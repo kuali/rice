@@ -61,7 +61,7 @@
 
           <property name="tree">
             <bean parent="Uif-Tree">
-              <property name="componentOptionsJSString">
+              <property name="templateOptionsJSString">
                 <value>
                   {"themes": {"theme": "default", "dots": true, "icons": false},
                    "checkbox": {"two_state": true, "real_checkboxes": true, "real_checkboxes_names": function (n) { return ['flush', (n[0].id)]; }},

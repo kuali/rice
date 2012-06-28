@@ -15,14 +15,23 @@
     limitations under the License.
 
 --%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
 <tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Inquiry"/>
 <tiles:useAttribute name="body"/>
+<tiles:useAttribute name="readOnly"/>
 
 <%--
-    Renders an inquiry link for a field value
-    Check if the field is read only
-    Render the direct inquiry for editable fields
- --%>
-<krad:template component="${widget.inquiryLinkField}" body="${body}"/>
+Renders an inquiry link for a field value
+Check if the field is read only
+Render the direct inquiry for editable fields
+--%>
+<c:choose>
+  <c:when test="${readOnly}">
+    <krad:template component="${widget.inquiryLink}" body="${body}"/>
+  </c:when>
+
+  <c:otherwise>
+    <krad:template component="${widget.directInquiryAction}"/>
+  </c:otherwise>
+</c:choose>

@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.kuali.rice.krad.uif.container.CollectionFilter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.PageGroup;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.view.View;
@@ -76,9 +76,9 @@ public class ViewCleaner {
      * @param collectionGroup - collection group instance to clean
      */
     public static void cleanCollectionGroup(CollectionGroup collectionGroup) {
-        collectionGroup.setAddLineLabelField(null);
-        collectionGroup.setAddLineActionFields(new ArrayList<ActionField>());
-        collectionGroup.setActionFields(new ArrayList<ActionField>());
+        collectionGroup.setAddLineLabel(null);
+        collectionGroup.setAddLineActions(new ArrayList<Action>());
+        collectionGroup.setLineActions(new ArrayList<Action>());
         collectionGroup.setSubCollections(new ArrayList<CollectionGroup>());
         collectionGroup.setActiveCollectionFilter(null);
         collectionGroup.setFilters(new ArrayList<CollectionFilter>());
@@ -96,8 +96,8 @@ public class ViewCleaner {
         container.setFooter(null);
         container.setHelp(null);
         container.setLayoutManager(null);
-        container.setInstructionalMessageField(null);
-        container.setComponentOptions(new HashMap<String, String>());
+        container.setInstructionalMessage(null);
+        container.setTemplateOptions(new HashMap<String, String>());
         container.setComponentModifiers(new ArrayList<ComponentModifier>());
         container.setPropertyReplacers(new ArrayList<PropertyReplacer>());
     }
@@ -109,12 +109,11 @@ public class ViewCleaner {
      */
     public static void cleanInputField(InputField inputField) {
         inputField.setControl(null);
-        inputField.setInstructionalMessageField(null);
-        inputField.setConstraintMessageField(null);
-        inputField.setFieldDirectInquiry(null);
-        inputField.setFieldInquiry(null);
-        inputField.setLabelField(null);
-        inputField.setComponentOptions(new HashMap<String, String>());
+        inputField.setInstructionalMessage(null);
+        inputField.setConstraintMessage(null);
+        inputField.setInquiry(null);
+        inputField.setLabel(null);
+        inputField.setTemplateOptions(new HashMap<String, String>());
         inputField.setComponentModifiers(new ArrayList<ComponentModifier>());
         inputField.setPropertyReplacers(new ArrayList<PropertyReplacer>());
     }

@@ -19,7 +19,7 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 
 /**
- * This Document Authorizer instance is used to test the {@link PessimisticLock} object and it's
+ * TestDocumentAuthorizerBase is used to test the {@link PessimisticLock} object and it's
  * use of lock descriptors 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

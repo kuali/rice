@@ -51,7 +51,7 @@ public interface ViewHelperService {
 	 * 
 	 * @see org.kuali.rice.krad.uif.component.RequestParameter
 	 */
-	public void populateViewFromRequestParameters(View view, Map<String, String> parameters);
+	void populateViewFromRequestParameters(View view, Map<String, String> parameters);
 
 	/**
 	 * Performs the Initialization phase for the <code>View</code>. During this
@@ -71,7 +71,7 @@ public interface ViewHelperService {
 	 *            - View instance that should be initialized
      * @param model - object instance containing the view data
 	 */
-	public void performInitialization(View view, Object model);
+	void performInitialization(View view, Object model);
 
 	/**
 	 * Performs the Initialization phase for the given <code>Component</code>
@@ -87,7 +87,7 @@ public interface ViewHelperService {
 	 * @param component
 	 *            - component instance that should be initialized
 	 */
-	public void performComponentInitialization(View view, Object model, Component component);
+	void performComponentInitialization(View view, Object model, Component component);
 
 	/**
 	 * Executes the ApplyModel phase. During this phase each component of the
@@ -115,7 +115,7 @@ public interface ViewHelperService {
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	public void performApplyModel(View view, Object model);
+	void performApplyModel(View view, Object model);
 
 	/**
 	 * The last phase before the view is rendered. Here final preparations can
@@ -133,7 +133,7 @@ public interface ViewHelperService {
 	 * @param model
 	 *            - top level object containing the data
 	 */
-	public void performFinalize(View view, Object model);
+	void performFinalize(View view, Object model);
 
     /**
      * Invoked after the view has been rendered to clear out objects that are not necessary to keep around for
@@ -141,7 +141,7 @@ public interface ViewHelperService {
      *
      * @param view - view instance to be cleaned
      */
-    public void cleanViewAfterRender(View view);
+    void cleanViewAfterRender(View view);
 
     /**
      * Performs the complete component lifecycle on the component passed in for use during a refresh process
@@ -158,7 +158,7 @@ public interface ViewHelperService {
      * @param component - component instance to perform lifecycle for
      * @param origId - id of the component within the view, used to pull the current component from the view
      */
-    public void performComponentLifecycle(View view, Object model, Component component, String origId);
+    void performComponentLifecycle(View view, Object model, Component component, String origId);
 
 	/**
 	 * Invoked when the add line action is chosen for a collection. The
@@ -177,7 +177,30 @@ public interface ViewHelperService {
 	 * @param collectionPath
 	 *            - full path to the collection on the model
 	 */
-	public void processCollectionAddLine(View view, Object model, String collectionPath);
+	void processCollectionAddLine(View view, Object model, String collectionPath);
+
+    /**
+     * Adds a blank line to the collection
+     *
+     * <p>
+     * Adds a new collection item to the collection and applies any default values.
+     * </p>
+     *
+     * @param view - view instance that is being presented (the action was taken on)
+     * @param model - Top level object containing the view data including the collection and new line
+     * @param collectionPath - full path to the collection on the model
+     */
+    void processCollectionAddBlankLine(View view, Object model, String collectionPath);
+
+    /**
+     * Invoked when the save line action is chosen for a collection. This method only does server side validation by
+     * default but creates hook for client applications to add additional logic like persisting data.
+     *
+     * @param view - view instance that is being presented (the action was taken on)
+     * @param model - Top level object containing the view data including the collection and new line
+     * @param collectionPath - full path to the collection on the model
+     */
+    void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex);
 
 	/**
 	 * Invoked when the delete line action is chosen for a collection. The
@@ -198,7 +221,7 @@ public interface ViewHelperService {
 	 * @param lineIndex
 	 *            - index of the collection line that was selected for removal
 	 */
-	public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
+    void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
 
     /**
      * Process the results returned from a multi-value lookup populating the lines for the collection given
@@ -209,8 +232,7 @@ public interface ViewHelperService {
      * @param collectionPath - binding path to the collection to populated
      * @param lookupResultValues - String containing the selected line values
      */
-    public void processMultipleValueLookupResults(View view, Object model, String collectionPath,
-            String lookupResultValues);
+    void processMultipleValueLookupResults(View view, Object model, String collectionPath, String lookupResultValues);
 	
 	/**
 	 * Invoked by the <code>Inquiry</code> widget to build the inquiry link
@@ -232,7 +254,7 @@ public interface ViewHelperService {
 	 * @param inquiry
 	 *            - instance of the inquiry widget being built for the property
 	 */
-	public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
+    void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
 
     /**
      * Applies configured default values for the line fields to the line
@@ -247,7 +269,6 @@ public interface ViewHelperService {
      * @param line
      *            - line instance to apply default values to
      */
-    public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
-            Object line);
+    void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup, Object line);
 
 }

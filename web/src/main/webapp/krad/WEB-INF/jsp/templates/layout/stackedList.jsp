@@ -22,10 +22,10 @@
 <tiles:useAttribute name="container" classname="org.kuali.rice.krad.uif.container.ContainerBase"/>
 
 <%--
-    Stacked Layout Manager:
-    
-      Used to render the collection line groups in an unordered list
- --%>
+     Stacked Layout Manager:
+
+       Used to render the collection line groups in an unordered list
+  --%>
 
 <ul id="${manager.id}">
   <c:forEach items="${manager.stackedGroups}" var="item" varStatus="itemVarStatus">

@@ -20,4 +20,4 @@
 <tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Reorderer"/>
 <tiles:useAttribute name="parent" classname="org.kuali.rice.krad.uif.container.Group"/>
 
-<krad:script value="createReorderer('${parent.id}', ${widget.componentOptionsJSString});"/>
+<krad:script value="createReorderer('${parent.id}', ${widget.templateOptionsJSString});"/>

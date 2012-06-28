@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.ReferenceDefinition;
+import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.document.Document;
@@ -81,58 +82,7 @@ public interface DictionaryValidationService {
     public DictionaryValidationResult validate(Object object);
 
     /**
-     * Validates an object using its class name as the entry name to look up its metadata in the dictionary.
-     *
-     * @param object - an object to validate
-     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values
-     * are required or not), false otherwise
-     * @return the dictionary validation result object associated with this validation
-     */
-    public DictionaryValidationResult validate(Object object, boolean doOptionalProcessing);
-
-    /**
-     * Validates an object using the passed entry name to look up metadata in the dictionary
-     *
-     * @param object - an object to validate
-     * @param entryName - the dictionary entry name to look up the metadata associated with this object
-     * @return the dictionary validation result object associated with this validation
-     * @since 1.1
-     */
-    public DictionaryValidationResult validate(Object object, String entryName);
-
-    /**
-     * Same as {@link #validate(java.lang.Object, java.lang.String)} except that it provides a boolean parameter for
-     * the
-     * calling method to choose whether to do optional processing (generally to check if blank/empty values are
-     * required
-     * or not).
-     *
-     * @param object - an object to validate
-     * @param entryName - the dictionary entry name to look up the metadata associated with this object
-     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values
-     * are required or not), false otherwise
-     * @return the dictionary validation result object associated with this validation
-     * @since 1.1
-     */
-    public DictionaryValidationResult validate(Object object, String entryName, boolean doOptionalProcessing);
-
-    /**
-     * Validates a single attribute on the passed object using the passed entry name to look up
-     * metadata in the dictionary.
-     *
-     * @param object - an object to validate
-     * @param entryName - the dictionary entry name to look up the metadata associated with this object
-     * @param attributeName - the name of the attribute (field) on the object that should be validated
-     * @return the dictionary validation result object associated with this validation
-     * @since 1.1
-     */
-    public DictionaryValidationResult validate(Object object, String entryName, String attributeName);
-
-    /**
-     * Same as {@link #validate(Object, String, String)} except that it provides a boolean parameter for the
-     * calling method to choose whether to do optional processing (generally to check if blank/empty values are
-     * required
-     * or not).
+     * Validate an object with the passed in dictionary entryName and the specific attribute to be evaluated
      *
      * @param object - an object to validate
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
@@ -146,7 +96,8 @@ public interface DictionaryValidationService {
             boolean doOptionalProcessing);
 
     /**
-     * Same as {@link DictionaryValidationService#validate(Object, String, boolean) except that it provides an explicit
+     * Same as {@link DictionaryValidationService#validate(Object, String, String, boolean) except that it provides an
+     * explicit
      * data dictionary
      * entry to use for the purpose of validation.
      *
@@ -162,35 +113,32 @@ public interface DictionaryValidationService {
             boolean doOptionalProcessing);
 
     /**
-     * Instead of validating an object with dictionary metadata, or validating a specific member of an object by name,
-     * validates a
-     * specific attribute of an object by passing in the attribute value itself. This limits the amount of validation
-     * that can be done
-     * to constraints that directly affect this attribute.
+     * Validates the object agains the next state (or current state if there is no next state).  When
+     * no stateMapping exists on the DataDictionaryEntry that applies for this object, validation is considered
+     * stateless and all constraints are processed regardless of their states attribute.
      *
-     * @param entryName - the dictionary entry name to use in association with error look ups
-     * @param attributeName - the dictionary entry attribute name to use in association with error look ups
-     * @param attributeValue - the value of the attribute being validated
+     * @param object
+     * @return the dictionary validation result object associated with this validation
+     * @since 2.2
      */
-    public void validate(String entryName, String attributeName, Object attributeValue);
+    public DictionaryValidationResult validateAgainstNextState(Object object);
 
     /**
-     * Same as {@link #validate(String, String, Object)} except that it provides a boolean parameter for the
-     * calling method to choose whether to do optional processing (generally to check if blank/empty values are
-     * required
-     * or not).
+     * Validates the object against the state specified.
      *
-     * @param entryName - the dictionary entry name to use in association with error look ups
-     * @param attributeName - the dictionary entry attribute name to use in association with error look ups
-     * @param attributeValue - the value of the attribute being validated
-     * @param doOptionalProcessing - true if the validation should do optional validation (e.g. to check if empty
-     * values
-     * are required or not), false otherwise
+     * <p>Important note: Alternatively the state can be changed on the
+     * object itself and another validation method can be used instead of this one (in practice, you'd revert the
+     * state on the object if validation returns errors).</p>
+     *
+     * @param object
+     * @param validationState
+     * @return the dictionary validation result object associated with this validation
+     * @since 2.2
      */
-    public void validate(String entryName, String attributeName, Object attributeValue, boolean doOptionalProcessing);
+    public DictionaryValidationResult validateAgainstState(Object object, String validationState);
 
     /**
-     * Same as other validate method except, allows you to provide the attributeValueReader directly for evaluation
+     * Same as other validate methods, except allows you to provide the attributeValueReader directly for evaluation
      *
      * @param valueReader - an object to validate
      * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values
@@ -198,7 +146,8 @@ public interface DictionaryValidationService {
      * @return the dictionary validation result object associated with this validation
      * @since 1.1
      */
-    public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing);
+    public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing,
+            String validationState, StateMapping stateMapping);
 
     /**
      * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to
@@ -341,24 +290,26 @@ public interface DictionaryValidationService {
     public boolean validateReferenceIsActive(BusinessObject bo, String referenceName);
 
     /**
-     * This method intelligently tests the designated reference on the bo for both existence and active status, where
-     * appropriate.
+     * validateReferenceExistsAndIsActive intelligently tests the designated reference on the bo for both existence and
+     * active status, where
+     * appropriate
      *
-     * It will not test anything if the foreign-key fields for the given reference arent filled out with values, and it
-     * will not
-     * test active status if the reference doesnt exist.
+     * <p>It will not test anything if the foreign-key fields for the given reference aren't filled out with values,
+     * and
+     * it
+     * will not test active status if the reference doesn't exist.</p>
      *
-     * Further, it will only test active status where the correct flag is set.
+     * <p>Further, it will only test active status where the correct flag is set.</p>
      *
-     * On failures of either sort, it will put the relevant errors into the GlobalVariables errorMap, and return a
+     * <p>On failures of either sort, it will put the relevant errors into the GlobalVariables errorMap, and return a
      * false. If there
      * are no failures, or nothing can be tested because the foreign-key fields arent fully filled out, it will return
      * true and add
-     * no errors.
+     * no errors.</p>
      *
-     * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the
+     * <p>This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the
      * errorMap with no
-     * prefix, other than what has already been pushed onto the errorMap.
+     * prefix, other than what has already been pushed onto the errorMap.</p>
      *
      * @param bo - the BusinessObject instance to be tested.
      * @param reference - the ReferenceDefinition to control the nature of the testing.

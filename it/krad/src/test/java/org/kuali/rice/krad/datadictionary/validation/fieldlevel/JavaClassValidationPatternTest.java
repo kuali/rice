@@ -22,7 +22,13 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
+/**
+ * JavaClassValidationPatternTest tests {@link JavaClassValidationPattern}
+ *
+ * <p>Valid Java class file names should match</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class JavaClassValidationPatternTest extends KRADTestCase {
     JavaClassValidationPattern pattern;
 

@@ -17,11 +17,12 @@ package org.kuali.rice.krad.uif.widget;
 
 /**
  * Growls sets up settings for growls global to the current view and its pages
+ *
+ * <p>
  * Some basic options of the plugin are exposed through this class, however additional options
- * can be passed through setComponentOptions as usual.
- * However, the header and theme option is set by the growl processing in PageGroup
- * automatically.
- * See the jquery jGrowl plugin for more details.
+ * can be passed through setComponentOptions as usual. However, the header and theme option is set
+ * by the growl processing in PageGroup automatically. See the jquery jGrowl plugin for more details.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -31,6 +32,10 @@ public class Growls extends WidgetBase {
     private boolean sticky;
     private int timeShown;
     private String position;
+
+    public Growls() {
+        super();
+    }
 
     /**
      * If true, the growl will stick to the page until the user dismisses it
@@ -46,7 +51,7 @@ public class Growls extends WidgetBase {
      */
     public void setSticky(boolean sticky) {
         this.sticky = sticky;
-        this.getComponentOptions().put("sticky", Boolean.toString(sticky));
+        this.getTemplateOptions().put("sticky", Boolean.toString(sticky));
     }
 
     /**
@@ -63,7 +68,7 @@ public class Growls extends WidgetBase {
      */
     public void setTimeShown(int timeShown) {
         this.timeShown = timeShown;
-        this.getComponentOptions().put("life", Integer.toString(timeShown));
+        this.getTemplateOptions().put("life", Integer.toString(timeShown));
     }
 
     /**
@@ -81,6 +86,6 @@ public class Growls extends WidgetBase {
      */
     public void setPosition(String position) {
         this.position = position;
-        this.getComponentOptions().put("position", position);
+        this.getTemplateOptions().put("position", position);
     }
 }

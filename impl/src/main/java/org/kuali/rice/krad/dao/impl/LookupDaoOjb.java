@@ -180,6 +180,8 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     		List bos = new ArrayList();
     		bos.addAll(searchResults);
     		searchResults = bos;
+
+
     	}
     	catch (OjbOperationException e) {
     		throw new RuntimeException("LookupDaoOjb encountered exception during executeSearch", e);

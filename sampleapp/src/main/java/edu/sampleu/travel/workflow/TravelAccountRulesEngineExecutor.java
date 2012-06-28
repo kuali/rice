@@ -63,7 +63,11 @@ public class TravelAccountRulesEngineExecutor implements RulesEngineExecutor {
 
         Facts.Builder factsBuilder = Facts.Builder.create();
 
-        factsBuilder.addFact("Subsidized Percent", Double.valueOf(subsidizedPercentStr));
+        try {
+            factsBuilder.addFact("Subsidized Percent", Double.valueOf(subsidizedPercentStr));
+        } catch (NumberFormatException e) {
+            factsBuilder.addFact("Subsidized Percent", 0);
+        }
         factsBuilder.addFact("Account Type Code", accountTypeCode);
         factsBuilder.addFact("Initiator Principal ID", initiator);
 

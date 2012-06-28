@@ -23,10 +23,15 @@ package org.kuali.rice.krad.uif;
 public class UifConstants {
     public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
     public static final String DEFAULT_MODEL_NAME = "KualiForm";
+    public static final String COMPONENT_MODEL_NAME = "Component";
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String COMPONENT_ID_PREFIX = "u";
-    public static final String SPRING_VIEW_ID = "Application";
-    public static final String SPRING_REDIRECT_ID = "redirectURL";
+
+    // uncomment for freemarker testing
+    public static final String SPRING_VIEW_ID = "/krad/WEB-INF/ftl/uifRender";
+    //public static final String SPRING_VIEW_ID = "UifTemplateRender";
+    public static final String SPRING_REDIRECT_ID = "/krad/WEB-INF/ftl/redirect";
+    public static final String REDIRECT_PREFIX = "redirect:";
 
     public static final String EL_PLACEHOLDER_PREFIX = "@{";
     public static final String EL_PLACEHOLDER_SUFFIX = "}";
@@ -35,6 +40,9 @@ public class UifConstants {
     public static final String FIELD_PATH_BIND_ADJUST_PREFIX = "#fp.";
     public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
     public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
+
+    public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
+    public static final String REQUEST_FORM = "requestForm";
 
     public static enum Position {
         BOTTOM, LEFT, RIGHT, TOP
@@ -50,10 +58,6 @@ public class UifConstants {
 
     public static enum Orientation {
         HORIZONTAL, VERTICAL
-    }
-
-    public static enum MessageType {
-        NORMAL, CUTLINE, INSTRUCTIONAL, CONSTRAINT, REQUIRED, HELP_SUMMARY, HELP_DESCRIPTION
     }
 
     public static enum ViewType {
@@ -79,12 +83,12 @@ public class UifConstants {
         public static final String DELETE_LINE = "deleteLine";
         public static final String REFRESH = "refresh";
         public static final String CANCEL = "cancel";
-        public static final String UPDATE_COMP = "updateComponent";
         public static final String TOGGLE_INACTIVE = "toggleInactiveRecordDisplay";
     }
 
     public static class ActionEvents {
         public static final String ADD_LINE = "addLine";
+        public static final String ADD_BLANK_LINE = "addBlankLine";
     }
 
     public static class LayoutComponentOptions {
@@ -94,15 +98,16 @@ public class UifConstants {
 
     public static class IdSuffixes {
         public static final String ADD_LINE = "_add";
+        public static final String CONTROL = "_control";
         public static final String ATTRIBUTE = "_attribute";
         public static final String COMPARE = "_comp";
         public static final String CONSTRAINT = "_constraint";
         public static final String DIRECT_INQUIRY = "_directinquiry";
-        public static final String DIV = "_div";
         public static final String ERRORS = "_errors";
         public static final String INSTRUCTIONAL = "_instructional";
         public static final String LINE = "_line";
         public static final String LABEL = "_label";
+        public static final String FIELDSET = "_fieldset";
         public static final String SUB = "_sub";
         public static final String SUGGEST = "_suggest";
         public static final String QUICK_FINDER = "_quickfinder";
@@ -137,6 +142,7 @@ public class UifConstants {
         public static final String UIF_CONSTANTS = "UifConstants";
         public static final String VIEW = "view";
         public static final String VIEW_HELPER = "ViewHelper";
+        public static final String PARENT_LINE = "parentLine";
     }
 
     public static class TableToolsKeys {
@@ -152,6 +158,7 @@ public class UifConstants {
         public static final String VISIBLE = "bVisible";
         public static final String SORT_TYPE = "sType";
         public static final String TABLE_SORT = "bSort";
+        public static final String SAJAX_SOURCE = "sAjaxSource";
     }
 
     public static class TableToolsValues {
@@ -189,10 +196,12 @@ public class UifConstants {
         public static final String FORM_KEY = "formKey";
         public static final String PAGE_ID = "pageId";
         public static final String HISTORY = "history";
+        public static final String LAST_FORM_KEY = "lastFormKey";
     }
 
     public static class Messages {
         public static final String VALIDATION_MSG_KEY_PREFIX = "validation.";
+        public static final String STATE_PREFIX = "validation.statePrefix";
     }
 
     public static class MessageKeys {
@@ -209,4 +218,34 @@ public class UifConstants {
         public static final String MULTI_VALUE_LOOKUP = "MULTI_VALUE_LOOKUP";
         public static final String QUESTION = "QUESTION";
     }
+
+    public static final class DataAttributes {
+        public static final String SERVER_MESSAGES = "server-messages";
+        public static final String VALIDATION_MESSAGES = "validationMessages";
+        public static final String SUMMARIZE = "summarize";
+        public static final String DISPLAY_MESSAGES = "displayMessages";
+        public static final String COLLAPSE_FIELD_MESSAGES = "collapseFieldMessages";
+        public static final String DISPLAY_LABEL = "displayLabel";
+        public static final String HAS_OWN_MESSAGES = "hasOwnMessages";
+        public static final String PAGE_LEVEL = "pageLevel";
+        public static final String FORCE_SHOW = "forceShow";
+        public static final String SECTIONS = "sections";
+        public static final String ORDER = "order";
+        public static final String SERVER_ERRORS = "serverErrors";
+        public static final String SERVER_WARNINGS = "serverWarnings";
+        public static final String SERVER_INFO = "serverInfo";
+        public static final String VIGNORE = "vignore";
+    }
+
+    public static final class CaseConstraintOperators {
+        public static final String HAS_VALUE = "has_value";
+        public static final String EQUALS = "equals";
+        public static final String GREATER_THAN_EQUAL = "greater_than_equal";
+        public static final String LESS_THAN_EQUAL = "less_than_equal";
+        public static final String NOT_EQUAL = "not_equal";
+        public static final String NOT_EQUALS = "not_equals";
+        public static final String GREATER_THAN = "greater_than";
+        public static final String LESS_THAN = "less_than";
+    }
+
 }

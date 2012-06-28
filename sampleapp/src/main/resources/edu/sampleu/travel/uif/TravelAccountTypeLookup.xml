@@ -22,7 +22,7 @@
 
 
   <bean id="TravelAccountType-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Travel Account Type Lookup" />
+    <property name="headerText" value="Travel Account Type Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccountType" />
     <property name="criteriaFields">
       <list>

@@ -24,7 +24,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Verifies that the RiceTestCase starts up cleanly.
+ * Verifies that the RiceTestCase starts up cleanly
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

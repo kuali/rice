@@ -24,8 +24,11 @@
     Group of HTML Checkbox Inputs
     
  --%>
-
-<form:checkboxes id="${field.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
-                   items="${control.options}" itemValue="key" itemLabel="value"
-                   cssClass="${control.styleClassesAsString}" delimiter="${control.delimiter}"
-                   tabindex="${control.tabIndex}"/>
+<fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
+        data-type="CheckboxSet" id="${field.id}_fieldset">
+  <legend style="display: none">${field.label}</legend>
+  <form:checkboxes id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
+                     items="${control.options}" itemValue="key" itemLabel="value"
+                     cssClass="${control.styleClassesAsString}" delimiter="${control.delimiter}"
+                     tabindex="${control.tabIndex}"/>
+</fieldset>

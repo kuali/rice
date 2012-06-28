@@ -22,8 +22,8 @@
 
 <%-- renders standard unordered list and calls doNavigation function --%>
 
-<!----------------------------------- #NAVIGATION --------------------------------------->
-<krad:div component="${group}">
+<!-- NAVIGATION -->
+
   <%-- render items in list --%>
   <ul id="${group.id}" role="navigation">
     <c:forEach items="${group.items}" var="item" varStatus="itemVarStatus">
@@ -32,10 +32,9 @@
       </li>
     </c:forEach>
   </ul>
-</krad:div>
 
 <krad:script value="
-  var options = ${group.componentOptionsJSString};
+  var options = ${group.templateOptionsJSString};
   options.currentPage = '${currentPageId}';
   createNavigation('${group.id}', '${group.navigationType}', options);
 "/>

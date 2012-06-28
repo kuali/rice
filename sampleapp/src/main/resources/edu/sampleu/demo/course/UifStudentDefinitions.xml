@@ -23,7 +23,7 @@
 
   <bean id="GenericTextArea" parent="Uif-InputField" abstract="true"
         p:label="Field Label" p:labelPlacement="TOP"
-        p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+        p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40"/>
     </property>
@@ -31,7 +31,7 @@
 
   <bean id="GenericTextField" parent="Uif-InputField" abstract="true"
         p:label="Field Label" p:labelPlacement="TOP"
-        p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+        p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-TextControl" p:size="30"/>
     </property>
@@ -40,11 +40,11 @@
   <bean id="GenericTextFieldMedium" parent="GenericTextField" p:control.size="12"/>
   <bean id="GenericTextFieldSmall" parent="GenericTextField" p:control.size="5"/>
 
-  <bean id="GenericFieldGroup" parent="Uif-VerticalFieldGroup" p:labelField.styleClasses="labelTop" p:labelPlacement="TOP"
-        p:labelField.renderColon="false"/>
+  <bean id="GenericFieldGroup" parent="Uif-VerticalFieldGroup" p:fieldLabel.cssClasses="labelTop" p:labelPlacement="TOP"
+        p:fieldLabel.renderColon="false"/>
 
-  <bean id="GenericHorizontalFieldGroup" parent="Uif-HorizontalFieldGroup" p:labelField.styleClasses="labelTop" p:labelPlacement="TOP"
-        p:labelField.renderColon="false"/>
+  <bean id="GenericHorizontalFieldGroup" parent="Uif-HorizontalFieldGroup" p:fieldLabel.cssClasses="labelTop" p:labelPlacement="TOP"
+        p:fieldLabel.renderColon="false"/>
 
   <bean id="GenericDateField" parent="GenericTextField">
     <property name="control">
@@ -57,8 +57,8 @@
   </bean>
 
   <bean id="GenericSelection" parent="Uif-InputField" abstract="true"
-        p:label="Select" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
-        p:labelField.renderColon="false">
+        p:label="Select" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"
+        p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-DropdownControl">
         <property name="options">
@@ -75,7 +75,7 @@
     </property>
   </bean>
 
-  <bean id="GenericGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false" p:header.styleClasses="group_header"/>
+  <bean id="GenericGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false" p:header.cssClasses="group_header"/>
 
   <bean id="genericTextGroup" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false"/>
@@ -92,25 +92,25 @@
   </bean>
 
   <bean id="GenericCollectionGroup" parent="Uif-StackedCollectionSection" p:disclosure.render="false"
-        p:header.styleClasses="group_header">
+        p:header.cssClasses="group_header">
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-WithBoxItems"/>
     </property>
-    <property name="addLineActionFields">
+    <property name="addLineActions">
       <list>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add">
           <property name="actionImage">
-            <bean parent="Uif-ImageField"
+            <bean parent="Uif-Image"
                   p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/icon_btn_add.png"/>
           </property>
         </bean>
       </list>
     </property>
-    <property name="actionFields">
+    <property name="lineActions">
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete">
           <property name="actionImage">
-            <bean parent="Uif-ImageField"
+            <bean parent="Uif-Image"
                   p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/icon_btn_minus.png"/>
           </property>
         </bean>
@@ -119,8 +119,8 @@
   </bean>
 
   <bean id="GenericRadio" parent="Uif-InputField" abstract="true"
-        p:label="Radio" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
-        p:labelField.renderColon="false">
+        p:label="Radio" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"
+        p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-VerticalRadioControl">
         <property name="options">
@@ -136,21 +136,21 @@
 
   <bean id="GenericCheckbox" parent="Uif-InputField" abstract="true"
         p:labelPlacement="RIGHT"
-        p:labelField.styleClasses="labelRight" p:labelField.renderColon="false">
+        p:fieldLabel.cssClasses="labelRight" p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-CheckboxControl"/>
     </property>
   </bean>
 
-  <bean id="KSFormView" parent="Uif-FormView" p:breadcrumbsInApplicationHeader="true"
-        p:breadcrumbs.styleClasses="fl-container-flex75 fl-col breadcrumbs gutter-right">
+  <bean id="KSFormView" parent="Uif-FormView" p:renderBreadcrumbsInView="false"
+        p:breadcrumbs.cssClasses="fl-container-flex75 fl-col breadcrumbs gutter-right">
     <property name="applicationHeader">
-      <bean parent="Uif-HeaderField-One" p:id="ks-banner" p:template="/WEB-INF/jsp/templates/StudentApplicationHeader.jsp"
-            p:styleClasses="fl-container-flex"/>
+      <bean parent="Uif-HeaderOne" p:id="ks-banner" p:template="/WEB-INF/jsp/templates/StudentApplicationHeader.jsp"
+            p:cssClasses="fl-container-flex"/>
     </property>
     <property name="applicationFooter">
       <bean parent="Uif-FooterBase" p:template="/WEB-INF/jsp/templates/StudentApplicationFooter.jsp"
-            p:styleClasses="fl-container-flex ks-page-bottom"/>
+            p:cssClasses="fl-container-flex ks-page-bottom"/>
     </property>
   </bean>
 
@@ -159,9 +159,9 @@
   </bean>
 
   <bean id="AdvancedSearchQuickFinder" parent="Uif-QuickFinder">
-    <property name="quickfinderActionField">
+    <property name="quickfinderAction">
       <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Advanced Search"
-            p:styleClasses="kr-quickfinder action">
+            p:cssClasses="kr-quickfinder action">
         <property name="lightBoxLookup">
           <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="true"/>
         </property>

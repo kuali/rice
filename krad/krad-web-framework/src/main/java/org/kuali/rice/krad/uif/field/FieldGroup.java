@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -43,8 +44,7 @@ public class FieldGroup extends FieldBase {
 	 * The following initialization is performed:
      *
 	 * <ul>
-	 * <li>Set the align on group if empty and the align has been set on the
-	 * field</li>
+	 * <li>Set the align on group if empty and the align has been set on the field</li>
 	 * </ul>
 	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
@@ -58,7 +58,20 @@ public class FieldGroup extends FieldBase {
 		}
 	}
 
-	/**
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+        this.addDataAttribute("parent", parent.getId());
+        if(group != null){
+            this.addDataAttribute("group", group.getId());
+        }
+        setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);
+        if(this.getFieldLabel() != null){
+            this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.FIELDSET);
+        }
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
 	 */
 	@Override

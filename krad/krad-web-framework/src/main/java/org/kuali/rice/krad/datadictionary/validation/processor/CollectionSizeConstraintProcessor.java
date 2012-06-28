@@ -38,7 +38,7 @@ public class CollectionSizeConstraintProcessor implements CollectionConstraintPr
 	private static final String CONSTRAINT_NAME = "collection size constraint";
 	
 	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.capability.Validatable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {

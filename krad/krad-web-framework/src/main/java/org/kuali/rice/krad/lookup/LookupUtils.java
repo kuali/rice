@@ -123,6 +123,7 @@ public class LookupUtils {
      * specific to this data object class
      *
      * @param dataObjectClass - class to get limit for
+     * @return result set limit
      */
     public static Integer getSearchResultsLimit(Class dataObjectClass) {
         Integer limit = KRADServiceLocatorWeb.getViewDictionaryService().getResultSetLimitForLookup(dataObjectClass);
@@ -136,6 +137,8 @@ public class LookupUtils {
     /**
      * Retrieves the default application search limit configured through
      * a system parameter
+     *
+     * @return default result set limit of the application
      */
     public static Integer getApplicationSearchResultsLimit() {
         String limitString = CoreFrameworkServiceLocator.getParameterService()
@@ -229,10 +232,10 @@ public class LookupUtils {
 
     /**
      * Changes from/to dates into the range operators the lookupable dao expects ("..",">" etc) this method modifies
-     * the
-     * passed in map and returns a list containing only the modified fields
+     * the passed in map and returns a list containing only the modified fields
      *
      * @param searchCriteria - map of criteria currently set for which the date criteria will be adjusted
+     * @return map of modified fields
      */
     public static Map<String, String> preprocessDateFields(Map<String, String> searchCriteria) {
         Map<String, String> fieldsToUpdate = new HashMap<String, String>();
@@ -268,6 +271,12 @@ public class LookupUtils {
 
     /**
      * Checks whether any of the fieldValues being passed refer to a property within an ExternalizableBusinessObject.
+     *
+     * @param boClass business object class of the lookup
+     * @param fieldValues map of the lookup criteria values
+     * @return true if externalizable buiness object are contained, false otherwise
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
     public static boolean hasExternalBusinessObjectProperty(Class<?> boClass,
             Map<String, String> fieldValues) throws IllegalAccessException, InstantiationException {
@@ -285,6 +294,10 @@ public class LookupUtils {
      * Check whether the given property represents a property within an EBO starting with the sampleBo object given.
      * This is used to determine if a criteria needs to be applied to the EBO first,
      * before sending to the normal lookup DAO.
+     *
+     * @param sampleBo business object of the property to be tested
+     * @param propertyName property name to be tested
+     * @return true if the property is within an externalizable business object.
      */
     public static boolean isExternalBusinessObjectProperty(Object sampleBo, String propertyName) {
         if (propertyName.indexOf(".") > 0 && !StringUtils.contains(propertyName, "add.")) {
@@ -302,6 +315,10 @@ public class LookupUtils {
      * Returns a map stripped of any properties which refer to ExternalizableBusinessObjects. These values may not be
      * passed into the lookup service, since the objects they refer to are not in the
      * local database.
+     *
+     * @param boClass business object class of the lookup
+     * @param fieldValues map of lookup criteria from which to remove the externalizable business objects
+     * @return map of lookup criteria without externalizable business objects
      */
     public static Map<String, String> removeExternalizableBusinessObjectFieldValues(Class<?> boClass,
             Map<String, String> fieldValues) throws IllegalAccessException, InstantiationException {
@@ -319,6 +336,10 @@ public class LookupUtils {
     /**
      * Return the EBO fieldValue entries explicitly for the given eboPropertyName. (I.e., any properties with the given
      * property name as a prefix.
+     *
+     * @param eboPropertyName the externalizable business object property name to retrieve
+     * @param fieldValues map of lookup criteria
+     * return map of lookup criteria for the given eboPropertyName
      */
     public static Map<String, String> getExternalizableBusinessObjectFieldValues(String eboPropertyName,
             Map<String, String> fieldValues) {
@@ -335,7 +356,15 @@ public class LookupUtils {
     /**
      * Get the complete list of all properties referenced in the fieldValues that are ExternalizableBusinessObjects.
      *
+     * <p>
      * This is a list of the EBO object references themselves, not of the properties within them.
+     * </p>
+     *
+     * @param boClass business object class of the lookup
+     * @param fieldValues map of lookup criteria from which to return the externalizable business objects
+     * @return map of lookup criteria that are externalizable business objects
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
     public static List<String> getExternalizableBusinessObjectProperties(Class<?> boClass,
             Map<String, String> fieldValues) throws IllegalAccessException, InstantiationException {
@@ -355,9 +384,11 @@ public class LookupUtils {
      * Given an property on the main BO class, return the defined type of the ExternalizableBusinessObject. This will
      * be used by other code to determine the correct module service to call for the lookup.
      *
-     * @param boClass
-     * @param propertyName
-     * @return
+     * @param boClass business object class of the lookup
+     * @param propertyName property of which the externalizable business object type is to be determined
+     * @return externalizable business object type
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
     public static Class<? extends ExternalizableBusinessObject> getExternalizableBusinessObjectClass(Class<?> boClass,
             String propertyName) throws IllegalAccessException, InstantiationException {

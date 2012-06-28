@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Implementation of <code>Configurable</code> that contains a Map<String, String> for holding
- * property expressions
+ * Implementation of <code>Configurable</code> that contains a Map<String, String> of initally configured
+ * expressions and a Map<String, String> of expressions that need to be evaluated
  *
  * <p>
  * Should be extended by other UIF classes (such as <code>Component</code> or <code>LayoutManager</code>) to
@@ -30,10 +30,37 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ConfigurableBase implements Configurable {
+    
+    private Map<String, String> expressionGraph;
+    private Map<String, String> refreshExpressionGraph;
     private Map<String, String> propertyExpressions;
 
     public ConfigurableBase() {
+        expressionGraph = new HashMap<String, String>();
+        refreshExpressionGraph = new HashMap<String, String>();
         propertyExpressions = new HashMap<String, String>();
+    }
+
+    /**
+     * @see Configurable#getExpressionGraph()
+     */
+    public Map<String, String> getExpressionGraph() {
+        return expressionGraph;
+    }
+
+    /**
+     * @see Configurable#setExpressionGraph(java.util.Map<java.lang.String,java.lang.String>)
+     */
+    public void setExpressionGraph(Map<String, String> expressionGraph) {
+        this.expressionGraph = expressionGraph;
+    }
+
+    public Map<String, String> getRefreshExpressionGraph() {
+        return refreshExpressionGraph;
+    }
+
+    public void setRefreshExpressionGraph(Map<String, String> refreshExpressionGraph) {
+        this.refreshExpressionGraph = refreshExpressionGraph;
     }
 
     /**

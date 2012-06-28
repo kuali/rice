@@ -17,5 +17,20 @@
 
 <%@ attribute name="value" required="true" 
               description="The script to run - DO NOT include the script tags"%>
-   
-<input type="hidden" name="script"  value="${fn:escapeXml(value)}"/>
+<%@ attribute name="component" required="false"
+              description="The UIF component for which the script is for"
+              type="org.kuali.rice.krad.uif.component.Component"%>
+<%@ attribute name="role" required="false"
+              description="The role of this script to identify scipts with particular uses"%>
+
+<c:if test="${!empty component && !empty component.id}">
+  <c:set var="dataFor" value="data-for=\"${component.id}\""/>
+</c:if>
+
+<c:set var="roleString" value="script"/>
+<c:if test="${!empty role}">
+  <c:set var="roleString" value="${role}"/>
+</c:if>
+<c:if test="${!empty value}">
+  <input type="hidden" data-role="${roleString}" ${dataFor} name="script"  value="${fn:escapeXml(value)}"/>
+</c:if>

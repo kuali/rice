@@ -19,27 +19,28 @@
 
 <tiles:useAttribute name="group" classname="org.kuali.rice.krad.uif.container.TabGroup"/>
 
-<krad:group group="${group}" groupBodyIdSuffix="_tabGroup">
+<krad:group group="${group}">
 
   <%-- render items through layout manager --%>
   <div id="${group.id}_tabs">
     <%-- render items in list --%>
-    <ul id="${group.id}">
+    <ul id="${group.id}_tabList">
       <c:forEach items="${group.items}" var="item">
-        <li>
-          <a href="#${item.id}_tab">${item.title}</a>
+        <li data-tabfor="${item.id}">
+          <a  href="#${item.id}_tab">${item.header.headerText}</a>
         </li>
       </c:forEach>
     </ul>
 
     <c:forEach items="${group.items}" var="item">
-      <div id="${item.id}_tab">
+      <div data-tabwrapperfor="${item.id}" data-type="TabWrapper" id="${item.id}_tab">
         <krad:template component="${item}"/>
       </div>
     </c:forEach>
   </div>
 
+  <%-- render tabs widget --%>
+  <krad:template component="${group.tabsWidget}" parent="${group}"/>
 </krad:group>
 
-<%-- render tabs widget --%>
-<krad:template component="${group.tabsWidget}" parent="${group}"/>
+

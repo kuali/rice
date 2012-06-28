@@ -117,9 +117,9 @@
   </bean>
 
   <bean id="TermSpec-MaintenanceView" parent="Uif-MaintenanceView">
-    <property name="title" value="Term Specification"/>
+    <property name="headerText" value="Term Specification"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.ui.TermSpecificationMaintainable"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.ui.TermSpecificationMaintainable"/>
     <property name="items">
       <list>
         <ref bean="TermSpec-MainSection"/>
@@ -128,7 +128,7 @@
   </bean>
 
   <bean id="TermSpec-MainSection" parent="Uif-MaintenanceVerticalBoxSection">
-    <property name="title" value="Term Specification" />
+    <property name="headerText" value="Term Specification" />
     <property name="items">
       <list>
         <bean parent="Uif-GridGroup" p:layoutManager.numberOfColumns="2">
@@ -150,7 +150,7 @@
   </bean>
 
   <bean id="TermSpec-Categories" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="3" p:colSpan="2">
-    <property name="title" value="Categories" />
+    <property name="headerText" value="Categories" />
     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo" />
     <property name="propertyName" value="categories" />
     <property name="layoutManager.renderSequenceField" value="false" />
@@ -165,15 +165,15 @@
             <bean parent="Uif-TextControl" p:size="40"/>
           </property>
 
-          <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-          <property name="fieldLookup.fieldConversions">
+          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
+          <property name="quickfinder.fieldConversions">
             <map>
               <entry key="id" value="id"/>
               <entry key="name" value="name"/>
               <entry key="namespace" value="namespace"/>
             </map>
           </property>
-          <property name="fieldLookup.lookupParameters">
+          <property name="quickfinder.lookupParameters">
             <map>
               <entry key="namespace" value="namespace"/>
               <entry key="name" value="name"/>
@@ -198,7 +198,7 @@
   </bean>
 
   <bean id="TermSpec-Contexts" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:colSpan="2">
-    <property name="title" value="Contexts" />
+    <property name="headerText" value="Contexts" />
     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo" />
     <property name="propertyName" value="contexts" />
     <property name="layoutManager.renderSequenceField" value="false" />
@@ -213,8 +213,8 @@
             <bean parent="Uif-TextControl" p:size="40"/>
           </property>
 
-          <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
-          <property name="fieldLookup.fieldConversions">
+          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
+          <property name="quickfinder.fieldConversions">
             <map>
               <entry key="id" value="id"/>
               <entry key="name" value="name"/>
@@ -222,7 +222,7 @@
               <entry key="description" value="description" />
             </map>
           </property>
-          <property name="fieldLookup.lookupParameters">
+          <property name="quickfinder.lookupParameters">
             <map>
               <entry key="namespace" value="namespace"/>
               <entry key="name" value="name"/>
@@ -259,7 +259,7 @@
 
   <bean id="TermSpecificationBo-InquiryView" parent="TermSpecificationBo-InquiryView-parentBean"/>
   <bean id="TermSpecificationBo-InquiryView-parentBean" abstract="true" parent="Uif-InquiryView">
-    <property name="title" value="Term Inquiry"/>
+    <property name="headerText" value="Term Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
@@ -294,7 +294,7 @@
 
   <bean id="TermSpecificationBo-InquiryView-contexts" parent="TermSpecificationBo-InquiryView-contexts-parent" />
   <bean id="TermSpecificationBo-InquiryView-contexts-parent" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:colSpan="2">
-    <property name="title" value="Contexts" />
+    <property name="headerText" value="Contexts" />
     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo" />
     <property name="propertyName" value="contexts" />
     <property name="layoutManager.renderSequenceField" value="false" />
@@ -311,7 +311,7 @@
 
   <bean id="TermSpecificationBo-InquiryView-categories" parent="TermSpecificationBo-InquiryView-categories-parentBean"/>
   <bean id="TermSpecificationBo-InquiryView-categories-parentBean" abstract="true" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="3">
-     <property name="title" value="Categories"/>
+     <property name="headerText" value="Categories"/>
      <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
      <property name="propertyName" value="categories"/>
      <property name="layoutManager.renderSequenceField" value="false"/>
@@ -329,7 +329,7 @@
 
   <bean id="TermSpecificationBo-LookupView" parent="TermSpecificationBo-LookupView-parentBean" />
   <bean id="TermSpecificationBo-LookupView-parentBean" abstract="true" parent="Uif-LookupView">
-    <property name="title" value="Term Specification Lookup"/>
+    <property name="headerText" value="Term Specification Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
     <property name="criteriaFields">
       <list>

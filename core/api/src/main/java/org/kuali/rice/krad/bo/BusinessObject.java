@@ -18,19 +18,39 @@ package org.kuali.rice.krad.bo;
 import org.kuali.rice.core.api.mo.ModelObjectBasic;
 
 /**
- * Interface for business objects
+ * Interface for classes that act as a business object within the framework
  *
  * <p>
  * Business objects are special objects to the Rice framework that indicate an object has certain features
- * (like refresh), most business objects are persistable see {@link PersistableBusinessObjectBase}
+ * (like refresh). Most business objects are persistable, see @{link PersistableBusinessObject},
+ * which means Rice can provide handle the CRUD operations performed on the object. In addition, metadata from the
+ * ORM layer will be available on these objects that is consumed by the framework to enable features.
+ * </p>
+ *
+ * <p>
+ * Business objects are a special kind of data object within the system. A data object is just a general object that
+ * provides data within the system and can be used to back the user interfaces. In general, how the system doesn't
+ * know anything about how data objects are built (for example they could come from services or some other mechanism).
+ * Make a data object implement BusinessObject causes the system to make assumptions regarding the handling of that
+ * object.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface BusinessObject extends ModelObjectBasic {
-    
+
     /**
-     * Refreshes any reference objects from the primitive values.
+     * Invoked to refresh business objects related to the parent based on their key field values
+     *
+     * <p>
+     * During processing (for example accepting user input) the field values that participate in relationships can
+     * become out of sync with the related business objects (for example: suppose our business object has a property
+     * name bookId with a related object of type Book that contains the id property. If the user changes the value
+     * for the bookId property, our id property on the related book and the associated information is still pointing
+     * to the previous book id). This method is invoked to indicate the related objects should be refreshed based
+     * on their related keys. For @{link PersistableBusinessObject} implementations, most refreshes can be handled
+     * by the ORM tool
+     * </p>
      */
     public abstract void refresh();
 }

@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="collection1" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-     <property name="title" value="Collection Group 1 - CollectionGroupTableLayout"/>
+     <property name="headerText" value="Collection Group 1 - CollectionGroupTableLayout"/>
      <property name="instructionalText"
                value="This is a table based layout of a collection - CollectionGroupTableLayout"/>
      <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
@@ -41,20 +41,29 @@
            </property>
          </bean>
          <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
-         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+         <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
+               p:required="true">
+           <property name="control">
+             <bean parent="Uif-CheckboxControl">
+               <property name="onChangeScript" value="alert('checkbox clicked')"/>
+             </bean>
+           </property>
+         </bean>
        </list>
      </property>
    </bean>
 
    <bean id="collection2" parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
-     <property name="title"
+     <property name="headerText"
        value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
      <property name="instructionalText"
-       value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery richTable and multi-value lookup" />
+       value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery richTable and
+       multi-value lookup and having the actions in the first column" />
      <property name="collectionObjectClass"
        value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list2" />
      <property name="layoutManager.sequencePropertyName" value="field1" />
+     <property name="layoutManager.actionColumnPlacement" value="LEFT" />
      <property name="layoutManager.richTable.render" value="true" />
      <property name="collectionLookup.render" value="true"/>
      <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
@@ -113,7 +122,7 @@
    </bean>
 
    <bean id="collection3" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="title" value="Collection Group 3 - Stacked" />
+     <property name="headerText" value="Collection Group 3 - Stacked" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
      <property name="collectionObjectClass"
@@ -187,7 +196,7 @@
    </bean>
 
    <bean id="collection4" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="title"
+     <property name="headerText"
        value="Collection Group 4 - Stacked Collection with a Table subcollection" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
@@ -216,7 +225,7 @@
 
    <bean id="subCollection1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
      p:layoutManager.numberOfColumns="4">
-     <property name="title" value="SubCollection" />
+     <property name="headerText" value="SubCollection - (@{#parentLine.subList.size()} lines) " />
      <property name="instructionalText"
        value="A table collection within an item of a stacked collection" />
      <property name="collectionObjectClass"
@@ -288,7 +297,7 @@
    </bean>
 
    <bean id="collection5" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="title"
+     <property name="headerText"
        value="Collection Group 5 - Stacked Collection with a Stacked subcollection" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
@@ -317,7 +326,7 @@
    </bean>
 
    <bean id="subCollection2" parent="Uif-StackedSubCollection-WithinSection">
-     <property name="title" value="SubCollection" />
+     <property name="headerText" value="SubCollection" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
      <property name="disclosure.render" value="false" />
@@ -343,9 +352,9 @@
 
    <bean id="collection6" parent="Uif-Disclosure-TableCollectionSection"
      p:layoutManager.numberOfColumns="4">
-     <property name="title"
+     <property name="headerText"
        value="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on" />
-     <property name="instructionalText" value="No sequence column rendering on, separate add line" />
+     <property name="instructionalText" value="No sequence column rendering on, separate add line, infinite scrolling" />
      <property name="collectionObjectClass"
        value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list6" />
@@ -367,7 +376,7 @@
            p:required="true" />
        </list>
      </property>
-     <property name="addLineFields">
+     <property name="addLineItems">
        <list>
          <bean parent="Uif-InputField" p:label="Add line field 1" p:propertyName="field1"
                p:required="true" />
@@ -378,6 +387,15 @@
          <bean parent="Uif-InputField" p:label="Add line field 4" p:propertyName="field4"
                p:required="true" />
        </list>
+     </property>
+     <property name="layoutManager.richTable.templateOptions">
+       <map>
+         <!-- infinite scrolling settings from http://datatables.net/examples/basic_init/scroll_y_infinite.html -->
+         <entry key="'bScrollInfinite'" value="true"/>
+         <entry key="'bScrollCollapse'" value="true"/>
+         <entry key="'sScrollY'" value="200px"/>
+         <!-- end of infinite scrolling settings -->
+       </map>
      </property>
    </bean>
 

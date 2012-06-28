@@ -21,6 +21,11 @@
               
 <%@ variable name-given="styleClass" scope="AT_END" %>
 <%@ variable name-given="style" scope="AT_END" %>
+<%@ variable name-given="title" scope="AT_END" %>
+<%@ variable name-given="dataRoleAttribute" scope="AT_END" %>
+<%@ variable name-given="dataTypeAttribute" scope="AT_END" %>
+<%@ variable name-given="dataMetaAttribute" scope="AT_END" %>
+
               
 <%-- Can be called by templates that are building HTML tags to build the standard attributes
 such as class and style. This tag checks whether the component actually
@@ -40,3 +45,16 @@ variables --%>
    <c:if test="${!empty component.title}">
       <c:set var="title" value="title=\"${component.title}\""/>
    </c:if>
+
+  <c:if test="${!empty component.dataTypeAttribute}">
+    <c:set var="dataTypeAttribute" value="data-type=\"${component.dataTypeAttribute}\""/>
+  </c:if>
+
+  <c:if test="${!empty component.dataRoleAttribute}">
+    <c:set var="dataRoleAttribute" value="data-role=\"${component.dataRoleAttribute}\""/>
+  </c:if>
+
+  <c:if test="${!empty component.dataMetaAttribute}">
+    <c:set var="dataMetaAttribute" value="data-meta=\"${component.dataMetaAttribute}\""/>
+  </c:if>
+

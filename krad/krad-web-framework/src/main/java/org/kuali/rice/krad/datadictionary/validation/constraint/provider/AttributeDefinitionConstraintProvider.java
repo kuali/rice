@@ -37,9 +37,11 @@ import org.kuali.rice.krad.uif.field.InputField;
 import java.util.HashMap;
 
 /**
- * An object that looks up constraints for attribute definitions by constraint type. This can either by instantiated by dependency
+ * AttributeDefinitionConstraintProvider looks up constraints for attribute definitions by constraint type
+ *
+ * <p> This can either by instantiated by dependency
  * injection, in which case a map of class names to constraint resolvers can be injected, or the default map can be constructed by
- * calling the init() method immediately after instantiation. 
+ * calling the init() method immediately after instantiation.</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

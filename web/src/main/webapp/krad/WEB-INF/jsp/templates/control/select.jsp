@@ -25,16 +25,17 @@
     
  --%>
  
-<form:select id="${field.id}" path="${field.bindingInfo.bindingPath}" 
+<form:select id="${control.id}" path="${field.bindingInfo.bindingPath}"
              size="${control.size}" multiple="${control.multiple}"
              cssClass="${control.styleClassesAsString}" disabled="${control.disabled}"
-             tabindex="${control.tabIndex}">
+             tabindex="${control.tabIndex}"
+             data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}">
       
   <%-- TODO: need htmlSpacePadding that was removed from KeyValuePair --%>           
   <c:forEach items="${control.options}" var="option" varStatus="optionVarStatus">
     <form:option value="${option.key}">${option.value}</form:option>
   </c:forEach>           
              
-</form:select>             
+</form:select>
  
  

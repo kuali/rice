@@ -18,34 +18,32 @@
 <%@ attribute name="group" required="true"
               description="The group instance that is being rendered"
               type="org.kuali.rice.krad.uif.container.Group"%>
-<%@ attribute name="groupBodyIdSuffix" required="false"
-              description="String to append to the div id for the group body" %>
+<!-- GROUP '${group.id}' HEADER -->
 
-<c:if test="${empty groupBodyIdSuffix}">
-    <c:set var="groupBodyIdSuffix" value="_group"/>
-</c:if>
-
-<%-- Standard wrapper for group templates --%>
 <krad:div component="${group}">
 
-  <!----------------------------------- #GROUP '${group.id}' HEADER --------------------------------------->
   <c:if test="${!empty group.header}">
     <krad:template component="${group.header}"/>
   </c:if>
 
-  <div id="${group.id}${groupBodyIdSuffix}">
-    <krad:template component="${group.instructionalMessageField}"/>
-    <krad:template component="${group.errorsField}"/>
+  <c:if test="${group.disclosure.render}">
+    <div id="${group.id}_disclosureContent" class="uif-disclosureContent">
+  </c:if>
 
-    <jsp:doBody/>
+  <krad:template component="${group.validationMessages}"/>
+  <krad:template component="${group.instructionalMessage}"/>
 
-    <!----------------------------------- #GROUP '${group.id}' FOOTER --------------------------------------->
-    <c:if test="${!empty group.footer}">
-      <krad:template component="${group.footer}"/>
-    </c:if>
-  </div>
+  <jsp:doBody/>
+
+  <!-- GROUP '${group.id}' FOOTER -->
+  <c:if test="${!empty group.footer}">
+    <krad:template component="${group.footer}"/>
+  </c:if>
+
+  <c:if test="${group.disclosure.render}">
+    <%-- render group disclosure --%>
+    <krad:template component="${group.disclosure}" parent="${group}"/>
+    </div>
+  </c:if>
 
 </krad:div>
-
-<%-- render group disclosure --%>
-<krad:template component="${group.disclosure}" parent="${group}"/>

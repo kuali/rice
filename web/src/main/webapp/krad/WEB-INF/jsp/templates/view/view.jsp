@@ -15,84 +15,38 @@
     limitations under the License.
 
 --%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
-<tiles:useAttribute name="view"	classname="org.kuali.rice.krad.uif.view.View" />
+<tiles:useAttribute name="view" classname="org.kuali.rice.krad.uif.view.View"/>
 
-<krad:html view="${view}">
-<!-- begin of view render -->
-<!----------------------------------- #Resize notification --------------------------------------->
-<c:if test="${!view.dialogMode}">
-<krad:script value="
-    jq(function(){
-      publishHeight();
-      window.onresize = publishHeight;
-      window.setInterval(publishHeight, 500);
-    });
-" />
-</c:if>
+<!-- VIEW -->
+<krad:div component="${view}">
 
-<!----------------------------------- #APPLICATION HEADER --------------------------------------->
-<krad:template component="${view.applicationHeader}"/>
+  <!-- BREADCRUMBS -->
+  <c:if test="${view.renderBreadcrumbsInView}">
+    <krad:template component="${view.breadcrumbs}"/>
+  </c:if>
 
-<c:if test="${!view.breadcrumbsInApplicationHeader}">
-  <krad:template component="${view.breadcrumbs}"/>
-</c:if>
+  <!-- VIEW HEADER -->
+  <krad:template component="${view.header}"/>
 
-  <!----------------------------------- #VIEW HEADER --------------------------------------->
-<div id="viewheader_div">
-	<krad:template component="${view.header}" />
-</div>
+  <!-- VIEW CONTENT -->
+  <div id="Uif-ViewContentWrapper" class="uif-viewContentWrapper">
 
-<!-- changing any ids here will break navigation slide out functionality -->
-<div id="viewlayout_div">
-	<!----------------------------------- #VIEW NAVIGATION --------------------------------------->
-	<div id="viewnavigation_div">
-		<krad:template component="${view.navigation}"
-			currentPageId="${view.currentPageId}" />
-	</div>
+    <!-- VIEW NAVIGATION -->
+    <div id="Uif-Navigation">
+      <krad:template component="${view.navigation}" currentPageId="${view.currentPageId}"/>
+    </div>
 
-	<krad:template component="${view.errorsField}" />
+    <!-- PAGE CONTENT -->
+    <div id="Uif-PageContentWrapper" class="uif-pageContentWrapper">
+      <krad:template component="${view.currentPage}"/>
+    </div>
 
-	<%-- write out view, page id as hidden so the view can be reconstructed if necessary --%>
-	<c:if test="${view.renderForm}">
-		<form:hidden path="viewId" />
+  </div>
 
-		<%-- all forms will be stored in session, this is the conversation key --%>
-		<form:hidden path="formKey" />
-		<%-- Based on its value, form elements will be checked for dirtyness --%>
-		<form:hidden path="validateDirty" />
-	</c:if>
-
-	<!----------------------------------- #VIEW PAGE --------------------------------------->
-	<div id="viewpage_div">
-		<krad:template component="${view.currentPage}" />
-
-		<c:if test="${view.renderForm}">
-			<form:hidden path="pageId" />
-			<c:if test="${!empty view.currentPage}">
-				<form:hidden id="currentPageTitle" path="view.currentPage.title"/>
-			</c:if>
-			<form:hidden path="jumpToId" />
-			<form:hidden path="jumpToName" />
-			<form:hidden path="focusId" />
-			<form:hidden path="formHistory.historyParameterString"/>
-		</c:if>
-
-		<krad:script value="performJumpTo();" />
-		<c:if test="${view.currentPage.autoFocus}">
-			<krad:script value="performFocus();" />
-		</c:if>
-	</div>
-</div>
-
-<!----------------------------------- #VIEW FOOTER --------------------------------------->
-<div id="viewfooter_div">
-	<krad:template component="${view.footer}" />
-</div>
-
-<!----------------------------------- #APPLICATION FOOTER --------------------------------------->
-<krad:template component="${view.applicationFooter}"/>
-
-</krad:html>
-<!-- end of view render -->
+  <!-- VIEW FOOTER -->
+  <div id="viewfooter_div">
+    <krad:template component="${view.footer}"/>
+  </div>
+</krad:div>

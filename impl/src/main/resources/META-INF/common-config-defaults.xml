@@ -117,7 +117,7 @@
     <param name="rice.server.url" override="false">${application.url}</param>
     <param name="workflow.url" override="false">${rice.server.url}/kew</param>
     <param name="workflow.documentsearch.base.url" override="false">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>
-    
+
     <param name="rice.default.soap.service" override="false">false</param>
 
     <param name="cas.context.name" override="false">cas</param>
@@ -169,11 +169,11 @@
     <param name="mailing.list.batch" override="false">mailing.list.batch</param>
 
     <!-- TODO: remove once all KNS screen converted to KRAD -->
-    <param name="kns.javascript.files" override="false">krad/plugins/jquery/jquery-1.6.3.js,krad/plugins/postmsg/jquery.ba-postmessage.js,krad/plugins/cookie/jquery.cookie.js,kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
+    <param name="kns.javascript.files" override="false">krad/plugins/jquery/jquery-1.7.2.js,krad/plugins/postmsg/jquery.ba-postmessage.js,krad/plugins/cookie/jquery.cookie.js,kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
     <param name="kns.css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
 
-    <param name="portal.css.files" override="false">rice-portal/css/portal.css,krad/plugins/fancybox/jquery.fancybox-1.3.4.css,krad/plugins/rice/textpopout/popoutTextarea.css,krad/plugins/jgrowl/jquery.jgrowl.css</param>
-    <param name="portal.javascript.files" override="false">krad/plugins/jquery/jquery-1.6.3.js,krad/plugins/postmsg/jquery.ba-postmessage.js,krad/plugins/cookie/jquery.cookie.js,krad/plugins/scrollto/jquery.scrollTo-1.4.2-min.js,krad/plugins/blockUI/jquery.blockUI.js,kr/scripts/my_common.js,krad/plugins/easydrag/jquery.easydrag.js,krad/plugins/fancybox/jquery.fancybox-1.3.4.pack.js,krad/plugins/easing/jquery.easing-1.3.pack.js,krad/plugins/jgrowl/jquery.jgrowl.js,krad/scripts/portal.initialize.js</param>
+    <param name="portal.css.files" override="false">rice-portal/css/portal.css,krad/plugins/fancybox/jquery.fancybox.css,krad/plugins/rice/textpopout/popoutTextarea.css,krad/plugins/jgrowl/jquery.jgrowl.css</param>
+    <param name="portal.javascript.files" override="false">krad/plugins/jquery/jquery-1.7.2.js,krad/plugins/postmsg/jquery.ba-postmessage.js,krad/plugins/cookie/jquery.cookie.js,krad/plugins/scrollto/jquery.scrollTo-1.4.2-min.js,krad/plugins/blockUI/jquery.blockUI.js,kr/scripts/my_common.js,krad/plugins/easydrag/jquery.easydrag.js,krad/plugins/fancybox/jquery.fancybox.pack.js,krad/plugins/easing/jquery.easing-1.3.pack.js,krad/plugins/jgrowl/jquery.jgrowl.js,rice-portal/scripts/portal.initialize.js</param>
     <param name="portal.title" override="false">Kuali Rice</param>
 
   	<!-- JPA-related parameters -->
@@ -236,7 +236,7 @@
     <param name="rice.krad.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
 
     <param name="kns.editable.properties.history.size" override="false">20</param>
-    
+
     <!-- Reloading Dictionary Config -->
     <param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
     <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
@@ -272,7 +272,7 @@
 	<param name="rice.ksb.message.jpa.PersistenceXmlLocation" override="false">META-INF/ksb-persistence.xml</param>
 	<param name="rice.ksb.message.jpa.PersistenceUnitName" override="false">ksb-message-unit</param>
 	<param name="rice.ksb.message.jpa.GenerateDdl" override="false">true</param>
-	
+
 	<!-- End KSB-specific JPA parameters -->
 
 	<!-- KNS-specific JPA parameters -->
@@ -293,7 +293,7 @@
     <!-- The Kim peron inquiry screens can (since 1.0.3.1) hide fields based on two different type of config parameters
     	If the kim document showing the data has a type (i.e. Address, Phone, etc have AddressType/PhoneType), you can hide all
     	data with this type by using the following format: "kim.hide.document.type" and the value of of the code (HM, WRK, OTH)
-    	
+
     	Individual fields (all instances of them on the page) can also be hidden by following this format:
     	"[documentClass].hidden".  The value of this should be a comma delimited list of the DD names of the fields.
      -->
@@ -304,13 +304,13 @@
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
     <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">300</param>
     <param name="kim.identityArchiveServiceImpl.maxWriteQueueSize" override="false">300</param>
-    
-    <!-- KIM-specific JPA parameters --> 
+
+    <!-- KIM-specific JPA parameters -->
 	  <param name="rice.kim.jpa.enabled" override="false">false</param>
 	  <param name="rice.kim.jpa.PersistenceXmlLocation" override="false">META-INF/kim-persistence.xml</param>
 	  <param name="rice.kim.jpa.PersistenceUnitName" override="false">kim-unit</param>
 	  <param name="rice.kim.jpa.GenerateDdl" override="false">true</param>
-	
+
 	  <!-- End KIM-specific JPA parameters -->
 
 	  <param name="kim.show.blank.qualifiers" override="false">true</param>
@@ -333,8 +333,8 @@
     <param name="kcb.maxProcessAttempts" override="false">3</param>
     <param name="kcb.messaging.synchronous" override="false">false</param>
     <param name="kcb.smtp.host" override="false">${mail.smtp.host}</param>
-    
-    <!-- KEN-specific JPA parameters --> 
+
+    <!-- KEN-specific JPA parameters -->
    	<param name="rice.ken.jpa.enabled" override="false">false</param>
 	  <param name="rice.ken.jpa.PersistenceXmlLocation" override="false">META-INF/ken-persistence.xml</param>
 	  <param name="rice.ken.jpa.PersistenceUnitName" override="false">ken-unit</param>
@@ -385,14 +385,14 @@
 
 
 	<!-- additonal params extracted from Configurers -->
-	
+
 	<!-- Rice (common) -->
 	<param name="datasource.jndi.location" override="false"></param>
 	<param name="nonTransactional.datasource.jndi.location" override="false"></param>
 	<param name="serverDatasource.jndi.location" override="false"></param>
 	<param name="transactionManager.jndi.location" override="false"></param>
 	<param name="userTransaction.jndi.location" override="false"></param>
-	
+
 	<!-- KRAD -->
 	<param name="rice.kr.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
 	<param name="kr.url" override="false">${application.url}/kr</param>
@@ -408,7 +408,7 @@
 	<param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
   <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
   <param name="reload.data.dictionary.interval" override="false">3000</param>
-	
+
 	<!-- KCB -->
 	<param name="rice.kcb.struts.config.files" override="false">/kcb/WEB-INF/struts-config.xml</param>
 	<param name="kcb.url" override="false">${application.url}/kcb</param>
@@ -484,13 +484,13 @@
 	<param name="core.mode" override="false">LOCAL</param>
   <param name="rice.core.expose.services.on.bus" override="false">true</param>
   <param name="core.soapExposedService.jaxws.security" override="false">true</param>
-  
+
   <!-- CORE Services -->
   <param name="coreservice.mode" override="false">REMOTE</param>
   <param name="coreService.ehcache.config.location" override="false">classpath:org/kuali/rice/coreservice/config/coreService.ehcache.xml</param>
-	
+
 	<!-- from kew-config-defaults -->
-	
+
 	 <!-- Daily emails every day at 1 AM -->
   <!--  By disabling the cronExpression below, that disables the related scheduled email -->
   <!--<param name="dailyEmail.cronExpression" override="false">0 0 1 * * ?</param>-->

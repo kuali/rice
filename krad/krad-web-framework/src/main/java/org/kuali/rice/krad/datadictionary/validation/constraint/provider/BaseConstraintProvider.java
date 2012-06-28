@@ -24,8 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A class that implements a simple in memory storage map of constraint resolvers. This provides a convenient base class
- * from which other constraint providers can be derived. 
+ * BaseConstraintProvider implements a simple in memory storage map of constraint resolvers
+ *
+ * <p>This provides a convenient base class
+ * from which other constraint providers can be derived.</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
@@ -34,7 +36,12 @@ public abstract class BaseConstraintProvider<T extends Constrainable> implements
 	
 	
 	protected Map<String, ConstraintResolver<T>> resolverMap;
-	
+
+    /**
+     * initializes the constraints
+     *
+     * <p>By doing initialization here, and not in a constructor, constraints are only placed in memory when they are utilized.</p>
+     */
 	public void init() {
 		if (resolverMap == null)
 			resolverMap = new HashMap<String, ConstraintResolver<T>>();

@@ -22,7 +22,11 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
+/**
+ * EmailAddressValidationPatternTest tests {@link EmailAddressValidationPattern} - only valid email addresses should match
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class EmailAddressValidationPatternTest extends KRADTestCase {
     private EmailAddressValidationPattern pattern;
 

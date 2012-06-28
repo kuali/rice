@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
@@ -43,6 +44,10 @@ public class UserControl extends TextControl {
         super();
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
@@ -52,39 +57,41 @@ public class UserControl extends TextControl {
         }
 
         InputField field = (InputField) parent;
-        field.getHiddenPropertyNames().add(principalIdPropertyName);
+        field.getAdditionalHiddenPropertyNames().add(principalIdPropertyName);
 
         if (!field.isReadOnly()) {
             // add information fields
             if (StringUtils.isNotBlank(personNamePropertyName)) {
-                field.getInformationalDisplayPropertyNames().add(personNamePropertyName);
+                field.getPropertyNamesForAdditionalDisplay().add(personNamePropertyName);
             } else {
-                field.getInformationalDisplayPropertyNames().add(personObjectPropertyName + ".name");
+                field.getPropertyNamesForAdditionalDisplay().add(personObjectPropertyName + ".name");
             }
 
             // setup script to clear id field when name is modified
             String idPropertyPath = field.getBindingInfo().getPropertyAdjustedBindingPath(principalIdPropertyName);
-            String onChangeScript = "setValue('" + idPropertyPath + "','');";
+            String onChangeScript = "setValue('" + ScriptUtils.escapeName(idPropertyPath) + "','');";
 
-            if (StringUtils.isNotBlank(field.getOnChangeScript())) {
-                onChangeScript = field.getOnChangeScript() + onChangeScript;
+            if (StringUtils.isNotBlank(getOnChangeScript())) {
+                onChangeScript = getOnChangeScript() + onChangeScript;
             }
-            field.setOnChangeScript(onChangeScript);
+            setOnChangeScript(onChangeScript);
         }
 
-        if (field.isReadOnly() && StringUtils.isBlank(field.getAdditionalDisplayPropertyName())) {
+        if (field.isReadOnly() && StringUtils.isBlank(field.getReadOnlyDisplaySuffixPropertyName())) {
             if (StringUtils.isNotBlank(personNamePropertyName)) {
-                field.setAdditionalDisplayPropertyName(personNamePropertyName);
+                field.setReadOnlyDisplaySuffixPropertyName(personNamePropertyName);
             } else {
-                field.setAdditionalDisplayPropertyName(personObjectPropertyName + ".name");
+                field.setReadOnlyDisplaySuffixPropertyName(personObjectPropertyName + ".name");
             }
         }
 
         // setup field query for displaying name
         AttributeQuery attributeQuery = new AttributeQuery();
+
         MethodInvokerConfig methodInvokerConfig = new MethodInvokerConfig();
         PersonService personService = KimApiServiceLocator.getPersonService();
         methodInvokerConfig.setTargetObject(personService);
+
         attributeQuery.setQueryMethodInvokerConfig(methodInvokerConfig);
         attributeQuery.setQueryMethodToCall("getPersonByPrincipalName");
         attributeQuery.getQueryMethodArgumentFieldList().add(field.getPropertyName());
@@ -95,10 +102,10 @@ public class UserControl extends TextControl {
         } else {
             attributeQuery.getReturnFieldMapping().put("name", personObjectPropertyName + ".name");
         }
-        field.setFieldAttributeQuery(attributeQuery);
+        field.setAttributeQuery(attributeQuery);
 
         // setup field lookup
-        QuickFinder quickFinder = field.getFieldLookup();
+        QuickFinder quickFinder = field.getQuickfinder();
         if (quickFinder.isRender()) {
             if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
                 quickFinder.setDataObjectClassName(Person.class.getName());

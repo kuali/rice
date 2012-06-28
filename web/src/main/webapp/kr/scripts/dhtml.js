@@ -190,7 +190,7 @@ function setRecipientValue(recipientBase, value, isError ) {
 		if (value == '') {
 			dwr.util.setValue( containerDiv.id, "&nbsp;", {escapeHtml:false} );
 		} else {
-            dwr.util.setValue( containerDiv.id, value, isError?{escapeHtml:false}:{escapeHtml:true} );
+			dwr.util.setValue( containerDiv.id, value, isError?{escapeHtml:false}:{escapeHtml:true} );
 		}
 	}
     if (containerHidden) {

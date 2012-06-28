@@ -42,8 +42,8 @@
   <bean id="Uif-DatePicker-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.DatePicker"
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/datePicker.jsp"/>
-    <property name="styleClasses" value="calendar"/>
-    <property name="componentOptions">
+    <property name="cssClasses" value="calendar"/>
+    <property name="templateOptions">
       <map>
         <entry key="showOn" value="button"/>
         <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
@@ -62,15 +62,14 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxLink.jsp"/>
     <property name="height" value="95%"/>
     <property name="width" value="75%"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
-        <entry key="autoScale" value="true"/>
-        <entry key="centerOnScroll" value="true"/>
-        <entry key="transitionIn" value="fade"/>
-        <entry key="transitionOut" value="fade"/>
-        <entry key="speedIn" value="200"/>
-        <entry key="speedOut" value="200"/>
-        <entry key="hideOnOverlayClick" value="false"/>
+        <entry key="fitToView" value="true"/>
+        <entry key="openEffect" value="fade"/>
+        <entry key="closeEffect" value="fade"/>
+        <entry key="openSpeed" value="200"/>
+        <entry key="closeSpeed" value="200"/>
+        <entry key="helpers" value="{overlay:{css:{cursor:'arrow'},closeClick:false}}"/>
         <entry key="type" value="iframe"/>
       </map>
     </property>
@@ -85,10 +84,11 @@
   <bean id="Uif-RichTable-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.RichTable"
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/richTable.jsp"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="sDom" value="fTrtip"/>
         <entry key="bRetrieve" value="true"/>
+        <entry key="sPaginationType" value="full_numbers"/>
         <entry key="oTableTools"
                value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;@{#ConfigProperties['application.url']}/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
       </map>
@@ -99,9 +99,8 @@
 
   <bean id="Uif-PagedRichTable" parent="Uif-PagedRichTable-parentBean"/>
   <bean id="Uif-PagedRichTable-parentBean" parent="Uif-RichTable-parentBean" scope="prototype">
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map merge="true">
-        <entry key="sScrollX" value="100%"/>
         <entry key="bScrollCollapse" value="true"/>
       </map>
     </property>
@@ -109,7 +108,7 @@
 
   <bean id="Uif-ScrollableRichTable" parent="Uif-ScrollableRichTable-parentBean"/>
   <bean id="Uif-ScrollableRichTable-parentBean" parent="Uif-RichTable-parentBean" scope="prototype">
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map merge="true">
         <entry key="sDom" value="fTrt"/>
         <entry key="bScrollInfinite" value="true"/>
@@ -126,7 +125,7 @@
     <!-- TODO: change to use config krad.url -->
     <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/kr-krad/lookup"/>
     <property name="multipleValuesSelect" value="false"/>
-    <property name="quickfinderActionField">
+    <property name="quickfinderAction">
       <bean parent="Uif-ActionImage" p:methodToCall="performLookup">
         <property name="actionImage">
           <bean parent="Uif-QuickLookupImage"/>
@@ -140,30 +139,32 @@
   </bean>
 
   <bean id="Uif-QuickFinderByScript" parent="Uif-QuickFinder-parentBean"
-        p:quickfinderActionField.lightBoxLookup.lookupReturnByScript="true"/>
+        p:quickfinderAction.lightBoxLookup.lookupReturnByScript="true"/>
+
+  <bean id="Uif-QuickLookupImage" parent="Uif-Image"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+        p:altText="Search Field" p:title="Search Field">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-quickFinderImage</value>
+      </list>
+    </property>
+  </bean>
 
   <bean id="Uif-Inquiry" parent="Uif-Inquiry-parentBean"/>
   <bean id="Uif-Inquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Inquiry" scope="prototype"
         parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/inquiry.jsp"/>
     <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/kr-krad/inquiry"/>
-    <property name="inquiryLinkField">
+    <property name="enableDirectInquiry" value="true"/>
+    <property name="inquiryLink">
       <bean parent="Uif-Link">
         <property name="lightBox">
           <bean parent="Uif-LightBox"/>
         </property>
       </bean>
     </property>
-    <property name="readOnly" value="@{#parent.readOnly}"/>
-    <property name="render" value="@{#parent.readOnly}"/>
-  </bean>
-
-  <bean id="Uif-DirectInquiry" parent="Uif-DirectInquiry-parentBean"/>
-  <bean id="Uif-DirectInquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.DirectInquiry"
-        scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
-    <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/kr-krad/inquiry"/>
-    <property name="directInquiryActionField">
+    <property name="directInquiryAction">
       <bean parent="Uif-ActionImage">
         <property name="actionImage">
           <bean parent="Uif-DirectInquiryImage"/>
@@ -173,8 +174,17 @@
         </property>
       </bean>
     </property>
-    <property name="render" value="@{!#parent.readOnly}"/>
     <property name="readOnly" value="@{#parent.readOnly}"/>
+  </bean>
+
+  <bean id="Uif-DirectInquiryImage" parent="Uif-Image"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}book_open.png"
+        p:altText="Direct Inquiry" p:title="Direct Inquiry">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-directInquiryImage</value>
+      </list>
+    </property>
   </bean>
 
   <bean id="Uif-Disclosure" parent="Uif-Disclosure-parentBean"/>
@@ -187,6 +197,10 @@
     <property name="defaultOpen" value="true"/>
   </bean>
 
+  <bean id="Uif-Scrollpane" parent="Uif-Scrollpane-parentBean"/>
+  <bean id="Uif-Scrollpane-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Scrollpane"
+        scope="prototype" parent="Uif-WidgetBase"/>
+
   <!-- Breadcrumbs and History -->
   <bean id="Uif-Breadcrumbs" parent="Uif-Breadcrumbs-parentBean"/>
   <bean id="Uif-Breadcrumbs-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.BreadCrumbs"
@@ -195,7 +209,7 @@
     <property name="displayHomewardPath" value="true"/>
     <property name="displayPassedHistory" value="true"/>
     <property name="displayBreadcrumbsWhenOne" value="false"/>
-    <property name="styleClasses" value="uif-breadcrumbs"/>
+    <property name="cssClasses" value="uif-breadcrumbs"/>
     <property name="homewardPathList">
       <list>
         <bean parent="Uif-HistoryEntry" p:title="Home" p:url="@{#ConfigProperties['application.url']}/portal.do"/>
@@ -216,7 +230,7 @@
   <bean id="Uif-Tree-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tree" scope="prototype"
         parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tree.jsp"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="themes" value="{'theme' : 'default', 'dots' : 'true', 'icons' : 'false'}"/>
         <entry key="plugins" value="[ 'themes','html_data' ]"/>
@@ -228,7 +242,7 @@
   <bean id="Uif-Suggest-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Suggest" scope="prototype"
         parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/suggest.jsp"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="minLength" value="2"/>
         <entry key="delay" value="300"/>
@@ -249,12 +263,78 @@
   <bean id="Uif-Spinner" parent="Uif-Spinner-parentBean"/>
   <bean id="Uif-Spinner-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Spinner" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="min" value="0"/>
         <entry key="stepInc" value="1"/>
         <entry key="pageInc" value="1"/>
       </map>
+    </property>
+  </bean>
+
+  <bean id="Uif-Tooltip" parent="Uif-Tooltip-parentBean"/>
+  <bean id="Uif-Tooltip-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tooltip" scope="prototype">
+    <property name="onMouseHover" value="true"/>
+    <property name="templateOptions">
+      <map>
+        <entry key="position" value="top"/>
+        <entry key="align" value="left"/>
+        <entry key="alwaysVisible" value="false"/>
+        <entry key="tail" value="{ align:'left', hidden: false }"/>
+        <entry key="themePath" value="../krad/plugins/tooltip/jquerybubblepopup-theme/"/>
+        <entry key="themeName" value="black"/>
+        <entry key="selectable" value="true"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="Uif-TooltipHelp" parent="Uif-TooltipHelp-parentBean"/>
+  <bean id="Uif-TooltipHelp-parentBean" abstract="true" parent="Uif-Tooltip">
+    <property name="templateOptions">
+      <map merge = "true">
+        <entry key="themeName" value="black"/>
+        <entry key="selectable" value="true"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="Uif-TooltipFocus" parent="Uif-TooltipFocus-parentBean"/>
+  <bean id="Uif-TooltipFocus-parentBean" abstract="true" parent="Uif-Tooltip">
+    <property name="onFocus" value="true"/>
+    <property name="onMouseHover" value="false"/>
+  </bean>
+
+  <bean id="Uif-Help" parent="Uif-Help-parentBean"/>
+  <bean id="Uif-Help-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Help" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/help.jsp"/>
+    <property name="toolTip">
+      <bean parent="Uif-TooltipHelp"/>
+    </property>
+    <property name="helpAction">
+      <bean parent="Uif-ActionImage">
+        <property name="actionImage">
+          <bean parent="Uif-HelpImage"/>
+        </property>
+      </bean>
+    </property>
+    <property name="helpDefinition">
+      <bean parent="HelpDefinition"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-HelpImage" parent="Uif-Image"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}icon_help.png"
+        p:altText="Help" p:title="Help">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-helpImage</value>
+      </list>
+    </property>
+    <property name="captionHeader">
+      <null/>
+    </property>
+    <property name="cutlineMessage">
+      <null/>
     </property>
   </bean>
 

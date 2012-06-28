@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This class compares the two beans using multiple property names.
+ * BeanPropertyComparator compares the two beans using multiple property names
  * 
  * 
  */
@@ -42,9 +42,11 @@ public class BeanPropertyComparator implements Comparator, Serializable {
     private Comparator genericComparator;
 
     /**
-     * Constructs a PropertyComparator for comparing beans using the properties named in the given List; if the List is null, the
-     * beans will be compared directly (by Properties will be compared in the order in which they are listed. Case will be ignored
-     * in String comparisons.
+     * Constructs a PropertyComparator for comparing beans using the properties named in the given List
+     *
+     * <p>if the List is null, the beans will be compared directly
+     * by Properties will be compared in the order in which they are listed. Case will be ignored
+     * in String comparisons.</p>
      * 
      * @param propertyNames List of property names (as Strings) used to compare beans
      */
@@ -53,8 +55,10 @@ public class BeanPropertyComparator implements Comparator, Serializable {
     }
 
     /**
-     * Constructs a PropertyComparator for comparing beans using the properties named in the given List. Properties will be compared
-     * in the order in which they are listed. Case will be ignored if ignoreCase is true.
+     * Constructs a PropertyComparator for comparing beans using the properties named in the given List.
+     *
+     * <p>Properties will be compared
+     * in the order in which they are listed. Case will be ignored if ignoreCase is true.</p>
      * 
      * @param propertyNames List of property names (as Strings) used to compare beans
      * @param ignoreCase if true, case will be ignored during String comparisons
@@ -100,7 +104,7 @@ public class BeanPropertyComparator implements Comparator, Serializable {
 
 
     /**
-     * Compare two JavaBeans by the properties given to the constructor. If no propertues
+     * Compare two JavaBeans by the properties given to the constructor.
      * 
      * @param o1 Object The first bean to get data from to compare against
      * @param o2 Object The second bean to get data from to compare

@@ -65,10 +65,26 @@
 		</property>
 	</bean>
 
-  <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-    <property name="prefix" value="/krad/WEB-INF/jsp/" />
-    <property name="suffix" value=".jsp" />
+  <!--bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+      <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+      <property name="prefix" value="/krad/WEB-INF/jsp/" />
+      <property name="suffix" value=".jsp" />
+    </bean-->
+
+  <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <property name="templateLoaderPath" value="/"/>
+    <property name="freemarkerSettings">
+      <props>
+          <prop key="template_update_delay">-1</prop>
+          <prop key="cache_storage">freemarker.cache.StrongCacheStorage</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <property name="cache" value="true"/>
+    <property name="prefix" value=""/>
+    <property name="suffix" value=".ftl"/>
   </bean>
   
   <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">

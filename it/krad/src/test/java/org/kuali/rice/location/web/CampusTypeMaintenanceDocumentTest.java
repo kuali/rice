@@ -25,11 +25,10 @@ import org.kuali.rice.location.impl.campus.CampusTypeBo;
 import org.kuali.test.BaseMaintenanceDocumentTest;
 
 /**
- * This class...
- * 
- * 
+ * CampusTypeMaintenanceDocumentTest tests some maintenance document operations on the document type 'CampusTypeMaintenanceDocument'
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class CampusTypeMaintenanceDocumentTest extends BaseMaintenanceDocumentTest {
 
     @Override
@@ -64,10 +63,4 @@ public class CampusTypeMaintenanceDocumentTest extends BaseMaintenanceDocumentTe
         KRADServiceLocatorWeb.getDocumentService().routeDocument(getDocument(), "submit", null);
         Assert.assertTrue(getDocument().getDocumentHeader().getWorkflowDocument().isEnroute());
     }
-
- /*   @Override
-    @Test(expected = ValidationException.class)
-    public void test_SaveNewDoc() throws WorkflowException {
-        super.test_SaveNewDoc();
-    }*/
 }

@@ -22,33 +22,28 @@
 	type="org.kuali.rice.krad.uif.component.Component"%>
 <%@ attribute name="body" required="false"
 	description="If the template takes a body (wraps content) that content should be passed with this parameter" %>
+<%@ attribute name="componentUpdate" required="false"
+	description="if this is true, then don't render the progressive/refresh scripts at this level - they have already been run" %>
 
 <c:if test="${empty body}">
   <c:set var="body" value=""/>
+</c:if>
+
+<c:if test="${empty componentUpdate}">
+  <c:set var="componentUpdate" value="false"/>
 </c:if>
 
 <%-- verify the component is not null and should be rendered --%>
 
 <%-- check to see if the component should render, if this has progressiveDisclosure and not getting disclosed via ajax
 still render, but render in a hidden container --%>
-<c:if test="${!empty component && (component.render || (!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender))}">
-
-	<c:choose>
-		<c:when	test="${!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender}">
-			<div style="display: none;" id="${component.id}_refreshWrapper" class="refreshWrapper">
-		</c:when>
-    <c:when test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged || component.refreshedByAction}">
-      <div id="${component.id}_refreshWrapper" class="refreshWrapper">
-    </c:when>
-    <c:when test="${component.hidden}">
-      <div style="display: none;">
-    </c:when>
-	</c:choose>
+<c:if test="${!empty component && (component.render || (!component.render && !component.progressiveRenderViaAJAX
+  && !component.progressiveRenderAndRefresh && !empty component.progressiveRender))}">
 
 	<c:choose>
 		<%-- for self rendered components, write out render output --%>
 		<c:when test="${component.selfRendered}">
-	        ${component.renderOutput}
+	        ${component.renderedHtmlOutput}
 	  </c:when>
 
 		<%-- render component through template --%>
@@ -63,43 +58,44 @@ still render, but render in a hidden container --%>
 		</c:otherwise>
 	</c:choose>
 
-	<%-- generate event code for component --%>
+	<%-- write data attributes --%>
+  <krad:script component="${component}" role="dataScript" value="${component.complexDataAttributesJs}"/>
+  <%-- generate event code for component --%>
 	<krad:eventScript component="${component}" />
-	
-	<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged
-	              || component.refreshedByAction || component.hidden}">
-		</div>
-	</c:if>
+
 </c:if>
 
-<c:if test="${(!empty component) && (!empty component.progressiveRender)}">
-	<%-- For progressive rendering requiring an ajax call, put in place holder div --%>
-	<c:if test="${!component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)}">
-		<div id="${component.id}_refreshWrapper" class="unrendered refreshWrapper"	style="display: none;"></div>
-	</c:if>
+<c:if test="${!componentUpdate}">
+  <c:if test="${(!empty component) && (!empty component.progressiveRender)}">
+    <%-- For progressive rendering requiring an ajax call, put in place holder div --%>
+    <c:if test="${!component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)}">
+      <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
+    </c:if>
 
-	<%-- setup progressive handlers for each control which may satisfy a disclosure condition --%>
-	<c:forEach items="${component.progressiveDisclosureControlNames}" var="cName">
-		<krad:script
-			value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
-			setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition, ${component.progressiveRenderAndRefresh}, '${component.refreshDiscloseMethodToCall}');" />
-	</c:forEach>
-	<krad:script value="hiddenInputValidationToggle('${component.id}_refreshWrapper');" />
+    <%-- setup progressive handlers for each control which may satisfy a disclosure condition --%>
+    <c:forEach items="${component.progressiveDisclosureControlNames}" var="cName">
+      <krad:script
+        value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
+        setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition, ${component.progressiveRenderAndRefresh}, '${component.methodToCallOnRefresh}');" />
+    </c:forEach>
+    <krad:script value="hiddenInputValidationToggle('${component.id}');" />
+  </c:if>
+
+  <%-- Conditional Refresh setup --%>
+  <c:if test="${!empty component.conditionalRefresh}">
+    <c:forEach items="${component.conditionalRefreshControlNames}" var="cName">
+      <krad:script
+        value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
+      setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition, '${component.methodToCallOnRefresh}');" />
+    </c:forEach>
+  </c:if>
+
+  <%-- Refresh when changed setup --%>
+  <c:forEach items="${component.refreshWhenChangedPropertyNames}" var="cName">
+    <krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', '${component.methodToCallOnRefresh}');"/>
+  </c:forEach>
+
+  <%-- generate tooltip for component --%>
+  <krad:tooltip component="${component}" />
+
 </c:if>
-
-<%-- Conditional Refresh setup --%>
-<c:if test="${!empty component.conditionalRefresh}">
-	<c:forEach items="${component.conditionalRefreshControlNames}" var="cName">
-		<krad:script
-			value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
-		setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition, '${component.refreshDiscloseMethodToCall}');" />
-	</c:forEach>
-</c:if>
-
-<%-- Refresh when changed setup --%>
-<c:if test="${!empty component.refreshWhenChanged}">
-	<c:forEach items="${component.refreshWhenChangedControlNames}" var="cName">
-		<krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', '${component.refreshDiscloseMethodToCall}');" />
-	</c:forEach>
-</c:if>
-

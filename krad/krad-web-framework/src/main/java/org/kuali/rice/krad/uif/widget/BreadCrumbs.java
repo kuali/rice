@@ -57,8 +57,8 @@ public class BreadCrumbs extends WidgetBase {
             context.putAll(view.getContext());
 
             for (HistoryEntry historyEntry : homewardPathList) {
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateObjectExpressions(historyEntry, model,
-                        context);
+                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
+                        historyEntry, model, context);
             }
         }
     }

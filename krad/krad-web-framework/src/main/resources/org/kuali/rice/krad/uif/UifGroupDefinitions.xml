@@ -28,12 +28,12 @@
   <bean id="Uif-GroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype"
         parent="Uif-ComponentBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-group</value>
       </list>
     </property>
-    <property name="errorsField">
+    <property name="validationMessages">
       <bean parent="Uif-GroupValidationMessages"/>
     </property>
     <property name="disclosure">
@@ -43,7 +43,7 @@
               value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="disclosure.expandImageSrc"
               value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-    <property name="instructionalMessageField">
+    <property name="instructionalMessage">
       <bean parent="Uif-InstructionalMessage"/>
     </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
@@ -53,7 +53,7 @@
 
   <bean id="Uif-BoxGroupBase" parent="Uif-BoxGroupBase-parentBean"/>
   <bean id="Uif-BoxGroupBase-parentBean" abstract="true" parent="Uif-GroupBase" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-boxGroup</value>
       </list>
@@ -64,7 +64,7 @@
 
   <bean id="Uif-VerticalBoxGroup" parent="Uif-VerticalBoxGroup-parentBean"/>
   <bean id="Uif-VerticalBoxGroup-parentBean" abstract="true" parent="Uif-BoxGroupBase" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-verticalBoxGroup</value>
       </list>
@@ -76,25 +76,31 @@
 
   <bean id="Uif-VerticalBoxSection" parent="Uif-VerticalBoxSection-parentBean"/>
   <bean id="Uif-VerticalBoxSection-parentBean" abstract="true" parent="Uif-VerticalBoxGroup" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-boxSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-VerticalBoxSubSection" parent="Uif-VerticalBoxSubSection-parentBean"/>
   <bean id="Uif-VerticalBoxSubSection-parentBean" abstract="true" parent="Uif-VerticalBoxGroup" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-boxSubSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -103,7 +109,7 @@
   <bean id="Uif-Disclosure-VerticalBoxSection" parent="Uif-Disclosure-VerticalBoxSection-parentBean"/>
   <bean id="Uif-Disclosure-VerticalBoxSection-parentBean" abstract="true" parent="Uif-VerticalBoxSection"
         scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -114,7 +120,7 @@
   <bean id="Uif-Disclosure-VerticalBoxSubSection" parent="Uif-Disclosure-VerticalBoxSubSection-parentBean"/>
   <bean id="Uif-Disclosure-VerticalBoxSubSection-parentBean" abstract="true" parent="Uif-VerticalBoxSubSection"
         scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -126,7 +132,7 @@
 
   <bean id="Uif-HorizontalBoxGroup" parent="Uif-HorizontalBoxGroup-parentBean"/>
   <bean id="Uif-HorizontalBoxGroup-parentBean" abstract="true" parent="Uif-BoxGroupBase" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-horizontalBoxGroup</value>
       </list>
@@ -138,25 +144,31 @@
 
   <bean id="Uif-HorizontalBoxSection" parent="Uif-HorizontalBoxSection-parentBean"/>
   <bean id="Uif-HorizontalBoxSection-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-boxSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-HorizontalBoxSubSection" parent="Uif-HorizontalBoxSubSection-parentBean"/>
   <bean id="Uif-HorizontalBoxSubSection-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-boxSubSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -165,7 +177,7 @@
   <bean id="Uif-Disclosure-HorizontalBoxSection" parent="Uif-Disclosure-HorizontalBoxSection-parentBean"/>
   <bean id="Uif-Disclosure-HorizontalBoxSection-parentBean" abstract="true" parent="Uif-HorizontalBoxSection"
         scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -176,7 +188,7 @@
   <bean id="Uif-Disclosure-HorizontalBoxSubSection" parent="Uif-Disclosure-HorizontalBoxSubSection-parentBean"/>
   <bean id="Uif-Disclosure-HorizontalBoxSubSection-parentBean" abstract="true" parent="Uif-HorizontalBoxSubSection"
         scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -188,8 +200,8 @@
 
   <bean id="Uif-GridGroup" parent="Uif-GridGroup-parentBean"/>
   <bean id="Uif-GridGroup-parentBean" abstract="true" parent="Uif-GroupBase" scope="prototype">
-    <property name="styleClasses">
-      <list>
+    <property name="cssClasses">
+      <list merge="true">
         <value>uif-gridGroup</value>
       </list>
     </property>
@@ -198,32 +210,38 @@
     </property>
     <property name="componentModifiers">
       <list>
-        <bean parent="Uif-LabelFieldSeparator-Modifier" p:runPhase="FINALIZE"/>
+        <bean parent="Uif-LabelSeparator-Modifier" p:runPhase="FINALIZE"/>
       </list>
     </property>
   </bean>
 
   <bean id="Uif-GridSection" parent="Uif-GridSection-parentBean"/>
   <bean id="Uif-GridSection-parentBean" abstract="true" parent="Uif-GridGroup" scope="prototype">
-    <property name="styleClasses">
-      <list>
+    <property name="cssClasses">
+      <list merge="true">
         <value>uif-gridSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-GridSubSection" parent="Uif-GridSubSection-parentBean"/>
   <bean id="Uif-GridSubSection-parentBean" abstract="true" parent="Uif-GridGroup" scope="prototype">
-    <property name="styleClasses">
-      <list>
+    <property name="cssClasses">
+      <list merge="true">
         <value>uif-gridSubSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -231,7 +249,7 @@
 
   <bean id="Uif-Disclosure-GridSection" parent="Uif-Disclosure-GridSection-parentBean"/>
   <bean id="Uif-Disclosure-GridSection-parentBean" abstract="true" parent="Uif-GridSection" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -242,7 +260,7 @@
 
   <bean id="Uif-Disclosure-GridSubSection" parent="Uif-Disclosure-GridSubSection-parentBean"/>
   <bean id="Uif-Disclosure-GridSubSection-parentBean" abstract="true" parent="Uif-GridSubSection" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -256,7 +274,7 @@
   <bean id="Uif-TabGroup-parentBean" abstract="true" parent="Uif-GroupBase"
         class="org.kuali.rice.krad.uif.container.TabGroup" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/tabGroup.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tabGroup</value>
       </list>
@@ -268,25 +286,31 @@
 
   <bean id="Uif-TabSection" parent="Uif-TabSection-parentBean"/>
   <bean id="Uif-TabSection-parentBean" abstract="true" parent="Uif-TabGroup" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tabSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-TabSubSection" parent="Uif-TabSubSection-parentBean"/>
   <bean id="Uif-TabSubSection-parentBean" abstract="true" parent="Uif-TabGroup" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tabSubSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -297,7 +321,7 @@
         class="org.kuali.rice.krad.uif.container.NavigationGroup"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/navigationGroup.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-navigationGroup</value>
       </list>
@@ -306,7 +330,7 @@
 
   <bean id="Uif-MenuNavigationGroup" parent="Uif-MenuNavigationGroup-parentBean"/>
   <bean id="Uif-MenuNavigationGroup-parentBean" abstract="true" parent="Uif-NavigationGroupBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-menuNavigationGroup</value>
       </list>
@@ -316,7 +340,7 @@
 
   <bean id="Uif-TabNavigationGroup" parent="Uif-TabNavigationGroup-parentBean"/>
   <bean id="Uif-TabNavigationGroup-parentBean" abstract="true" parent="Uif-NavigationGroupBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tabNavigationGroup</value>
       </list>
@@ -330,7 +354,7 @@
   <bean id="Uif-TreeGroup-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.TreeGroup" parent="Uif-GroupBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/treeGroup.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-treeGroup</value>
       </list>
@@ -344,7 +368,7 @@
     <property name="defaultNodePrototype">
       <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
         <property name="labelPrototype">
-          <bean parent="Uif-MessageField"/>
+          <bean parent="Uif-Message"/>
         </property>
         <property name="dataGroupPrototype">
           <bean parent="Uif-VerticalBoxGroup"/>
@@ -359,26 +383,32 @@
   <bean id="Uif-TreeSection" parent="Uif-TreeSection-parentBean"/>
   <bean id="Uif-TreeSection-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.TreeGroup" parent="Uif-TreeGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-treeSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-TreeSubSection" parent="Uif-TreeSubSection-parentBean"/>
   <bean id="Uif-TreeSubSection-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.TreeGroup" parent="Uif-TreeGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-treeSubSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -388,7 +418,7 @@
   <bean id="Uif-ReorderGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.ReorderingGroup"
         scope="prototype" parent="Uif-VerticalBoxGroup">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/reorderingGroup.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-reorderGroup</value>
       </list>
@@ -401,13 +431,16 @@
   <bean id="Uif-ReorderSection" parent="Uif-ReorderSection-parentBean"/>
   <bean id="Uif-ReorderSection-parentBean" abstract="true" scope="prototype" parent="Uif-ReorderGroup">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/reorderingGroup.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-reorderSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -415,8 +448,8 @@
 
   <bean id="Uif-LinkGroup" parent="Uif-LinkGroup-parentBean"/>
   <bean id="Uif-LinkGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.LinkGroup"
-        parent="Uif-VerticalBoxGroup">
-    <property name="styleClasses">
+        parent="Uif-HorizontalBoxGroup">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-linkGroup</value>
       </list>
@@ -428,7 +461,7 @@
 
   <bean id="Uif-LinkSubGroup" parent="Uif-LinkSubGroup-parentBean"/>
   <bean id="Uif-LinkSubGroup-parentBean" abstract="true" parent="Uif-LinkGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-linkSubGroup</value>
       </list>
@@ -444,11 +477,16 @@
   <bean id="Uif-CollectionGroupBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.CollectionGroup"
         parent="Uif-GroupBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionGroup</value>
       </list>
     </property>
+    <property name="highlightNewItems" value="true"/>
+    <property name="newItemsCssClass" value="uif-newCollectionItem"/>
+    <property name="highlightAddItem" value="true"/>
+    <property name="addItemCssClass" value="uif-collectionAddItem"/>
+    <property name="renderAddBlankLineButton" value="false"/>
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/collectionGroup.jsp"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
@@ -456,24 +494,58 @@
     <property name="addLineBindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
-    <property name="addLineLabelField">
-      <bean parent="Uif-Label" p:labelText="add" p:requiredMessageField.render="false"/>
+    <property name="addLineLabel">
+      <bean parent="Uif-Label" p:labelText="add" p:requiredMessage.render="false"/>
     </property>
-    <property name="addLineActionFields">
+    <property name="addLineActions">
       <list>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add"
               p:actionEvent="addLine"/>
       </list>
     </property>
-    <property name="actionFields">
+    <property name="lineActions">
       <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"/>
+        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
+              p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
+              p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');" />
       </list>
     </property>
+    <property name="validatedLineActions">
+      <list>
+        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
+              p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}">
+          <property name="cssClasses">
+            <list merge="true">
+              <value>uif-saveLineAction</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="addBlankLineAction">
+      <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine" p:actionLabel="Add Line"
+            p:actionEvent="addBlankLine" p:onMouseOverScript="addLineMouseOver(this, 'uif-collectionAddHighlight');"
+            p:onMouseOutScript="addLineMouseOut(this, 'uif-collectionAddHighlight');"/>
+    </property>
+    <property name="addViaLightBoxAction">
+      <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"
+            p:onMouseOverScript="addLineMouseOver(this, 'uif-collectionAddHighlight');"
+            p:onMouseOutScript="addLineMouseOut(this, 'uif-collectionAddHighlight');"/>
+    </property>
     <property name="collectionLookup">
-      <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true"
-            p:quickfinderActionField.styleClasses="kr-mvQuickfinder-cntr"
-            p:quickfinderActionField.label="Look Up/Add Multiple Account Lines"/>
+      <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true">
+        <property name="quickfinderAction">
+          <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Lookup/Add Multiple Lines"
+                p:actionImagePlacement="RIGHT">
+            <property name="actionImage">
+              <bean parent="Uif-QuickLookupImage"/>
+            </property>
+            <property name="lightBoxLookup">
+              <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
+            </property>
+          </bean>
+        </property>
+      </bean>
     </property>
   </bean>
 
@@ -481,7 +553,7 @@
 
   <bean id="Uif-StackedCollectionGroup" parent="Uif-StackedCollectionGroup-parentBean"/>
   <bean id="Uif-StackedCollectionGroup-parentBean" parent="Uif-CollectionGroupBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-stackedCollectionGroup</value>
       </list>
@@ -493,89 +565,101 @@
 
   <bean id="Uif-StackedCollectionSection" parent="Uif-StackedCollectionSection-parentBean"/>
   <bean id="Uif-StackedCollectionSection-parentBean" parent="Uif-StackedCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-stackedCollectionSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SectionHeader">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderField-Four"/>
+      <bean parent="Uif-HeaderFour"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
-      <bean parent="Uif-HeaderField-Four"/>
+      <bean parent="Uif-HeaderFour"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-StackedCollectionSubSection" parent="Uif-StackedCollectionSubSection-parentBean"/>
   <bean id="Uif-StackedCollectionSubSection-parentBean" parent="Uif-StackedCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-stackedCollectionSubSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubSectionHeader">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderField-Five"/>
+      <bean parent="Uif-HeaderFive"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
-      <bean parent="Uif-HeaderField-Five"/>
+      <bean parent="Uif-HeaderFive"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-StackedSubCollection-WithinSection" parent="Uif-StackedSubCollection-WithinSection-parentBean"/>
   <bean id="Uif-StackedSubCollection-WithinSection-parentBean" parent="Uif-StackedCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-stackedSubCollection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubCollectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubCollectionHeader">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderField-Five"/>
+      <bean parent="Uif-HeaderFive"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
-      <bean parent="Uif-HeaderField-Five"/>
+      <bean parent="Uif-HeaderFive"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-StackedSubCollection-WithinSubSection" parent="Uif-StackedSubCollection-WithinSubSection-parentBean"/>
   <bean id="Uif-StackedSubCollection-WithinSubSection-parentBean" parent="Uif-StackedCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-stackedSubCollection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubCollectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubCollectionHeader">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderField-Six"/>
+      <bean parent="Uif-HeaderSix"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
-      <bean parent="Uif-HeaderField-Six"/>
+      <bean parent="Uif-HeaderSix"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -583,7 +667,7 @@
 
   <bean id="Uif-Disclosure-StackedCollectionSection" parent="Uif-Disclosure-StackedCollectionSection-parentBean"/>
   <bean id="Uif-Disclosure-StackedCollectionSection-parentBean" parent="Uif-StackedCollectionSection">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -593,7 +677,7 @@
 
   <bean id="Uif-Disclosure-StackedCollectionSubSection" parent="Uif-Disclosure-StackedCollectionSubSection-parentBean"/>
   <bean id="Uif-Disclosure-StackedCollectionSubSection-parentBean" parent="Uif-StackedCollectionSubSection">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -605,7 +689,7 @@
         parent="Uif-Disclosure-StackedSubCollection-WithinSection-parentBean"/>
   <bean id="Uif-Disclosure-StackedSubCollection-WithinSection-parentBean"
         parent="Uif-StackedSubCollection-WithinSection">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -617,7 +701,7 @@
         parent="Uif-Disclosure-StackedSubCollection-WithinSubSection-parentBean"/>
   <bean id="Uif-Disclosure-StackedSubCollection-WithinSubSection-parentBean"
         parent="Uif-StackedSubCollection-WithinSubSection">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -629,7 +713,7 @@
 
   <bean id="Uif-TableCollectionGroup" parent="Uif-TableCollectionGroup-parentBean"/>
   <bean id="Uif-TableCollectionGroup-parentBean" parent="Uif-CollectionGroupBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tableCollectionGroup</value>
       </list>
@@ -641,77 +725,89 @@
 
   <bean id="Uif-TableCollectionSection" parent="Uif-TableCollectionSection-parentBean"/>
   <bean id="Uif-TableCollectionSection-parentBean" parent="Uif-TableCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tableCollectionSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SectionHeader">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-TableCollectionSubSection" parent="Uif-TableCollectionSubSection-parentBean"/>
   <bean id="Uif-TableCollectionSubSection-parentBean" parent="Uif-TableCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tableCollectionSubSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubSectionHeader">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-TableSubCollection-WithinSection" parent="Uif-TableSubCollection-WithinSection-parentBean"/>
   <bean id="Uif-TableSubCollection-WithinSection-parentBean" parent="Uif-TableCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tableSubCollection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubCollectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubCollectionHeader">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-SubCollectionHeaderField"/>
+      <bean parent="Uif-SubCollectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-TableSubCollection-WithinSubSection" parent="Uif-TableSubCollection-WithinSubSection-parentBean"/>
   <bean id="Uif-TableSubCollection-WithinSubSection-parentBean" parent="Uif-TableCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tableSubCollection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubCollectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubCollectionHeader">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-SubCollectionHeaderField"/>
+      <bean parent="Uif-SubCollectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -719,7 +815,7 @@
 
   <bean id="Uif-Disclosure-TableCollectionSection" parent="Uif-Disclosure-TableCollectionSection-parentBean"/>
   <bean id="Uif-Disclosure-TableCollectionSection-parentBean" parent="Uif-TableCollectionSection">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -729,7 +825,7 @@
 
   <bean id="Uif-Disclosure-TableCollectionSubSection" parent="Uif-Disclosure-TableCollectionSubSection-parentBean"/>
   <bean id="Uif-Disclosure-TableCollectionSubSection-parentBean" parent="Uif-TableCollectionSubSection">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -740,7 +836,7 @@
   <bean id="Uif-Disclosure-TableSubCollection-WithinSection"
         parent="Uif-Disclosure-TableSubCollection-WithinSection-parentBean"/>
   <bean id="Uif-Disclosure-TableSubCollection-WithinSection-parentBean" parent="Uif-TableSubCollection-WithinSection">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -752,7 +848,7 @@
         parent="Uif-Disclosure-TableSubCollection-WithinSubSection-parentBean"/>
   <bean id="Uif-Disclosure-TableSubCollection-WithinSubSection-parentBean"
         parent="Uif-TableSubCollection-WithinSubSection">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-disclosure</value>
       </list>
@@ -766,7 +862,7 @@
   <bean id="Uif-ListCollectionGroup-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.CollectionGroup"
         parent="Uif-GroupBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionGroup</value>
         <value>uif-listCollectionGroup</value>
@@ -777,21 +873,21 @@
     </property>
     <property name="renderAddLine" value="false"/>
     <property name="renderLineActions" value="false"/>
-    <property name="renderSelectField" value="false"/>
+    <property name="includeLineSelectionField" value="false"/>
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-WithGridItems">
         <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stackedList.jsp"/>
         <property name="lineGroupPrototype">
           <bean parent="Uif-VerticalBoxSection">
             <property name="header">
-              <bean parent="Uif-HeaderField-Four"/>
+              <bean parent="Uif-HeaderFour"/>
             </property>
             <property name="disclosure.renderImage" value="false"/>
             <property name="disclosure.defaultOpen" value="true"/>
           </bean>
         </property>
         <property name="subCollectionFieldGroupPrototype">
-          <bean parent="Uif-VerticalFieldGroup" p:labelField.render="false"/>
+          <bean parent="Uif-VerticalFieldGroup" p:fieldLabel.render="false"/>
         </property>
       </bean>
     </property>
@@ -799,31 +895,37 @@
 
   <bean id="Uif-ListCollectionSection" parent="Uif-ListCollectionSection-parentBean"/>
   <bean id="Uif-ListCollectionSection-parentBean" abstract="true" parent="Uif-ListCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-listCollectionSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <bean id="Uif-ListCollectionSubSection" parent="Uif-ListCollectionSubSection-parentBean"/>
   <bean id="Uif-ListCollectionSubSection-parentBean" abstract="true" parent="Uif-ListCollectionGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-listCollectionSubSection</value>
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
   <!-- Common Default Groups -->
   <bean id="Uif-ActionsGroup" parent="Uif-HorizontalBoxGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-actionsGroup</value>
       </list>
@@ -831,7 +933,7 @@
   </bean>
 
   <bean id="Uif-DisclosureActionsGroup" parent="Uif-ActionsGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-rightAligned-headerFieldGroup</value>
       </list>
@@ -858,12 +960,160 @@
     <property name="items">
       <list>
         <bean parent="Uif-ShowInactiveCollectionItemsButton"
-              p:render="@{!#collectionGroup.showInactive and #collectionGroup.showHideInactiveButton}"/>
+              p:render="@{!#collectionGroup.showInactiveLines and #collectionGroup.renderInactiveToggleButton}"/>
         <bean parent="Uif-HideInactiveCollectionItemsButton"
-              p:render="@{#collectionGroup.showInactive and #collectionGroup.showHideInactiveButton}"/>
+              p:render="@{#collectionGroup.showInactiveLines and #collectionGroup.renderInactiveToggleButton}"/>
       </list>
     </property>
   </bean>
 
+  <!-- Dialog Groups -->
+  <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
+  <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
+        parent="Uif-VerticalBoxSection">
+    <property name="headerText" value="Section 1 Title"/>
+    <property name="template" value="/krad/WEB-INF/jsp/templates/group/dialogGroup.jsp"/>
+    <property name="hidden" value="true"/>
+    <property name="promptText" value="Would You Like to Continue?"/>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
+      </list>
+    </property>
+    <property name="displayExplanation" value="false"/>
+    <property name="reverseButtonOrder" value="false"/>
+    <property name="prompt">
+      <bean parent="Uif-Message"/>
+    </property>
+    <property name="explanation">
+      <bean parent="Uif-DialogExplanation"/>
+    </property>
+    <property name="responseInputField">
+      <bean parent="Uif-InputField" p:propertyName="dialogResponse">
+        <property name="control">
+          <bean parent="Uif-HorizontalCheckboxesControl"/>
+        </property>
+        <property name="onChangeScript" value="
+          writeHiddenToForm('methodToCall','returnFromLightbox');
+          writeHiddenToForm('dialogResponse',jQuery('.uif-dialogButtons').find(':checked').val());
+          writeHiddenToForm('dialogExplanation', coerceValue('dialogExplanation'));
+          jQuery.fancybox.close();
+          jQuery('#kualiForm').submit();"/>
+        <property name="cssClasses">
+          <list merge="true">
+            <value>uif-dialogButtons</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-dialogGroup</value>
+      </list>
+    </property>
+  </bean>
 
+  <bean id="Uif-DialogExplanation" parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+    <property name="control">
+      <bean parent="Uif-TextAreaControl" />
+    </property>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-dialogExplanation</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="RUSure-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to cancel?"/>
+  </bean>
+  <bean id="RUSure-Delete-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to delete?"/>
+  </bean>
+  <bean id="RUSure-Modify-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to modify this document?"/>
+  </bean>
+  <bean id="RUSure-Disapprove-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to disapprove this document?"/>
+  </bean>
+  <bean id="RUSure-Close-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Would you like to save this document before you close it?"/>
+  </bean>
+  <bean id="SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
+  </bean>
+  <bean id="OK-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="Yes-No-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="True-False-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="T" p:value="True"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="False"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="Checkbox-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="explanation">
+      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+        <property name="control">
+          <bean parent="Uif-VerticalCheckboxesControl">
+            <property name="options">
+              <list>
+                <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="RadioButton-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="explanation">
+      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+        <property name="control">
+          <bean parent="Uif-VerticalRadioControl">
+            <property name="options">
+              <list>
+                <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1"/>
+                <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
 </beans>
+

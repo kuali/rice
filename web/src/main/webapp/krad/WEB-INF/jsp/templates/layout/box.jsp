@@ -36,56 +36,13 @@
 </c:if>
 
 <c:if test="${!empty manager.style}">
-  <c:set var="style" value="${manager.style}"/>
-</c:if>
-
-<c:if test="${!empty manager.itemStyle}">
-  <c:set var="itemStyle" value="style=\"${manager.itemStyle}\""/>
-</c:if>
-
-<c:choose>
-  <c:when test="${manager.orientation=='HORIZONTAL'}">
-     <c:set var="itemStyleClass" value="boxLayoutHorizontalItem ${manager.itemStyleClassesAsString}"/>
-  </c:when>
-  <c:otherwise>
-     <c:set var="itemStyleClass" value="boxLayoutVerticalItem ${manager.itemStyleClassesAsString} clearfix"/>
-  </c:otherwise>
-</c:choose>
-
-<c:choose>
-  <c:when test="${container.fieldContainer}">
-     <c:set var="style" value="float:left;${style}"/>
-  </c:when>
-  <c:otherwise>
-     <c:set var="itemStyleClass" value="fieldLine ${itemStyleClass}"/>
-  </c:otherwise>
-</c:choose>
-
-<c:set var="itemStyleClass" value="class=\"${itemStyleClass}\""/>
-
-<c:if test="${!empty style}">
-  <c:set var="style" value="style=\"${style}\""/>
+  <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if>
 
 <%-- render items --%>
-<div id="${manager.id}" ${style} ${styleClass}>
+<div id="${manager.id}_boxLayout" ${style} ${styleClass}>
   <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
-     <span ${itemStyle} ${itemStyleClass}>
-        <krad:template component="${item}"/>
-     </span>
+    <krad:template component="${item}"/>
   </c:forEach>
-
-  <%--
-     Adds a special error container for horizontal case, fields will instead display their errors here
-     (errorsField in attributeFields of this layout will not generate their errorsField through their jsp, as normal)
-     see BoxLayoutManager.java
-  --%>
-  <c:if test="${manager.layoutFieldErrors}">
-	   <span id="${manager.id}_errors_block" class="kr-errorsField" style="float:left;">
-	   		<c:forEach items="${container.inputFields}" var="item">
-           <krad:template component="${item.errorsField}"/>
-         </c:forEach>
-	   </span>
-  </c:if>
 
 </div> 

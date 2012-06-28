@@ -168,7 +168,7 @@ public interface LayoutManager extends Configurable, Serializable {
 	 * 
 	 * @return Set<String> property names for which only the value reference
 	 *         should be copied
-	 * @see org.kuali.rice.krad.uif.util.ComponentUtils.copy(T)
+	 * @see org.kuali.rice.krad.uif.util.ComponentUtils#copy(org.kuali.rice.krad.uif.component.Component)
 	 */
 	public Set<String> getPropertiesForReferenceCopy();
 
@@ -231,19 +231,19 @@ public interface LayoutManager extends Configurable, Serializable {
 	 * 
 	 * @return List<String> css style classes to apply
 	 */
-	public List<String> getStyleClasses();
+	public List<String> getCssClasses();
 
 	/**
 	 * Setter for the layout manager div style class
 	 * 
-	 * @param styleClass
+	 * @param styleClasses
 	 */
-	public void setStyleClasses(List<String> styleClasses);
+	public void setCssClasses(List<String> styleClasses);
 
 	/**
 	 * This method adds a single style class to the list of css style classes on this component
 	 * 
-	 * @param style
+	 * @param styleClass
 	 */
 	public void addStyleClass(String styleClass);
 
@@ -251,15 +251,21 @@ public interface LayoutManager extends Configurable, Serializable {
 	 * Context map for the layout manager
 	 * 
 	 * @return Map<String, Object> context
-	 * @see org.kuali.rice.krad.uif.Component.getContext()
+	 * @see org.kuali.rice.krad.uif.component.Component#getContext()
 	 */
 	public Map<String, Object> getContext();
 
-	/**
+    /**
+     * Appends to the inline style set on this layoutManager
+     *
+     * @param styleRules
+     */
+    public void appendToStyle(String styleRules);
+
+    /**
 	 * Setter for the context Map
 	 * 
 	 * @param context
-	 * @see org.kuali.rice.krad.uif.Component.setElContext(Map<String, Object>)
 	 */
 	public void setContext(Map<String, Object> context);
 
@@ -267,7 +273,7 @@ public interface LayoutManager extends Configurable, Serializable {
 	 * Places the given object into the context Map for the layout manager
 	 * with the given name
 	 * 
-	 * @see org.kuali.rice.krad.uif.Component.pushObjectToContext(String,
+	 * @see org.kuali.rice.krad.uif.component.Component#pushObjectToContext(String,
 	 *      Object)
 	 */
 	public void pushObjectToContext(String objectName, Object object);

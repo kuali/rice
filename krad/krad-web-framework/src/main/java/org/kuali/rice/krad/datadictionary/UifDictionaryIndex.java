@@ -58,6 +58,9 @@ public class UifDictionaryIndex implements Runnable {
     // view entries indexed by type
     private Map<String, ViewTypeDictionaryIndex> viewEntriesByType;
 
+    // views that are loaded eagerly
+    private Map<String, UifViewPool> viewPools;
+
     public UifDictionaryIndex(KualiDefaultListableBeanFactory ddBeans) {
         this.ddBeans = ddBeans;
     }
@@ -69,20 +72,66 @@ public class UifDictionaryIndex implements Runnable {
     }
 
     /**
-     * Retrieves the View instance with the given id from the bean factory.
-     * Since View instances are stateful, we need to get a new instance from
-     * Spring each time.
+     * Retrieves the View instance with the given id
+     * 
+     * <p>
+     * First an attempt is made to get a preloaded view (if one exists). If found it is pulled from
+     * the pool and a replacement is built on another thread. If a preloaded view does not exist, one is built
+     * by Spring from the bean factory
+     * </p>
      *
      * @param viewId - the unique id for the view
-     * @return <code>View</code> instance
+     * @return View instance with the given id
+     * @throws DataDictionaryException if view doesn't exist for id
      */
-    public View getViewById(String viewId) {
+    public View getViewById(final String viewId) {
+        // check for preloaded view
+        if (viewPools.containsKey(viewId)) {
+            View view = null;
+
+            final UifViewPool viewPool = viewPools.get(viewId);
+            synchronized (viewPool) {
+                if (!viewPool.isEmpty()) {
+                    view = viewPool.getViewInstance();
+
+                    // replace view in the pool
+                    Runnable createView = new Runnable() {
+                        public void run() {
+                            View newViewInstance = getViewInstanceFromFactory(viewId);
+                            viewPool.addViewInstance(newViewInstance);
+                        }
+                    };
+
+                    Thread t = new Thread(createView);
+                    t.start();
+
+                    return view;
+                } else {
+                    LOG.info("Pool size for view with id: "
+                            + viewId
+                            + " is empty. Considering increasing max pool size.");
+                }
+            }
+        }
+
+        // no pooling, get new instance from factory
+        return getViewInstanceFromFactory(viewId);
+    }
+
+    /**
+     * Retrieves a view object from the bean factory based on view id
+     *
+     * @param viewId - id of the view to retrieve
+     * @return View instance for view with specified id
+     * @throws DataDictionaryException if view doesn't exist for id
+     */
+    protected View getViewInstanceFromFactory(String viewId) {
         String beanName = viewBeanEntriesById.get(viewId);
         if (StringUtils.isBlank(beanName)) {
             throw new DataDictionaryException("Unable to find View with id: " + viewId);
         }
 
-        return ddBeans.getBean(beanName, View.class);
+        return ddBeans.getBean(beanName, View.class);  
     }
 
     /**
@@ -101,9 +150,9 @@ public class UifDictionaryIndex implements Runnable {
 
         ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewTypeName);
 
-        String beanName = typeIndex.get(index);
-        if (StringUtils.isNotBlank(beanName)) {
-            return ddBeans.getBean(beanName, View.class);
+        String viewId = typeIndex.get(index);
+        if (StringUtils.isNotBlank(viewId)) {
+            return getViewById(viewId);
         }
 
         return null;
@@ -123,8 +172,8 @@ public class UifDictionaryIndex implements Runnable {
         String index = buildTypeIndex(indexKey);
         ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewTypeName);
 
-        String beanName = typeIndex.get(index);
-        if (StringUtils.isNotBlank(beanName)) {
+        String viewId = typeIndex.get(index);
+        if (StringUtils.isNotBlank(viewId)) {
             viewExist = true;
         }
 
@@ -215,10 +264,11 @@ public class UifDictionaryIndex implements Runnable {
     protected void buildViewIndicies() {
         viewBeanEntriesById = new HashMap<String, String>();
         viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
+        viewPools = new HashMap<String, UifViewPool>();
 
         String[] beanNames = ddBeans.getBeanNamesForType(View.class);
         for (int i = 0; i < beanNames.length; i++) {
-            String beanName = beanNames[i];
+            final String beanName = beanNames[i];
             BeanDefinition beanDefinition = ddBeans.getMergedBeanDefinition(beanName);
             PropertyValues propertyValues = beanDefinition.getPropertyValues();
 
@@ -232,7 +282,32 @@ public class UifDictionaryIndex implements Runnable {
             }
             viewBeanEntriesById.put(id, beanName);
 
-            indexViewForType(propertyValues, beanName);
+            indexViewForType(propertyValues, id);
+
+            // pre-load views if necessary
+            String poolSizeStr = ViewModelUtils.getStringValFromPVs(propertyValues, "preloadPoolSize");
+            if (StringUtils.isNotBlank(poolSizeStr)) {
+                int poolSize = Integer.parseInt(poolSizeStr);
+                if (poolSize < 1) {
+                    continue;
+                }
+
+                final UifViewPool viewPool = new UifViewPool();
+                viewPool.setMaxSize(poolSize);
+                for (int j = 0; j < poolSize; j++) {
+                    Runnable createView = new Runnable() {
+                        public void run() {
+                            View view = (View) ddBeans.getBean(beanName);
+                            viewPool.addViewInstance(view);
+                        }
+                    };
+
+                    Thread t = new Thread(createView);
+                    t.start();
+                }
+
+                viewPools.put(id, viewPool);
+            }
         }
     }
 
@@ -243,10 +318,10 @@ public class UifDictionaryIndex implements Runnable {
      * used to key the entry
      *
      * @param propertyValues - property values configured on the view bean definition
-     * @param beanName - name of the view's bean in Spring
+     * @param beanName - id (or bean name if id was not set) for the view
      */
-    protected void indexViewForType(PropertyValues propertyValues, String beanName) {
-        String viewTypeName = ViewModelUtils.getStringValFromPVs(propertyValues,  "viewTypeName");
+    protected void indexViewForType(PropertyValues propertyValues, String id) {
+        String viewTypeName = ViewModelUtils.getStringValFromPVs(propertyValues, "viewTypeName");
         if (StringUtils.isBlank(viewTypeName)) {
             return;
         }
@@ -268,7 +343,7 @@ public class UifDictionaryIndex implements Runnable {
         // get the index for the type and add the view entry
         ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewType);
 
-        typeIndex.put(index, beanName);
+        typeIndex.put(index, id);
     }
 
     /**

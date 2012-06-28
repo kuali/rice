@@ -50,11 +50,11 @@ import java.util.concurrent.Callable;
 import static org.junit.Assert.*;
 
 /**
- * This class performs various DataDictionarySearchableAttribute-related tests on the doc search, including verification of proper wildcard functionality. 
+ * DataDictionarySearchableAttributeTest performs various DataDictionarySearchableAttribute-related tests on the doc search, including verification of proper wildcard functionality
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-//@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+
 public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 
     @Override
@@ -236,7 +236,7 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     }
 
     /**
-     * A convenience method for testing wildcards on data dictionary searchable attributes.
+     * A convenience method for testing wildcards on data dictionary searchable attributes
      *
      * @param docType The document type containing the attributes.
      * @param principalId The ID of the user performing the search.
@@ -254,6 +254,9 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
         DocumentSearchResults results = null;
         DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
         for (int i = 0; i < resultSizes.length; i++) {
+            if (searchValues[i].toString().equalsIgnoreCase("Zero")) {
+                int num = 1 + 1;
+            }
         	criteria = DocumentSearchCriteria.Builder.create();
         	criteria.setDocumentTypeName(docType.getName());
             if (searchValues instanceof String[][]) {
@@ -275,7 +278,8 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
         		}
         	} catch (Exception ex) {
         		if (resultSizes[i] >= 0) {
-        			fail(fieldName + "'s search at loop index " + i + " should not have thrown an exception");
+                    LOG.error("exception", ex);
+        			fail(fieldName + "'s search at loop index " + i + " for search value '" + searchValues[i] + "' should not have thrown an exception");
         		}
         	}
         	GlobalVariables.clear();
@@ -349,6 +353,7 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
         assertEquals(1, errors.size());
         assertEquals("the error message", errors.get(0).getMessage());
     }
+
     /**
      * Test multiple value searches in the context of whole document search context
      */

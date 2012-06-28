@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Implementation for {@link DocumentAdHocService}.
+ * Implementation for {@link DocumentAdHocService}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -65,6 +65,10 @@ public class DocumentAdHocServiceImpl implements DocumentAdHocService {
         document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
 	}
 
+    /**
+     * gets the {@link BusinessObjectService} from {@code KRADServiceLocator}
+     * @return
+     */
     protected BusinessObjectService getBusinessObjectService() {
     	return KRADServiceLocator.getBusinessObjectService();
     }

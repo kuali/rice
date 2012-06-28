@@ -56,8 +56,8 @@ public class AttachmentServiceImpl implements AttachmentService {
 	}
 
     /**
-     * @see org.kuali.rice.krad.service.DocumentAttachmentService#createAttachment(java.lang.String, java.lang.String, int,
-     *      java.io.InputStream, Document)
+     * @see org.kuali.rice.krad.service.AttachmentService#createAttachment(org.kuali.rice.krad.bo.PersistableBusinessObject,
+     * String, String, int, java.io.InputStream, String)
      */
     public Attachment createAttachment(PersistableBusinessObject parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentTypeCode) throws IOException {
         if ( LOG.isDebugEnabled() ) {
@@ -183,7 +183,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     /**
      * /* (non-Javadoc)
      *
-     * @see org.kuali.rice.krad.service.DocumentAttachmentService#retrieveAttachmentContents(org.kuali.rice.krad.document.DocumentAttachment)
+     * @see org.kuali.rice.krad.service.AttachmentService#retrieveAttachmentContents(org.kuali.rice.krad.bo.Attachment)
      */
     public InputStream retrieveAttachmentContents(Attachment attachment) throws IOException {
         //refresh to get Note object in case it's not there

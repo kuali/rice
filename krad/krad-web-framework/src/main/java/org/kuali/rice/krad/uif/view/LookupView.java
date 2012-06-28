@@ -22,7 +22,9 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Arrays;
@@ -53,7 +55,7 @@ public class LookupView extends FormView {
     private Group criteriaGroup;
     private CollectionGroup resultsGroup;
 
-    private Field resultsActionsField;
+    private FieldGroup resultsActionsFieldGroup;
     private Field resultsReturnField;
 
     private List<Component> criteriaFields;
@@ -87,8 +89,9 @@ public class LookupView extends FormView {
 
     public LookupView() {
         super();
+
         setViewTypeName(ViewType.LOOKUP);
-        setValidateDirty(false);
+        setApplyDirtyCheck(false);
     }
 
     /**
@@ -113,9 +116,9 @@ public class LookupView extends FormView {
             hideReturnLinks = true;
         }
 
-        getAbstractTypeClasses().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
+        getObjectPathToConcreteClassMapping().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
         if (StringUtils.isNotBlank(getDefaultBindingObjectPath())) {
-            getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+            getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDataObjectClassName());
         }
     }
 
@@ -123,6 +126,7 @@ public class LookupView extends FormView {
         if ((getCriteriaGroup() != null) && (getCriteriaGroup().getItems().isEmpty())) {
             getCriteriaGroup().setItems(getCriteriaFields());
         }
+
         if (getResultsGroup() != null) {
             if ((getResultsGroup().getItems().isEmpty()) && (getResultFields() != null)) {
                 getResultsGroup().setItems(getResultFields());
@@ -143,12 +147,12 @@ public class LookupView extends FormView {
 
         // TODO: need to check lookupForm.isAtLeastOneRowHasActions() somewhere
         if (!isSuppressActions() && isShowMaintenanceLinks()) {
-            ((List<Field>) getResultsGroup().getItems()).add(0, getResultsActionsField());
+            ((List<Component>) getResultsGroup().getItems()).add(0, getResultsActionsFieldGroup());
         }
 
         if (StringUtils.isNotBlank(lookupForm.getReturnFormKey()) &&
                 StringUtils.isNotBlank(lookupForm.getReturnLocation()) && !isHideReturnLinks()) {
-            ((List<Field>) getResultsGroup().getItems()).add(0, getResultsReturnField());
+            ((List<Component>) getResultsGroup().getItems()).add(0, getResultsReturnField());
         }
 
         super.performApplyModel(view, model, parent);
@@ -163,7 +167,7 @@ public class LookupView extends FormView {
 
         components.add(criteriaGroup);
         components.add(resultsGroup);
-        components.add(resultsActionsField);
+        components.add(resultsActionsFieldGroup);
         components.add(resultsReturnField);
         components.addAll(criteriaFields);
         components.addAll(resultFields);
@@ -291,15 +295,15 @@ public class LookupView extends FormView {
     /**
      * @return the resultsActionsField
      */
-    public Field getResultsActionsField() {
-        return this.resultsActionsField;
+    public FieldGroup getResultsActionsFieldGroup() {
+        return this.resultsActionsFieldGroup;
     }
 
     /**
-     * @param resultsActionsField the resultsActionsField to set
+     * @param resultsActionsFieldGroup the resultsActionsField to set
      */
-    public void setResultsActionsField(Field resultsActionsField) {
-        this.resultsActionsField = resultsActionsField;
+    public void setResultsActionsFieldGroup(FieldGroup resultsActionsFieldGroup) {
+        this.resultsActionsFieldGroup = resultsActionsFieldGroup;
     }
 
     /**

@@ -429,9 +429,15 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             Collection<Object> oldCollection = ObjectPropertyUtils
                     .getPropertyValue(document.getOldMaintainableObject().getDataObject(),
                             collectionGroup.getPropertyName());
+
             try {
                 Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();
-                oldCollection.add(blankLine);
+                //Add a blank line to the top of the collection
+                if(oldCollection instanceof List){
+                   ((List) oldCollection).add(0,blankLine);
+                } else {
+                    oldCollection.add(blankLine);
+                }
             } catch (Exception e) {
                 throw new RuntimeException("Unable to create new line instance for old maintenance object", e);
             }

@@ -197,7 +197,8 @@ public class History implements Serializable {
      * method appends the appropriate history information on the HistoryEntry url variables so when a view is requested
      * its history can be regenerated for use in its breadcrumbs.  It also sets the the passed showHome variable to
      * false to prevent showing the homeward path more than once (as it is passed through the history
-     * variable backwards). This does not include the current HistoryEntry as a breadcrumb.
+     * variable backwards). This does not include the current HistoryEntry as a breadcrumb but adds the formKey as the
+     * LAST_FORM_KEY to assist with server side form cleanup.
      *
      * @return
      */
@@ -220,10 +221,13 @@ public class History implements Serializable {
                 }
 
                 String url = "";
+                if (StringUtils.isEmpty(breadcrumb.getUrl()))continue;
                 if (breadcrumb.getUrl().contains("?")) {
-                    url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + "=" + historyParam;
+                    url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + "=" + historyParam
+                            + "&" + UifConstants.UrlParams.LAST_FORM_KEY + "=" + current.getFormKey();
                 } else {
-                    url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + "=" + historyParam;
+                    url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + "=" + historyParam
+                            + "&" + UifConstants.UrlParams.LAST_FORM_KEY + "=" + current.getFormKey();
                 }
 
                 breadcrumb.setUrl(url);
@@ -401,11 +405,11 @@ public class History implements Serializable {
      */
     protected String buildViewTitle(UifFormBase form) {
         View view = form.getView();
-        String title = view.getTitle();
+        String title = view.getHeaderText();
 
         // may move this into view logic instead in the future if it is required for the view's title (not just breadcrumb)
         // if so remove this and just use getTitle - this logic would be in performFinalize instead
-        String viewLabelPropertyName = view.getViewLabelFieldPropertyName();
+        String viewLabelPropertyName = view.getBreadcrumbTitlePropertyName();
 
         // if view label property name given, try to retrieve the title attribute for the main data object
         if (StringUtils.isBlank(viewLabelPropertyName)) {
@@ -463,12 +467,12 @@ public class History implements Serializable {
             titleAppend = viewLabelPropertyValue.toString();
         }
 
-        if (StringUtils.isNotBlank(titleAppend) && view.getAppendOption() != null) {
-            if (view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.DASH)) {
+        if (StringUtils.isNotBlank(titleAppend) && view.getBreadcrumbTitleDisplayOption() != null) {
+            if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.DASH)) {
                 title = title + " - " + titleAppend;
-            } else if (view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.PARENTHESIS)) {
+            } else if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.PARENTHESIS)) {
                 title = title + "(" + titleAppend + ")";
-            } else if (view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.REPLACE)) {
+            } else if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.REPLACE)) {
                 title = titleAppend;
             }
             //else it is none or blank so no title modification will be used

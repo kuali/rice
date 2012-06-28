@@ -60,7 +60,7 @@ public final class KRADConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
-    
+
     public static final String KNS_NAMESPACE = "KR-NS";
     public static final String KRAD_NAMESPACE = "KR-KRAD";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
@@ -116,7 +116,7 @@ public final class KRADConstants {
         public static final String RULE_SERVICE_DETAIL_TYPE = "RuleBaseValues";
         public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
         public static final String WORKGROUP_DETAIL_TYPE = "Notification";
-        
+
     	private DetailTypes() {
     		throw new UnsupportedOperationException("do not call");
     	}
@@ -128,7 +128,7 @@ public final class KRADConstants {
     	public static final String DOCUMENT_INITIATOR = "documentInitiator";
     	public static final String DOCUMENT_CREATE_DATE = "documentCreateDate";
     	public static final String DOCUMENT_TEMPLATE_NUMBER = "documentTemplateNumber";
-    	
+
     	private DocumentFormHeaderFieldIds() {
     		throw new UnsupportedOperationException("do not call");
     	}
@@ -175,6 +175,9 @@ public final class KRADConstants {
     public static final String SCRIPT_CONFIGURATION_FILES_LIST_NAME = "scriptConfigurationFilePaths";
 //    public static final String JOB_NAMES_LIST_NAME = "jobNames";
 //    public static final String TRIGGER_NAMES_LIST_NAME = "triggerNames";
+    
+    public static final String IMAGE_URL_EXPRESSION = "@{#ConfigProperties['krad.externalizable.images.url']}";
+    public static final String DETAILS_IMAGE = "details_open.png";
 
     public static final String ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER = "~";
     public static final String ADD_LINE_METHOD = "addLine";
@@ -212,13 +215,13 @@ public final class KRADConstants {
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
     public static final String DICTIONARY_BO_NAME = "dictionaryBusinessObjectName";
     public static final String DISPATCH_REQUEST_PARAMETER = "methodToCall";
-    
+
     /**
      * Constant defined to match with method call in module-locked.jsp which is
      * set to a message that is displayed when the module is locked.
      */
     public static final String MODULE_LOCKED_MESSAGE_REQUEST_PARAMETER = "moduleLockedMessage";
-    
+
     public static final String CUSTOM_ACTION = "customAction";
     public static final String DOC_FORM_KEY = "docFormKey";
     public static final String FORM_KEY = "formKey";
@@ -251,7 +254,7 @@ public final class KRADConstants {
 //    public static final String STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES = "AttributeReferenceDummy";
     public static final String OVERRIDE_KEYS = "overrideKeys";
     public static final String COPY_KEYS = "cpKys";
-    
+
     public static final String KRAD_APPLICATION_DATASOURCE = "kradApplication.datasource";
     public static final String KRAD_APPLICATION_DATASOURCE_JNDI = "kradApplication.datasource.jndi.location";
 
@@ -274,7 +277,7 @@ public final class KRADConstants {
      */
     public static final String NOTE_ATTACHMENT_FILE_PROPERTY_NAME = "attachmentFile";
 
-    
+
     /**
      * Property name for enabling attachments to note, overriding the defaults defined by the document template - Value is
      * "enableNoteAttachments"
@@ -320,7 +323,7 @@ public final class KRADConstants {
     public static final String CONTINUE_WITH_INQUIRY_METHOD_TO_CALL = "continueWithInquiry";
     public static final String INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX = "previousPkValue_";
     public static final String INACTIVE_RECORD_DISPLAY_PARAM_PREFIX = "inactiveRecordDisplay_";
-    
+
     public static final String FIELD_NAME_TO_FOCUS_ON_AFTER_SUBMIT = "fieldNameToFocusOnAfterSubmit";
 
     public static final String DEFAULT_PARAMETER_APPLICATION_ID = "KUALI";
@@ -412,8 +415,8 @@ public final class KRADConstants {
     public static final String METHOD_TO_CALL_PARM14_LEFT_DEL = "(::::;";
     public static final String METHOD_TO_CALL_PARM14_RIGHT_DEL = ";::::)";
     // if more strings needed, then add more colons to the PARM11 strings above, e.g. (::; (:::;, etc.
-    
-    
+
+
     // Pessimistic Locking Constants
     public static final String SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM = "SESSION_TIMEOUT_WARNING_MESSAGE_TIME";
     public static final String SESSION_TIMEOUT_WARNING_MILLISECONDS = "SESSION_TIMEOUT_WARNING_MILLISECONDS";
@@ -470,7 +473,7 @@ public final class KRADConstants {
     public static final String BO_ATTACHMENT_FILE_NAME = "fileName";
     public static final String BO_ATTACHMENT_FILE_CONTENT_TYPE = "contentType";
     public static final String BO_ATTACHMENT_FILE_CONTENT_FIELD = "fileContentBOField";
-    
+
 
     // specialized method 'delete' used only for PessimisticLocks currently
     public static final String DELETE_METHOD = "delete";
@@ -488,7 +491,9 @@ public final class KRADConstants {
     public static final String DISPLAY_ALL_INACTIVATION_BLOCKERS_ACTION = "inactivationBlockers.do";
 
     public static final String GLOBAL_ERRORS = "GLOBAL_ERRORS";
+    // TODO: fix this constant to be GLOBAL_MESSAGES once KNS is removed
     public static final String GLOBAL_MESSAGES = "GlobalMessages";
+    public static final String GLOBAL_INFO = "GLOBAL_INFO";
     public static final String PESSIMISTIC_LOCK_MESSAGES = "DocumentPessimisticLockMessages";
     public static final String AD_HOC_ROUTE_PERSON_ERRORS = "newAdHocRoutePerson*,adHocRoutePerson*";
     public static final String AD_HOC_ROUTE_WORKGROUP_ERRORS = "newAdHocRouteWorkgroup*,adHocRouteWorkgroup*";
@@ -551,14 +556,14 @@ public final class KRADConstants {
 
         public static final String ENABLE_DIRECT_INQUIRIES_IND = "ENABLE_DIRECT_INQUIRIES_IND";
         public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
-                
+
         public static final String SENSITIVE_DATA_PATTERNS = "SENSITIVE_DATA_PATTERNS";
         public static final String SENSITIVE_DATA_PATTERNS_WARNING_IND = "SENSITIVE_DATA_PATTERNS_WARNING_IND";
-        
+
         public static final String OLTP_LOCKOUT_ACTIVE_IND = "OLTP_LOCKOUT_ACTIVE_IND";
         public static final String OLTP_LOCKOUT_MESSAGE_PARM = "OLTP_LOCKOUT_MESSAGE";
         public static final String OLTP_LOCKOUT_DEFAULT_MESSAGE = "OLTP_LOCKOUT_DEFAULT_MESSAGE";
-        
+
     	private SystemGroupParameterNames() {
     		throw new UnsupportedOperationException("do not call");
     	}
@@ -575,14 +580,14 @@ public final class KRADConstants {
         // below field used on displayMultipleValueLookupResults.tag
         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
         public static final String VIEWED_PAGE_NUMBER = "viewedPageNumber";
-        
+
     	private TableRenderConstants() {
     		throw new UnsupportedOperationException("do not call");
     	}
     }
 
     public static final String TAB_STATES = "tabStates";
-    
+
     public static final List<String> ALWAYS_VALID_PARAMETER_PREFIXES = new ArrayList<String>();
     static {
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( TAB_STATES );
@@ -600,16 +605,16 @@ public final class KRADConstants {
     	public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.krad.illegalBusinessObjectsForSave";
         public static final String COMPONENT_PUBLISHING_ENABLED = "rice.krad.componentPublishing.enabled";
         public static final String COMPONENT_PUBLISHING_DELAY = "rice.krad.componentPublishing.delay";
-    	
+
     	private Config() {
     		throw new UnsupportedOperationException("do not call");
     	}
     }
 
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
-	
+
   	public static final String SINGLE_QUOTE = "'";
-  	
+
   	public static final String SENSITIVE_DATA_QUESTION_SESSION_TICKET = "SENSITIVE_DATA_QUESTION_SESSION_TICKET";
   	public static final String EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME = "EditablePropertiesHistoryHolder";
 

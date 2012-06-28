@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.2.0-M2-SNAPSHOT</version>
   </parent>
   <artifactId>rice-sampleapp</artifactId>
   <packaging>war</packaging>
@@ -196,6 +196,21 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krms-impl</artifactId>
       <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-it-krad</artifactId>
+      <version>${project.version}</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-it-internal-tools</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>

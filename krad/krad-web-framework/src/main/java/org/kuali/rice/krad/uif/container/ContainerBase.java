@@ -18,17 +18,16 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.ErrorsField;
-import org.kuali.rice.krad.uif.field.HeaderField;
-import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.element.Header;
+import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
+import org.kuali.rice.krad.uif.widget.Tooltip;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,27 +45,24 @@ import java.util.List;
 public abstract class ContainerBase extends ComponentBase implements Container {
 	private static final long serialVersionUID = -4182226230601746657L;
 
-	private int itemOrderingSequence;
-
-	private String additionalMessageKeys;
-	private ErrorsField errorsField;
+	private int defaultItemPosition;
 
 	private Help help;
 	private LayoutManager layoutManager;
 
-	private HeaderField header;
+	private Header header;
 	private Group footer;
 
 	private String instructionalText;
-	private MessageField instructionalMessageField;
+	private Message instructionalMessage;
 
-	private boolean fieldContainer;
+    private ValidationMessages validationMessages;
 
 	/**
 	 * Default Constructor
 	 */
 	public ContainerBase() {
-		itemOrderingSequence = 1;
+		defaultItemPosition = 1;
 	}
 
 	/**
@@ -74,6 +70,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * 
 	 * <ul>
 	 * <li>Sorts the containers list of components</li>
+     * <li>Initializes the instructional field if necessary</li>
 	 * <li>Initializes LayoutManager</li>
 	 * </ul>
 	 * 
@@ -86,8 +83,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 		// sort items list by the order property
 		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
-				itemOrderingSequence);
+                defaultItemPosition);
 		setItems(sortedItems);
+
+        if (StringUtils.isNotBlank(instructionalText) && (instructionalMessage == null)) {
+            instructionalMessage = ComponentFactory.getInstructionalMessage();
+            view.assignComponentIds(instructionalMessage);
+        }
 
 		if (layoutManager != null) {
 			layoutManager.performInitialization(view, model, this);
@@ -112,7 +114,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * 
 	 * <ul>
 	 * <li>Sets the headerText of the header Group if it is blank</li>
-	 * <li>Set the messageText of the summary MessageField if it is blank</li>
+	 * <li>Set the messageText of the summary Message if it is blank</li>
 	 * <li>Finalizes LayoutManager</li>
 	 * </ul>
 	 * 
@@ -123,19 +125,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void performFinalize(View view, Object model, Component parent) {
 		super.performFinalize(view, model, parent);
 
-		// if header title not given, use the container title
-		if (header != null && StringUtils.isBlank(header.getHeaderText())) {
-			header.setHeaderText(this.getTitle());
-		}
+        if(header != null){
+            header.addDataAttribute("headerFor", this.getId());
+        }
 
 		// setup summary message field if necessary
-		if (instructionalMessageField != null && StringUtils.isBlank(instructionalMessageField.getMessageText())) {
-			instructionalMessageField.setMessageText(instructionalText);
+		if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+			instructionalMessage.setMessageText(instructionalText);
 		}
 
 		if (layoutManager != null) {
 			layoutManager.performFinalize(view, model, this);
 		}
+        
 	}
 
 	/**
@@ -147,9 +149,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 		components.add(header);
 		components.add(footer);
-		components.add(errorsField);
+		components.add(validationMessages);
 		components.add(help);
-		components.add(instructionalMessageField);
+		components.add(instructionalMessage);
 
 		for (Component component : getItems()) {
 			components.add(component);
@@ -177,57 +179,23 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
 	/**
-	 * Additional keys that should be matching on when gathering errors or other
-	 * messages for the <code>Container</code>
-	 * 
-	 * <p>
-	 * Messages associated with the container will be displayed with the
-	 * container grouping in the user interface. Typically, these are a result
-	 * of problems with the containers fields or some other business logic
-	 * associated with the containers information. The framework will by default
-	 * include all the error keys for fields in the container, and also an
-	 * errors associated with the containers id. Keys given here will be matched
-	 * in addition to those defaults.
-	 * </p>
-	 * 
-	 * <p>
-	 * Multple keys can be given using the comma delimiter, the * wildcard is
-	 * also allowed in the message key
-	 * </p>
-	 * 
-	 * @return String additional message key string
-	 */
-	public String getAdditionalMessageKeys() {
-		return this.additionalMessageKeys;
-	}
-
-	/**
-	 * Setter for the components additional message key string
-	 * 
-	 * @param additionalMessageKeys
-	 */
-	public void setAdditionalMessageKeys(String additionalMessageKeys) {
-		this.additionalMessageKeys = additionalMessageKeys;
-	}
-
-	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getErrorsField()
+	 * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
 	 */
 	@Override
-	public ErrorsField getErrorsField() {
-		return this.errorsField;
+	public ValidationMessages getValidationMessages() {
+		return this.validationMessages;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setErrorsField(org.kuali.rice.krad.uif.field.ErrorsField)
+	 * @see org.kuali.rice.krad.uif.container.Container#setValidationMessages(org.kuali.rice.krad.uif.element.ValidationMessages)
 	 */
 	@Override
-	public void setErrorsField(ErrorsField errorsField) {
-		this.errorsField = errorsField;
+	public void setValidationMessages(ValidationMessages validationMessages) {
+		this.validationMessages = validationMessages;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getHelp()
+	 * @see org.kuali.rice.krad.uif.widget.Helpable#getHelp()
 	 */
 	@Override
 	public Help getHelp() {
@@ -235,14 +203,36 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setHelp(org.kuali.rice.krad.uif.widget.Help)
+	 * @see org.kuali.rice.krad.uif.widget.Helpable#setHelp(org.kuali.rice.krad.uif.widget.Help)
 	 */
 	@Override
 	public void setHelp(Help help) {
 		this.help = help;
 	}
 
-	/**
+    /**
+     * For containers the help tooltip is placed on the header.
+     *
+     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
+     */
+    @Override
+    public void setTooltipOfComponent(Tooltip tooltip) {
+        getHeader().setToolTip(tooltip);
+    }
+
+    /**
+     * Return the container header text for the help title
+     *
+     * @return container title
+     *
+     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
+     */
+    @Override
+    public String getHelpTitle() {
+        return this.getHeader().getHeaderText();
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.uif.container.Container#getItems()
 	 */
 	@Override
@@ -264,17 +254,17 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * 
 	 * @return int order sequence
 	 */
-	public int getItemOrderingSequence() {
-		return this.itemOrderingSequence;
+	public int getDefaultItemPosition() {
+		return this.defaultItemPosition;
 	}
 
 	/**
 	 * Setter for the container's item ordering sequence number (initial value)
 	 * 
-	 * @param itemOrderingSequence
+	 * @param defaultItemPosition
 	 */
-	public void setItemOrderingSequence(int itemOrderingSequence) {
-		this.itemOrderingSequence = itemOrderingSequence;
+	public void setDefaultItemPosition(int defaultItemPosition) {
+		this.defaultItemPosition = defaultItemPosition;
 	}
 
 	/**
@@ -297,15 +287,15 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getHeader()
 	 */
 	@Override
-	public HeaderField getHeader() {
+	public Header getHeader() {
 		return this.header;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setHeader(org.kuali.rice.krad.uif.field.HeaderField)
+	 * @see org.kuali.rice.krad.uif.container.Container#setHeader(org.kuali.rice.krad.uif.element.Header)
 	 */
 	@Override
-	public void setHeader(HeaderField header) {
+	public void setHeader(Header header) {
 		this.header = header;
 	}
 
@@ -342,6 +332,30 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 			header.setRender(renderHeader);
 		}
 	}
+
+    /**
+     * Convenience getter for the header text
+     *
+     * @return The text that should be displayed on the header
+     */
+    public String getHeaderText () {
+        if (header != null) {
+            return header.getHeaderText();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Convenience setter for configuration to set the header text
+     *
+     * @param headerText  the text that should be displayed on the header.
+     */
+    public void setHeaderText (String headerText) {
+        if (header != null) {
+            header.setHeaderText(headerText);
+        }
+    }
 
 	/**
 	 * Convenience setter for configuration to turn rendering of the footer
@@ -388,10 +402,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * the styleClasses property will be of most interest
      * </p>
      *
-     * @return MessageField instructional message field
+     * @return Message instructional message field
      */
-	public MessageField getInstructionalMessageField() {
-		return this.instructionalMessageField;
+	public Message getInstructionalMessage() {
+		return this.instructionalMessage;
 	}
 
     /**
@@ -402,66 +416,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * set on the field but can also be set using {@link #setInstructionalText(String)}
      * </p>
      *
-     * @param instructionalMessageField
+     * @param instructionalMessage
      */
-	public void setInstructionalMessageField(MessageField instructionalMessageField) {
-		this.instructionalMessageField = instructionalMessageField;
-	}
-
-	/**
-	 * Gets only the data fields that are nested in this container.  This is a subset of
-	 * what getComponentsForLifecycle() returns
-	 * 
-	 * @return
-	 */
-	public List<InputField> getInputFields(){
-		List<InputField> inputFields = new ArrayList<InputField>();
-		for(Component c: this.getComponentsForLifecycle()){
-			if(c instanceof InputField){
-				inputFields.add((InputField)c);
-			}
-		}
-		return inputFields;
-		
-	}
-
-    /**
-     * getAllInputFields gets all the input fields contained in this container, but also in
-     * every sub-container that is a child of this container.  When called from the top level
-     * View this will be every InputField across all pages.
-     * @return every InputField that is a child at any level of this container
-     */
-    public List<InputField> getAllInputFields(){
-        List<InputField> inputFields = new ArrayList<InputField>();
-        for(Component c: this.getComponentsForLifecycle()){
-            if(c instanceof InputField){
-                inputFields.add((InputField)c);
-            }
-            else if(c instanceof ContainerBase){
-                inputFields.addAll( ((ContainerBase) c).getAllInputFields());
-            }
-            else if(c instanceof FieldGroup){
-                ContainerBase cb = ((FieldGroup) c).getGroup();
-                inputFields.addAll(cb.getAllInputFields());
-            }
-        }
-        return inputFields;    
-    }
-
-	/**
-	 * This property is true if the container is used to display a group of fields that is visually a single
-	 * field.
-	 * @return the fieldContainer
-	 */
-	public boolean isFieldContainer() {
-		return this.fieldContainer;
-	}
-
-	/**
-	 * @param fieldContainer the fieldContainer to set
-	 */
-	public void setFieldContainer(boolean fieldContainer) {
-		this.fieldContainer = fieldContainer;
+	public void setInstructionalMessage(Message instructionalMessage) {
+		this.instructionalMessage = instructionalMessage;
 	}
 
 }

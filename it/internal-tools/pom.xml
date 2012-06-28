@@ -19,16 +19,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <name>Rice Integration Test Internal Tools</name>
   <description>
-        This module contains rice's internal integration testing tools.
-
-        This module is internal to rice and should not used outside of the rice project.
-        It should only be depended on by rice integration test code.  This module can depend on any part of rice.
+        This module contains rice's internal integration testing tools. This module is internal to rice and should not used outside of the rice project. It should only be depended on by rice integration test code.  This module can depend on any part of rice.
     </description>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-it</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.2.0-M2-SNAPSHOT</version>
   </parent>
   <artifactId>rice-it-internal-tools</artifactId>
 

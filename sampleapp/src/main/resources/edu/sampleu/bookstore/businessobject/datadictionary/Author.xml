@@ -141,12 +141,12 @@
     <property name="name" value="extension.accountNumber"/>
   </bean>
   <bean id="Author-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Author Inquiry"/>
+    <property name="headerText" value="Author Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Author"/>
     <property name="Items">
       <list>
         <bean parent="Uif-Disclosure-GridSection">
-          <property name="title" value="Author Information"/>
+          <property name="headerText" value="Author Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
@@ -157,7 +157,7 @@
           </property>
         </bean>
         <bean parent="Uif-Disclosure-GridSection">
-          <property name="title" value="Account Information"/>
+          <property name="headerText" value="Account Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
@@ -167,7 +167,7 @@
           </property>
         </bean>
         <bean parent="Uif-Disclosure-StackedCollectionSection">
-          <property name="title" value="Addresses"/>
+          <property name="headerText" value="Addresses"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Address"/>
           <property name="propertyName" value="addresses"/>
           <property name="items">
@@ -188,7 +188,7 @@
           <property name="layoutManager.summaryTitle" value ="Address"/>
         </bean>
         <bean parent="Uif-Disclosure-StackedCollectionSection">
-          <property name="title" value="Books"/>
+          <property name="headerText" value="Books"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
           <property name="propertyName" value="books"/>
           <property name="items">
@@ -212,7 +212,7 @@
     </property>
   </bean>
   <bean id="Author-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Author Lookup"/>
+    <property name="headerText" value="Author Lookup"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Author"/>
     <property name="criteriaFields">
       <list>

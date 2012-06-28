@@ -37,7 +37,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 
+ * BaseConstraintProcessorTest is a base class that is contains a setup method that prepares test data dictionary
+ * attribute definitions and constraints
+ *
+ * <p>Constraints initialized are PrerequisiteConstraint, MustOccurConstraint, CaseConstraint, WhenConstraint, ValidCharactersConstraint</p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseConstraintProcessorTest<P extends ConstraintProcessor> {

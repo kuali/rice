@@ -19,9 +19,12 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Layout manager that organizes its components in a table based grid
- * 
+ *
  * <p>
  * Items are laid out from left to right (with each item taking up one column)
  * until the configured number of columns is reached. If the item count is
@@ -31,7 +34,7 @@ import org.kuali.rice.krad.uif.view.View;
  * also supports the column span and row span options for the field items. If
  * not specified the default is 1.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GridLayoutManager extends LayoutManagerBase {
@@ -42,21 +45,26 @@ public class GridLayoutManager extends LayoutManagerBase {
     private boolean suppressLineWrapping;
     private boolean applyAlternatingRowStyles;
     private boolean applyDefaultCellWidths;
+    private boolean renderFirstRowHeader;
     private boolean renderAlternatingHeaderColumns;
-    private String firstLineStyle = "";
+    private boolean renderRowFirstCellHeader;
+
+    private List<String> rowCssClasses;
 
     public GridLayoutManager() {
         super();
+
+        rowCssClasses = new ArrayList<String>();
     }
 
     /**
      * The following finalization is performed:
-     * 
+     *
      * <ul>
      * <li>If suppressLineWrapping is true, sets the number of columns to the
      * container's items list size</li>
      * </ul>
-     * 
+     *
      * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
@@ -70,7 +78,7 @@ public class GridLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.ContainerAware#getSupportedContainer()
+     * @see LayoutManagerBase#getSupportedContainer()
      */
     @Override
     public Class<? extends Container> getSupportedContainer() {
@@ -79,19 +87,19 @@ public class GridLayoutManager extends LayoutManagerBase {
 
     /**
      * Indicates the number of columns that should make up one row of data
-     * 
+     *
      * <p>
      * If the item count is greater than the number of columns, a new row will
      * be created to render the remaining items (and so on until all items are
      * placed).
      * </p>
-     * 
+     *
      * <p>
      * Note this does not include any generated columns by the layout manager,
      * so the final column count could be greater (if label fields are
      * separate).
      * </p>
-     * 
+     *
      * @return
      */
     public int getNumberOfColumns() {
@@ -100,7 +108,7 @@ public class GridLayoutManager extends LayoutManagerBase {
 
     /**
      * Setter for the number of columns (each row)
-     * 
+     *
      * @param numberOfColumns
      */
     public void setNumberOfColumns(int numberOfColumns) {
@@ -111,14 +119,14 @@ public class GridLayoutManager extends LayoutManagerBase {
      * Indicates whether the number of columns for the table data should match
      * the number of fields given in the container's items list (so that each
      * field takes up one column without wrapping), this overrides the configured
-     * numberOfColumns 
-     * 
+     * numberOfColumns
+     *
      * <p>
      * If set to true during the initialize phase the number of columns will be
      * set to the size of the container's field list, if false the configured
      * number of columns is used
      * </p>
-     * 
+     *
      * @return boolean true if the column count should match the container's
      *         field count, false to use the configured number of columns
      */
@@ -128,7 +136,7 @@ public class GridLayoutManager extends LayoutManagerBase {
 
     /**
      * Setter for the suppressLineWrapping indicator
-     * 
+     *
      * @param suppressLineWrapping
      */
     public void setSuppressLineWrapping(boolean suppressLineWrapping) {
@@ -137,12 +145,12 @@ public class GridLayoutManager extends LayoutManagerBase {
 
     /**
      * Indicates whether alternating row styles should be applied
-     * 
+     *
      * <p>
      * Indicator to layout manager templates to apply alternating row styles.
      * See the configured template for the actual style classes used
      * </p>
-     * 
+     *
      * @return boolean true if alternating styles should be applied, false if
      *         all rows should have the same style
      */
@@ -152,7 +160,7 @@ public class GridLayoutManager extends LayoutManagerBase {
 
     /**
      * Setter for the alternating row styles indicator
-     * 
+     *
      * @param applyAlternatingRowStyles
      */
     public void setApplyAlternatingRowStyles(boolean applyAlternatingRowStyles) {
@@ -161,12 +169,12 @@ public class GridLayoutManager extends LayoutManagerBase {
 
     /**
      * Indicates whether the manager should default the cell widths
-     * 
+     *
      * <p>
      * If true, the manager will set the cell width by equally dividing by the
      * number of columns
      * </p>
-     * 
+     *
      * @return boolean true if default cell widths should be applied, false if
      *         no defaults should be applied
      */
@@ -176,7 +184,7 @@ public class GridLayoutManager extends LayoutManagerBase {
 
     /**
      * Setter for the default cell width indicator
-     * 
+     *
      * @param applyDefaultCellWidths
      */
     public void setApplyDefaultCellWidths(boolean applyDefaultCellWidths) {
@@ -184,14 +192,63 @@ public class GridLayoutManager extends LayoutManagerBase {
     }
 
     /**
+     * Indicates whether the first cell of each row should be rendered as a header cell (th)
+     *
+     * <p>
+     * When this flag is turned on, the first cell for each row will be rendered as a header cell. If
+     * {@link #isRenderAlternatingHeaderColumns()} is false, the remaining cells for the row will be rendered
+     * as data cells, else they will alternate between cell headers
+     * </p>
+     *
+     * @return boolean true if first cell of each row should be rendered as a header cell
+     */
+    public boolean isRenderRowFirstCellHeader() {
+        return renderRowFirstCellHeader;
+    }
+
+    /**
+     * Setter for render first row column as header indicator
+     *
+     * @param renderRowFirstCellHeader
+     */
+    public void setRenderRowFirstCellHeader(boolean renderRowFirstCellHeader) {
+        this.renderRowFirstCellHeader = renderRowFirstCellHeader;
+    }
+
+    /**
+     * Indicates whether the first row of items rendered should all be rendered as table header (th) cells
+     *
+     * <p>
+     * Generally when using a grid layout all the cells will be tds or alternating th/td (with the label in the
+     * th cell). However in some cases it might be desired to display the labels in one row as table header cells (th)
+     * followed by a row with the corresponding fields in td cells. When this is enabled this type of layout is
+     * possible
+     * </p>
+     *
+     * @return boolean true if first row should be rendered as header cells
+     */
+    public boolean isRenderFirstRowHeader() {
+        return renderFirstRowHeader;
+    }
+
+    /**
+     * Setter for the first row as header indicator
+     *
+     * @param renderFirstRowHeader
+     */
+    public void setRenderFirstRowHeader(boolean renderFirstRowHeader) {
+        this.renderFirstRowHeader = renderFirstRowHeader;
+    }
+
+    /**
      * Indicates whether header columns (th for tables) should be rendered for
      * every other item (alternating)
-     * 
+     *
      * <p>
      * If true the first cell of each row will be rendered as an header, with
      * every other cell in the row as a header
      * </p>
-     * 
+     *
      * @return boolean true if alternating headers should be rendered, false if
      *         not
      */
@@ -201,23 +258,35 @@ public class GridLayoutManager extends LayoutManagerBase {
 
     /**
      * Setter for the render alternating header columns indicator
-     * 
+     *
      * @param renderAlternatingHeaderColumns
      */
     public void setRenderAlternatingHeaderColumns(boolean renderAlternatingHeaderColumns) {
         this.renderAlternatingHeaderColumns = renderAlternatingHeaderColumns;
     }
 
-
-    public String getFirstLineStyle() {
-        return firstLineStyle;
+    /**
+     * The list of styles for each row
+     *
+     * <p>
+     * Each entry in the list gives the style for the row with the same index. This style will be added the the <tr>
+     * tag
+     * when the table rows are rendered in the grid.tag. This is used to store the styles for newly added lines and
+     * other special cases like the add item row.
+     * </p>
+     *
+     * @return List<String> list of styles for the rows
+     */
+    public List<String> getRowCssClasses() {
+        return rowCssClasses;
     }
 
     /**
-     * Style class given to the first line in the collection
-     * @param firstLineStyle
+     * Setter for the list that stores the css style names of each row
+     *
+     * @param rowCssClasses
      */
-    public void setFirstLineStyle(String firstLineStyle) {
-        this.firstLineStyle = firstLineStyle;
+    public void setRowCssClasses(List<String> rowCssClasses) {
+        this.rowCssClasses = rowCssClasses;
     }
 }

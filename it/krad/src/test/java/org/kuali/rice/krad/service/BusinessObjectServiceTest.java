@@ -26,7 +26,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * This class tests KULRICE-1666: missing Spring mapping for ojbCollectionHelper
+ * BusinessObjectServiceTest tests KULRICE-1666: missing Spring mapping for ojbCollectionHelper
  * (not injected into BusinessObjectDaoTest)
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

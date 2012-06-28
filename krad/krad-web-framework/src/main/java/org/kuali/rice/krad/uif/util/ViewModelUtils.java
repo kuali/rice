@@ -58,7 +58,7 @@ public class ViewModelUtils {
      * @param view - view instance providing the context (abstract map)
      * @param propertyPath - full path to property to retrieve type for (relative to the form class)
      * @return Class<?> type of property in model, or Null if type could not be determined
-     * @see org.kuali.rice.krad.uif.view.View#getAbstractTypeClasses()
+     * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
      */
     public static Class<?> getPropertyTypeByClassAndView(View view, String propertyPath) {
         Class<?> propertyType = null;
@@ -78,7 +78,7 @@ public class ViewModelUtils {
         String flattenedPropertyPath = propertyPath.replaceAll("\\[.+\\]", "");
 
         // check if property path matches one of the modelClass entries
-        Map<String, Class<?>> modelClasses = view.getAbstractTypeClasses();
+        Map<String, Class<?>> modelClasses = view.getObjectPathToConcreteClassMapping();
         for (String path : modelClasses.keySet()) {
             // full match
             if (StringUtils.equals(path, flattenedPropertyPath)) {
@@ -104,6 +104,12 @@ public class ViewModelUtils {
         return propertyType;
     }
 
+    /**
+     * Gets the parent object path of the data field
+     *
+     * @param field
+     * @return String parent object path
+     */
     public static String getParentObjectPath(DataField field) {
         String parentObjectPath = "";
 
@@ -125,18 +131,70 @@ public class ViewModelUtils {
         return parentObjectPath;
     }
 
+    /**
+     * Determines the associated type for the property within the View context
+     *
+     * <p>
+     * The abstract type classes map configured on the View will be consulted for any entries that match
+     * the property path. If the parent object path for the given field contains a partial match to an
+     * abstract class (somewhere on path is an abstract class), the property type will be retrieved based
+     * on the given concrete class to use and the part of the path remaining. If no matching entry is found,
+     * standard reflection is used to get the type
+     * </p>
+     *
+     * @param view - view instance providing the context (abstract map)
+     * @param field - field to retrieve type for
+     * @return Class<?> type of property in model, or Null if type could not be determined
+     * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
+     */
     public static Class<?> getParentObjectClassForMetadata(View view, DataField field) {
         String parentObjectPath = getParentObjectPath(field);
 
         return getPropertyTypeByClassAndView(view, parentObjectPath);
     }
 
+    /**
+     * Determines the associated type for the property within the View context
+     *
+     * <p>
+     * If the parent object instance is not null, get the class through it.  Otherwise, use the following logic:
+     * The abstract type classes map configured on the View will be consulted for any entries that match
+     * the property path. If the parent object path for the given field contains a partial match to an
+     * abstract class (somewhere on path is an abstract class), the property type will be retrieved based
+     * on the given concrete class to use and the part of the path remaining. If no matching entry is found,
+     * standard reflection is used to get the type
+     * </p>
+     *
+     * @param view - view instance providing the context (abstract map)
+     * @param model - object model
+     * @param field - field to retrieve type for
+     * @return Class<?> the class of the object instance if not null or the type of property in model, or Null if type could not be determined
+     * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
+     */
     public static Class<?> getParentObjectClassForMetadata(View view, Object model, DataField field) {
         String parentObjectPath = getParentObjectPath(field);
 
         return getObjectClassForMetadata(view, model, parentObjectPath);
     }
 
+    /**
+     * Determines the associated type for the property within the View context
+     *
+     * <p>
+     * If the parent object instance is not null, get the class through it.  Otherwise, use the following logic:
+     * The abstract type classes map configured on the View will be consulted for any entries that match
+     * the property path. If the parent object path for the given field contains a partial match to an
+     * abstract class (somewhere on path is an abstract class), the property type will be retrieved based
+     * on the given concrete class to use and the part of the path remaining. If no matching entry is found,
+     * standard reflection is used to get the type
+     * </p>
+     *
+     * @param view - view instance providing the context (abstract map)
+     * @param model - object model
+     * @param propertyPath - full path to property to retrieve type for (relative to the form class)
+     * @return Class<?> the class of the object instance if not null or the type of property in model, or Null if type could not be determined
+     * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
+     */
     public static Class<?> getObjectClassForMetadata(View view, Object model, String propertyPath) {
         // get class by object instance if not null
         Object parentObject = ObjectPropertyUtils.getPropertyValue(model, propertyPath);
@@ -148,6 +206,15 @@ public class ViewModelUtils {
         return getPropertyTypeByClassAndView(view, propertyPath);
     }
 
+    /**
+     * Retrieves the parent object if it exists or attempts to create a new instance
+     *
+     * @param view - view instance providing the context (abstract map)
+     * @param model - object model
+     * @param field - field to retrieve type for
+     * @return Class<?> the class of the object instance if not null or the type of property in model, or Null if type could not be determined
+     * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
+     */
     public static Object getParentObjectForMetadata(View view, Object model, DataField field) {
         // default to model as parent
         Object parentObject = model;

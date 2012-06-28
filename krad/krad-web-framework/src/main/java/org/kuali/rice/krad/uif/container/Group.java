@@ -18,10 +18,10 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Scrollpane;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 
 import java.util.ArrayList;
@@ -56,6 +56,7 @@ public class Group extends ContainerBase {
 	private String fieldBindingObjectPath;
 
 	private Disclosure disclosure;
+    private Scrollpane scrollpane;
 
 	private List<? extends Component> items;
 
@@ -142,12 +143,13 @@ public class Group extends ContainerBase {
 		List<Component> components = super.getComponentsForLifecycle();
 
 		components.add(disclosure);
+        components.add(scrollpane);
 
 		return components;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+	 * @see org.kuali.rice.krad.uif.container.Container#getSupportedComponents()
 	 */
 	@Override
 	public Set<Class<? extends Component>> getSupportedComponents() {
@@ -162,7 +164,7 @@ public class Group extends ContainerBase {
 	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
 	 */
 	@Override
-	public final String getComponentTypeName() {
+	public String getComponentTypeName() {
 		return "group";
 	}
 
@@ -204,7 +206,7 @@ public class Group extends ContainerBase {
 	 * </p>
 	 * 
 	 * @return String model path to set
-	 * @see org.kuali.rice.krad.uif.BindingInfo.getBindingObjectPath()
+	 * @see org.kuali.rice.krad.uif.component.BindingInfo#getBindingObjectPath()
 	 */
 	public String getFieldBindingObjectPath() {
 		return this.fieldBindingObjectPath;
@@ -223,7 +225,7 @@ public class Group extends ContainerBase {
 	 * Disclosure widget that provides collapse/expand functionality for the
 	 * group
 	 * 
-	 * @return Accordion instance
+	 * @return Disclosure instance
 	 */
 	public Disclosure getDisclosure() {
 		return this.disclosure;
@@ -237,6 +239,25 @@ public class Group extends ContainerBase {
 	public void setDisclosure(Disclosure disclosure) {
 		this.disclosure = disclosure;
 	}
+
+    /**
+     * Scrollpane widget that provides scrolling functionality for the
+     * group
+     *
+     * @return Scrollpane instance
+     */
+    public Scrollpane getScrollpane() {
+        return this.scrollpane;
+    }
+
+    /**
+     * Setter for the group's scrollpane instance
+     *
+     * @param scrollpane
+     */
+    public void setScrollpane(Scrollpane scrollpane) {
+        this.scrollpane = scrollpane;
+    }
 
     /**
 	 * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()

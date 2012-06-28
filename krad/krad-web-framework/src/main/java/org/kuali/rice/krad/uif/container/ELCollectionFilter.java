@@ -56,6 +56,7 @@ public class ELCollectionFilter implements CollectionFilter {
         for (Object line : modelCollection) {
             Map<String, Object> context = new HashMap<String, Object>(collectionGroup.getContext());
             context.put(UifConstants.ContextVariableNames.LINE, line);
+            context.put(UifConstants.ContextVariableNames.INDEX, lineIndex);
 
             Boolean conditionPasses = (Boolean) getExpressionEvaluatorService().evaluateExpression(model, context,
                     expression);

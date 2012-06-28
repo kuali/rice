@@ -46,14 +46,14 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 5. value with valid email address. (success) {@link #testValueValidEmailAddress3()}
  * 6. value with valid email address. (success) {@link #testValueValidEmailAddress4()}
  * 7. value with valid email address. (success) {@link #testValueValidEmailAddress5()}
- * 8. value with invalid email address. (failure) {@link testValueInvalidEmailAddress()}
- * 9. value with invalid email address. (failure) {@link testValueInvalidEmailAddress1()}
- * 10. value with invalid email address. (failure) {@link testValueInvalidEmailAddress2()}
- * 11. value with invalid email address. (failure) {@link testValueInvalidEmailAddress3()}
- * 12. value with invalid email address. (failure) {@link testValueInvalidEmailAddress4()}
- * 13. value with invalid email address. (failure) {@link testValueInvalidEmailAddress5()}
- * 14. value with invalid email address. (failure) {@link testValueInvalidEmailAddress6()}
- * 15. value with invalid email address. (failure) {@link testValueInvalidEmailAddress7()}
+ * 8. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress()}
+ * 9. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress1()}
+ * 10. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress2()}
+ * 11. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress3()}
+ * 12. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress4()}
+ * 13. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress5()}
+ * 14. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress6()}
+ * 15. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress7()}
  * 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 

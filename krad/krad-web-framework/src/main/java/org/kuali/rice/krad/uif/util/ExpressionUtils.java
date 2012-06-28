@@ -16,18 +16,17 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.field.DataField;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.uif.component.Configurable;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Utility class for UIF expressions
@@ -35,204 +34,101 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExpressionUtils {
+    private static final Log LOG = LogFactory.getLog(ExpressionUtils.class);
 
     /**
-     * Adjusts the property expressions for a given object. Any nested properties are moved to the parent
-     * object. Binding adjust prefixes are replaced with the correct values.
+     * Pulls expressions within the configurable's expression graph and moves them to the property expressions
+     * map for the configurable or a nested configurable (for the case of nested expression property names)
      *
      * <p>
-     * The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
-     * as this is a placeholder indicating that the property is directly on the form.
-     * The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
-     * the object's field path - this is only applicable to DataFields. The
-     * org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
-     * by the view's default path if it is set.
+     * Expressions that are configured on properties and pulled out by the {@link org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor}
+     * and put in the {@link org.kuali.rice.krad.uif.component.Configurable#getExpressionGraph()} for the bean that is
+     * at root (non nested) level. Before evaluating the expressions, they need to be moved to the
+     * {@link org.kuali.rice.krad.uif.component.Configurable#getPropertyExpressions()} map for the configurable that
+     * property
+     * is on.
      * </p>
      *
-     * @param view - the parent view of the object
-     * @param object - Object to adjust property expressions on
+     * @param configurable - configurable instance to process expressions for
+     * @param buildRefreshGraphs - indicates whether the expression graphs for component refresh should be built
      */
-    public static void adjustPropertyExpressions(View view, Object object) {
-        if (object == null) {
+    public static void populatePropertyExpressionsFromGraph(Configurable configurable, boolean buildRefreshGraphs) {
+        if (configurable == null) {
             return;
         }
 
-        // get the map of property expressions to adjust
-        Map<String, String> propertyExpressions = new HashMap<String, String>();
-        if (Component.class.isAssignableFrom(object.getClass())) {
-            propertyExpressions = ((Component) object).getPropertyExpressions();
-        } else if (LayoutManager.class.isAssignableFrom(object.getClass())) {
-            propertyExpressions = ((LayoutManager) object).getPropertyExpressions();
-        } else if (BindingInfo.class.isAssignableFrom(object.getClass())) {
-            propertyExpressions = ((BindingInfo) object).getPropertyExpressions();
-        }
+        // will hold graphs to populate the refreshExpressionGraph property on each configurable
+        // key is the path to the configurable and value is the map of nested property names to expressions
+        Map<String, Map<String, String>> refreshExpressionGraphs = new HashMap<String, Map<String, String>>();
 
-        Map<String, String> adjustedPropertyExpressions = new HashMap<String, String>();
-        for (Map.Entry<String, String> propertyExpression : propertyExpressions.entrySet()) {
-            String propertyName = propertyExpression.getKey();
-            String expression = propertyExpression.getValue();
+        Map<String, String> expressionGraph = configurable.getExpressionGraph();
+        for (Map.Entry<String, String> expressionEntry : expressionGraph.entrySet()) {
+            String propertyName = expressionEntry.getKey();
+            String expression = expressionEntry.getValue();
 
-            // if property name is nested, need to move the expression to the parent object
+            // by default assume expression belongs with passed in configurable
+            Configurable configurableWithExpression = configurable;
+
+            // if property name is nested, we need to move the expression to the last configurable
+            String adjustedPropertyName = propertyName;
             if (StringUtils.contains(propertyName, ".")) {
-                boolean expressionMoved = moveNestedPropertyExpression(object, propertyName, expression);
+                String configurablePath = StringUtils.substringBeforeLast(propertyName, ".");
+                adjustedPropertyName = StringUtils.substringAfterLast(propertyName, ".");
 
-                // if expression moved, skip rest of control statement so it is not added to the adjusted map
-                if (expressionMoved) {
-                    continue;
+                Object nestedObject = ObjectPropertyUtils.getPropertyValue(configurable, configurablePath);
+                if ((nestedObject == null) || !(nestedObject instanceof Configurable)) {
+                    throw new RiceRuntimeException(
+                            "Object for which expression is configured on is null or does not implement Configurable: '"
+                                    + configurablePath
+                                    + "'");
+                }
+
+                // use nested object as the configurable which will get the property expression
+                configurableWithExpression = (Configurable) nestedObject;
+
+                // now add the expression to the refresh graphs
+                if (buildRefreshGraphs) {
+                    String currentPath = "";
+
+                    String[] configurablePathNames = StringUtils.split(configurablePath, ".");
+                    for (String configurablePathName : configurablePathNames) {
+                        if (StringUtils.isNotBlank(currentPath)) {
+                            currentPath += ".";
+                        }
+                        currentPath += configurablePathName;
+
+                        Map<String, String> graphExpressions = null;
+                        if (refreshExpressionGraphs.containsKey(currentPath)) {
+                            graphExpressions = refreshExpressionGraphs.get(currentPath);
+                        } else {
+                            graphExpressions = new HashMap<String, String>();
+                            refreshExpressionGraphs.put(currentPath, graphExpressions);
+                        }
+
+                        // property name in refresh graph should be relative to configurable
+                        String configurablePropertyName = StringUtils.substringAfter(propertyName, currentPath + ".");
+                        graphExpressions.put(configurablePropertyName, expression);
+                    }
                 }
             }
 
-            // replace the binding prefixes
-            String adjustedExpression = replaceBindingPrefixes(view, object, expression);
-
-            adjustedPropertyExpressions.put(propertyName, adjustedExpression);
+            configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
         }
 
-        // update property expressions map on object
-        ObjectPropertyUtils.setPropertyValue(object, UifPropertyPaths.PROPERTY_EXPRESSIONS,
-                adjustedPropertyExpressions);
-    }
-
-    /**
-     * Adjusts the property expressions for a given object
-     *
-     * <p>
-     * The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
-     * as this is a placeholder indicating that the property is directly on the form.
-     * The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
-     * the object's field path - this is only applicable to DataFields. The
-     * org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
-     * by the view's default path if it is set.
-     * </p>
-     *
-     * @param view - the parent view of the object
-     * @param object - Object to adjust property expressions on
-     * @param expression - The expression to adjust
-     * @return the adjusted expression String
-     */
-    public static String replaceBindingPrefixes(View view, Object object, String expression) {
-        String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
-
-        // replace the field path prefix for DataFields
-        if (object instanceof DataField) {
-
-            // Get the binding path from the object
-            BindingInfo bindingInfo = ((DataField) object).getBindingInfo();
-            String fieldPath = bindingInfo.getBindingPath();
-
-            // Remove the property name from the binding path
-            fieldPath = StringUtils.removeEnd(fieldPath, "." + bindingInfo.getBindingName());
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
-                    fieldPath + ".");
-        } else {
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
-                    "");
-        }
-
-        // replace the default path prefix if there is one set on the view
-        if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
-                    view.getDefaultBindingObjectPath() + ".");
-
-        } else {
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
-                    "");
-        }
-
-        // replace line path binding prefix with the actual line path
-        if (adjustedExpression.contains(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
-            String linePath = getLinePathPrefixValue((Component) object);
-
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
-                    linePath + ".");
-        }
-
-        // replace node path binding prefix with the actual node path
-        if (adjustedExpression.contains(UifConstants.NODE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
-            String nodePath = "";
-
-            Map<String, Object> context = ((Component) object).getContext();
-            if (context.containsKey(UifConstants.ContextVariableNames.NODE_PATH)) {
-                nodePath = (String) context.get(UifConstants.ContextVariableNames.NODE_PATH);
+        // set the refreshExpressionGraph property on each configurable an expression was found for
+        if (buildRefreshGraphs) {
+            for (String configurablePath : refreshExpressionGraphs.keySet()) {
+                Object nestedObject = ObjectPropertyUtils.getPropertyValue(configurable, configurablePath);
+                // note if nested object is not a configurable, then it can't be refresh and we can safely ignore
+                if ((nestedObject != null) && (nestedObject instanceof Configurable)) {
+                    ((Configurable) nestedObject).setRefreshExpressionGraph(refreshExpressionGraphs.get(
+                            configurablePath));
+                }
             }
 
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.NODE_PATH_BIND_ADJUST_PREFIX,
-                    nodePath + ".");
+            // the expression graph for the passed in configurable will be its refresh graph as well
+            configurable.setRefreshExpressionGraph(expressionGraph);
         }
-
-        return adjustedExpression;
-    }
-
-    /**
-     * Determines the value for the org.kuali.rice.krad.uif.UifConstants#LINE_PATH_BIND_ADJUST_PREFIX binding prefix
-     * based on collection group found in the component context
-     *
-     * @param component - component instance for which the prefix is configured on
-     * @return String line binding path or empty string if path not found
-     */
-    protected static String getLinePathPrefixValue(Component component) {
-        String linePath = "";
-
-        CollectionGroup collectionGroup = (CollectionGroup) (component.getContext().get(
-                UifConstants.ContextVariableNames.COLLECTION_GROUP));
-        if (collectionGroup == null) {
-            return linePath;
-        }
-
-        Object indexObj = component.getContext().get(UifConstants.ContextVariableNames.INDEX);
-        if (indexObj != null) {
-            int index = (Integer) indexObj;
-            boolean addLine = false;
-            Object addLineObj = component.getContext().get(UifConstants.ContextVariableNames.IS_ADD_LINE);
-
-            if (addLineObj != null) {
-                addLine = (Boolean) addLineObj;
-            }
-
-            if (addLine) {
-                linePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-            } else {
-                linePath = collectionGroup.getBindingInfo().getBindingPath() + "[" + index + "]";
-            }
-        }
-
-        return linePath;
-    }
-
-    /**
-     * Moves any nested property expressions to the parent object
-     *
-     * @param object - the object containing the expression
-     * @param propertyName - the property the expression is on
-     * @param expression - the expression to move
-     * @return
-     */
-    protected static boolean moveNestedPropertyExpression(Object object, String propertyName, String expression) {
-        boolean moved = false;
-
-        // get the parent object for the property
-        String parentPropertyName = StringUtils.substringBeforeLast(propertyName, ".");
-        String propertyNameInParent = StringUtils.substringAfterLast(propertyName, ".");
-
-        Object parentObject = ObjectPropertyUtils.getPropertyValue(object, parentPropertyName);
-        if ((parentObject != null) && ObjectPropertyUtils.isReadableProperty(parentObject,
-                UifPropertyPaths.PROPERTY_EXPRESSIONS) && ((parentObject instanceof Component)
-                || (parentObject instanceof LayoutManager)
-                || (parentObject instanceof BindingInfo))) {
-            Map<String, String> propertyExpressions = ObjectPropertyUtils.getPropertyValue(parentObject,
-                    UifPropertyPaths.PROPERTY_EXPRESSIONS);
-            if (propertyExpressions == null) {
-                propertyExpressions = new HashMap<String, String>();
-            }
-
-            // add expression to map on parent object
-            propertyExpressions.put(propertyNameInParent, expression);
-            ObjectPropertyUtils.setPropertyValue(parentObject, UifPropertyPaths.PROPERTY_EXPRESSIONS,
-                    propertyExpressions);
-            moved = true;
-        }
-
-        return moved;
     }
 
     /**

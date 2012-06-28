@@ -18,11 +18,13 @@ package org.kuali.rice.krad.uif.component;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
-import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
+import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -47,12 +49,13 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
-    private String factoryId;
+    private String baseId;
     private String template;
+    private String templateName;
+
     private String title;
 
     private boolean render;
-    private boolean refresh;
 
     @KeepExpression
     private String progressiveRender;
@@ -66,12 +69,11 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String conditionalRefreshConditionJs;
     private List<String> conditionalRefreshControlNames;
 
-    private String refreshWhenChanged;
-    private List<String> refreshWhenChangedControlNames;
+    private List<String> refreshWhenChangedPropertyNames;
     private boolean refreshedByAction;
 
     private boolean resetDataOnRefresh;
-    private String refreshDiscloseMethodToCall;
+    private String methodToCallOnRefresh;
 
     private boolean hidden;
     private boolean readOnly;
@@ -85,7 +87,9 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private int rowSpan;
 
     private String style;
-    private List<String> styleClasses;
+    private List<String> cssClasses;
+
+    private Tooltip toolTip;
 
     private int order;
 
@@ -94,10 +98,12 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String finalizeMethodToCall;
     private List<Object> finalizeMethodAdditionalArguments;
     private MethodInvokerConfig finalizeMethodInvoker;
-    private boolean selfRendered;
-    private String renderOutput;
 
-    private boolean persistInSession;
+    private boolean selfRendered;
+    private String renderedHtmlOutput;
+
+    private boolean disableSessionPersistence;
+    private boolean forceSessionPersistence;
 
     private ComponentSecurity componentSecurity;
 
@@ -122,13 +128,18 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     private List<ComponentModifier> componentModifiers;
 
-    private Map<String, String> componentOptions;
-    private String componentOptionsJSString;
+    private Map<String, String> templateOptions;
+    private String templateOptionsJSString;
 
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
 
     private List<PropertyReplacer> propertyReplacers;
+    
+    private Map<String,String> dataAttributes;
+    private String dataRoleAttribute;
+    private String dataTypeAttribute;
+    private String dataMetaAttribute;
 
     public ComponentBase() {
         super();
@@ -143,16 +154,19 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         progressiveRenderAndRefresh = false;
         refreshedByAction = false;
         resetDataOnRefresh = false;
-        persistInSession = false;
+        disableSessionPersistence = false;
+        forceSessionPersistence = false;
 
         componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
 
+        refreshWhenChangedPropertyNames = new ArrayList<String>();
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
-        styleClasses = new ArrayList<String>();
+        cssClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
-        componentOptions = new HashMap<String, String>();
+        templateOptions = new HashMap<String, String>();
         context = new HashMap<String, Object>();
         propertyReplacers = new ArrayList<PropertyReplacer>();
+        dataAttributes = new HashMap<String, String>();
     }
 
     /**
@@ -179,12 +193,16 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     public void performApplyModel(View view, Object model, Component parent) {
-        if (StringUtils.isNotEmpty(progressiveRender)) {
-            // progressive anded with conditional render, will not render at least one of the two are false
-            Boolean progRenderEval = (Boolean) KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpression(
-                    model, context, progressiveRender);
+        if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
+            // progressive anded with render, will not render at least one of the two are false
+            ExpressionEvaluatorService expressionEvaluatorService =
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService();
+            String adjustedProgressiveRender = expressionEvaluatorService.replaceBindingPrefixes(view, this,
+                    progressiveRender);
+            Boolean progRenderEval = (Boolean) expressionEvaluatorService.evaluateExpression(model, context,
+                    adjustedProgressiveRender);
 
-            this.setRender(progRenderEval && this.render);
+            this.setRender(progRenderEval);
         }
     }
 
@@ -202,42 +220,40 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void performFinalize(View view, Object model, Component parent) {
         if (StringUtils.isNotEmpty(progressiveRender)) {
-            progressiveRender = ExpressionUtils.replaceBindingPrefixes(view, this, progressiveRender);
+            progressiveRender = KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
+                    progressiveRender);
             progressiveDisclosureControlNames = new ArrayList<String>();
             progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
                     progressiveDisclosureControlNames);
         }
 
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
-            conditionalRefresh = ExpressionUtils.replaceBindingPrefixes(view, this, conditionalRefresh);
+            conditionalRefresh = KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view,
+                    this, conditionalRefresh);
             conditionalRefreshControlNames = new ArrayList<String>();
             conditionalRefreshConditionJs = ExpressionUtils.parseExpression(conditionalRefresh,
                     conditionalRefreshControlNames);
         }
 
-        if (StringUtils.isNotEmpty(refreshWhenChanged)) {
-            refreshWhenChanged = ExpressionUtils.replaceBindingPrefixes(view, this, refreshWhenChanged);
-            refreshWhenChangedControlNames = new ArrayList<String>();
-            String[] names = StringUtils.split(refreshWhenChanged, ",");
-            for (String name : names) {
-                refreshWhenChangedControlNames.add(name.trim());
-            }
+        List<String> adjustedRefreshPropertyNames = new ArrayList<String>();
+        for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
+            adjustedRefreshPropertyNames.add(
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
+                            refreshPropertyName));
+        }
+        refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
+
+        // add the align, valign, and width settings to style
+        if (StringUtils.isNotBlank(getAlign()) && !StringUtils.contains(getStyle(), CssConstants.TEXT_ALIGN)) {
+            appendToStyle(CssConstants.TEXT_ALIGN + getAlign() + ";");
         }
 
-        // TODO: does this check on final status need to be here?
-        if (!ViewStatus.FINAL.equals(view.getViewStatus())) {
-            // add the align, valign, and width settings to style
-            if (StringUtils.isNotBlank(getAlign()) && !StringUtils.contains(getStyle(), CssConstants.TEXT_ALIGN)) {
-                appendToStyle(CssConstants.TEXT_ALIGN + getAlign() + ";");
-            }
+        if (StringUtils.isNotBlank(getValign()) && !StringUtils.contains(getStyle(), CssConstants.VERTICAL_ALIGN)) {
+            appendToStyle(CssConstants.VERTICAL_ALIGN + getValign() + ";");
+        }
 
-            if (StringUtils.isNotBlank(getValign()) && !StringUtils.contains(getStyle(), CssConstants.VERTICAL_ALIGN)) {
-                appendToStyle(CssConstants.VERTICAL_ALIGN + getValign() + ";");
-            }
-
-            if (StringUtils.isNotBlank(getWidth()) && !StringUtils.contains(getStyle(), CssConstants.WIDTH)) {
-                appendToStyle(CssConstants.WIDTH + getWidth() + ";");
-            }
+        if (StringUtils.isNotBlank(getWidth()) && !StringUtils.contains(getStyle(), CssConstants.WIDTH)) {
+            appendToStyle(CssConstants.WIDTH + getWidth() + ";");
         }
 
         // Set the skipInTabOrder flag on all nested components
@@ -248,6 +264,28 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
                 if (component instanceof ControlBase) {
                     ((ControlBase) component).setTabIndex(-1);
                 }
+            }
+        }
+
+        // if this is not rendering and it is not rendering via an ajax call, but still has a progressive render
+        // condition we still want to render the component, but hide it (in ajax cases, template creates a placeholder)
+        boolean hide = false;
+        if (!this.render && !this.progressiveRenderViaAJAX && !this.progressiveRenderAndRefresh && StringUtils
+                .isNotBlank(progressiveRender)) {
+            hide = true;
+        } else if (this.isHidden()) {
+            hide = true;
+        }
+
+        if (hide) {
+            if (StringUtils.isNotBlank(this.getStyle())) {
+                if (this.getStyle().endsWith(";")) {
+                    this.setStyle(this.getStyle() + " display: none;");
+                } else {
+                    this.setStyle(this.getStyle() + "; display: none;");
+                }
+            } else {
+                this.setStyle("display: none;");
             }
         }
     }
@@ -305,17 +343,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getFactoryId()
+     * @see org.kuali.rice.krad.uif.component.Component#getBaseId()
      */
-    public String getFactoryId() {
-        return this.factoryId;
+    public String getBaseId() {
+        return this.baseId;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setFactoryId(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setBaseId(java.lang.String)
      */
-    public void setFactoryId(String factoryId) {
-        this.factoryId = factoryId;
+    public void setBaseId(String baseId) {
+        this.baseId = baseId;
     }
 
     /**
@@ -330,6 +368,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setTemplate(String template) {
         this.template = template;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 
     /**
@@ -457,6 +503,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * Vertical alignment of the component within its container
+     *
      * <p>
      * All components belong to a <code>Container</code> and are placed using a
      * <code>LayoutManager</code>. This property specifies how the component
@@ -524,17 +571,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getStyleClasses()
+     * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
-    public List<String> getStyleClasses() {
-        return this.styleClasses;
+    public List<String> getCssClasses() {
+        return this.cssClasses;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setStyleClasses(java.util.List)
+     * @see org.kuali.rice.krad.uif.component.Component#setCssClasses(java.util.List)
      */
-    public void setStyleClasses(List<String> styleClasses) {
-        this.styleClasses = styleClasses;
+    public void setCssClasses(List<String> cssClasses) {
+        this.cssClasses = cssClasses;
     }
 
     /**
@@ -544,8 +591,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @return String class attribute string
      */
     public String getStyleClassesAsString() {
-        if (styleClasses != null) {
-            return StringUtils.join(styleClasses, " ");
+        if (cssClasses != null) {
+            return StringUtils.join(cssClasses, " ");
         }
 
         return "";
@@ -555,8 +602,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.Component#addStyleClass(java.lang.String)
      */
     public void addStyleClass(String styleClass) {
-        if (!styleClasses.contains(styleClass)) {
-            styleClasses.add(styleClass);
+        if (!cssClasses.contains(styleClass)) {
+            cssClasses.add(styleClass);
         }
     }
 
@@ -633,31 +680,45 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getRenderOutput()
+     * @see org.kuali.rice.krad.uif.component.Component#getRenderedHtmlOutput()
      */
-    public String getRenderOutput() {
-        return this.renderOutput;
+    public String getRenderedHtmlOutput() {
+        return this.renderedHtmlOutput;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setRenderOutput(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setRenderedHtmlOutput(java.lang.String)
      */
-    public void setRenderOutput(String renderOutput) {
-        this.renderOutput = renderOutput;
+    public void setRenderedHtmlOutput(String renderedHtmlOutput) {
+        this.renderedHtmlOutput = renderedHtmlOutput;
     }
 
     /**
-     * @see Component#isPersistInSession()
+     * @see Component#isDisableSessionPersistence()
      */
-    public boolean isPersistInSession() {
-        return persistInSession;
+    public boolean isDisableSessionPersistence() {
+        return disableSessionPersistence;
     }
 
     /**
-     * @see Component#setPersistInSession(boolean)
+     * @see Component#setDisableSessionPersistence(boolean)
      */
-    public void setPersistInSession(boolean persistInSession) {
-        this.persistInSession = persistInSession;
+    public void setDisableSessionPersistence(boolean disableSessionPersistence) {
+        this.disableSessionPersistence = disableSessionPersistence;
+    }
+
+    /**
+     * @see Component#isForceSessionPersistence()
+     */
+    public boolean isForceSessionPersistence() {
+        return forceSessionPersistence;
+    }
+
+    /**
+     * @see Component#setForceSessionPersistence(boolean)
+     */
+    public void setForceSessionPersistence(boolean forceSessionPersistence) {
+        this.forceSessionPersistence = forceSessionPersistence;
     }
 
     /**
@@ -775,10 +836,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnLoad()
+     * @see org.kuali.rice.krad.uif.component.Component#getToolTip()
      */
-    public boolean getSupportsOnLoad() {
-        return false;
+    public Tooltip getToolTip() {
+        return toolTip;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#setToolTip(Tooltip)
+     */
+    public void setToolTip(Tooltip toolTip) {
+        this.toolTip = toolTip;
     }
 
     /**
@@ -798,13 +866,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnDocumentReady()
-     */
-    public boolean getSupportsOnDocumentReady() {
-        return true;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDocumentReadyScript()
      */
     public String getOnDocumentReadyScript() {
@@ -818,13 +879,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnDocumentReadyScript(String onDocumentReadyScript) {
         this.onDocumentReadyScript = onDocumentReadyScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnUnload()
-     */
-    public boolean getSupportsOnUnload() {
-        return false;
     }
 
     /**
@@ -844,13 +898,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClose()
-     */
-    public boolean getSupportsOnClose() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnCloseScript()
      */
     public String getOnCloseScript() {
@@ -864,13 +911,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnCloseScript(String onCloseScript) {
         this.onCloseScript = onCloseScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnBlur()
-     */
-    public boolean getSupportsOnBlur() {
-        return false;
     }
 
     /**
@@ -890,13 +930,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnChange()
-     */
-    public boolean getSupportsOnChange() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnChangeScript()
      */
     public String getOnChangeScript() {
@@ -910,13 +943,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnChangeScript(String onChangeScript) {
         this.onChangeScript = onChangeScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClick()
-     */
-    public boolean getSupportsOnClick() {
-        return false;
     }
 
     /**
@@ -936,13 +962,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnDblClick()
-     */
-    public boolean getSupportsOnDblClick() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDblClickScript()
      */
     public String getOnDblClickScript() {
@@ -956,13 +975,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnDblClickScript(String onDblClickScript) {
         this.onDblClickScript = onDblClickScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnFocus()
-     */
-    public boolean getSupportsOnFocus() {
-        return false;
     }
 
     /**
@@ -982,13 +994,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnSubmit()
-     */
-    public boolean getSupportsOnSubmit() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnSubmitScript()
      */
     public String getOnSubmitScript() {
@@ -1002,13 +1007,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnSubmitScript(String onSubmitScript) {
         this.onSubmitScript = onSubmitScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyPress()
-     */
-    public boolean getSupportsOnKeyPress() {
-        return false;
     }
 
     /**
@@ -1028,13 +1026,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyUp()
-     */
-    public boolean getSupportsOnKeyUp() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyUpScript()
      */
     public String getOnKeyUpScript() {
@@ -1048,13 +1039,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnKeyUpScript(String onKeyUpScript) {
         this.onKeyUpScript = onKeyUpScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyDown()
-     */
-    public boolean getSupportsOnKeyDown() {
-        return false;
     }
 
     /**
@@ -1074,13 +1058,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseOver()
-     */
-    public boolean getSupportsOnMouseOver() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOverScript()
      */
     public String getOnMouseOverScript() {
@@ -1094,13 +1071,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnMouseOverScript(String onMouseOverScript) {
         this.onMouseOverScript = onMouseOverScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseOut()
-     */
-    public boolean getSupportsOnMouseOut() {
-        return false;
     }
 
     /**
@@ -1120,13 +1090,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseUp()
-     */
-    public boolean getSupportsOnMouseUp() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseUpScript()
      */
     public String getOnMouseUpScript() {
@@ -1140,13 +1103,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnMouseUpScript(String onMouseUpScript) {
         this.onMouseUpScript = onMouseUpScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseDown()
-     */
-    public boolean getSupportsOnMouseDown() {
-        return false;
     }
 
     /**
@@ -1166,13 +1122,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseMove()
-     */
-    public boolean getSupportsOnMouseMove() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseMoveScript()
      */
     public String getOnMouseMoveScript() {
@@ -1188,39 +1137,47 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         this.onMouseMoveScript = onMouseMoveScript;
     }
 
-    public Map<String, String> getComponentOptions() {
-        if (componentOptions == null) {
-            componentOptions = new HashMap<String, String>();
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
+     * @return
+     */
+    public Map<String, String> getTemplateOptions() {
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
         }
-        return this.componentOptions;
-    }
-
-    public void setComponentOptions(Map<String, String> componentOptions) {
-        this.componentOptions = componentOptions;
+        return this.templateOptions;
     }
 
     /**
-     * Builds a string from the underlying <code>Map</code> of component options
+     * @see Component#setTemplateOptions(java.util.Map)
+     * @param templateOptions
+     */
+    public void setTemplateOptions(Map<String, String> templateOptions) {
+        this.templateOptions = templateOptions;
+    }
+
+    /**
+     * Builds a string from the underlying <code>Map</code> of template options
      * that will export that options as a JavaScript Map for use in js and
      * jQuery plugins
      *
      * @return String of widget options formatted as JS Map
      */
     @Override
-    public String getComponentOptionsJSString() {
-        if (componentOptionsJSString != null) {
-            return componentOptionsJSString;
+    public String getTemplateOptionsJSString() {
+        if (templateOptionsJSString != null) {
+            return templateOptionsJSString;
         }
 
-        if (componentOptions == null) {
-            componentOptions = new HashMap<String, String>();
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
         }
         StringBuilder sb = new StringBuilder();
 
         sb.append("{");
 
-        for (String optionKey : componentOptions.keySet()) {
-            String optionValue = componentOptions.get(optionKey);
+        for (String optionKey : templateOptions.keySet()) {
+            String optionValue = templateOptions.get(optionKey);
 
             if (sb.length() > 1) {
                 sb.append(",");
@@ -1229,36 +1186,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             sb.append(optionKey);
             sb.append(":");
 
-            boolean isNumber = false;
-            if (StringUtils.isNotBlank(optionValue) && (StringUtils.isNumeric(optionValue.trim().substring(0, 1))
-                    || optionValue.trim().substring(0, 1).equals("-"))) {
-                try {
-                    Double.parseDouble(optionValue.trim());
-                    isNumber = true;
-                } catch (NumberFormatException e) {
-                    isNumber = false;
-                }
-            }
-            // If an option value starts with { or [, it would be a nested value
-            // and it should not use quotes around it
-            if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")) {
-                sb.append(optionValue);
-            }
-            // need to be the base boolean value "false" is true in js - a non
-            // empty string
-            else if (optionValue.equalsIgnoreCase("false") || optionValue.equalsIgnoreCase("true")) {
-                sb.append(optionValue);
-            }
-            // if it is a call back function, do not add the quotes
-            else if (StringUtils.startsWith(optionValue, "function") && StringUtils.endsWith(optionValue, "}")) {
-                sb.append(optionValue);
-            }
-            // for numerics
-            else if (isNumber) {
-                sb.append(optionValue);
-            } else {
-                sb.append("\"" + optionValue + "\"");
-            }
+            sb.append(ScriptUtils.convertToJsValue(optionValue));
         }
 
         sb.append("}");
@@ -1267,14 +1195,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     @Override
-    public void setComponentOptionsJSString(String componentOptionsJSString) {
-        this.componentOptionsJSString = componentOptionsJSString;
-    }
-
-    public String getEventCode() {
-        String eventCode = "";
-
-        return eventCode;
+    public void setTemplateOptionsJSString(String templateOptionsJSString) {
+        this.templateOptionsJSString = templateOptionsJSString;
     }
 
     /**
@@ -1419,34 +1341,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * Specifies a property by name that when it value changes will
-     * automatically perform a refresh on this component. This can be a comma
-     * separated list of multiple properties that require this component to be
-     * refreshed when any of them change. <Br>DO NOT use with progressiveRender
-     * unless it is know that progressiveRender condition will always be
-     * satisfied before one of these fields can be changed.
-     *
-     * @return the refreshWhenChanged
+     * @see Component#getRefreshWhenChangedPropertyNames()
      */
-    public String getRefreshWhenChanged() {
-        return this.refreshWhenChanged;
+    public List<String> getRefreshWhenChangedPropertyNames() {
+        return this.refreshWhenChangedPropertyNames;
     }
 
     /**
-     * @param refreshWhenChanged the refreshWhenChanged to set
+     * @see Component#setRefreshWhenChangedPropertyNames(java.util.List<java.lang.String>)
      */
-    public void setRefreshWhenChanged(String refreshWhenChanged) {
-        this.refreshWhenChanged = refreshWhenChanged;
-    }
-
-    /**
-     * Control names which will refresh this component when they are changed, added
-     * internally
-     *
-     * @return the refreshWhenChangedControlNames
-     */
-    public List<String> getRefreshWhenChangedControlNames() {
-        return this.refreshWhenChangedControlNames;
+    public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
+        this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames;
     }
 
     /**
@@ -1478,20 +1383,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @return the refresh
-     */
-    public boolean isRefresh() {
-        return this.refresh;
-    }
-
-    /**
-     * @param refresh the refresh to set
-     */
-    public void setRefresh(boolean refresh) {
-        this.refresh = refresh;
-    }
-
-    /**
      * Name of a method on the controller that should be invoked as part of the component refresh and disclosure process
      *
      * <p>
@@ -1507,17 +1398,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      *
      * @return String valid controller method name
      */
-    public String getRefreshDiscloseMethodToCall() {
-        return refreshDiscloseMethodToCall;
+    public String getMethodToCallOnRefresh() {
+        return methodToCallOnRefresh;
     }
 
     /**
      * Setter for the controller method to call for a refresh or disclosure action on this component
      *
-     * @param refreshDiscloseMethodToCall
+     * @param methodToCallOnRefresh
      */
-    public void setRefreshDiscloseMethodToCall(String refreshDiscloseMethodToCall) {
-        this.refreshDiscloseMethodToCall = refreshDiscloseMethodToCall;
+    public void setMethodToCallOnRefresh(String methodToCallOnRefresh) {
+        this.methodToCallOnRefresh = methodToCallOnRefresh;
     }
 
     /**
@@ -1535,6 +1426,135 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public boolean isSkipInTabOrder() {
         return skipInTabOrder;
+    }
+
+    /**
+     * Add a data attribute to the dataAttributes map
+     * @param key
+     * @param value
+     */
+    public void addDataAttribute(String key, String value){
+        dataAttributes.put(key,value);    
+    }
+
+    public Map<String, String> getDataAttributes() {
+        return dataAttributes;
+    }
+
+    /**
+     *  the data role - used as a html5 data attribute (data-role) to specify the role
+     * @return the data role attribute value
+     */
+    public String getDataRoleAttribute() {
+        return dataRoleAttribute;
+    }
+
+    /**
+     * set the value of data-role attribute
+     * @param dataRoleAttribute the data role value
+     */
+    public void setDataRoleAttribute(String dataRoleAttribute) {
+        this.dataRoleAttribute = dataRoleAttribute;
+    }
+
+    /**
+     *  the data type - used as a html5 data attribute (data-type)
+     * @return the data type attribute value
+     */
+    public String getDataTypeAttribute() {
+        return dataTypeAttribute;
+    }
+
+    /**
+     * set the value of data-type attribute
+     * @param dataTypeAttribute the data type value
+     */
+    public void setDataTypeAttribute(String dataTypeAttribute) {
+        this.dataTypeAttribute = dataTypeAttribute;
+    }
+
+    /**
+     *  the data meta - used as a html5 data attribute (data-meta) for custom information
+     * @return the data meta attribute value
+     */
+    public String getDataMetaAttribute() {
+        return dataMetaAttribute;
+    }
+
+    /**
+     * set the value of data-meta attribute
+     * @param dataMetaAttribute the data meta value
+     */
+    public void setDataMetaAttribute(String dataMetaAttribute) {
+        this.dataMetaAttribute = dataMetaAttribute;
+    }
+
+    /**
+     * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
+     * The attributes that are complex objects (contain {}) they will be written through script.
+     * The attritubes that are simple (contain no objects) will be written directly to the html of the
+     * component using standard data-.
+     * Either way they can be access through .data() call in jQuery
+     * @param dataAttributes
+     */
+    public void setDataAttributes(Map<String, String> dataAttributes) {
+        this.dataAttributes = dataAttributes;
+    }
+
+    /**
+     * Returns js that will add data to this component by the element which matches its id.
+     * This will return script for only the complex data elements (containing {});
+     * @return jQuery data script for adding complex data attributes
+     */
+    public String getComplexDataAttributesJs(){
+        String js = "";
+        if (getDataAttributes() == null) {
+            return js;
+        } else {
+            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
+                if(data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
+                    js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
+                            +"', " + data.getValue() +");";
+                }
+            }
+            return js;
+        }
+    }
+
+    /**
+     * Returns a string that can be put into a the tag of a component to add data attributes inline.
+     * This does not include the complex attributes which contain {}
+     * @return html string for data attributes for the simple attributes
+     */
+    public String getSimpleDataAttributes(){
+        String attributes = "";
+        if (getDataAttributes() == null) {
+            return attributes;
+        } else {
+            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
+                if(!data.getValue().trim().startsWith("{")){
+                    attributes = attributes + " " + "data-" + data.getKey() + "=\"" + data.getValue() + "\"";
+                }
+            }
+            return attributes;
+        }
+    }
+
+    @Override
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getAllDataAttributesJs()
+     */
+    public String getAllDataAttributesJs() {
+        String js = "";
+        if (getDataAttributes() == null) {
+            return js;
+        } else {
+            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
+                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
+                        +"', " + ScriptUtils.convertToJsValue(data.getValue()) +");";
+            }
+            return js;
+        }
     }
 
 }

@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,8 +59,6 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @param form - lookup form instance containing the lookup data
      * @param searchCriteria - map of criteria where key is search property name and value is
      * search value (which can include wildcards)
-     * @param boolean true if validation was successful, false if there were errors and the search
-     * should not be performed
      */
     public boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria);
 
@@ -77,29 +75,6 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @return Class<?> data object class
      */
     public Class<?> getDataObjectClass();
-
-    /**
-     * Sets the field conversion map on the lookupable
-     *
-     * <p>
-     * The field conversions map specifies the mappings for return fields. When the
-     * user selects a row to return, for each configured field conversion the corresponding value
-     * from the result row will be sent back as the value for the field on the calling field.
-     * </p>
-     *
-     * @param fieldConversions - map of field conversions where key is name of the property on result
-     * data object to get value for, and map value is the name of the field to send the value back as (name
-     * of the field on the calling view)
-     */
-    public void setFieldConversions(Map<String, String> fieldConversions);
-
-    /**
-     * Sets List of fields on the lookupable that should be made read only in the search
-     * criteria group
-     *
-     * @param readOnlyFieldsList - list of read only fields
-     */
-    public void setReadOnlyFieldsList(List<String> readOnlyFieldsList);
 
     /**
      * Invoked to build the return URL for a result row
@@ -124,11 +99,23 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * field should be set to not render
      * </p>
      *
-     * @param actionLinkField - link field that will be used to return the maintenance URL
+     * @param actionLink - link that will be used to return the maintenance URL
      * @param model - lookup form containing the data
      * @param maintenanceMethodToCall - name of the method that should be invoked in the maintenance controller
      */
-    public void getMaintenanceActionLink(LinkField actionLinkField, Object model, String maintenanceMethodToCall);
+    public void getMaintenanceActionLink(Link actionLink, Object model, String maintenanceMethodToCall);
 
+    /**
+     * Set the value for the input field control to contain the field conversion values for the line
+     *
+     * <p>
+     * Creates and populate the value of the input field control.  This value is build according to
+     * {@link LookupForm#getFieldConversions} and allows for client side population of the returned fields without
+     * having to do an additional server call.
+     * </p>
+     *
+     * @param selectField - the InputField used to mark the lookup row as selected
+     * @param model - lookup form containing the data
+     */
     public void setMultiValueLookupSelect(InputField selectField, Object model);
 }

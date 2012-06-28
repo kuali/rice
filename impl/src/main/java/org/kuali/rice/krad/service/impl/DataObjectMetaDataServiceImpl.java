@@ -253,6 +253,14 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         return hasSupportedFeatures;
     }
 
+    /**
+     * gets the relationship that the attribute represents on the class
+     *
+     * @param c - the class to which the attribute belongs
+     * @param attributeName - property name for the attribute
+     *
+     * @return a relationship definition for the attribute
+     */
     public RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName) {
         DataDictionaryEntry entryBase = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(
                 c.getName());

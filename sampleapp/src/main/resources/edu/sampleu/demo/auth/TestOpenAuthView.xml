@@ -31,7 +31,7 @@
   ********************************************************************************************************************
   -->
   <bean id="TestOpenAuthView" parent="Uif-FormView">
-    <property name="title" value="Test Open Authorization View"/>
+    <property name="headerText" value="Test Open Authorization View"/>
     <property name="instructionalText" value="Editing of this view is controlled by a KIM permission."/>
     <property name="singlePageView" value="true"/>
     <property name="page">
@@ -40,7 +40,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-Disclosure-VerticalBoxSection">
-          <property name="title" value="Group"/>
+          <property name="headerText" value="Group"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1">

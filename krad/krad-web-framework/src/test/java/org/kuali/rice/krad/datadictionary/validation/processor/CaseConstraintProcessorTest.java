@@ -29,7 +29,7 @@ import java.util.List;
 
 
 /**
- * 
+ * CaseConstraintProcessorTest tests that CaseConstraintProcessor works as expected
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest<CaseConstraintProcessor> {

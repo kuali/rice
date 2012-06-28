@@ -111,42 +111,92 @@ public class DocumentView extends FormView {
         return documentEntry;
     }
 
+    /**
+     * Gets the document class
+     *
+     * @return Class<? extends Document> the document class
+     */
 	public Class<? extends Document> getDocumentClass() {
 		return this.documentClass;
 	}
 
+    /**
+     * Sets the document class
+     *
+     * @param documentClass
+     */
 	public void setDocumentClass(Class<? extends Document> documentClass) {
 		this.documentClass = documentClass;
 	}
 
+    /**
+     * Gets boolean that indicates if the document view allows note attachments
+     *
+     * @return boolean - true if the document view allows note attachments
+     */
 	public boolean isAllowsNoteAttachments() {
 		return this.allowsNoteAttachments;
 	}
 
+    /**
+     * Sets boolean that indicates if the document view allows note attachments
+     *
+     * @param allowsNoteAttachments
+     */
 	public void setAllowsNoteAttachments(boolean allowsNoteAttachments) {
 		this.allowsNoteAttachments = allowsNoteAttachments;
 	}
 
+    /**
+     * Gets boolean that indicates if the document view allows note FYI
+     *
+     * @return boolean - true if the document view allows note FYI
+     */
 	public boolean isAllowsNoteFYI() {
 		return this.allowsNoteFYI;
 	}
 
+    /**
+     * Sets boolean that indicates if the document view allows note FYI
+     *
+     * @param allowsNoteFYI
+     */
 	public void setAllowsNoteFYI(boolean allowsNoteFYI) {
 		this.allowsNoteFYI = allowsNoteFYI;
 	}
 
+    /**
+     * Gets boolean that indicates if the document view displays the topic field in notes
+     *
+     * @return boolean - true if the document view displays the topic field in notes
+     */
 	public boolean isDisplayTopicFieldInNotes() {
 		return this.displayTopicFieldInNotes;
 	}
 
+    /**
+     * Sets boolean that indicates if the document view displays the topic field in notes
+     *
+     * @param displayTopicFieldInNotes
+     */
 	public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
 		this.displayTopicFieldInNotes = displayTopicFieldInNotes;
 	}
 
+    /**
+     * Gets attachment types values finder classs
+     *
+     * @return Class<? extends KeyValuesFinder> attachment types values finder class
+     */
 	public Class<? extends KeyValuesFinder> getAttachmentTypesValuesFinderClass() {
 		return this.attachmentTypesValuesFinderClass;
 	}
 
+    /**
+     * Sets attachment types values finder classs
+     *
+     * @param attachmentTypesValuesFinderClass
+     */
 	public void setAttachmentTypesValuesFinderClass(Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass) {
 		this.attachmentTypesValuesFinderClass = attachmentTypesValuesFinderClass;
 	}

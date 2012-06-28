@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- View Themes -->
+
+  <bean id="Uif-BaseTheme" abstract="true" parent="Uif-BaseTheme-parentBean"/>
+  <bean id="Uif-BaseTheme-parentBean" abstract="true" parent="Uif-ViewTheme">
+    <property name="cssFiles">
+      <list>
+        <!--<value>krad/css/krad.min.css</value>-->
+        <!-- For Debugging, uncomment out the values below (and comment out the minimized css above) -->
+        <value>krad/css/global/fss-reset.css</value>
+        <value>krad/css/global/fss-layout.css</value>
+        <value>krad/css/global/fss-text.css</value>
+        <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.css</value>
+        <value>krad/plugins/jgrowl/jquery.jgrowl.css</value>
+        <value>krad/plugins/rice/datatables/jquery.dataTables.css</value>
+        <value>krad/plugins/rice/datatables/TableTools.css</value>
+        <value>krad/plugins/fancybox/jquery.fancybox.css</value>
+        <value>krad/plugins/rice/textpopout/popoutTextarea.css</value>
+        <value>krad/plugins/rice/menu/tabs.css</value>
+        <value>krad/plugins/rice/spinner/smartspinner.css</value>
+        <value>krad/plugins/tooltip/jquery.tools.tooltip.css</value>
+        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
+        <value>krad/css/global/base.css</value>
+      </list>
+    </property>
+    <property name="scriptFiles">
+      <list>
+        <!--<value>krad/scripts/krad.min.js</value>-->
+        <!-- For Debugging, uncomment out the values below (and comment out the minimized js above) -->
+        <value>krad/plugins/jquery/jquery-1.7.2.js</value>
+        <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.js</value>
+        <value>krad/plugins/cookie/jquery.cookie.js</value>
+        <value>krad/plugins/postmsg/jquery.ba-postmessage.js</value>
+        <value>krad/plugins/jgrowl/jquery.jgrowl.js</value>
+        <value>krad/plugins/blockUI/jquery.blockUI.js</value>
+        <value>krad/plugins/watermark/jquery.watermark.js</value>
+        <value>krad/plugins/validate/jquery.validate.js</value>
+        <value>krad/plugins/tooltip/jquery.tools.min.js</value>
+        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</value>
+        <value>krad/plugins/rice/spinner/smartspinner.js</value>
+        <value>krad/plugins/rice/menu/krad.navigationMenu.js</value>
+        <value>krad/plugins/rice/textpopout/krad.textareaPopout.js</value>
+        <value>krad/plugins/dirtyform/jquery.dirtyform.js</value>
+        <value>krad/plugins/scrollto/jquery.scrollTo-1.4.2-min.js</value>
+        <value>krad/plugins/rice/menu/krad.tabMenu.js</value>
+        <value>krad/plugins/rice/datatables/jquery.dataTables.js</value>
+        <value>krad/plugins/rice/datatables/ZeroClipboard.js</value>
+        <value>krad/plugins/rice/datatables/TableTools.js</value>
+        <value>krad/plugins/jstree/jquery.jstree.js</value>
+        <value>krad/plugins/validate/additional_validations.js</value>
+        <value>krad/plugins/jqform/jquery.form.js</value>
+        <value>krad/plugins/fancybox/jquery.fancybox.pack.js</value>
+        <value>krad/plugins/easydrag/jquery.easydrag.js</value>
+        <value>krad/plugins/easing/jquery.easing-1.3.pack.js</value>
+        <value>krad/plugins/json/jquery.json-2.2.js</value>
+        <value>krad/plugins/infusion/infusion-1.4.js</value>
+        <value>krad/plugins/infusion/infusion.reorderer.js</value>
+        <value>krad/scripts/krad.variables.js</value>
+        <value>krad/scripts/krad.message.js</value>
+        <value>krad/scripts/krad.widget.js</value>
+        <value>krad/scripts/krad.initialize.js</value>
+        <value>krad/scripts/krad.ajax.js</value>
+        <value>krad/scripts/krad.utility.js</value>
+        <value>krad/scripts/krad.validate.js</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ClassicKnsTheme" abstract="true" parent="Uif-ClassicKnsTheme-parentBean"/>
+  <bean id="Uif-ClassicKnsTheme-parentBean" parent="Uif-BaseTheme">
+    <property name="cssFiles">
+      <list merge="true">
+        <value>krad/css/kns/theme-kns.css</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-KradTheme" abstract="true" parent="Uif-KradTheme-parentBean"/>
+  <bean id="Uif-KradTheme-parentBean" parent="Uif-BaseTheme">
+    <property name="cssFiles">
+      <list merge="true">
+        <value>krad/css/ks/theme-krad.css</value>
+        <value>krad/css/ks/fss-theme-krad.css</value>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Base Views -->
+
+  <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean"/>
+  <bean id="Uif-View-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.view.View" scope="prototype" parent="Uif-ComponentBase">
+    <property name="template" value="/krad/WEB-INF/ftl/components/view/view.ftl"/>
+    <property name="templateName" value="uif_view"/>
+    <property name="theme">
+      <bean parent="Uif-KradTheme"/>
+    </property>
+    <property name="cssClasses">
+      <list>
+        <value>uif-view</value>
+      </list>
+    </property>
+    <property name="renderBreadcrumbsInView" value="true"/>
+    <property name="onSubmitScript" value="createLoading(true);"/>
+    <property name="viewTypeName" value="DEFAULT"/>
+    <property name="viewName" value="default"/>
+    <property name="viewHelperServiceClass"
+              value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl"/>
+    <property name="persistFormToSession" value="true"/>
+    <property name="presentationControllerClass" value="org.kuali.rice.krad.uif.view.ViewPresentationControllerBase"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.uif.view.ViewAuthorizerBase"/>
+    <property name="preloadPoolSize" value="1"/>
+    <property name="breadcrumbs">
+      <bean parent="Uif-Breadcrumbs"/>
+    </property>
+    <property name="breadcrumbTitleDisplayOption" value="dash"/>
+    <property name="growlMessagingEnabled" value="true"/>
+    <property name="growls">
+      <bean parent="Uif-Growls"/>
+    </property>
+    <property name="header">
+      <bean parent="Uif-ViewHeader"/>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase"/>
+    </property>
+    <property name="expressionVariables">
+      <map>
+        <entry key="editModes" value="#view.editModes"/>
+        <entry key="actionFlags" value="#view.actionFlags"/>
+      </map>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-FormView" abstract="true" parent="Uif-FormView-parentBean"/>
+  <bean id="Uif-FormView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.view.FormView" parent="Uif-View">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-formView</value>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase"/>
+    </property>
+  </bean>
+
+  <!-- Common Views -->
+
+
+  <bean id="Uif-Page" parent="Uif-Page-parentBean"/>
+  <bean id="Uif-Page-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/pageGroup.ftl"/>
+    <property name="templateName" value="uif_pageGroup"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-page</value>
+      </list>
+    </property>
+    <property name="validationMessages">
+      <bean parent="Uif-PageValidationMessages"/>
+    </property>
+    <property name="header">
+      <bean parent="Uif-PageHeader">
+        <!-- default set here so page header will always be generated -->
+        <property name="headerText" value="&amp;nbsp;"/>
+      </bean>
+    </property>
+    <property name="disclosure">
+      <bean parent="Uif-Disclosure"/>
+    </property>
+    <property name="layoutManager">
+      <bean parent="Uif-VerticalBoxLayout"/>
+    </property>
+    <property name="instructionalMessage">
+      <bean parent="Uif-InstructionalMessage"/>
+    </property>
+    <property name="readOnly" value="@{#parent.readOnly}"/>
+    <property name="autoFocus" value="true"/>
+    <property name="disclosure.render" value="false"/>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-Disclosure-Page" parent="Uif-Disclosure-Page-parentBean"/>
+  <bean id="Uif-Disclosure-Page-parentBean" abstract="true" parent="Uif-Page">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="header">
+      <ref bean="Uif-EditablePageHeader"/>
+    </property>
+  </bean>
+
+</beans>

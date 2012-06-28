@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.maintenance;
 
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.maintenance.Maintainable;
 
 /**
  * Common interface for all maintenance documents.
@@ -24,109 +23,127 @@ import org.kuali.rice.krad.maintenance.Maintainable;
 public interface MaintenanceDocument extends Document {
 
     /**
+     * Get the XML representation of the maintenance document
+     *
      * @return String containing the xml representation of the maintenance document
      */
-    public String getXmlDocumentContents();
+    String getXmlDocumentContents();
 
     /**
+     * Get the new maintainable object
+     *
      * @return Maintainable which holds the new maintenance record
      */
-    public Maintainable getNewMaintainableObject();
+    Maintainable getNewMaintainableObject();
 
     /**
+     * Get the old maintainable object
+     *
      * @return Maintainable which holds the old maintenance record
      */
-    public Maintainable getOldMaintainableObject();
+    Maintainable getOldMaintainableObject();
 
     /**
      * Sets the xml contents of the maintenance document
      * 
-     * @param documentContents - String xml
+     * @param documentContents String xml
      */
-    public void setXmlDocumentContents(String documentContents);
+    void setXmlDocumentContents(String documentContents);
 
     /**
-     * @param newMaintainableObject - Initializes the new maintainable
+     * Set the new maintainable object
+     *
+     * @param newMaintainableObject maintainable with the new maintenance record
      */
-    public void setNewMaintainableObject(Maintainable newMaintainableObject);
+    void setNewMaintainableObject(Maintainable newMaintainableObject);
 
     /**
-     * @param newMaintainableObject - Initializes the old maintainable
+     * Set the old maintainable object
+     *
+     * @param oldMaintainableObject maintainable with the old maintenance record
      */
-    public void setOldMaintainableObject(Maintainable oldMaintainableObject);
+    void setOldMaintainableObject(Maintainable oldMaintainableObject);
 
     /**
-     * Returns a reference to the data object that this MaintenanceDocument is maintaining
+     * Return the data object that this MaintenanceDocument is maintaining
+     *
+     * @return document data object instance
      */
-    public Object getDocumentDataObject();
+    Object getDocumentDataObject();
     
     /**
-     * Builds the xml document string from the contents of the old and new maintainbles.
+     * Build the xml document string from the contents of the old and new maintainables.
      */
-    public void populateXmlDocumentContentsFromMaintainables();
+    void populateXmlDocumentContentsFromMaintainables();
 
     /**
      * Populates the old and new maintainables from the xml document contents string.
      */
-    public void populateMaintainablesFromXmlDocumentContents();
+    void populateMaintainablesFromXmlDocumentContents();
 
     /**
-     * @return boolean - indicates whether this is an edit or new maintenace document by the existence of an old maintainable
+     * Check if maintenance document has old maintenance data
+
+     * @return true if this maintenance document has old data, false otherwise
      */
-    public boolean isOldDataObjectInDocument();
+    boolean isOldDataObjectInDocument();
 
     /**
-     * 
-     * Returns true if this maintenance document is creating a new Business Object, false if its an edit.
-     * 
+     * Check if maintenance document is creating a new Business Object
+     *
+     * @return true if this maintenance document is creating a new Business Object, false otherwise
      */
-    public boolean isNew();
+    boolean isNew();
 
     /**
-     * 
-     * Returns true if this maintenance document is editing an existing Business Object, false if its creating a new one.
-     * 
+     * Check if maintenance document is editing an existing Business Object
+     *
+     * @return true if this maintenance document is editing an existing Business Object, false otherwise
      */
-    public boolean isEdit();
+    boolean isEdit();
 
     /**
-     * 
-     * Returns true if this maintenance document is creating a new Business Object out of an existing Business Object,
-     * for example, a new division vendor out of an existing parent vendor.
-     * 
+     * Check if maintenance document is creating a new Business Object out of an existing Business Object
+     *
+     * <p>
+     * For example, a new division vendor out of an existing parent vendor.
+     * </p>
+     *
+     * @return true if maintenance document is creating a new Business Object out of an existing Business object, false otherwise
      */
-    public boolean isNewWithExisting();
+    boolean isNewWithExisting();
     
     /**
-     * 
-     * A flag which indicates whether the primary keys have been cleared on a Copy-type of document. This will be true if the 'clear
-     * keys on a copy' has been done, and it will be false if not.
-     * 
-     * @return true if the primary keys have been cleared already, false if not.
-     * 
+     * Check if fields are cleared on copy
+     *
+     * <p>
+     * For copy action the primary keys need to be cleared.  This flag indicates if the clearing has occurred.
+     * </p>
+     *
+     * @return true if the primary keys have been cleared already, false otherwise
      */
-    public boolean isFieldsClearedOnCopy();
+    boolean isFieldsClearedOnCopy();
 
     /**
+     * Set the keys cleared on copy flag
      * 
-     * This method sets the value of the fieldsClearedOnCopy.
-     * 
-     * @param fieldsClearedOnCopy - true or false
+     * @param keysClearedOnCopy
      * 
      */
-    public void setFieldsClearedOnCopy(boolean keysClearedOnCopy);
+    void setFieldsClearedOnCopy(boolean keysClearedOnCopy);
 
     /**
-     * 
-     * This method...
-     * @return
+     * Check if the topic field should be displayed in the notes section
+     *
+     * @return true if the topic field should be displayed in the notes section, false otherwise
      */
-    public boolean getDisplayTopicFieldInNotes();
+    boolean isDisplayTopicFieldInNotes();
 
     /**
-     * 
-     * This method...
+     * Set the display topic field in notes flag
+     *
+     * @parm displayTopicFieldInNotes
      */
-    public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes);
+    void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes);
 
 }

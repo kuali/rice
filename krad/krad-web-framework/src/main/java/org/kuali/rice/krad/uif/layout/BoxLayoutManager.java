@@ -20,7 +20,6 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 
@@ -51,11 +50,10 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	private String itemStyle;
     private List<String> itemStyleClasses;
 
-	private boolean layoutFieldErrors;
-
 	public BoxLayoutManager() {
 		super();
 
+        itemStyle = "";
 		orientation = Orientation.HORIZONTAL;
         itemStyleClasses = new ArrayList<String>();
 	}
@@ -91,25 +89,28 @@ public class BoxLayoutManager extends LayoutManagerBase {
 		}
 
         //classes to identify this layout in jQuery and to clear the float correctly in all browsers
-        this.addStyleClass("fieldLine");
         this.addStyleClass("clearfix");
         
         for (Component c : container.getItems()) {
             if (c != null) {
-                if (orientation.equals(Orientation.HORIZONTAL)) {
-                    // in a horizontal box layout errors are placed in a div next to all fields,
-                    // set the errorsField to know that we are using an alternate container for them
-                    if (c instanceof InputField) {
-                        ((InputField) c).getErrorsField().setAlternateContainer(true);
-                        layoutFieldErrors = true;
-                    }
+                
+                //Add item styles to the the item
+                List<String> styleClasses = c.getCssClasses();
+                if(orientation.equals(Orientation.HORIZONTAL)){
+                    styleClasses.add("uif-boxLayoutHorizontalItem");
+                    styleClasses.addAll(this.getItemStyleClasses());
                 }
-
-                if (container.isFieldContainer()) {
-                    if (c instanceof InputField) {
-                        ((InputField) c).getErrorsField().setAlternateContainer(true);
-                        layoutFieldErrors = true;
-                    }
+                else{
+                    styleClasses.add("uif-boxLayoutVerticalItem");
+                    styleClasses.addAll(this.getItemStyleClasses());
+                    styleClasses.add("clearfix");
+                }
+                c.setCssClasses(styleClasses);
+                if(c.getStyle() != null && !c.getStyle().endsWith(";")){
+                    c.appendToStyle(";" + this.getItemStyle());
+                }
+                else{
+                    c.appendToStyle(this.getItemStyle());
                 }
             }
         }
@@ -218,19 +219,5 @@ public class BoxLayoutManager extends LayoutManagerBase {
 
         return "";
     }
-
-	/**
-	 * @return the layoutFieldErrors
-	 */
-	public boolean isLayoutFieldErrors() {
-		return this.layoutFieldErrors;
-	}
-
-	/**
-	 * @param layoutFieldErrors the layoutFieldErrors to set
-	 */
-	public void setLayoutFieldErrors(boolean layoutFieldErrors) {
-		this.layoutFieldErrors = layoutFieldErrors;
-	}
 
 }

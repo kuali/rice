@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="UifCompView-SecureGroupView" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Secure Group View"/>
+    <property name="headerText" value="Secure Group View"/>
     <property name="instructionalText" value="Viewing of group is secured by a KIM permission."/>
     <property name="items">
       <list>
@@ -43,7 +43,7 @@
   </bean>
 
   <bean id="UifCompView-SecureGroupEdit" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Secure Group Edit"/>
+    <property name="headerText" value="Secure Group Edit"/>
     <property name="instructionalText" value="Editing of group is secured by a KIM permission."/>
     <property name="items">
       <list>
@@ -64,7 +64,7 @@
   </bean>
 
   <bean id="UifCompView-SecureFields" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Secure Fields"/>
+    <property name="headerText" value="Secure Fields"/>
     <property name="instructionalText" value="Viewing of field 2 and edit of field 3 is secured by a KIM permission."/>
     <property name="items">
       <list>
@@ -92,7 +92,7 @@
   </bean>
 
   <bean id="UifCompView-SecureFieldGroups" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Secure Field Groups"/>
+    <property name="headerText" value="Secure Field Groups"/>
     <property name="instructionalText"
               value="Viewing of the second field group and editing of the third field group is secured by a KIM permission"/>
     <property name="items">
@@ -157,7 +157,7 @@
   </bean>
 
   <bean id="UifCompView-SecureActions" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Secure Actions"/>
+    <property name="headerText" value="Secure Actions"/>
     <property name="instructionalText" value="Ability to perform the Save action is secured by a KIM permission."/>
     <property name="items">
       <list>
@@ -170,22 +170,22 @@
   </bean>
 
   <bean id="UifCompView-SecureWidgets" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Secure Widgets"/>
+    <property name="headerText" value="Secure Widgets"/>
     <property name="instructionalText" value="Ability to use quickfinder is secured by a KIM permission."/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field14">
-          <property name="fieldLookup.id" value="UifCompView-SecureWidget"/>
-          <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-          <property name="fieldLookup.fieldConversions" value="number:field60"/>
-          <property name="fieldLookup.componentSecurity.viewAuthz" value="true"/>
+          <property name="quickfinder.id" value="UifCompView-SecureWidget"/>
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+          <property name="quickfinder.fieldConversions" value="number:field60"/>
+          <property name="quickfinder.componentSecurity.viewAuthz" value="true"/>
         </bean>
       </list>
     </property>
   </bean>
 
   <bean id="UifCompView-SecureLineView" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-    <property name="title" value="Secure Line View"/>
+    <property name="headerText" value="Secure Line View"/>
     <property name="instructionalText" value="Ability to view a collection line is controlled by a KIM permission."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list1"/>
@@ -203,7 +203,7 @@
   </bean>
 
   <bean id="UifCompView-SecureLineEdit" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-    <property name="title" value="Secure Line Edit"/>
+    <property name="headerText" value="Secure Line Edit"/>
     <property name="instructionalText" value="Ability to edit a collection line is controlled by a KIM permission."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list2"/>
@@ -222,7 +222,7 @@
 
   <bean id="UifCompView-SecureLineFields" parent="Uif-Disclosure-TableCollectionSection"
         p:layoutManager.numberOfColumns="4">
-    <property name="title" value="Secure Line Fields"/>
+    <property name="headerText" value="Secure Line Fields"/>
     <property name="instructionalText"
               value="Ability to view field 2 or edit field 3 is controlled by a KIM permission."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
@@ -243,7 +243,7 @@
 
   <bean id="UifCompView-SecureLineActions" parent="Uif-Disclosure-TableCollectionSection"
         p:layoutManager.numberOfColumns="4">
-    <property name="title" value="Secure Line Actions"/>
+    <property name="headerText" value="Secure Line Actions"/>
     <property name="instructionalText"
               value="Ability to perform the line delete action is controlled by a KIM permission."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
@@ -258,7 +258,7 @@
         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
-    <property name="actionFields">
+    <property name="lineActions">
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
               p:actionEvent="delete" p:componentSecurity.performLineActionAuthz="true"/>

@@ -23,7 +23,7 @@
 
 
   <bean id="prog1" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
-		p:title="Progressive Disclosure of Fields">
+		p:headerText="Progressive Disclosure of Fields">
 		<property name="disclosure.render" value="false" />
 		
 		<property name="items">
@@ -53,7 +53,11 @@
 					p:propertyName="field36" />
 				<bean parent="GenericTextField" p:label="Field 3"
 					p:progressiveRenderAndRefresh="true" p:progressiveRender="@{#form.field34 eq 'show3'}"
-					p:propertyName="field37" />
+					p:propertyName="field37" p:instructionalText="has email address validCharactersConstraint">
+          <property name="validCharactersConstraint">
+            <bean parent="EmailAddressPatternConstraint" />
+          </property>
+        </bean>
 				<bean parent="GenericTextField" p:label="Show Field through matching"
 					p:progressiveRenderAndRefresh="true" p:maxLength="1"
 					p:instructionalText="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"
@@ -69,7 +73,7 @@
 	</bean>
 
 	<bean id="prog2" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
-		p:title="Progressive Disclosure of Groups">
+		p:headerText="Progressive Disclosure of Groups">
 		<property name="disclosure.render" value="false" />
 		
 		<property name="items">
@@ -91,7 +95,7 @@
 					</property>
 				</bean>
 				<bean parent="Uif-HorizontalBoxSection"
-					p:progressiveRender="field38 eq 'show1'" p:title="Group 1"
+					p:progressiveRender="field38 eq 'show1'" p:headerText="Group 1"
 					p:disclosure.render="false">
 					<property name="items">
 						<list>
@@ -106,7 +110,7 @@
 				</bean>
 				<bean parent="Uif-HorizontalBoxSection"
 					p:progressiveRenderViaAJAX="true" p:progressiveRender="field38 eq 'show2'"
-					p:title="Group 2" p:disclosure.render="false">
+					p:headerText="Group 2" p:disclosure.render="false">
 					<property name="items">
 						<list>
 							<bean parent="GenericTextField" p:label="Field 1B"
@@ -121,13 +125,13 @@
 	</bean>
 
 	<bean id="prog3" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
-		p:title="Conditional Refresh">
+		p:headerText="Conditional Refresh">
 		<property name="disclosure.render" value="false" />
 		
 		<property name="items">
 			<list>
 				<bean parent="Uif-InputField" p:label="Conditional Refresh"
-					p:instructionalText="Chose an option cause a conditional refresh on a field"
+					p:instructionalText="Chose an option to cause a conditional refresh on a field"
 					p:width="auto" p:propertyName="field44">
 					<property name="control">
 						<bean parent="Uif-VerticalRadioControl">
@@ -145,9 +149,9 @@
 				<bean parent="GenericTextField" p:label="Field 1"
 					p:conditionalRefresh="#dp.field44 eq 'show1'" p:propertyName="field45" />
 				<bean parent="GenericTextField" p:label="Field 2"
-					p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="#form.field44"
+					p:progressiveRenderViaAJAX="true" p:refreshWhenChangedPropertyNames="#form.field44"
 					p:readOnly="@{field44 eq 'show2'}" p:propertyName="field46" />
-        <bean parent="GenericHorizontalFieldGroup" p:label="Conditonal Options"
+        <bean parent="GenericHorizontalFieldGroup" p:label="Conditional Options"
               p:group.instructionalText="Choose an option from the first select control which will change the options available in the second select control">
           <property name="items">
             <list>
@@ -165,7 +169,7 @@
               </bean>
               <bean parent="GenericTextField" p:propertyName="field89" p:label="Field 2"
                     p:optionsFinderClass="edu.sampleu.travel.options.FoodKeyValuesFinder"
-                    p:refreshWhenChanged="field88">
+                    p:refreshWhenChangedPropertyNames="field88">
                 <property name="control">
                   <bean parent="Uif-DropdownControl"/>
                 </property>
@@ -176,10 +180,10 @@
         <bean parent="GenericHorizontalFieldGroup" p:label="Refresh Buttons">
           <property name="items">
             <list>
-              <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Group" p:methodToCall="refreshProgGroup"
-                    p:refreshId="prog3"/>
-              <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
-                    p:refreshPropertyName="field45"/>
+                <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Group" p:methodToCall="refreshProgGroup"
+                      p:refreshId="prog3"/>
+                <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
+                      p:refreshPropertyName="field45"/>
               <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Field but with Server Errors" p:methodToCall="refreshWithServerMessages"
                     p:refreshPropertyName="field45"/>
               <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
@@ -191,7 +195,7 @@
 	</bean>
 
   <bean id="Uif-CollectionRefresh" parent="Uif-Disclosure-StackedCollectionSection">
-    <property name="title" value="Collection Group With Refresh"/>
+    <property name="headerText" value="Collection Group With Refresh"/>
     <property name="instructionalText" value="This demonstrates refreshes fields and groups within a collection"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list5"/>
@@ -213,13 +217,13 @@
     </property>
     <property name="subCollections">
       <list>
-        <bean parent="Uif-SubCollectionRefresh" p:refreshWhenChanged="#lp.field2"/>
+        <bean parent="Uif-SubCollectionRefresh" p:refreshWhenChangedPropertyNames="#lp.field2"/>
       </list>
     </property>
   </bean>
 
   <bean id="Uif-SubCollectionRefresh" parent="Uif-StackedCollectionSection">
-    <property name="title" value="SubCollection With Refresh"/>
+    <property name="headerText" value="SubCollection With Refresh"/>
     <property name="instructionalText" value="This demonstrates refreshes within a sub-collection"/>
     <property name="disclosure.render" value="false"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>

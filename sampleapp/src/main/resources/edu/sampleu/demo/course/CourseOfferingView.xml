@@ -25,11 +25,11 @@
                     http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
   <bean id="CourseOfferingView" parent="KSFormView">
-    <property name="title"
+    <property name="headerText"
               value="@{courseSection.course.subjectId} @{courseSection.course.number} @{courseSection.course.title}"/>
     <property name="header.items">
       <list>
-        <bean parent="Uif-Link" p:linkLabel="Back to term" p:target="foo"/>
+        <bean parent="Uif-LinkField" p:linkText="Back to term" p:target="foo"/>
       </list>
     </property>
     <property name="items">
@@ -53,8 +53,8 @@
                                            Course Page
   ********************************************************************************************************************
   -->
-  <bean id="CourseOfferingPage" parent="Uif-Page" p:title="Course Offering Information"
-        p:layoutManager.orientation="HORIZONTAL" p:header.styleClasses="course-header"
+  <bean id="CourseOfferingPage" parent="Uif-Page" p:headerText="Course Offering Information"
+        p:layoutManager.orientation="HORIZONTAL" p:header.cssClasses="course-header"
         p:disclosure.render="false">
     <property name="items">
       <list>
@@ -69,7 +69,7 @@
     ********************************************************************************************************************
     -->
     <property name="footer">
-      <bean parent="Uif-FooterBase" p:styleClasses="course-footer">
+      <bean parent="Uif-FooterBase" p:cssClasses="course-footer">
         <property name="items">
           <list>
             <bean parent="Uif-PrimaryActionButton" p:actionLabel="Save" p:methodToCall="save"/>
@@ -86,12 +86,12 @@
                                            COURSE INFO
   ********************************************************************************************************************
   -->
-  <bean id="CourseOffering-CourseInfoSection" parent="GenericGroup" p:title="Course Information &lt;br&gt; (inherited)"
-        p:fieldBindByNamePrefix="courseSection.course" p:readOnly="true" p:styleClasses="group-border"
-        p:header.styleClasses="header-borderBottom">
+  <bean id="CourseOffering-CourseInfoSection" parent="GenericGroup" p:headerText="Course Information &lt;br&gt; (inherited)"
+        p:fieldBindByNamePrefix="courseSection.course" p:readOnly="true" p:cssClasses="group-border"
+        p:header.cssClasses="header-borderBottom">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkLabel="Edit" p:target="foo"/>
+        <bean parent="Uif-LinkField" p:linkText="Edit" p:target="foo"/>
         <bean parent="GenericTextField" p:propertyName="subjectId" p:label="Subject ID"/>
         <bean parent="Uif-HorizontalFieldGroup">
           <property name="items">
@@ -128,18 +128,18 @@
   <bean id="CourseOffering-MainSection" parent="GenericGroup" p:fieldBindByNamePrefix="courseSection">
     <property name="items">
       <list>
-        <bean parent="Uif-HorizontalBoxGroup" p:styleClasses="group-border" p:style="margin-bottom: 0px;">
+        <bean parent="Uif-HorizontalBoxGroup" p:cssClasses="group-border" p:style="margin-bottom: 0px;">
           <property name="items">
             <list>
               <bean parent="GenericTextField" p:propertyName="section" p:label="Section" p:readOnly="true"
-                    p:labelPlacement="LEFT" p:labelField.styleClasses="labelLeft" p:styleClasses="font-light"/>
+                    p:labelPlacement="LEFT" p:fieldLabel.cssClasses="labelLeft" p:cssClasses="font-light"/>
               <bean parent="GenericTextField" p:propertyName="registrationId" p:label="Registration ID"
-                    p:readOnly="true" p:labelField.styleClasses="labelLeft" p:labelPlacement="LEFT"
-                    p:styleClasses="font-light"/>
+                    p:readOnly="true" p:fieldLabel.cssClasses="labelLeft" p:labelPlacement="LEFT"
+                    p:cssClasses="font-light"/>
             </list>
           </property>
         </bean>
-        <bean parent="Uif-Link" p:linkLabel="view other sections (@{courseSection.course.sections.size()})"
+        <bean parent="Uif-LinkField" p:linkText="view other sections (@{courseSection.course.sections.size()})"
               p:target="foo"/>
         <!--
         ********************************************************************************************************************
@@ -152,7 +152,7 @@
                                                  Meeting Times and Contact Hours
         ********************************************************************************************************************
         -->
-        <bean parent="GenericGroup" p:title="Meeting Times + Contact Hours">
+        <bean parent="GenericGroup" p:headerText="Meeting Times + Contact Hours">
           <property name="items">
             <list>
               <bean parent="Uif-HorizontalFieldGroup">
@@ -171,11 +171,11 @@
               ********************************************************************************************************************
               -->
               <ref bean="CourseOffering-Schedule"/>
-              <bean parent="Uif-VerticalBoxGroup" p:styleClasses="group-border">
+              <bean parent="Uif-VerticalBoxGroup" p:cssClasses="group-border">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-MessageField" p:messageText="System Calculated Information"
-                          p:styleClasses="font-lightBold"/>
+                    <bean parent="Uif-Message" p:messageText="System Calculated Information"
+                          p:cssClasses="font-lightBold"/>
                     <bean parent="Uif-HorizontalFieldGroup" p:label="Weekly Contact Hours" p:labelPlacement="TOP">
                       <property name="items">
                         <list>
@@ -207,7 +207,7 @@
                                                  Enrollment + Facilities
         ********************************************************************************************************************
         -->
-        <bean parent="GenericGroup" p:title="Enrollment + Facilities">
+        <bean parent="GenericGroup" p:headerText="Enrollment + Facilities">
           <property name="items">
             <list>
               <bean parent="Uif-HorizontalFieldGroup">
@@ -276,10 +276,10 @@
                                            Final Exam Bean
   ********************************************************************************************************************
   -->
-  <bean id="CourseOffering-FinalExam" parent="GenericGroup" p:title="Final Exam"
+  <bean id="CourseOffering-FinalExam" parent="GenericGroup" p:headerText="Final Exam"
         p:progressiveRender="courseSection.finalExam"
         p:instructionalText="These are all system generated values, based on the course &lt;br&gt; information and meeting days and times, and cannot be overridden."
-        p:styleClasses="group-border">
+        p:cssClasses="group-border">
     <property name="items">
       <list>
         <bean parent="Uif-HorizontalFieldGroup">
@@ -347,14 +347,14 @@
   ********************************************************************************************************************
   -->
   <bean id="CourseOffering-SectionInstructors" parent="GenericCollectionGroup"
-        p:title="Instructors, Teaching Assistants, Graders" p:propertyName="instructors"
+        p:headerText="Instructors, Teaching Assistants, Graders" p:propertyName="instructors"
         p:collectionObjectClass="edu.sampleu.demo.course.CourseInstructor">
     <property name="items">
       <list>
         <bean parent="GenericSelection" p:propertyName="affiliation"
               p:label="Affiliation" p:control.options-ref="affiliation-options"/>
         <bean parent="GenericTextField" p:propertyName="name" p:label="Name"
-              p:fieldLookup.dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"/>
+              p:quickfinder.dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"/>
       </list>
     </property>
   </bean>

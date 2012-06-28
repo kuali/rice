@@ -26,7 +26,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests creating and cancelling the new Campus Type maintenance screen 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,6 +40,9 @@ public class ReferenceCampusTypeIT {
     }
 
     @Test
+    /**
+     * tests that a new Campus Type maintenance document can be cancelled
+     */
     public void testEditCampusType() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());

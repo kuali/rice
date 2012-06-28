@@ -25,5 +25,5 @@
  --%>
  
 <krad:script value="
-  createTable('${componentId}', ${widget.componentOptionsJSString});
+  createTable('${componentId}', ${widget.templateOptionsJSString});
 "/>

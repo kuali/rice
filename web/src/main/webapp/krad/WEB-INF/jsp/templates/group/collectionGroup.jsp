@@ -15,20 +15,36 @@
     limitations under the License.
 
 --%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
 <tiles:useAttribute name="group" classname="org.kuali.rice.krad.uif.container.CollectionGroup"/>
 
 <krad:group group="${group}">
 
-    <%-- render collection quickfinder --%>
-    <krad:template component="${group.collectionLookup}"/>
+  <%-- render collection quickfinder --%>
+  <krad:template component="${group.collectionLookup}"/>
 
-    <%-- render items through layout manager --%>
-    <tiles:insertTemplate template="${group.layoutManager.template}">
-        <tiles:putAttribute name="items" value="${group.items}"/>
-        <tiles:putAttribute name="manager" value="${group.layoutManager}"/>
-        <tiles:putAttribute name="container" value="${group}"/>
-    </tiles:insertTemplate>
+  <c:if test="${group.renderAddBlankLineButton && group.addLinePlacement eq 'TOP'}">
+    <krad:template component="${group.addBlankLineAction}"/>
+  </c:if>
+
+  <c:if test="${group.addViaLightBox && group.addLinePlacement eq 'TOP'}">
+    <krad:template component="${group.addViaLightBoxAction}"/>
+  </c:if>
+
+  <%-- render items through layout manager --%>
+  <tiles:insertTemplate template="${group.layoutManager.template}">
+    <tiles:putAttribute name="items" value="${group.items}"/>
+    <tiles:putAttribute name="manager" value="${group.layoutManager}"/>
+    <tiles:putAttribute name="container" value="${group}"/>
+  </tiles:insertTemplate>
+
+  <c:if test="${group.renderAddBlankLineButton && group.addLinePlacement eq 'BOTTOM'}">
+    <krad:template component="${group.addBlankLineAction}"/>
+  </c:if>
+
+  <c:if test="${group.addViaLightBox && group.addLinePlacement eq 'BOTTOM'}">
+    <krad:template component="${group.addViaLightBoxAction}"/>
+  </c:if>
 
 </krad:group>

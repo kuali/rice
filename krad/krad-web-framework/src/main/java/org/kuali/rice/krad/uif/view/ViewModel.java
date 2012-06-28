@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,14 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ViewModel extends Serializable {
+
+    /**
+     * Called after Spring binds the request to the form and before the controller method is invoked
+     *
+     * @param request - request object containing the query parameters
+     */
+    public void postBind(HttpServletRequest request);
+
 
     /**
      * Unique Id for the <code>View</code> instance. This is specified for a
@@ -174,7 +183,7 @@ public interface ViewModel extends Serializable {
      * </p>
      *
      * @return List<String> read only property names
-     * @see View#isSupportsReadOnlyFieldsOverride()
+     * @see View#isSupportsRequestOverrideOfReadOnlyFields()
      */
     public List<String> getReadOnlyFieldsList();
 
@@ -276,5 +285,47 @@ public interface ViewModel extends Serializable {
      * @param defaultsApplied
      */
     public void setDefaultsApplied(boolean defaultsApplied);
+
+    /**
+     * Script that will run on render (view or component) for generating growl messages
+     *
+     * @return String JS growl script
+     */
+    public String getGrowlScript();
+
+    /**
+     * Setter for the script that generates growls on render
+     *
+     * @param growlScript
+     */
+    public void setGrowlScript(String growlScript);
+
+    /**
+     * Script that will run on render (view or component) for a lightbox
+     *
+     * @return String JS lightbox script
+     */
+    public String getLightboxScript();
+
+    /**
+     * Setter for the script that generates a lightbox on render
+     *
+     * @param lightboxScript
+     */
+    public void setLightboxScript(String lightboxScript);
+
+    /**
+     * Gets the state.  This is the default location for state on KRAD forms.
+     *
+     * @return the state
+     */
+    public String getState();
+
+    /**
+     * Set the state
+     *
+     * @param state
+     */
+    public void setState(String state);
 
 }

@@ -177,7 +177,7 @@
                 <title>Table Layout Manager</title>
                 <para>When laying out the rendering of collections, TableLayoutManager provides a
                     lot of power for rendering that data in a tabular fashion. The
-                    TableLayoutManager holds a List of Fields and a List of LabelFields. For each
+                    TableLayoutManager holds a List of Fields and a List of Labels. For each
                     row in a collection, TableLayoutManager will generate a rendered row of the
                     specified Fields. </para>
                 <para>By default, TableLayoutManager provides a sequence field for each row of

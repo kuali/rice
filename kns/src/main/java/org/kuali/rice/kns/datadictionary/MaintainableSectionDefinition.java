@@ -96,7 +96,7 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
     /**
      * Directly validate simple fields, call completeValidation on Definition fields.
      * 
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(Class, Class)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
     	if (StringUtils.contains(title, ",") && StringUtils.isBlank(id)) {

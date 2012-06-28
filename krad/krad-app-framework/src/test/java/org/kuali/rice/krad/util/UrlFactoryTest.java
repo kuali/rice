@@ -23,7 +23,7 @@ import java.util.Properties;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This class tests the UrlFactory methods.
+ * UrlFactoryTest tests the UrlFactory methods
  */
 public class UrlFactoryTest {
 

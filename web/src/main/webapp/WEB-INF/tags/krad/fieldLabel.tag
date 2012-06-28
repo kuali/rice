@@ -22,16 +22,16 @@
 <%-- Used to wrap field templates and handle the label rendering --%>
 
 <%-- check to see if label exists and if it has been rendered in another field (grid layout)--%>
-<c:set var="renderLabel" value="${!empty field.labelField && !field.labelFieldRendered}"/>
+<c:set var="renderLabel" value="${!empty field.label && !field.labelRendered}"/>
 
 <%-- render field label left --%>
 <c:if test="${renderLabel && ((field.labelPlacement eq 'LEFT') || (field.labelPlacement eq 'TOP'))}">
-  <krad:template component="${field.labelField}"/>
+  <krad:template component="${field.fieldLabel}"/>
 </c:if>
 
 <jsp:doBody/>
 
 <%-- render field label right --%>
 <c:if test="${renderLabel && (field.labelPlacement eq 'RIGHT')}">
-  <krad:template component="${field.labelField}"/>
+  <krad:template component="${field.fieldLabel}"/>
 </c:if>

@@ -40,7 +40,10 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.*;
 
 /**
- * This is a test case for the data dictionary's ability to index entries by a "base" superclass. 
+ * BaseBOClassAndBaseDocumentClassTest tests for the data dictionary's ability to index entries by a "base" superclass
+ *
+ * <p>When running this test, the working directory should be set to two levels down from the root of the project e.g.
+ * it/krad</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -70,6 +73,7 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml");
 		//dd.addConfigFileLocation("classpath:org/kuali/rice/krad/bo/datadictionary");
         dd.addConfigFileLocation("file:" + getUserDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");

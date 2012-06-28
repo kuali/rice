@@ -28,12 +28,13 @@
 <form:textarea id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
                rows="${control.rows}" cols="${control.cols}" readonly="${control.readOnly}"
                cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
-               tabindex="${control.tabIndex}" maxLength="${control.maxLength}" minLength="${control.minLength}"/>
+               tabindex="${control.tabIndex}" maxLength="${control.maxLength}" minLength="${control.minLength}"
+               data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}"/>
                
 <c:if test="${(!empty control.watermarkText)}">
 	<krad:script value="createWatermark('${control.id}', '${control.watermarkText}');" />
 </c:if>
 
 <c:if test="${control.textExpand}">
-	<krad:script value="setupTextPopout('${control.id}', '${field.labelField.labelText}', '${field.instructionalMessageField.messageText}', '${field.constraintMessageField.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
-</c:if>   
+	<krad:script value="setupTextPopout('${control.id}', '${field.label}', '${field.instructionalMessage.messageText}', '${field.constraintMessage.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
+</c:if>

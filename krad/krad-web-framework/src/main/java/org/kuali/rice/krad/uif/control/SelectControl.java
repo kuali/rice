@@ -63,6 +63,11 @@ public class SelectControl extends MultiValueControlBase implements SizedControl
         return this.multiple;
     }
 
+    /**
+     * Set whether multiple values can be selected
+     *
+     * @param multiple
+     */
     public void setMultiple(boolean multiple) {
         this.multiple = multiple;
     }

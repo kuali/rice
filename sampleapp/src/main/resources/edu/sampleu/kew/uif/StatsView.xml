@@ -24,11 +24,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 <bean id="KEW-StatView" parent="Uif-FormView-KnsTheme">
     <property name="id" value="KEW-StatView"/>
-    <property name="title" value="Workflow Statistics"/>
+    <property name="headerText" value="Workflow Statistics"/>
     <property name="formClass" value="edu.sampleu.kew.krad.form.StatsForm"/>
     <property name="items">
       <list>
-        <bean parent="Uif-Page" p:id="page1" p:autoFocus="false" p:errorsField.combineMessages="false" p:errorsField.displayFieldLabelWithMessages="false">
+        <bean parent="Uif-Page" p:id="page1" p:autoFocus="false" p:validationMessages.displayFieldLabelWithMessages="false">
            <property name="items">
              <list>
 		          <ref bean="aggregatesSection"/>
@@ -44,14 +44,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 </bean>
 
    <bean id="aggregatesSection" parent="Uif-GridSection" p:disclosure.render="false" p:layoutManager.numberOfColumns="4">
-      <property name="title" value="Aggregates"/>
+      <property name="headerText" value="Aggregates"/>
       <property name="fieldBindByNamePrefix" value="stats"/>
       <property name="items">
         <list>
-        	<bean parent="Uif-InputField" p:propertyName="numDocTypes" p:labelField.align="right" p:label="Number of Document Types" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	       <bean parent="Uif-InputField" p:propertyName="numUsers" p:label="Number of Users" p:labelField.align="right" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2"/>
-	       <bean parent="Uif-InputField" p:propertyName="numActionItems" p:labelField.align="right" p:label="Number of Active Items In All Action Lists" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2"/>
-	       <bean parent="Uif-Label" p:labelText="Number of Documents Initiated in the Last 30 Days" p:colSpan="2" p:align="right" p:requiredMessageField.render="false"/>
+        	<bean parent="Uif-InputField" p:propertyName="numDocTypes" p:fieldLabel.align="right" p:label="Number of Document Types" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
+	       <bean parent="Uif-InputField" p:propertyName="numUsers" p:label="Number of Users" p:fieldLabel.align="right" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2"/>
+	       <bean parent="Uif-InputField" p:propertyName="numActionItems" p:fieldLabel.align="right" p:label="Number of Active Items In All Action Lists" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2"/>
+	       <bean parent="Uif-Label" p:labelText="Number of Documents Initiated in the Last 30 Days" p:colSpan="2" p:align="right" p:requiredMessage.render="false"/>
 	       
 	       <bean id="testSection4" parent="Uif-Disclosure-GridSection" p:disclosure.render="false" p:colSpan="2">
       		 <property name="layoutManager">
@@ -84,7 +84,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean> 
    
     <bean id="dateRangesSection" parent="Uif-GridSection" p:disclosure.render="false" p:layoutManager.numberOfColumns="4">
-      <property name="title" value="Date Range"/>
+      <property name="headerText" value="Date Range"/>
       <property name="items">
         <list>
         	<bean parent="Uif-InputField" p:propertyName="begDate" p:label="Begin Date">
@@ -97,18 +97,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               		<bean parent="Uif-DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
                </property>
 	        </bean>
-	        <bean parent="Uif-Label" p:labelText="Routing Status" p:colSpan="2" p:requiredMessageField.render="false" p:align="center" p:renderColon="false"/>
-            <bean parent="Uif-Label" p:labelText="Number of Documents for Date Range" p:colSpan="2" p:requiredMessageField.render="false" p:align="center" p:renderColon="false"/>
-        	<!-- <bean parent="Uif-InputField" p:propertyName="stats.approvedNumber" p:labelField.align="right" p:label="APPROVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" /> -->
-	        <bean parent="Uif-InputField" p:propertyName="stats.canceledNumber" p:labelField.align="right" p:label="CANCELED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="Uif-InputField" p:propertyName="stats.disapprovedNumber" p:labelField.align="right" p:label="DISAPPROVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="Uif-Label" p:labelText="Routing Status" p:colSpan="2" p:requiredMessage.render="false" p:align="center" p:renderColon="false"/>
+            <bean parent="Uif-Label" p:labelText="Number of Documents for Date Range" p:colSpan="2" p:requiredMessage.render="false" p:align="center" p:renderColon="false"/>
+        	<!-- <bean parent="Uif-InputField" p:propertyName="stats.approvedNumber" p:fieldLabel.align="right" p:label="APPROVED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" /> -->
+	        <bean parent="Uif-InputField" p:propertyName="stats.canceledNumber" p:fieldLabel.align="right" p:label="CANCELED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
+	        <bean parent="Uif-InputField" p:propertyName="stats.disapprovedNumber" p:fieldLabel.align="right" p:label="DISAPPROVED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
 	        
-	        <bean parent="Uif-InputField" p:propertyName="stats.enrouteNumber" p:labelField.align="right" p:label="ENROUTE" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="Uif-InputField" p:propertyName="stats.exceptionNumber" p:labelField.align="right" p:label="EXCEPTION" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="Uif-InputField" p:propertyName="stats.finalNumber" p:labelField.align="right" p:label="FINAL" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="Uif-InputField" p:propertyName="stats.initiatedNumber" p:labelField.align="right" p:label="INITIATED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="Uif-InputField" p:propertyName="stats.processedNumber" p:labelField.align="right" p:label="PROCESSED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="Uif-InputField" p:propertyName="stats.savedNumber" p:labelField.align="right" p:label="SAVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="Uif-InputField" p:propertyName="stats.enrouteNumber" p:fieldLabel.align="right" p:label="ENROUTE" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
+	        <bean parent="Uif-InputField" p:propertyName="stats.exceptionNumber" p:fieldLabel.align="right" p:label="EXCEPTION" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
+	        <bean parent="Uif-InputField" p:propertyName="stats.finalNumber" p:fieldLabel.align="right" p:label="FINAL" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
+	        <bean parent="Uif-InputField" p:propertyName="stats.initiatedNumber" p:fieldLabel.align="right" p:label="INITIATED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
+	        <bean parent="Uif-InputField" p:propertyName="stats.processedNumber" p:fieldLabel.align="right" p:label="PROCESSED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
+	        <bean parent="Uif-InputField" p:propertyName="stats.savedNumber" p:fieldLabel.align="right" p:label="SAVED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
    		</list>
    	  </property>
   </bean>   

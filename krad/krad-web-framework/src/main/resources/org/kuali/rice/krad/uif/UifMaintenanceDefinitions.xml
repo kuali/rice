@@ -16,21 +16,21 @@
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="Uif-MaintenanceView" abstract="true" parent="Uif-MaintenanceView-parentBean"/>
   <bean id="Uif-MaintenanceView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.MaintenanceView" parent="Uif-DocumentView">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-maintenanceView</value>
       </list>
     </property>
     <property name="viewTypeName" value="MAINTENANCE"/>
     <property name="viewName" value="default"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
     <property name="presentationControllerClass"
               value="org.kuali.rice.krad.maintenance.MaintenanceViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.maintenance.MaintenanceViewAuthorizerBase"/>
@@ -44,7 +44,7 @@
 
   <bean id="Uif-MaintenancePage" abstract="true" parent="Uif-MaintenancePage-parentBean"/>
   <bean id="Uif-MaintenancePage-parentBean" parent="Uif-DocumentPage">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-maintenancePage</value>
       </list>
@@ -52,17 +52,9 @@
   </bean>
 
   <bean id="Uif-MaintenanceGridGroup" abstract="true" parent="Uif-MaintenanceGridGroup-parentBean"/>
-  <bean id="Uif-MaintenanceGridGroup-parentBean" parent="Uif-GridGroup"/>
-
-  <bean id="Uif-MaintenanceHorizontalBoxGroup" abstract="true" parent="Uif-MaintenanceHorizontalBoxGroup-parentBean"/>
-  <bean id="Uif-MaintenanceHorizontalBoxGroup-parentBean" parent="Uif-HorizontalBoxGroup"/>
-
-  <bean id="Uif-MaintenanceVerticalBoxGroup" abstract="true" parent="Uif-MaintenanceVerticalBoxGroup-parentBean"/>
-  <bean id="Uif-MaintenanceVerticalBoxGroup-parentBean" parent="Uif-VerticalBoxGroup"/>
-
-  <bean id="Uif-MaintenanceGridSection" abstract="true" parent="Uif-MaintenanceGridSection-parentBean"/>
-  <bean id="Uif-MaintenanceGridSection-parentBean" parent="Uif-Disclosure-GridSection">
-    <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
+  <bean id="Uif-MaintenanceGridGroup-parentBean" parent="Uif-GridGroup">
+    <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 3 : 2}"/>
+    <property name="layoutManager.renderFirstRowHeader" value="@{maintenanceAction eq 'Edit'}"/>
     <property name="componentModifiers">
       <list merge="true">
         <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
@@ -71,26 +63,107 @@
     </property>
   </bean>
 
-  <bean id="Uif-MaintenanceGridSubSection" abstract="true" parent="Uif-MaintenanceGridSubSection-parentBean"/>
-  <bean id="Uif-MaintenanceGridSubSection-parentBean" parent="Uif-Disclosure-GridSubSection"/>
+  <bean id="Uif-MaintenanceHorizontalBoxGroup" abstract="true" parent="Uif-MaintenanceHorizontalBoxGroup-parentBean"/>
+  <bean id="Uif-MaintenanceHorizontalBoxGroup-parentBean" parent="Uif-HorizontalBoxGroup">
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
 
-  <bean id="Uif-MaintenanceHorizontalBoxSection" abstract="true" parent="Uif-MaintenanceHorizontalBoxSection-parentBean"/>
-  <bean id="Uif-MaintenanceHorizontalBoxSection-parentBean" parent="Uif-Disclosure-HorizontalBoxSection"/>
+  <bean id="Uif-MaintenanceVerticalBoxGroup" abstract="true" parent="Uif-MaintenanceVerticalBoxGroup-parentBean"/>
+  <bean id="Uif-MaintenanceVerticalBoxGroup-parentBean" parent="Uif-VerticalBoxGroup">
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-MaintenanceGridSection" abstract="true" parent="Uif-MaintenanceGridSection-parentBean"/>
+  <bean id="Uif-MaintenanceGridSection-parentBean" parent="Uif-Disclosure-GridSection">
+    <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 3 : 2}"/>
+    <property name="layoutManager.renderFirstRowHeader" value="@{maintenanceAction eq 'Edit'}"/>
+    <property name="layoutManager.renderRowFirstCellHeader" value="@{maintenanceAction eq 'Edit'}"/>
+    <property name="layoutManager.renderAlternatingHeaderColumns" value="@{!(maintenanceAction eq 'Edit')}"/>
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
+
+
+  <bean id="Uif-MaintenanceGridSubSection" abstract="true" parent="Uif-MaintenanceGridSubSection-parentBean"/>
+  <bean id="Uif-MaintenanceGridSubSection-parentBean" parent="Uif-Disclosure-GridSubSection">
+    <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 3 : 2}"/>
+    <property name="layoutManager.renderFirstRowHeader" value="@{maintenanceAction eq 'Edit'}"/>
+    <property name="layoutManager.renderRowFirstCellHeader" value="@{maintenanceAction eq 'Edit'}"/>
+    <property name="layoutManager.renderAlternatingHeaderColumns" value="@{!(maintenanceAction eq 'Edit')}"/>
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-MaintenanceHorizontalBoxSection" abstract="true"
+        parent="Uif-MaintenanceHorizontalBoxSection-parentBean"/>
+  <bean id="Uif-MaintenanceHorizontalBoxSection-parentBean" parent="Uif-Disclosure-HorizontalBoxSection">
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
 
   <bean id="Uif-MaintenanceVerticalBoxSection" abstract="true" parent="Uif-MaintenanceVerticalBoxSection-parentBean"/>
-  <bean id="Uif-MaintenanceVerticalBoxSection-parentBean" parent="Uif-Disclosure-VerticalBoxSection"/>
+  <bean id="Uif-MaintenanceVerticalBoxSection-parentBean" parent="Uif-Disclosure-VerticalBoxSection">
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
 
-  <bean id="Uif-MaintenanceHorizontalBoxSubSection" abstract="true" parent="Uif-MaintenanceHorizontalBoxSubSection-parentBean"/>
-  <bean id="Uif-MaintenanceHorizontalBoxSubSection-parentBean" parent="Uif-Disclosure-HorizontalBoxSubSection"/>
+  <bean id="Uif-MaintenanceHorizontalBoxSubSection" abstract="true"
+        parent="Uif-MaintenanceHorizontalBoxSubSection-parentBean"/>
+  <bean id="Uif-MaintenanceHorizontalBoxSubSection-parentBean" parent="Uif-Disclosure-HorizontalBoxSubSection">
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
 
-  <bean id="Uif-MaintenanceVerticalBoxSubSection" abstract="true" parent="Uif-MaintenanceVerticalBoxSubSection-parentBean"/>
-  <bean id="Uif-MaintenanceVerticalBoxSubSection-parentBean" parent="Uif-Disclosure-VerticalBoxSubSection"/>
+  <bean id="Uif-MaintenanceVerticalBoxSubSection" abstract="true"
+        parent="Uif-MaintenanceVerticalBoxSubSection-parentBean"/>
+  <bean id="Uif-MaintenanceVerticalBoxSubSection-parentBean" parent="Uif-Disclosure-VerticalBoxSubSection">
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
 
-  <bean id="Uif-MaintenanceStackedCollectionSection" abstract="true" parent="Uif-MaintenanceStackedCollectionSection-parentBean"/>
+  <bean id="Uif-MaintenanceStackedCollectionSection" abstract="true"
+        parent="Uif-MaintenanceStackedCollectionSection-parentBean"/>
   <bean id="Uif-MaintenanceStackedCollectionSection-parentBean" parent="Uif-Disclosure-StackedCollectionSection">
     <property name="layoutManager.lineGroupPrototype">
       <bean parent="Uif-CollectionGridItem">
-        <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
+        <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 3 : 2}"/>
+        <property name="layoutManager.renderFirstRowHeader" value="@{maintenanceAction eq 'Edit'}"/>
+        <property name="layoutManager.renderRowFirstCellHeader" value="@{maintenanceAction eq 'Edit'}"/>
+        <property name="layoutManager.renderAlternatingHeaderColumns" value="@{!(maintenanceAction eq 'Edit')}"/>
         <property name="componentModifiers">
           <list merge="true">
             <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
@@ -105,11 +178,16 @@
     </property>
   </bean>
 
-  <bean id="Uif-MaintenanceStackedSubCollection-WithinSection" abstract="true" parent="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean"/>
-  <bean id="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean" parent="Uif-Disclosure-StackedSubCollection-WithinSection">
+  <bean id="Uif-MaintenanceStackedSubCollection-WithinSection" abstract="true"
+        parent="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean"/>
+  <bean id="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean"
+        parent="Uif-Disclosure-StackedSubCollection-WithinSection">
     <property name="layoutManager.lineGroupPrototype">
       <bean parent="Uif-CollectionGridItem">
-        <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
+        <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 3 : 2}"/>
+        <property name="layoutManager.renderFirstRowHeader" value="@{maintenanceAction eq 'Edit'}"/>
+        <property name="layoutManager.renderRowFirstCellHeader" value="@{maintenanceAction eq 'Edit'}"/>
+        <property name="layoutManager.renderAlternatingHeaderColumns" value="@{!(maintenanceAction eq 'Edit')}"/>
         <property name="componentModifiers">
           <list merge="true">
             <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
@@ -124,7 +202,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-MaintenanceTableCollectionSection" abstract="true" parent="Uif-MaintenanceTableCollectionSection-parentBean"/>
+  <bean id="Uif-MaintenanceTableCollectionSection" abstract="true"
+        parent="Uif-MaintenanceTableCollectionSection-parentBean"/>
   <bean id="Uif-MaintenanceTableCollectionSection-parentBean" parent="Uif-Disclosure-TableCollectionSection">
     <property name="activeCollectionFilter">
       <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"
@@ -132,12 +211,30 @@
     </property>
   </bean>
 
-  <bean id="Uif-MaintenanceTableSubCollection-withinSection" abstract="true" parent="Uif-MaintenanceTableSubCollection-withinSection-parentBean"/>
-  <bean id="Uif-MaintenanceTableSubCollection-withinSection-parentBean" parent="Uif-Disclosure-TableSubCollection-WithinSection">
+  <bean id="Uif-MaintenanceTableSubCollection-withinSection" abstract="true"
+        parent="Uif-MaintenanceTableSubCollection-withinSection-parentBean"/>
+  <bean id="Uif-MaintenanceTableSubCollection-withinSection-parentBean"
+        parent="Uif-Disclosure-TableSubCollection-WithinSection">
     <property name="activeCollectionFilter">
       <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"
             p:oldBindingObjectPath="document.oldMaintainableObject.dataObject"/>
     </property>
+  </bean>
+
+  <bean id="Uif-MaintenanceCompare-Modifier" parent="Uif-MaintenanceCompare-Modifier-parentBean"/>
+  <bean id="Uif-MaintenanceCompare-Modifier-parentBean" abstract="true" parent="Uif-CompareFieldCreate-Modifier">
+    <property name="headerFieldPrototype">
+      <bean parent="Uif-HeaderFour"/>
+    </property>
+    <property name="comparables">
+      <list>
+        <bean parent="Uif-CompareConfig" p:readOnly="true" p:headerText="Old" p:compareToForValueChange="true"
+              p:bindingObjectPath="document.oldMaintainableObject.dataObject"/>
+        <bean parent="Uif-CompareConfig" p:headerText="New"
+              p:bindingObjectPath="document.newMaintainableObject.dataObject"/>
+      </list>
+    </property>
+    <property name="generateCompareHeaders" value="true"/>
   </bean>
 
 </beans>

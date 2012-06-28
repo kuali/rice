@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.2.0-M2-SNAPSHOT</version>
   </parent>
   <artifactId>rice-web</artifactId>
   <packaging>war</packaging>
@@ -76,6 +76,10 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -133,14 +137,47 @@
               <cssSourceIncludes>
                 <cssSourceInclude>css/**/*.css</cssSourceInclude>
                 <cssSourceInclude>plugins/**/*.css</cssSourceInclude>
+              </cssSourceIncludes>
+              <cssSourceExcludes>
                 <cssSourceExclude>css/ks/*.css</cssSourceExclude>
                 <cssSourceExclude>css/kns/*.css</cssSourceExclude>
-              </cssSourceIncludes>
+              </cssSourceExcludes>
               <jsSourceDir>krad</jsSourceDir>
-              <jsSourceIncludes>
-                <jsSourceInclude>scripts/*.js</jsSourceInclude>
-                <jsSourceInclude>plugins/**/*.js</jsSourceInclude>
-              </jsSourceIncludes>
+              <jsSourceFiles>
+                <jsSourceFile>plugins/jquery/jquery-1.7.2.js</jsSourceFile>
+                <jsSourceFile>plugins/jqueryUI/jquery-ui-1.8.19.js</jsSourceFile>
+                <jsSourceFile>plugins/blockUI/jquery.blockUI.js</jsSourceFile>
+                <jsSourceFile>plugins/validate/jquery.validate.js</jsSourceFile>
+                <jsSourceFile>plugins/cookie/jquery.cookie.js</jsSourceFile>
+                <jsSourceFile>plugins/postmsg/jquery.ba-postmessage.js</jsSourceFile>
+                <jsSourceFile>plugins/jgrowl/jquery.jgrowl.js</jsSourceFile>
+                <jsSourceFile>plugins/watermark/jquery.watermark.js</jsSourceFile>
+                <jsSourceFile>plugins/rice/spinner/smartspinner.js</jsSourceFile>
+                <jsSourceFile>plugins/rice/menu/krad.navigationMenu.js</jsSourceFile>
+                <jsSourceFile>plugins/rice/textpopout/krad.textareaPopout.js</jsSourceFile>
+                <jsSourceFile>plugins/dirtyform/jquery.dirtyform.js</jsSourceFile>
+                <jsSourceFile>plugins/scrollto/jquery.scrollTo-1.4.2-min.js</jsSourceFile>
+                <jsSourceFile>plugins/rice/menu/krad.tabMenu.js</jsSourceFile>
+                <jsSourceFile>plugins/rice/datatables/jquery.dataTables.js</jsSourceFile>
+                <jsSourceFile>plugins/rice/datatables/ZeroClipboard.js</jsSourceFile>
+                <jsSourceFile>plugins/rice/datatables/TableTools.js</jsSourceFile>
+                <jsSourceFile>plugins/jstree/jquery.jstree.js</jsSourceFile>
+                <jsSourceFile>plugins/validate/additional_validations.js</jsSourceFile>
+                <jsSourceFile>plugins/jqform/jquery.form.js</jsSourceFile>
+                <jsSourceFile>plugins/fancybox/jquery.fancybox.pack.js</jsSourceFile>
+                <jsSourceFile>plugins/easydrag/jquery.easydrag.js</jsSourceFile>
+                <jsSourceFile>plugins/easing/jquery.easing-1.3.pack.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.initialize.js</jsSourceFile>
+                <jsSourceFile>plugins/json/jquery.json-2.2.js</jsSourceFile>
+                <jsSourceFile>plugins/infusion/infusion-1.4.js</jsSourceFile>
+                <jsSourceFile>plugins/infusion/infusion.reorderer.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.ajax.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.message.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.utility.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.validate.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.widget.js</jsSourceFile>
+              </jsSourceFiles>
               <cssTargetDir>krad/css</cssTargetDir>
               <cssFinalFile>krad.css</cssFinalFile>
               <jsTargetDir>krad/scripts</jsTargetDir>

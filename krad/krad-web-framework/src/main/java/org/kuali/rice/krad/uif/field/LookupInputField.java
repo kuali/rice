@@ -42,14 +42,14 @@ import java.util.List;
 public class LookupInputField extends InputField {
     private static final long serialVersionUID = -8294275596836322699L;
 
-    private boolean treatWildcardsAndOperatorsAsLiteral;
-    private boolean addAllOption;
+    private boolean disableWildcardsAndOperators;
+    private boolean addControlSelectAllOption;
 
     public LookupInputField() {
         super();
 
-        treatWildcardsAndOperatorsAsLiteral = false;
-        addAllOption = false;
+        disableWildcardsAndOperators = false;
+        addControlSelectAllOption = false;
     }
 
     /**
@@ -67,7 +67,7 @@ public class LookupInputField extends InputField {
         super.performFinalize(view, model, parent);
 
         // add all option
-        if (addAllOption && (getControl() != null) && getControl() instanceof MultiValueControl) {
+        if (addControlSelectAllOption && (getControl() != null) && getControl() instanceof MultiValueControl) {
             MultiValueControl multiValueControl = (MultiValueControl) getControl();
             if (multiValueControl.getOptions() != null) {
                 List<KeyValue> fieldOptions = multiValueControl.getOptions();
@@ -172,15 +172,15 @@ public class LookupInputField extends InputField {
     /**
      * @return the treatWildcardsAndOperatorsAsLiteral
      */
-    public boolean isTreatWildcardsAndOperatorsAsLiteral() {
-        return this.treatWildcardsAndOperatorsAsLiteral;
+    public boolean isDisableWildcardsAndOperators() {
+        return this.disableWildcardsAndOperators;
     }
 
     /**
-     * @param treatWildcardsAndOperatorsAsLiteral the treatWildcardsAndOperatorsAsLiteral to set
+     * @param disableWildcardsAndOperators the treatWildcardsAndOperatorsAsLiteral to set
      */
-    public void setTreatWildcardsAndOperatorsAsLiteral(boolean treatWildcardsAndOperatorsAsLiteral) {
-        this.treatWildcardsAndOperatorsAsLiteral = treatWildcardsAndOperatorsAsLiteral;
+    public void setDisableWildcardsAndOperators(boolean disableWildcardsAndOperators) {
+        this.disableWildcardsAndOperators = disableWildcardsAndOperators;
     }
 
     /**
@@ -189,16 +189,16 @@ public class LookupInputField extends InputField {
      *
      * @return boolean true if all option should be added, false if not
      */
-    public boolean isAddAllOption() {
-        return addAllOption;
+    public boolean isAddControlSelectAllOption() {
+        return addControlSelectAllOption;
     }
 
     /**
      * Setter for the add all option indicator
      *
-     * @param addAllOption
+     * @param addControlSelectAllOption
      */
-    public void setAddAllOption(boolean addAllOption) {
-        this.addAllOption = addAllOption;
+    public void setAddControlSelectAllOption(boolean addControlSelectAllOption) {
+        this.addControlSelectAllOption = addControlSelectAllOption;
     }
 }

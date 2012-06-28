@@ -29,6 +29,7 @@ public class UifParameters {
 	public static final String METHOD_TO_CALL = "methodToCall";
     public static final String CLIENT_VIEW_STATE = "clientViewState";
     public static final String CONVERSION_FIELDS = "conversionFields";
+    public static final String CONFIG_PROPERTIES = "ConfigProperties";
 	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
 	public static final String DISABLE_SEARCH_BUTTONS = "disableSearchButtons";
     public static final String DOC_NUM = "docNum";
@@ -49,6 +50,7 @@ public class UifParameters {
 	public static final String RETURN_LOCATION = "returnLocation";
 	public static final String RETURN_FORM_KEY = "returnFormKey";
     public static final String REQUESTED_COMPONENT_ID = "reqComponentId";
+    public static final String REQUEST = "request";
     public static final String SHOW_INACTIVE_RECORDS = "showInactiveRecords";
     public static final String SKIP_VIEW_INIT = "skipViewInit";
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
@@ -67,4 +69,6 @@ public class UifParameters {
     public static final String QUERY_PARAMETER = "queryParameter";
     public static final String QUERY_FIELD_ID = "queryFieldId";
     public static final String QUERY_TERM = "queryTerm";
+    public static final String UPDATE_COMPONENT_ID = "updateComponentId";
+
 }

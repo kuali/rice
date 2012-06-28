@@ -25,5 +25,5 @@
  --%>
 
 <krad:script value="
-  createTree('${componentId}', ${widget.componentOptionsJSString});
+  createTree('${componentId}', ${widget.templateOptionsJSString});
 "/>

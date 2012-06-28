@@ -40,10 +40,10 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 1. empty value check. (failure) {@link #testValueInvalidTimestampEmpty()}
  * 2. value with valid timestamp. (success) {@link #testValueValidTimestamp()}
  * 3. value with valid timestamp. (success) {@link #testValueValidTimestamp1()}
- * 4. value with invalid timestamp. (failure) {@link testValueInvalidTimestamp()}
- * 5. value with invalid timestamp. (failure) {@link testValueInvalidTimestamp1()}
- * 6. value with invalid timestamp. (failure) {@link testValueInvalidTimestamp2()}
- * 7. value with invalid timestamp. (failure) {@link testValueInvalidTimestamp3()}  
+ * 4. value with invalid timestamp. (failure) {@link #testValueInvalidTimestamp()}
+ * 5. value with invalid timestamp. (failure) {@link #testValueInvalidTimestamp1()}
+ * 6. value with invalid timestamp. (failure) {@link #testValueInvalidTimestamp2()}
+ * 7. value with invalid timestamp. (failure) {@link #testValueInvalidTimestamp3()}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

@@ -20,15 +20,12 @@ import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.view.LookupView;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,7 +70,7 @@ public class LookupForm extends UifFormBase {
 
     /**
      * Picks out business object name from the request to get retrieve a
-     * lookupable and set properties
+     * lookupable and set properties on the initial request
      */
     @Override
     public void postBind(HttpServletRequest request) {
@@ -89,50 +86,34 @@ public class LookupForm extends UifFormBase {
             if (StringUtils.isBlank(getDataObjectClassName())) {
                 setDataObjectClassName(((LookupView) getView()).getDataObjectClassName().getName());
             }
-
-            // init lookupable with data object class
             Class<?> dataObjectClass = Class.forName(getDataObjectClassName());
             lookupable.setDataObjectClass(dataObjectClass);
 
-            // if showMaintenanceLinks is not already true, only show maintenance links
-            // if the lookup was called from the home application view
-            if (!((LookupView) getView()).isShowMaintenanceLinks()) {
-                // TODO replace with check to history
-                if (StringUtils.contains(getReturnLocation(), "/" + KRADConstants.PORTAL_ACTION) ||
-                        StringUtils.contains(getReturnLocation(), "/index.html")) {
-                    ((LookupView) getView()).setShowMaintenanceLinks(true);
+            if (request.getMethod().equals("GET")) {
+                // populate field conversions list
+                if (request.getParameter(KRADConstants.CONVERSION_FIELDS_PARAMETER) != null) {
+                    String conversionFields = request.getParameter(KRADConstants.CONVERSION_FIELDS_PARAMETER);
+                    setFieldConversions(KRADUtils.convertStringParameterToMap(conversionFields));
                 }
-            }
 
-            // populate lookup read only fields list on lookupable
-            lookupable.setReadOnlyFieldsList(getReadOnlyFieldsList());
+                // perform upper casing of lookup parameters
+                Map<String, String> fieldValues = new HashMap<String, String>();
+                Map<String, String> formFields = getCriteriaFields();
 
-            // populate field conversions list
-            if (request.getParameter(KRADConstants.CONVERSION_FIELDS_PARAMETER) != null) {
-                String conversionFields = request.getParameter(KRADConstants.CONVERSION_FIELDS_PARAMETER);
-                setFieldConversions(KRADUtils.convertStringParameterToMap(conversionFields));
-                lookupable.setFieldConversions(getFieldConversions());
-            }
-
-            // perform upper casing of lookup parameters
-            Map<String, String> fieldValues = new HashMap<String, String>();
-            Map<String, String> formFields = getCriteriaFields();
-
-            if (formFields != null) {
-                for (Map.Entry<String, String> entry : formFields.entrySet()) {
-                    // check here to see if this field is a criteria element on the form
-                    fieldValues.put(entry.getKey(),
-                            LookupUtils.forceUppercase(dataObjectClass, entry.getKey(), entry.getValue()));
+                if (formFields != null) {
+                    for (Map.Entry<String, String> entry : formFields.entrySet()) {
+                        // check here to see if this field is a criteria element on the form
+                        fieldValues.put(entry.getKey(), LookupUtils.forceUppercase(dataObjectClass, entry.getKey(),
+                                entry.getValue()));
+                    }
                 }
-            }
 
-            // fieldValues.put(UifParameters.RETURN_FORM_KEY, getReturnFormKey());
-            // fieldValues.put(UifParameters.RETURN_LOCATION, getReturnLocation());
-            if (StringUtils.isNotBlank(getDocNum())) {
-                fieldValues.put(KRADConstants.DOC_NUM, getDocNum());
-            }
+                if (StringUtils.isNotBlank(getDocNum())) {
+                    fieldValues.put(KRADConstants.DOC_NUM, getDocNum());
+                }
 
-            this.setCriteriaFields(fieldValues);
+                this.setCriteriaFields(fieldValues);
+            }
         } catch (ClassNotFoundException e) {
             LOG.error("Object class " + getDataObjectClassName() + " not found");
             throw new RuntimeException("Object class " + getDataObjectClassName() + " not found", e);
@@ -140,8 +121,12 @@ public class LookupForm extends UifFormBase {
     }
 
     public Lookupable getLookupable() {
-        if ((getView() != null) && Lookupable.class.isAssignableFrom(getView().getViewHelperService().getClass())) {
+        if ((getView() != null) && (getView().getViewHelperService() != null) && Lookupable.class.isAssignableFrom(
+                getView().getViewHelperService().getClass())) {
             return (Lookupable) getView().getViewHelperService();
+        } else if ((getPostedView() != null) && (getPostedView().getViewHelperService() != null) && Lookupable.class
+                .isAssignableFrom(getPostedView().getViewHelperService().getClass())) {
+            return (Lookupable) getPostedView().getViewHelperService();
         }
 
         return null;

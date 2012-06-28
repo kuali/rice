@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Tests the LookupResultsService
+ * LookupResultsServiceTest tests {@link LookupResultsService}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -49,7 +49,7 @@ public class LookupResultsServiceTest extends KRADTestCase {
 	 * Tests that lookup ids work
 	 *
 	 */
-	@Ignore
+	// @Ignore
 	@Test public void testLookupIds() {
 		Map<String, String> parameterPK = new HashMap<String, String>();
 		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);
@@ -69,7 +69,7 @@ public class LookupResultsServiceTest extends KRADTestCase {
 	 * Tests that PersistableBusinessObjectSearches work
 	 *
 	 */
-	@Ignore
+	// @Ignore
 	@Test public void testPersistableBusinessObjectSearch() throws Exception {
 		Map<String, String> parameterPK = new HashMap<String, String>();
 		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);

@@ -48,3 +48,14 @@ a.logicNode { border: 1px solid #ccd; background-color:#dde; /* -moz-border-radi
 }
 
 .tree-bar-button { padding-right: 1em; padding-left: 1em; }
+
+#AgendaEditorView-TreeControls_span .boxLayoutHorizontalItem {
+    float: none;
+    display: inline;
+    margin-right: 0em;
+    text-align: center;
+}
+
+#AgendaEditorView-TreeControls_span {
+    text-align: center;
+}

@@ -18,12 +18,12 @@ function getSelectedItemInput() {
 }
 
 function getRuleIdFromParentLi(parentLiNode) {
-    return jq(parentLiNode).find('span.agendaItemId').find('input').first().attr('value');
+    return jq(parentLiNode).find('div.agendaItemId').find('input').first().attr('value');
 }
 
 function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
 
-    var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
+    var collectionGroupDivLocator = '#' + collectionGroupId;
 
     var elementToBlock = jq(collectionGroupDivLocator);
     var selectedItemInput = getSelectedItemInput();
@@ -39,15 +39,15 @@ function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
                 if(jq(collectionGroupDivLocator).length){
                     jq(collectionGroupDivLocator).replaceWith(component);
                 }
-                runHiddenScripts(collectionGroupId + '_div');
+                runHiddenScripts(collectionGroupId);
             }
             });
 
         };
 
         ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-                {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
-                elementToBlock);
+                {updateComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
+                elementToBlock, null);
     } else {
         // TODO: refactor to disabled buttons, or externalize
         alert('Please select an agenda item first.');

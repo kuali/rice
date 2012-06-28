@@ -28,11 +28,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class tests the BeanPropertyComparator methods.
+ * BeanPropertyComparatorTest tests the BeanPropertyComparator methods
  */
 public class BeanPropertyComparatorTest {
 
-    @Test public void testConstructor_nullList() {
+    @Test
+    /**
+     * tests that an IllegalArgumentException is thrown when BeanPropertyComparator constructor is passed a null argument
+     */
+    public void testConstructor_nullList() {
         boolean failedAsExpected = false;
 
         try {
@@ -45,6 +49,9 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(failedAsExpected);
     }
 
+    /**
+     * tests that an IllegalArgumentException is thrown when BeanPropertyComparator constructor is passed a empty list
+     */
     @Test public void testConstructor_emptyList() {
         boolean failedAsExpected = false;
         try {
@@ -56,13 +63,19 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(failedAsExpected);
     }
 
-    @Test public void testCompare_unknownPropertyNames() {
+    @Test
+    /**
+     * tests comparison with an unknown property name
+     *
+     * <p>test that a <code>NullPointerException</code> is thrown when the list of property names contains a property name
+     * that does not exist in the first argument to  @{link  org.kuali.rice.krad.util.BeanPropertyComparator#compare(java.lang.Object, java.lang.Object)}</p>
+     */
+    public void testCompare_unknownPropertyNames() {
         List unknownProperties = Arrays.asList(new String[] { "one", "two", "three" });
 
         BeanPropertyComparator bpc = new BeanPropertyComparator(unknownProperties);
         A a = new A("something", new Integer(0), Boolean.valueOf(false));
         B b = new B("something else", new Integer(1), Boolean.valueOf(true));
-
 
         boolean failedAsExpected = false;
         try {
@@ -76,7 +89,11 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(failedAsExpected);
     }
 
-    @Test public void testCompare_propertyTypeMismatch() {
+    @Test
+    /**
+     * tests that a ClassCastException is thrown when comparing beans that each have a property with the same name but of different object type
+     */
+    public void testCompare_propertyTypeMismatch() {
         List mismatchedProperties = Arrays.asList(new String[] { "i", "b" });
 
         BeanPropertyComparator bpc = new BeanPropertyComparator(mismatchedProperties);
@@ -94,7 +111,15 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(failedAsExpected);
     }
 
-    @Test public void testCompare_privateProperty() {
+    @Test
+    /**
+     * tests comparison when a property has a getter with private scope
+     *
+     * <p>test that a NullPointerException exception is thrown when the first argument to
+     * @{link  org.kuali.rice.krad.util.BeanPropertyComparator#compare(java.lang.Object, java.lang.Object)}
+     * has a private scoped getter</p>
+     */
+    public void testCompare_privateProperty() {
         List privateProperty = Arrays.asList(new String[] { "s" });
 
         BeanPropertyComparator bpc = new BeanPropertyComparator(privateProperty);
@@ -115,7 +140,11 @@ public class BeanPropertyComparatorTest {
     }
 
 
-    @Test public void testCompare_oneProperty_string() {
+    @Test
+    /**
+     * test the comparison result when specifying a property of type String
+     */
+    public void testCompare_oneProperty_string() {
         List properties = Arrays.asList(new String[] { "s" });
 
         BeanPropertyComparator bpc = new BeanPropertyComparator(properties);
@@ -132,7 +161,11 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(equal == 0);
     }
 
-    @Test public void testCompare_oneProperty_integer() {
+    @Test
+    /**
+     * test the comparison result when specifying a property of type Integer
+     */
+    public void testCompare_oneProperty_integer() {
         List properties = Arrays.asList(new String[] { "i" });
 
         BeanPropertyComparator bpc = new BeanPropertyComparator(properties);
@@ -149,7 +182,11 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(equal == 0);
     }
 
-    @Test public void testCompare_oneProperty_boolean() {
+    @Test
+    /**
+     * test the comparison result when specifying a property of type Boolean
+     */
+    public void testCompare_oneProperty_boolean() {
         List properties = Arrays.asList(new String[] { "b" });
 
         BeanPropertyComparator bpc = new BeanPropertyComparator(properties);
@@ -166,7 +203,14 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(equal == 0);
     }
 
-    @Test public void testCompare_oneLevel() {
+    @Test
+    /**
+     * tests comparison of multiple properties
+     *
+     * <p>using 3 properties, compare two beans that have a different value for the first property
+     * and the same values for the other two properties</p>
+     */
+    public void testCompare_oneLevel() {
         List propertiesSIB = Arrays.asList(new String[] { "s", "i", "b" });
 
         BeanPropertyComparator bpcSIB = new BeanPropertyComparator(propertiesSIB);
@@ -183,7 +227,14 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(equal == 0);
     }
 
-    @Test public void testCompare_twoLevels() {
+    @Test
+    /**
+     * tests comparison of multiple properties
+     *
+     * <p>using 3 properties, compare two beans that have a different value for the second property
+     * and the same values for the other two properties</p>
+     */
+    public void testCompare_twoLevels() {
         List propertiesSIB = Arrays.asList(new String[] { "s", "i", "b" });
 
         BeanPropertyComparator bpc = new BeanPropertyComparator(propertiesSIB);
@@ -200,7 +251,14 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(equal == 0);
     }
 
-    @Test public void testCompare_threeLevels() {
+    @Test
+    /**
+     * tests comparison of multiple properties
+     *
+     * <p>using 3 properties, compare two beans that have a different value for the third property
+     * and the same values for the other two properties</p>
+     */
+    public void testCompare_threeLevels() {
         List propertiesSIB = Arrays.asList(new String[] { "s", "i", "b" });
 
         BeanPropertyComparator bpc = new BeanPropertyComparator(propertiesSIB);
@@ -217,7 +275,11 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(equal == 0);
     }
 
-    @Test public void testCompare_differentCases() {
+    @Test
+    /**
+     * test that case is ignored during String comparisons when set to true the constructor
+     */
+    public void testCompare_differentCases() {
         List propertiesSIB = Arrays.asList(new String[] { "s", "i", "b" });
 
         BeanPropertyComparator sensitive = new BeanPropertyComparator(propertiesSIB, false);
@@ -233,7 +295,11 @@ public class BeanPropertyComparatorTest {
         Assert.assertTrue(inequal != 0);
     }
     
-    @Test public void testCompare_differentDates() throws ParseException {
+    @Test
+    /**
+     * test that the result of comparing two dates is as expected
+     */
+    public void testCompare_differentDates() throws ParseException {
     	List propertiesD = Arrays.asList(new String[] { "d" });
     	
     	DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
@@ -256,7 +322,11 @@ public class BeanPropertyComparatorTest {
     	Assert.assertEquals(0, result);
     }
     
-    @Test public void testCompare_firstNullDates() throws ParseException {
+    @Test
+    /**
+     * test the comparison of null objects
+     */
+    public void testCompare_firstNullDates() throws ParseException {
     	List propertiesD = Arrays.asList(new String[] { "d" });
     	
     	DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
@@ -279,7 +349,11 @@ public class BeanPropertyComparatorTest {
     	Assert.assertEquals(0, result);
     }
     
-    @Test public void testCompare_secondNullDates() throws ParseException {
+    @Test
+    /**
+     * test the comparison of null objects
+     */
+    public void testCompare_secondNullDates() throws ParseException {
     	List propertiesD = Arrays.asList(new String[] { "d" });
     	
     	DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);

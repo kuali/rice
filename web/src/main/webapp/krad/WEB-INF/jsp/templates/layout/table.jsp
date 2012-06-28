@@ -38,11 +38,11 @@
   <krad:template component="${manager.addLineGroup}"/>
 </c:if>
 
-<c:if test="${!empty manager.headerFields}">
+<c:if test="${!empty manager.headerLabels}">
 	<table id="${manager.id}" ${style} ${styleClass}>
 		
 		  <thead>
-		     <krad:grid items="${manager.headerFields}" numberOfColumns="${manager.numberOfColumns}" 
+		     <krad:grid items="${manager.headerLabels}" numberOfColumns="${manager.numberOfColumns}"
 		                renderHeaderRow="true" renderAlternatingHeaderColumns="false"
 		                applyDefaultCellWidths="${manager.applyDefaultCellWidths}"/>
 		  </thead>
@@ -51,8 +51,8 @@
 		     <krad:grid items="${manager.dataFields}" numberOfColumns="${manager.numberOfColumns}" 
 		                applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"
 		                applyDefaultCellWidths="${manager.applyDefaultCellWidths}"
-                    firstLineStyle="${manager.firstLineStyle}"
-		                renderAlternatingHeaderColumns="false"/>
+                    renderAlternatingHeaderColumns="false"
+                    rowCssClasses="${manager.rowCssClasses}"/>
 		  </tbody>
 	  	
 	</table>

@@ -18,6 +18,7 @@ package edu.samplu.mainmenu.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests that user 'admin', on blanket approving a new Routing Rule maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,7 +41,12 @@ public class WorkFlowRouteRulesBlanketAppIT {
 
     @Test
     public void testUntitled() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
+        String remotePublicUrl = System.getProperty("remote.public.url");
+        // remove the trailing slash to allow for correction concatenation in locating the lookup buttons below
+        if (StringUtils.endsWith(remotePublicUrl, "/")) {
+            remotePublicUrl = StringUtils.removeEnd(remotePublicUrl, "/");
+        }
+        selenium.open(remotePublicUrl);
         assertEquals("Login", selenium.getTitle());
         selenium.type("__login_user", "admin");
         selenium.click("//input[@value='Login']");
@@ -74,7 +80,7 @@ public class WorkFlowRouteRulesBlanketAppIT {
         selenium.click("//input[@id='document.newMaintainableObject.forceAction']");
         selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
         selenium.type("//input[@id='document.newMaintainableObject.fieldValues(1321:docTypeFullName)']", "DocumentTypeDocument");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor15");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;" + remotePublicUrl + "/kr/lookup.do;::::).anchor15");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests that a blanket approval by user admin of a Namespace maintenance document results in a document in state FINAL
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

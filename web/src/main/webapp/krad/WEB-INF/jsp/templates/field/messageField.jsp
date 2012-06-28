@@ -1,3 +1,4 @@
+</krad:div>
 <%--
 
     Copyright 2005-2012 The Kuali Foundation
@@ -15,20 +16,21 @@
     limitations under the License.
 
 --%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
 <tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.MessageField"/>
 
 <%--
-    Renders text in a span tag     
+    Generates span and label then invoked template for message component
+    
  --%>
 
-<krad:span component="${field}">
+<krad:div component="${field}">
 
   <krad:fieldLabel field="${field}">
 
-    ${field.messageText}
+    <krad:template component="${field.message}"/>
 
   </krad:fieldLabel>
 
-</krad:span>
+</krad:div>

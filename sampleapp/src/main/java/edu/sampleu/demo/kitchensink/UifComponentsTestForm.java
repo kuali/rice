@@ -15,6 +15,7 @@
  */
 package edu.sampleu.demo.kitchensink;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -25,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,6 +164,8 @@ public class UifComponentsTestForm extends UifFormBase {
     private String field129;
     private String field130;
     private Integer field131;
+    private String field132;
+    private String field133;
 
     private String testPersonId;
     private Person testPerson;
@@ -183,6 +188,11 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list4 = new ArrayList<UITestObject>();
     private List<UITestObject> list5 = new ArrayList<UITestObject>();
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
+    private List<UITestObject> list1generated = new ArrayList<UITestObject>();
+    private List<UITestObject> list2generated = new ArrayList<UITestObject>();
+    private List<UITestObject> list3generated = new ArrayList<UITestObject>();
+    private List<TimeInfo> listTimeInfo = new ArrayList<TimeInfo>();
+    private List<DayEvent> dayEvents = new ArrayList<DayEvent>();
 
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
@@ -191,6 +201,14 @@ public class UifComponentsTestForm extends UifFormBase {
     private boolean bField2;
     private boolean bField3;
 
+    private Date date1;
+    private Date date2;
+    private Date date3;
+    private Date date4;
+    private Date date5;
+    private Date date6;
+    private Date date7;
+
     private Map<String, Object> remoteFieldValuesMap;
     private Map<String, Object> remoteFieldValuesMap2;
 
@@ -198,6 +216,8 @@ public class UifComponentsTestForm extends UifFormBase {
         super();
 
         uiTestObject = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
+        
+
 
         list1.add(new UITestObject("A", "B", "C", "D"));
         list1.add(new UITestObject("1", "2", "3", "4"));
@@ -230,11 +250,14 @@ public class UifComponentsTestForm extends UifFormBase {
         list5.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
         list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
 
-        list6.add(new UITestObject("A", "B", "C", "D"));
-        list6.add(new UITestObject("1", "2", "3", "4"));
-        list6.add(new UITestObject("W", "X", "Y", "Z"));
-        list6.add(new UITestObject("a", "b", "c", "d"));
-        list6.add(new UITestObject("a", "s", "d", "f"));
+        for (int i=0; i<50; i++) {
+            list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(1),
+                    RandomStringUtils.randomAlphanumeric(1),
+                    RandomStringUtils.randomAlphanumeric(1),
+                    RandomStringUtils.randomAlphanumeric(1)));
+        }
+        
+        
 
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
@@ -2078,11 +2101,123 @@ public class UifComponentsTestForm extends UifFormBase {
         this.field131 = field131;
     }
 
+    public String getField132() {
+        return field132;
+    }
+
+    public void setField132(String field132) {
+        this.field132 = field132;
+    }
+
+    public String getField133() {
+        return field133;
+    }
+
+    public void setField133(String field133) {
+        this.field133 = field133;
+    }
+
     public MultipartFile getFileUpload() {
         return fileUpload;
     }
 
     public void setFileUpload(MultipartFile fileUpload) {
         this.fileUpload = fileUpload;
+    }
+
+    public List<TimeInfo> getListTimeInfo() {
+        return listTimeInfo;
+    }
+
+    public void setListTimeInfo(List<TimeInfo> listTimeInfo) {
+        this.listTimeInfo = listTimeInfo;
+    }
+
+    public Date getDate1() {
+        return date1;
+    }
+
+    public void setDate1(Date date1) {
+        this.date1 = date1;
+    }
+
+    public Date getDate2() {
+        return date2;
+    }
+
+    public void setDate2(Date date2) {
+        this.date2 = date2;
+    }
+
+    public Date getDate3() {
+        return date3;
+    }
+
+    public void setDate3(Date date3) {
+        this.date3 = date3;
+    }
+
+    public Date getDate4() {
+        return date4;
+    }
+
+    public void setDate4(Date date4) {
+        this.date4 = date4;
+    }
+
+    public Date getDate5() {
+        return date5;
+    }
+
+    public void setDate5(Date date5) {
+        this.date5 = date5;
+    }
+
+    public Date getDate6() {
+        return date6;
+    }
+
+    public void setDate6(Date date6) {
+        this.date6 = date6;
+    }
+
+    public Date getDate7() {
+        return date7;
+    }
+
+    public void setDate7(Date date7) {
+        this.date7 = date7;
+    }
+
+    public List<DayEvent> getDayEvents() {
+        return dayEvents;
+    }
+
+    public void setDayEvents(List<DayEvent> dayEvents) {
+        this.dayEvents = dayEvents;
+    }
+
+    public List<UITestObject> getList1generated() {
+        return list1generated;
+    }
+
+    public void setList1generated(List<UITestObject> list1generated) {
+        this.list1generated = list1generated;
+    }
+
+    public List<UITestObject> getList2generated() {
+        return list2generated;
+    }
+
+    public void setList2generated(List<UITestObject> list2generated) {
+        this.list2generated = list2generated;
+    }
+
+    public List<UITestObject> getList3generated() {
+        return list3generated;
+    }
+
+    public void setList3generated(List<UITestObject> list3generated) {
+        this.list3generated = list3generated;
     }
 }

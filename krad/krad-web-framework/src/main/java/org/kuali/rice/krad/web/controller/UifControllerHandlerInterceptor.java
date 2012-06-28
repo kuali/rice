@@ -17,6 +17,7 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.UifFormManager;
 import org.kuali.rice.krad.uif.util.UifWebUtils;
@@ -93,9 +94,13 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             Exception ex) throws Exception {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
 
-        UifFormBase uifForm = uifFormManager.getCurrentForm();
+        UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
+
         if (uifForm != null) {
-            if (uifForm.isSkipViewInit()) {
+            if (uifForm.isRequestRedirect()) {
+                // view wasn't rendered, just set to null and leave previous posted view
+                uifForm.setView(null);
+            } else if (uifForm.isSkipViewInit()) {
                 // partial refresh or query
                 View postedView = uifForm.getPostedView();
                 if (postedView != null) {
@@ -106,11 +111,20 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 View view = uifForm.getView();
                 if (view != null) {
                     view.getViewHelperService().cleanViewAfterRender(view);
+
+                    // check whether form should be keep in session or not
+                    if (view.isPersistFormToSession()) {
+                        // Remove the session transient variables from the request form before adding it to the list of
+                        // Uifsession forms
+                        uifFormManager.purgeForm(uifForm);
+                        uifFormManager.addSessionForm(uifForm);
+                    }
                 }
 
                 uifForm.setPostedView(view);
                 uifForm.setView(null);
             }
+
         }
     }
 

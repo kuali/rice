@@ -22,7 +22,13 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
+/**
+ * FloatingPointValidationPatternTest tests {@link FloatingPointValidationPattern}
+ *
+ * <p>Valid negative and positive floating point numbers should match</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class FloatingPointValidationPatternTest extends KRADTestCase {
     FloatingPointValidationPattern pattern;
 

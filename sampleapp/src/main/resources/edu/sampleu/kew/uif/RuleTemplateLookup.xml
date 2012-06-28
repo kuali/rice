@@ -22,7 +22,7 @@
 
 
   <bean id="RuleTemplate-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Rule Template Lookup" />
+    <property name="headerText" value="Rule Template Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleTemplateBo" />
     <property name="defaultSortAttributeNames">
       <list>

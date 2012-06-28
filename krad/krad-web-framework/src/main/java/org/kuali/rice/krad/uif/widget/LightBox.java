@@ -24,7 +24,6 @@ import java.util.HashMap;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LightBox extends WidgetBase {
-
     private static final long serialVersionUID = -4004284762546700975L;
 
     private String actionParameterMapString;
@@ -95,23 +94,23 @@ public class LightBox extends WidgetBase {
     }
 
      /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentOptionsJSString()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getTemplateOptionsJSString()
      */
     @Override
-    public String getComponentOptionsJSString() {
-        if (getComponentOptions() == null) {
-            setComponentOptions(new HashMap<String, String>());
+    public String getTemplateOptionsJSString() {
+        if (getTemplateOptions() == null) {
+            setTemplateOptions(new HashMap<String, String>());
         }
 
         // Add the width and height properties to the ComponentOptions
         // before the JS String gets generated.
         if (width != null) {
-            getComponentOptions().put("width", width);
+            getTemplateOptions().put("width", width);
         }
         if (height != null) {
-            getComponentOptions().put("height", height);
+            getTemplateOptions().put("height", height);
         }
-        return super.getComponentOptionsJSString();
+        return super.getTemplateOptionsJSString();
     }
 
     /**

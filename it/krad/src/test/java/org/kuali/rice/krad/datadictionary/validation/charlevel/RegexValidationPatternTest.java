@@ -23,7 +23,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This is a description of what this class does - ctdang don't forget to fill this in. 
+ * RegexValidationPatternTest tests {@link RegexValidationPattern}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -34,7 +34,10 @@ public class RegexValidationPatternTest extends BaseRiceTestCase {
     public void setUp() throws Exception {      
         regexValidationPattern=new RegexValidationPattern();
     }
-    
+
+    /**
+     * tests a numeric regex pattern
+     */
     @Test public final void testNumericPattern() {
         regexValidationPattern.setPattern("[0-9]");
         
@@ -42,6 +45,9 @@ public class RegexValidationPatternTest extends BaseRiceTestCase {
         assertFalse(regexValidationPattern.matches("abc"));
     }
 
+    /**
+     * tests an alphabetic (lowercase and uppercase) pattern
+     */
     @Test public final void testAlphaPattern() {
         regexValidationPattern.setPattern("[a-zA-Z]");
         
@@ -49,6 +55,9 @@ public class RegexValidationPatternTest extends BaseRiceTestCase {
         assertFalse(regexValidationPattern.matches("a12345"));
     }
 
+    /**
+     * tests an alphanumeric regex pattern
+     */
     @Test public final void testAlphaNumericPattern() {
         regexValidationPattern.setPattern("[a-zA-Z0-9]");
         

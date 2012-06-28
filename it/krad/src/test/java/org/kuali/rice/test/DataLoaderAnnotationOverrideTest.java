@@ -28,7 +28,7 @@ import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 
 /**
- * This class is used to test the annotation data entry provided by {@link UnitTestData}, {@link PerTestUnitTestData}, and {@link PerSuiteUnitTestData}
+ * DataLoaderAnnotationOverrideTest is used to test the annotation data entry provided by {@link UnitTestData}, {@link PerTestUnitTestData}, and {@link PerSuiteUnitTestData}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

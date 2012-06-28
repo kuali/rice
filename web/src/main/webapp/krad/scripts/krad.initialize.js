@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // global vars
-var $dialog = null;
 var jq = jQuery.noConflict();
 
 //clear out blockUI css, using css class overrides
@@ -24,345 +24,856 @@ jQuery.blockUI.defaults.overlayCSS = {};
 // validation init
 var pageValidatorReady = false;
 var validateClient = true;
+var messageSummariesShown = false;
+var pauseTooltipDisplay = false;
 
-//sets up the validator with the necessary default settings and methods
-//also sets up the dirty check and other page scripts
-//note the use of onClick and onFocusout for on the fly validation client side
-function setupPage(validate){
-	jq('#kualiForm').dirty_form({changedClass: 'dirty'});
+var errorImage;
+var errorGreyImage;
+var warningImage;
+var infoImage;
+var detailsOpenImage;
+var detailsCloseImage;
 
-    validateClient = validate;
-	//Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
-	jq(window).bind('beforeunload', function(evt){
-        var validateDirty = jq("[name='validateDirty']").val();
-		if (validateDirty == "true")
-		{
-			var dirty = jq(".uif-field").find("input.dirty");
-			//methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
-			var methodToCall = jq("[name='methodToCall']").val();
-			if (dirty.length > 0 && methodToCall == null)
-			{
-				return "Form has unsaved data. Do you want to leave anyway?";
-			}
-		}
-	});
+// common event registering done here through JQuery ready event
+jQuery(document).ready(function () {
+    setPageBreadcrumb();
 
-	jq('#kualiForm').validate(
-	{
-		onsubmit: false,
-		ignore: ".ignoreValid",
-		onclick: function(element) {
-            if(validateClient){
-                if(element.type != "select-one") {
-                    var valid = jq(element).valid();
-                    dependsOnCheck(element, new Array());
-                }
-            }
-		},
-		onfocusout: function(element) {
-            if(validateClient){
-                var valid = jq(element).valid();
-                dependsOnCheck(element, new Array());
-                if((element.type == "select-one" || element.type == "select-multiple") && jq(element).hasClass("valid")){
-                    applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
-                    showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
-                }
-            }
-		},
-		wrapper: "li",
-		highlight: function(element, errorClass, validClass) {
-			jq(element).addClass(errorClass).removeClass(validClass);
-            jq(element).attr("aria-invalid", "true");
-			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 1, 0, 0, true);
-			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 1);
-		},
-		unhighlight: function(element, errorClass, validClass) {
-			jq(element).removeClass(errorClass).addClass(validClass);
-            jq(element).attr("aria-invalid", "false");
-			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
-			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
-		},
-		errorPlacement: function(error, element) {
-			var id = getAttributeId(element.attr('id'), element[0].type);
-			//check to see if the option to use labels is on
-			if (!jq("#" + id + "_errors_div").hasClass("noLabels")) {
-				var label = getLabel(id);
-				label = jq.trim(label);
-				if (label) {
-					if (label.charAt(label.length - 1) == ":") {
-						label = label.slice(0, -1);
-					}
-					error.find("label").before(label + " - ");
-				}
-			}
-			jq("#" + id + "_errors_div").show();
-			jq("#" + id + "_errors_errorMessages").show();
-			var errorList = jq("#" + id + "_errors_errorMessages ul");
-			error.appendTo(errorList);
-		}
-	});
+    // buttons
+    jQuery("input:submit").button();
+    jQuery("input:button").button();
+    jQuery("a.button").button();
+    jQuery(".uif-dialogButtons").find(".uif-checkboxesControl").button();
 
-    jq(".required").each(function(){
-        jq(this).attr("aria-required", "true");
+    // common ajax setup
+    jQuery.ajaxSetup({
+        beforeSend:function () {
+            createLoading(true);
+        },
+        complete:function () {
+            createLoading(false);
+        },
+        error:function (jqXHR, textStatus, errorThrown) {
+            createLoading(false);
+            showGrowl('Status: ' + textStatus + '<br/>' + errorThrown, 'Server Response Error', 'errorGrowl');
+        }
     });
 
-	jq(document).trigger('validationSetup');
-	pageValidatorReady = true;
+    runHiddenScripts("");
+    jQuery("#" + kradVariables.APP_ID).show();
+    createLoading(false);
 
-	jq.watermark.showAll();
-}
+    // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
+    jQuery(window).unload(function () {
+        createLoading(false);
+    });
 
-jQuery.validator.addMethod("minExclusive", function(value, element, param){
-	if (param.length == 1 || param[1]()) {
-		return this.optional(element) || value > param[0];
-	}
-	else{
-		return true;
-	}
-});
-jQuery.validator.addMethod("maxInclusive", function(value, element, param){
-	if (param.length == 1 || param[1]()) {
-		return this.optional(element) || value <= param[0];
-	}
-	else{
-		return true;
-	}
-});
-jQuery.validator.addMethod("minLengthConditional", function(value, element, param){
-	if (param.length == 1 || param[1]()) {
-		return this.optional(element) || this.getLength(jq.trim(value), element) >= param[0];
-	}
-	else{
-		return true;
-	}
-});
-jQuery.validator.addMethod("maxLengthConditional", function(value, element, param){
-	if (param.length == 1 || param[1]()) {
-		return this.optional(element) || this.getLength(jq.trim(value), element) <= param[0];
-	}
-	else{
-		return true;
-	}
+    //setup the various event handlers for fields - THIS IS IMPORTANT
+    initFieldHandlers();
 });
 
-// data table initialize default sorting
-jQuery.fn.dataTableExt.oSort['kuali_date-asc']  = function(a,b) {
-	var date1 = a.split('/');
-	var date2 = b.split('/');
-	var x = (date1[2] + date1[0] + date1[1]) * 1;
-	var y = (date2[2] + date2[0] + date2[1]) * 1;
-	return ((x < y) ? -1 : ((x > y) ?  1 : 0));
-};
+/**
+ * Sets up the various handlers for various field controls.
+ * This function includes handlers that are critical to the behavior of KRAD validation and message frameworks
+ * on the client
+ */
+function initFieldHandlers() {
+    // var HANDLE_FIELD_MESSAGES_EVENT = "handleFieldsetMessages";
+    var validationTooltipOptions = {
+        position:"top",
+        align:"left",
+        distance:0,
+        manageMouseEvents:false,
+        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
+        alwaysVisible:false,
+        tail:{align:"left"}
+    };
 
-jQuery.fn.dataTableExt.oSort['kuali_date-desc'] = function(a,b) {
-	var date1 = a.split('/');
-	var date2 = b.split('/');
-	var x = (date1[2] + date1[0] + date1[1]) * 1;
-	var y = (date2[2] + date2[0] + date2[1]) * 1;
-	return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
-};
+    jQuery(document).on("mouseenter",
+            "[data-role='InputField'] input,"
+                    + "[data-role='InputField'] fieldset, "
+                    + "[data-role='InputField'] fieldset input, "
+                    + "[data-role='InputField'] fieldset label, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea",
+            function (event) {
+                var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
+                var data = jQuery("#" + fieldId).data("validationMessages");
+                if(data && data.useTooltip){
+                    var elementInfo = getHoverElement(fieldId);
+                    var element = elementInfo.element;
+                    var tooltipElement = this;
+                    var focus = jQuery(tooltipElement).is(":focus");
+                    if (elementInfo.type == "fieldset") {
+                        //for checkbox/radio fieldsets we put the tooltip on the label of the first input
+                        tooltipElement = jQuery(element).filter("label:first");
+                        //if the fieldset or one of the inputs have focus then the fieldset is considered focused
+                        focus = jQuery(element).filter("fieldset").is(":focus")
+                                || jQuery(element).filter("input").is(":focus");
+                    }
 
-jQuery.fn.dataTableExt.oSort['kuali_percent-asc'] = function(a,b) {
-	var num1 = a.replace(/[^0-9]/g, '');
-	var num2 = b.replace(/[^0-9]/g, '');
-	num1 = (num1 == "-" || num1 === "" || isNaN(num1)) ? 0 : num1*1;
-	num2 = (num2 == "-" || num2 === "" || isNaN(num2)) ? 0 : num2*1;
-	return num1 - num2;
-};
+                    var hasMessages = jQuery("[data-messagesFor='" + fieldId + "']").children().length;
 
-jQuery.fn.dataTableExt.oSort['kuali_percent-desc'] = function(a,b) {
-	var num1 = a.replace(/[^0-9]/g, '');
-	var num2 = b.replace(/[^0-9]/g, '');
-	num1 = (num1 == "-" || num1 === "" || isNaN(num1)) ? 0 : num1*1;
-	num2 = (num2 == "-" || num2 === "" || isNaN(num2)) ? 0 : num2*1;
-	return num2 - num1;
-};
+                    //only display the tooltip if not already focused or already showing
+                    if (!focus && hasMessages && !jQuery(tooltipElement).IsBubblePopupOpen()) {
+                        if (elementInfo.themeMargins) {
+                            validationTooltipOptions.themeMargins = elementInfo.themeMargins;
+                        }
+                        var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+                        validationTooltipOptions.themeName = data.tooltipTheme;
+                        validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
+                        //set the margin to offset it from the left appropriately
+                        validationTooltipOptions.divStyle = {margin:getTooltipMargin(tooltipElement)};
+                        jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
+                        jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
+                        jQuery(tooltipElement).ShowBubblePopup();
+                    }
+                }
+            });
 
-jQuery.fn.dataTableExt.oSort['kuali_currency-asc'] = function(a,b) {
-	/* Remove any commas (assumes that if present all strings will have a fixed number of d.p) */
-	var x = a == "-" ? 0 : a.replace( /,/g, "" );
-	var y = b == "-" ? 0 : b.replace( /,/g, "" );
-	/* Remove the currency sign */
-	x = x.substring( 1 );
-	y = y.substring( 1 );
-	/* Parse and return */
-	x = parseFloat( x );
-	y = parseFloat( y );
-	
-	x = isNaN(x) ? 0 : x*1;
-	y = isNaN(y) ? 0 : y*1;
-	
-	return x - y;
-};
+    jQuery(document).on("mouseleave",
+            "[data-role='InputField'] input,"
+                    + "[data-role='InputField'] fieldset, "
+                    + "[data-role='InputField'] fieldset input, "
+                    + "[data-role='InputField'] fieldset label, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea",
+            function (event) {
+                var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
+                var data = jQuery("#" + fieldId).data("validationMessages");
+                if(data && data.useTooltip){
+                    var elementInfo = getHoverElement(fieldId);
+                    var element = elementInfo.element;
+                    //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
+                    //above the field - so this is necessary) - also prevents non-displayed tooltips from hiding content
+                    //when entered
+                    var result = mouseInBubblePopupCheck(event, fieldId, element, this, elementInfo.type);
+                    if (!result) {
+                        return false;
+                    }
+                    //continue with the mouseleave event
+                    mouseLeaveHideMessageTooltip(fieldId, this, element, elementInfo.type);
+                }
+            });
 
-jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function(a,b) {
-	/* Remove any commas (assumes that if present all strings will have a fixed number of d.p) */
-	var x = a == "-" ? 0 : a.replace( /,/g, "" );
-	var y = b == "-" ? 0 : b.replace( /,/g, "" );
-	/* Remove the currency sign */
-	x = x.substring( 1 );
-	y = y.substring( 1 );
-	/* Parse and return */
-	x = parseFloat( x );
-	y = parseFloat( y );
-	
-	x = isNaN(x) ? 0 : x;
-	y = isNaN(y) ? 0 : y;
-	
-	return y - x;
-};
+    //when these fields are focus store what the current errors are if any and show the messageTooltip
+    jQuery(document).on("focus",
+            "[data-role='InputField'] input:text, "
+                    + "[data-role='InputField'] input:password, "
+                    + "[data-role='InputField'] input:file, "
+                    + "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio,"
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea, "
+                    + "[data-role='InputField'] option",
+            function () {
+                var id = getAttributeId(jQuery(this).attr('id'));
 
-jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
-{
-	var aData = [];
-	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		var input = jq(this).find('input:text');
-		if(input.length != 0){
-			aData.push( input.val() );	
-		}else{
-            // match DataField or InputField CSS classes - respectively
-			var input1 = jq(this).find('.uif-field');
-			if(input1.length != 0){
-				aData.push(jq.trim(input1.find("span:first").text()));
-			}else{
-				aData.push("");
-			}
-		}
-		
-	} );
-	return aData;
+                //keep track of what errors it had on initial focus
+                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                if(data && data.errors){
+                    data.focusedErrors = data.errors;
+                }
+
+                //show tooltip on focus
+                showMessageTooltip(id, false);
+            });
+
+    //when these fields are focused out validate and if this field never had an error before, show and close, otherwise
+    //immediately close the tooltip
+    jQuery(document).on("focusout",
+            "[data-role='InputField'] input:text, "
+                    + "[data-role='InputField'] input:password, "
+                    + "[data-role='InputField'] input:file, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea",
+            function () {
+                var id = getAttributeId(jQuery(this).attr('id'));
+                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                var hadError = false;
+                if (data && data.focusedErrors){
+                    hadError = data.focusedErrors.length;
+                }
+                var valid = true;
+
+                if (validateClient) {
+                    valid = validateFieldValue(this);
+                }
+
+                if (!hadError && !valid) {
+                    //never had a client error before, so pop-up and delay
+                    showMessageTooltip(id, true, true);
+                }
+                else {
+                    hideMessageTooltip(id);
+                }
+            });
+
+    //when these fields are changed validate immediately
+    jQuery(document).on("change",
+            "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio, "
+                    + "[data-role='InputField'] select",
+            function () {
+                if (validateClient) {
+                    validateFieldValue(this);
+                }
+            });
+
+    //Greying out functionality
+    jQuery(document).on("change",
+            "[data-role='InputField'] input:text, "
+                    + "[data-role='InputField'] input:password, "
+                    + "[data-role='InputField'] input:file, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea, "
+                    + "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio",
+            function () {
+                var id = getAttributeId(jQuery(this).attr('id'));
+                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                if(data){
+                    data.fieldModified = true;
+                    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                }
+            });
+
+    //special radio and checkbox control handling for click events
+    jQuery(document).on("click",
+            "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio,"
+                    + "fieldset[data-type='CheckboxSet'] label,"
+                    + "fieldset[data-type='RadioSet'] label",
+            function () {
+                var event = jQuery.Event("handleFieldsetMessages");
+                event.element = this;
+                //fire the handleFieldsetMessages event on every input of checkbox or radio fieldset
+                jQuery("fieldset > span > input").not(this).trigger(event);
+            });
+
+    //special radio and checkbox control handling for focus events
+    jQuery(document).on("focus",
+            "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio",
+            function () {
+                var event = jQuery.Event("handleFieldsetMessages");
+                event.element = this;
+                //fire the handleFieldsetMessages event on every input of checkbox or radio fieldset
+                jQuery("fieldset > span > input").not(this).trigger(event);
+            });
+
+    //when focused out the checkbox and radio controls that are part of a fieldset will check if another control in
+    //their fieldset has received focus after a short period of time, otherwise the tooltip will close.
+    //if not part of the fieldset, the closing behavior is similar to normal fields
+    //in both cases, validation occurs when the field is considered to have lost focus (fieldset case - no control
+    //in the fieldset has focus)
+    jQuery(document).on("focusout",
+            "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio",
+            function () {
+                var parent = jQuery(this).parent();
+                var id = getAttributeId(jQuery(this).attr('id'));
+
+                //radio/checkbox is in fieldset case
+                if (parent.parent().is("fieldset")) {
+                    //we only ever want this to be handled once per attachment
+                    jQuery(this).one("handleFieldsetMessages", function (event) {
+                        var proceed = true;
+                        //if the element that invoked the event is part of THIS fieldset, we do not lose focus, so
+                        //do not proceed with close handling
+                        if (event.element
+                                && jQuery(event.element).is(jQuery(this).closest("fieldset").find("input"))) {
+                            proceed = false;
+                        }
+
+                        //the fieldset is focused out - proceed
+                        if (proceed) {
+                            var hadError = parent.parent().find("input").hasClass("error");
+                            var valid = true;
+
+                            if (validateClient) {
+                                valid = validateFieldValue(this);
+                            }
+
+                            if (!hadError && !valid) {
+                                //never had a client error before, so pop-up and delay close
+                                showMessageTooltip(id, true, true);
+                            }
+                            else {
+                                hideMessageTooltip(id);
+                            }
+                        }
+                    });
+
+                    var currentElement = this;
+
+                    //if no radios/checkboxes are reporting events assume we want to proceed with closing the message
+                    setTimeout(function () {
+                        var event = jQuery.Event("handleFieldsetMessages");
+                        event.element = [];
+                        jQuery(currentElement).trigger(event);
+                    }, 500);
+                }
+                //non-fieldset case
+                else if (!jQuery(this).parent().parent().is("fieldset")) {
+                    var hadError = jQuery(this).hasClass("error");
+                    var valid = true;
+                    //not in a fieldset - so validate directly
+                    if (validateClient) {
+                        valid = validateFieldValue(this);
+                    }
+
+                    if (!hadError && !valid) {
+                        //never had a client error before, so pop-up and delay
+                        showMessageTooltip(id, true, true);
+                    }
+                    else {
+                        hideMessageTooltip(id);
+                    }
+                }
+            });
 }
 
-/* Create an array with the values of all the select options in a column */
-jQuery.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColumn )
-{
-	var aData = [];
-	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		var selected = jq(this).find('select option:selected:first');
-		if(selected.length != 0){
-			aData.push( selected.text() );	
-		}else{
-			var input1 = jq(this).find('.uif-inputField');
-			if(input1.length != 0){
-				aData.push(jq.trim(input1.text()));
-			}else{
-				aData.push( "");
-			}
-		}
-		
-	} );
-	return aData;
+function initBubblePopups() {
+    //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup
+    //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
+    //will cause a severe loss of functionality and buggy behavior
+    //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
+    jQuery("input, select, textarea, "
+            + " label, .uif-tooltip").CreateBubblePopup(
+            {   manageMouseEvents:false,
+                themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
+            } );
 }
 
-/* Create an array with the values of all the checkboxes in a column */
-jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iColumn )
-{
-	var aData = [];
-	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		var checkboxes = jq(this).find('input:checkbox');
-		if(checkboxes.length != 0){
-			var str = "";
-			for(i=0; i < checkboxes.length; i++){
-				var check = checkboxes[i]; 
-				if (check.checked == true && check.value.length > 0){
-					str += check.value + " ";
-				}
-			}
-			aData.push( str );
-		}else{
-			var input1 = jq(this).find('.uif-inputField');
-			if(input1.length != 0){
-				aData.push(jq.trim(input1.text()));
-			}else{
-				aData.push( "");
-			}
-		}
-		
-	} );
-	return aData;
-	
+function hideBubblePopups() {
+    jQuery("input, select, textarea, "
+            + " label, .uif-tooltip").HideAllBubblePopups();
 }
 
-jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function  ( oSettings, iColumn )
-{
-	var aData = [];
-	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		var radioButtons = jq(this).find('input:radio');
-		if(radioButtons.length != 0){
-			var value = "";
-			for(i=0; i < radioButtons.length; i++){
-				var radio = radioButtons[i];
-				if (radio.checked == true){
-					value = radio.value;
-					break;
-				}
-			}
-			aData.push( value );
-		}else{
-			var input1 = jq(this).find('.uif-inputField');
-			if(input1.length != 0){
-				aData.push(jq.trim(input1.text()));
-			}else{
-				aData.push( "");
-			}
-		}
-		
-	} );
-	return aData;
-	
+/**
+ * Sets up the validator and the dirty check and other page scripts
+ */
+function setupPage(validate, focusFirstField) {
+    jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+
+    setupImages();
+
+    //Reset summary state before processing each field - summaries are shown if server messages
+    // or on client page validation
+    messageSummariesShown = false;
+
+    //flag to turn off and on validation mechanisms on the client
+    validateClient = validate;
+
+    //select current page
+    var pageId = jQuery("[name='pageId']").val();
+    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage : pageId});
+    jQuery("ul.uif-tabMenu").selectTab({selectPage : pageId});
+
+    //skip input field iteration and validation message writing, if no server messages
+    var hasServerMessagesData = jQuery("[data-type='Page']").data("server-messages");
+    if(hasServerMessagesData){
+        //Handle messages at field, if any
+        jQuery("[data-role='InputField']").each(function () {
+            var id = jQuery(this).attr('id');
+            handleMessagesAtField(id, true);
+        });
+        //Write the result of the validation messages
+        writeMessagesForPage();
+        messageSummariesShown = true;
+    }
+
+    //focus on pageValidation header if there are messages on this page
+    if(jQuery(".uif-pageValidationHeader").length){
+        jQuery(".uif-pageValidationHeader").focus();
+    }
+
+    //Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
+    jQuery(window).bind('beforeunload', function (evt) {
+        var validateDirty = jQuery("[name='validateDirty']").val();
+        if (validateDirty == "true") {
+            var dirty = jQuery(".uif-field").find("input.dirty");
+            //methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
+            var methodToCall = jQuery("[name='methodToCall']").val();
+            if (dirty.length > 0 && methodToCall == null) {
+                return "Form has unsaved data. Do you want to leave anyway?";
+            }
+        }
+    });
+
+    setupValidator(jQuery('#kualiForm'));
+
+    jQuery(".required").each(function () {
+        jQuery(this).attr("aria-required", "true");
+    });
+
+    jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
+    pageValidatorReady = true;
+
+    jQuery.watermark.showAll();
+    if(focusFirstField){
+        performFocus();
+    }
+}
+
+/**
+ * Sets up the validator with the necessary default settings and methods on a form
+ *
+ * @param form
+ */
+function setupValidator(form) {
+    jQuery(form).validate(
+            {
+                onsubmit:false,
+                ignore:".ignoreValid",
+                wrapper:"",
+                onfocusout:false,
+                onclick:false,
+                onkeyup:function (element) {
+                    if (validateClient) {
+                        var id = getAttributeId(jQuery(element).attr('id'));
+                        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+
+                        //if this field previously had errors validate on key up
+                        if (data && data.focusedErrors && data.focusedErrors.length) {
+                            validateFieldValue(element);
+                        }
+                    }
+                },
+                highlight:function (element, errorClass, validClass) {
+                    jQuery(element).addClass(errorClass).removeClass(validClass);
+                    jQuery(element).attr("aria-invalid", "true");
+                },
+                unhighlight:function (element, errorClass, validClass) {
+                    jQuery(element).removeClass(errorClass).addClass(validClass);
+                    jQuery(element).removeAttr("aria-invalid");
+
+                    var id = getAttributeId(jQuery(element).attr("id"));
+                    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+
+                    if (data) {
+                        data.errors = [];
+                        jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+
+                        if (messageSummariesShown) {
+                            handleMessagesAtField(id);
+                        }
+                        else {
+                            writeMessagesAtField(id);
+                        }
+
+                        //force hide of tooltip if no messages present
+                        if (!(data.warnings.length || data.info.length || data.serverErrors.length
+                                || data.serverWarnings.length || data.serverInfo.length)) {
+                            hideMessageTooltip(id);
+                        }
+                    }
+                },
+                errorPlacement:function (error, element) {
+                },
+                showErrors:function (nameErrorMap, elementObjectList) {
+                    this.defaultShowErrors();
+
+                    for (var i in elementObjectList) {
+                        var element = elementObjectList[i].element;
+                        var message = elementObjectList[i].message;
+                        var id = getAttributeId(jQuery(element).attr('id'));
+
+                        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+
+                        var exists = false;
+                        if (data && data.errors && data.errors.length) {
+                            for (var j in data.errors) {
+                                if (data.errors[j] === message) {
+                                    exists = true;
+                                }
+                            }
+                        }
+
+                        if (data && !exists) {
+                            data.errors = [];
+                            data.errors.push(message);
+                            jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+
+                            if (messageSummariesShown) {
+                                handleMessagesAtField(id);
+                            }
+                            else {
+                                writeMessagesAtField(id);
+                            }
+
+                            if (!pauseTooltipDisplay) {
+                                showMessageTooltip(id, false, true);
+                            }
+                        }
+                    }
+
+                },
+                success:function (label) {
+                    var htmlFor = jQuery(label).attr('for');
+                    var id = "";
+                    if (htmlFor.indexOf("_control") >= 0) {
+                        id = getAttributeId(htmlFor);
+                    }
+                    else {
+                        id = jQuery("[name='" + escapeName(htmlFor) + "']:first").attr("id");
+                        id = getAttributeId(id);
+                    }
+
+                    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                    if (data && data.errors && data.errors.length) {
+                        data.errors = [];
+                        jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                        if (messageSummariesShown) {
+                            handleMessagesAtField(id);
+                        }
+                        else {
+                            writeMessagesAtField(id);
+                        }
+                        showMessageTooltip(id, false, true);
+                    }
+                }
+            });
+}
+
+/**
+ * Initializes all of the image variables
+ */
+function setupImages() {
+    errorImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error.png' alt='Error' /> ";
+    errorGreyImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
+    warningImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/warning.png' alt='Warning' /> ";
+    infoImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/info.png' alt='Information' /> ";
+    detailsOpenImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_open.png' alt='Details' /> ");
+    detailsCloseImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_close.png' alt='Close Details' /> ");
+}
+
+/**
+ * Retrieves the value for a configuration parameter
+ *
+ * @param paramName - name of the parameter to retrieve
+ */
+function getConfigParam(paramName) {
+    var configParams = jQuery(document).data("ConfigParameters");
+    if (configParams) {
+        return configParams[paramName];
+    }
+    return "";
+}
+
+jQuery.validator.addMethod("minExclusive", function (value, element, param) {
+    if (param.length == 1 || param[1]()) {
+        return this.optional(element) || value > param[0];
+    }
+    else {
+        return true;
+    }
+});
+jQuery.validator.addMethod("maxInclusive", function (value, element, param) {
+    if (param.length == 1 || param[1]()) {
+        return this.optional(element) || value <= param[0];
+    }
+    else {
+        return true;
+    }
+});
+jQuery.validator.addMethod("minLengthConditional", function (value, element, param) {
+    if (param.length == 1 || param[1]()) {
+        return this.optional(element) || this.getLength(jQuery.trim(value), element) >= param[0];
+    }
+    else {
+        return true;
+    }
+});
+jQuery.validator.addMethod("maxLengthConditional", function (value, element, param) {
+    if (param.length == 1 || param[1]()) {
+        return this.optional(element) || this.getLength(jQuery.trim(value), element) <= param[0];
+    }
+    else {
+        return true;
+    }
+});
+
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_date in aoColumns in ascending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
+jQuery.fn.dataTableExt.oSort['kuali_date-asc'] = function (a, b) {
+    var date1 = a.split('/');
+    var date2 = b.split('/');
+    var x = (date1[2] + date1[0] + date1[1]) * 1;
+    var y = (date2[2] + date2[0] + date2[1]) * 1;
+    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+};
+
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_date in aoColumns in descending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
+jQuery.fn.dataTableExt.oSort['kuali_date-desc'] = function (a, b) {
+    var date1 = a.split('/');
+    var date2 = b.split('/');
+    var x = (date1[2] + date1[0] + date1[1]) * 1;
+    var y = (date2[2] + date2[0] + date2[1]) * 1;
+    return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+};
+
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_percent in aoColumns in ascending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
+jQuery.fn.dataTableExt.oSort['kuali_percent-asc'] = function (a, b) {
+    var num1 = a.replace(/[^0-9]/g, '');
+    var num2 = b.replace(/[^0-9]/g, '');
+    num1 = (num1 == "-" || num1 === "" || isNaN(num1)) ? 0 : num1 * 1;
+    num2 = (num2 == "-" || num2 === "" || isNaN(num2)) ? 0 : num2 * 1;
+    return num1 - num2;
+};
+
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_percent in aoColumns in descending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
+jQuery.fn.dataTableExt.oSort['kuali_percent-desc'] = function (a, b) {
+    var num1 = a.replace(/[^0-9]/g, '');
+    var num2 = b.replace(/[^0-9]/g, '');
+    num1 = (num1 == "-" || num1 === "" || isNaN(num1)) ? 0 : num1 * 1;
+    num2 = (num2 == "-" || num2 === "" || isNaN(num2)) ? 0 : num2 * 1;
+    return num2 - num1;
+};
+
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_currency in aoColumns in ascending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
+jQuery.fn.dataTableExt.oSort['kuali_currency-asc'] = function (a, b) {
+    /* Remove any commas (assumes that if present all strings will have a fixed number of d.p) */
+    var x = a == "-" ? 0 : a.replace(/,/g, "");
+    var y = b == "-" ? 0 : b.replace(/,/g, "");
+    /* Remove the currency sign */
+    x = x.substring(1);
+    y = y.substring(1);
+    /* Parse and return */
+    x = parseFloat(x);
+    y = parseFloat(y);
+
+    x = isNaN(x) ? 0 : x * 1;
+    y = isNaN(y) ? 0 : y * 1;
+
+    return x - y;
+};
+
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_currency in aoColumns in descending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
+jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function (a, b) {
+    /* Remove any commas (assumes that if present all strings will have a fixed number of d.p) */
+    var x = a == "-" ? 0 : a.replace(/,/g, "");
+    var y = b == "-" ? 0 : b.replace(/,/g, "");
+    /* Remove the currency sign */
+    x = x.substring(1);
+    y = y.substring(1);
+    /* Parse and return */
+    x = parseFloat(x);
+    y = parseFloat(y);
+
+    x = isNaN(x) ? 0 : x;
+    y = isNaN(y) ? 0 : y;
+
+    return y - x;
+};
+
+/**
+ * retrieve column values for sorting a column marked with sSortDataType:dom-text in aoColumns
+ *
+ * @param oSettings - an object provided by datatables containing table information and configuration
+ * @param iColumn - the column whose values are to be retrieved
+ * @return an array of column values - extracted from any surrounding markup
+ */
+jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
+    var aData = [];
+    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var input = jQuery(this).find('input:text');
+        if (input.length != 0) {
+            aData.push(input.val());
+        } else {
+            // find span for the data or input field and get its text
+            var input1 = jQuery(this).find('.uif-field');
+            if (input1.length != 0) {
+                aData.push(jQuery.trim(input1.find("span:first").text()));
+            } else {
+                // just use the text within the cell
+                aData.push(jQuery(this).text());
+            }
+        }
+
+    });
+
+    return aData;
+}
+
+/**
+ * retrieve column values for sorting a column marked with sSortDataType:dom-select in aoColumns
+ *
+ * <p>Create an array with the values of all the select options in a column</p>
+ *
+ * @param oSettings - an object provided by datatables containing table information and configuration
+ * @param iColumn - the column whose values are to be retrieved
+ * @return an array of column values - extracted from any surrounding markup
+ */
+jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn) {
+    var aData = [];
+    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var selected = jQuery(this).find('select option:selected:first');
+        if (selected.length != 0) {
+            aData.push(selected.text());
+        } else {
+            var input1 = jQuery(this).find('.uif-inputField');
+            if (input1.length != 0) {
+                aData.push(jQuery.trim(input1.text()));
+            } else {
+                aData.push("");
+            }
+        }
+
+    });
+
+    return aData;
+}
+
+/**
+ * retrieve column values for sorting a column marked with sSortDataType:dom-checkbox in aoColumns
+ *
+ * <p>Create an array with the values of all the checkboxes in a column</p>
+ *
+ * @param oSettings - an object provided by datatables containing table information and configuration
+ * @param iColumn - the column whose values are to be retrieved
+ * @return an array of column values - extracted from any surrounding markup
+ */
+jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn) {
+    var aData = [];
+    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var checkboxes = jQuery(this).find('input:checkbox');
+        if (checkboxes.length != 0) {
+            var str = "";
+            for (i = 0; i < checkboxes.length; i++) {
+                var check = checkboxes[i];
+                if (check.checked == true && check.value.length > 0) {
+                    str += check.value + " ";
+                }
+            }
+            aData.push(str);
+        } else {
+            var input1 = jQuery(this).find('.uif-inputField');
+            if (input1.length != 0) {
+                aData.push(jQuery.trim(input1.text()));
+            } else {
+                aData.push("");
+            }
+        }
+
+    });
+
+    return aData;
+}
+
+/**
+ * retrieve column values for sorting a column marked with sSortDataType:dom-radio in aoColumns
+ *
+ * <p>Create an array with the values of all the radio buttons in a column</p>
+ *
+ * @param oSettings - an object provided by datatables containing table information and configuration
+ * @param iColumn - the column whose values are to be retrieved
+ * @return an array of column values - extracted from any surrounding markup
+ */
+jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) {
+    var aData = [];
+    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var radioButtons = jQuery(this).find('input:radio');
+        if (radioButtons.length != 0) {
+            var value = "";
+            for (i = 0; i < radioButtons.length; i++) {
+                var radio = radioButtons[i];
+                if (radio.checked == true) {
+                    value = radio.value;
+                    break;
+                }
+            }
+            aData.push(value);
+        } else {
+            var input1 = jQuery(this).find('.uif-inputField');
+            if (input1.length != 0) {
+                aData.push(jQuery.trim(input1.text()));
+            } else {
+                aData.push("");
+            }
+        }
+
+    });
+
+    return aData;
 }
 
 // setup window javascript error handler
 window.onerror = errorHandler;
 
-function errorHandler(msg,url,lno)
-{
-  jq("#view_div").show();
-  jq("#viewpage_div").show();
-  var context = getContext();
-  context.unblockUI();
-  showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');
-  return false;
+function errorHandler(msg, url, lno) {
+    jQuery("#" + kradVariables.APP_ID).show();
+    jQuery("#" + kradVariables.PAGE_CONTENT_HEADER_CLASS).show();
+    var context = getContext();
+    context.unblockUI();
+    showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');
+    return false;
 }
 
-// common event registering done here through JQuery ready event
-jq(document).ready(function() {
-	setPageBreadcrumb();
-
-	// buttons
-	jq("input:submit").button();
-	jq("input:button").button();
-    jq("a.button").button();
-
-    // common ajax setup
-	jq.ajaxSetup({
-		  beforeSend: function() {
-		     createLoading(true);
-		  },
-		  complete: function(){
-			 createLoading(false);
-		  },
-		  error: function(jqXHR, textStatus, errorThrown){
-			 createLoading(false);
-			 showGrowl('Status: ' + textStatus + '<br/>' + errorThrown, 'Server Response Error', 'errorGrowl');
-		  }
-	});
-
-	runHiddenScripts("");
-    jq("#view_div").show();
-    createLoading(false);
-
-    // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
-    jq(window).unload(function() {
-        createLoading(false);
-    });
-});
-
 // script that should execute when the page unloads
-jq(window).bind('beforeunload', function (evt) {
+jQuery(window).bind('beforeunload', function (evt) {
     // clear server form if closing the browser tab/window or going back
     // TODO: work out back button problem so we can add this clearing
-//    if (!event.clientY || (event.clientY < 0)) {
+//    if (!event.pageY || (event.pageY < 0)) {
 //        clearServerSideForm();
 //    }
 });

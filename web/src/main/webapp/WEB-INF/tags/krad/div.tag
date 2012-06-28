@@ -21,6 +21,7 @@
               
 <krad:attributeBuilder component="${component}"/>            
 
-<div id="${component.id}_div" ${styleClass} ${style}>
+<%-- the variables styleClass  and style are set in attributeBuilder.tag --%>
+<div id="${component.id}" ${styleClass} ${style} ${title} ${component.simpleDataAttributes}>
    <jsp:doBody/>
 </div>

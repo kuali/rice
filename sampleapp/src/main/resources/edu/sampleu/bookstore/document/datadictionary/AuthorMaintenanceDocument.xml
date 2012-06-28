@@ -36,7 +36,7 @@
     <property name="items">
       <list merge="true">
         <bean parent="Uif-MaintenanceGridSection">
-          <property name="title" value="Add/Edit Author"/>
+          <property name="headerText" value="Add/Edit Author"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="authorName"/>
@@ -47,7 +47,7 @@
           </property>
         </bean>
         <bean parent="Uif-MaintenanceGridSection">
-          <property name="title" value="Account Information"/>
+          <property name="headerText" value="Account Information"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="extension.accountNumber"/>
@@ -56,7 +56,7 @@
           </property>
         </bean>
         <bean parent="Uif-MaintenanceStackedCollectionSection">
-          <property name="title" value="Addresses"/>
+          <property name="headerText" value="Addresses"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Address"/>
           <property name="propertyName" value="addresses"/>
           <property name="items">

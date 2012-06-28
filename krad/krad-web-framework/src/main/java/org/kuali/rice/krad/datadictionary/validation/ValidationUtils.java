@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.uif.UifConstants;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -26,13 +27,22 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- * Inherited from Kuali Student and adapted extensively, this class provides static utility methods for validation processing. 
+ * ValidationUtils provides static utility methods for validation processing
+ *
+ * <p>Inherited from Kuali Student and adapted extensively</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValidationUtils {
 
-	public static String buildPath(String attributePath, String attributeName) {
+    /**
+     * constructs a path by appending the attribute name to the provided path
+     *
+     * @param attributePath - a string representation of specifically which attribute (at some depth) is being accessed
+     * @param attributeName - the attribute name
+     * @return the path
+     */
+    public static String buildPath(String attributePath, String attributeName) {
 		if (StringUtils.isNotBlank(attributeName)) {
 			if (StringUtils.isNotBlank(attributePath)) 
 				return new StringBuilder(attributePath).append(".").append(attributeName).toString();
@@ -65,30 +75,41 @@ public class ValidationUtils {
 	    
 	    return index;
 	}
-	
-	public static boolean compareValues(Object value1, Object value2,
+
+    /**
+     * compares the value provided by the user and the one specified by the {@code WhenConstraint}
+     *
+     * @param fieldValue - the value found in the field specified by a {@code CaseConstraint}'s {@code propertyName}
+     * @param whenValue - the value specified by a {@code WhenConstraint}
+     * @param dataType - the data type of the field which caseConstraint's propertyName refers to
+     * @param operator - the relationship to check between the {@code fieldValue} and the {@code whenValue}
+     * @param isCaseSensitive - whether string comparison will be carried out in a case sensitive fashion
+     * @param dateTimeService - used to convert strings to dates
+     * @return
+     */
+	public static boolean compareValues(Object fieldValue, Object whenValue,
 			DataType dataType, String operator, boolean isCaseSensitive, DateTimeService dateTimeService) {
 
 		boolean result = false;
 		Integer compareResult = null;
 
-		if("has_value".equalsIgnoreCase(operator)){
-			if(value1==null){
-				return "false".equals(value2.toString().toLowerCase());
+		if(UifConstants.CaseConstraintOperators.HAS_VALUE.equalsIgnoreCase(operator)){
+			if(fieldValue ==null){
+				return "false".equals(whenValue.toString().toLowerCase());
 			}
-			if (value1 instanceof String && ((String) value1).isEmpty()){
-			    return "false".equals(value2.toString().toLowerCase());			    
+			if (fieldValue instanceof String && ((String) fieldValue).isEmpty()){
+			    return "false".equals(whenValue.toString().toLowerCase());
 			}
-			if(value1 instanceof Collection && ((Collection<?>) value1).isEmpty()){
-				return "false".equals(value2.toString().toLowerCase());
+			if(fieldValue instanceof Collection && ((Collection<?>) fieldValue).isEmpty()){
+				return "false".equals(whenValue.toString().toLowerCase());
 			}
-			return "true".equals(value2.toString().toLowerCase());
+			return "true".equals(whenValue.toString().toLowerCase());
 		}		
 		// Convert objects into appropriate data types
 		if (null != dataType) {
 			if (DataType.STRING.equals(dataType)) {
-			    String v1 = getString(value1);
-				String v2 = getString(value2);
+			    String v1 = getString(fieldValue);
+				String v2 = getString(whenValue);
 
 				if(!isCaseSensitive) {
 				    v1 = v1.toUpperCase();
@@ -97,47 +118,49 @@ public class ValidationUtils {
 				
 				compareResult = v1.compareTo(v2);
 			} else if (DataType.INTEGER.equals(dataType)) {
-				Integer v1 = getInteger(value1);
-				Integer v2 = getInteger(value2);
+				Integer v1 = getInteger(fieldValue);
+				Integer v2 = getInteger(whenValue);
 				compareResult = v1.compareTo(v2);
 			} else if (DataType.LONG.equals(dataType)) {
-				Long v1 = getLong(value1);
-				Long v2 = getLong(value2);
+				Long v1 = getLong(fieldValue);
+				Long v2 = getLong(whenValue);
 				compareResult = v1.compareTo(v2);
 			} else if (DataType.DOUBLE.equals(dataType)) {
-				Double v1 = getDouble(value1);
-				Double v2 = getDouble(value2);
+				Double v1 = getDouble(fieldValue);
+				Double v2 = getDouble(whenValue);
 				compareResult = v1.compareTo(v2);
 			} else if (DataType.FLOAT.equals(dataType)) {
-				Float v1 = getFloat(value1);
-				Float v2 = getFloat(value2);
+				Float v1 = getFloat(fieldValue);
+				Float v2 = getFloat(whenValue);
 				compareResult = v1.compareTo(v2);
 			} else if (DataType.BOOLEAN.equals(dataType)) {
-				Boolean v1 = getBoolean(value1);
-				Boolean v2 = getBoolean(value2);
+				Boolean v1 = getBoolean(fieldValue);
+				Boolean v2 = getBoolean(whenValue);
 				compareResult = v1.compareTo(v2);
 			} else if (DataType.DATE.equals(dataType)) {
-				Date v1 = getDate(value1, dateTimeService);
-				Date v2 = getDate(value2, dateTimeService);
+				Date v1 = getDate(fieldValue, dateTimeService);
+				Date v2 = getDate(whenValue, dateTimeService);
 				compareResult = v1.compareTo(v2);
 			}
 		}
 
 		if (null != compareResult) {
-			if (("equals".equalsIgnoreCase(operator)
-					|| "greater_than_equal".equalsIgnoreCase(operator) || "less_than_equal"
-					.equalsIgnoreCase(operator))
+			if ((UifConstants.CaseConstraintOperators.EQUALS.equalsIgnoreCase(operator)
+					|| UifConstants.CaseConstraintOperators.GREATER_THAN_EQUAL.equalsIgnoreCase(operator)
+                    || UifConstants.CaseConstraintOperators.LESS_THAN_EQUAL.equalsIgnoreCase(operator))
 					&& 0 == compareResult) {
 				result = true;
 			}
 
-			if (("not_equal".equalsIgnoreCase (operator) || "not_equals".equalsIgnoreCase (operator)
-     || "greater_than".equalsIgnoreCase(operator)) && compareResult >= 1) {
+			if ((UifConstants.CaseConstraintOperators.NOT_EQUAL.equalsIgnoreCase(operator)
+                    || UifConstants.CaseConstraintOperators.NOT_EQUALS.equalsIgnoreCase(operator)
+     || UifConstants.CaseConstraintOperators.GREATER_THAN.equalsIgnoreCase(operator)) && compareResult >= 1) {
 				result = true;
 			}
 
-			if (("not_equal".equalsIgnoreCase (operator) || "not_equals".equalsIgnoreCase (operator)
-     || "less_than".equalsIgnoreCase(operator)) && compareResult <= -1) {
+			if ((UifConstants.CaseConstraintOperators.NOT_EQUAL.equalsIgnoreCase(operator)
+                    || UifConstants.CaseConstraintOperators.NOT_EQUALS.equalsIgnoreCase(operator)
+     || UifConstants.CaseConstraintOperators.LESS_THAN.equalsIgnoreCase(operator)) && compareResult <= -1) {
 				result = true;
 			}
 		}
@@ -145,6 +168,12 @@ public class ValidationUtils {
 		return result;
 	}
 
+    /**
+     * converts the provided object into an integer
+     *
+     * @param o - the object to convert
+     * @return the integer value
+     */
 	public static Integer getInteger(Object o) {
 		Integer result = null;
 		if (o instanceof Integer)
@@ -160,6 +189,12 @@ public class ValidationUtils {
 		return result;
 	}
 
+    /**
+     * converts the provided object into a long
+     *
+     * @param o - the object to convert
+     * @return the long value
+     */
 	public static Long getLong(Object o) {
 		Long result = null;
 		if (o instanceof Long)
@@ -175,6 +210,12 @@ public class ValidationUtils {
 		return result;
 	}
 
+    /**
+     * converts the provided object into an float
+     *
+     * @param o - the object to convert
+     * @return the float value
+     */
 	public static Float getFloat(Object o) {
 		Float result = null;
 		if (o instanceof Float)
@@ -190,6 +231,12 @@ public class ValidationUtils {
 		return result;
 	}
 
+    /**
+     * converts the provided object into a double
+     *
+     * @param o - the object to convert
+     * @return the double value
+     */
 	public static Double getDouble(Object o) {
 		Double result = null;
 		if (o instanceof BigDecimal)
@@ -207,13 +254,21 @@ public class ValidationUtils {
 		return result;
 	}
 
-	public static Date getDate(Object o, DateTimeService dateTimeService) throws IllegalArgumentException {
+    /**
+     * determines whether the provided object is a date and tries to converts non-date values
+     *
+     * @param object - the object to convert/cast into a date
+     * @param dateTimeService - used to convert strings to dates
+     * @return a date object
+     * @throws IllegalArgumentException
+     */
+	public static Date getDate(Object object, DateTimeService dateTimeService) throws IllegalArgumentException {
 		Date result = null;
-		if (o instanceof Date)
-			return (Date) o;
-		if (o == null)
+		if (object instanceof Date)
+			return (Date) object;
+		if (object == null)
 			return null;
-		String s = o.toString();
+		String s = object.toString();
 		if (s != null && s.trim().length() > 0) {
 			try {
 				result = dateTimeService.convertToDate(s.trim());
@@ -224,6 +279,12 @@ public class ValidationUtils {
 		return result;
 	}
 
+    /**
+     * converts the provided object into a string
+     *
+     * @param o - the object to convert
+     * @return the string value
+     */
 	public static String getString(Object o) {
 		if (o instanceof String)
 			return (String) o;
@@ -232,6 +293,12 @@ public class ValidationUtils {
 		return o.toString();
 	}
 
+    /**
+     * converts the provided object into a boolean
+     *
+     * @param o - the object to convert
+     * @return the boolean value
+     */
 	public static Boolean getBoolean(Object o) {
 		Boolean result = null;
 		if (o instanceof Boolean)
@@ -243,9 +310,14 @@ public class ValidationUtils {
 			result = Boolean.parseBoolean(s.trim());
 		}
 		return result;
-	}	
-	
+	}
 
+    /**
+     * checks whether the string contains non-whitespace characters
+     *
+     * @param string
+     * @return true if the string contains at least one none-whitespace character, false otherwise
+     */
     public static boolean hasText(String string) {
 
         if (string == null || string.length() < 1) {
@@ -262,14 +334,31 @@ public class ValidationUtils {
 
         return false;
     }
-    
+
+    /**
+     * checks whether the provided object is null or empty
+     *
+     * @param value - the object to check
+     * @return true if the object is null or empty, false otherwise
+     */
     public static boolean isNullOrEmpty(Object value) {
     	return value == null || (value instanceof String && StringUtils.isBlank(((String) value).trim()));
     }
-    
-	
+
+    /**
+     * defines possible result values of a comparison operation
+     */
 	public static enum Result { VALID, INVALID, UNDEFINED };
-	
+
+    /**
+     * attempts to convert the provided value to the given dataType
+     *
+     * @param value - the object to convert
+     * @param dataType - the data type to convert into
+     * @param dateTimeService - used to convert strings to dates
+     * @return the converted value if null or successful, otherwise throws an exception
+     * @throws AttributeValidationException
+     */
 	public static Object convertToDataType(Object value, DataType dataType, DateTimeService dateTimeService) throws AttributeValidationException {
 		Object returnValue = value;
 		
@@ -329,24 +418,61 @@ public class ValidationUtils {
 		
 		return returnValue;
 	}
-	
+
+    /**
+     * checks whether the provided value is greater than the limit given
+     *
+     * @param value - the object to check
+     * @param limit - the limit to use
+     * @param <T>
+     * @return one of the values in {@link  Result}
+     */
 	public static <T> Result isGreaterThan(T value, Comparable<T> limit) {
 		return limit == null ? Result.UNDEFINED : ( limit.compareTo(value) < 0 ? Result.VALID : Result.INVALID );
 	}
-	
+
+    /**
+     * checks whether the provided value is greater than or equal to the limit given
+     *
+     * @param value - the object to check
+     * @param limit - the limit to use
+     * @param <T>
+     * @return one of the values in {@link  Result}
+     */
 	public static <T> Result isGreaterThanOrEqual(T value, Comparable<T> limit) {
 		return limit == null ? Result.UNDEFINED : ( limit.compareTo(value) <= 0 ? Result.VALID : Result.INVALID );
 	}
-	
+
+    /**
+     * checks whether the provided value is less than the limit given
+     *
+     * @param value - the object to check
+     * @param limit - the limit to use
+     * @param <T>
+     * @return one of the values in {@link  Result}
+     */
 	public static <T> Result isLessThan(T value, Comparable<T> limit) {
 		return limit == null ? Result.UNDEFINED : ( limit.compareTo(value) > 0 ? Result.VALID : Result.INVALID );
 	}
-	
+
+    /**
+     * checks whether the provided value is greater than the limit given
+     *
+     * @param value - the object to check
+     * @param limit - the limit to use
+     * @param <T>
+     * @return one of the values in {@link  Result}
+     */
 	public static <T> Result isLessThanOrEqual(T value, Comparable<T> limit) {
 		return limit == null ? Result.UNDEFINED : ( limit.compareTo(value) >= 0 ? Result.VALID : Result.INVALID );
 	}
-	
-	
+
+    /**
+     * converts a path into an array of its path components
+     *
+     * @param fieldPath  - a string representation of specifically which attribute (at some depth) is being accessed
+     * @return the array of path components
+     */
     public static String[] getPathTokens(String fieldPath) {
         return (fieldPath != null && fieldPath.contains(".") ? fieldPath.split("\\.") : new String[]{fieldPath});
     }

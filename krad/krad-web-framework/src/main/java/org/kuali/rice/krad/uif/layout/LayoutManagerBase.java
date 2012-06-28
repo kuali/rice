@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
@@ -23,6 +24,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ConfigurableBase;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import sun.misc.Regexp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,9 +49,10 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 
 	private String id;
 	private String template;
-	private String style;
+    private String templateName;
 
-	private List<String> styleClasses;
+	private String style;
+	private List<String> cssClasses;
 
 	@ReferenceCopy(newCollectionInstance=true)
 	private Map<String, Object> context;
@@ -59,7 +62,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	public LayoutManagerBase() {
         super();
 
-		styleClasses = new ArrayList<String>();
+		cssClasses = new ArrayList<String>();
 		context = new HashMap<String, Object>();
 		propertyReplacers = new ArrayList<PropertyReplacer>();
 	}
@@ -68,7 +71,8 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
-	public void performInitialization(View view, Object model, Container container) {
+    @Override
+    public void performInitialization(View view, Object model, Container container) {
 		// set id of layout manager from container
 		if (StringUtils.isBlank(id)) {
 			id = container.getId() + "_layout";
@@ -79,7 +83,8 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performApplyModel(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
-	public void performApplyModel(View view, Object model, Container container) {
+    @Override
+    public void performApplyModel(View view, Object model, Container container) {
 
 	}
 
@@ -87,7 +92,8 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performFinalize(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
-	public void performFinalize(View view, Object model, Container container) {
+    @Override
+    public void performFinalize(View view, Object model, Container container) {
 
 	}
 
@@ -96,10 +102,10 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * property value reference should be copied. Subclasses can override this
 	 * but should include a call to super
 	 * 
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager.
-	 *      getPropertiesForReferenceCopy()
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertiesForReferenceCopy()
 	 */
-	public Set<String> getPropertiesForReferenceCopy() {
+    @Override
+    public Set<String> getPropertiesForReferenceCopy() {
 		Set<String> refCopyProperties = new HashSet<String>();
 
 		refCopyProperties.add(UifPropertyPaths.CONTEXT);
@@ -120,13 +126,15 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentsForLifecycle()
 	 */
-	public List<Component> getComponentsForLifecycle() {
+    @Override
+    public List<Component> getComponentsForLifecycle() {
 		return new ArrayList<Component>();
 	}
 
     /**
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
      */
+    @Override
     public List<Component> getComponentPrototypes() {
         List<Component> components = new ArrayList<Component>();
 
@@ -136,57 +144,84 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getId()
 	 */
-	public String getId() {
+    @Override
+    public String getId() {
 		return this.id;
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setId(java.lang.String)
 	 */
-	public void setId(String id) {
+    @Override
+    public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getTemplate()
 	 */
-	public String getTemplate() {
+    @Override
+    public String getTemplate() {
 		return this.template;
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setTemplate(java.lang.String)
 	 */
-	public void setTemplate(String template) {
+    @Override
+    public void setTemplate(String template) {
 		this.template = template;
 	}
 
-	/**
+    /**
+     * The name of the layout manager template
+     *
+     * @return template name
+     * @see #getTemplate()
+     */
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    /**
+     * Setter for the layout managers template name
+     *
+     * @param templateName
+     */
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getStyle()
 	 */
-	public String getStyle() {
+    @Override
+    public String getStyle() {
 		return this.style;
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setStyle(java.lang.String)
 	 */
-	public void setStyle(String style) {
+    @Override
+    public void setStyle(String style) {
 		this.style = style;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getStyleClasses()
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getCssClasses()
 	 */
-	public List<String> getStyleClasses() {
-		return this.styleClasses;
+    @Override
+    public List<String> getCssClasses() {
+		return this.cssClasses;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setStyleClasses(java.util.List)
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setCssClasses(java.util.List)
 	 */
-	public void setStyleClasses(List<String> styleClasses) {
-		this.styleClasses = styleClasses;
+    @Override
+	public void setCssClasses(List<String> cssClasses) {
+		this.cssClasses = cssClasses;
 	}
 
 	/**
@@ -196,8 +231,8 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @return String class attribute string
 	 */
 	public String getStyleClassesAsString() {
-		if (styleClasses != null) {
-			return StringUtils.join(styleClasses, " ");
+		if (cssClasses != null) {
+			return StringUtils.join(cssClasses, " ");
 		}
 
 		return "";
@@ -213,32 +248,43 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 */
 	public void setStyleClasses(String styleClasses) {
 		String[] classes = StringUtils.split(styleClasses);
-		this.styleClasses = Arrays.asList(classes);
+		this.cssClasses = Arrays.asList(classes);
 	}
 
 	/**
-	 * This method adds a single style to the list of css style classes on this layoutManager
-	 * 
-	 * @param style
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#addStyleClass(java.lang.String)
 	 */
 	@Override
 	public void addStyleClass(String styleClass){
-		if(!styleClasses.contains(styleClass)){
-			styleClasses.add(styleClass);
+		if(!cssClasses.contains(styleClass)){
+			cssClasses.add(styleClass);
 		}
 	}
 
-	/**
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#appendToStyle(java.lang.String)
+     */
+    @Override
+    public void appendToStyle(String styleRules) {
+        if (style == null) {
+            style = "";
+        }
+        style = style + styleRules;
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getContext()
 	 */
-	public Map<String, Object> getContext() {
+    @Override
+    public Map<String, Object> getContext() {
 		return this.context;
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setContext(java.util.Map)
 	 */
-	public void setContext(Map<String, Object> context) {
+    @Override
+    public void setContext(Map<String, Object> context) {
 		this.context = context;
 	}
 
@@ -246,7 +292,8 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#pushObjectToContext(java.lang.String,
 	 *      java.lang.Object)
 	 */
-	public void pushObjectToContext(String objectName, Object object) {
+    @Override
+    public void pushObjectToContext(String objectName, Object object) {
 		if (this.context == null) {
 			this.context = new HashMap<String, Object>();
 		}
@@ -257,14 +304,16 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyReplacers()
 	 */
-	public List<PropertyReplacer> getPropertyReplacers() {
+    @Override
+    public List<PropertyReplacer> getPropertyReplacers() {
 		return this.propertyReplacers;
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setPropertyReplacers(java.util.List)
 	 */
-	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
+    @Override
+    public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
 		this.propertyReplacers = propertyReplacers;
 	}
 

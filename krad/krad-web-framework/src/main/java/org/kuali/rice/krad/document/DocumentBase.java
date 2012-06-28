@@ -133,10 +133,15 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
+     * Retrieves the title of the document
+     *
+     * <p>
      * This is the default document title implementation. It concatenates the document's data dictionary file label attribute and
      * the document's document header description together. This title is used to populate workflow and will show up in document
      * search results and user action lists.
+     * </p>
      *
+     * return String representing the title of the document
      * @see org.kuali.rice.krad.document.Document#getDocumentTitle()
      */
     public String getDocumentTitle() {

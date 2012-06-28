@@ -33,7 +33,12 @@ public class DataTypeUtil {
 		final Class<?> attributeClass = thieveAttributeClassFromBusinessObjectClass(businessObjectClass, attributeName);
 		return determineDataType(attributeClass);
 	}
-	
+	 /**
+     * Determines the datatype of the given class.
+     *
+     * @param attributeClass the class whose datatype is to be determined.
+     * @return String representation of the datatype. Defaults to string.
+     */
 	public static String determineDataType(Class<?> attributeClass) {
         if (isStringy(attributeClass)) return KRADConstants.DATA_TYPE_STRING; // our most common case should go first
         if (isDecimaltastic(attributeClass)) return KRADConstants.DATA_TYPE_FLOAT;

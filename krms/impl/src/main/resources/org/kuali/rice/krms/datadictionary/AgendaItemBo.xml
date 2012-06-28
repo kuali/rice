@@ -152,7 +152,7 @@
   </bean -->  
     
   <bean id="AgendaItemBo-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Agenda Lookup" />
+    <property name="headerText" value="Agenda Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaItemBo" />
     <property name="criteriaFields">
       <list>
@@ -177,7 +177,7 @@
   </bean>
   
   <bean id="AgendaItemBo-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Agenda Item Inquiry"/>
+    <property name="headerText" value="Agenda Item Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
@@ -193,10 +193,10 @@
                               <bean parent="Uif-InputField" p:propertyName="ruleId"/>
                             </list>
                           </property>
-                          <property name="title" value="Agenda Item Attributes"/>
+                          <property name="headerText" value="Agenda Item Attributes"/>
                       </bean>
                                    <bean parent="Uif-Disclosure-StackedCollectionSection">
-						              <property name="title" value="Always"/>  
+						              <property name="headerText" value="Always"/>  
 						              <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
 						              <property name="propertyName" value="alwaysList"/>
 						              <property name="items">

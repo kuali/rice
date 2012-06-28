@@ -168,6 +168,16 @@ public class MaintenanceUtils {
         }
     }
 
+   /**
+    * Determines if the maintenance document action creates a new record.
+    *
+    * <p>
+    * When taking an action on a maintenance document, some actions cause the creation of a new record, while some don't.
+    * For example, editing does not create a record, but copying does.
+    * @param maintenanceAction
+    * @return boolean
+    * </p>
+    */
     public static boolean isMaintenanceDocumentCreatingNewRecord(String maintenanceAction) {
         if (KRADConstants.MAINTENANCE_EDIT_ACTION.equalsIgnoreCase(maintenanceAction)) {
             return false;

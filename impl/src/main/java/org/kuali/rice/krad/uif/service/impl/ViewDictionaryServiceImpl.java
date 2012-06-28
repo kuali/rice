@@ -27,6 +27,7 @@ import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.LookupView;
@@ -70,7 +71,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
         PropertyValues propertyValues = getDataDictionary().getViewPropertiesByType(ViewType.INQUIRY, indexKey);
 
         String viewHelperServiceClassName = ViewModelUtils.getStringValFromPVs(propertyValues,
-                "viewHelperServiceClassName");
+                UifPropertyPaths.VIEW_HELPER_SERVICE_CLASS);
         if (StringUtils.isNotBlank(viewHelperServiceClassName)) {
             try {
                 inquirable = (Inquirable) ObjectUtils.newInstance(Class.forName(viewHelperServiceClassName));

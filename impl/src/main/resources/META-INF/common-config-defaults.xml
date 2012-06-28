@@ -112,7 +112,9 @@
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
     <param name="krad.url" override="false">${application.url}/kr-krad</param>
+    <param name="rice.server.krad.url" override="false">${rice.server.url}/kr-krad</param>
     <param name="krad.lookup.url" override="false">${krad.url}/lookup</param>
+    <param name="rice.server.krad.lookup.url" override="false">${rice.server.krad.url}/lookup</param>
     <param name="krad.inquiry.url" override="false">${krad.url}/inquiry</param>
     <param name="rice.server.url" override="false">${application.url}</param>
     <param name="workflow.url" override="false">${rice.server.url}/kew</param>

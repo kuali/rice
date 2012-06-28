@@ -193,7 +193,17 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
     public boolean goToCentralRiceForInquiry() { 
         return false;
     }
-        
+
+    /**
+     * Returns the base URL to use for lookup requests to objects within the module
+     *
+     * @return String base lookup URL
+     */
+    @Override
+    protected String getBaseLookupUrl() {
+        return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
+    }
+
     protected RunMode getRunMode(String module) {
         String propertyName = module + ".mode";
         String runMode = ConfigContext.getCurrentContextConfig().getProperty(propertyName);

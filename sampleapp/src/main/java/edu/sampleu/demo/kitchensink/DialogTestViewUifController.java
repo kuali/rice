@@ -73,9 +73,9 @@ public class DialogTestViewUifController extends UifControllerBase {
         ModelAndView mv;
 
         // dialog names
-        String dialog1Name = "myDialog";
-        String dialog2Name = "myRadioButtonDialog";
-        String dialog3Name = "myRestart";
+        String dialog1 = "myDialog";
+        String dialog2 = "myRadioButtonDialog";
+        String dialog3 = "myRestart";
 
         // local copies of dialog answers
         boolean whichStory = false;
@@ -83,35 +83,35 @@ public class DialogTestViewUifController extends UifControllerBase {
         boolean doRestart = false;
 
         //exercise asking a question here
-//        boolean answer = askYesOrNoQuestion("myDialog", uiTestForm,  request, response);
+//        boolean answer = askYesOrNoQuestion("dialog1", uiTestForm,  request, response);
+
+        DialogManager dm = uiTestForm.getDialogManager();
 
         //TODO: Hack by Dan
-        DialogManager dm = uiTestForm.getDialogManager();
-        if (dm.hasDialogBeenAnswered(dialog1Name)){
-            whichStory = dm.wasDialogAnswerAffirmative(dialog1Name);
+        if (dm.hasDialogBeenAnswered(dialog1)){
+            whichStory = dm.wasDialogAnswerAffirmative(dialog1);
         } else {
             // redirect back to client to display lightbox
-            dm.addDialog(dialog1Name, uiTestForm.getMethodToCall());
-            mv = showDialog(dialog1Name, uiTestForm, request, response);
+            dm.addDialog(dialog1, uiTestForm.getMethodToCall());
+            mv = showDialog(dialog1, uiTestForm, request, response);
             return mv;
         }
 
         // continue on here if they answered the question
         if (whichStory){
             uiTestForm.setField1("You Selected: Go Dog, Go!");
-            if (!dm.hasDialogBeenDisplayed(dialog2Name)){
-                dm.addDialog(dialog2Name,uiTestForm.getMethodToCall());
-                return getUIFModelAndView(uiTestForm, "DialogView-Page1");
-            }
-            if (dm.hasDialogBeenAnswered(dialog2Name)){
-                whichVersion = dm.getDialogExplanation(dialog2Name);
+
+            // popup a 2nd consecutive dialog
+            if (dm.hasDialogBeenAnswered(dialog2)){
+                whichVersion = dm.getDialogExplanation(dialog2);
             } else {
                 // redirect back to client to display lightbox
-                dm.addDialog(dialog2Name, uiTestForm.getMethodToCall());
-                mv = showDialog(dialog2Name, uiTestForm, request, response);
+                dm.addDialog(dialog2, uiTestForm.getMethodToCall());
+                mv = showDialog(dialog2, uiTestForm, request, response);
                 return mv;
             }
 
+            // do something different for each possible response
             if(whichVersion.contains("A")){
                 uiTestForm.setField1("You selected the G rated version, by P.D. Eastman. Here we go...");
             } else if(whichVersion.contains("B")){
@@ -119,24 +119,31 @@ public class DialogTestViewUifController extends UifControllerBase {
             } else if (whichVersion.contains("C")){
                 uiTestForm.setField1("For the X Rated version, your credit card will be charged $29.99");
             } else {
+                // if they didn't make a proper choice, ask them again
                 uiTestForm.setField1("You need to select a version");
-                dm.resetDialogStatus(dialog2Name);
+                dm.resetDialogStatus(dialog2);
                 return getUIFModelAndView(uiTestForm, "DialogView-Page1");
             }
         } else {
             uiTestForm.setField1("You Selected: Green Eggs And Ham");
-            if (!dm.hasDialogBeenDisplayed(dialog2Name)){
-                dm.addDialog(dialog2Name,uiTestForm.getMethodToCall());
+
+            // in this case, return to client and wait for them to submit again before showing next dialog
+            if (!dm.hasDialogBeenDisplayed(dialog2)){
+                dm.addDialog(dialog2,uiTestForm.getMethodToCall());
                 return getUIFModelAndView(uiTestForm, "DialogView-Page1");
             }
-            if (dm.hasDialogBeenAnswered(dialog2Name)){
-                whichVersion = dm.getDialogAnswer(dialog2Name);
+
+            // cluncky approach to invoking 2nd dialog
+            if (dm.hasDialogBeenAnswered(dialog2)){
+                whichVersion = dm.getDialogAnswer(dialog2);
             } else {
                 // redirect back to client to display lightbox
-                dm.addDialog(dialog2Name, uiTestForm.getMethodToCall());
-                mv = showDialog(dialog2Name, uiTestForm, request, response);
+                dm.addDialog(dialog2, uiTestForm.getMethodToCall());
+                mv = showDialog(dialog2, uiTestForm, request, response);
                 return mv;
             }
+
+            // display which story the user has selected
             if(whichVersion.contains("A")){
                 uiTestForm.setField1("You selected the G rated version, by Dr. Seuss. Here we go...");
             } else if(whichVersion.contains("B")){
@@ -145,31 +152,38 @@ public class DialogTestViewUifController extends UifControllerBase {
                 uiTestForm.setField1("For the X Rated version, your credit card will be charged $29.99");
             } else {
                 uiTestForm.setField1("You need to select a version");
-                dm.resetDialogStatus(dialog2Name);
+                dm.resetDialogStatus(dialog2);
                 return getUIFModelAndView(uiTestForm, "DialogView-Page1");
             }
 
         }
-        if (!dm.hasDialogBeenDisplayed(dialog3Name)) {
-                dm.addDialog(dialog3Name,uiTestForm.getMethodToCall());
+
+        // Wait at the client page for another page submit
+        if (!dm.hasDialogBeenDisplayed(dialog3)) {
+                dm.addDialog(dialog3,uiTestForm.getMethodToCall());
                 return getUIFModelAndView(uiTestForm, "DialogView-Page1");
         };
-        if (dm.hasDialogBeenAnswered(dialog3Name)){
-            doRestart = dm.wasDialogAnswerAffirmative(dialog3Name);
+
+        // Ask them if they want to start over
+        if (dm.hasDialogBeenAnswered(dialog3)){
+            doRestart = dm.wasDialogAnswerAffirmative(dialog3);
         } else {
             // redirect back to client to display lightbox
-            dm.addDialog(dialog3Name, uiTestForm.getMethodToCall());
-            mv = showDialog(dialog3Name, uiTestForm, request, response);
+            dm.addDialog(dialog3, uiTestForm.getMethodToCall());
+            mv = showDialog(dialog3, uiTestForm, request, response);
             return mv;
         }
+
+        // clear the dialog manager entries, so when we come back, we'll ask all the questions again
         if (doRestart){
-            dm.removeDialog(dialog1Name);
-            dm.removeDialog(dialog2Name);
-            dm.removeDialog(dialog3Name);
+            dm.removeDialog(dialog1);
+            dm.removeDialog(dialog2);
+            dm.removeDialog(dialog3);
+            uiTestForm.setField1("Ok, let's start over.");
         }
 
-
-        return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+        // we're done, go to the next page
+        return getUIFModelAndView(uiTestForm, "DialogView-Page2");
     }
 
     /**

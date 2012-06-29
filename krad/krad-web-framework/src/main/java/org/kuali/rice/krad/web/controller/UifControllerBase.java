@@ -687,7 +687,7 @@ public abstract class UifControllerBase {
      * <p>
      * If this modal dialog has not yet been presented to the user, a redirect back to the client
      * is performed to display the modal dialog as a Lightbox. The DialogGroup identified by the
-     * dialogName is used as the Lightbox content.
+     * dialogId is used as the Lightbox content.
      * </p>
      *
      * <p>
@@ -696,18 +696,18 @@ public abstract class UifControllerBase {
      * </p>
      *
      * @param form
-     * @param dialogName
+     * @param dialogId
      * @return
      */
-    protected boolean askYesOrNoQuestion(String dialogName, UifFormBase form,
+    protected boolean askYesOrNoQuestion(String dialogId, UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         DialogManager dm = form.getDialogManager();
-        if (dm.hasDialogBeenAnswered(dialogName)){
-            return dm.wasDialogAnswerAffirmative(dialogName);
+        if (dm.hasDialogBeenAnswered(dialogId)){
+            return dm.wasDialogAnswerAffirmative(dialogId);
         } else {
             // redirect back to client to display lightbox
-            dm.addDialog(dialogName, form.getMethodToCall());
-            showDialog(dialogName, form, request, response);
+            dm.addDialog(dialogId, form.getMethodToCall());
+            showDialog(dialogId, form, request, response);
         }
         // should never get here. TODO: throw exception?
         //TODO: clear dialogManager entry if exception thrown during redirect?
@@ -721,14 +721,14 @@ public abstract class UifControllerBase {
      * <p>
      * Similar to askYesOrNoQuestion() but returns a string instead of a boolean
      * </p>
-     * @param dialogName
+     * @param dialogId
      * @param form
      * @param request
      * @param response
      * @return
      * @throws Exception
      */
-    protected String askTextResponseQuestion(String dialogName, UifFormBase form,
+    protected String askTextResponseQuestion(String dialogId, UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         // TODO: implement me     - same as above give the answer back as a string instead of a boolean
         return null;
@@ -742,22 +742,22 @@ public abstract class UifControllerBase {
      * from the controller method.
      * </p>
      *
-     * @param dialogName - id of the dialog or group to use as content in the lightbox.
+     * @param dialogId - id of the dialog or group to use as content in the lightbox.
      * @param form - the form associated with the view
      * @param request - the http request
      * @param response - the http response
      * @return will return void.  actually, won't return at all.
      * @throws Exception
      */
-    protected ModelAndView showDialog(String dialogName, UifFormBase form,
+    protected ModelAndView showDialog(String dialogId, UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) throws Exception{
         // js script to invoke lightbox: runs onDocumentReady
-        form.setLightboxScript("showLightboxComponent('"+dialogName+"');");
+        form.setLightboxScript("showLightboxComponent('"+dialogId+"');");
 
         // respond back to the client directly
         // without returning back to the controller, but we still want spring mvc to build the view
         ModelAndView mv = getUIFModelAndView(form);
-        UifWebUtils.postControllerHandle(request, response, this, mv);
+//        UifWebUtils.postControllerHandle(request, response, this, mv);
         String myViewName = mv.getViewName();
 
         // try rendering view manually
@@ -825,18 +825,15 @@ public abstract class UifControllerBase {
         String responseValue = form.getDialogResponse();
         String explanationValue = form.getDialogExplanation();
         DialogManager dm = form.getDialogManager();
-        String dialogName = dm.getCurrentDialogName();
+        String dialogId = dm.getCurrentDialogId();
 
-        // TODO: what if dialog is not found in dm??
-        dm.setDialogAnswer(dialogName, responseValue);
-        dm.setDialogExplanation(dialogName, explanationValue);
+        dm.setDialogAnswer(dialogId, responseValue);
+        dm.setDialogExplanation(dialogId, explanationValue);
         form.setDialogExplanation("");
-        // TODO: also set explanation value
-
         form.setLightboxScript("");
 
         // call intended controller method
-        String actualMethodToCall = dm.getDialogReturnMethod(dialogName);
+        String actualMethodToCall = dm.getDialogReturnMethod(dialogId);
         String redirectUrl = form.getFormPostUrl();
         Properties props = new Properties();
         props.put(UifParameters.METHOD_TO_CALL, actualMethodToCall);

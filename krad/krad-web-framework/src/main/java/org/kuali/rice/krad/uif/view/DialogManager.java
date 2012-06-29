@@ -43,15 +43,15 @@ public class DialogManager implements Serializable {
     private static class DialogInfo implements Serializable{
         private static final long serialVersionUID = 2779403853894669510L;
 
-        private String dialogName;
+        private String dialogId;
         private boolean asked;
         private boolean answered;
         private String answer;
         private String explanation;
         private String returnMethod;
 
-        public DialogInfo(String dialogName, String returnMethod){
-            this.dialogName = dialogName;
+        public DialogInfo(String dialogId, String returnMethod){
+            this.dialogId = dialogId;
             this.asked = false;
             this.asked = answered;
             this.answer = null;
@@ -60,7 +60,7 @@ public class DialogManager implements Serializable {
         }
     }
 
-    private String currentDialogName;
+    private String currentDialogId;
     private Map<String, DialogInfo> dialogs;
 
     /**
@@ -74,12 +74,12 @@ public class DialogManager implements Serializable {
     /**
      * Indicates whether the named dialog has already been presented to the user
      *
-     * @param dialogName - the key identifying the specific dialog
+     * @param dialogId - the key identifying the specific dialog
      * @return true if dialog has been displayed, false if not
      */
-    public boolean hasDialogBeenDisplayed(String dialogName){
-        if (dialogs.containsKey(dialogName)){
-            return dialogs.get(dialogName).asked;
+    public boolean hasDialogBeenDisplayed(String dialogId){
+        if (dialogs.containsKey(dialogId)){
+            return dialogs.get(dialogId).asked;
         }
         return false;
     }
@@ -87,12 +87,12 @@ public class DialogManager implements Serializable {
     /**
      * Indicates whether the named dialog has alread been answered by the user
      *
-     * @param dialogName - name of the dialog in questions
+     * @param dialogId - name of the dialog in questions
      * @return - true if the dialog has been answered by the user
      */
-    public boolean hasDialogBeenAnswered(String dialogName){
-        if (dialogs.containsKey(dialogName)){
-            return dialogs.get(dialogName).answered;
+    public boolean hasDialogBeenAnswered(String dialogId){
+        if (dialogs.containsKey(dialogId)){
+            return dialogs.get(dialogId).answered;
         }
         return false;
     }
@@ -106,12 +106,12 @@ public class DialogManager implements Serializable {
      * responded.
      * </p>
      *
-     * @param dialogName - a String identifying the dialog
+     * @param dialogId - a String identifying the dialog
      * @return the key String of the option KeyValue chosen by the user
      */
-    public String getDialogAnswer(String dialogName){
-        if (hasDialogBeenAnswered(dialogName)){
-            return dialogs.get(dialogName).answer;
+    public String getDialogAnswer(String dialogId){
+        if (hasDialogBeenAnswered(dialogId)){
+            return dialogs.get(dialogId).answer;
         }
         return null;
     }
@@ -119,24 +119,37 @@ public class DialogManager implements Serializable {
     /**
      * Sets the answer chosen by the user when responding to the dialog
      *
-     * @param dialogName - id of the dialog
+     * @param dialogId - id of the dialog
      * @param answer - value chosen by the user
      */
-    public void setDialogAnswer(String dialogName, String answer){
-        DialogInfo dialogInfo = dialogs.get(dialogName);
+    public void setDialogAnswer(String dialogId, String answer){
+        DialogInfo dialogInfo = dialogs.get(dialogId);
         dialogInfo.answer = answer;
         dialogInfo.answered = true;
-        dialogs.put(dialogName,dialogInfo);
+        dialogs.put(dialogId,dialogInfo);
     }
 
-    public String getDialogExplanation(String dialogName){
-        return dialogs.get(dialogName).explanation;
+    /**
+     * Gets the text String value of the explanation input field
+     *
+     * @param dialogId - dialog identifier
+     * @return String representing user text input entered into the dialog
+     */
+    public String getDialogExplanation(String dialogId){
+        return dialogs.get(dialogId).explanation;
     }
 
-    public void setDialogExplanation(String dialogName, String explanation){
-        DialogInfo dialogInfo = dialogs.get(dialogName);
+    /**
+     * Sets the exlanation text String obtained from the explanation input field
+     * for the dialog
+     *
+     * @param dialogId - identifier of the dialog
+     * @param explanation - text String from input field
+     */
+    public void setDialogExplanation(String dialogId, String explanation){
+        DialogInfo dialogInfo = dialogs.get(dialogId);
         dialogInfo.explanation = explanation;
-        dialogs.put(dialogName,dialogInfo);
+        dialogs.put(dialogId,dialogInfo);
     }
 
     /**
@@ -150,12 +163,12 @@ public class DialogManager implements Serializable {
      * Also returns false, if the question has not even been asked of the user.
      * </p>
      *
-     * @param dialogName
+     * @param dialogId
      * @return true if the user answered the modal dialog affirmatively, false if answered negatively.
      *   also returns false if the questions hasn't yet been answered.
      */
-    public boolean wasDialogAnswerAffirmative(String dialogName){
-        String answer = getDialogAnswer(dialogName);
+    public boolean wasDialogAnswerAffirmative(String dialogId){
+        String answer = getDialogAnswer(dialogId);
         if (answer != null){
             StringBuilder builder = new StringBuilder();
             builder.append("/").append(answer.toLowerCase()).append("/");
@@ -173,25 +186,25 @@ public class DialogManager implements Serializable {
     /**
      * Retrieves the target method to redirect to when returning from a lightbox
      *
-     * @param dialogName - identifies the dialog currently being handled
+     * @param dialogId - identifies the dialog currently being handled
      * @return String - controller method to call
      */
-    public String getDialogReturnMethod(String dialogName){
-        if (hasDialogBeenAnswered(dialogName)){
-            return dialogs.get(dialogName).returnMethod;
+    public String getDialogReturnMethod(String dialogId){
+        if (hasDialogBeenAnswered(dialogId)){
+            return dialogs.get(dialogId).returnMethod;
         }
         return null;
     }
 
     /**
      * sets the return method to call after returning from dialog
-     * @param dialogName
+     * @param dialogId
      * @param returnMethod
      */
-    public void setDialogReturnMethod(String dialogName, String returnMethod){
-        DialogInfo dialogInfo = dialogs.get(dialogName);
+    public void setDialogReturnMethod(String dialogId, String returnMethod){
+        DialogInfo dialogInfo = dialogs.get(dialogId);
         dialogInfo.returnMethod = returnMethod;
-        dialogs.put(dialogName, dialogInfo);
+        dialogs.put(dialogId, dialogInfo);
     }
 
     /**
@@ -203,13 +216,13 @@ public class DialogManager implements Serializable {
      * If the dialog already has a record, nothing is performed.
      * </p>
      *
-     * @param dialogName - String name identifying the dialog
+     * @param dialogId - String name identifying the dialog
      */
-    public void addDialog(String dialogName, String returnMethod){
-        DialogInfo dialogInfo = new DialogInfo(dialogName, returnMethod);
+    public void addDialog(String dialogId, String returnMethod){
+        DialogInfo dialogInfo = new DialogInfo(dialogId, returnMethod);
         dialogInfo.asked = true;
-        dialogs.put(dialogName, dialogInfo);
-        setCurrentDialogName(dialogName);
+        dialogs.put(dialogId, dialogInfo);
+        setCurrentDialogId(dialogId);
     }
 
     /**
@@ -220,11 +233,11 @@ public class DialogManager implements Serializable {
      * If the dialog is not in the list, nothing is performed.
      * </p>
      *
-     * @param dialogName - String identifying the dialog to be removed
+     * @param dialogId - String identifying the dialog to be removed
      */
-    public void removeDialog(String dialogName){
-        if (dialogs.containsKey(dialogName)){
-            dialogs.remove(dialogName);
+    public void removeDialog(String dialogId){
+        if (dialogs.containsKey(dialogId)){
+            dialogs.remove(dialogId);
         }
     }
 
@@ -232,11 +245,11 @@ public class DialogManager implements Serializable {
      * Sets the status of the dialog tracking record to indicate that this dialog
      * has not yet been asked or answered.
      *
-     * @param dialogName - String identifier for the dialog
+     * @param dialogId - String identifier for the dialog
      */
-    public void resetDialogStatus(String dialogName){
-        String returnMethod = getDialogReturnMethod(dialogName);
-        dialogs.put(dialogName, new DialogInfo(dialogName, returnMethod));
+    public void resetDialogStatus(String dialogId){
+        String returnMethod = getDialogReturnMethod(dialogId);
+        dialogs.put(dialogId, new DialogInfo(dialogId, returnMethod));
     }
 
     /**
@@ -263,17 +276,17 @@ public class DialogManager implements Serializable {
      *
      * @return - the name of the current dialog
      */
-    public String getCurrentDialogName() {
-        return currentDialogName;
+    public String getCurrentDialogId() {
+        return currentDialogId;
     }
 
     /**
      * Sets the name of the currently active dialog
      *
-     * @param currentDialogName - the name of the dialog
+     * @param currentDialogId - the name of the dialog
      */
-    public void setCurrentDialogName(String currentDialogName) {
-        this.currentDialogName = currentDialogName;
+    public void setCurrentDialogId(String currentDialogId) {
+        this.currentDialogId = currentDialogId;
     }
 
 }

@@ -86,6 +86,28 @@ public class DialogGroup extends Group {
 
         return components;
     }
+    /**
+     * The following actions are performed:
+     *
+     * <ul>
+     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+        // move dialogGroup custom properties into the items property.
+        // where they will be rendered by group.jsp
+        List<Component> myItems = new ArrayList<Component>();
+        myItems.addAll( getItems() );
+        myItems.add(prompt);
+        myItems.add(explanation);
+        myItems.add(responseInputField);
+        this.setItems(myItems);
+
+    }
 
     /**
      * Performs the final phase of the component lifecycle.

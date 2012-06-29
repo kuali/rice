@@ -35,7 +35,7 @@
 
     <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
               data-type="CheckboxSet" id="${field.id}_fieldset">
-        <legend style="display: none">${field.label}</legend>
+        <legend style="display: none">${field.label!}</legend>
         <@spring.formCheckboxes path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
                                 separator="${control.delimiter!}" attributes="${attributes}"/>
     </fieldset>

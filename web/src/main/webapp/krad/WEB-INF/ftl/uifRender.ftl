@@ -93,11 +93,11 @@
         <#-- now render the updated component (or page) wrapped in an update div -->
         <div id="${Component.id}_update" data-handler="update-component">
             <@krad.template componentUpdate=true component=Component/>
+            <@krad.script value="${KualiForm.lightboxScript!}"/>
         </div>
 
         <#-- show added growls -->
         <@krad.script value="${KualiForm.growlScript!}"/>
-        <@krad.script value="${KualiForm.lightboxScript!}"/>
     </html>
 
 </#if>

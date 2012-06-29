@@ -34,7 +34,7 @@ Standard HTML Radio Input
 
     <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
               data-type="RadioSet" id="${field.id}_fieldset">
-        <legend style="display: none">${field.label}</legend>
+        <legend style="display: none">${field.label!}</legend>
         <@spring.formRadioButtons path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
                                   separator="${control.delimiter!}" attributes="${attributes}"/>
     </fieldset>

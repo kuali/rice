@@ -182,27 +182,6 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         this.ruleExpressionDef = ruleExpressionDef;
     }
 
-    public Map getRuleExtensionValueLabels() {
-        Map extensionLabels = new HashMap();
-        for (RuleExtensionBo ruleExtension : getRuleExtensions()) {
-            if (!ruleExtension.getRuleTemplateAttribute().isWorkflowAttribute()) {
-                continue;
-            }
-            WorkflowRuleAttribute workflowAttribute = ruleExtension.getRuleTemplateAttribute().getWorkflowAttribute();
-
-            RuleAttribute ruleAttribute = ruleExtension.getRuleTemplateAttribute().getRuleAttribute();
-            /*if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
-            }*/
-            for (Row row : workflowAttribute.getRuleRows()) {
-                for (Field field : row.getFields()) {
-                    extensionLabels.put(field.getPropertyName(), field.getFieldLabel());
-                }
-            }
-        }
-        return extensionLabels;
-    }
-
     public String getRuleTemplateName() {
         if (ruleTemplate != null) {
             return ruleTemplate.getName();

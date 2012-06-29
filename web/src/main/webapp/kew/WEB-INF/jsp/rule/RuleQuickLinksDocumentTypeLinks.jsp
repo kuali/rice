@@ -83,7 +83,7 @@
 	                        <c:param name="methodToCall" value="start"/>
 	                        <c:param name="docFormKey" value="88888888"/>
 	                        <c:param name="documentType.name" value="${documentType.name}"/>
-	                        <c:param name="template.name" value="${routeLevel.ruleTemplate.name}"/>
+	                        <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
 	                      </c:url>" target="_blank">Search</a>
 	                    <c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
 	                      &nbsp;

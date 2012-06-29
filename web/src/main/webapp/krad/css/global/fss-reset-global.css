@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 html{color:#000;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
 table{border-collapse:collapse;border-spacing:0;}

@@ -146,6 +146,7 @@ public class UifWebUtils {
 
             history.setCurrent(form, request);
             history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
+
             form.setFormHistory(history);
         }
     }

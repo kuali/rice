@@ -308,7 +308,6 @@ public class Inquiry extends WidgetBase {
             directInquiryAction.setActionScript(onClickScript.toString());
 
             setRender(true);
-
         }
     }
 
@@ -344,7 +343,6 @@ public class Inquiry extends WidgetBase {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(getInquiryLink());
-
         components.add(getDirectInquiryAction());
 
         return components;

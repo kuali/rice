@@ -525,7 +525,7 @@
 
         <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxCut', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
-          <property name="styleClasses">
+          <property name="cssClasses">
             <list merge="true">
               <value>kr-cut-button</value>
             </list>
@@ -540,7 +540,7 @@
             p:conditionalDisable="document.newMaintainableObject.dataObject.agendaItemCutPaste == null -->
         <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxPaste', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Paste">
-          <property name="styleClasses">
+          <property name="cssClasses">
             <list merge="true">
               <value>kr-paste-button</value>
             </list>

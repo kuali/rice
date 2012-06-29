@@ -387,6 +387,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: initialize from dictionary
         }
 
+        // invoke initialize service hook
+        performCustomInitialization(view, component);
+
         // invoke component modifiers setup to run in the initialize phase
         runComponentModifiers(view, component, null, UifConstants.ViewPhases.INITIALIZE);
 
@@ -401,9 +404,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 performComponentInitialization(view, model, replacerComponent);
             }
         }
-
-        // invoke initialize service hook
-        performCustomInitialization(view, component);
     }
 
     /**

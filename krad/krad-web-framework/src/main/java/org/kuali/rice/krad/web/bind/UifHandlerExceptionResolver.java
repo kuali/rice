@@ -114,16 +114,14 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setFormHistory(history);
 
         // Set render full view to force full render
-
         incidentReportForm.setRenderFullView(true);
+
         ModelAndView modelAndView = UifWebUtils.getUIFModelAndView(incidentReportForm, "");
         try {
             UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
         }
-
-       // GlobalVariables.getUifFormManager().setCurrentForm(incidentReportForm);
 
         return modelAndView;
     }

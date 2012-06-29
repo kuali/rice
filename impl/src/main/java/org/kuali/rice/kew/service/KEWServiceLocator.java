@@ -230,10 +230,14 @@ public final class KEWServiceLocator {
         QName name = new QName(serviceName);
         RunMode kewRunMode = RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY));
         if (kewRunMode == RunMode.REMOTE || kewRunMode == RunMode.THIN) {
-            name = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName);
+            if (!serviceName.equals(WORKFLOW_DOCUMENT_PROTOTYPE)) {
+                name = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName);
+            } else { 
+                name = new QName(serviceName);
+            }
         }
-		return GlobalResourceLoader.getResourceLoader().<T>getService(name);
-	}
+        return GlobalResourceLoader.getResourceLoader().<T>getService(name);
+    }
 
 	public static DocumentTypeService getDocumentTypeService() {
 		return (DocumentTypeService) getBean(DOCUMENT_TYPE_SERVICE);

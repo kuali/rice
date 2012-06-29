@@ -1069,7 +1069,7 @@
   <bean id="Checkbox-DialogGroup" parent="Uif-DialogGroup" >
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
-      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+      <bean parent="Uif-DialogExplanation" p:render="true">
         <property name="control">
           <bean parent="Uif-VerticalCheckboxesControl">
             <property name="options">

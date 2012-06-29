@@ -31,7 +31,7 @@
      <li><portal:portalLink displayTitle="true" title="Test Open Authorization" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=TestOpenAuthView&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Configuration Test View" url="${ConfigProperties.application.url}/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView_KNS&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Dialog Test View" url="${ConfigProperties.application.url}/kr-krad/dialog-configuration-test?viewId=DialogTestView_KNS&methodToCall=start" /></li>
-     <li><portal:portalLink displayTitle="true" title="Collections Configuration Test View" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections_KNS&methodToCall=start" /></li>
+     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections_KNS&methodToCall=start"/>Collections Configuration Test View</a></li>
    </ul>
 
 </div>

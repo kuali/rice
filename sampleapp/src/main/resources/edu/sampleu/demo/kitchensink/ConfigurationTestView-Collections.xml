@@ -248,6 +248,7 @@
   <bean id="Collections-SaveRow-Stack" parent="Collections-Base-StackLayout">
     <property name="headerText" value="Stack Layout With Save Row" />
     <property name="renderSaveLineActions" value="true" />
+    <property name="propertyName" value="list2" />
   </bean>
 
 </beans>

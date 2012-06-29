@@ -135,7 +135,7 @@ public class DialogTestViewUifController extends UifControllerBase {
 
             // cluncky approach to invoking 2nd dialog
             if (dm.hasDialogBeenAnswered(dialog2)){
-                whichVersion = dm.getDialogAnswer(dialog2);
+                whichVersion = dm.getDialogExplanation(dialog2);
             } else {
                 // redirect back to client to display lightbox
                 dm.addDialog(dialog2, uiTestForm.getMethodToCall());
@@ -180,6 +180,7 @@ public class DialogTestViewUifController extends UifControllerBase {
             dm.removeDialog(dialog2);
             dm.removeDialog(dialog3);
             uiTestForm.setField1("Ok, let's start over.");
+            return getUIFModelAndView(uiTestForm, "DialogView-Page1");
         }
 
         // we're done, go to the next page
@@ -195,12 +196,12 @@ public class DialogTestViewUifController extends UifControllerBase {
      * @param response
      * @return
      */
-    @RequestMapping(params = "methodToCall=close")
-    public ModelAndView close(@ModelAttribute("KualiForm") UifDialogTestForm uiTestForm, BindingResult result,
+    @RequestMapping(params = "methodToCall=closeMe")
+    public ModelAndView closeMe(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
 //      TODO: Put "Are Your Sure?" dialog here
-        return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+        return close(form, result, request, response);
     }
 
     /**
@@ -217,16 +218,8 @@ public class DialogTestViewUifController extends UifControllerBase {
     public ModelAndView doSomething(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // TODO: STUB   ***  not yet implemented
-        // note: code below is test junk, just to get a skeleton in place
-        StringBuffer testBucket = new StringBuffer();
-        testBucket.append("blah");
-        boolean okToContinue = false;
-        okToContinue = super.askYesOrNoQuestion("OK_TO_CONTINUE", form, request, response);
-
-        testBucket.append("question answer = ");
-        testBucket.append(Boolean.toString(okToContinue));
-        return super.refresh(form, result, request, response);
+        // just load page1
+        return getUIFModelAndView(form, "DialogView-Page1");
     }
 
 

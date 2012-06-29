@@ -829,8 +829,6 @@ public abstract class UifControllerBase {
 
         dm.setDialogAnswer(dialogId, responseValue);
         dm.setDialogExplanation(dialogId, explanationValue);
-        form.setDialogExplanation("");
-        form.setLightboxScript("");
 
         // call intended controller method
         String actualMethodToCall = dm.getDialogReturnMethod(dialogId);

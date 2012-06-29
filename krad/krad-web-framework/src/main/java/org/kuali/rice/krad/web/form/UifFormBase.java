@@ -129,7 +129,6 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected String dialogResponse;
 
-    @SessionTransient
     private DialogManager dialogManager;
 
     @SessionTransient

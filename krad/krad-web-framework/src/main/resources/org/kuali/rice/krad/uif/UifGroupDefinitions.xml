@@ -996,8 +996,6 @@
         </property>
         <property name="onChangeScript" value="
           writeHiddenToForm('methodToCall','returnFromLightbox');
-          writeHiddenToForm('dialogResponse',jQuery('.uif-dialogButtons').find(':checked').val());
-          writeHiddenToForm('dialogExplanation', coerceValue('dialogExplanation'));
           jQuery.fancybox.close();
           jQuery('#kualiForm').submit();"/>
         <property name="cssClasses">
@@ -1095,7 +1093,7 @@
   <bean id="RadioButton-DialogGroup" parent="Uif-DialogGroup" >
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
-      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+      <bean parent="Uif-DialogExplanation" p:render="true">
         <property name="control">
           <bean parent="Uif-VerticalRadioControl">
             <property name="options">

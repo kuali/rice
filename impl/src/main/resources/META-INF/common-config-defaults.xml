@@ -434,7 +434,9 @@
 	<param name="rice.kew.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kew.expose.services.on.bus" override="false">true</param>
   <param name="rice.kew.ignoreUnknownPrincipalIds" override="false">false</param>
-
+	<!-- This is used to get the standalone version of WorkflowDocumentActionsService when kew.mode is REMOTE or THIN --> 
+	<param name="standalone.application.id" override="false">RICE</param>
+	
 	<!-- KIM -->
 	<param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
 	<param name="kim.url" override="false">${application.url}/kim</param>

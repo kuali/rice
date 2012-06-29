@@ -17,6 +17,8 @@ package org.kuali.rice.kew.api;
 
 import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.actionlist.ActionListService;
@@ -51,7 +53,8 @@ public class KewApiServiceLocator {
     public static final String KEW_TYPE_REPOSITORY_SERVICE = "rice.kew.kewTypeRepositoryService";
     public static final String PEOPLE_FLOW_SERVICE = "rice.kew.peopleFlowService";
     public static final String PREFERENCES_SERVICE = "rice.kew.preferencesService";
-
+    public static final String KEW_RUN_MODE_PROPERTY = "kew.mode";
+    public static final String STANDALONE_APPLICATION_ID = "standalone.application.id";
     public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueue");
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueue");
     public static final QName IMMEDIATE_EMAIL_REMINDER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "immediateEmailReminderQueue");
@@ -62,7 +65,13 @@ public class KewApiServiceLocator {
     }
 
     public static WorkflowDocumentActionsService getWorkflowDocumentActionsService() {
-        return getService(WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+        RunMode kewRunMode = RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY));
+        if (kewRunMode == RunMode.REMOTE || kewRunMode == RunMode.THIN) {
+            String standaloneApplicationId = ConfigContext.getCurrentContextConfig().getProperty(STANDALONE_APPLICATION_ID);
+            return getWorkflowDocumentActionsService(standaloneApplicationId);
+        } else { 
+            return getService(WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+        }
     }
     
     public static WorkflowDocumentActionsService getWorkflowDocumentActionsService(String applicationId){

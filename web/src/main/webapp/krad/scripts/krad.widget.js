@@ -438,7 +438,7 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
             headerText.prepend(collapseImage);
         }
 
-        headerText.wrap("<a href='#' id='" + groupToggleLinkId + "'>");
+        headerText.wrap("<a href='#' id='" + groupToggleLinkId + "'></a>");
 
         var animationFinishedCallback = function(){
             jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", false);

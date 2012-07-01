@@ -44,6 +44,7 @@ import java.util.Map;
         RemotableSelect.Elements.GROUPS,
         RemotableSelect.Elements.SIZE,
         RemotableSelect.Elements.MULTIPLE,
+        RemotableSelect.Elements.REFRESH_ON_CHANGE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableSelect extends RemotableAbstractControl implements RemotableSelectContract {
 
@@ -61,6 +62,9 @@ public final class RemotableSelect extends RemotableAbstractControl implements R
     @XmlElement(name = Elements.MULTIPLE, required = false)
     private final boolean multiple;
 
+    @XmlElement(name = Elements.REFRESH_ON_CHANGE, required = false)
+    private final boolean refreshOnChange;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -74,6 +78,7 @@ public final class RemotableSelect extends RemotableAbstractControl implements R
         keyLabels = null;
         groups = null;
         multiple = false;
+        refreshOnChange = false;
     }
 
     private RemotableSelect(Builder b) {
@@ -87,6 +92,7 @@ public final class RemotableSelect extends RemotableAbstractControl implements R
         this.groups = Collections.unmodifiableList(temp);
 
         multiple = b.multiple;
+        refreshOnChange = b.refreshOnChange;
     }
 
     @Override
@@ -109,11 +115,17 @@ public final class RemotableSelect extends RemotableAbstractControl implements R
         return multiple;
     }
 
+    @Override
+    public boolean isRefreshOnChange() {
+        return refreshOnChange;
+    }
+
     public static final class Builder extends RemotableAbstractControl.Builder implements RemotableSelectContract {
         private Integer size;
         private Map<String, String> keyLabels = Collections.emptyMap();
         private List<RemotableSelectGroup.Builder> groups = Collections.emptyList();
         private boolean multiple;
+        private boolean refreshOnChange;
 
         private Builder(Map<String, String> keyLabels) {
             setKeyLabels(keyLabels);
@@ -180,6 +192,15 @@ public final class RemotableSelect extends RemotableAbstractControl implements R
         }
 
         @Override
+        public boolean isRefreshOnChange() {
+            return refreshOnChange;
+        }
+
+        public void setRefreshOnChange(boolean refreshOnChange) {
+            this.refreshOnChange = refreshOnChange;
+        }
+
+        @Override
         public RemotableSelect build() {
             if (keyLabels.isEmpty() && groups.isEmpty()) {
                 throw new IllegalStateException("the keyLabels or groups must be set to a non-empty collection");
@@ -203,5 +224,6 @@ public final class RemotableSelect extends RemotableAbstractControl implements R
         static final String GROUPS = "groups";
         static final String GROUP = "group";
         static final String MULTIPLE = "multiple";
+        static final String REFRESH_ON_CHANGE = "refreshOnChange";
     }
 }

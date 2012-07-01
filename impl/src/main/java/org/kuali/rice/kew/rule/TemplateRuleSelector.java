@@ -25,18 +25,13 @@ import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
-import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.PerformanceLogger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,8 +64,7 @@ class TemplateRuleSelector implements RuleSelector {
         }
         for (RuleTemplateAttribute templateAttribute : template.getActiveRuleTemplateAttributes()) {
             String ruleAttributeName = templateAttribute.getRuleAttribute().getName();
-            WorkflowRuleAttributeHandlerService wrahs = KewFrameworkServiceLocator.getWorkflowRuleAttributeHandlerService();
-            if (!wrahs.isWorkflowRuleAttribute(ruleAttributeName)) {
+            if (!RuleAttribute.isWorkflowAttribute(templateAttribute.getRuleAttribute().getType())) {
                 continue;
             }
             ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(ruleAttributeName);
@@ -92,7 +86,7 @@ class TemplateRuleSelector implements RuleSelector {
 
         }
 
-        List<org.kuali.rice.kew.api.rule.Rule> rules = Collections.emptyList();
+        List<org.kuali.rice.kew.api.rule.Rule> rules;
         if (effectiveDate == null) {
             rules = KewApiServiceLocator.getRuleService()
                     .getRulesByTemplateNameAndDocumentTypeName(ruleTemplateName,

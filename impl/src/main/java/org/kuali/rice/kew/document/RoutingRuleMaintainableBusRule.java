@@ -15,25 +15,27 @@
  */
 package org.kuali.rice.kew.document;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
-import org.kuali.rice.kew.api.validation.ValidationResults;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
+import org.kuali.rice.kew.rule.WorkflowRuleAttributeRows;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -221,21 +223,19 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 
 		/** Populate rule extension values * */
 		for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes()) {
-            WorkflowRuleAttributeHandlerService wrahs = KewFrameworkServiceLocator.getWorkflowRuleAttributeHandlerService();
+            if (!RuleAttribute.isWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getType())) {
+                continue;
+            }
+            Map<String, String> parameterMap = WebRuleUtils.getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
+            WorkflowRuleAttributeRows rows =
+                    KEWServiceLocator.getWorkflowRuleAttributeMediator().getRuleRows(parameterMap, ruleTemplateAttribute);
 
-			Map<String, String> parameterMap = WebRuleUtils.getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
-
-    		ValidationResults validationResults = wrahs.validateRuleData(ruleTemplateAttribute.getRuleAttribute().getName(), parameterMap);
-
-            if (!validationResults.getErrors().isEmpty()) {
-				isValid = false;
-				this.putFieldError("RuleAttributes", "routetemplate.xmlattribute.required.error");
-			}
 			// TODO hook validation of rule data into PreRules
-			if (validationResults.getErrors().isEmpty()) {
-				isValid = false;
-				for(Map.Entry<String, String> error: validationResults.getErrors().entrySet()){
-				    this.putFieldError("RuleAttributes", error.getValue(), error.getKey());
+            List<RemotableAttributeError> errors = rows.getValidationErrors();
+			if (!errors.isEmpty()) {
+                isValid = false;
+				for(RemotableAttributeError error: errors){
+				    this.putFieldError("RuleAttributes", RiceKeyConstants.ERROR_CUSTOM, error.getMessage());
 				}
 			}
 		}

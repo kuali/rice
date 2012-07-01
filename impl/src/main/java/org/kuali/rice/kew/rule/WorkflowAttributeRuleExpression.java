@@ -16,20 +16,16 @@
 package org.kuali.rice.kew.rule;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +64,7 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
         //RuleBaseValues rule = KEWServiceLocator.getRuleService().getRuleByName(ruleDefinition.getName());
         for (RuleTemplateAttribute ruleTemplateAttribute : ruleDefinition.getRuleTemplate().getActiveRuleTemplateAttributes()) {
             String attributeName = ruleTemplateAttribute.getRuleAttribute().getName();
-            WorkflowRuleAttributeHandlerService wrahs = KewFrameworkServiceLocator.getWorkflowRuleAttributeHandlerService();
-            if (!wrahs.isWorkflowRuleAttribute(attributeName)) {
+            if (!RuleAttribute.isWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getType())) {
                 continue;
             }
             //WorkflowRuleAttribute routingAttribute = (WorkflowRuleAttribute) ruleTemplateAttribute.getWorkflowAttribute();

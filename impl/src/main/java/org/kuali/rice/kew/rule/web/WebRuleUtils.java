@@ -21,10 +21,10 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttributeContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;
 import org.kuali.rice.kew.rule.RoleRuleResponsibility;
@@ -33,14 +33,11 @@ import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
-import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttributeRows;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
-import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kns.web.ui.Field;
@@ -66,7 +63,7 @@ public final class WebRuleUtils {
 	public static final String RULE_TEMPLATE_NAME_PARAM = "ruleCreationValues.ruleTemplateName";
 	public static final String DOCUMENT_TYPE_NAME_PARAM = "ruleCreationValues.docTypeName";
 	public static final String RESPONSIBILITY_ID_PARAM = "ruleCreationValues.responsibilityId";
-	
+
 	private static final String ID_SEPARATOR = "~";
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String RULE_ATTRIBUTES_SECTION_TITLE = "Rule Attributes";
@@ -267,45 +264,34 @@ public final class WebRuleUtils {
 		}
 		
 		return finalSections;
-	}
-	
-	
-	
+    }
 
-	public static List<Row> getRuleTemplateRows(RuleBaseValues rule, boolean delegateRule) {
-
-		List<Row> rows = new ArrayList<Row>();
-		RuleTemplateBo ruleTemplate = rule.getRuleTemplate();
-		Map<String, String> fieldNameMap = new HashMap<String, String>();
-		// refetch rule template from service because after persistence in KNS, it comes back without any rule template attributes
-		if (ruleTemplate != null){
-			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getId());
-			if (ruleTemplate != null) {
-				
-				List<RuleTemplateAttributeBo> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
-				Collections.sort(ruleTemplateAttributes);
-
-				for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes) {
-					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
-						continue;
-					}
-					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-					if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(
-                                ruleAttribute));
-					}
-					Map<String, String> parameterMap = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
-					workflowAttribute.validateRuleData(parameterMap);
-					List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, rule, fieldNameMap, delegateRule);
-					rows.addAll(attributeRows);
-
-				}
-			}
-			transformFieldConversions(rows, fieldNameMap);
-		}
-		return rows;
-	}
+    public static List<Row> getRuleTemplateRows(RuleBaseValues rule, boolean delegateRule) {
+   		List<Row> rows = new ArrayList<Row>();
+   		RuleTemplateBo ruleTemplate = rule.getRuleTemplate();
+   		Map<String, String> fieldNameMap = new HashMap<String, String>();
+   		// refetch rule template from service because after persistence in KNS, it comes back without any rule template attributes
+   		if (ruleTemplate != null) {
+   			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getId());
+   			if (ruleTemplate != null) {
+   				List<RuleTemplateAttributeBo> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
+   				Collections.sort(ruleTemplateAttributes);
+   				for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes) {
+   					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
+   						continue;
+   					}
+                    Map<String, String> parameters = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
+                    WorkflowRuleAttributeRows workflowRuleAttributeRows =
+                            KEWServiceLocator.getWorkflowRuleAttributeMediator().getRuleRows(parameters, ruleTemplateAttribute);
+                    List<Row> attributeRows = transformAndPopulateAttributeRows(workflowRuleAttributeRows.getRows(),
+                            ruleTemplateAttribute, rule, fieldNameMap, delegateRule);
+                    rows.addAll(attributeRows);
+   				}
+   			}
+   			transformFieldConversions(rows, fieldNameMap);
+   		}
+   		return rows;
+   	}
 	
 	public static void transformFieldConversions(List<Row> rows, Map<String, String> fieldNameMap) {
 		for (Row row : rows) {
@@ -326,20 +312,17 @@ public final class WebRuleUtils {
 			}
 		}
 	}
-	
 
-
-	
 	private static boolean hasRoles(RuleBaseValues rule) {
 		RuleTemplateBo ruleTemplate = rule.getRuleTemplate();
 		return !ruleTemplate.getRoles().isEmpty();
 	}
-	
+
 	/**
 	 * Processes the Fields on the various attributes Rows to assign an appropriate field name to them so that the
 	 * field name rendered in the maintenance HTML will properly assign the value to RuleBaseValues.fieldValues.
 	 */
-	
+
 	public static List<Row> transformAndPopulateAttributeRows(List<Row> attributeRows, RuleTemplateAttributeBo ruleTemplateAttribute, RuleBaseValues rule, Map<String, String> fieldNameMap, boolean delegateRule) {
 
 		for (Row row : attributeRows) {
@@ -349,11 +332,11 @@ public final class WebRuleUtils {
 					String valueKey = ruleTemplateAttribute.getId() + ID_SEPARATOR + fieldName;
 
 					String propertyName;
-					
+
 					if (delegateRule) {
-						propertyName = "delegationRuleBaseValues.fieldValues(" + valueKey + ")"; 
+						propertyName = "delegationRuleBaseValues.fieldValues(" + valueKey + ")";
 					} else {
-						propertyName = "fieldValues(" + valueKey + ")"; 
+						propertyName = "fieldValues(" + valueKey + ")";
 					}
 
 					fieldNameMap.put(fieldName, propertyName);
@@ -364,7 +347,7 @@ public final class WebRuleUtils {
 		}
 		return attributeRows;
 	}
-	
+
 	/**
 	 * Since editing of a Rule should actually result in a rule with a new ID and new
 	 * entries in the rule and rule responsibility tables, we need to clear out
@@ -443,17 +426,13 @@ public final class WebRuleUtils {
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
 			}
-			WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-
-			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-			if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
-			}
-
 			Map<String, String> parameterMap = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
+            WorkflowRuleAttributeRows workflowRuleAttributeRows =
+                    KEWServiceLocator.getWorkflowRuleAttributeMediator().getRuleRows(parameterMap, ruleTemplateAttribute);
+
 						
 			// validate rule data populates the rule extension values for us
-			List<RemotableAttributeError> attValidationErrors = workflowAttribute.validateRuleData(parameterMap);
+			List<RemotableAttributeError> attValidationErrors = workflowRuleAttributeRows.getValidationErrors();
 
 			// because validation should be handled by business rules now, if we encounter a validation error at this point in
 			// time, let's throw an exception
@@ -461,12 +440,19 @@ public final class WebRuleUtils {
 				throw new RiceRuntimeException("Encountered attribute validation errors when attempting to save the Rule!");
 			}
 			
-			List ruleExtensionValues = workflowAttribute.getRuleExtensionValues();
-			if (ruleExtensionValues != null && !ruleExtensionValues.isEmpty()) {
+			Map<String, String> ruleExtensionValuesMap = workflowRuleAttributeRows.getRuleExtensionValues();
+			if (ruleExtensionValuesMap != null && !ruleExtensionValuesMap.isEmpty()) {
 				RuleExtensionBo ruleExtension = new RuleExtensionBo();
 				ruleExtension.setRuleTemplateAttributeId(ruleTemplateAttribute.getId());
-
-				ruleExtension.setExtensionValues(ruleExtensionValues);
+                List<RuleExtensionValue> ruleExtensionValues = new ArrayList<RuleExtensionValue>();
+                for (String key : ruleExtensionValuesMap.keySet()) {
+                    RuleExtensionValue ruleExtensionValue = new RuleExtensionValue();
+                    ruleExtensionValue.setExtension(ruleExtension);
+                    ruleExtensionValue.setKey(key);
+                    ruleExtensionValue.setValue(ruleExtensionValuesMap.get(key));
+				    ruleExtensionValues.add(ruleExtensionValue);
+                }
+                ruleExtension.setExtensionValues(ruleExtensionValues);
 				extensions.add(ruleExtension);
 			}
 				

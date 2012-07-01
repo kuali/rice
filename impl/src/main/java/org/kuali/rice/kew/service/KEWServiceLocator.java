@@ -50,6 +50,7 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.routemodule.service.RouteModuleService;
 import org.kuali.rice.kew.routemodule.service.RoutingReportService;
+import org.kuali.rice.kew.rule.WorkflowRuleAttributeMediator;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
@@ -208,7 +209,9 @@ public final class KEWServiceLocator {
 
     public static final String RULE_VALIDATION_ATTRIBUTE_RESOLVER = "rice.kew.ruleValidationAttributeResolver";
 
-    public static final String LOCAL_CACHE_MANAGER = "kimLocalCacheManager";
+    public static final String WORKFLOW_RULE_ATTRIBUTE_MEDIATOR = "rice.kew.workflowRuleAttributeMediator";
+
+    public static final String LOCAL_CACHE_MANAGER = "kewLocalCacheManager";
 
     public static EntityManagerFactory getEntityManagerFactory() {
         return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
@@ -401,6 +404,9 @@ public final class KEWServiceLocator {
         return getBean(DOCUMENT_SEARCH_CUSTOMIZATION_MEDIATOR);
     }
 
+    public static WorkflowRuleAttributeMediator getWorkflowRuleAttributeMediator() {
+        return getBean(WORKFLOW_RULE_ATTRIBUTE_MEDIATOR);
+    }
 
     public static RuleValidationAttributeResolver getRuleValidationAttributeResolver() {
         return getBean(RULE_VALIDATION_ATTRIBUTE_RESOLVER);

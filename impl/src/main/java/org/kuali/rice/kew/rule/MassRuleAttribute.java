@@ -30,6 +30,6 @@ import org.kuali.rice.kew.engine.RouteContext;
  */
 public interface MassRuleAttribute {
     
-    public List filterNonMatchingRules(RouteContext routeContext, List rules);
+    public List<org.kuali.rice.kew.api.rule.Rule> filterNonMatchingRules(RouteContext routeContext, List<org.kuali.rice.kew.api.rule.Rule> rules);
 
 }

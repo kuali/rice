@@ -432,7 +432,7 @@
       <parent>RiceDocument</parent>
       <label>CountryMaintenanceDocument</label>
       <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${krad.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <helpDefinitionURL>default.htm?turl=WordDocuments%2Fcountry.htm</helpDefinitionURL>
       <active>true</active>
       <routingVersion>2</routingVersion>
@@ -441,7 +441,7 @@
       <name>CampusTypeMaintenanceDocument</name>
       <parent>RiceDocument</parent>
       <label>CampusTypeMaintenanceDocument</label>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${krad.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <helpDefinitionURL>default.htm?turl=WordDocuments%2Fcampustype.htm</helpDefinitionURL>
       <active>true</active>
       <routingVersion>2</routingVersion>

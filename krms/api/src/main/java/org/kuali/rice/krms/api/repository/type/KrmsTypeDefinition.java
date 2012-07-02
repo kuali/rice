@@ -34,11 +34,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * An immutable, concrete model object implementation of a {@link KrmsTypeContract}.
+ * An immutable, concrete model object implementation of a {@link KrmsTypeDefinitionContract}.
  * <p>To construct an instance of a KrmsTypeDefinition, use the {@link KrmsTypeDefinition.Builder} class.
  * Instances of KrmsType can be (un)marshalled to and from XML.<p/>
  *
- * @see KrmsTypeContract
+ * @see KrmsTypeDefinitionContract
  */
 @XmlRootElement(name = KrmsTypeDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -52,7 +52,7 @@ import java.util.List;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class KrmsTypeDefinition extends AbstractDataTransferObject implements KrmsTypeContract{
+public final class KrmsTypeDefinition extends AbstractDataTransferObject implements KrmsTypeDefinitionContract{
 	private static final long serialVersionUID = -8314397393380856301L;
 
 	@XmlElement(name = Elements.ID, required = false)
@@ -139,9 +139,9 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
     }
 
 	/**
-     * This builder is used to construct instances of KrmsTypeDefinition.  It enforces the constraints of the {@link KrmsTypeContract}.
+     * This builder is used to construct instances of KrmsTypeDefinition.  It enforces the constraints of the {@link KrmsTypeDefinitionContract}.
      */
-    public static class Builder implements KrmsTypeContract, ModelBuilder, Serializable {
+    public static class Builder implements KrmsTypeDefinitionContract, ModelBuilder, Serializable {
 		private static final long serialVersionUID = -3469525730879441547L;
 
 		private String id;
@@ -197,13 +197,13 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
         }
 
         /**
-         * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.
+         * Creates a builder by populating it with data from the given {@link KrmsTypeDefinitionContract}.
          *
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          * @throws IllegalArgumentException if the contract is null
          */
-        public static Builder create(KrmsTypeContract contract) {
+        public static Builder create(KrmsTypeDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }

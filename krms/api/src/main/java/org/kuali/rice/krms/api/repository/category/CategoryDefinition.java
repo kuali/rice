@@ -46,7 +46,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class CategoryDefinition extends AbstractDataTransferObject implements CategoryContract {
+public class CategoryDefinition extends AbstractDataTransferObject implements CategoryDefinitionContract {
 
     private static final long serialVersionUID = -4748818967880857017L;
 
@@ -107,9 +107,9 @@ public class CategoryDefinition extends AbstractDataTransferObject implements Ca
     }
 
     /**
-     * This builder is used to construct instances of CategoryDefinition.  It enforces the constraints of the {@link org.kuali.rice.krms.api.repository.category.CategoryContract}.
+     * This builder is used to construct instances of CategoryDefinition.  It enforces the constraints of the {@link org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract}.
      */
-    public static class Builder implements CategoryContract, ModelBuilder, Serializable {
+    public static class Builder implements CategoryDefinitionContract, ModelBuilder, Serializable {
 
         private static final long serialVersionUID = -5775478956373560840L;
 
@@ -150,7 +150,7 @@ public class CategoryDefinition extends AbstractDataTransferObject implements Ca
          * @param category the category from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(CategoryContract category) {
+        public static Builder create(CategoryDefinitionContract category) {
             if (category == null) {
                 throw new IllegalArgumentException("contract is null");
             }

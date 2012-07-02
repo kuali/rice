@@ -40,7 +40,7 @@ import java.util.Map;
  * immutable. 
  * Instances of Agenda can be (un)marshalled to and from XML.
  *
- * @see AgendaContract
+ * @see AgendaDefinitionContract
  */
 @XmlRootElement(name = AgendaDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -55,7 +55,7 @@ import java.util.Map;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AgendaDefinition extends AbstractDataTransferObject implements AgendaContract {
+public final class AgendaDefinition extends AbstractDataTransferObject implements AgendaDefinitionContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.AGENDA_ID, required = false)
@@ -169,9 +169,9 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
     }
     
  	/**
-     * This builder is used to construct instances of KRMS Repository Agenda.  It enforces the constraints of the {@link AgendaContract}.
+     * This builder is used to construct instances of KRMS Repository Agenda.  It enforces the constraints of the {@link AgendaDefinitionContract}.
      */
-    public static class Builder implements AgendaContract, ModelBuilder, Serializable {
+    public static class Builder implements AgendaDefinitionContract, ModelBuilder, Serializable {
 		
         private static final long serialVersionUID = -8862851720709537839L;
         
@@ -210,13 +210,13 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
         }
 
         /**
-         * Creates a builder by populating it with data from the given {@link AgendaContract}.
+         * Creates a builder by populating it with data from the given {@link AgendaDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          * @throws IllegalArgumentException if the contract is null
          */
-        public static Builder create(AgendaContract contract) {
+        public static Builder create(AgendaDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }

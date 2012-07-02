@@ -58,7 +58,7 @@ import java.util.Set;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class TermResolverDefinition extends AbstractDataTransferObject implements TermResolverContract {
+public final class TermResolverDefinition extends AbstractDataTransferObject implements TermResolverDefinitionContract {
 	
     private static final long serialVersionUID = 1L;
 	
@@ -127,7 +127,7 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
         }
 	}
 	
-	public static class Builder implements TermResolverContract, ModelBuilder,
+	public static class Builder implements TermResolverDefinitionContract, ModelBuilder, 
 		Serializable {
 		
 		private static final long serialVersionUID = 1L;
@@ -158,7 +158,7 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		
 		
 		
-		private Builder(TermResolverContract termResolver) {
+		private Builder(TermResolverDefinitionContract termResolver) {
 			setId(termResolver.getId());
 			setNamespace(termResolver.getNamespace());
 			setName(termResolver.getName());
@@ -171,7 +171,7 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 			this.setVersionNumber(termResolver.getVersionNumber());
 		}
 		
-		public static Builder create(TermResolverContract termResolver) {
+		public static Builder create(TermResolverDefinitionContract termResolver) {
 			return new Builder(termResolver);
 		}
 		

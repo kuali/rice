@@ -47,7 +47,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 		AgendaTreeRuleEntry.Elements.IF_FALSE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AgendaTreeRuleEntry extends AbstractDataTransferObject implements AgendaTreeEntryContract {
+public final class AgendaTreeRuleEntry extends AbstractDataTransferObject implements AgendaTreeEntryDefinitionContract {
 
 	private static final long serialVersionUID = 8594116503548506936L;
 
@@ -122,9 +122,9 @@ public final class AgendaTreeRuleEntry extends AbstractDataTransferObject implem
 
     /**
      * This builder is used to construct instances of AgendaTreeRuleEntry.
-     * It enforces the constraints of the {@link AgendaTreeEntryContract}.
+     * It enforces the constraints of the {@link AgendaTreeEntryDefinitionContract}.
      */
-	public static class Builder implements AgendaTreeEntryContract, Serializable {
+	public static class Builder implements AgendaTreeEntryDefinitionContract, Serializable {
         
 		private static final long serialVersionUID = 3548736700798501429L;
 		

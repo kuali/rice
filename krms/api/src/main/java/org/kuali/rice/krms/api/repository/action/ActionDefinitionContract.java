@@ -15,10 +15,76 @@
  */
 package org.kuali.rice.krms.api.repository.action;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
+
+import java.util.Map;
+
 /**
- * @deprecated
- * @see ActionContract
+ * Defines the contract for an {@link ActionDefinition}
+ *
+ * @see ActionDefinition
+ * @see org.kuali.rice.krms.framework.engine.Action
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Deprecated
-public interface ActionDefinitionContract extends ActionContract {}
+public interface ActionDefinitionContract extends Identifiable, Versioned {
+
+	/**
+	 * Returns the name of the Action
+	 *
+	 * <p>
+	 * name - the name of the Action
+	 * </p>
+	 * @return the name of the Action
+	 */
+	public String getName();
+
+	/**
+	 * Returns the namespace of the Action
+	 *
+	 * <p>
+	 * The namespace of the Action
+	 * </p>
+	 * @return the namespace of the Action
+	 */
+	public String getNamespace();
+
+    /**
+     * Returns the description for what the parameter is used for.  This can be null or a blank string.
+     *
+     * @return the description of the Action
+     */
+	public String getDescription();
+
+	/**
+	 * Returns the KrmsType of the Action
+	 *
+	 * @return id for KRMS type related of the Action
+	 */
+	public String getTypeId();
+	
+	/**
+	 * Returns the id of the rule associated with the action
+	 * 
+	 * @return id for the Rule associated with the action.
+	 */
+	public String getRuleId();
+	
+	/**
+	 * Returns the sequence number of the  action
+	 * 
+	 * @return sequence number of the action.
+	 */
+	public Integer getSequenceNumber();
+	
+	/**
+	 * Returns a set of attributes associated with the
+	 * Action.  The attributes are represented as name/value pairs.
+	 * 
+	 * @return a set of ActionAttribute objects.
+	 */
+	public Map<String, String> getAttributes();
+	
+
+}

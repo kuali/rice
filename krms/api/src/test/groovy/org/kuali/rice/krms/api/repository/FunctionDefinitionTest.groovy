@@ -19,12 +19,12 @@ import static org.junit.Assert.*
 
 import org.junit.Test
 import org.kuali.rice.krms.api.repository.function.FunctionDefinition
+import org.kuali.rice.krms.api.repository.function.FunctionDefinitionContract
 import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinition
+import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinitionContract
 import org.kuali.rice.krms.api.test.JAXBAssert
-import org.kuali.rice.krms.api.repository.category.CategoryContract
+import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition
-import org.kuali.rice.krms.api.repository.function.FunctionContract
-import org.kuali.rice.krms.api.repository.function.FunctionParameterContract
 
 class FunctionDefinitionTest {
 
@@ -248,7 +248,7 @@ class FunctionDefinitionTest {
 	}
 
     private FunctionDefinition.Builder createBuilder() {
-		return FunctionDefinition.Builder.create(new FunctionContract() {
+		return FunctionDefinition.Builder.create(new FunctionDefinitionContract() {
 				String id = FunctionDefinitionTest.ID;
 				String namespace = FunctionDefinitionTest.NAMESPACE_CODE;
 				String name = FunctionDefinitionTest.NAME;
@@ -258,7 +258,7 @@ class FunctionDefinitionTest {
                 boolean active = FunctionDefinitionTest.ACTIVE;
                 Long versionNumber = FunctionDefinitionTest.VERSION_NUMBER;
 				List<FunctionParameterDefinition.Builder> parameters = [
-					FunctionParameterDefinition.Builder.create(new FunctionParameterContract() {
+					FunctionParameterDefinition.Builder.create(new FunctionParameterDefinitionContract() {
 						String id = FunctionDefinitionTest.PARM1_ID;
 						String name = FunctionDefinitionTest.PARM1_NAME;
 						String description = FunctionDefinitionTest.PARM1_DESCRIPTION;
@@ -267,7 +267,7 @@ class FunctionDefinitionTest {
 						Long versionNumber = FunctionDefinitionTest.PARM1_VERSION_NUMBER;
 						String functionId = FunctionDefinitionTest.ID;
 					}),
-					FunctionParameterDefinition.Builder.create(new FunctionParameterContract() {
+					FunctionParameterDefinition.Builder.create(new FunctionParameterDefinitionContract() {
 						String id = FunctionDefinitionTest.PARM2_ID;
 						String name = FunctionDefinitionTest.PARM2_NAME;
 						String description = FunctionDefinitionTest.PARM2_DESCRIPTION;
@@ -278,13 +278,13 @@ class FunctionDefinitionTest {
 					})
 				]
                 List<CategoryDefinition.Builder> categories = [
-                    CategoryDefinition.Builder.create(new CategoryContract() {
+                    CategoryDefinition.Builder.create(new CategoryDefinitionContract() {
                         String id = FunctionDefinitionTest.CTGRY1_ID;
                         String name = FunctionDefinitionTest.CTGRY1_NAME;
                         String namespace = FunctionDefinitionTest.CTGRY1_NAMESPACE;
                         Long versionNumber = FunctionDefinitionTest.CTGRY1_VERSION_NUMBER;
                     }),
-                    CategoryDefinition.Builder.create(new CategoryContract() {
+                    CategoryDefinition.Builder.create(new CategoryDefinitionContract() {
                         String id = FunctionDefinitionTest.CTGRY2_ID;
                         String name = FunctionDefinitionTest.CTGRY2_NAME;
                         String namespace = FunctionDefinitionTest.CTGRY2_NAMESPACE;

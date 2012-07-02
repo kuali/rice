@@ -40,7 +40,7 @@ import org.kuali.rice.krms.api.KrmsConstants;
  * immutable. 
  * Instances of Agenda can be (un)marshalled to and from XML.
  *
- * @see AgendaContract
+ * @see AgendaDefinitionContract
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -62,7 +62,7 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
             @XmlElement(name = Elements.RULE, type = AgendaTreeRuleEntry.class, required = false),
             @XmlElement(name = Elements.SUB_AGENDA, type = AgendaTreeSubAgendaEntry.class, required = false)
 	})
-	private final List<AgendaTreeEntryContract> entries;
+	private final List<AgendaTreeEntryDefinitionContract> entries;
 		
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -97,10 +97,10 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
     }
 
     /**
-     * Returns the {@link AgendaTreeEntryContract}s
-     * @return List<{@link AgendaTreeEntryContract}>s
+     * Returns the {@link AgendaTreeEntryDefinitionContract}s
+     * @return List<{@link AgendaTreeEntryDefinitionContract}>s
      */
-	public List<AgendaTreeEntryContract> getEntries() {
+	public List<AgendaTreeEntryDefinitionContract> getEntries() {
 		if (entries == null){
 			return Collections.emptyList();
 		}
@@ -116,13 +116,13 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
 		private static final long serialVersionUID = 7981215392039022620L;
 		
 		private String agendaId;
-		private List<AgendaTreeEntryContract> entries;
+		private List<AgendaTreeEntryDefinitionContract> entries;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
         private Builder() {
-        	this.entries = new ArrayList<AgendaTreeEntryContract>();
+        	this.entries = new ArrayList<AgendaTreeEntryDefinitionContract>();
         }
 
         /**
@@ -178,10 +178,10 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
         }
 
         /**
-         * Returns the list of {@link AgendaTreeEntryContract}s entries
+         * Returns the list of {@link AgendaTreeEntryDefinitionContract}s entries
          * @return List<{@link AgendaTreeEntryDefinitionContract}> of entries
          */
-        public List<AgendaTreeEntryContract> getEntries() {
+        public List<AgendaTreeEntryDefinitionContract> getEntries() {
         	return this.entries;
         }
 

@@ -21,8 +21,8 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.krms.api.KrmsConstants;
-import org.kuali.rice.krms.api.repository.agenda.AgendaContract;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -49,7 +49,7 @@ import java.util.Map;
  * context.  Typically, during rule engine execution, one or more of these
  * agendas is selected for execution based on a given set of selection criteria.
  *
- * @see ContextContract
+ * @see ContextDefinitionContract
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -67,7 +67,7 @@ import java.util.Map;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ContextDefinition extends AbstractDataTransferObject implements ContextContract {
+public final class ContextDefinition extends AbstractDataTransferObject implements ContextDefinitionContract {
 	
 	private static final long serialVersionUID = -6639428234851623868L;
 
@@ -199,13 +199,13 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 	
 	/**
 	 * A builder which can be used to construct ContextDefinition instances.  Enforces the
-	 * constraints of the {@link ContextContract}.  This class is the only means
+	 * constraints of the {@link ContextDefinitionContract}.  This class is the only means
 	 * by which a {@link ContextDefinition} object can be constructed.
 	 * 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	public static final class Builder implements ContextContract, ModelBuilder, Serializable  {
+	public static final class Builder implements ContextDefinitionContract, ModelBuilder, Serializable  {
     	
     	private static final long serialVersionUID = -219369603932108436L;
     	
@@ -253,7 +253,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
          * 
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(ContextContract contract) {
+        public static Builder create(ContextDefinitionContract contract) {
         	if (contract == null) {
         		throw new IllegalArgumentException("contract was null");
         	}
@@ -396,15 +396,15 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 
         /**
          * Sets the agendas property of this context definition.
-         * <p>For each of the {@link AgendaContract} provided in the parameter list,
+         * <p>For each of the {@link AgendaDefinitionContract} provided in the parameter list,
          * construct an AgendaDefinition from the builder of the provided contract, and save the agenda definitions
          * in a List of {@link AgendaDefinition}</p>
          *
          * @param agendaContracts a list of agenda definition contracts
          */
-		public void setAgendas(List<? extends AgendaContract> agendaContracts) {
+		public void setAgendas(List<? extends AgendaDefinitionContract> agendaContracts) {
 			this.agendas = new ArrayList<AgendaDefinition.Builder>();
-			if (agendaContracts != null) for (AgendaContract agendaContract : agendaContracts) {
+			if (agendaContracts != null) for (AgendaDefinitionContract agendaContract : agendaContracts) {
 				this.agendas.add(AgendaDefinition.Builder.create(agendaContract));
 			}
 		}
@@ -427,8 +427,8 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
          * builder.
          * 
          * <p>In general, this value should not be manually set on the builder,
-         * but rather copied from an existing {@link ContextContract} when
-         * invoking {@link Builder#create(ContextContract)}.
+         * but rather copied from an existing {@link ContextDefinitionContract} when
+         * invoking {@link Builder#create(ContextDefinitionContract)}.
          * 
          * @param versionNumber the version number to set
          */

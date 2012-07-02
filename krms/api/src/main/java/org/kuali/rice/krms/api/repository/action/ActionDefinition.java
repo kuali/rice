@@ -41,7 +41,7 @@ import java.util.Map;
  * Instances of Action can be (un)marshalled to and from XML.
  *
  * @see org.kuali.rice.krms.framework.engine.Action
- * @see ActionContract
+ * @see ActionDefinitionContract
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -59,7 +59,7 @@ import java.util.Map;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ActionDefinition extends AbstractDataTransferObject implements ActionContract {
+public final class ActionDefinition extends AbstractDataTransferObject implements ActionDefinitionContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
@@ -179,9 +179,9 @@ public final class ActionDefinition extends AbstractDataTransferObject implement
     }
         
 	/**
-     * This builder is used to construct instances of KRMS Repository Action.  It enforces the constraints of the {@link ActionContract}.
+     * This builder is used to construct instances of KRMS Repository Action.  It enforces the constraints of the {@link ActionDefinitionContract}.
      */
-    public static class Builder implements ActionContract, ModelBuilder, Serializable {
+    public static class Builder implements ActionDefinitionContract, ModelBuilder, Serializable {
         private static final long serialVersionUID = -6773634512570180267L;
 
         private String id;
@@ -229,13 +229,13 @@ public final class ActionDefinition extends AbstractDataTransferObject implement
         	return new Builder(actionId, name, namespace, typeId, ruleId, sequenceNumber);
         }
         /**
-         * Creates a builder by populating it with data from the given {@link ActionContract}.
+         * Creates a builder by populating it with data from the given {@link ActionDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          * @throws IllegalArgumentException if the contract is null
          */
-        public static Builder create(ActionContract contract) {
+        public static Builder create(ActionDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }

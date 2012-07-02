@@ -254,10 +254,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         // set label field rendered to true on line fields
         for (Field field : lineFields) {
             field.setLabelRendered(true);
-
-            // don't display summary message
-            // TODO: remove once we have modifier
-            ComponentUtils.setComponentPropertyDeep(field, "summaryMessageField.render", new Boolean(false));
+            field.setFieldLabel(null);
         }
 
         int rowCount = calculateNumberOfRows(lineFields);
@@ -311,8 +308,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
         }
-        
-        
 
         // now add the fields in the correct position
         int cellPosition = 0;

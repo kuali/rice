@@ -152,12 +152,6 @@
         <value>uif-quickFinderImage</value>
       </list>
     </property>
-    <property name="captionHeader">
-      <null/>
-    </property>
-    <property name="cutlineMessage">
-      <null/>
-    </property>
   </bean>
 
   <bean id="Uif-Inquiry" parent="Uif-Inquiry-parentBean"/>
@@ -194,12 +188,6 @@
       <list merge="true">
         <value>uif-directInquiryImage</value>
       </list>
-    </property>
-    <property name="captionHeader">
-      <null/>
-    </property>
-    <property name="cutlineMessage">
-      <null/>
     </property>
   </bean>
 
@@ -350,12 +338,6 @@
       <list merge="true">
         <value>uif-helpImage</value>
       </list>
-    </property>
-    <property name="captionHeader">
-      <null/>
-    </property>
-    <property name="cutlineMessage">
-      <null/>
     </property>
   </bean>
 

@@ -63,9 +63,10 @@ public class Help extends WidgetBase {
         super.performInitialization(view, model);
 
         if (helpAction == null) {
-            if (StringUtils.isNotBlank(externalHelpUrl) || ((helpDefinition != null) && StringUtils.isNotBlank(
-                    helpDefinition.getParameterName())) && StringUtils.isNotBlank(
-                    helpDefinition.getParameterDetailType())) {
+            // TODO: check for expressions on helpDefinition?
+            if ((StringUtils.isNotBlank(externalHelpUrl) || (getPropertyExpression("externalHelpUrl") != null))
+                    || ((helpDefinition != null) && StringUtils.isNotBlank(helpDefinition.getParameterName()))
+                    && StringUtils.isNotBlank(helpDefinition.getParameterDetailType())) {
                 helpAction = ComponentFactory.getHelpAction();
 
                 view.assignComponentIds(helpAction);

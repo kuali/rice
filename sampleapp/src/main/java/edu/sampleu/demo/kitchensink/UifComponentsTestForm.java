@@ -216,8 +216,6 @@ public class UifComponentsTestForm extends UifFormBase {
         super();
 
         uiTestObject = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
-        
-
 
         list1.add(new UITestObject("A", "B", "C", "D"));
         list1.add(new UITestObject("1", "2", "3", "4"));
@@ -257,8 +255,6 @@ public class UifComponentsTestForm extends UifFormBase {
                     RandomStringUtils.randomAlphanumeric(1)));
         }
         
-        
-
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
             item1.addChild(new Node<String, String>("SubItem A", "SubItem A"));

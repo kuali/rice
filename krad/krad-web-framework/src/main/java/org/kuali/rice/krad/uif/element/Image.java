@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
 
@@ -49,6 +50,33 @@ public class Image extends ContentElementBase {
         super();
 
         altText = "";
+    }
+    
+    /**
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>Initializes the cutline message and caption header components if necessary</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        if ((StringUtils.isNotBlank(captionHeaderText) || (getPropertyExpression("captionHeaderText") != null)) && (
+                captionHeader == null)) {
+            captionHeader = ComponentFactory.getImageCaptionHeader();
+            view.assignComponentIds(captionHeader);
+        }
+
+        if ((StringUtils.isNotBlank(cutlineText) || (getPropertyExpression("cutlineText") != null)) && (cutlineMessage
+                == null)) {
+            cutlineMessage = ComponentFactory.getImageCutlineMessage();
+            view.assignComponentIds(cutlineMessage);
+        }
     }
 
     /**

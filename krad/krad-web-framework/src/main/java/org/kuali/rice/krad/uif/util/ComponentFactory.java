@@ -86,6 +86,8 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentFactory {
+    
+    private static Log LOG = LogFactory.getLog(ComponentFactory.class);
 
     protected static final String TEXT_CONTROL = "Uif-TextControl";
     protected static final String CHECKBOX_CONTROL = "Uif-CheckboxControl";
@@ -138,8 +140,10 @@ public class ComponentFactory {
     protected static final String CONSTRAINT_MESSAGE = "Uif-ConstraintMessage";
     protected static final String INSTRUCTIONAL_MESSAGE = "Uif-InstructionalMessage";
     protected static final String HELP_ACTION = "Uif-HelpAction";
+    protected static final String IMAGE_CAPTION_HEADER = "Uif-ImageCaptionHeader";
+    protected static final String IMAGE_CUTLINE_MESSAGE = "Uif-ImageCutineMessage";
 
-    private static Log LOG = LogFactory.getLog(ComponentFactory.class);
+    private static Map<String, Component> cache = new HashMap<String, Component>();
 
     /**
      * Gets a fresh copy of the component by the id passed in which used to look up the component in
@@ -182,14 +186,22 @@ public class ComponentFactory {
      * @return new component instance or null if no such component definition was found
      */
     public static Component getNewComponentInstance(String beanId) {
-        Component component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(beanId);
+        Component component = null;
+        if (cache.containsKey(beanId)) {
+            component = ComponentUtils.copy(cache.get(beanId));
+        } else {
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(beanId);
 
-        // clear id before returning so duplicates do not occur
-        component.setId(null);
-        component.setBaseId(null);
+            // clear id before returning so duplicates do not occur
+            component.setId(null);
+            component.setBaseId(null);
 
-        // populate property expressions from expression graph
-        ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
+            // populate property expressions from expression graph
+            ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
+
+            // add to cache
+            cache.put(beanId, ComponentUtils.copy(component));
+        }
 
         return component;
     }
@@ -1004,4 +1016,21 @@ public class ComponentFactory {
         return (Message) getNewComponentInstance(INSTRUCTIONAL_MESSAGE);
     }
 
+    /**
+     * Gets the default image caption header configuration
+     *
+     * @return Header component for image caption headers
+     */
+    public static Header getImageCaptionHeader() {
+        return (Header) getNewComponentInstance(IMAGE_CAPTION_HEADER);
+    }
+
+    /**
+     * Gets the default image cutline message configuration
+     *
+     * @return Message component for image cutlines messages
+     */
+    public static Message getImageCutlineMessage() {
+        return (Message) getNewComponentInstance(IMAGE_CUTLINE_MESSAGE);
+    }
 }

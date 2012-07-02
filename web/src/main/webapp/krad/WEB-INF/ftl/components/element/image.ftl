@@ -27,7 +27,8 @@
     </#if>
 
     <#-- render caption header above -->
-    <#if element.captionHeader.headerText?has_content && element.captionHeaderPlacementAboveImage>
+    <#if element.captionHeader?? && element.captionHeader.headerText?has_content
+         && element.captionHeaderPlacementAboveImage>
         <@krad.template component=element.captionHeader/>
     </#if>
 
@@ -35,12 +36,13 @@
          ${height!} ${attrBuild(element)} ${element.simpleDataAttributes!}/>
 
     <#-- render caption header above -->
-    <#if element.captionHeader.headerText?has_content && !element.captionHeaderPlacementAboveImage>
+    <#if element.captionHeader?? && element.captionHeader.headerText?has_content
+         && !element.captionHeaderPlacementAboveImage>
         <@krad.template component=element.captionHeader/>
     </#if>
 
     <#-- render cutline text -->
-    <#if element.cutlineMessage.messageText?has_content>
+    <#if element.cutlineMessage?? && element.cutlineMessage.messageText?has_content>
         <@krad.template component=element.cutlineMessage/>
     </#if>
 

@@ -131,12 +131,14 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        if (StringUtils.isNotBlank(constraintText) && (constraintMessage == null)) {
+        if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
+                constraintMessage == null)) {
             constraintMessage = ComponentFactory.getConstraintMessage();
             view.assignComponentIds(constraintMessage);
         }
 
-        if (StringUtils.isNotBlank(instructionalText) && (instructionalMessage == null)) {
+        if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
+                instructionalMessage == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
             view.assignComponentIds(instructionalMessage);
         }
@@ -240,8 +242,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         setupFieldQuery();
 
-        //special requiredness indicator handling, if this was previously not required reset its required
-        //message to be ** for indicating required in the next state
+        // special requiredness indicator handling, if this was previously not required reset its required
+        // message to be ** for indicating required in the next state
         String path = view.getStateObjectBindingPath();
         Object stateObject;
 
@@ -254,17 +256,19 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         if (stateMapping != null) {
             String validationState = ConstraintStateUtils.getClientViewValidationState(model, view);
-            SimpleConstraint appliedSimpleConstraint = ConstraintStateUtils.getApplicableConstraint(this.getSimpleConstraint(),
-                    validationState, stateMapping);
-            if(appliedSimpleConstraint != null && appliedSimpleConstraint.getRequired() != null && appliedSimpleConstraint.getRequired()){
-                SimpleConstraint prevConstraint = ConstraintStateUtils.getApplicableConstraint(this.getSimpleConstraint(),
-                        stateMapping.getCurrentState(stateObject), stateMapping);
+            SimpleConstraint appliedSimpleConstraint = ConstraintStateUtils.getApplicableConstraint(
+                    this.getSimpleConstraint(), validationState, stateMapping);
+
+            if (appliedSimpleConstraint != null
+                    && appliedSimpleConstraint.getRequired() != null
+                    && appliedSimpleConstraint.getRequired()) {
+                SimpleConstraint prevConstraint = ConstraintStateUtils.getApplicableConstraint(
+                        this.getSimpleConstraint(), stateMapping.getCurrentState(stateObject), stateMapping);
                 if (prevConstraint == null || prevConstraint.getRequired() == null || !prevConstraint.getRequired()) {
                     this.getFieldLabel().getRequiredMessage().setMessageText("**");
                 }
             }
         }
-        //end special requiredness indicator handling
 
         ClientValidationUtils.processAndApplyConstraints(this, view, model);
     }

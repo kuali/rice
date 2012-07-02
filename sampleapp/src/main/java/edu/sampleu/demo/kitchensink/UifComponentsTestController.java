@@ -81,7 +81,7 @@ public class UifComponentsTestController extends UifControllerBase {
                 ((UifComponentsTestForm)form).getList2generated().add(
                         new UITestObject("A" + i, "B" + i, "C" + i, "D" + i));
             }
-            for(int i=0; i<100; i++){
+            for(int i=0; i<10; i++){
                 ((UifComponentsTestForm)form).getList3generated().add(
                         new UITestObject("A" + i, "B" + i, "C" + i, "D" + i));
                 for(int j=0; j<10; j++){

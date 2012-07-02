@@ -86,7 +86,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
                 defaultItemPosition);
 		setItems(sortedItems);
 
-        if (StringUtils.isNotBlank(instructionalText) && (instructionalMessage == null)) {
+        if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
+                instructionalMessage == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
             view.assignComponentIds(instructionalMessage);
         }

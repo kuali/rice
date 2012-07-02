@@ -103,12 +103,14 @@
       </list>
     </property>
     <property name="captionHeaderPlacementAboveImage" value="true"/>
-    <property name="captionHeader">
-      <bean parent="Uif-HeaderFour"/>
-    </property>
-    <property name="cutlineMessage">
-      <bean parent="Uif-Message" p:cssClasses="uif-cutlineMessage"/>
-    </property>
+  </bean>
+
+  <bean id="Uif-ImageCaptionHeader"  parent="Uif-ImageCaptionHeader-parentBean"/>
+  <bean id="Uif-ImageCaptionHeader-parentBean" abstract="true" parent="Uif-HeaderFour"/>
+
+  <bean id="Uif-ImageCutineMessage"  parent="Uif-ImageCutineMessage-parentBean"/>
+  <bean id="Uif-ImageCutineMessage-parentBean" abstract="true" parent="Uif-Message">
+     <property name="cssClasses" value="uif-cutlineMessage"/>
   </bean>
 
   <bean id="Uif-Label" parent="Uif-Label-parentBean"/>

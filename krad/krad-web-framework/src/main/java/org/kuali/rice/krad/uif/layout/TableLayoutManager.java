@@ -116,7 +116,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     @Override
     public void performInitialization(View view, Object model, Container container) {
         super.performInitialization(view, model, container);
+
         getRowCssClasses().clear();
+
         if (generateAutoSequence && !(getSequenceFieldPrototype() instanceof Message)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
             view.assignComponentIds(getSequenceFieldPrototype());

@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * The breadcrumb widget contains various settings for setting up
- * Breadcrumb/History support on the view.
+ * Breadcrumb/History support on the view
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -36,6 +36,7 @@ public class BreadCrumbs extends WidgetBase {
     private boolean displayHomewardPath;
     private boolean displayPassedHistory;
     private boolean displayBreadcrumbsWhenOne;
+
     private List<HistoryEntry> homewardPathList;
 
     /**

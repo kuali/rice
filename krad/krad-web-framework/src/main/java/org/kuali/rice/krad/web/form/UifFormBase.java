@@ -208,11 +208,9 @@ public class UifFormBase implements ViewModel {
         }
     }
 
-
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getViewId()
      */
-
     @Override
     public String getViewId() {
         return this.viewId;

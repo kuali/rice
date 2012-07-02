@@ -41,13 +41,15 @@
               <bean id="myDialog" parent="PickAStory-DialogGroup"/>
               <bean id="myRadioButtonDialog" parent="RadioButtonDialog"/>
               <bean id="myRestart" parent="RestartYesNo" />
-              <bean id="myCheckboxDialog" parent="CheckboxDialog" p:promptText="Select Applicable" />
               <bean id="mySensitiveDialog" parent="SensitiveData-DialogGroup"/>
               <bean id="myImage" parent="ImageDialog"/>
               <bean id="preDefinedDialogOkCancel" parent="OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
               <bean id="preDefinedDialogTrueFalse" parent="True-False-DialogGroup" p:promptText="Is this a correct statement?" />
               <bean id="radioButtonDialog" parent="RadioButtonDialog" p:promptText="Select" />
               <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
+<!--
+              <bean id="myCheckboxDialog" parent="CheckboxDialog" p:promptText="Select Applicable" />
+-->
             </list>
           </property>
           <property name="footer">

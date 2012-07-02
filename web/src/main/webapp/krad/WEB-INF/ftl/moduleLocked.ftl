@@ -1,4 +1,4 @@
-<%--
+<#--
 
     Copyright 2005-2012 The Kuali Foundation
 
@@ -14,16 +14,19 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
---%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+-->
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.LightBox"/>
-<tiles:useAttribute name="componentId"/>
+<html>
+<head>
+    <title>Module Locked</title>
+    <link href="${ConfigProperties.kr.url}/css/kuali.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="scripts/en-common.js"></script>
+</head>
 
-<%--
-    Invokes JS method to implement a script linking the lightbox (fancybox) for lookups
- --%>
- 
-<krad:script value="
-   createLightBoxPost('${componentId}', ${widget.templateOptionsJSString}, ${widget.actionParameterMapString} , ${widget.lookupReturnByScript});
-"/>
+<body>
+<div style="margin-top: 25px;">
+    <strong>${request.getAttribute("moduleLockedMessage")}</strong>
+</div>
+</body>
+
+</html>

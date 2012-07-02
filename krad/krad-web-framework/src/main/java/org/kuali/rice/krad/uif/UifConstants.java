@@ -29,7 +29,6 @@ public class UifConstants {
 
     // uncomment for freemarker testing
     public static final String SPRING_VIEW_ID = "/krad/WEB-INF/ftl/uifRender";
-    //public static final String SPRING_VIEW_ID = "UifTemplateRender";
     public static final String SPRING_REDIRECT_ID = "/krad/WEB-INF/ftl/redirect";
     public static final String REDIRECT_PREFIX = "redirect:";
 

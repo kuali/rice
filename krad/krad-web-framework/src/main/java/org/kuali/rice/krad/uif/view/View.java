@@ -278,14 +278,6 @@ public class View extends ContainerBase {
             }
         }
 
-        // check if component has already been initialized to prevent cyclic references
-        // TODO: move to VHS initialize
-        //        if (initializedComponentIds.contains(component.getId())) {
-        //            throw new RiceRuntimeException(
-        //                    "Circular reference or duplicate id found for component with id: " + component.getId());
-        //        }
-        //        initializedComponentIds.add(component.getId());
-
         // assign id to nested components
         List<Component> allNested = new ArrayList<Component>(component.getComponentsForLifecycle());
         allNested.addAll(component.getComponentPrototypes());
@@ -299,7 +291,7 @@ public class View extends ContainerBase {
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
+        List<Component> components = new ArrayList<Component>();
 
         components.add(applicationHeader);
         components.add(applicationFooter);
@@ -307,6 +299,10 @@ public class View extends ContainerBase {
         components.add(breadcrumbs);
         components.add(growls);
         components.add(viewMenuLink);
+
+        // Note super items should be added after navigation and other view components so
+        // conflicting ids between nav and page do not occur on page navigation via ajax
+        components.addAll(super.getComponentsForLifecycle());
 
         // remove all pages that are not the current page
         if (!singlePageView) {

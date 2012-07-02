@@ -178,6 +178,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void performInitialization(View view, Object model) {
         view.assignComponentIds(view);
+        
+        // increment the id sequence so components added later to the static view components
+        // will not conflict with components on the page when navigation happens
+        view.setIdSequence(100000);
         performComponentInitialization(view, model, view);
     }
 

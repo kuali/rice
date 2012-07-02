@@ -106,7 +106,7 @@ public class RichTable extends WidgetBase {
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
             }
 
-            if ((component instanceof CollectionGroup)) {// && !getTemplateOptions().containsKey(UifConstants.TableToolsKeys.AO_COLUMNS)) {
+            if ((component instanceof CollectionGroup)) {
                 buildTableOptions((CollectionGroup) component);
             }
 

@@ -86,6 +86,11 @@
         class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.kew.serviceNamespace"/>
 
+  <bean id="rice.kew.remote.RICE.import" abstract="true" lazy-init="true"
+        class="org.kuali.rice.ksb.api.bus.support.LazyServiceFactoryBean"
+        p:serviceNamespace-ref="rice.kew.serviceNamespace"
+        p:applicationId="${standalone.application.id}"/>
+
   <bean id="rice.kew.workflowDocumentPrototype" class="org.kuali.rice.kew.impl.document.WorkflowDocumentImpl" scope="prototype"
         p:workflowDocumentActionsService-ref="rice.kew.workflowDocumentActionsService"
         p:workflowDocumentService-ref="rice.kew.workflowDocumentService" />

@@ -28,7 +28,7 @@
         p:cacheManager-ref="kewLocalCacheManager"/>
 
   <bean id="rice.kew.workflowDocumentActionsService"
-        parent="rice.kew.remote.import"
+        parent="rice.kew.remote.RICE.import"
         p:serviceName="workflowDocumentActionsService"
         p:objectType="org.kuali.rice.kew.api.action.WorkflowDocumentActionsService"/>
 

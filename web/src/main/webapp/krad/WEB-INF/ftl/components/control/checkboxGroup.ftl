@@ -22,7 +22,7 @@
 
 <#macro uif_checkboxes control field>
 
-    <#local attributes='id="${control.id}" class="${control.styleClassesAsString!}"
+    <#local attributes='class="${control.styleClassesAsString!}"
             tabindex="${control.tabIndex!}" ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
@@ -37,7 +37,7 @@
               data-type="CheckboxSet" id="${field.id}_fieldset">
         <legend style="display: none">${field.label!}</legend>
         <@spring.formCheckboxes path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
-                                separator="${control.delimiter!}" attributes="${attributes}"/>
+                         separator="${control.delimiter!}" attributes="${attributes}" prefix="${field.id}_"/>
     </fieldset>
 
 </#macro>

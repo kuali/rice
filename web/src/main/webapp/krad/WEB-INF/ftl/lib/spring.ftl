@@ -313,11 +313,12 @@
  *    separate each option. Typically '&nbsp;' or '<br>'
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
+ * @param prefix
 -->
-<#macro formCheckboxes path options separator attributes="">
+<#macro formCheckboxes path options separator attributes="" prefix="">
     <@bind path/>
     <#list options as option>
-    <#assign id="${status.expression}${option_index}">
+    <#assign id="${prefix}${status.expression}${option_index}">
     <#assign isSelected = contains(status.actualValue?default([""]), option.key)>
     <span>
     <input type="checkbox" id="${id}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>

@@ -550,17 +550,12 @@ public abstract class UifControllerBase {
     /**
      * Checks the form/view against all current and future validations and returns warnings for any validations
      * that fail
-     *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
-     * @return
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=checkForm")
     public ModelAndView checkForm(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         KRADServiceLocatorWeb.getViewValidationService().validateViewSimulation(form.getPostedView(), form);
+
         return getUIFModelAndView(form);
     }
 

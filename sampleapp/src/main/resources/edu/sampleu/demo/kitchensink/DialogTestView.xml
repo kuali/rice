@@ -38,8 +38,9 @@
               <bean parent="DialogTestView-SampleDialogs"/>
               <bean parent="DialogTestView-MainGroup"/>
 
-              <bean id="myDialog" parent="PickAStory-DialogGroup"/>
-              <bean id="myRadioButtonDialog" parent="RadioButtonDialog"/>
+              <bean id="chooseAuthorDialog" parent="ChooseAuthor-DialogGroup"/>
+              <bean id="chooseEastmanBookDialog" parent="EastmanBooks-DialogGroup"/>
+              <bean id="chooseSeussBookDialog" parent="SeussBooks-DialogGroup"/>
               <bean id="myRestart" parent="RestartYesNo" />
 
               <bean id="mySensitiveDialog" parent="SensitiveData-DialogGroup"/>
@@ -149,27 +150,51 @@
 
   <!-- dialogs used in the tell me a story conversation -->
 
-  <bean id="PickAStory-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Which Story Would You Like To Read?"/>
+  <bean id="ChooseAuthor-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Choose an Author"/>
     <property name="availableResponses">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Go Dog, Go!"/>
-        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Green Eggs and Ham"/>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="P. D. Eastman"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Dr. Seuss"/>
       </list>
     </property>
   </bean>
 
-  <bean id="RadioButtonDialog" parent="RadioButton-DialogGroup">
-    <property name="promptText" value="Which Version of Story Would You Like To Read?"/>
+  <bean id="SeussBooks-DialogGroup" parent="RadioButton-DialogGroup">
+    <property name="promptText" value="Which Book You Like To Read?"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation" p:render="true">
         <property name="control">
           <bean parent="Uif-VerticalRadioControl">
             <property name="options">
               <list>
-                <bean parent="Uif-KeyLabelPair" p:key="A" p:value="G Rated"/>
-                <bean parent="Uif-KeyLabelPair" p:key="B" p:value="PG Rated"/>
-                <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Explicit"/>
+                <bean parent="Uif-KeyLabelPair" p:key="Green Eggs and Ham" p:value="Green Eggs and Ham"/>
+                <bean parent="Uif-KeyLabelPair" p:key="Cat in the Hat" p:value="Cat in the Hat"/>
+                <bean parent="Uif-KeyLabelPair" p:key="The Grinch Who Stole Christmas" p:value="The Grinch Who Stole Christmas"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="EastmanBooks-DialogGroup" parent="RadioButton-DialogGroup">
+    <property name="promptText" value="Which Book You Like To Read?"/>
+    <property name="explanation">
+      <bean parent="Uif-DialogExplanation" p:render="true">
+        <property name="control">
+          <bean parent="Uif-VerticalRadioControl">
+            <property name="options">
+              <list>
+                <bean parent="Uif-KeyLabelPair" p:key="Are You My Mother?" p:value="Are You My Mother?"/>
+                <bean parent="Uif-KeyLabelPair" p:key="Go, Dog. Go!" p:value="Go, Dog. Go!"/>
+                <bean parent="Uif-KeyLabelPair" p:key="The Alphabet Book" p:value="The Alphabet Book"/>
               </list>
             </property>
           </bean>

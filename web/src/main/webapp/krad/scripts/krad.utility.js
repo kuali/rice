@@ -827,6 +827,13 @@ function showLightboxComponent(componentId, overrideOptions) {
     var component = jQuery('#' + componentId);
     var cssDisplay = component.css('display');
 
+    // suppress scrollbar when not needed
+    // undo the div.clearfix hack (KULRICE-7467)
+    component.attr('class', component.attr('class').replace('clearfix', ''));
+    component.find('div').each(function() {
+        jQuery(this).attr('class', jQuery(this).attr('class').replace('clearfix', ''));
+    });
+
     if (top == self) {
         // ensure that component of KualiForm gets updated after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose:function () {

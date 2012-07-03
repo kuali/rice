@@ -996,3 +996,27 @@ function removeIdPrefix(component, prefix) {
     }
     return component;
 }
+
+/**
+ * opens the lightbox upon return from the server
+ *
+ * @param dialogId - component id of the content for the lightbox
+ */
+function openLightboxOnLoad(dialogId){
+    showLightboxComponent(dialogId);
+    jQuery('.uif-dialogButtons').find('.uif-checkboxesControl').button();
+}
+
+/**
+ * script to run when a lightbox response button is selected.
+ *
+ * <p>
+ * setup common return method for lightboxes, close the fancybox, and submit the form
+ * </p>
+ *
+ */
+function lightboxButtonScript(){
+      writeHiddenToForm('methodToCall','returnFromLightbox');
+      jQuery.fancybox.close();
+      jQuery('#kualiForm').submit();
+}

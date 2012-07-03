@@ -41,6 +41,7 @@
               <bean id="myDialog" parent="PickAStory-DialogGroup"/>
               <bean id="myRadioButtonDialog" parent="RadioButtonDialog"/>
               <bean id="myRestart" parent="RestartYesNo" />
+
               <bean id="mySensitiveDialog" parent="SensitiveData-DialogGroup"/>
               <bean id="myImage" parent="ImageDialog"/>
               <bean id="preDefinedDialogOkCancel" parent="OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
@@ -188,6 +189,8 @@
 
 
 <!-- other sample dialogs -->
+
+<!--
   <bean id="CheckboxDialog" parent="Checkbox-DialogGroup" >
     <property name="availableResponses">
       <list>
@@ -195,7 +198,7 @@
       </list>
     </property>
   </bean>
-
+-->
   <bean id="ImageDialog" parent="Uif-ImageField" p:hidden="true" p:fieldLabel.render="false"
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
 

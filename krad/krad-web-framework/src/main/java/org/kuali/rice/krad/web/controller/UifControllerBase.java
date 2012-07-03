@@ -752,7 +752,7 @@ public abstract class UifControllerBase {
     protected ModelAndView showDialog(String dialogId, UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) throws Exception{
         // js script to invoke lightbox: runs onDocumentReady
-        form.setLightboxScript("showLightboxComponent('"+dialogId+"');");
+        form.setLightboxScript("openLightboxOnLoad('"+dialogId+"');");
 
         // respond back to the client directly
         // without returning back to the controller, but we still want spring mvc to build the view

@@ -1016,10 +1016,7 @@
     <property name="control">
       <bean parent="Uif-HorizontalCheckboxesControl"/>
     </property>
-    <property name="onChangeScript" value="
-      writeHiddenToForm('methodToCall','returnFromLightbox');
-      jQuery.fancybox.close();
-      jQuery('#kualiForm').submit();"/>
+    <property name="onChangeScript" value="lightboxButtonScript();"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-dialogButtons</value>
@@ -1082,7 +1079,7 @@
   <bean id="Checkbox-DialogGroup" parent="Uif-DialogGroup" >
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
-      <bean parent="Uif-DialogExplanation" p:render="true">
+      <bean parent="Uif-DialogExplanation">
         <property name="control">
           <bean parent="Uif-VerticalCheckboxesControl">
             <property name="options">

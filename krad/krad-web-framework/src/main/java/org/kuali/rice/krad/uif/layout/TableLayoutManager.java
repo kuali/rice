@@ -915,6 +915,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
+     * Indicates the index of the action column
+     *
+     * @return int = the action column index
+     */
+    public int getActionColumnIndex() {
+        return actionColumnIndex;
+    }
+
+    /**
      * Indicates the actions column placement
      *
      * <p>

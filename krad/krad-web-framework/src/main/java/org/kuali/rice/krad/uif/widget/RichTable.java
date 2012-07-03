@@ -145,15 +145,32 @@ public class RichTable extends WidgetBase {
 
             StringBuffer tableToolsColumnOptions = new StringBuffer("[");
 
+            int columnIndex = 1;
+            int actionIndex = -1;
+            boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+            String actionColOptions = constructTableColumnOptions(false, null, null);
+            if (layoutManager instanceof TableLayoutManager) {
+                actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
+            }
+            
+            if (actionIndex == 1 && actionFieldVisible) {
+                    tableToolsColumnOptions.append(actionColOptions + " , ");
+            }
+
             if (layoutManager instanceof TableLayoutManager && ((TableLayoutManager) layoutManager)
                     .isRenderSequenceField()) {
                 tableToolsColumnOptions.append(" null ,");
+                columnIndex++;
+                if (actionIndex == 2 && actionFieldVisible) {
+                    tableToolsColumnOptions.append(actionColOptions + " , ");
+                }
             }
 
             // skip select field if enabled
             if (collectionGroup.isIncludeLineSelectionField()) {
                 String colOptions = constructTableColumnOptions(false, null, null);
                 tableToolsColumnOptions.append(colOptions + " , ");
+                columnIndex++;
             }
 
             // if data dictionary defines aoColumns, copy here and skip default sorting/visibility behaviour
@@ -166,6 +183,9 @@ public class RichTable extends WidgetBase {
             } else {
                 // TODO: does this handle multiple rows correctly?
                 for (Component component : collectionGroup.getItems()) {
+                    if (actionFieldVisible && columnIndex == actionIndex) {
+                            tableToolsColumnOptions.append(actionColOptions + " , ");
+                    }
                     // for FieldGroup, get the first field from that group
                     if (component instanceof FieldGroup) {
                         component = ((FieldGroup) component).getItems().get(0);
@@ -201,13 +221,14 @@ public class RichTable extends WidgetBase {
                         String colOptions = constructTableColumnOptions(false, null, null);
                         tableToolsColumnOptions.append(colOptions + " , ");
                     }
+                    columnIndex++;
                 }
             }
 
-            if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
-                String colOptions = constructTableColumnOptions(false, null, null);
-                tableToolsColumnOptions.append(colOptions);
-            } else {
+            if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
+                tableToolsColumnOptions.append(actionColOptions);
+            }
+            else {
                 tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
                         ", "));
             }

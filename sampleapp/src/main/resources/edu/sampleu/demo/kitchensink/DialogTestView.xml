@@ -46,10 +46,10 @@
               <bean id="myImage" parent="ImageDialog"/>
               <bean id="preDefinedDialogOkCancel" parent="OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
               <bean id="preDefinedDialogTrueFalse" parent="True-False-DialogGroup" p:promptText="Is this a correct statement?" />
-              <bean id="radioButtonDialog" parent="RadioButtonDialog" p:promptText="Select" />
+              <bean id="sampleRadioButtonDialog" parent="RadioButton-DialogGroup" p:promptText="Select" />
               <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
 <!--
-              <bean id="myCheckboxDialog" parent="CheckboxDialog" p:promptText="Select Applicable" />
+              <bean id="myCheckboxDialog" parent="sampleCheckboxDialog" p:promptText="Select Applicable" />
 -->
             </list>
           </property>
@@ -110,12 +110,10 @@
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with overrides" p:actionScript="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from HTML" p:actionScript="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined OK/Cancel" p:actionScript="showLightboxComponent('preDefinedDialogOkCancel');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Checkboxes" p:actionScript="showLightboxComponent('myCheckboxDialog');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Radiobuttons" p:actionScript="showLightboxComponent('radioButtonDialog');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Checkboxes" p:actionScript="showLightboxComponent('sampleCheckboxDialog');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Radiobuttons" p:actionScript="showLightboxComponent('sampleRadioButtonDialog');"/>
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with progressive rendering" p:actionScript="showLightboxComponent('myProgressiveDialog');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Samuel" p:actionScript="showLightboxContent(jQuery('#myDialog').detach());"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Samuel Frame" p:actionScript="showLightboxContent(jQuery('#iframeportlet').contents().find('#myDialog').detach());"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:actionScript="showLightboxComponent('myImage');"/>
       </list>
     </property>
@@ -191,7 +189,7 @@
 <!-- other sample dialogs -->
 
 <!--
-  <bean id="CheckboxDialog" parent="Checkbox-DialogGroup" >
+  <bean id="sampleCheckboxDialog" parent="Checkbox-DialogGroup" >
     <property name="availableResponses">
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="OK"/>

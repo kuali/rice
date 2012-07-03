@@ -716,8 +716,8 @@ function time(start, testingText) {
  * @param highlightItemClass - the class to add to the item that should be highlighted
  */
 function deleteLineMouseOver(deleteButton, highlightItemClass) {
-    innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
-    if (innerLayout == 'uif-tableCollectionLayout') {
+    var innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
+    if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
         jQuery(deleteButton).closest('tr').addClass(highlightItemClass);
     } else {
         jQuery(deleteButton).closest('.uif-collectionItem').addClass(highlightItemClass);
@@ -731,8 +731,8 @@ function deleteLineMouseOver(deleteButton, highlightItemClass) {
  * @param highlightItemClass - the class remove from the collection item
  */
 function deleteLineMouseOut(deleteButton, highlightItemClass) {
-    innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
-    if (innerLayout == 'uif-tableCollectionLayout') {
+    var innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
+    if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
         jQuery(deleteButton).closest('tr').removeClass(highlightItemClass);
     } else {
         jQuery(deleteButton).closest('.uif-collectionItem').removeClass(highlightItemClass);

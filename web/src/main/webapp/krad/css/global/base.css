@@ -535,6 +535,10 @@ table.dataTable tr.even td.sorting_1{
     background-color: #FAFAFA;
 }
 
+table.dataTable tr.uif-collectionDeleteHighlight {
+    background-color: #FFE1E9;
+}
+
 .paging_full_numbers a.paginate_button_disabled{
     cursor: auto;
     color: #888888 !important;

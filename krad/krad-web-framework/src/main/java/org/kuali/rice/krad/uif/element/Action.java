@@ -75,7 +75,10 @@ public class Action extends ContentElementBase {
         super();
 
         actionImagePlacement = UifConstants.Position.LEFT.name();
-
+        ajaxSubmit = true;
+        successCallback = "";
+        errorCallback = "";
+        preSubmitCall = "";
         disabled = false;
         actionParameters = new HashMap<String, String>();
     }
@@ -92,8 +95,10 @@ public class Action extends ContentElementBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
+    public  void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
+
+        Map<String, Object> submitData = new HashMap<String, Object>();
         //clear alt text to avoid screen reader confusion when using image in button with text
         if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(
                 actionLabel)) {
@@ -140,12 +145,8 @@ public class Action extends ContentElementBase {
                     if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
                         parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
                     }
-
-                    writeParamsScript =
-                            writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '" + actionParameters.get(
-                                    key) + "'); ";
-
-                    // Include dirtycheck js function call if the method to call
+                    submitData.put(parameterPath,actionParameters.get(key));
+                     // Include dirtycheck js function call if the method to call
                     // is refresh, navigate, cancel or close
                     if (validateFormDirty && !includeDirtyCheckScript && key.equals(
                             UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
@@ -160,73 +161,65 @@ public class Action extends ContentElementBase {
                 }
             }
 
+
+            // Map properties to data attribuite
+            addDataAttribute("ajaxsubmit", Boolean.toString(ajaxSubmit));
+            addDataAttribute("successcallback", this.successCallback);
+            addDataAttribute("errorcallback", this.errorCallback);
+            addDataAttribute("presubmitcall", this.preSubmitCall);
+            addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
+
             // TODO possibly fix some other way - this is a workaround, prevents
             // showing history and showing home again on actions which submit
             // the form
-            writeParamsScript = writeParamsScript
-                    + "writeHiddenToForm('"
-                    + UifConstants.UrlParams.SHOW_HISTORY
-                    + "', '"
-                    + "false"
-                    + "'); ";
-            writeParamsScript = writeParamsScript
-                    + "writeHiddenToForm('"
-                    + UifConstants.UrlParams.SHOW_HOME
-                    + "' , '"
-                    + "false"
-                    + "'); ";
-
+            submitData.put(UifConstants.UrlParams.SHOW_HISTORY,"false");
+            submitData.put(UifConstants.UrlParams.SHOW_HOME,"false");
             if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
                 // if this is blank focus this actionField by default
                 focusOnIdAfterSubmit = this.getId();
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + this.getId() + "'); ";
+                submitData.put("focusId",focusOnIdAfterSubmit);
             } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
                 // Use the id passed in
-                writeParamsScript =
-                        writeParamsScript + "writeHiddenToForm('focusId' , '" + focusOnIdAfterSubmit + "'); ";
+                submitData.put("focusId",focusOnIdAfterSubmit);
             } else {
                 // First input will be focused, must be first field set to empty
                 // string
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , ''); ";
+                submitData.put("focusId","");
             }
 
             if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
                 jumpToIdAfterSubmit = this.getId();
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '" + this.getId() + "'); ";
+                submitData.put("jumpToId",jumpToIdAfterSubmit);
             } else if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
-                writeParamsScript =
-                        writeParamsScript + "writeHiddenToForm('jumpToId' , '" + jumpToIdAfterSubmit + "'); ";
+                 submitData.put("jumpToId",jumpToIdAfterSubmit);
             } else {
-                writeParamsScript =
-                        writeParamsScript + "writeHiddenToForm('jumpToName' , '" + jumpToNameAfterSubmit + "'); ";
+                submitData.put("jumpToName",jumpToNameAfterSubmit);
             }
+            StringBuffer sb = new StringBuffer("{");
+            for (String key : submitData.keySet()) {
+                Object optionValue = submitData.get(key);
+                if (sb.length() > 1) {
+                    sb.append(",");
+                }
+                sb.append("\"" + key + "\"");
+
+                sb.append(":");
+                sb.append("\"" + optionValue + "\"");
+            }
+            sb.append("}");
+            addDataAttribute("submitData",sb.toString());
 
             String postScript = "";
             if (StringUtils.isNotBlank(actionScript)) {
                 postScript = actionScript;
             }
-            if (isPerformClientSideValidation()) {
-                postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
-            }
             String submitScript = "";
-            if (ajaxSubmit) {
-                submitScript = "ajaxSubmitForm( '"
-                        + getMethodToCall()
-                        + "',"
-                        + successCallback
-                        + ", null, null,"
-                        + errorCallback
-                        + ");";
-            } else {
-                submitScript = "jQuery('#kualiForm').submit();";
-            }
+
+            submitScript = "actionInvokeHandler(this);";
+
+
             if (StringUtils.isBlank(postScript)) {
-                //if the preSubmitCall evaluates to true then submit the form else don't
-                if (StringUtils.isNotBlank(preSubmitCall)) {
-                    postScript = "if (" + preSubmitCall + "== true ) {" + submitScript + "}";
-                } else {
                     postScript = submitScript;
-                }
             }
 
             if (includeDirtyCheckScript) {

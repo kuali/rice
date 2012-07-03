@@ -171,24 +171,19 @@
       <list>
         <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField" p:actionScript="alert('You clicked the link');" />
 
-        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call true"  p:methodToCall="start" p:preSubmitCall="returnBoolean(true)" p:ajaxSubmit="true" p:successCallback="function(htmlContent) {alert('Sucess Call back eg');}">
-          <property name="dataAttributes">
-            <map>
-              <entry key="iconTemplateName" value="cool-icon-%s.png"/>
-              <entry key="transitions" value="3"/>
-              <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
-              <entry key="intervals" value="{short:2, medium:5, long:13}"/>
-            </map>
-          </property>
-        </bean>
+               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call true"  p:methodToCall="start" p:preSubmitCall="returnBoolean(true)" p:successCallback="successCallbackF">
 
-        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call false"  p:methodToCall="start" p:preSubmitCall="returnBoolean(false)"/>
+               </bean>
 
-        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField ajaxSubmit call false"  p:methodToCall="start" p:ajaxSubmit="false"/>
+               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call false"  p:methodToCall="start" p:preSubmitCall="returnBoolean(false)"/>
 
-        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField sucessCallBack"  p:methodToCall="start" p:ajaxSubmit="true" p:successCallback="function(htmlContent) {alert('Sucess Call back eg');}"/>
+               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField ajaxSubmit call false"  p:methodToCall="start" p:ajaxSubmit="false" p:preSubmitCall="returnBoolean(true)"/>
 
-       <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField errorCallBack"  p:methodToCall="errorCheck" p:ajaxSubmit="true" p:errorCallback="function(htmlContent) {alert('Error Call back eg');}"/>
+               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField sucessCallBack"  p:methodToCall="start" p:ajaxSubmit="true" p:successCallback="successCallbackF"/>
+
+                <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField validate"  p:methodToCall="start" p:ajaxSubmit="true" p:successCallback="successCallbackF" p:performClientSideValidation = "true"/>
+
+              <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField errorCallBack"  p:methodToCall="errorCheck" p:ajaxSubmit="true" p:errorCallback="function(htmlContent) {alert('Error Call back eg');}"/>
 
         <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField image right" p:actionImagePlacement="RIGHT"
               p:actionScript="alert('You clicked a button');">

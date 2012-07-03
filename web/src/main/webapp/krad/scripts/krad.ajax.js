@@ -14,6 +14,49 @@
  * limitations under the License.
  */
 
+function actionInvokeHandler(component) {
+
+    var ajaxSubmit = jQuery(component).data("ajaxsubmit");
+    var submitData = jQuery(component).data("submitData");
+    var successCallback = jQuery(component).data("successcallback");
+    var elementToBlock = jQuery(component).data("elementtoblock");
+    var errorCallback = jQuery(component).data("errorcallback");
+    var preSubmitCall = jQuery(component).data("presubmitcall");
+    var validate = jQuery(component).data("validate");
+
+    var additionalData = {};
+    var methodToCall = submitData['methodToCall'];
+    for (key in submitData) {
+        additionalData[key] = submitData[key];
+        //  alert(key + ":" + additionalData[key]);
+    }
+     if (successCallback == null || successCallback == "") {
+         successCallback = updatePageCallback;
+     }
+    if (ajaxSubmit) {
+            if(validate){
+              validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData,elementToBlock ,  preSubmitCall);
+            } else{
+                ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock ,  preSubmitCall);
+            }
+    } else {
+        if(validate){
+            validateAndSubmitForm(methodToCall, additionalData, preSubmitCall)
+        }   else{
+           submitForm(methodToCall, additionalData, preSubmitCall);
+        }
+
+    }
+}
+
+function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock ,  preSubmitCall) {
+    ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false, preSubmitCall);
+}
+
+function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock ,  preSubmitCall) {
+    ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, true, preSubmitCall);
+}
+
 /**
  * Submits the form through an ajax submit, the response is the new page html
  * runs all hidden scripts passed back (this is to get around a bug with premature script evaluation)
@@ -24,18 +67,19 @@
  *
  * For the above reason, the renderFullView below is set to false so that the script content between <head></head> is left out
  */
-
-function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, errorCallback){
-	var data = {};
-
-    // methodToCall checks
-    if (methodToCall == null) {
-        var methodToCallInput = jQuery("input[name='methodToCall']");
-        if (methodToCallInput.length > 0) {
-            methodToCall = jQuery("input[name='methodToCall']").val();
-        }
+function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate, preSubmitCall  ) {
+    var data = {};
+    // invoke validateForm if validate flag is true, if returns false do not continue
+    if (validate && !validateForm()) {
+        return;
     }
 
+    if(preSubmitCall!= null && preSubmitCall!=="") {
+         if(!eval(preSubmitCall)){
+            return;
+        }
+
+     }
     // check to see if methodToCall is still null
     if (methodToCall != null || methodToCall !== "") {
         data.methodToCall = methodToCall;
@@ -47,10 +91,10 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 
     // remove this since the methodToCall was passed in or extracted from the page, to avoid issues
     jQuery("input[name='methodToCall']").remove();
-	
-	if(additionalData != null){
+
+    if (additionalData != null) {
         jQuery.extend(data, additionalData);
-	}
+    }
 
     var viewState = jQuery(document).data(kradVariables.VIEW_STATE);
     if (!jQuery.isEmptyObject(viewState)) {
@@ -67,110 +111,140 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
         componentId = jQuery('#kualiLightboxForm').children(':first').attr('id');
     }
 
-	
-	var submitOptions = {
-			data: data, 
-			success: function(response){
-				var tempDiv = document.createElement('div');
-				tempDiv.innerHTML = response;
-				var hasError = handleIncidentReport(response);
-				if(!hasError){
-					successCallback(tempDiv);
-				} else if(errorCallback != null) {
-                    errorCallback(tempDiv);
+    var submitOptions = {
+        data: data,
+        success: function(response) {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = response;
+            var hasError = handleIncidentReport(response);
+            if (!hasError) {
+               // alert("Type :: "+typeof successCallback)
+                if(typeof successCallback == "string"){
+                    eval(successCallback + "(tempDiv)");
+                } else {
+                     successCallback(tempDiv);
                 }
+            } else if (errorCallback != null) {
+                eval(errorCallback + "(tempDiv)");
+            }
 
-                jQuery("#formComplete").html("");
+            jQuery("#formComplete").html("");
 
-                //for lightbox copy data back into lightbox
-                if (componentId !== undefined) {
-                    var component = jQuery('#' + componentId).clone(true, true);
-                    addIdPrefix( jQuery('#' + componentId), 'tmpForm_');
-                    jQuery('#tmpLightbox_' + componentId).replaceWith(component);
-                    jQuery('#' + componentId).css('display', '');
+            //for lightbox copy data back into lightbox
+            if (componentId !== undefined) {
+                var component = jQuery('#' + componentId).clone(true, true);
+                addIdPrefix(jQuery('#' + componentId), 'tmpForm_');
+                jQuery('#tmpLightbox_' + componentId).replaceWith(component);
+                jQuery('#' + componentId).css('display', '');
+            }
+
+        },
+        error: function(jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        }
+    };
+
+    if (elementToBlock != null && elementToBlock.length) {
+        var elementBlockingOptions = {
+            beforeSend: function() {
+                if (elementToBlock.hasClass("unrendered")) {
+                    elementToBlock.append('<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Loading...');
+                    elementToBlock.show();
                 }
+                else {
+                    elementToBlock.block({
+                        message: '<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Updating...',
+                        fadeIn:  400,
+                        fadeOut:  800
+                    });
+                }
+            },
+            complete: function() {
+                // note that if you want to unblock simultaneous with showing the new retrieval
+                // you must do so in the successCallback
+                elementToBlock.unblock();
 
             },
-            error: function(jqXHR, textStatus) {
-                alert( "Request failed: " + textStatus );
+            error: function() {
+                if (elementToBlock.hasClass("unrendered")) {
+                    elementToBlock.hide();
+                }
+                else {
+                    elementToBlock.unblock();
+                }
             }
-	};
-	
-	if(elementToBlock != null && elementToBlock.length){
-		var elementBlockingOptions = {
-				beforeSend: function() {
-					if(elementToBlock.hasClass("unrendered")){
-						elementToBlock.append('<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Loading...');
-						elementToBlock.show();
-					}
-					else{
-						elementToBlock.block({
-			                message: '<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Updating...',
-			                fadeIn:  400,
-			                fadeOut:  800
-			            });
-					}
-				},
-				complete: function(){
-					// note that if you want to unblock simultaneous with showing the new retrieval
-					// you must do so in the successCallback
-					elementToBlock.unblock();
-
-				},
-				error: function(){
-					if(elementToBlock.hasClass("unrendered")){
-						elementToBlock.hide();
-					}
-					else{
-						elementToBlock.unblock();
-					}
-				}
-		};
-	}
+        };
+    }
 
     //for lightbox copy data back into form
     if (componentId !== undefined) {
         var component = jQuery('#' + componentId).clone(true, true);
-        addIdPrefix( jQuery('#' + componentId), 'tmpLightbox_');
+        addIdPrefix(jQuery('#' + componentId), 'tmpLightbox_');
         jQuery('#tmpForm_' + componentId).replaceWith(component);
     }
 
     jQuery.extend(submitOptions, elementBlockingOptions);
-	var form = jQuery("#kualiForm");
-	form.ajaxSubmit(submitOptions);
+    var form = jQuery("#kualiForm");
+    form.ajaxSubmit(submitOptions);
+
 }
 
-//Called when a form is being persisted to assure all validation passes
-function validateAndSubmit(methodToCall, successCallback){
+function submitForm(methodToCall, additionalData, preSubmitCall) {
+    // invoke submitFormFullOpts with null callback, validate false
+    submitFormFullOpts(methodToCall, additionalData, false, preSubmitCall);
+}
+
+function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
+    // invoke submitFormFullOpts with null callback, validate true
+    submitFormFullOpts(methodToCall, additionalData, true, preSubmitCall);
+}
+
+function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall) {
+    // invoke validateForm if validate flag is true, if returns false do not continue
+    if (validate && !validateForm()) {
+        return;
+    }
+
+    // if presubmit call given, invoke. If returns false don't continue
+
+    if(preSubmitCall!= null && preSubmitCall!=="") {
+         if(!eval(preSubmitCall)){
+            return;
+        }
+    }
+    // write out methodToCall as hidden
+    writeHiddenToForm("methodToCall", methodToCall);
+
+    // if additional data write out as hiddens
+    for (key in additionalData) {
+        writeHiddenToForm(key, additionalData[key]);
+    }
+
+    // submit
+    jQuery('#kualiForm').submit();
+}
+
+function validateForm() {
     jQuery.watermark.hideAll();
 
     var validForm = true;
 
-    if(validateClient){
+    if (validateClient) {
         messageSummariesShown = true;
         pauseTooltipDisplay = true;
         validForm = jQuery("#kualiForm").valid();
         pauseTooltipDisplay = false;
     }
 
-	if(validForm){
-        jQuery.watermark.showAll();
-		ajaxSubmitForm(methodToCall, successCallback, null, null, null);
-	}
-	else{
-        jQuery.watermark.showAll();
-        jQuery("#formComplete").html("");
-        jumpToTop();
-		alert("The form contains errors.  Please correct these errors and try again.");
-        jQuery(".uif-pageValidationHeader").focus();
-	}
+    return validForm;
 }
+
 
 /**
  * Validate form.  When no validation errors exists the form is submitted with the methodToCall of the form.
  * The page is then replaced with the result of the ajax call.
  */
-function validateAndSubmitUsingFormMethodToCall(){
+function validateAndSubmitUsingFormMethodToCall() {
     validateAndSubmit(null, updatePageCallback);
 }
 
@@ -178,26 +252,10 @@ function validateAndSubmitUsingFormMethodToCall(){
  * Submits a form via ajax using the jquery form plugin
  * The methodToCall parameter is used to determine the controller method to invoke
  */
-function submitForm(){
-	var methodToCall = jQuery("input[name='methodToCall']").val();
-	ajaxSubmitForm(methodToCall, updatePageCallback, null, null, null);
-}
-
-/**
- * Translates all data variable to hidden form element and submits the form
- */
-function submitKualiForm() {
-  var data = jQuery(this).data();
-  for(var key in data){
-    writeHiddenToForm(key, data[key]);
-  }
-
-  jQuery('#kualiForm').submit();
-}
-
-
-
-
+//function submitForm(){
+//	var methodToCall = jQuery("input[name='methodToCall']").val();
+//	ajaxSubmitForm(methodToCall, updatePageCallback, null, null, null);
+//}
 
 
 
@@ -227,6 +285,10 @@ function updatePageCallback(content) {
     jQuery(pageInLayout).show();
 }
 
+function successCallbackF(content) {
+   alert("Test");
+}
+
 /**
  * Handles a link that should post the form. Should be called from the methods
  * onClick event
@@ -237,7 +299,7 @@ function updatePageCallback(content) {
  *          the id for the page that the link should navigate to
  */
 function handleActionLink(methodToCall, navigateToPageId) {
-    ajaxSubmitForm(methodToCall, updatePageCallback, {navigateToPageId:navigateToPageId}, null, null);
+    ajaxSubmitForm(methodToCall, "updatePageCallback", {navigateToPageId:navigateToPageId}, null, null);
 }
 
 /**
@@ -315,8 +377,8 @@ function retrieveComponent(id, baseId, methodToCall){
         // Since we are always setting skipViewInit to true, remove any existing input skipViewInit param
     jQuery("input[name='skipViewInit']").remove();
 
-	ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
-			{updateComponentId: id, skipViewInit: "true"}, elementToBlock, null);
+    ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
+            {updateComponentId: id, skipViewInit: "true"}, elementToBlock, null);
 }
 
 /**
@@ -348,10 +410,9 @@ function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
     // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
     jQuery("input[name='skipViewInit']").remove();
 
-
-    ajaxSubmitForm("toggleInactiveRecordDisplay", updateCollectionCallback, 
-			{updateComponentId: collectionGroupId, skipViewInit: "true", showInactiveRecords : showInactive},
-			elementToBlock, null);
+    ajaxSubmitForm("toggleInactiveRecordDisplay", updateCollectionCallback,
+            {updateComponentId: collectionGroupId, skipViewInit: "true", showInactiveRecords : showInactive},
+            elementToBlock, null);
 }
 
 function performCollectionAction(collectionGroupId){
@@ -369,13 +430,14 @@ function performCollectionAction(collectionGroupId){
 				}
 			});
 	    };
-	    
+
 	    var methodToCall = jQuery("input[name='methodToCall']").val();
         // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
         jQuery("input[name='skipViewInit']").remove();
-		ajaxSubmitForm(methodToCall, updateCollectionCallback, {updateComponentId: collectionGroupId, skipViewInit: "true"},
-				elementToBlock, null);
-	}
+
+        ajaxSubmitForm(methodToCall, updateCollectionCallback, {updateComponentId: collectionGroupId, skipViewInit: "true"},
+                elementToBlock, null);
+    }
 }
 
 

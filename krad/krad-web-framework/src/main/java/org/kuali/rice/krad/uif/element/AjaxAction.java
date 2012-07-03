@@ -90,7 +90,7 @@ public class AjaxAction extends Action {
         }
         else {
             // refresh page
-            actionScript = "submitForm();";
+            actionScript = "actionInvokeHandler(this);";
         }
 
         // add action script to client JS

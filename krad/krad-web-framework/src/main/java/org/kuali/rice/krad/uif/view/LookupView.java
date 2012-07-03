@@ -109,7 +109,11 @@ public class LookupView extends FormView {
         if (getItems().isEmpty()) {
             setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
         }
+
         super.performInitialization(view, model);
+
+        view.getViewHelperService().performComponentInitialization(view, model, getResultsActionsFieldGroup());
+        view.getViewHelperService().performComponentInitialization(view, model, getResultsReturnField());
 
         // if this is a multi-value lookup, don't show return column
         if (multipleValuesSelect) {

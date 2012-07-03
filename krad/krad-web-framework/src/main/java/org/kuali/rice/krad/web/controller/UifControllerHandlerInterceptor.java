@@ -19,8 +19,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.util.UifFormManager;
-import org.kuali.rice.krad.uif.util.UifWebUtils;
+import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -80,7 +79,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-        UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
+        UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);
     }
 
     /**

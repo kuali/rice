@@ -59,140 +59,6 @@ public class History implements Serializable {
     }
 
     /**
-     * Gets the predetermined homeward path for this view's history.
-     * This is set by the same property in the view's Breadcrumbs configuration.
-     *
-     * @return the homewardPath
-     */
-    public List<HistoryEntry> getHomewardPath() {
-        return this.homewardPath;
-    }
-
-    /**
-     * @param homewardPath the homewardPath to set
-     */
-    public void setHomewardPath(List<HistoryEntry> homewardPath) {
-        this.homewardPath = homewardPath;
-    }
-
-    /**
-     * Gets a list of the current HistoryEntries not including the current entry.
-     * This list does not include the "&history=" query parameter on each HistoryEntry's
-     * url variable.  For HistoryEntries that include history information to be passed to the
-     * view they are retrieving, getGeneratedBreadcrumbs is used.
-     *
-     * @return the history
-     */
-    public List<HistoryEntry> getHistoryEntries() {
-        return this.historyEntries;
-    }
-
-    /**
-     * @param history the history to set
-     */
-    public void setHistoryEntries(List<HistoryEntry> history) {
-        this.historyEntries = history;
-    }
-
-    /**
-     * Gets the current view's HistoryEntry.
-     * This does not include the "&history=" query parameter on its
-     * url variable.  For the HistoryEntry that includes history information to be passed
-     * on the url it is retrieving, getGeneratedCurrentBreadcrumb is used.
-     *
-     * @return the current
-     */
-    public HistoryEntry getCurrent() {
-        return this.current;
-    }
-
-    /**
-     * Sets the current HistoryEntry to the current view
-     * @param viewId
-     * @param pageId
-     * @param title
-     * @param url
-     * @param formKey
-     */
-    private void setCurrent(String viewId, String pageId, String title, String url, String formKey) {
-        HistoryEntry entry = new HistoryEntry(viewId, pageId, title, url, formKey);
-        current = entry;
-    }
-
-    /**
-     * @param current the current to set
-     */
-    public void setCurrent(HistoryEntry current) {
-        this.current = current;
-    }
-
-    /**
-     * Takes in the encoded history query parameter string passed on the url and parses it to create
-     * the list of historyEntries.  It will also append any homeward path if appendHomewardPath is true.  This
-     * append will happen after the passedHistory entries are appended so it will not make sense to use both settings
-     * in most cases.
-     *
-     * @param parameterString
-     */
-    public void buildHistoryFromParameterString(String parameterString) {
-        if (StringUtils.isNotEmpty(parameterString)) {
-            try {
-                parameterString = URLDecoder.decode(parameterString, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                LOG.error("Error decoding history param", e);
-            }
-
-            historyEntries = new ArrayList<HistoryEntry>();
-            if (appendPassedHistory) {
-                String[] historyTokens = parameterString.split("\\" + ENTRY_TOKEN);
-                for (String token : historyTokens) {
-                    String[] params = token.split(VAR_TOKEN);
-                    pushToHistory(params[0], params[1], params[2], params[3], params[4]);
-                }
-            }
-        }
-
-        if (appendHomewardPath) {
-            historyEntries.addAll(homewardPath);
-        }
-    }
-
-    /**
-     * Gets the encoded and tokenized history parameter string that is representative of the HistoryEntries
-     * currently in History and includes the current view's HistoryEntry.  This parameter should be appended on any
-     * appropriate links which perform view swapping.
-     *
-     * @return
-     */
-    public String getHistoryParameterString() {
-        String historyString = "";
-        for (HistoryEntry e : historyEntries) {
-            if (historyEntries.indexOf(e) == 0) {
-                historyString = historyString + e.toParam();
-            } else {
-                historyString = historyString + ENTRY_TOKEN + e.toParam();
-            }
-        }
-
-        // add current
-        if (current != null) {
-            if (historyString.equals("")) {
-                historyString = historyString + current.toParam();
-            } else {
-                historyString = historyString + ENTRY_TOKEN + current.toParam();
-            }
-        }
-
-        try {
-            historyString = URLEncoder.encode(historyString, "UTF-8");
-        } catch (Exception e) {
-            LOG.error("Error encoding history param", e);
-        }
-
-        return historyString;
-    }
-
-    /**
      * Generates a list of HistoryEntries that can be used as breadcrumbs by the breadcrumb widget.  This
      * method appends the appropriate history information on the HistoryEntry url variables so when a view is requested
      * its history can be regenerated for use in its breadcrumbs.  It also sets the the passed showHome variable to
@@ -209,26 +75,37 @@ public class History implements Serializable {
                 breadcrumbs.add(copyEntry(historyEntries.get(i)));
             } else {
                 HistoryEntry breadcrumb = copyEntry(historyEntries.get(i));
+
                 String historyParam = "";
                 for (int j = 0; j < i; j++) {
                     historyParam = historyParam + ENTRY_TOKEN + historyEntries.get(j).toParam();
                 }
                 historyParam = historyParam.replaceFirst("\\" + ENTRY_TOKEN, "");
+
                 try {
                     historyParam = URLEncoder.encode(historyParam, "UTF-8");
                 } catch (Exception e) {
-                    LOG.error("Error encoding history param", e);
+                    throw new RuntimeException("Error encoding history param", e);
                 }
 
-                String url = "";
-                if (StringUtils.isEmpty(breadcrumb.getUrl()))continue;
-                if (breadcrumb.getUrl().contains("?")) {
-                    url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + "=" + historyParam
-                            + "&" + UifConstants.UrlParams.LAST_FORM_KEY + "=" + current.getFormKey();
-                } else {
-                    url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + "=" + historyParam
-                            + "&" + UifConstants.UrlParams.LAST_FORM_KEY + "=" + current.getFormKey();
+                if (StringUtils.isEmpty(breadcrumb.getUrl())) {
+                    continue;
                 }
+
+                String url = breadcrumb.getUrl();
+                if (url.contains("?")) {
+                    url += "&";
+                } else {
+                    url += "?";
+                }
+
+                url += UifConstants.UrlParams.HISTORY
+                        + "="
+                        + historyParam
+                        + "&"
+                        + UifConstants.UrlParams.LAST_FORM_KEY
+                        + "="
+                        + current.getFormKey();
 
                 breadcrumb.setUrl(url);
                 breadcrumbs.add(breadcrumb);
@@ -240,11 +117,9 @@ public class History implements Serializable {
 
     /**
      * Gets the current HistoryEntry in the breadcrumb format described in getGeneratedBreadcrumbs
-     *
-     * @return
      */
     public HistoryEntry getGeneratedCurrentBreadcrumb() {
-        if (current == null){
+        if (current == null) {
             return new HistoryEntry();
         }
 
@@ -258,7 +133,7 @@ public class History implements Serializable {
         try {
             historyParam = URLEncoder.encode(historyParam, "UTF-8");
         } catch (Exception e) {
-            LOG.error("Error encoding history param", e);
+            throw new RuntimeException("Error encoding history param", e);
         }
 
         String url = "";
@@ -298,95 +173,126 @@ public class History implements Serializable {
     }
 
     /**
-     * When this is set to true, the homeward path will be appended.
-     * Note:  For most cases this should only be on during the first view load.
-     * This setting is set automatically in most cases.
-     *
-     * @param appendHomewardPath the appendHomewardPath to set
-     */
-    public void setAppendHomewardPath(boolean appendHomewardPath) {
-        this.appendHomewardPath = appendHomewardPath;
-    }
-
-    /**
-     * @return the appendHomewardPath
-     */
-    public boolean isAppendHomewardPath() {
-        return appendHomewardPath;
-    }
-
-    /**
-     * Appends the passed history as each different view is shown.  This setting should be used when displaying
-     * passed history is relevant to the user (ie inquiry/lookup chains).  This setting is set automatically in
-     * most cases.
-     *
-     * @param appendPassedHistory the appendPassedHistory to set
-     */
-    public void setAppendPassedHistory(boolean appendPassedHistory) {
-        this.appendPassedHistory = appendPassedHistory;
-    }
-
-    /**
-     * @return the appendPassedHistory
-     */
-    public boolean isAppendPassedHistory() {
-        return appendPassedHistory;
-    }
-
-    /**
      * Sets the current HistoryEntry using information from the form and the request.  This history parameter is
-     * extracted out of the url inorder for a "clean" url to be used in history parameter and
+     * extracted out of the url in order for a "clean" url to be used in history parameter and
      * breadcrumb generation, as passing history history through the nested urls is unnecessary.
      *
      * @param form
      * @param request
      */
-    @SuppressWarnings("unchecked")
-    public void setCurrent(UifFormBase form, HttpServletRequest request) {
-        if (!request.getMethod().equals("POST")) {
-            boolean showHomeValue = false;
-            boolean pageIdValue = false;
-            boolean formKeyValue = false;
+    public void buildCurrentEntryFromRequest(UifFormBase form, HttpServletRequest request) {
+        if (request.getMethod().equals("POST")) {
+            return;
+        }
 
-            String queryString = "";
-            String url = request.getRequestURL().toString();
+        boolean showHomeValue = false;
+        boolean pageIdValue = false;
+        boolean formKeyValue = false;
 
-            //remove history attribute
-            Enumeration<String> params = request.getParameterNames();
-            while (params.hasMoreElements()) {
-                String key = params.nextElement();
-                if (!key.equals(UifConstants.UrlParams.HISTORY)) {
-                    for (String value : request.getParameterValues(key)) {
-                        queryString = queryString + "&" + key + "=" + value;
-                    }
-                } else if (key.equals(UifConstants.UrlParams.PAGE_ID)) {
-                    pageIdValue = true;
-                } else if (key.equals(UifConstants.UrlParams.SHOW_HOME)) {
-                    showHomeValue = true;
-                } else if (key.equals(UifConstants.UrlParams.FORM_KEY)) {
-                    formKeyValue = true;
+        String queryString = "";
+        String url = request.getRequestURL().toString();
+
+        // remove history attribute
+        Enumeration<String> params = request.getParameterNames();
+        while (params.hasMoreElements()) {
+            String key = params.nextElement();
+            if (!key.equals(UifConstants.UrlParams.HISTORY)) {
+                for (String value : request.getParameterValues(key)) {
+                    queryString = queryString + "&" + key + "=" + value;
                 }
             }
 
-            //add formKey and pageId to url
-            if (StringUtils.isNotBlank(form.getFormKey()) && !formKeyValue) {
-                queryString = queryString + "&" + UifConstants.UrlParams.FORM_KEY + "=" + form.getFormKey();
+            if (key.equals(UifConstants.UrlParams.PAGE_ID)) {
+                pageIdValue = true;
+            } else if (key.equals(UifConstants.UrlParams.SHOW_HOME)) {
+                showHomeValue = true;
+            } else if (key.equals(UifConstants.UrlParams.FORM_KEY)) {
+                formKeyValue = true;
             }
-            if (StringUtils.isNotBlank(form.getPageId()) && !pageIdValue) {
-                queryString = queryString + "&" + UifConstants.UrlParams.PAGE_ID + "=" + form.getPageId();
-            }
-            if (!showHomeValue) {
-                queryString = queryString + "&" + UifConstants.UrlParams.SHOW_HOME + "=false";
-            }
-
-            queryString = queryString.replaceFirst("&", "");
-
-            if (StringUtils.isNotEmpty(queryString)) {
-                url = url + "?" + queryString;
-            }
-
-            this.setCurrent(form.getViewId(), form.getPageId(), buildViewTitle(form), url, form.getFormKey());
         }
+
+        // add formKey and pageId to url
+        if (StringUtils.isNotBlank(form.getFormKey()) && !formKeyValue) {
+            queryString = queryString + "&" + UifConstants.UrlParams.FORM_KEY + "=" + form.getFormKey();
+        }
+        if (StringUtils.isNotBlank(form.getPageId()) && !pageIdValue) {
+            queryString = queryString + "&" + UifConstants.UrlParams.PAGE_ID + "=" + form.getPageId();
+        }
+        if (!showHomeValue) {
+            queryString = queryString + "&" + UifConstants.UrlParams.SHOW_HOME + "=false";
+        }
+
+        queryString = queryString.replaceFirst("&", "");
+
+        if (StringUtils.isNotEmpty(queryString)) {
+            url = url + "?" + queryString;
+        }
+
+        this.setCurrent(form.getViewId(), form.getPageId(), buildViewTitle(form), url, form.getFormKey());
+    }
+
+    /**
+     * Takes in the encoded history query parameter string passed on the url and parses it to create
+     * the list of historyEntries.  It will also append any homeward path if appendHomewardPath is true.  This
+     * append will happen after the passedHistory entries are appended so it will not make sense to use both settings
+     * in most cases.
+     *
+     * @param parameterString
+     */
+    public void buildHistoryFromParameterString(String parameterString) {
+        if (StringUtils.isNotEmpty(parameterString)) {
+            try {
+                parameterString = URLDecoder.decode(parameterString, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("Unable to get history from parameter string", e);
+            }
+
+            historyEntries = new ArrayList<HistoryEntry>();
+            if (appendPassedHistory) {
+                String[] historyTokens = parameterString.split("\\" + ENTRY_TOKEN);
+                for (String token : historyTokens) {
+                    String[] params = token.split(VAR_TOKEN);
+                    pushToHistory(params[0], params[1], params[2], params[3], params[4]);
+                }
+            }
+        }
+
+        if (appendHomewardPath) {
+            historyEntries.addAll(homewardPath);
+        }
+    }
+
+    /**
+     * Gets the encoded and tokenized history parameter string that is representative of the HistoryEntries
+     * currently in History and includes the current view's HistoryEntry.  This parameter should be appended on any
+     * appropriate links which perform view swapping.
+     *
+     * @return String containing history entries
+     */
+    public String getHistoryParameterString() {
+        String history = "";
+
+        for (HistoryEntry entry : historyEntries) {
+            if (StringUtils.isNotBlank(history)) {
+                history = history + ENTRY_TOKEN;
+            }
+            history = history + entry.toParam();
+        }
+
+        if (current != null) {
+            if (StringUtils.isNotBlank(history)) {
+                history = history + ENTRY_TOKEN;
+            }
+            history = history + current.toParam();
+        }
+
+        try {
+            history = URLEncoder.encode(history, "UTF-8");
+        } catch (Exception e) {
+            throw new RuntimeException("Error encoding history param", e);
+        }
+
+        return history;
     }
 
     /**
@@ -437,8 +343,7 @@ public class History implements Serializable {
                 viewLabelPropertyPath = StringUtils.removeStart(viewLabelPropertyName,
                         UifConstants.NO_BIND_ADJUST_PREFIX);
             }
-        }
-        else {
+        } else {
             // attempt to get title attribute
             Class<?> dataObjectClass;
             if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
@@ -452,13 +357,14 @@ public class History implements Serializable {
             if (dataObjectClass != null) {
                 String titleAttribute = mds.getTitleAttribute(dataObjectClass);
                 if (StringUtils.isNotBlank(titleAttribute)) {
-                  viewLabelPropertyPath = view.getDefaultBindingObjectPath() + "." + titleAttribute;
+                    viewLabelPropertyPath = view.getDefaultBindingObjectPath() + "." + titleAttribute;
                 }
             }
         }
 
         Object viewLabelPropertyValue = null;
-        if (StringUtils.isNotBlank(viewLabelPropertyPath) && ObjectPropertyUtils. isReadableProperty(form, viewLabelPropertyPath)) {
+        if (StringUtils.isNotBlank(viewLabelPropertyPath) && ObjectPropertyUtils.isReadableProperty(form,
+                viewLabelPropertyPath)) {
             viewLabelPropertyValue = ObjectPropertyUtils.getPropertyValue(form, viewLabelPropertyPath);
         }
 
@@ -470,7 +376,8 @@ public class History implements Serializable {
         if (StringUtils.isNotBlank(titleAppend) && view.getBreadcrumbTitleDisplayOption() != null) {
             if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.DASH)) {
                 title = title + " - " + titleAppend;
-            } else if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.PARENTHESIS)) {
+            } else if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(
+                    UifConstants.TitleAppendTypes.PARENTHESIS)) {
                 title = title + "(" + titleAppend + ")";
             } else if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.REPLACE)) {
                 title = titleAppend;
@@ -480,4 +387,110 @@ public class History implements Serializable {
 
         return title;
     }
+
+    /**
+     * Gets the predetermined homeward path for this view's history.
+     * This is set by the same property in the view's Breadcrumbs configuration.
+     *
+     * @return the homewardPath
+     */
+    public List<HistoryEntry> getHomewardPath() {
+        return this.homewardPath;
+    }
+
+    /**
+     * @param homewardPath the homewardPath to set
+     */
+    public void setHomewardPath(List<HistoryEntry> homewardPath) {
+        this.homewardPath = homewardPath;
+    }
+
+    /**
+     * Gets a list of the current HistoryEntries not including the current entry.
+     * This list does not include the "&history=" query parameter on each HistoryEntry's
+     * url variable.  For HistoryEntries that include history information to be passed to the
+     * view they are retrieving, getGeneratedBreadcrumbs is used.
+     *
+     * @return the history
+     */
+    public List<HistoryEntry> getHistoryEntries() {
+        return this.historyEntries;
+    }
+
+    /**
+     * @param history the history to set
+     */
+    public void setHistoryEntries(List<HistoryEntry> history) {
+        this.historyEntries = history;
+    }
+
+    /**
+     * Gets the current view's HistoryEntry.
+     * This does not include the "&history=" query parameter on its
+     * url variable.  For the HistoryEntry that includes history information to be passed
+     * on the url it is retrieving, getGeneratedCurrentBreadcrumb is used.
+     *
+     * @return the current
+     */
+    public HistoryEntry getCurrent() {
+        return this.current;
+    }
+
+    /**
+     * Sets the current HistoryEntry to the current view
+     *
+     * @param viewId
+     * @param pageId
+     * @param title
+     * @param url
+     * @param formKey
+     */
+    private void setCurrent(String viewId, String pageId, String title, String url, String formKey) {
+        HistoryEntry entry = new HistoryEntry(viewId, pageId, title, url, formKey);
+        current = entry;
+    }
+
+    /**
+     * @param current the current to set
+     */
+    public void setCurrent(HistoryEntry current) {
+        this.current = current;
+    }
+
+    /**
+     * When this is set to true, the homeward path will be appended.
+     * Note:  For most cases this should only be on during the first view load.
+     * This setting is set automatically in most cases.
+     *
+     * @param appendHomewardPath the appendHomewardPath to set
+     */
+    public void setAppendHomewardPath(boolean appendHomewardPath) {
+        this.appendHomewardPath = appendHomewardPath;
+    }
+
+    /**
+     * @return the appendHomewardPath
+     */
+    public boolean isAppendHomewardPath() {
+        return appendHomewardPath;
+    }
+
+    /**
+     * Appends the passed history as each different view is shown.  This setting should be used when displaying
+     * passed history is relevant to the user (ie inquiry/lookup chains).  This setting is set automatically in
+     * most cases.
+     *
+     * @param appendPassedHistory the appendPassedHistory to set
+     */
+    public void setAppendPassedHistory(boolean appendPassedHistory) {
+        this.appendPassedHistory = appendPassedHistory;
+    }
+
+    /**
+     * @return the appendPassedHistory
+     */
+    public boolean isAppendPassedHistory() {
+        return appendPassedHistory;
+    }
+
 }

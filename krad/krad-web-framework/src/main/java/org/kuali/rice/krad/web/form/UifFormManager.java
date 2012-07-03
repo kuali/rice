@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.util;
+package org.kuali.rice.krad.web.form;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -36,6 +37,7 @@ import java.util.Map;
  */
 public class UifFormManager implements Serializable {
     private static final long serialVersionUID = -6323378881342207080L;
+
     private Map<String, UifFormBase> sessionForms;
 
     /**
@@ -123,11 +125,11 @@ public class UifFormManager implements Serializable {
     public UifFormBase updateFormWithSession(UifFormBase requestForm, String formKey) {
         UifFormBase updatedForm = null;
         Object fieldValue = null;
+
         UifFormBase sessionForm = sessionForms.get(formKey);
         if (sessionForm == null) {
             updatedForm = requestForm;
         } else {
-
             List<Field> fields = new ArrayList<Field>();
             for (Field field : ObjectUtils.getAllFields(fields, sessionForm.getClass(), UifFormBase.class)) {
                 boolean copyValue = true;
@@ -164,7 +166,6 @@ public class UifFormManager implements Serializable {
      * @return UifFormBase the form from which the session transient values have been purged
      */
     public UifFormBase purgeForm(UifFormBase form) {
-
         List<Field> fields = new ArrayList<Field>();
         for (Field field : ObjectUtils.getAllFields(fields, form.getClass(), UifFormBase.class)) {
             boolean purgeValue = false;

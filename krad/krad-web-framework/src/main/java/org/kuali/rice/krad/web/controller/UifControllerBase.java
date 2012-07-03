@@ -30,8 +30,7 @@ import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
-import org.kuali.rice.krad.uif.util.UifFormManager;
-import org.kuali.rice.krad.uif.util.UifWebUtils;
+import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
@@ -116,7 +115,7 @@ public abstract class UifControllerBase {
 
         // if form exist, remove unused forms from breadcrumb history
         if (requestForm != null) {
-            removeUnusedBreadcrumbs(uifFormManager, requestForm.getFormKey(), request.getParameter(
+            UifControllerHelper.removeUnusedBreadcrumbs(uifFormManager, requestForm.getFormKey(), request.getParameter(
                     UifConstants.UrlParams.LAST_FORM_KEY));
         }
 
@@ -134,39 +133,6 @@ public abstract class UifControllerBase {
      * @param request - the http request that was made
      */
     protected abstract UifFormBase createInitialForm(HttpServletRequest request);
-
-    /**
-     * Remove unused forms from breadcrumb history
-     *
-     * <p>
-     * When going back in the breadcrumb history some forms become unused in the breadcrumb history.  Here the unused
-     * forms are being determine and removed from the server to free memory.
-     * </p>
-     *
-     * @param uifFormManager
-     * @param formKey of the current form
-     * @param lastFormKey of the last form
-     */
-    private void removeUnusedBreadcrumbs(UifFormManager uifFormManager, String formKey, String lastFormKey) {
-        if (StringUtils.isBlank(formKey) || StringUtils.isBlank(lastFormKey) || StringUtils.equals(formKey, lastFormKey)) {
-            return;
-        }
-
-        UifFormBase previousForm = uifFormManager.getSessionForm(lastFormKey);
-
-        boolean cleanUpRemainingForms = false;
-        for (HistoryEntry historyEntry : previousForm.getFormHistory().getHistoryEntries()) {
-            if (cleanUpRemainingForms) {
-                uifFormManager.removeSessionFormByKey(historyEntry.getFormKey());
-            } else {
-                if (StringUtils.equals(formKey, historyEntry.getFormKey())) {
-                    cleanUpRemainingForms = true;
-                }
-            }
-        }
-
-        uifFormManager.removeSessionFormByKey(lastFormKey);
-    }
 
     /**
      * Initial method called when requesting a new view instance which checks authorization and forwards
@@ -425,6 +391,7 @@ public abstract class UifControllerBase {
         // Get the history page url. Default to the application url if there is no history.
         String histUrl = null;
         if (histEntries.isEmpty()) {
+            // TODO: use configuration service here
             histUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
         } else {
             // For home get the first entry, for previous get the last entry.
@@ -757,7 +724,7 @@ public abstract class UifControllerBase {
         // respond back to the client directly
         // without returning back to the controller, but we still want spring mvc to build the view
         ModelAndView mv = getUIFModelAndView(form);
-//        UifWebUtils.postControllerHandle(request, response, this, mv);
+//        UifControllerHelper.postControllerHandle(request, response, this, mv);
         String myViewName = mv.getViewName();
 
         // try rendering view manually
@@ -890,7 +857,7 @@ public abstract class UifControllerBase {
      * @return ModelAndView object with the contained form
      */
     protected ModelAndView getUIFModelAndView(UifFormBase form, String pageId) {
-        return UifWebUtils.getUIFModelAndView(form, pageId);
+        return UifControllerHelper.getUIFModelAndView(form, pageId);
     }
 
     // TODO: add getUIFModelAndView that takes in a view id and can perform view switching

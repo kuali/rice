@@ -19,11 +19,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.util.UifWebUtils;
+import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -116,9 +115,9 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         // Set render full view to force full render
         incidentReportForm.setRenderFullView(true);
 
-        ModelAndView modelAndView = UifWebUtils.getUIFModelAndView(incidentReportForm, "");
+        ModelAndView modelAndView = UifControllerHelper.getUIFModelAndView(incidentReportForm, "");
         try {
-            UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
+            UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
         }

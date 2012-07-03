@@ -21,42 +21,35 @@
  * ajax
  */
 function setPageBreadcrumb(){
-	//check to see if page has navigation element, if so show breadcrumb
+	// check to see if page has navigation element, if so show breadcrumb
 	if(jQuery("#Uif-Navigation").html() && jQuery("#breadcrumbs").length){
-		var pageTitle = jQuery("#currentPageTitle").val();
+		var pageTitle = jQuery("#pageTitle").val();
 		var pageId = jQuery("#pageId").val();
+
 		jQuery("#breadcrumbs").find("#page_breadcrumb").remove();
-		var bcSet = false;
-		if(pageTitle && pageTitle != "&nbsp;" && pageTitle != ""){
+
+        // if page title note set attempt to find from navigation
+        if(!pageTitle || pageTitle == "&nbsp;"){
+            pageTitle = jQuery("a[name='"+ escapeName(pageId) + "']").text();
+        }
+
+		if(pageTitle && pageTitle != "&nbsp;"){
 			jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
 			jQuery("#current_breadcrumb_span").hide();
+
             if(jQuery("#current_breadcrumb_span").parent("li").length){
                 jQuery("#current_breadcrumb_span").unwrap();
             }
-            var anchor = jQuery("#current_breadcrumb_anchor");
+
             jQuery("#current_breadcrumb_anchor").wrap("<li/>");
 			jQuery("#current_breadcrumb_anchor").show();
-			bcSet = true;
 		}
-		else if(pageId){
-			pageTitle = jQuery("a[name='"+ escapeName(pageId) + "']").text();
-			if(pageTitle && pageTitle != "&nbsp;" && pageTitle != ""){
-				jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
-				jQuery("#current_breadcrumb_span").hide();
-                if(jQuery("#current_breadcrumb_span").parent("li").length){
-                    jQuery("#current_breadcrumb_span").unwrap();
-                }
-                jQuery("#current_breadcrumb_anchor").wrap();
-				jQuery("#current_breadcrumb_anchor").show();
-				bcSet=true;
-			}
-		}
-
-		if(!bcSet){
+		else {
 			jQuery("#current_breadcrumb_anchor").hide();
             if(jQuery("#current_breadcrumb_anchor").parent("li").length){
                 jQuery("#current_breadcrumb_anchor").unwrap();
             }
+
             jQuery("#current_breadcrumb_span").wrap("<li/>");
 			jQuery("#current_breadcrumb_span").show();
 		}
@@ -156,7 +149,7 @@ function createLightBoxLink(controlId, options) {
         if (jQuery("#" + controlId).attr('href').indexOf('&renderedInLightBox=true') == -1) {
             jQuery("#" + controlId).attr('href', jQuery("#" + controlId).attr('href') + '&renderedInLightBox=true'
                     + '&showHome=false' + '&showHistory=' + showHistory
-                    + '&history=' + jQuery('#formHistory\\.historyParameterString').val());
+                    + '&history=' + jQuery('#historyParameterString').val());
         }
     });
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.util;
+package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -21,14 +21,16 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.History;
+import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,8 +46,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifWebUtils {
-    private static final Logger LOG = Logger.getLogger(UifWebUtils.class);
+public class UifControllerHelper {
+    private static final Logger LOG = Logger.getLogger(UifControllerHelper.class);
 
     /**
      * Configures the <code>ModelAndView</code> instance containing the form
@@ -75,44 +77,45 @@ public class UifWebUtils {
      */
     public static void postControllerHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-        if (handler instanceof UifControllerBase && (modelAndView != null)) {
-            UifControllerBase controller = (UifControllerBase) handler;
-
-            Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
-            if (model instanceof UifFormBase) {
-                UifFormBase form = (UifFormBase) model;
-
-                // handle view building if not a redirect
-                if (!form.isRequestRedirect()) {
-                    // prepare view instance
-                    prepareViewForRendering(request, form);
-
-                    // for component refresh need to export the component as a model
-                    if (!form.isRenderFullView()) {
-                        Component component = null;
-                        if (StringUtils.isBlank(form.getUpdateComponentId())) {
-                            // refresh component is page
-                            component = form.getView().getCurrentPage();
-                        } else {
-                            component = form.getPostedView().getViewIndex().getComponentById(
-                                    form.getUpdateComponentId());
-                        }
-                        modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
-                    }
-                }
-
-                // update history for view
-                prepareHistory(request, form);
-            }
-
-            // expose additional objects to the templates
-            modelAndView.addObject(UifParameters.REQUEST, request);
-            modelAndView.addObject(KRADConstants.USER_SESSION_KEY, request.getSession().getAttribute(
-                    KRADConstants.USER_SESSION_KEY));
-
-            Map<String, String> properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
-            modelAndView.addObject(UifParameters.CONFIG_PROPERTIES, properties);
+        if (!(handler instanceof UifControllerBase) || (modelAndView == null)) {
+            return;
         }
+        UifControllerBase controller = (UifControllerBase) handler;
+
+        Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
+        if (!(model instanceof UifFormBase)) {
+            return;
+        }
+        UifFormBase form = (UifFormBase) model;
+
+        // handle view building if not a redirect
+        if (!form.isRequestRedirect()) {
+            // prepare view instance
+            prepareViewForRendering(request, form);
+
+            // for component refresh need to export the component as a model
+            if (!form.isRenderFullView()) {
+                Component component = null;
+                if (StringUtils.isBlank(form.getUpdateComponentId())) {
+                    // refresh component is page
+                    component = form.getView().getCurrentPage();
+                } else {
+                    component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
+                }
+                modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
+            }
+        }
+
+        // update history for view
+        prepareHistory(request, form);
+
+        // expose additional objects to the templates
+        modelAndView.addObject(UifParameters.REQUEST, request);
+        modelAndView.addObject(KRADConstants.USER_SESSION_KEY, request.getSession().getAttribute(
+                KRADConstants.USER_SESSION_KEY));
+
+        Map<String, String> properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
+        modelAndView.addObject(UifParameters.CONFIG_PROPERTIES, properties);
     }
 
     /**
@@ -144,7 +147,7 @@ public class UifWebUtils {
                         UifConstants.UrlParams.SHOW_HISTORY)));
             }
 
-            history.setCurrent(form, request);
+            history.buildCurrentEntryFromRequest(form, request);
             history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
 
             form.setFormHistory(history);
@@ -194,10 +197,42 @@ public class UifWebUtils {
     }
 
     /**
-     * Gets the view service
+     * Remove unused forms from breadcrumb history
      *
-     * @return ViewService view service
+     * <p>
+     * When going back in the breadcrumb history some forms become unused in the breadcrumb history.  Here the unused
+     * forms are being determine and removed from the server to free memory.
+     * </p>
+     *
+     * @param uifFormManager
+     * @param formKey of the current form
+     * @param lastFormKey of the last form
      */
+    public static void removeUnusedBreadcrumbs(UifFormManager uifFormManager, String formKey, String lastFormKey) {
+        if (StringUtils.isBlank(formKey) || StringUtils.isBlank(lastFormKey) || StringUtils.equals(formKey,
+                lastFormKey)) {
+            return;
+        }
+
+        UifFormBase previousForm = uifFormManager.getSessionForm(lastFormKey);
+        if (previousForm == null) {
+            return;
+        }
+
+        boolean cleanUpRemainingForms = false;
+        for (HistoryEntry historyEntry : previousForm.getFormHistory().getHistoryEntries()) {
+            if (cleanUpRemainingForms) {
+                uifFormManager.removeSessionFormByKey(historyEntry.getFormKey());
+            } else {
+                if (StringUtils.equals(formKey, historyEntry.getFormKey())) {
+                    cleanUpRemainingForms = true;
+                }
+            }
+        }
+
+        uifFormManager.removeSessionFormByKey(lastFormKey);
+    }
+
     protected static ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
     }

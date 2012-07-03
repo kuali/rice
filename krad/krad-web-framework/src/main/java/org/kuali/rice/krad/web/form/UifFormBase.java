@@ -119,7 +119,6 @@ public class UifFormBase implements ViewModel {
 
     protected String returnFormKey;
 
-    @SessionTransient
     protected History formHistory;
 
     // dialog fields
@@ -149,8 +148,6 @@ public class UifFormBase implements ViewModel {
         defaultsApplied = false;
         skipViewInit = false;
         requestRedirect = false;
-
-        formHistory = new History();
 
         readOnlyFieldsList = new ArrayList<String>();
         viewRequestParameters = new HashMap<String, String>();

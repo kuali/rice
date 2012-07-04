@@ -45,6 +45,10 @@
 
   <cache:annotation-driven cache-manager="kewLocalCacheManager"/>
 
+  <bean id="rice.kew.remote.import" abstract="true" lazy-init="true"
+        class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
+        p:serviceNamespace-ref="rice.kew.serviceNamespace"/>
+
   <bean id="rice.kew.remote.RICE.import" abstract="true" lazy-init="true"
         class="org.kuali.rice.ksb.api.bus.support.LazyServiceFactoryBean"
         p:serviceNamespace-ref="rice.kew.serviceNamespace"

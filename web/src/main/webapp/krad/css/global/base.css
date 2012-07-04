@@ -451,7 +451,6 @@ table.uif-tableCollectionLayout tbody tr.uif-addLine{
 
 tr.uif-newCollectionItem {
     background-color: #FFFFCC;
-    border: 1px solid #D3D3D3;
 }
 
 tr.uif-newCollectionItem td.sorting_1 {
@@ -535,7 +534,19 @@ table.dataTable tr.even td.sorting_1{
     background-color: #FAFAFA;
 }
 
+table.dataTable tr.uif-newCollectionItem {
+    background-color: #FFFFCC;
+}
+
+table.dataTable tr.uif-newCollectionItem td.sorting_1 {
+    background-color: #FFFFCC;
+}
+
 table.dataTable tr.uif-collectionDeleteHighlight {
+    background-color: #FFE1E9;
+}
+
+table.dataTable tr.uif-collectionDeleteHighlight td.sorting_1 {
     background-color: #FFE1E9;
 }
 

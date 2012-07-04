@@ -32,9 +32,16 @@ check_ret_code() {
 
 hosts=( 
 ubuntu@ci.rice.kuali.org
-ec2-user@deploy1.rice.kuali.org
-ec2-user@deploy2.rice.kuali.org
-ec2-user@deploy3.rice.kuali.org
+ec2-user@env1.rice.kuali.org
+ec2-user@env2.rice.kuali.org
+ec2-user@env3.rice.kuali.org
+ec2-user@env4.rice.kuali.org
+ec2-user@env5.rice.kuali.org
+ec2-user@demo.rice.kuali.org
+ec2-user@env7.rice.kuali.org
+ec2-user@env8.rice.kuali.org
+ec2-user@env9.rice.kuali.org
+ec2-user@env10.rice.kuali.org
 )
 
 # Make sure key file exists and it is not zero byte

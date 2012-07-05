@@ -34,8 +34,8 @@ link again through jquery as in setPageBreadcrumb when needed -->
                     <li><a href="${crumb.url!}">${crumb.title!}</a><span role="presentation"> &raquo; </span></li>
                 </#list>
 
-                <span class="kr-current" id="current_breadcrumb_span">${current.title}</span>
-                <a style="display:none;" id="current_breadcrumb_anchor" href="${current.url!}"/>${current.title}</a>
+                <span class="kr-current" id="current_breadcrumb_span">${current.title!}</span>
+                <a style="display:none;" id="current_breadcrumb_anchor" href="${current.url!}"/>${current.title!}</a>
             </ol>
         </span>
 

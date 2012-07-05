@@ -181,10 +181,6 @@ public class History implements Serializable {
      * @param request
      */
     public void buildCurrentEntryFromRequest(UifFormBase form, HttpServletRequest request) {
-        if (request.getMethod().equals("POST")) {
-            return;
-        }
-
         boolean showHomeValue = false;
         boolean pageIdValue = false;
         boolean formKeyValue = false;

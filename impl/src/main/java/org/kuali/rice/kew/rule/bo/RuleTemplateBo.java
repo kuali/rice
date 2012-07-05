@@ -345,6 +345,10 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
         List<RoleName> roleNames = new ArrayList<RoleName>();
         List<RuleTemplateAttributeBo> templateAttributes = getRuleTemplateAttributes();
         for (RuleTemplateAttributeBo templateAttribute : templateAttributes) {
+            if (!templateAttribute.isWorkflowAttribute())
+            {
+				continue;
+			}
             roleNames.addAll(KEWServiceLocator.getWorkflowRuleAttributeMediator().getRoleNames(templateAttribute));
         }
         return roleNames;

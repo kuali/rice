@@ -162,7 +162,7 @@ public class Action extends ContentElementBase {
             }
 
 
-            // Map properties to data attribuite
+            // Map properties to data attribute
             addDataAttribute("ajaxsubmit", Boolean.toString(ajaxSubmit));
             addDataAttribute("successcallback", this.successCallback);
             addDataAttribute("errorcallback", this.errorCallback);

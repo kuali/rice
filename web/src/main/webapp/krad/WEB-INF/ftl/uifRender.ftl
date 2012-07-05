@@ -62,6 +62,10 @@
 
              <@krad.script value="${KualiForm.lightboxScript!}"/>
 
+             <#-- set focus and perform jump to -->
+             <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, '${KualiForm.focusId!}',
+                                  '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
+
          </div>
 
          <!-- APPLICATION FOOTER -->
@@ -76,28 +80,37 @@
 
         <#assign isPageRefresh=!KualiForm.updateComponentId?has_content/>
 
-        <#if isPageRefresh>
-            <#-- rerun view pre-load script to get new state variables for page -->
-            <@krad.script value="${KualiForm.view.preLoadScript!}"/>
-
-            <#-- update for breadcrumbs -->
-            <@krad.template component=KualiForm.view.breadcrumbs/>
-        <#else>
-            <#-- rerun view pre-load script to get new state variables for component -->
-            <@krad.script value="${KualiForm.postedView.preLoadScript!}"/>
+        <#assign view=KualiForm.view/>
+        <#if !isPageRefresh>
+            <#assign view=KualiForm.postedView/>
 
             <#-- need to render the pages errors since the component could have added errors for the page -->
-            <@krad.template component=KualiForm.postedView.currentPage.validationMessages/>
+            <@krad.template component=view.currentPage.validationMessages/>
         </#if>
 
         <#-- now render the updated component (or page) wrapped in an update div -->
         <div id="${Component.id}_update" data-handler="update-component">
+            <#-- rerun view pre-load script to get new state variables for component -->
+            <@krad.script value="${view.preLoadScript!}" component=Component/>
+
             <@krad.template componentUpdate=true component=Component/>
-            <@krad.script value="${KualiForm.lightboxScript!}"/>
+
+            <@krad.script value="${KualiForm.lightboxScript!}" component=Component/>
+
+            <#-- show added growls -->
+            <@krad.script value="${KualiForm.growlScript!}" component=Component/>
+
+
+            <#assign autoJump="false"/>
+            <#if isPageRefresh>
+                <#assign autoJump="true"/>
+            </#if>
+
+            <#-- set focus and perform jump to -->
+            <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, ${autoJump}, '${KualiForm.focusId!}',
+                                 '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
         </div>
 
-        <#-- show added growls -->
-        <@krad.script value="${KualiForm.growlScript!}"/>
     </html>
 
 </#if>

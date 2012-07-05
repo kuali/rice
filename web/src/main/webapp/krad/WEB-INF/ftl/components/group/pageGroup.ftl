@@ -28,9 +28,6 @@
             <@spring.formHiddenInput path="KualiForm.view.currentPage.header.headerText" attributes="id=\"pageTitle\""/>
         </#if>
 
-        <@spring.formHiddenInput path="KualiForm.jumpToId" attributes="id=\"jumpToId\""/>
-        <@spring.formHiddenInput path="KualiForm.jumpToName" attributes="id=\"jumpToName\""/>
-        <@spring.formHiddenInput path="KualiForm.focusId" attributes="id=\"focusId\""/>
         <@spring.formHiddenInput path="KualiForm.formHistory.historyParameterString" attributes="id=\"historyParameterString\""/>
 
     </#if>

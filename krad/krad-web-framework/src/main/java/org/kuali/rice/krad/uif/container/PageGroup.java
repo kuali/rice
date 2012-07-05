@@ -46,10 +46,10 @@ public class PageGroup extends Group {
         }
 
         if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
-            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true," + this.autoFocus +");");
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true);");
         }
         else{
-            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false,"+ this.autoFocus +");");
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
         }
     }
 

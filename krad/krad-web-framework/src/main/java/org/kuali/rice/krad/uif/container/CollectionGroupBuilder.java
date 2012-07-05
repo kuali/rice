@@ -287,7 +287,7 @@ public class CollectionGroupBuilder implements Serializable {
             for (Action action : actions) {
                 if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE) && (lineFields
                         .size() > 0)) {
-                    action.setFocusOnIdAfterSubmit(lineFields.get(0).getId());
+                    action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
                 }
             }
         } else {
@@ -666,7 +666,6 @@ public class CollectionGroupBuilder implements Serializable {
         List<Action> actions = ComponentUtils.copyComponentList(lineActions, lineSuffix);
 
         for (Action action : actions) {
-
             action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
                     collectionGroup.getBindingInfo().getBindingPath());
             action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));

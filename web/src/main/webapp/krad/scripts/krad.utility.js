@@ -472,12 +472,28 @@ function getAttributeId(elementId) {
     return id;
 }
 
+/**
+ * Invoked after the page or a component is refreshed to perform any repositioning or setting
+ * of focus
+ *
+ * @param setFocus - boolean that indicates whether focus should be set, if false just the jump will be performed
+ * @param autoJump - boolean that indicates where jump to top should happen if jump to not set
+ * @param focusId - id of the dom element to focus on
+ * @param jumpToId - id of the dom element to jump to
+ * @param jumpToName - name of the dom element to jump to
+ */
+function performFocusAndJumpTo(setFocus, autoJump, focusId, jumpToId, jumpToName) {
+    if (setFocus) {
+        performFocus(focusId);
+    }
+
+    if (jumpToId || jumpToName || autoJump) {
+        performJumpTo(jumpToId, jumpToName);
+    }
+}
+
 //performs a 'jump' - a scroll to the necessary html element
-//The element that is used is based on the hidden value of jumpToId or jumpToName on the form
-//if these hidden attributes do not contain a value it jumps to the top of the page by default
-function performJumpTo() {
-    var jumpToId = jQuery("[name='jumpToId']").val();
-    var jumpToName = jQuery("[name='jumpToName']").val();
+function performJumpTo(jumpToId, jumpToName) {
     if (jumpToId) {
         if (jumpToId.toUpperCase() === "TOP") {
             jumpToTop();
@@ -498,8 +514,7 @@ function performJumpTo() {
 }
 
 //performs a focus on an the element with the id preset
-function performFocus() {
-    var focusId = jQuery("[name='focusId']").val();
+function performFocus(focusId) {
     if (focusId) {
         jQuery("#" + focusId).focus();
     }

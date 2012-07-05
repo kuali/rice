@@ -186,7 +186,6 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
     jQuery.extend(submitOptions, elementBlockingOptions);
     var form = jQuery("#kualiForm");
     form.ajaxSubmit(submitOptions);
-
 }
 
 function submitForm(methodToCall, additionalData, preSubmitCall) {
@@ -332,15 +331,16 @@ function retrieveComponent(id, baseId, methodToCall){
 
 		elementToBlock.unblock({onUnblock: function(){
                 var origColor = jQuery(component).find("#" + id).css("background-color");
-            jQuery(component).find("#" + id).css("background-color", "");
-            jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+                jQuery(component).find("#" + id).css("background-color", "");
+                jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
 
                 // remove old stuff
                 if(jQuery("#" + id + "_errors").length){
                     jQuery("#" + id + "_errors").remove();
                 }
-            jQuery("input[data-for='"+ id +"']").each(function () {
-                jQuery(this).remove();
+
+                jQuery("input[data-for='"+ id +"']").each(function () {
+                    jQuery(this).remove();
                 });
 
 				// replace component
@@ -359,8 +359,8 @@ function retrieveComponent(id, baseId, methodToCall){
                     origColor = "transparent";
                 }
 
-            jQuery("#" + id).animate({backgroundColor: origColor}, 5000);
-			}
+                jQuery("#" + id).animate({backgroundColor: origColor}, 5000);
+			    }
 		});
 
         var displayWithLabel = jQuery(".displayWith-" + displayWithId);
@@ -374,7 +374,7 @@ function retrieveComponent(id, baseId, methodToCall){
         methodToCall = "refresh";
     }
 
-        // Since we are always setting skipViewInit to true, remove any existing input skipViewInit param
+    // Since we are always setting skipViewInit to true, remove any existing input skipViewInit param
     jQuery("input[name='skipViewInit']").remove();
 
     ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,

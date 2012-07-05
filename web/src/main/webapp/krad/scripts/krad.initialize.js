@@ -353,7 +353,7 @@ function hideBubblePopups() {
 /**
  * Sets up the validator and the dirty check and other page scripts
  */
-function setupPage(validate, focusFirstField) {
+function setupPage(validate) {
     jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
     setupImages();
@@ -378,6 +378,7 @@ function setupPage(validate, focusFirstField) {
             var id = jQuery(this).attr('id');
             handleMessagesAtField(id, true);
         });
+
         //Write the result of the validation messages
         writeMessagesForPage();
         messageSummariesShown = true;
@@ -393,6 +394,7 @@ function setupPage(validate, focusFirstField) {
         var validateDirty = jQuery("[name='validateDirty']").val();
         if (validateDirty == "true") {
             var dirty = jQuery(".uif-field").find("input.dirty");
+
             //methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
             var methodToCall = jQuery("[name='methodToCall']").val();
             if (dirty.length > 0 && methodToCall == null) {
@@ -411,9 +413,6 @@ function setupPage(validate, focusFirstField) {
     pageValidatorReady = true;
 
     jQuery.watermark.showAll();
-    if(focusFirstField){
-        performFocus();
-    }
 }
 
 /**

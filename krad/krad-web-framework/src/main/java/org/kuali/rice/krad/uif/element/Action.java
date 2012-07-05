@@ -98,7 +98,7 @@ public class Action extends ContentElementBase {
     public  void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        Map<String, Object> submitData = new HashMap<String, Object>();
+        Map<String, String> submitData = new HashMap<String, String>();
         //clear alt text to avoid screen reader confusion when using image in button with text
         if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(
                 actionLabel)) {
@@ -164,9 +164,17 @@ public class Action extends ContentElementBase {
 
             // Map properties to data attribute
             addDataAttribute("ajaxsubmit", Boolean.toString(ajaxSubmit));
-            addDataAttribute("successcallback", this.successCallback);
-            addDataAttribute("errorcallback", this.errorCallback);
-            addDataAttribute("presubmitcall", this.preSubmitCall);
+
+            if(StringUtils.isNotBlank(successCallback)){
+                addDataAttribute("successcallback", this.successCallback);
+            }
+            if(StringUtils.isNotBlank(errorCallback)){
+                addDataAttribute("errorcallback", this.errorCallback);
+            }
+            if(StringUtils.isNotBlank(preSubmitCall)){
+                addDataAttribute("presubmitcall", this.preSubmitCall);
+            }
+
             addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
 
             // TODO possibly fix some other way - this is a workaround, prevents
@@ -174,6 +182,7 @@ public class Action extends ContentElementBase {
             // the form
             submitData.put(UifConstants.UrlParams.SHOW_HISTORY,"false");
             submitData.put(UifConstants.UrlParams.SHOW_HOME,"false");
+
             if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
                 // if this is blank focus this actionField by default
                 focusOnIdAfterSubmit = this.getId();
@@ -181,10 +190,6 @@ public class Action extends ContentElementBase {
             } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
                 // Use the id passed in
                 submitData.put("focusId",focusOnIdAfterSubmit);
-            } else {
-                // First input will be focused, must be first field set to empty
-                // string
-                submitData.put("focusId","");
             }
 
             if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
@@ -195,19 +200,8 @@ public class Action extends ContentElementBase {
             } else {
                 submitData.put("jumpToName",jumpToNameAfterSubmit);
             }
-            StringBuffer sb = new StringBuffer("{");
-            for (String key : submitData.keySet()) {
-                Object optionValue = submitData.get(key);
-                if (sb.length() > 1) {
-                    sb.append(",");
-                }
-                sb.append("\"" + key + "\"");
 
-                sb.append(":");
-                sb.append("\"" + optionValue + "\"");
-            }
-            sb.append("}");
-            addDataAttribute("submitData",sb.toString());
+            addDataAttribute("submitData",mapToString(submitData));
 
             String postScript = "";
             if (StringUtils.isNotBlank(actionScript)) {
@@ -216,7 +210,6 @@ public class Action extends ContentElementBase {
             String submitScript = "";
 
             submitScript = "actionInvokeHandler(this);";
-
 
             if (StringUtils.isBlank(postScript)) {
                     postScript = submitScript;
@@ -271,6 +264,21 @@ public class Action extends ContentElementBase {
         return components;
     }
 
+    private String mapToString(Map<String, String> submitData){
+        StringBuffer sb = new StringBuffer("{");
+            for (String key : submitData.keySet()) {
+                Object optionValue = submitData.get(key);
+                if (sb.length() > 1) {
+                    sb.append(",");
+                }
+                sb.append("\"" + key + "\"");
+
+                sb.append(":");
+                sb.append("\"" + optionValue + "\"");
+            }
+            sb.append("}");
+        return sb.toString();
+    }
     /**
      * Name of the method that should be called when the action is selected
      * <p>

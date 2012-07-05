@@ -313,7 +313,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('addparent');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('addparent');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
@@ -325,7 +325,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('edit');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('edit');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
@@ -338,7 +338,7 @@
         </bean>
 
         <bean parent="Uif-MessageField" p:messageText="Move: [" p:style="display: inline;"/>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('left');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('left');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-TreeGroup');
           }
@@ -349,7 +349,7 @@
                   p:altText="Left"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('right');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('right');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-TreeGroup');
           }
@@ -360,7 +360,7 @@
                   p:altText="Right"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('up');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('up');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-TreeGroup');
           }
@@ -371,7 +371,7 @@
                   p:altText="Up"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('down');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('down');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-TreeGroup');
           }
@@ -384,7 +384,7 @@
         </bean>
         <bean parent="Uif-Message" p:messageText="]" p:style="display: inline;"/>
         
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('cut');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('cut');
           if (enabled) {
               ajaxCutPropositionTree('cutProposition', 'RuleEditorView-Tree');
           }
@@ -401,7 +401,7 @@
                   p:altText="Cut"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('paste');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('paste');
           if (enabled) {
               ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-TreeGroup');
           }
@@ -418,7 +418,7 @@
                   p:altText="Paste"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('delete');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('delete');
           if (enabled) {
               ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-TreeGroup');
           }

@@ -285,7 +285,7 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         if (renderAddBlankLineButton && (addBlankLineAction != null)) {
-            String actionScript = "performCollectionAction('" + getId() + "');";
+            String actionScript = "performCollectionAction(this, '" + getId() + "');";
             if (StringUtils.isNotBlank(addBlankLineAction.getActionScript())) {
                 actionScript = addBlankLineAction.getActionScript() + actionScript;
             }

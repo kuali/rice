@@ -33,6 +33,7 @@ var warningImage;
 var infoImage;
 var detailsOpenImage;
 var detailsCloseImage;
+var ajaxReturnHandlers = {};
 
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
@@ -69,6 +70,8 @@ jQuery(document).ready(function () {
 
     //setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
+
+    //ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler};
 });
 
 /**

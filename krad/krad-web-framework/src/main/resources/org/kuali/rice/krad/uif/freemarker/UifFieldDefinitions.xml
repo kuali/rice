@@ -318,7 +318,7 @@
   <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
         p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="show inactive"
-        p:actionScript="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);">
+        p:actionScript="toggleInactiveRecordDisplay(this, '@{#component.context['collectionGroup'].id}', true);">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-showInactiveCollectionItemsButton</value>
@@ -329,7 +329,7 @@
   <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
         p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="hide inactive"
-        p:actionScript="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', false);">
+        p:actionScript="toggleInactiveRecordDisplay(this, '@{#component.context['collectionGroup'].id}', false);">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-hideInactiveCollectionItemsButton</value>

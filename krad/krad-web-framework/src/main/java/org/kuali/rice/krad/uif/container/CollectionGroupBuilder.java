@@ -130,12 +130,12 @@ public class CollectionGroupBuilder implements Serializable {
                     Object currentLine = modelCollection.get(index);
 
                     // Default line actions - no client side validation
-                    String actionScript = "performCollectionAction('" + collectionGroup.getId() + "');";
+                    String actionScript = "performCollectionAction(this, '" + collectionGroup.getId() + "');";
                     List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view,
                             model, collectionGroup, currentLine, index, actionScript);
 
                     // Line actions with client side validation
-                    String actionScriptValidatedLine = "validateAndPerformCollectionAction('" + collectionGroup.getId() + "', '"
+                    String actionScriptValidatedLine = "validateAndPerformCollectionAction(this, '" + collectionGroup.getId() + "', '"
                             + collectionGroup.getPropertyName() + "');";
                     List<Action> validatedLineActions = initializeLineActions(collectionGroup.getValidatedLineActions(),
                             view, model, collectionGroup, currentLine, index, actionScriptValidatedLine);
@@ -712,7 +712,7 @@ public class CollectionGroupBuilder implements Serializable {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }
 
-            String actionScript = "addLineToCollection('" + collectionGroup.getId() + "', '" + baseId + "');";
+            String actionScript = "addLineToCollection(this, '" + collectionGroup.getId() + "', '" + baseId + "');";
             if (collectionGroup.isAddViaLightBox()) {
                 actionScript = "closeLightbox();" + actionScript;
             }

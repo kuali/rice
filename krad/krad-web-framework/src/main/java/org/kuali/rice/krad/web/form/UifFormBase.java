@@ -119,6 +119,11 @@ public class UifFormBase implements ViewModel {
 
     protected String returnFormKey;
 
+    protected boolean ajaxRequest;
+
+    protected String ajaxReturnType;
+
+  
     protected History formHistory;
 
     // dialog fields
@@ -773,6 +778,39 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setLightboxScript(String lightboxScript) {
         this.lightboxScript = lightboxScript;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isAjaxRequest()
+     */
+    @Override
+    public boolean isAjaxRequest() {
+        return ajaxRequest;
+    }
+
+     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxRequest(boolean)
+     */
+    @Override
+    public void setAjaxRequest(boolean ajaxRequest) {
+        this.ajaxRequest = ajaxRequest;
+    }
+
+     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getAjaxReturnType()
+     */
+    @Override
+    public String getAjaxReturnType() {
+        return ajaxReturnType;
+    }
+
+
+     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxReturnType(java.lang.String)
+     */
+    @Override
+    public void setAjaxReturnType(String ajaxReturnType) {
+        this.ajaxReturnType = ajaxReturnType;
     }
 
     /**

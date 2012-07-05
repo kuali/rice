@@ -328,4 +328,32 @@ public interface ViewModel extends Serializable {
      */
     public void setState(String state);
 
+    /**
+     * Gets the ajaxRequest. Indicates if the request is coming through an ajax call.
+     *
+     * @return
+     */
+    public boolean isAjaxRequest();
+
+    /**
+     * Set the ajaxRequest
+     *
+     * @param ajaxRequest
+     */
+    public void setAjaxRequest(boolean ajaxRequest);
+
+    /**
+     * Gets the return type for the ajax call. Used to determine the handler for the request
+     *
+     * @return
+     */
+     public String getAjaxReturnType();
+
+    /**
+     * Set the ajaxReturnType
+     *
+     * @param ajaxReturnType
+     */
+    public void setAjaxReturnType(String ajaxReturnType);
+
 }

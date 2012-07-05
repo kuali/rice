@@ -51,7 +51,7 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
 
     ajaxSubmitForm(controllerMethod, updateCollectionCallback,
             {updateComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
-            elementToBlock, null);
+            elementToBlock, null,"update-component");
 }
 
 function ajaxCutPropositionTree(controllerMethod, collectionGroupId) {

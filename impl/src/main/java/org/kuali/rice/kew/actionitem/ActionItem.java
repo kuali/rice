@@ -100,9 +100,6 @@ public class ActionItem implements ActionItemContract, Serializable {
 	private String docLabel;
     @Column(name="DOC_HDLR_URL")
 	private String docHandlerURL;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
     @Column(name="DOC_TYP_NM")
 	private String docName;
     @Column(name="RSP_ID")
@@ -197,10 +194,6 @@ public class ActionItem implements ActionItemContract, Serializable {
         return docHandlerURL;
     }
     
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
-    }
-
     public String getDocName() {
         return docName;
     }
@@ -286,10 +279,6 @@ public class ActionItem implements ActionItemContract, Serializable {
         this.principalId = principalId;
     }
     
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
-    }
-
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
@@ -356,7 +345,6 @@ public class ActionItem implements ActionItemContract, Serializable {
                                         .append("docTitle", docTitle)
                                         .append("docLabel", docLabel)
                                         .append("docHandlerURL", docHandlerURL)
-                                        .append("lockVerNbr", lockVerNbr)
                                         .append("docName", docName)
                                         .append("responsibilityId", responsibilityId)
                                         .append("roleName", roleName)

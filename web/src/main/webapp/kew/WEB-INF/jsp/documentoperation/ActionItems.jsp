@@ -31,7 +31,6 @@
 	  <c:otherwise>
       <logic-el:iterate id="actionItem" name="DocumentOperationForm" property="routeHeader.actionItems" indexId="ctr">
       <html-el:hidden property="routeHeader.docActionItem[${ctr}].id" />
-      <html-el:hidden property="routeHeader.docActionItem[${ctr}].lockVerNbr" />  
  	  <tr>
 	    <td width="33%" class="headercell3-b-l" align="right"><b> Action Item ID: </b><c:out value="${actionItem.id}" /> </td>
 	    <td width="66%" class="headercell3-b-l">

@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class DialogGroup extends Group {
     private String promptText;
     private List<KeyValue> availableResponses;
 
-    private Message prompt;
+    private MessageField prompt;
     private InputField explanation;
     private InputField responseInputField;
 
@@ -176,7 +177,7 @@ public class DialogGroup extends Group {
      *
      * @return Message - the text element containing the message string
      */
-    public Message getPrompt() {
+    public MessageField getPrompt() {
         return prompt;
     }
 
@@ -185,7 +186,7 @@ public class DialogGroup extends Group {
      *
      * @param prompt - The Message element for this dialog
      */
-    public void setPrompt(Message prompt) {
+    public void setPrompt(MessageField prompt) {
         this.prompt = prompt;
     }
 

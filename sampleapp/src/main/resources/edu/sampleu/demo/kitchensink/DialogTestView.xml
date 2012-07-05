@@ -151,6 +151,7 @@
   <!-- dialogs used in the tell me a story conversation -->
 
   <bean id="ChooseAuthor-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="headerText" value="Choose an Author"/>
     <property name="promptText" value="Choose an Author"/>
     <property name="availableResponses">
       <list>
@@ -161,6 +162,7 @@
   </bean>
 
   <bean id="SeussBooks-DialogGroup" parent="Uif-RadioButton-DialogGroup">
+    <property name="headerText" value="Which Book You Like To Read?"/>
     <property name="promptText" value="Which Book You Like To Read?"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation" p:render="true">
@@ -185,7 +187,7 @@
   </bean>
 
   <bean id="EastmanBooks-DialogGroup" parent="Uif-RadioButton-DialogGroup">
-    <property name="promptText" value="Which Book You Like To Read?"/>
+    <property name="headerText" value="Which Book You Like To Read?"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation" p:render="true">
         <property name="control">

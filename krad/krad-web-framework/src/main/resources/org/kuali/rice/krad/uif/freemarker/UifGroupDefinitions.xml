@@ -974,7 +974,11 @@
   <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
         parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Section 1 Title"/>
+    <property name="header">
+      <bean parent="Uif-HeaderThree"/>
+    </property>
+    <property name="header.cssClasses" value="uif-dialogHeader"/>
+    <property name="headerText" value=""/>
     <property name="hidden" value="true"/>
     <property name="promptText" value="Would You Like to Continue?"/>
     <property name="availableResponses">
@@ -986,13 +990,25 @@
     <property name="displayExplanation" value="false"/>
     <property name="reverseButtonOrder" value="false"/>
     <property name="prompt">
-      <bean parent="Uif-Message"/>
+      <bean parent="Uif-MessageField">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>uif-dialogPrompt</value>
+          </list>
+        </property>
+      </bean>
     </property>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation"/>
     </property>
     <property name="responseInputField">
-      <bean parent="Uif-DialogResponse"/>
+      <bean parent="Uif-DialogResponse">
+       <!-- <property name="cssClasses">
+          <list merge="true">
+            <value>uif-action uif-primaryActionButton uif-boxLayoutHorizontalItem</value>
+          </list>
+        </property>-->
+      </bean>
     </property>
     <property name="cssClasses">
       <list merge="true">
@@ -1025,10 +1041,18 @@
   </bean>
 
   <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="headerText" value="Warning: Sensitive Data"/>
+    <property name="items">
+      <list>
+        <bean id="imageWarning" parent="Uif-ImageField" p:fieldLabel.render="false"  p:width="50px" p:height="50px"
+              p:source="@{#ConfigProperties['krad.externalizable.images.url']}warning.png"/>
+      </list>
+    </property>
     <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
   </bean>
 
   <bean id="Uif-OK-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="headerText" value="Please Confirm to Continue"/>
     <property name="availableResponses">
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
@@ -1038,6 +1062,7 @@
   </bean>
 
   <bean id="Uif-Yes-No-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="headerText" value="Please Select"/>
     <property name="availableResponses">
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
@@ -1047,6 +1072,7 @@
   </bean>
 
   <bean id="Uif-True-False-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="headerText" value="Please select from the values below"/>
     <property name="displayExplanation" value="true"/>
     <property name="availableResponses">
       <list>
@@ -1057,6 +1083,7 @@
   </bean>
 
   <bean id="Uif-Checkbox-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="headerText" value="Please Select from the values below"/>
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation">

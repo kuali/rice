@@ -22,7 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +42,7 @@ public class DialogTestViewUifController extends UifControllerBase {
     }
 
     /**
-     * places a message containing apostrophes into the message map for display as a growl
+     * Displays page for testing dialogs
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
@@ -56,11 +55,15 @@ public class DialogTestViewUifController extends UifControllerBase {
      * Exercises the Dialog framework.
      *
      * <p>
-     * Asks a question of the user while processing a client request. Demonstrates the ability to go back
+     * Asks a series of questions of the user while processing a client request. Demonstrates the ability to go back
      * to the client bring up a Lightbox modal dialog.
+     * <br>
+     * Displays a few dialogs back to the user. First a yes/no dialog asking the user to pick an author.
+     * Depending on which author was chosen, the user is asked to select a book.
+     * The user is then given a chance to start the selection process over or continue on.
      * </p>
      *
-     * @param uiTestForm - test form
+     * @param form - test form
      * @param result - Spring form binding result
      * @param request - http request
      * @param response - http response
@@ -68,7 +71,7 @@ public class DialogTestViewUifController extends UifControllerBase {
      * @throws Exception
      */
     @RequestMapping(params = "methodToCall=save")
-    public ModelAndView save(@ModelAttribute("KualiForm") UifDialogTestForm uiTestForm, BindingResult result,
+    public ModelAndView save(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView mv;
 
@@ -83,88 +86,71 @@ public class DialogTestViewUifController extends UifControllerBase {
         String chosenBook;
         boolean doRestart = false;
 
-        //exercise asking a question here
-//        boolean answer = askYesOrNoQuestion("dialog1", uiTestForm,  request, response);
-
-        DialogManager dm = uiTestForm.getDialogManager();
-
-        //TODO: Hack by Dan
-        if (dm.hasDialogBeenAnswered(dialog1)){
-            whichAuthor = dm.wasDialogAnswerAffirmative(dialog1);
-        } else {
+        // choose which author
+        if (!hasDialogBeenAnswered(dialog1, form)){
             // redirect back to client to display lightbox
-            dm.addDialog(dialog1, uiTestForm.getMethodToCall());
-            mv = showDialog(dialog1, uiTestForm, request, response);
-            return mv;
+            return showDialog(dialog1, form, request, response);
         }
+        whichAuthor = getBooleanDialogResponse(dialog1, form, request, response);
 
-        // continue on here if they answered the question
+        // continue on here if they answered the the first question
         if (whichAuthor){
-            uiTestForm.setField1("You Selected: P.D. Eastman");
+            form.setField1("You Selected: P.D. Eastman");
 
             // popup a 2nd consecutive dialog
-            if (dm.hasDialogBeenAnswered(dialog2a)){
-                chosenBook = dm.getDialogExplanation(dialog2a);
-            } else {
+            if (!hasDialogBeenAnswered(dialog2a,form)){
                 // redirect back to client to display lightbox
-                dm.addDialog(dialog2a, uiTestForm.getMethodToCall());
-                mv = showDialog(dialog2a, uiTestForm, request, response);
-                return mv;
+                return showDialog(dialog2a, form, request, response);
             }
+            chosenBook = form.getDialogManager().getDialogExplanation(dialog2a);
 
-            // do something different for each possible response
-            uiTestForm.setField1("You selected: "+chosenBook+" by P.D. Eastman. Here we go...");
+            // return back to the client displaying the choices
+            form.setField1("You selected: "+chosenBook+" by P.D. Eastman. Here we go...");
         } else {
-            uiTestForm.setField1("You Selected: Dr. Seuss");
-
+            form.setField1("You Selected: Dr. Seuss");
             // in this case, return to client and wait for them to submit again before showing next dialog
-            if (!dm.hasDialogBeenDisplayed(dialog2b)){
-                dm.addDialog(dialog2b,uiTestForm.getMethodToCall());
-                return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+            // In the above case, the 1st and 2nd dialog are displayed consecutively before returning to the client.
+            // But in this example, we return to the client and wait for them to hit the submit button again
+            if (!hasDialogBeenDisplayed(dialog2b, form)){
+                form.getDialogManager().addDialog(dialog2b, form.getMethodToCall());
+                return getUIFModelAndView(form, "DialogView-Page1");
             }
 
-            // cluncky approach to invoking 2nd dialog
-            if (dm.hasDialogBeenAnswered(dialog2b)){
-                chosenBook = dm.getDialogExplanation(dialog2b);
-            } else {
-                // redirect back to client to display lightbox
-                dm.addDialog(dialog2b, uiTestForm.getMethodToCall());
-                mv = showDialog(dialog2b, uiTestForm, request, response);
-                return mv;
+            // now display the dialog to choose which book
+            if (!hasDialogBeenAnswered(dialog2b, form)){
+                return showDialog(dialog2b, form, request, response);
             }
+            chosenBook = form.getDialogManager().getDialogExplanation(dialog2b);
 
             // display which story the user has selected
-            uiTestForm.setField1("You selected: "+chosenBook+"  by Dr. Seuss. Here we go...");
+            form.setField1("You selected: "+chosenBook+"  by Dr. Seuss. Here we go...");
         }
 
         // Wait at the client page for another page submit
-        if (!dm.hasDialogBeenDisplayed(dialog3)) {
-                dm.addDialog(dialog3,uiTestForm.getMethodToCall());
-                return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+        if (!hasDialogBeenDisplayed(dialog3, form)) {
+                form.getDialogManager().addDialog(dialog3, form.getMethodToCall());
+                return getUIFModelAndView(form, "DialogView-Page1");
         };
 
         // Ask them if they want to start over
-        if (dm.hasDialogBeenAnswered(dialog3)){
-            doRestart = dm.wasDialogAnswerAffirmative(dialog3);
-        } else {
-            // redirect back to client to display lightbox
-            dm.addDialog(dialog3, uiTestForm.getMethodToCall());
-            mv = showDialog(dialog3, uiTestForm, request, response);
-            return mv;
+        if (!hasDialogBeenAnswered(dialog3,form)){
+            return showDialog(dialog3, form, request, response);
         }
+        doRestart = getBooleanDialogResponse(dialog3, form, request, response);
 
         // clear the dialog manager entries, so when we come back, we'll ask all the questions again
         if (doRestart){
+            DialogManager dm = form.getDialogManager();
             dm.removeDialog(dialog1);
             dm.removeDialog(dialog2a);
             dm.removeDialog(dialog2b);
             dm.removeDialog(dialog3);
-            uiTestForm.setField1("Ok, let's start over.");
-            return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+            form.setField1("Ok, let's start over.");
+            return getUIFModelAndView(form, "DialogView-Page1");
         }
 
         // we're done, go to the next page
-        return getUIFModelAndView(uiTestForm, "DialogView-Page2");
+        return getUIFModelAndView(form, "DialogView-Page2");
     }
 
     /**

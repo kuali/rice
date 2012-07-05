@@ -17,6 +17,7 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
@@ -644,6 +645,28 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * returns whether this dialog has been displayed on the client
+     *
+     * @param dialogId - the id of the dialog
+     * @param form - form instance containing the request data
+     * @return boolean - true if dialog has been displayed, false if not
+     */
+    protected boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form){
+        return (form.getDialogManager().hasDialogBeenDisplayed(dialogId));
+    }
+
+    /**
+     * returns whether the dialog has already been answered by the user
+     *
+     * @param dialogId - identifier for the dialog group
+     * @param form - form instance containing the request data
+     * @return boolean - true if client has already responded to the dialog, false otherwise
+     */
+    protected boolean hasDialogBeenAnswered(String dialogId, UifFormBase form){
+        return (form.getDialogManager().hasDialogBeenAnswered(dialogId));
+    }
+
+    /**
      * Handles modal dialog interactions for a view controller When a controller method wishes to prompt the user
      * for additional information before continuing to process the request.
      *
@@ -658,43 +681,51 @@ public abstract class UifControllerBase {
      * option chosen by the user is returned back to the calling controller
      * </p>
      *
-     * @param form
-     * @param dialogId
-     * @return
+     * @param dialogId - identifier of the dialog group
+     * @param form - form instance containing the request data
+     * @param request - the http request
+     * @param response - the http response
+     * @return boolean - true if user chose affirmative response, false if negative response was chosen
      */
-    protected boolean askYesOrNoQuestion(String dialogId, UifFormBase form,
+    protected boolean getBooleanDialogResponse(String dialogId, UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         DialogManager dm = form.getDialogManager();
-        if (dm.hasDialogBeenAnswered(dialogId)){
-            return dm.wasDialogAnswerAffirmative(dialogId);
-        } else {
-            // redirect back to client to display lightbox
-            dm.addDialog(dialogId, form.getMethodToCall());
+        if (!dm.hasDialogBeenAnswered(dialogId)){
             showDialog(dialogId, form, request, response);
+            // throw an exception until showDialog is able to complete request.
+            // until then, programmers should check hasDialogBeenAnswered
+            throw new RiceRuntimeException("Dialog has not yet been answered by client. "
+                +"Check that hasDialogBeenAnswered(id) returns true.");
         }
-        // should never get here. TODO: throw exception?
-        //TODO: clear dialogManager entry if exception thrown during redirect?
-
-        return false;
+        return dm.wasDialogAnswerAffirmative(dialogId);
     }
 
     /**
      * Handles a modal dialog interaction with the client user when the response back is a string.
      *
      * <p>
-     * Similar to askYesOrNoQuestion() but returns a string instead of a boolean
+     * Similar to askYesOrNoQuestion() but returns a string instead of a boolean.  The string value is the key
+     * string of the key/value pair assigned to the button that the user chose.
      * </p>
-     * @param dialogId
-     * @param form
-     * @param request
-     * @param response
+     *
+     * @param dialogId - identifier of the dialog group
+     * @param form - form instance containing the request data
+     * @param request - the http request
+     * @param response - the http response
      * @return
      * @throws Exception
      */
-    protected String askTextResponseQuestion(String dialogId, UifFormBase form,
+    protected String getStringDialogResponse(String dialogId, UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // TODO: implement me     - same as above give the answer back as a string instead of a boolean
-        return null;
+        DialogManager dm = form.getDialogManager();
+        if (!dm.hasDialogBeenAnswered(dialogId)){
+            showDialog(dialogId, form, request, response);
+            // throw an exception until showDialog is able to complete request.
+            // until then, programmers should check hasDialogBeenAnswered
+            throw new RiceRuntimeException("Dialog has not yet been answered by client. "
+                +"Check that hasDialogBeenAnswered(id) returns true.");
+        }
+        return dm.getDialogAnswer(dialogId);
     }
 
     /**
@@ -716,12 +747,12 @@ public abstract class UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) throws Exception{
         // js script to invoke lightbox: runs onDocumentReady
         form.setLightboxScript("openLightboxOnLoad('"+dialogId+"');");
+        form.getDialogManager().addDialog(dialogId, form.getMethodToCall());
 
         // respond back to the client directly
         // without returning back to the controller, but we still want spring mvc to build the view
         ModelAndView mv = getUIFModelAndView(form);
 //        UifControllerHelper.postControllerHandle(request, response, this, mv);
-        String myViewName = mv.getViewName();
 
         // try rendering view manually
         // NOTE: this code below is experimental, and does not currently work
@@ -729,7 +760,6 @@ public abstract class UifControllerBase {
 
         //should never reach this code, but we do for now until the above is fixed
         //TODO: fix the above
-        String myTest="should never get here";
         return mv;
     }
 
@@ -784,23 +814,18 @@ public abstract class UifControllerBase {
     @RequestMapping(params = "methodToCall=returnFromLightbox")
     public ModelAndView returnFromLightbox(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        String responseValue = form.getDialogResponse();
-        String explanationValue = form.getDialogExplanation();
+        // Save user responses from dialog
         DialogManager dm = form.getDialogManager();
         String dialogId = dm.getCurrentDialogId();
-
-        dm.setDialogAnswer(dialogId, responseValue);
-        dm.setDialogExplanation(dialogId, explanationValue);
+        dm.setDialogAnswer(dialogId, form.getDialogResponse());
+        dm.setDialogExplanation(dialogId, form.getDialogExplanation());
 
         // call intended controller method
-        String actualMethodToCall = dm.getDialogReturnMethod(dialogId);
-        String redirectUrl = form.getFormPostUrl();
         Properties props = new Properties();
-        props.put(UifParameters.METHOD_TO_CALL, actualMethodToCall);
+        props.put(UifParameters.METHOD_TO_CALL, dm.getDialogReturnMethod(dialogId));
         props.put(UifParameters.VIEW_ID, form.getViewId());
         props.put(UifParameters.FORM_KEY, form.getFormKey());
-        return performRedirect(form, redirectUrl, props);
+        return performRedirect(form, form.getFormPostUrl(), props);
     }
 
 

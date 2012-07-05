@@ -43,11 +43,11 @@
               <bean id="chooseSeussBookDialog" parent="SeussBooks-DialogGroup"/>
               <bean id="myRestart" parent="RestartYesNo" />
 
-              <bean id="mySensitiveDialog" parent="SensitiveData-DialogGroup"/>
+              <bean id="mySensitiveDialog" parent="Uif-SensitiveData-DialogGroup"/>
               <bean id="myImage" parent="ImageDialog"/>
-              <bean id="preDefinedDialogOkCancel" parent="OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
-              <bean id="preDefinedDialogTrueFalse" parent="True-False-DialogGroup" p:promptText="Is this a correct statement?" />
-              <bean id="sampleRadioButtonDialog" parent="RadioButton-DialogGroup" p:promptText="Select" />
+              <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
+              <bean id="preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup" p:promptText="Is this a correct statement?" />
+              <bean id="sampleRadioButtonDialog" parent="Uif-RadioButton-DialogGroup" p:promptText="Select" />
               <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
 <!--
               <bean id="myCheckboxDialog" parent="sampleCheckboxDialog" p:promptText="Select Applicable" />
@@ -160,7 +160,7 @@
     </property>
   </bean>
 
-  <bean id="SeussBooks-DialogGroup" parent="RadioButton-DialogGroup">
+  <bean id="SeussBooks-DialogGroup" parent="Uif-RadioButton-DialogGroup">
     <property name="promptText" value="Which Book You Like To Read?"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation" p:render="true">
@@ -184,7 +184,7 @@
     </property>
   </bean>
 
-  <bean id="EastmanBooks-DialogGroup" parent="RadioButton-DialogGroup">
+  <bean id="EastmanBooks-DialogGroup" parent="Uif-RadioButton-DialogGroup">
     <property name="promptText" value="Which Book You Like To Read?"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation" p:render="true">
@@ -208,13 +208,13 @@
     </property>
   </bean>
 
-  <bean id="RestartYesNo" parent="Yes-No-DialogGroup" p:promptText="Would you like to start over?" />
+  <bean id="RestartYesNo" parent="Uif-Yes-No-DialogGroup" p:promptText="Would you like to start over?" />
 
 
 <!-- other sample dialogs -->
 
 <!--
-  <bean id="sampleCheckboxDialog" parent="Checkbox-DialogGroup" >
+  <bean id="sampleCheckboxDialog" parent="Uif-Checkbox-DialogGroup" >
     <property name="availableResponses">
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="OK"/>

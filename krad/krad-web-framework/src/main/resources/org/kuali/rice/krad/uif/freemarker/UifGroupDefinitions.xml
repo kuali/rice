@@ -1024,31 +1024,11 @@
     </property>
   </bean>
 
-  <bean id="RUSure-Cancel-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Are you sure you want to cancel?"/>
-  </bean>
-
-  <bean id="RUSure-Delete-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Are you sure you want to delete?"/>
-  </bean>
-
-  <bean id="RUSure-Modify-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Are you sure you want to modify this document?"/>
-  </bean>
-
-  <bean id="RUSure-Disapprove-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Are you sure you want to disapprove this document?"/>
-  </bean>
-
-  <bean id="RUSure-Close-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="Would you like to save this document before you close it?"/>
-  </bean>
-
-  <bean id="SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
   </bean>
 
-  <bean id="OK-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-OK-Cancel-DialogGroup" parent="Uif-DialogGroup" >
     <property name="availableResponses">
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
@@ -1057,7 +1037,7 @@
     </property>
   </bean>
 
-  <bean id="Yes-No-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-Yes-No-DialogGroup" parent="Uif-DialogGroup" >
     <property name="availableResponses">
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
@@ -1066,7 +1046,7 @@
     </property>
   </bean>
 
-  <bean id="True-False-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-True-False-DialogGroup" parent="Uif-DialogGroup" >
     <property name="displayExplanation" value="true"/>
     <property name="availableResponses">
       <list>
@@ -1076,7 +1056,7 @@
     </property>
   </bean>
 
-  <bean id="Checkbox-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-Checkbox-DialogGroup" parent="Uif-DialogGroup" >
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation">
@@ -1101,7 +1081,7 @@
     </property>
   </bean>
 
-  <bean id="RadioButton-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-RadioButton-DialogGroup" parent="Uif-DialogGroup" >
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation" p:render="true">

@@ -177,6 +177,8 @@ public class View extends ContainerBase {
         viewRequestParameters = new HashMap<String, String>();
         expressionVariables = new HashMap<String, String>();
         clientSideState = new HashMap<String, Object>();
+
+        dialogs = new ArrayList<Group>();
     }
 
     /**

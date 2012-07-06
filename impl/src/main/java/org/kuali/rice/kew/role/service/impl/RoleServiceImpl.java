@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.RolePokerQueue;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
-import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -29,8 +28,6 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.FlexRM;
-import org.kuali.rice.kew.rule.RoleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -221,15 +218,10 @@ public class RoleServiceImpl implements RoleService {
     private boolean templateHasRole(RuleTemplateBo template, String roleName) {
         List<RuleTemplateAttributeBo> templateAttributes = template.getRuleTemplateAttributes();
         for (RuleTemplateAttributeBo templateAttribute : templateAttributes) {
-            RuleAttribute ruleAttribute = templateAttribute.getRuleAttribute();
-            Object workflowAttribute = ExtensionUtils.loadExtension(ruleAttribute);
-
-            if (workflowAttribute instanceof RoleAttribute) {
-                List<RoleName> roleNames = ((RoleAttribute)workflowAttribute).getRoleNames();
-                for (RoleName role : roleNames) {
-                    if (role.getLabel().equals(roleName)) {
-                        return true;
-                    }
+            List<RoleName> roleNames = KEWServiceLocator.getWorkflowRuleAttributeMediator().getRoleNames(templateAttribute);
+            for (RoleName role : roleNames) {
+                if (role.getLabel().equals(roleName)) {
+                    return true;
                 }
             }
         }

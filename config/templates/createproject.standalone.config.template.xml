@@ -18,6 +18,7 @@
 <config>
 	<!-- App specific parameters -->
 	<param name="application.id">${APP_NAMESPACE}</param>
+	<param name="standalone.application.id">${application.id}</param>	
 	<param name="app.code">${PROJECT_NAME}</param>
 	<param name="app.context.name">${app.code}</param>
 	<param name="production.environment.code">PRD</param>

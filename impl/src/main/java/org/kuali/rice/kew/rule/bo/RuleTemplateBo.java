@@ -15,38 +15,37 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
- import org.apache.commons.lang.ArrayUtils;
- import org.hibernate.annotations.Fetch;
- import org.hibernate.annotations.FetchMode;
- import org.hibernate.annotations.GenericGenerator;
- import org.hibernate.annotations.Parameter;
- import org.kuali.rice.kew.api.rule.RoleName;
- import org.kuali.rice.kew.api.rule.RuleTemplate;
- import org.kuali.rice.kew.api.rule.RuleTemplateContract;
- import org.kuali.rice.kew.rule.RoleAttribute;
- import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
- import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
- import org.kuali.rice.kew.api.KewApiConstants;
- import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.apache.commons.lang.ArrayUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.rule.RoleName;
+import org.kuali.rice.kew.api.rule.RuleTemplate;
+import org.kuali.rice.kew.api.rule.RuleTemplateContract;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
- import javax.persistence.CascadeType;
- import javax.persistence.Column;
- import javax.persistence.Entity;
- import javax.persistence.FetchType;
- import javax.persistence.GeneratedValue;
- import javax.persistence.Id;
- import javax.persistence.JoinColumn;
- import javax.persistence.NamedQueries;
- import javax.persistence.NamedQuery;
- import javax.persistence.OneToMany;
- import javax.persistence.OneToOne;
- import javax.persistence.Table;
- import javax.persistence.Transient;
- import java.net.URLEncoder;
- import java.util.ArrayList;
- import java.util.Collections;
- import java.util.Iterator;
- import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -136,34 +135,8 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
 
     public String getRuleTemplateActionsUrl() {
         return "<a href=\"RuleTemplate.do?methodToCall=report&currentRuleTemplateId=" + id + "\" >report</a>" /*+ "&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"RuleTemplate.do?methodToCall=edit&ruleTemplate.id=" + id + "\" >edit</a>"*/;
-//        		"&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick=\"if (confirm('Delete this record?')){ return true; } else {return false;} \" href=\"RuleTemplate.do?methodToCall=delete&ruleTemplate.id=" + id + "&redirectUrl=Lookup.do?methodToCall=search&lookupableImplServiceName=RuleTemplateLookupableImplService\" >delete</a>";
     }
 
-//    public void addRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute, Integer counter) {
-//        boolean alreadyAdded = false;
-//        int location = 0;
-//        if (counter != null) {
-//            for (Iterator templateAttributeIter = getRuleTemplateAttributes().iterator(); templateAttributeIter.hasNext();) {
-//                RuleTemplateAttribute ruleTemplateAtt = (RuleTemplateAttribute) templateAttributeIter.next();
-//                //                if (ruleTemplateAtt.getId().longValue() == ruleTemplateAttribute.getId().longValue()) {
-//                if (counter.intValue() == location) {
-//                    ruleTemplateAtt.setDefaultValue(ruleTemplateAttribute.getDefaultValue());
-//                    ruleTemplateAtt.setDisplayOrder(ruleTemplateAttribute.getDisplayOrder());
-//                    ruleTemplateAtt.setLockVerNbr(ruleTemplateAttribute.getLockVerNbr());
-//                    ruleTemplateAtt.setRequired(ruleTemplateAttribute.getRequired());
-//                    ruleTemplateAtt.setId(ruleTemplateAttribute.getId());
-//                    ruleTemplateAtt.setId(ruleTemplateAttribute.getId());
-//                    alreadyAdded = true;
-//                }
-//                location++;
-//            }
-//        }
-//        if (!alreadyAdded) {
-//            ruleTemplateAttribute.setDisplayOrder(new Integer(getRuleTemplateAttributes().size() + 1));
-//            getRuleTemplateAttributes().add(ruleTemplateAttribute);
-//        }
-//    }
-    
     /**
      * Returns the rule template attribute on this instance whose name matches the name of the rule template attribute
      * passed as a parameter, qualified by it's active state, or null if a match was not found.
@@ -307,14 +280,7 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
         }
         return null;
     }
-/*
-    public void setInstructions(RuleTemplateOption instructions) {
-        RuleTemplateOption option = getRuleTemplateOption(KewApiConstants.RULE_INSTRUCTIONS_CD);
-        option.setValue(instructions.getValue());
-        option.setId(instructions.getId());
-        option.setLockVerNbr(instructions.getLockVerNbr());
-    }
-*/
+
     public void setAcknowledge(RuleTemplateOptionBo acknowledge) {
         RuleTemplateOptionBo option = getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         option.setValue(acknowledge.getValue());
@@ -349,11 +315,7 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
         option.setId(defaultActionRequestValue.getId());
         option.setVersionNumber(defaultActionRequestValue.getVersionNumber());
     }
-/*
-    public RuleTemplateOption getInstructions() {
-        return getRuleTemplateOption(KewApiConstants.RULE_INSTRUCTIONS_CD);
-    }
-*/
+
     public RuleTemplateOptionBo getAcknowledge() {
         return getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
     }
@@ -373,29 +335,23 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
     public RuleTemplateOptionBo getDefaultActionRequestValue() {
         return getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_DEFAULT_CD);
     }
-    
+
     /**
      * Returns a List of Roles from all RoleAttributes attached to this template.
+     *
      * @return list of roles
      */
     public List<RoleName> getRoles() {
-    	List<RoleName> roles = new ArrayList<RoleName>();
-    	List<RuleTemplateAttributeBo> ruleTemplateAttributes = getActiveRuleTemplateAttributes();
-		Collections.sort(ruleTemplateAttributes);
-        for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes)
-        {
-            if (!ruleTemplateAttribute.isWorkflowAttribute())
+        List<RoleName> roleNames = new ArrayList<RoleName>();
+        List<RuleTemplateAttributeBo> templateAttributes = getRuleTemplateAttributes();
+        for (RuleTemplateAttributeBo templateAttribute : templateAttributes) {
+            if (!templateAttribute.isWorkflowAttribute())
             {
-                continue;
-            }
-            WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-            if (workflowAttribute instanceof RoleAttribute)
-            {
-                RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
-                roles.addAll(roleAttribute.getRoleNames());
-            }
+				continue;
+			}
+            roleNames.addAll(KEWServiceLocator.getWorkflowRuleAttributeMediator().getRoleNames(templateAttribute));
         }
-		return roles;
+        return roleNames;
     }
 
     public static RuleTemplate to(RuleTemplateBo bo) {

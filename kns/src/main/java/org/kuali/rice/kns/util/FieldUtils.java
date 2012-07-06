@@ -1685,6 +1685,10 @@ public final class FieldUtils {
             return control;
 		} else if (Field.DROPDOWN.equals(type)) {
             return RemotableSelect.Builder.create(optionMap);
+        } else if (Field.DROPDOWN_REFRESH.equals(type)) {
+            RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
+            control.setRefreshOnChange(true);
+            return control;
         } else if (Field.CHECKBOX.equals(type)) {
             return RemotableCheckbox.Builder.create();
 		} else if (Field.RADIO.equals(type)) {
@@ -1744,6 +1748,8 @@ public final class FieldUtils {
             field.setFieldValidValues(FieldUtils.convertMapToKeyValueList(selectControl.getKeyLabels()));
             if (selectControl.isMultiple()) {
                 fieldType = Field.MULTISELECT;
+            } else if (selectControl.isRefreshOnChange()) {
+                fieldType = Field.DROPDOWN_REFRESH;
             } else {
                 fieldType = Field.DROPDOWN;
             }

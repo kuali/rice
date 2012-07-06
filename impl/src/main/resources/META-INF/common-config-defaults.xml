@@ -112,7 +112,9 @@
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
     <param name="krad.url" override="false">${application.url}/kr-krad</param>
+    <param name="rice.server.krad.url" override="false">${rice.server.url}/kr-krad</param>
     <param name="krad.lookup.url" override="false">${krad.url}/lookup</param>
+    <param name="rice.server.krad.lookup.url" override="false">${rice.server.krad.url}/lookup</param>
     <param name="krad.inquiry.url" override="false">${krad.url}/inquiry</param>
     <param name="rice.server.url" override="false">${application.url}</param>
     <param name="workflow.url" override="false">${rice.server.url}/kew</param>
@@ -432,7 +434,9 @@
 	<param name="rice.kew.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kew.expose.services.on.bus" override="false">true</param>
   <param name="rice.kew.ignoreUnknownPrincipalIds" override="false">false</param>
-
+	<!-- This is used to get the standalone version of WorkflowDocumentActionsService when kew.mode is REMOTE or THIN --> 
+	<param name="standalone.application.id" override="false">RICE</param>
+	
 	<!-- KIM -->
 	<param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
 	<param name="kim.url" override="false">${application.url}/kim</param>

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,8 @@ public class MapStringStringAdapter extends XmlAdapter<MapStringStringAdapter.St
 			return null;
 		}
 		List<StringMapEntry> entries = entryList.getEntries();
-		Map<String, String> resultMap = new HashMap<String, String>(entries.size());
+        // LinkedHashMap so that order is preserved!
+		Map<String, String> resultMap = new LinkedHashMap<String, String>(entries.size());
 		for (StringMapEntry entry : entries) {
 			resultMap.put(entry.getKey(), entry.getValue());
 		}

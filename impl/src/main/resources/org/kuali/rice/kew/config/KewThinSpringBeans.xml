@@ -49,22 +49,28 @@
         class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.kew.serviceNamespace"/>
 
+  <bean id="rice.kew.remote.RICE.import" abstract="true" lazy-init="true"
+        class="org.kuali.rice.ksb.api.bus.support.LazyServiceFactoryBean"
+        p:serviceNamespace-ref="rice.kew.serviceNamespace"
+        p:applicationId="${standalone.application.id}"/>
+
+
   <bean id="rice.kew.workflowDocumentPrototype" class="org.kuali.rice.kew.impl.document.WorkflowDocumentImpl" scope="prototype"
         p:workflowDocumentActionsService-ref="rice.kew.workflowDocumentActionsService"
         p:workflowDocumentService-ref="rice.kew.workflowDocumentService" />
 
   <bean id="rice.kew.workflowDocumentActionsService"
-        parent="rice.kew.remote.import"
+        parent="rice.kew.remote.RICE.import"
         p:serviceName="workflowDocumentActionsService"
         p:objectType="org.kuali.rice.kew.api.action.WorkflowDocumentActionsService"/>
 
   <bean id="rice.kew.workflowDocumentService"
-        parent="rice.kew.remote.import"
+        parent="rice.kew.remote.RICE.import"
         p:serviceName="workflowDocumentService"
         p:objectType="org.kuali.rice.kew.api.document.WorkflowDocumentService"/>
 
   <bean id="rice.kew.actionListService"
-        parent="rice.kew.remote.import"
+        parent="rice.kew.remote.RICE.import"
         p:serviceName="actionListService"
         p:objectType="org.kuali.rice.kew.api.actionlist.ActionListService"/>
 

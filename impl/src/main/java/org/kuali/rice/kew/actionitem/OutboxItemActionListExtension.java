@@ -46,7 +46,6 @@ import javax.persistence.Table;
 	@AttributeOverride(name="delegatorPrincipalId", column=@Column(name="DLGN_PRNCPL_ID")),
 	@AttributeOverride(name="delegatorGroupId", column=@Column(name="DLGN_GRP_ID")),
 	@AttributeOverride(name="delegationType", column=@Column(name="DLGN_TYP")),
-	@AttributeOverride(name="lockVerNbr", column=@Column(name="VER_NBR")),
 	@AttributeOverride(name="requestLabel", column=@Column(name="RQST_LBL"))
 })
 

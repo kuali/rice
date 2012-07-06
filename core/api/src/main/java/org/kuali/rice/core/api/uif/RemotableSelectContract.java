@@ -34,4 +34,12 @@ public interface RemotableSelectContract extends Sized, KeyLabeled {
      * @return allows multiple selections
      */
     boolean isMultiple();
+
+    /**
+     * If true, indicates that the page needs to be refreshed whenever the drop-down value is changed.
+     *
+     * @return whether or not to refresh the page when the select value is changed
+     */
+    boolean isRefreshOnChange();
+
 }

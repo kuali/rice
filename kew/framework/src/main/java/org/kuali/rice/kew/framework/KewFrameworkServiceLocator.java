@@ -48,17 +48,9 @@ public class KewFrameworkServiceLocator {
         return (T)KsbApiServiceLocator.getServiceBus().getService(new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName), applicationId);
     }
 
-    public static DocumentSearchCustomizationHandlerService getDocumentSearchCustomizationHandlerService() {
-        return getDocumentSearchCustomizationHandlerService(null);
-    }
-
     public static DocumentSearchCustomizationHandlerService getDocumentSearchCustomizationHandlerService(
             String applicationId) {
         return getServiceOnBus(DOCUMENT_SEARCH_CUSTOMIZATION_HANDLER_SERVICE, applicationId);
-    }
-
-    public static DocumentSecurityHandlerService getDocumentSecurityHandlerService() {
-        return getDocumentSecurityHandlerService(null);
     }
 
     public static DocumentSecurityHandlerService getDocumentSecurityHandlerService(
@@ -66,16 +58,8 @@ public class KewFrameworkServiceLocator {
         return getServiceOnBus(DOCUMENT_SECURITY_HANDLER_SERVICE, applicationId);
     }
 
-    public static RuleValidationAttributeExporterService getRuleValidationAttributeExporterService() {
-        return getRuleValidationAttributeExporterService(null);
-    }
-
     public static RuleValidationAttributeExporterService getRuleValidationAttributeExporterService(String applicationId) {
         return getServiceOnBus(RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE, applicationId);
-    }
-
-    public static WorkflowRuleAttributeHandlerService getWorkflowRuleAttributeHandlerService() {
-        return getWorkflowRuleAttributeHandlerService(null);
     }
 
     public static WorkflowRuleAttributeHandlerService getWorkflowRuleAttributeHandlerService(String applicationId) {

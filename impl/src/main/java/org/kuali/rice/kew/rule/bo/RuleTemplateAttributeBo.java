@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule.bo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
@@ -26,9 +27,7 @@ import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleValidationAttribute;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
-import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -117,16 +116,7 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
     }
 
     public boolean isWorkflowAttribute() {
-        try {
-            Object attributeObject = getAttribute();//GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(getRuleAttribute().getClassName()));
-            if (attributeObject == null) {
-                return false;
-            }
-            Class<?> attributeClass = attributeObject.getClass();
-            return WorkflowRuleAttribute.class.isAssignableFrom(attributeClass);
-        } catch (Exception e) {
-            throw new RuntimeException("Caught error attempting to load WorkflowAttribute class: " + getRuleAttribute().getResourceDescriptor(), e);
-        }
+        return getRuleAttribute().isWorkflowAttribute();
     }
 
     public boolean isRuleValidationAttribute() {
@@ -192,7 +182,6 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
     public RuleAttribute getRuleAttribute() {
         if (ruleAttribute == null && ruleAttributeId != null) {
             ruleAttribute = RuleAttribute.from(KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(ruleAttributeId));
-            //ruleAttribute = ((RuleAttributeService) KEWServiceLocator.getService(KEWServiceLocator.RULE_ATTRIBUTE_SERVICE)).findByRuleAttributeId(ruleAttributeId);
         }
         return ruleAttribute;
     }
@@ -276,4 +265,5 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
     public void setRuleTemplateId(String ruleTemplateId) {
     	this.ruleTemplateId = ruleTemplateId;
     }
+
 }

@@ -349,6 +349,18 @@
                         <entry>org/kuali/rice/core/ojb/RiceOJB.properties</entry>
                     </row>
                     <row>
+                        <entry>rice.cache.disableAllCaches</entry>
+                        <entry>Flag to disable all Spring caching in Rice</entry>
+                        <entry>false</entry>
+                    </row>
+                    <row>
+                        <entry>rice.cache.disabledCaches</entry>
+                        <entry>Flag to disable specific Spring caches in Rice by name.  The cache names should be comma
+                            separated.</entry>
+                        <entry>http://rice.kuali.org/kim/v2_0/PermissionType,
+                          http://rice.kuali.org/kim/v2_0/TemplateType{Permission}</entry>
+                    </row>
+                    <row>
                         <entry>rice.logging.configure</entry>
                         <entry>Determines whether the logging lifecycle should be loaded.</entry>
                         <entry>false</entry>

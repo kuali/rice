@@ -16,12 +16,7 @@
 package org.kuali.rice.kew.rule.bo;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.uif.RemotableCheckbox;
-import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
-import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
-import org.kuali.rice.core.api.uif.RemotableSelect;
-import org.kuali.rice.core.api.uif.RemotableTextInput;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -29,28 +24,26 @@ import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.core.web.format.CollectionFormatter;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
-import org.kuali.rice.kew.api.validation.ValidationResults;
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
+import org.kuali.rice.kew.rule.WorkflowRuleAttributeRows;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
@@ -112,21 +105,49 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
     @Override
     public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
-        String ruleTemplateNameParam = (String) fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
+        String ruleTemplateNameParam = fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
 
         if (StringUtils.isNotBlank(ruleTemplateNameParam)) {
             rows = new ArrayList<Row>();
             RuleTemplate ruleTemplate = KewApiServiceLocator.getRuleService().getRuleTemplateByName(ruleTemplateNameParam);
 
             for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes()) {
-                List<RemotableAttributeField> attributeFields = null;
-                WorkflowRuleAttributeHandlerService wrahs = KewFrameworkServiceLocator
-                        .getWorkflowRuleAttributeHandlerService();
-                String attributeName = ruleTemplateAttribute.getRuleAttribute().getName();
-                attributeFields = wrahs.getSearchRows(attributeName);
+                if (!RuleAttribute.isWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getType())) {
+                    continue;
+                }
+                // run through the attributes fields once to populate field values we have to do this
+                // to allow rows dependent on another row value to populate correctly in the loop below
+                WorkflowRuleAttributeRows workflowRuleAttributeRows =
+                        KEWServiceLocator.getWorkflowRuleAttributeMediator().getSearchRows(fieldValues, ruleTemplateAttribute);
+                for (Row row : workflowRuleAttributeRows.getRows()) {
+                    List<Field> fields = new ArrayList<Field>();
+                    for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext(); ) {
+                        Field field = (Field) iterator2.next();
+                        if (fieldValues.get(field.getPropertyName()) != null) {
+                            field.setPropertyValue(fieldValues.get(field.getPropertyName()));
+                        }
+                        fields.add(field);
+                        fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+                    }
+                }
+                // now run through a second time with our shiny new field values
+                // ...by the way, just trying to preserve behavior from Rice 1.0.x here...generally speaking, this stuff is crazy!!!
+                workflowRuleAttributeRows =
+                        KEWServiceLocator.getWorkflowRuleAttributeMediator().getSearchRows(fieldValues, ruleTemplateAttribute);
+                for (Row row : workflowRuleAttributeRows.getRows()) {
+                    List<Field> fields = new ArrayList<Field>();
+                    for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext(); ) {
+                        Field field = iterator2.next();
+                        if (fieldValues.get(field.getPropertyName()) != null) {
+                            field.setPropertyValue(fieldValues.get(field.getPropertyName()));
+                        }
+                        fields.add(field);
+                        fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+                    }
+                    row.setFields(fields);
+                    rows.add(row);
 
-                List<Row> searchRows = FieldUtils.convertRemotableAttributeFields(attributeFields);
-                rows.addAll(searchRows);
+                }
             }
             return true;
         }
@@ -136,12 +157,10 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
     @Override
     public List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues) {
-        List errors = new ArrayList();
-
         String parentRuleBaseValueId = fieldValues.get(PARENT_RULE_ID_PROPERTY_NAME);
         String parentResponsibilityId = fieldValues.get(PARENT_RESPONSIBILITY_ID_PROPERTY_NAME);
         String docTypeNameParam = fieldValues.get(DOC_TYP_NAME_PROPERTY_NAME);
-        String ruleTemplateIdParam = null;//(String) fieldValues.get(RULE_TEMPLATE_ID_PROPERTY_NAME);
+        String ruleTemplateIdParam = null;
         String ruleTemplateNameParam = fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
         String groupIdParam = fieldValues.get(GROUP_REVIEWER_PROPERTY_NAME);
         String groupNameParam = fieldValues.get(GROUP_REVIEWER_NAME_PROPERTY_NAME);
@@ -151,7 +170,6 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         String activeParam = fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
         String delegationParam = fieldValues.get(DELEGATION_PROPERTY_NAME);
         String ruleIdParam = fieldValues.get(RULE_ID_PROPERTY_NAME);
-        fieldValues.get(KewApiConstants.DELEGATION_WIZARD);
         String ruleDescription = fieldValues.get(RULE_DESC_PROPERTY_NAME);
 
         String docTypeSearchName = null;
@@ -162,12 +180,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         String ruleId = null;
 
         if (ruleIdParam != null && !"".equals(ruleIdParam.trim())) {
-            try {
-                ruleId = ruleIdParam.trim();
-            } catch (NumberFormatException e) {
-                // TODO: KULRICE-5201 - verify that this is a reasonable initialization given that ruleId is no longer a Long
-            	ruleId = "-1";
-            }
+            ruleId = ruleIdParam.trim();
         }
 
         if (!activeParam.equals("")) {
@@ -183,14 +196,14 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             docTypeSearchName = "%" + docTypeSearchName.trim() + "%";
         }
 
-        if (!StringUtils.isEmpty(networkIdParam)) {
-        	Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam);
-        	if (person != null) {
-        		workflowId = person.getPrincipalId();
+        if (StringUtils.isNotBlank(networkIdParam)) {
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkIdParam);
+        	if (principal != null) {
+        		workflowId = principal.getPrincipalId();
         	}
         }
 
-        if (!StringUtils.isEmpty(groupIdParam) || !StringUtils.isEmpty(groupNameParam)) {
+        if (StringUtils.isNotBlank(groupIdParam) || StringUtils.isNotBlank(groupNameParam)) {
             Group group = null;
             if (groupIdParam != null && !"".equals(groupIdParam)) {
                 group = getGroupService().getGroup(groupIdParam.trim());
@@ -218,59 +231,47 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 ruleTemplateId = ruleTemplate.getId();
             }
 
+            if (ruleTemplate == null) {
+                rows.clear();
+                LOG.info("Returning empty result set for Delegation Rule Lookup because a RuleTemplate Name or ID was provided, but no valid RuleTemplates were retrieved by the service.");
+                return new ArrayList<RuleDelegationBo>();
+            }
+
             attributes = new HashMap<String, String>();
+
             for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes()) {
-                /*WorkflowRuleAttribute attribute = (WorkflowRuleAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getResourceDescriptor(), ruleTemplateAttribute.getRuleAttribute().getApplicationId()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
-                RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-                ExtensionDefinition extensionDefinition = RuleAttribute.to(ruleAttribute);
-                if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                    ((GenericXMLRuleAttribute) attribute).setExtensionDefinition(extensionDefinition);
+                if (!RuleAttribute.isWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getType())) {
+                    continue;
                 }
-                attribute.setRequired(false);*/
-                List<RemotableAttributeField> searchRows = null;
-                String curExtId = "0";//debugging for EN-1682
+                WorkflowRuleAttributeRows workflowRuleAttributeRows =
+                        KEWServiceLocator.getWorkflowRuleAttributeMediator().getSearchRows(fieldValues, ruleTemplateAttribute, false);
 
-                String attributeName = ruleTemplateAttribute.getRuleAttribute().getName();
-                WorkflowRuleAttributeHandlerService wrahs = KewFrameworkServiceLocator.getWorkflowRuleAttributeHandlerService();
-                ValidationResults validationResults = wrahs.validateRuleData(attributeName, fieldValues);
-                for (Map.Entry<String, String> entry : validationResults.getErrors().entrySet()) {
-                    GlobalVariables.getMessageMap().putError(entry.getValue(), RiceKeyConstants.ERROR_CUSTOM, entry.getKey());
-                    }
-
-                //Validate extension data
-                Map<String, String> curExts = ruleTemplateAttribute.getRuleExtensionMap();
-                ValidationResults extensionValidationResults = wrahs.validateRuleData(attributeName, curExts);
-                if (!extensionValidationResults.getErrors().isEmpty()) {
-                    for (Map.Entry<String, String> entry : extensionValidationResults.getErrors().entrySet()) {
-                        LOG.warn("Exception caught attempting to validate attribute data for extension id:" + entry.getKey() + ". Reason: " + entry.getValue());
-                    }
+                for (RemotableAttributeError error : workflowRuleAttributeRows.getValidationErrors()) {
+                    GlobalVariables.getMessageMap().putError(error.getAttributeName(), RiceKeyConstants.ERROR_CUSTOM, error.getMessage());
                 }
 
-                searchRows = wrahs.getSearchRows(attributeName);
-
-                for (RemotableAttributeField field : searchRows) {
-                    if (fieldValues.get(field.getName()) != null) {
-                        String attributeParam = fieldValues.get(field.getName());
-                        if (StringUtils.isNotBlank(attributeParam)) {
-                            attributes.put(field.getName(), attributeParam.trim());
-                                }
+                for (Row row : workflowRuleAttributeRows.getRows()) {
+                    for (Field field : row.getFields()) {
+                        if (fieldValues.get(field.getPropertyName()) != null) {
+                            String attributeParam = fieldValues.get(field.getPropertyName());
+                            if (!attributeParam.equals("")) {
+                                attributes.put(field.getPropertyName(), attributeParam.trim());
                             }
-                    if (field.getControl() instanceof RemotableTextInput || field.getControl() instanceof RemotableSelect
-                            || field.getControl() instanceof RemotableCheckboxGroup
-                            || field.getControl() instanceof RemotableCheckbox
-                            || field.getControl() instanceof RemotableRadioButtonGroup) {
-                        myColumns.getColumns().add(new ConcreteKeyValue(field.getName(), ruleTemplateAttribute.getId()));
+                        }
+                        if (field.getFieldType().equals(Field.TEXT) || field.getFieldType().equals(Field.DROPDOWN) || field.getFieldType().equals(Field.DROPDOWN_REFRESH) || field.getFieldType().equals(Field.RADIO)) {
+                            myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getId()));
+                        }
                     }
                 }
             }
         }
 
-        if (!StringUtils.isEmpty(ruleDescription)) {
+        if (StringUtils.isNotBlank(ruleDescription)) {
             ruleDescription = ruleDescription.replace('*', '%');
             ruleDescription = "%" + ruleDescription.trim() + "%";
         }
 
-        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
+        if (GlobalVariables.getMessageMap().hasErrors()) {
             throw new ValidationException("errors in search criteria");
         }
 
@@ -282,7 +283,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             RuleDelegationBo ruleDelegation = rules.next();
             RuleBaseValues record = ruleDelegation.getDelegationRule();
 
-            if (org.apache.commons.lang.StringUtils.isEmpty(record.getDescription())) {
+            if (StringUtils.isBlank(record.getDescription())) {
                 record.setDescription(KewApiConstants.HTML_NON_BREAKING_SPACE);
             }
 
@@ -302,7 +303,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 record.setMyColumns(myNewColumns);
             }
 
-            StringBuffer returnUrl = new StringBuffer("<a href=\"");
+            StringBuilder returnUrl = new StringBuilder("<a href=\"");
             returnUrl.append(fieldValues.get(BACK_LOCATION)).append("?methodToCall=refresh&docFormKey=").append(fieldValues.get(DOC_FORM_KEY)).append("&");
 
             returnUrl.append(RULE_ID_PROPERTY_NAME);

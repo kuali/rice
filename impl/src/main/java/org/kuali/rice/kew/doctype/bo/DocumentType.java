@@ -335,7 +335,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     /**
-     * Returns the {@link RECALL_NOTIFICATION} policy on the document if defined, or
+     * Returns the RECALL_NOTIFICATION policy on the document if defined, or
      * the default value for this policy which is true.
      * @return the RECALL_NOTIFICATION document type policy
      * @since 2.1
@@ -610,7 +610,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public void setDocumentTypeSecurityXml(String documentTypeSecurityXml) {
         this.documentTypeSecurityXml = documentTypeSecurityXml;
-        if (!org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml.trim())) {
+        if (StringUtils.isNotBlank(documentTypeSecurityXml)) {
             this.documentTypeSecurity = new DocumentTypeSecurity(this.getApplicationId(), documentTypeSecurityXml);
         } else {
             this.documentTypeSecurity = null;

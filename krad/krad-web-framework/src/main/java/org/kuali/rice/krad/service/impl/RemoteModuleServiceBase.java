@@ -175,12 +175,12 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
     }
 
     /**
-     * Returns the base URL to use for lookup requests to objects within the module
+     * Returns the base lookup URL for the Rice server
      *
      * @return String base lookup URL
      */
     protected String getRiceBaseLookupUrl() {
-        return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
+        return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_SERVER_LOOKUP_URL_KEY);
     }
 
     /**
@@ -189,7 +189,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
      * @return String base lookup URL
      */
     protected String getBaseLookupUrl() {
-        return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
+        return getRiceBaseLookupUrl();
     }
 
     @Deprecated

@@ -358,9 +358,20 @@ function cleanupClosedLightboxForms() {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createDatePicker(controlId, options) {
+    var fieldId = jQuery("#" + controlId).closest("[data-role='InputField']").attr("id");
     jQuery(function() {
         jQuery("#" + controlId).datepicker(options);
-        jQuery("#" + controlId).datepicker('option','onSelect', function(){jQuery(this).trigger("focusout");});
+        jQuery("#" + controlId).datepicker('option','onClose',
+                function(){
+                    jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = true;
+                    jQuery(this).trigger("focusout");
+                    jQuery(this).trigger("focus");
+                });
+        jQuery("#" + controlId).datepicker('option','beforeShow',
+                function(){
+                    jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = false;
+                });
+
     });
 
     // in order to compensate for jQuery's "Today" functionality (which does not actually return the date to the input box), alter the functionality

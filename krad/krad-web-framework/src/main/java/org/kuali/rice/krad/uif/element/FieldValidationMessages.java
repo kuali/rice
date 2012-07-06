@@ -42,6 +42,7 @@ public class FieldValidationMessages extends ValidationMessages{
         parent.addDataAttribute("validationMessages", "{"
             + "displayMessages:" + this.isDisplayMessages() + ","
             + "useTooltip:"+ useTooltip + ","
+            + "messagingEnabled:"+ this.isDisplayMessages() + ","
             + "hasOwnMessages:"+ hasMessages + ","
             + "serverErrors:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors())) + ","
             + "serverWarnings:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings())) + ","

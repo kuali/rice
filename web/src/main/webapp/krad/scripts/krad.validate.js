@@ -158,7 +158,7 @@ function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement
  */
 function showMessageTooltip(fieldId, showAndClose, change) {
     var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-    if(data && data.useTooltip){
+    if(data && data.useTooltip && data.messagingEnabled){
         var elementInfo = getHoverElement(fieldId);
         var tooltipElement = jQuery(elementInfo.element);
         if (elementInfo.type == "fieldset") {

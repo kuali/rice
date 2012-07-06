@@ -48,6 +48,13 @@
             <@krad.template component=view.footer/>
         </div>
 
+        <!-- DIALOG LIST -->
+        <div id="dialogs_div">
+        <#list view.dialogs as dialog>
+            <@krad.template component=dialog/>
+        </#list>
+        </div>
+
     </@krad.div>
 
 </#macro>

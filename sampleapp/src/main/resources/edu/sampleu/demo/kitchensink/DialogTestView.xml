@@ -37,21 +37,7 @@
             <list>
               <bean parent="DialogTestView-SampleDialogs"/>
               <bean parent="DialogTestView-MainGroup"/>
-
-              <bean id="chooseAuthorDialog" parent="ChooseAuthor-DialogGroup"/>
-              <bean id="chooseEastmanBookDialog" parent="EastmanBooks-DialogGroup"/>
-              <bean id="chooseSeussBookDialog" parent="SeussBooks-DialogGroup"/>
-              <bean id="myRestart" parent="RestartYesNo" />
-
-              <bean id="mySensitiveDialog" parent="Uif-SensitiveData-DialogGroup"/>
               <bean id="myImage" parent="ImageDialog"/>
-              <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
-              <bean id="preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup" p:promptText="Is this a correct statement?" />
-              <bean id="sampleRadioButtonDialog" parent="Uif-RadioButton-DialogGroup" p:promptText="Select" />
-              <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
-<!--
-              <bean id="myCheckboxDialog" parent="sampleCheckboxDialog" p:promptText="Select Applicable" />
--->
             </list>
           </property>
           <property name="footer">
@@ -83,6 +69,23 @@
             </bean>
           </property>
         </bean>
+      </list>
+    </property>
+    <property name="dialogs">
+      <list>
+        <bean id="chooseAuthorDialog" parent="ChooseAuthor-DialogGroup"/>
+        <bean id="chooseEastmanBookDialog" parent="EastmanBooks-DialogGroup"/>
+        <bean id="chooseSeussBookDialog" parent="SeussBooks-DialogGroup"/>
+        <bean id="myRestart" parent="RestartYesNo" />
+
+        <bean id="mySensitiveDialog" parent="Uif-SensitiveData-DialogGroup"/>
+        <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
+        <bean id="preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup" p:promptText="Is this a correct statement?" />
+        <bean id="sampleRadioButtonDialog" parent="Uif-RadioButton-DialogGroup" p:promptText="Select" />
+        <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
+<!--
+        <bean id="myCheckboxDialog" parent="sampleCheckboxDialog" p:promptText="Select Applicable" />
+-->
       </list>
     </property>
     <property name="theme">

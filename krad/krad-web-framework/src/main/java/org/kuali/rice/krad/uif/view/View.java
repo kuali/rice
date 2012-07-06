@@ -133,6 +133,7 @@ public class View extends ContainerBase {
     private PageGroup page;
 
     private List<? extends Group> items;
+    private List<? extends Group> dialogs;
 
     private Link viewMenuLink;
     private String viewMenuGroupName;
@@ -298,6 +299,10 @@ public class View extends ContainerBase {
         components.add(navigation);
         components.add(breadcrumbs);
         components.add(growls);
+        for (Group dialog : getDialogs()) {
+            components.add(dialog);
+        }
+
         components.add(viewMenuLink);
 
         // Note super items should be added after navigation and other view components so
@@ -1107,6 +1112,24 @@ public class View extends ContainerBase {
     public void setItems(List<? extends Component> items) {
         // TODO: fix this generic issue
         this.items = (List<? extends Group>) items;
+    }
+
+    /**
+     * Provide a list of dialog groups associated with this view
+     *
+     * @return List of dialog Groups
+     */
+    public List<? extends Group> getDialogs() {
+        return dialogs;
+    }
+
+    /**
+     * Sets the list of dialog groups for this view
+     *
+     * @param dialogs - List of dialog groups
+     */
+    public void setDialogs(List<? extends Group> dialogs) {
+        this.dialogs = dialogs;
     }
 
     /**

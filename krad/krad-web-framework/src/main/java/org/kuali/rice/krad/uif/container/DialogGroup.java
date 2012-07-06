@@ -132,6 +132,12 @@ public class DialogGroup extends Group {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
+        // if ajax, just render a placeholder
+        if (useAjaxCallForContent){
+            setProgressiveRenderViaAJAX(useAjaxCallForContent);
+            setProgressiveRender("");
+            setRender(false);
+        }
         // set the messageTest to the promptText
         prompt.setMessageText(promptText);
 

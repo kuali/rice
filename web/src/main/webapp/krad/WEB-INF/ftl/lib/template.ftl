@@ -73,6 +73,11 @@
         <@script value="hiddenInputValidationToggle('${component.id}');"/>
     </#if>
 
+    <#-- ajax dialog setup -->
+    <#if component.progressiveRenderViaAJAX && !(component.progressiveRender?length > 0)>
+            <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
+    </#if>
+
     <#-- conditional Refresh setup -->
     <#if component.conditionalRefresh?has_content>
         <#list component.conditionalRefreshControlNames as cName>

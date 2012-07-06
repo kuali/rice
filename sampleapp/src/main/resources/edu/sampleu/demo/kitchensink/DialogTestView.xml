@@ -79,8 +79,11 @@
         <bean id="myRestart" parent="RestartYesNo" />
 
         <bean id="mySensitiveDialog" parent="Uif-SensitiveData-DialogGroup"/>
-        <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
-        <bean id="preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup" p:promptText="Is this a correct statement?" />
+        <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup"
+              p:promptText="Would you like to continue?" />
+        <bean id="preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup"
+              p:useAjaxCallForContent="true"
+              p:promptText="Is this a correct statement?" />
         <bean id="sampleRadioButtonDialog" parent="Uif-RadioButton-DialogGroup" p:promptText="Select" />
         <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
 <!--
@@ -120,6 +123,7 @@
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with progressive rendering" p:actionScript="showLightboxComponent('myProgressiveDialog');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:actionScript="showLightboxComponent('myImage');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from URL" p:actionScript="showLightboxUrl('http://kuali.org');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Client Ajax Dialog" p:actionScript="showLightboxComponent('preDefinedDialogTrueFalse');"/>
       </list>
     </property>
   </bean>

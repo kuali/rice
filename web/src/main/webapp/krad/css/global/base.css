@@ -953,7 +953,7 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 }
 
 .uif-validationMessages li a {
-    /*color: #000088;*/
+    white-space: normal;
 }
 
 .uif-validationMessages li a:hover, .uif-validationMessages li a:focus {

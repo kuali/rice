@@ -22,16 +22,13 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
-import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.LookupView;
-import org.kuali.rice.krad.uif.view.MaintenanceView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -49,6 +46,8 @@ import org.springframework.beans.PropertyValues;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewDictionaryServiceImpl implements ViewDictionaryService {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            ViewDictionaryServiceImpl.class);
 
     private DataDictionaryService dataDictionaryService;
 

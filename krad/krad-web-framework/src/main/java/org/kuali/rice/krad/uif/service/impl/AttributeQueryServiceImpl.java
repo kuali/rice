@@ -46,6 +46,8 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeQueryServiceImpl implements AttributeQueryService {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            AttributeQueryServiceImpl.class);
 
     private LookupService lookupService;
     private ConfigurationService configurationService;
@@ -88,8 +90,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         if (results != null) {
             List<String> suggestData = new ArrayList<String>();
             for (Object result : results) {
-                Object suggestFieldValue =
-                        ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getSourcePropertyName());
+                Object suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
+                        fieldSuggest.getSourcePropertyName());
                 if (suggestFieldValue != null) {
                     // TODO: need to apply formatter for field or have method in object property utils
                     suggestData.add(suggestFieldValue.toString());
@@ -150,8 +152,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 if (results.size() > 1) {
                     //finding too many results in a not found message (not specific enough)
                     resultObject = null;
-                }
-                else{
+                } else {
                     resultObject = results.iterator().next();
                 }
             }
@@ -176,9 +177,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         } else {
             // add data not found message
             if (fieldQuery.isRenderNotFoundMessage()) {
-                String messageTemplate =
-                        getConfigurationService().getPropertyValueAsString(
-                                UifConstants.MessageKeys.QUERY_DATA_NOT_FOUND);
+                String messageTemplate = getConfigurationService().getPropertyValueAsString(
+                        UifConstants.MessageKeys.QUERY_DATA_NOT_FOUND);
                 String message = MessageFormat.format(messageTemplate, inputField.getLabel());
                 fieldQuery.setReturnMessageText(message.toLowerCase());
             }
@@ -222,12 +222,12 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
         // setup query method arguments
         Object[] arguments = null;
-        if ((attributeQuery.getQueryMethodArgumentFieldList() != null) &&
-                (!attributeQuery.getQueryMethodArgumentFieldList().isEmpty())) {
+        if ((attributeQuery.getQueryMethodArgumentFieldList() != null) && (!attributeQuery
+                .getQueryMethodArgumentFieldList().isEmpty())) {
             // retrieve argument types for conversion
             Class[] argumentTypes = queryMethodInvoker.getArgumentTypes();
-            if ((argumentTypes == null) ||
-                    (argumentTypes.length != attributeQuery.getQueryMethodArgumentFieldList().size())) {
+            if ((argumentTypes == null) || (argumentTypes.length != attributeQuery.getQueryMethodArgumentFieldList()
+                    .size())) {
                 throw new RuntimeException(
                         "Query method argument field list size does not match found method argument list size");
             }

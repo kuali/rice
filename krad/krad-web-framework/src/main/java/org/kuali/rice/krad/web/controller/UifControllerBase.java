@@ -206,7 +206,7 @@ public abstract class UifControllerBase {
      * </p>
      *
      * @param uifForm - form instance containing the request data
-     * @return  the  ModelAndView object
+     * @return the  ModelAndView object
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addBlankLine")
     public ModelAndView addBlankLine(@ModelAttribute("KualiForm") UifFormBase uifForm) {
@@ -433,16 +433,17 @@ public abstract class UifControllerBase {
     }
 
     /**
-     *  handles an ajax refresh
+     * handles an ajax refresh
      *
-     *  <p>The query form plugin  activates this request via a form post, where on the JS side,
-     *  {@code org.kuali.rice.krad.uif.UifParameters#RENDER_FULL_VIEW} is set to false</p>
+     * <p>The query form plugin  activates this request via a form post, where on the JS side,
+     * {@code org.kuali.rice.krad.uif.UifParameters#RENDER_FULL_VIEW} is set to false</p>
      *
-     * @param form  -  Holds properties necessary to determine the <code>View</code> instance that will be used to render the UI
-     * @param result  -   represents binding results
-     * @param request  - http servlet request data
-     * @param response   - http servlet response object
-     * @return  the  ModelAndView object
+     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to render
+     * the UI
+     * @param result -   represents binding results
+     * @param request - http servlet request data
+     * @param response - http servlet response object
+     * @return the  ModelAndView object
      * @throws Exception
      */
     @RequestMapping(params = "methodToCall=refresh")
@@ -472,10 +473,9 @@ public abstract class UifControllerBase {
             }
 
             // invoked view helper to populate the collection from lookup results
-            form.getPostedView().getViewHelperService().processMultipleValueLookupResults(form.getPostedView(),
-                    form, lookupCollectionName, selectedLineValues);
+            form.getPostedView().getViewHelperService().processMultipleValueLookupResults(form.getPostedView(), form,
+                    lookupCollectionName, selectedLineValues);
         }
-
 
         return getUIFModelAndView(form);
     }
@@ -507,7 +507,7 @@ public abstract class UifControllerBase {
                         lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
 
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
-                    lookupParameters.put(UifPropertyPaths.CRITERIA_FIELDS + "['" + lookupParameter.getValue() + "']",
+                    lookupParameters.put(UifPropertyPaths.LOOKUP_CRITERIA + "['" + lookupParameter.getValue() + "']",
                             lookupParameterValue);
                 }
             }
@@ -651,7 +651,7 @@ public abstract class UifControllerBase {
      * @param form - form instance containing the request data
      * @return boolean - true if dialog has been displayed, false if not
      */
-    protected boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form){
+    protected boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form) {
         return (form.getDialogManager().hasDialogBeenDisplayed(dialogId));
     }
 
@@ -662,7 +662,7 @@ public abstract class UifControllerBase {
      * @param form - form instance containing the request data
      * @return boolean - true if client has already responded to the dialog, false otherwise
      */
-    protected boolean hasDialogBeenAnswered(String dialogId, UifFormBase form){
+    protected boolean hasDialogBeenAnswered(String dialogId, UifFormBase form) {
         return (form.getDialogManager().hasDialogBeenAnswered(dialogId));
     }
 
@@ -687,15 +687,15 @@ public abstract class UifControllerBase {
      * @param response - the http response
      * @return boolean - true if user chose affirmative response, false if negative response was chosen
      */
-    protected boolean getBooleanDialogResponse(String dialogId, UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected boolean getBooleanDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         DialogManager dm = form.getDialogManager();
-        if (!dm.hasDialogBeenAnswered(dialogId)){
+        if (!dm.hasDialogBeenAnswered(dialogId)) {
             showDialog(dialogId, form, request, response);
             // throw an exception until showDialog is able to complete request.
             // until then, programmers should check hasDialogBeenAnswered
             throw new RiceRuntimeException("Dialog has not yet been answered by client. "
-                +"Check that hasDialogBeenAnswered(id) returns true.");
+                    + "Check that hasDialogBeenAnswered(id) returns true.");
         }
         return dm.wasDialogAnswerAffirmative(dialogId);
     }
@@ -715,15 +715,15 @@ public abstract class UifControllerBase {
      * @return
      * @throws Exception
      */
-    protected String getStringDialogResponse(String dialogId, UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected String getStringDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         DialogManager dm = form.getDialogManager();
-        if (!dm.hasDialogBeenAnswered(dialogId)){
+        if (!dm.hasDialogBeenAnswered(dialogId)) {
             showDialog(dialogId, form, request, response);
             // throw an exception until showDialog is able to complete request.
             // until then, programmers should check hasDialogBeenAnswered
             throw new RiceRuntimeException("Dialog has not yet been answered by client. "
-                +"Check that hasDialogBeenAnswered(id) returns true.");
+                    + "Check that hasDialogBeenAnswered(id) returns true.");
         }
         return dm.getDialogAnswer(dialogId);
     }
@@ -743,20 +743,20 @@ public abstract class UifControllerBase {
      * @return will return void.  actually, won't return at all.
      * @throws Exception
      */
-    protected ModelAndView showDialog(String dialogId, UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception{
+    protected ModelAndView showDialog(String dialogId, UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         // js script to invoke lightbox: runs onDocumentReady
-        form.setLightboxScript("openLightboxOnLoad('"+dialogId+"');");
+        form.setLightboxScript("openLightboxOnLoad('" + dialogId + "');");
         form.getDialogManager().addDialog(dialogId, form.getMethodToCall());
 
         // respond back to the client directly
         // without returning back to the controller, but we still want spring mvc to build the view
         ModelAndView mv = getUIFModelAndView(form);
-//        UifControllerHelper.postControllerHandle(request, response, this, mv);
+        //        UifControllerHelper.postControllerHandle(request, response, this, mv);
 
         // try rendering view manually
         // NOTE: this code below is experimental, and does not currently work
-//        renderView(mv, request, response, myViewName);
+        //        renderView(mv, request, response, myViewName);
 
         //should never reach this code, but we do for now until the above is fixed
         //TODO: fix the above
@@ -772,27 +772,23 @@ public abstract class UifControllerBase {
      * @param viewName
      * @throws Exception
      */
-    public void renderView(ModelAndView mv,
-			    HttpServletRequest request,
-			    HttpServletResponse response,
-			    String viewName)
-		 throws Exception {
+    public void renderView(ModelAndView mv, HttpServletRequest request, HttpServletResponse response,
+            String viewName) throws Exception {
 
         ServletContext context = request.getSession().getServletContext();
-        WebApplicationContext applicationContext =
-                WebApplicationContextUtils.getWebApplicationContext(context);
+        WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(context);
         viewResolver = (UrlBasedViewResolver) applicationContext.getBean("viewResolver");
-        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request); // this returns null if not called within DispatcherServlet context!
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(
+                request); // this returns null if not called within DispatcherServlet context!
 
-		org.springframework.web.servlet.View view;
-		if (mv.isReference()) {
-			// We need to resolve the view name.
-			view = viewResolver.resolveViewName(viewName, localeResolver.resolveLocale(request));
-		}
-		else {
-			// No need to lookup: the ModelAndView object contains the actual View object.
-			view = mv.getView();
-		}
+        org.springframework.web.servlet.View view;
+        if (mv.isReference()) {
+            // We need to resolve the view name.
+            view = viewResolver.resolveViewName(viewName, localeResolver.resolveLocale(request));
+        } else {
+            // No need to lookup: the ModelAndView object contains the actual View object.
+            view = mv.getView();
+        }
         view.render(mv.getModel(), request, response);
     }
 
@@ -800,8 +796,8 @@ public abstract class UifControllerBase {
      * Common return point for dialogs.
      *
      * <p>
-     *     Determines the user responses to the dialog. Performs dialog management and then redirects to the
-     *     original contoller method.
+     * Determines the user responses to the dialog. Performs dialog management and then redirects to the
+     * original contoller method.
      * </p>
      *
      * @param form - current form
@@ -828,7 +824,6 @@ public abstract class UifControllerBase {
         return performRedirect(form, form.getFormPostUrl(), props);
     }
 
-
     /**
      * Builds a <code>ModelAndView</code> instance configured to redirect to the
      * URL formed by joining the base URL with the given URL parameters
@@ -848,8 +843,8 @@ public abstract class UifControllerBase {
 
         // If this is an Light Box call only return the redirectURL view with the URL
         // set this is to avoid automatic redirect when using light boxes
-        if (urlParameters.get(UifParameters.LIGHTBOX_CALL) != null &&
-                urlParameters.get(UifParameters.LIGHTBOX_CALL).equals("true")) {
+        if (urlParameters.get(UifParameters.LIGHTBOX_CALL) != null && urlParameters.get(UifParameters.LIGHTBOX_CALL)
+                .equals("true")) {
             urlParameters.remove(UifParameters.LIGHTBOX_CALL);
             String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 
@@ -889,7 +884,7 @@ public abstract class UifControllerBase {
 
     public UrlBasedViewResolver getViewResolver() {
         return viewResolver;
-}
+    }
 
     public void setViewResolver(UrlBasedViewResolver viewResolver) {
         this.viewResolver = viewResolver;

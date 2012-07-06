@@ -40,6 +40,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -61,21 +62,21 @@ public class LookupController extends UifControllerBase {
     }
 
     protected void suppressActionsIfNeeded(LookupForm lookupForm) {
-//        try {
-//            // TODO; move to authorizer for lookup view
-//            Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
-//            Person user = GlobalVariables.getUserSession().getPerson();
-//            // check if creating documents is allowed
-//            String documentTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
-//                    .getMaintenanceDocumentTypeName(dataObjectClass);
-//            if ((documentTypeName != null) &&
-//                    !KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName)
-//                            .canInitiate(documentTypeName, user)) {
-//                ((LookupView) lookupForm.getView()).setSuppressActions(true);
-//            }
-//        } catch (ClassNotFoundException e) {
-//            LOG.warn("Unable to load Data Object Class: " + lookupForm.getDataObjectClassName(), e);
-//        }
+        //        try {
+        //            // TODO; move to authorizer for lookup view
+        //            Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
+        //            Person user = GlobalVariables.getUserSession().getPerson();
+        //            // check if creating documents is allowed
+        //            String documentTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
+        //                    .getMaintenanceDocumentTypeName(dataObjectClass);
+        //            if ((documentTypeName != null) &&
+        //                    !KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName)
+        //                            .canInitiate(documentTypeName, user)) {
+        //                ((LookupView) lookupForm.getView()).setSuppressActions(true);
+        //            }
+        //        } catch (ClassNotFoundException e) {
+        //            LOG.warn("Unable to load Data Object Class: " + lookupForm.getDataObjectClassName(), e);
+        //        }
     }
 
     /**
@@ -124,7 +125,7 @@ public class LookupController extends UifControllerBase {
      * Just returns as if return with no value was selected
      */
     @Override
-    @RequestMapping(params = "methodToCall=cancel")
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=cancel")
     public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
@@ -148,13 +149,13 @@ public class LookupController extends UifControllerBase {
     /**
      * clearValues - clears the values of all the fields on the jsp.
      */
-    @RequestMapping(params = "methodToCall=clearValues")
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=clearValues")
     public ModelAndView clearValues(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         suppressActionsIfNeeded(lookupForm);
 
         Lookupable lookupable = (Lookupable) lookupForm.getLookupable();
-        lookupForm.setCriteriaFields(lookupable.performClear(lookupForm, lookupForm.getCriteriaFields()));
+        lookupForm.setLookupCriteria(lookupable.performClear(lookupForm, lookupForm.getLookupCriteria()));
 
         return getUIFModelAndView(lookupForm);
     }
@@ -175,10 +176,9 @@ public class LookupController extends UifControllerBase {
         }
 
         // validate search parameters
-        lookupable.validateSearchParameters(lookupForm, lookupForm.getCriteriaFields());
+        lookupable.validateSearchParameters(lookupForm, lookupForm.getLookupCriteria());
 
-        Collection<?> displayList =
-                lookupable.performSearch(lookupForm, lookupForm.getCriteriaFields(), true);
+        Collection<?> displayList = lookupable.performSearch(lookupForm, lookupForm.getLookupCriteria(), true);
 
         if (displayList instanceof CollectionIncomplete<?>) {
             request.setAttribute("reqSearchResultsActualSize",
@@ -187,7 +187,7 @@ public class LookupController extends UifControllerBase {
             request.setAttribute("reqSearchResultsActualSize", new Integer(displayList.size()));
         }
 
-        lookupForm.setSearchResults(displayList);
+        lookupForm.setLookupResults(displayList);
 
         return getUIFModelAndView(lookupForm);
     }
@@ -198,7 +198,7 @@ public class LookupController extends UifControllerBase {
      *
      * @param lookupForm - lookup form instance containing the selected results and lookup configuration
      */
-    @RequestMapping(params = "methodToCall=returnSelected")
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=returnSelected")
     public ModelAndView returnSelected(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         Properties parameters = new Properties();

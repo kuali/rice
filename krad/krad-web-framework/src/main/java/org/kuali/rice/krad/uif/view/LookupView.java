@@ -101,7 +101,8 @@ public class LookupView extends FormView {
      * <li>Set the abstractTypeClasses map for the lookup object path</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
      */
     @Override
     public void performInitialization(View view, Object model) {
@@ -120,7 +121,7 @@ public class LookupView extends FormView {
             hideReturnLinks = true;
         }
 
-        getObjectPathToConcreteClassMapping().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
+        getObjectPathToConcreteClassMapping().put(UifPropertyPaths.LOOKUP_CRITERIA, getDataObjectClassName());
         if (StringUtils.isNotBlank(getDefaultBindingObjectPath())) {
             getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDataObjectClassName());
         }
@@ -181,29 +182,29 @@ public class LookupView extends FormView {
 
     public void applyConditionalLogicForFieldDisplay() {
         // TODO: work into view lifecycle
-//	    LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) getViewHelperService();
-//		Set<String> readOnlyFields = lookupViewHelperService.getConditionallyReadOnlyPropertyNames();
-//		Set<String> requiredFields = lookupViewHelperService.getConditionallyRequiredPropertyNames();
-//		Set<String> hiddenFields = lookupViewHelperService.getConditionallyHiddenPropertyNames();
-//		if ( (readOnlyFields != null && !readOnlyFields.isEmpty()) ||
-//			 (requiredFields != null && !requiredFields.isEmpty()) ||
-//			 (hiddenFields != null && !hiddenFields.isEmpty())
-//			) {
-//			for (Field field : getResultsGroup().getItems()) {
-//				if (InputField.class.isAssignableFrom(field.getClass())) {
-//					InputField attributeField = (InputField) field;
-//					if (readOnlyFields != null && readOnlyFields.contains(attributeField.getBindingInfo().getBindingName())) {
-//						attributeField.setReadOnly(true);
-//					}
-//					if (requiredFields != null && requiredFields.contains(attributeField.getBindingInfo().getBindingName())) {
-//						attributeField.setRequired(Boolean.TRUE);
-//					}
-//					if (hiddenFields != null && hiddenFields.contains(attributeField.getBindingInfo().getBindingName())) {
-//						attributeField.setControl(LookupInquiryUtils.generateCustomLookupControlFromExisting(HiddenControl.class, null));
-//					}
-//				}
-//	        }
-//		}
+        //	    LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) getViewHelperService();
+        //		Set<String> readOnlyFields = lookupViewHelperService.getConditionallyReadOnlyPropertyNames();
+        //		Set<String> requiredFields = lookupViewHelperService.getConditionallyRequiredPropertyNames();
+        //		Set<String> hiddenFields = lookupViewHelperService.getConditionallyHiddenPropertyNames();
+        //		if ( (readOnlyFields != null && !readOnlyFields.isEmpty()) ||
+        //			 (requiredFields != null && !requiredFields.isEmpty()) ||
+        //			 (hiddenFields != null && !hiddenFields.isEmpty())
+        //			) {
+        //			for (Field field : getResultsGroup().getItems()) {
+        //				if (InputField.class.isAssignableFrom(field.getClass())) {
+        //					InputField attributeField = (InputField) field;
+        //					if (readOnlyFields != null && readOnlyFields.contains(attributeField.getBindingInfo().getBindingName())) {
+        //						attributeField.setReadOnly(true);
+        //					}
+        //					if (requiredFields != null && requiredFields.contains(attributeField.getBindingInfo().getBindingName())) {
+        //						attributeField.setRequired(Boolean.TRUE);
+        //					}
+        //					if (hiddenFields != null && hiddenFields.contains(attributeField.getBindingInfo().getBindingName())) {
+        //						attributeField.setControl(LookupInquiryUtils.generateCustomLookupControlFromExisting(HiddenControl.class, null));
+        //					}
+        //				}
+        //	        }
+        //		}
     }
 
     /**

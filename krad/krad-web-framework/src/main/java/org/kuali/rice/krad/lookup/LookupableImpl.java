@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -84,7 +85,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
     /**
      * Initialization of Lookupable requires that the business object class be set for the
-     * {@link #initializeDataFieldFromDataDictionary(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.field.DataField)} method
+     * {@link #initializeDataFieldFromDataDictionary(org.kuali.rice.krad.uif.view.View,
+     * org.kuali.rice.krad.uif.field.DataField)} method
      *
      * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
@@ -131,7 +133,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * @param form lookup form instance containing the lookup data
      * @param searchCriteria map of criteria currently set
      * @param unbounded indicates whether the complete result should be returned.  When set to false the result is
-     *                  limited (if necessary) to the max search result limit configured.
+     * limited (if necessary) to the max search result limit configured.
      * @return the list of result objects, possibly bounded
      */
     protected List<?> getSearchResults(LookupForm form, Map<String, String> searchCriteria, boolean unbounded) {
@@ -163,24 +165,64 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                         nonBlankSearchCriteria, unbounded);
             }
         } catch (IllegalAccessException e) {
-            LOG.error("Error trying to perform search", e);
             throw new RuntimeException("Error trying to perform search", e);
         } catch (InstantiationException e1) {
-            LOG.error("Error trying to perform search", e1);
             throw new RuntimeException("Error trying to perform search", e1);
         }
 
         if (searchResults == null) {
             searchResults = new ArrayList<Object>();
-        }
-
-        // sort list if default sort column given
-        List<String> defaultSortColumns = ((LookupView) form.getPostedView()).getDefaultSortAttributeNames();
-        if ((defaultSortColumns != null) && (defaultSortColumns.size() > 0)) {
-            Collections.sort(searchResults, new BeanPropertyComparator(defaultSortColumns, true));
+        } else {
+            sortSearchResults(form, searchResults);
         }
 
         return searchResults;
+    }
+
+    /**
+     * Sorts the given list of search results based on the lookup view's configured sort attributes
+     *
+     * <p>
+     * First if the posted view exists we grab the sort attributes from it. This will take into account expressions
+     * that might have been configured on the sort attributes. If the posted view does not exist (because we did a
+     * search from a get request or form session storage is off), we get the sort attributes from the view that we
+     * will be rendered (and was initialized before controller call). However, expressions will not be evaluated yet,
+     * thus if expressions were configured we don't know the results and can not sort the list
+     * </p>
+     *
+     * @param form - lookup form instance containing view information
+     * @param searchResults - list of search results to sort
+     * @TODO: revisit this when we have a solution for the posted view problem
+     */
+    protected void sortSearchResults(LookupForm form, List<?> searchResults) {
+        List<String> defaultSortColumns = null;
+
+        // first choice is to get default sort columns off posted view, since that will include the full
+        // lifecycle and expression evaluations
+        if (form.getPostedView() != null) {
+            defaultSortColumns = ((LookupView) form.getPostedView()).getDefaultSortAttributeNames();
+        }
+        // now try view being built, if default sort attributes have any expression (entry is null) we can't use them
+        else if (form.getView() != null) {
+            defaultSortColumns = ((LookupView) form.getView()).getDefaultSortAttributeNames();
+
+            boolean hasExpression = false;
+            if (defaultSortColumns != null) {
+                for (String sortColumn : defaultSortColumns) {
+                    if (sortColumn == null) {
+                        hasExpression = true;
+                    }
+                }
+            }
+
+            if (hasExpression) {
+                defaultSortColumns = null;
+            }
+        }
+
+        if ((defaultSortColumns != null) && (defaultSortColumns.size() > 0)) {
+            Collections.sort(searchResults, new BeanPropertyComparator(defaultSortColumns, true));
+        }
     }
 
     /**
@@ -196,8 +238,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * @return map with the non blank search criteria
      */
     protected Map<String, String> processSearchCriteria(LookupForm lookupForm, Map<String, String> searchCriteria) {
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getPostedView(),
-                lookupForm);
+        Map<String, InputField> criteriaFields = new HashMap<String, InputField>();
+        if (lookupForm.getPostedView() != null) {
+            criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getPostedView(), lookupForm);
+        }
 
         Map<String, String> nonBlankSearchCriteria = new HashMap<String, String>();
         for (String fieldName : searchCriteria.keySet()) {
@@ -205,7 +249,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             // don't add hidden criteria
             InputField inputField = criteriaFields.get(fieldName);
-            if (inputField.getControl() instanceof HiddenControl) {
+            if ((inputField != null) && (inputField.getControl() instanceof HiddenControl)) {
                 continue;
             }
 
@@ -236,7 +280,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      *
      * @param searchCriteria map of criteria currently set
      * @param unbounded indicates whether the complete result should be returned.  When set to false the result is
-     *                  limited (if necessary) to the max search result limit configured.
+     * limited (if necessary) to the max search result limit configured.
      * @return list of result objects, possibly bounded
      */
     protected List<?> getSearchResultsForEBO(Map<String, String> searchCriteria, boolean unbounded) {
@@ -260,10 +304,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
-     *
      * @param searchCriteria map of criteria currently set
      * @param unbounded indicates whether the complete result should be returned.  When set to false the result is
-     *                  limited (if necessary) to the max search result limit configured.
+     * limited (if necessary) to the max search result limit configured.
      * @return
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -398,8 +441,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     @Override
     public Map<String, String> performClear(LookupForm form, Map<String, String> searchCriteria) {
-        Map<String, InputField> criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getPostedView(),
-                form);
+        Map<String, InputField> criteriaFieldMap = new HashMap<String, InputField>();
+        if (form.getPostedView() == null) {
+            criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getPostedView(), form);
+        }
+
         Map<String, String> clearedSearchCriteria = new HashMap<String, String>();
         for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
             String searchPropertyName = searchKeyValue.getKey();
@@ -417,7 +463,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 // from checkbox to radio
                 clearedSearchCriteria.put(searchPropertyName, inputField.getDefaultValue());
             } else {
-                throw new RuntimeException("Invalid search field sent for property name: " + searchPropertyName);
+                clearedSearchCriteria.put(searchPropertyName, "");
             }
         }
 
@@ -433,6 +479,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         if (!getViewDictionaryService().isLookupable(getDataObjectClass())) {
             throw new RuntimeException("Lookup not defined for data object " + getDataObjectClass());
+        }
+
+        // if postedView is null then we are executing the search from get request, in which case we
+        // can't validate the criteria
+        if (form.getPostedView() == null) {
+            return valid;
         }
 
         Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getPostedView(),
@@ -454,6 +506,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
                 validateSearchParameterWildcardAndOperators(inputField, searchPropertyValue);
             } else {
+                // TODO: should we consider hiddenPropertyNames for input fields before throwing an exception?
                 throw new RuntimeException("Invalid search field sent for property name: " + searchPropertyName);
             }
         }
@@ -474,6 +527,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     protected Map<String, InputField> getCriteriaFieldsForValidation(LookupView lookupView, LookupForm form) {
         Map<String, InputField> criteriaFieldMap = new HashMap<String, InputField>();
+
+        if (lookupView.getCriteriaFields() == null) {
+            return criteriaFieldMap;
+        }
 
         // TODO; need hooks for code generated components and also this doesn't have lifecycle which
         // could change fields
@@ -692,6 +749,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * <p>Returns the configured return key property names or if not configured defaults to the primary keys
      * for the data object class
      * </p>
+     *
      * @param lookupView - lookup view instance containing lookup configuration
      * @param lookupForm - lookup form instance containing the data
      * @param dataObject - data object instance
@@ -923,7 +981,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return this.dataObjectClass;
     }
 
-
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
@@ -939,13 +996,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.dataObjectAuthorizationService = dataObjectAuthorizationService;
     }
 
-    /**
-     * Returns the <code>DataObjectMetaDataService</code>
-     * <p>
-     * If the <code>DataObjectMetaDataService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>.
-     * </p>
-     * @return dataObjectMetaDataService - the <code>DataObjectMetaDataService</code> that is set
-     */
     protected DataObjectMetaDataService getDataObjectMetaDataService() {
         if (dataObjectMetaDataService == null) {
             this.dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
@@ -957,13 +1007,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.dataObjectMetaDataService = dataObjectMetaDataService;
     }
 
-    /**
-     * Returns the <code>DocumentDictionaryService</code>
-     * <p>
-     * If the <code>DocumentDictionaryService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>.
-     * </p>
-     * @return documentDictionaryService - the <code>DocumentDictionaryService</code> that is set
-     */
     public DocumentDictionaryService getDocumentDictionaryService() {
         if (documentDictionaryService == null) {
             documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
@@ -975,13 +1018,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.documentDictionaryService = documentDictionaryService;
     }
 
-    /**
-     * Returns the <code>LookupService</code>
-     * <p>
-     * If the <code>LookupService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>.
-     * </p>
-     * @return configurationService - the <code>ConfigurationService</code> that is set
-     */
     protected LookupService getLookupService() {
         if (lookupService == null) {
             this.lookupService = KRADServiceLocatorWeb.getLookupService();
@@ -993,13 +1029,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.lookupService = lookupService;
     }
 
-    /**
-     * Returns the <code>EncryptionService</code>
-     * <p>
-     * If the <code>EncryptionService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>.
-     * </p>
-     * @return encryptionService - the <code>EncryptionService</code> that is set
-     */
     protected EncryptionService getEncryptionService() {
         if (encryptionService == null) {
             this.encryptionService = CoreApiServiceLocator.getEncryptionService();

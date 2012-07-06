@@ -45,13 +45,13 @@ public class LookupForm extends UifFormBase {
     private boolean multipleValuesSelect;
     private String lookupCollectionName;
 
-    private Map<String, String> criteriaFields;
+    private Map<String, String> lookupCriteria;
     private Map<String, String> fieldConversions;
+
+    private Collection<?> lookupResults;
 
     private boolean atLeastOneRowReturnable;
     private boolean atLeastOneRowHasActions;
-
-    private Collection<?> searchResults;
 
     private boolean redirectedLookup;
 
@@ -64,7 +64,7 @@ public class LookupForm extends UifFormBase {
         multipleValuesSelect = false;
         redirectedLookup = false;
 
-        criteriaFields = new HashMap<String, String>();
+        lookupCriteria = new HashMap<String, String>();
         fieldConversions = new HashMap<String, String>();
     }
 
@@ -98,10 +98,8 @@ public class LookupForm extends UifFormBase {
 
                 // perform upper casing of lookup parameters
                 Map<String, String> fieldValues = new HashMap<String, String>();
-                Map<String, String> formFields = getCriteriaFields();
-
-                if (formFields != null) {
-                    for (Map.Entry<String, String> entry : formFields.entrySet()) {
+                if (getLookupCriteria() != null) {
+                    for (Map.Entry<String, String> entry : getLookupCriteria().entrySet()) {
                         // check here to see if this field is a criteria element on the form
                         fieldValues.put(entry.getKey(), LookupUtils.forceUppercase(dataObjectClass, entry.getKey(),
                                 entry.getValue()));
@@ -112,7 +110,7 @@ public class LookupForm extends UifFormBase {
                     fieldValues.put(KRADConstants.DOC_NUM, getDocNum());
                 }
 
-                this.setCriteriaFields(fieldValues);
+                this.setLookupCriteria(fieldValues);
             }
         } catch (ClassNotFoundException e) {
             LOG.error("Object class " + getDataObjectClassName() + " not found");
@@ -198,12 +196,12 @@ public class LookupForm extends UifFormBase {
         this.lookupCollectionName = lookupCollectionName;
     }
 
-    public Map<String, String> getCriteriaFields() {
-        return this.criteriaFields;
+    public Map<String, String> getLookupCriteria() {
+        return this.lookupCriteria;
     }
 
-    public void setCriteriaFields(Map<String, String> criteriaFields) {
-        this.criteriaFields = criteriaFields;
+    public void setLookupCriteria(Map<String, String> lookupCriteria) {
+        this.lookupCriteria = lookupCriteria;
     }
 
     public Map<String, String> getFieldConversions() {
@@ -214,12 +212,12 @@ public class LookupForm extends UifFormBase {
         this.fieldConversions = fieldConversions;
     }
 
-    public Collection<?> getSearchResults() {
-        return this.searchResults;
+    public Collection<?> getLookupResults() {
+        return this.lookupResults;
     }
 
-    public void setSearchResults(Collection<?> searchResults) {
-        this.searchResults = searchResults;
+    public void setLookupResults(Collection<?> lookupResults) {
+        this.lookupResults = lookupResults;
     }
 
     public boolean isAtLeastOneRowReturnable() {

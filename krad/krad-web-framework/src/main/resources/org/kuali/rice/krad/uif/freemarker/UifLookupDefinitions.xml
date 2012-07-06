@@ -123,7 +123,7 @@
 
   <bean id="Uif-LookupCriteriaGroup" parent="Uif-GridGroup">
     <property name="headerText" value="Lookup Criteria"/>
-    <property name="fieldBindingObjectPath" value="criteriaFields"/>
+    <property name="fieldBindingObjectPath" value="lookupCriteria"/>
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="footer">
       <bean parent="Uif-LookupCriteriaFooter"/>
@@ -133,7 +133,7 @@
   <bean id="Uif-LookupResultsCollectionSection" parent="Uif-TableCollectionSection"
         p:id="uLookupResults" p:layoutManager.suppressLineWrapping="true">
     <property name="showInactiveLines" value="true"/>
-    <property name="propertyName" value="searchResults"/>
+    <property name="propertyName" value="lookupResults"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="renderLineActions" value="false"/>
     <property name="layoutManager.selectFieldPrototype.finalizeMethodToCall" value="setMultiValueLookupSelect"/>
@@ -145,7 +145,7 @@
     </property>
     <property name="footer">
       <bean parent="Uif-LookupResultsFooter"
-            p:render="@{#view.multipleValuesSelect and (searchResults != null) and !searchResults.empty}"/>
+            p:render="@{#view.multipleValuesSelect and (lookupResults != null) and !lookupResults.empty}"/>
     </property>
   </bean>
 
@@ -191,7 +191,8 @@
         <!--bean parent="Uif-AjaxActionButton" p:methodToCall="search" p:actionLabel="Search" p:refreshId="uLookupResults"/-->
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel" p:render="@{!#view.renderedInLightBox}"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
+              p:render="@{!#view.renderedInLightBox}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToPrevious" p:actionLabel="Cancel"
               p:render="@{#view.renderedInLightBox and formHistory != null and !formHistory?.historyEntries?.empty}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToHub" p:actionLabel="Home"
@@ -207,13 +208,16 @@
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPages" p:actionLabel="select all from all pages"
               p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPages" p:actionLabel="deselect all from all pages"
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPages"
+              p:actionLabel="deselect all from all pages"
               p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPage" p:actionLabel="select all from this page"
               p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage" p:actionLabel="deselect all from this page"
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage"
+              p:actionLabel="deselect all from this page"
               p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionScript="setMultiValueReturnTarget();jQuery('#kualiForm').submit();closeLightbox();"
+        <bean parent="Uif-PrimaryActionButton"
+              p:actionScript="setMultiValueReturnTarget();jQuery('#kualiForm').submit();closeLightbox();"
               p:methodToCall="returnSelected" p:actionLabel="return selected"/>
       </list>
     </property>

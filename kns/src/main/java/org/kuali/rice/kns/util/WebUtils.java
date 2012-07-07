@@ -51,6 +51,9 @@ import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
@@ -540,8 +543,9 @@ public class WebUtils {
 
 	public static int getIndexOfCoordinateExtension(String parameter) {
 		int indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION);
-		if (indexOfCoordinateExtension == -1)
-			indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
+        if (indexOfCoordinateExtension == -1) {
+            indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
+        }
 		return indexOfCoordinateExtension;
 	}
 
@@ -830,4 +834,36 @@ public class WebUtils {
     	}
     	return KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(principalId).getDefaultName().getCompositeName();
     }
+
+    /**
+     * Takes an {@link org.kuali.rice.kew.api.action.ActionRequest} with a recipient type of
+     * {@link org.kuali.rice.kew.api.action.RecipientType#ROLE} and returns the display name for the role.
+     *
+     * @param actionRequest the action request
+     * @return the display name for the role
+     * @throws IllegalArgumentException if the action request is null, or the recipient type is not ROLE
+     */
+    public static String getRoleDisplayName(ActionRequest actionRequest) {
+        String result;
+
+        if(actionRequest == null) {
+            throw new IllegalArgumentException("actionRequest must be non-null");
+        }
+        if (RecipientType.ROLE != actionRequest.getRecipientType()) {
+            throw new IllegalArgumentException("actionRequest recipient must be a Role");
+        }
+
+        Role role = KimApiServiceLocator.getRoleService().getRole(actionRequest.getRoleName());
+
+        if (role != null) {
+            result = role.getName();
+        } else if (!StringUtils.isBlank(actionRequest.getQualifiedRoleNameLabel())) {
+            result = actionRequest.getQualifiedRoleNameLabel();
+        } else {
+            result = actionRequest.getRoleName();
+        }
+
+        return result;
+    }
+
 }

@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.RichTable;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TableLayoutManager extends GridLayoutManager implements CollectionLayoutManager {
+public class TableLayoutManager extends GridLayoutManager implements CollectionLayoutManager, LineDetailSupport {
     private static final long serialVersionUID = 3622267585541524208L;
 
     private boolean useShortLabels;
@@ -85,11 +86,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private int actionColumnIndex = -1;
 
     private String actionColumnPlacement;
-    
+
     private Group rowDetailsGroup;
     private String rowDetailsLinkName = "Details";
-    private Image rowDetailsOpenImage;
-    private Image rowDetailsCloseImage;
+    private boolean rowDetailsUseImage;
 
     public TableLayoutManager() {
         useShortLabels = false;
@@ -953,11 +953,103 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
     }
 
+    /**
+     * The row details info group to use when using a TableLayoutManager with the a richTable.  This group will be
+     * displayed when the user clicks the "Details" link/image on a row.  This allows extra/long data to be
+     * hidden in table rows and then revealed during interaction with the table without the need to
+     * leave the page.  Allows for any group content.
+     *
+     * Does not currently work with javascript required content.
+     *
+     * @return rowDetailsGroup component
+     */
     public Group getRowDetailsGroup() {
         return rowDetailsGroup;
     }
 
+    /**
+     * Set the row details info group
+     *
+     * @param rowDetailsGroup
+     */
     public void setRowDetailsGroup(Group rowDetailsGroup) {
         this.rowDetailsGroup = rowDetailsGroup;
+    }
+
+    /**
+     * Name of the link for displaying row details in a TableLayoutManager CollectionGroup
+     *
+     * @return name of the link
+     */
+    public String getRowDetailsLinkName() {
+        return rowDetailsLinkName;
+    }
+
+    /**
+     * Row details link name
+     *
+     * @param rowDetailsLinkName
+     */
+    public void setRowDetailsLinkName(String rowDetailsLinkName) {
+        this.rowDetailsLinkName = rowDetailsLinkName;
+    }
+
+    /**
+     * If true, the row details link will use an image instead of a link to display row details in
+     * a TableLayoutManager CollectionGroup
+     *
+     * @return true if displaying an image instead of a link for row details
+     */
+    public boolean isRowDetailsUseImage() {
+        return rowDetailsUseImage;
+    }
+
+    /**
+     * Sets row details link use image flag
+     *
+     * @param rowDetailsUseImage
+     */
+    public void setRowDetailsUseImage(boolean rowDetailsUseImage) {
+        this.rowDetailsUseImage = rowDetailsUseImage;
+    }
+
+    @Override
+    public void setupDetails(CollectionGroup collectionGroup, View view) {
+        if (this.getRichTable() != null && this.getRichTable().isRender()) {
+            this.getRowDetailsGroup().setHidden(true);
+            FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
+            detailsFieldGroup.setDataRoleAttribute("detailsFieldGroup");
+            Action rowDetailsAction = ComponentFactory.getActionLink();
+            rowDetailsAction.addStyleClass("uif-detailsAction");
+            view.assignComponentIds(rowDetailsAction);
+
+            if (rowDetailsUseImage) {
+                Image rowDetailsImage = ComponentFactory.getImage();
+                view.assignComponentIds(rowDetailsImage);
+                rowDetailsImage.setAltText(rowDetailsLinkName);
+                rowDetailsImage.getPropertyExpressions().put("source",
+                        KRADConstants.IMAGE_URL_EXPRESSION + KRADConstants.DETAILS_IMAGE);
+                rowDetailsAction.setActionImage(rowDetailsImage);
+            } else if (StringUtils.isNotBlank(rowDetailsLinkName)) {
+                rowDetailsAction.setActionLabel(rowDetailsLinkName);
+            }
+
+            //build js for link
+            rowDetailsAction.setActionScript(
+                    "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");
+
+            List<Component> detailsItems = new ArrayList<Component>();
+
+            detailsItems.add(rowDetailsAction);
+            this.getRowDetailsGroup().setDataRoleAttribute("details");
+            detailsItems.add(getRowDetailsGroup());
+            detailsFieldGroup.setItems(detailsItems);
+            view.assignComponentIds(detailsFieldGroup);
+
+            List<Component> theItems = new ArrayList<Component>();
+            theItems.add(detailsFieldGroup);
+            theItems.addAll(collectionGroup.getItems());
+            collectionGroup.setItems(theItems);
+        }
     }
 }

@@ -281,7 +281,7 @@
     <property name="layoutManager.sequencePropertyName" value="field1"/>
     <property name="layoutManager.numberOfColumns" value="4"/>
     <property name="propertyName" value="subList"/>
-    <property name="rowDetailsGroup">
+    <property name="layoutManager.rowDetailsGroup">
           <bean parent="Uif-VerticalBoxGroup">
             <property name="items">
               <list>

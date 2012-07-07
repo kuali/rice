@@ -56,8 +56,8 @@
     <property name="propertyName" value="list1"/>
     <property name="readOnly" value="true"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
-    <property name="rowDetailsUseImage" value="true"/>
-    <property name="rowDetailsGroup">
+    <property name="layoutManager.rowDetailsUseImage" value="true"/>
+    <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">
           <list>
@@ -111,7 +111,7 @@
       </list>
     </property>-->
 
-    <property name="rowDetailsGroup">
+    <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">
           <list>

@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.layout.LineDetailSupport;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -113,9 +114,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
 
-    private Group rowDetailsGroup;
-    private String rowDetailsLinkName = "Details";
-    private boolean rowDetailsUseImage;
+
 
     public CollectionGroup() {
         renderAddLine = true;
@@ -155,46 +154,10 @@ public class CollectionGroup extends Group implements DataBinding {
     public void performInitialization(View view, Object model) {
         setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
         
-        //If this collection is using a layoutManager of type TableLayoutManager and is rendering
-        //its richTable widget, then check to see if a rowDetailsGroup is setup for this table
-        //and configure
-        if(this.getRowDetailsGroup() != null && this.getLayoutManager() instanceof TableLayoutManager
-                && ((TableLayoutManager)this.getLayoutManager()).getRichTable() != null 
-                && ((TableLayoutManager)this.getLayoutManager()).getRichTable().isRender()){
-            this.getRowDetailsGroup().setHidden(true);
-            FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
-            detailsFieldGroup.setDataRoleAttribute("detailsFieldGroup");
-            Action rowDetailsAction = ComponentFactory.getActionLink();
-            rowDetailsAction.addStyleClass("uif-detailsAction");
-            view.assignComponentIds(rowDetailsAction);
-
-            if(rowDetailsUseImage){
-                Image rowDetailsImage = ComponentFactory.getImage();
-                view.assignComponentIds(rowDetailsImage);
-                rowDetailsImage.setAltText(rowDetailsLinkName);
-                rowDetailsImage.getPropertyExpressions().put("source", KRADConstants.IMAGE_URL_EXPRESSION +
-                        KRADConstants.DETAILS_IMAGE);
-                rowDetailsAction.setActionImage(rowDetailsImage);
-            }
-            else if(StringUtils.isNotBlank(rowDetailsLinkName)){
-                rowDetailsAction.setActionLabel(rowDetailsLinkName);
-            }
-
-            //build js for link
-            rowDetailsAction.setActionScript("expandDataTableDetail(this,'"+ this.getId() +"',"+ rowDetailsUseImage + ")");
-
-            List<Component> detailsItems = new ArrayList<Component>();
-            
-            detailsItems.add(rowDetailsAction);
-            this.getRowDetailsGroup().setDataRoleAttribute("details");
-            detailsItems.add(getRowDetailsGroup());
-            detailsFieldGroup.setItems(detailsItems);
-            view.assignComponentIds(detailsFieldGroup);
-            
-            List<Component> theItems = new ArrayList<Component>();
-            theItems.add(detailsFieldGroup);
-            theItems.addAll(this.getItems());
-            this.setItems(theItems);
+        //If this collection is using a layoutManager of type LineDetailSupport, setup the details content for
+        //the collection lines
+        if(this.getLayoutManager() instanceof LineDetailSupport){
+            ((LineDetailSupport) this.getLayoutManager()).setupDetails(this, view);
         }
 
         super.performInitialization(view, model);
@@ -1141,63 +1104,4 @@ public class CollectionGroup extends Group implements DataBinding {
         this.addViaLightBoxAction = addViaLightBoxAction;
     }
 
-    /**
-     * The row details info group to use when using a TableLayoutManager with the a richTable.  This group will be
-     * displayed when the user clicks the "Details" link/image on a row.  This allows extra/long data to be
-     * hidden in table rows and then revealed during interaction with the table without the need to
-     * leave the page.  Allows for any group content.
-     *
-     * Does not currently work with javascript required content.
-     *
-     * @return rowDetailsGroup component
-     */
-    public Group getRowDetailsGroup() {
-        return rowDetailsGroup;
-    }
-
-    /**
-     * Set the row details info group
-     *
-     * @param rowDetailsGroup
-     */
-    public void setRowDetailsGroup(Group rowDetailsGroup) {
-        this.rowDetailsGroup = rowDetailsGroup;
-    }
-
-    /**
-     * Name of the link for displaying row details in a TableLayoutManager CollectionGroup
-     *
-     * @return name of the link
-     */
-    public String getRowDetailsLinkName() {
-        return rowDetailsLinkName;
-    }
-
-    /**
-     * Row details link name
-     *
-     * @param rowDetailsLinkName
-     */
-    public void setRowDetailsLinkName(String rowDetailsLinkName) {
-        this.rowDetailsLinkName = rowDetailsLinkName;
-    }
-
-    /**
-     * If true, the row details link will use an image instead of a link to display row details in
-     * a TableLayoutManager CollectionGroup
-     *
-     * @return true if displaying an image instead of a link for row details
-     */
-    public boolean isRowDetailsUseImage() {
-        return rowDetailsUseImage;
-    }
-
-    /**
-     * Sets row details link use image flag
-     *
-     * @param rowDetailsUseImage
-     */
-    public void setRowDetailsUseImage(boolean rowDetailsUseImage) {
-        this.rowDetailsUseImage = rowDetailsUseImage;
-    }
 }

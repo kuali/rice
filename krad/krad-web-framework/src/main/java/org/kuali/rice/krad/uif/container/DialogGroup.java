@@ -35,16 +35,18 @@ import java.util.List;
  * content inside the LightBox widget when the modal dialog is displayed.
  * For convenience, this group contains a standard set of components for commonly used modal dialogs
  * <ul>
- *     <li>a prompt to display in the lightbox</li>
- *     <li>an optional explanation <code>InputField</code> for holding the user's textual response</li>
- *     <li>a set of response options for the user to choose from</li>
+ * <li>a prompt to display in the lightbox</li>
+ * <li>an optional explanation <code>InputField</code> for holding the user's textual response</li>
+ * <li>a set of response options for the user to choose from</li>
  * </ul>
+ *
  * <p>
  * The DialogGroup may also serve as a base class for more complex dialogs.
  * The default settings for this DialogGroup is to display a prompt message
  * with two buttons labeled OK and Cancel.
  * The optional explanation <code>TextAreaControl</code> is hidden by default.
  * </p>
+ *
  * <p>
  * The prompt text, number of user options and their corresponding label are configurable.
  * The <code>InputField</code> for the explanation is <code>TextAreaControl</code> by default.
@@ -74,7 +76,6 @@ public class DialogGroup extends Group {
         super();
     }
 
-
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
@@ -88,6 +89,7 @@ public class DialogGroup extends Group {
 
         return components;
     }
+
     /**
      * The following actions are performed:
      *
@@ -95,20 +97,21 @@ public class DialogGroup extends Group {
      * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
      */
     @Override
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
+
         // move dialogGroup custom properties into the items property.
         // where they will be rendered by group.jsp
         List<Component> myItems = new ArrayList<Component>();
-        myItems.addAll( getItems() );
+        myItems.addAll(getItems());
         myItems.add(prompt);
         myItems.add(explanation);
         myItems.add(responseInputField);
         this.setItems(myItems);
-
     }
 
     /**
@@ -116,11 +119,11 @@ public class DialogGroup extends Group {
      *
      * <p>For this DialogGroup component, perform the following:
      * <ul>
-     *     <li>set the promptText in the message</li>
-     *     <li>sets whether to render explanation field</li>
-     *     <li>set the options for the checkbox control to the availableResponses KeyValue property of
-     *     this dialogGroup</li>
-     *     <li>orders response buttons</li>
+     * <li>set the promptText in the message</li>
+     * <li>sets whether to render explanation field</li>
+     * <li>set the options for the checkbox control to the availableResponses KeyValue property of
+     * this dialogGroup</li>
+     * <li>orders response buttons</li>
      * </ul>
      * </p>
      *
@@ -133,7 +136,7 @@ public class DialogGroup extends Group {
         super.performFinalize(view, model, parent);
 
         // if ajax, just render a placeholder
-        if (useAjaxCallForContent){
+        if (useAjaxCallForContent) {
             setProgressiveRenderViaAJAX(useAjaxCallForContent);
             setProgressiveRender("");
             setRender(false);
@@ -152,7 +155,7 @@ public class DialogGroup extends Group {
                 List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
                 Collections.reverse(buttonList);
                 multiValueControl.setOptions(buttonList);
-            }else{
+            } else {
                 multiValueControl.setOptions(availableResponses);
             }
         }
@@ -196,7 +199,6 @@ public class DialogGroup extends Group {
         this.prompt = prompt;
     }
 
-
     /**
      * Retrieves the explanation InputField used to gather user input text from the dialog
      *
@@ -224,8 +226,9 @@ public class DialogGroup extends Group {
      * determines if the explanation InputField is to be displayed in this dialog
      *
      * <p>
-     *     False by default.
+     * False by default.
      * </p>
+     *
      * @return boolean - true if this user input is to be rendered, false if not.
      */
     public boolean isDisplayExplanation() {
@@ -245,7 +248,7 @@ public class DialogGroup extends Group {
      * Gets the choices provided for user response.
      *
      * <p>
-     *     A List of KeyValue pairs for each of the choices provided on this dialog.
+     * A List of KeyValue pairs for each of the choices provided on this dialog.
      * </p>
      *
      * @return the List of response actions to provide the user.
@@ -267,9 +270,9 @@ public class DialogGroup extends Group {
      * Retrieves the InputField containing the choices displayed in this dialog
      *
      * <p>
-     *     By default, this InputField is configured to be a HorizontalCheckboxControl.
-     *     Styling is then used to make the checkboxes appear to be buttons.
-     *     The values of the availableResponses List are used as labels for the "buttons".
+     * By default, this InputField is configured to be a HorizontalCheckboxControl.
+     * Styling is then used to make the checkboxes appear to be buttons.
+     * The values of the availableResponses List are used as labels for the "buttons".
      * </p>
      *
      * @return InputField component within this dialog
@@ -291,12 +294,12 @@ public class DialogGroup extends Group {
      * Determines the positioning order of the choices displayed on this dialog
      *
      * <p>
-     *     Some page designers like the positive choice on the left and the negative choice on the right.
-     *     Others, prefer just the opposite. This allows the order to easily be switched.
+     * Some page designers like the positive choice on the left and the negative choice on the right.
+     * Others, prefer just the opposite. This allows the order to easily be switched.
      * </p>
      *
      * @return - true if choices left to right
-     *           false if choices right to left
+     *         false if choices right to left
      */
     public boolean isReverseButtonOrder() {
         return reverseButtonOrder;
@@ -306,7 +309,7 @@ public class DialogGroup extends Group {
      * Sets the display order of the choices displayed on this dialog
      *
      * <p>
-     *     By default, the choices are displayed left to right
+     * By default, the choices are displayed left to right
      * </p>
      *
      * @param reverseButtonOrder - true if buttons displayed left to right, false if right to left
@@ -326,6 +329,7 @@ public class DialogGroup extends Group {
      * </ul>
      * The default approach is to use a hidden form.
      * </p>
+     *
      * @return
      */
     public boolean isUseAjaxCallForContent() {

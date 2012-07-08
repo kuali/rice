@@ -1015,7 +1015,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     @Override
     public void setupDetails(CollectionGroup collectionGroup, View view) {
-        if (this.getRichTable() != null && this.getRichTable().isRender()) {
+        if (getRowDetailsGroup() != null && this.getRichTable() != null && this.getRichTable().isRender()) {
             this.getRowDetailsGroup().setHidden(true);
             FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
             detailsFieldGroup.setDataRoleAttribute("detailsFieldGroup");

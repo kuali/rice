@@ -50,40 +50,38 @@
 
     <#local imagePlacement="${element.actionImagePlacement}"/>
 
-    <a id="${element.id}" ${href!} ${name!} onclick="return false;" ${attrBuild(element)}
-       ${tabindex} ${element.simpleDataAttributes!}>
+<a id="${element.id}" ${href!} ${name!} onclick="return false;" ${attrBuild(element)}
+${tabindex} ${element.simpleDataAttributes!}>
 
-        <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
-            <#if imagePlacement == 'RIGHT'>
-                <#local imageStyleClass="rightActionImage"/>
-            <#elseif imagePlacement == 'LEFT'>
-                <#local imageStyleClass="leftActionImage"/>
-            </#if>
-
-            <#local imageTag>
-                <img ${imageRole!} ${height!} ${width!}
-                        style="${element.actionImage.style!}"
-                        class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
-                        src="${element.actionImage.source!}"
-                        alt="${element.actionImage.altText!}"
-                        title="${element.actionImage.title!}"/>
-            </#local>
-
-            <#if imagePlacement == 'RIGHT'>
-                ${element.actionLabel!}${imageTag}
-            <#elseif imagePlacement == 'LEFT'>
-                ${imageTag}${element.actionLabel!}
-            <#elseif imagePlacement == 'IMAGE_ONLY'>
-                ${imageTag}
-            <#else>
-                ${element.actionLabel!}
-            </#if>
-        <#else>
-            ${element.actionLabel!}
+    <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
+        <#if imagePlacement == 'RIGHT'>
+            <#local imageStyleClass="rightActionImage"/>
+        <#elseif imagePlacement == 'LEFT'>
+            <#local imageStyleClass="leftActionImage"/>
         </#if>
 
-    </a>
+        <#local imageTag>
+            <img ${imageRole!} ${height!} ${width!}
+                    style="${element.actionImage.style!}"
+                    class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
+                    src="${element.actionImage.source!}"
+                    alt="${element.actionImage.altText!}"
+                    title="${element.actionImage.title!}"/>
+        </#local>
 
-    <@krad.template component=element.lightBoxLookup componentId="${element.id}"/>
+        <#if imagePlacement == 'RIGHT'>
+        ${element.actionLabel!}${imageTag}
+        <#elseif imagePlacement == 'LEFT'>
+        ${imageTag}${element.actionLabel!}
+        <#elseif imagePlacement == 'IMAGE_ONLY'>
+        ${imageTag}
+        <#else>
+        ${element.actionLabel!}
+        </#if>
+    <#else>
+    ${element.actionLabel!}
+    </#if>
+
+</a>
 
 </#macro>

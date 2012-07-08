@@ -510,7 +510,7 @@
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
               p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
-              p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');" />
+              p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"/>
       </list>
     </property>
     <property name="validatedLineActions">
@@ -537,14 +537,14 @@
     </property>
     <property name="collectionLookup">
       <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true">
+        <property name="lightBoxLookup">
+          <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
+        </property>
         <property name="quickfinderAction">
           <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Lookup/Add Multiple Lines"
                 p:actionImagePlacement="RIGHT">
             <property name="actionImage">
               <bean parent="Uif-QuickLookupImage"/>
-            </property>
-            <property name="lightBoxLookup">
-              <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
             </property>
           </bean>
         </property>
@@ -1003,7 +1003,7 @@
     </property>
     <property name="responseInputField">
       <bean parent="Uif-DialogResponse">
-       <!-- <property name="cssClasses">
+        <!-- <property name="cssClasses">
           <list merge="true">
             <value>uif-action uif-primaryActionButton uif-boxLayoutHorizontalItem</value>
           </list>
@@ -1019,7 +1019,7 @@
 
   <bean id="Uif-DialogExplanation" parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
     <property name="control">
-      <bean parent="Uif-TextAreaControl" />
+      <bean parent="Uif-TextAreaControl"/>
     </property>
     <property name="cssClasses">
       <list merge="true">
@@ -1040,18 +1040,18 @@
     </property>
   </bean>
 
-  <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup">
     <property name="headerText" value="Warning: Sensitive Data"/>
     <property name="items">
       <list>
-        <bean id="imageWarning" parent="Uif-ImageField" p:fieldLabel.render="false"  p:width="50px" p:height="50px"
+        <bean id="imageWarning" parent="Uif-ImageField" p:fieldLabel.render="false" p:width="50px" p:height="50px"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}warning.png"/>
       </list>
     </property>
     <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
   </bean>
 
-  <bean id="Uif-OK-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-OK-Cancel-DialogGroup" parent="Uif-DialogGroup">
     <property name="headerText" value="Please Confirm to Continue"/>
     <property name="availableResponses">
       <list>
@@ -1061,7 +1061,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-Yes-No-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-Yes-No-DialogGroup" parent="Uif-DialogGroup">
     <property name="headerText" value="Please Select"/>
     <property name="availableResponses">
       <list>
@@ -1071,7 +1071,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-True-False-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-True-False-DialogGroup" parent="Uif-DialogGroup">
     <property name="headerText" value="Please select from the values below"/>
     <property name="displayExplanation" value="true"/>
     <property name="availableResponses">
@@ -1082,7 +1082,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-Checkbox-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-Checkbox-DialogGroup" parent="Uif-DialogGroup">
     <property name="headerText" value="Please Select from the values below"/>
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
@@ -1108,7 +1108,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-RadioButton-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="Uif-RadioButton-DialogGroup" parent="Uif-DialogGroup">
     <property name="displayExplanation" value="true"/>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation" p:render="true">

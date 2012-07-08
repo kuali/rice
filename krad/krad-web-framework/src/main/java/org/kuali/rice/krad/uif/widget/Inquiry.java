@@ -77,6 +77,8 @@ public class Inquiry extends WidgetBase {
     private boolean adjustInquiryParameters;
     private BindingInfo fieldBindingInfo;
 
+    private LightBox lightBoxDirectInquiry;
+
     public Inquiry() {
         super();
 
@@ -206,7 +208,6 @@ public class Inquiry extends WidgetBase {
 
         // configure inquiry when read only
         if (isReadOnly()) {
-
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
                 String parameterName = inquiryParameter.getKey();
 
@@ -232,8 +233,8 @@ public class Inquiry extends WidgetBase {
                     try {
                         parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
                     } catch (GeneralSecurityException e) {
-                        LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-                        throw new RuntimeException(e);
+                        throw new RuntimeException("Exception while trying to encrypted value for inquiry framework.",
+                                e);
                     }
                 }
 
@@ -266,31 +267,32 @@ public class Inquiry extends WidgetBase {
 
         // configure direct inquiry when editable
         if (!isReadOnly()) {
-
             // Direct inquiry
             String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
+
             StringBuilder paramMapString = new StringBuilder();
 
-            // Check if lightbox is set. Get lightbox options.
-            String lightBoxOptions = "";
-            boolean lightBoxShow = directInquiryAction.getLightBoxDirectInquiry() != null;
-            if (lightBoxShow) {
-                lightBoxOptions = directInquiryAction.getLightBoxDirectInquiry().getTemplateOptionsJSString();
-            }
-
-            // Build parameter string using the actual names of the fields as on the
-            // html page
+            // Build parameter string using the actual names of the fields as on the html page
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
                 String inquiryParameterFrom = inquiryParameter.getKey();
+
                 if (adjustInquiryParameters && (fieldBindingInfo != null)) {
                     inquiryParameterFrom = fieldBindingInfo.getPropertyAdjustedBindingPath(inquiryParameterFrom);
                 }
+
                 paramMapString.append(inquiryParameterFrom);
                 paramMapString.append(":");
                 paramMapString.append(inquiryParameter.getValue());
                 paramMapString.append(",");
             }
             paramMapString.deleteCharAt(paramMapString.length() - 1);
+
+            // Check if lightbox is set. Get lightbox options.
+            String lightBoxOptions = "";
+            boolean lightBoxShow = getLightBoxDirectInquiry() != null;
+            if (lightBoxShow) {
+                lightBoxOptions = getLightBoxDirectInquiry().getTemplateOptionsJSString();
+            }
 
             // Create onlick script to open the inquiry window on the click event
             // of the direct inquiry
@@ -344,6 +346,7 @@ public class Inquiry extends WidgetBase {
 
         components.add(getInquiryLink());
         components.add(getDirectInquiryAction());
+        components.add(lightBoxDirectInquiry);
 
         return components;
     }
@@ -499,5 +502,27 @@ public class Inquiry extends WidgetBase {
      */
     public void setEnableDirectInquiry(boolean enableDirectInquiry) {
         this.enableDirectInquiry = enableDirectInquiry;
+    }
+
+    /**
+     * Setter for the light box direct inquiry widget
+     *
+     * @param lightBoxDirectInquiry <code>LightBox</code> widget to set
+     */
+    public void setLightBoxDirectInquiry(LightBox lightBoxDirectInquiry) {
+        this.lightBoxDirectInquiry = lightBoxDirectInquiry;
+    }
+
+    /**
+     * LightBox widget for the field
+     * <p>
+     * The light box widget will change the direct inquiry behaviour to open up
+     * in a light box.
+     * </p>
+     *
+     * @return the <code>LightBox</code> field LightBox
+     */
+    public LightBox getLightBoxDirectInquiry() {
+        return lightBoxDirectInquiry;
     }
 }

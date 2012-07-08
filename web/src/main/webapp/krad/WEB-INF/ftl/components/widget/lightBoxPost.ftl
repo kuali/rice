@@ -17,11 +17,11 @@
 -->
 <#macro uif_lightBoxPost widget componentId>
 
-    <#--
-    Invokes JS method to implement a script linking the lightbox (fancybox) for lookups
-    -->
+<#--
+Invokes JS method to implement a script linking the lightbox (fancybox) for lookups
+-->
     <@krad.script value="
-       createLightBoxPost('${componentId}', ${widget.templateOptionsJSString}, ${widget.actionParameterMapString} , ${widget.lookupReturnByScript?string});
+       createLightBoxPost('${componentId}', ${widget.templateOptionsJSString}, ${widget.lookupReturnByScript?string});
     "/>
 
 </#macro>

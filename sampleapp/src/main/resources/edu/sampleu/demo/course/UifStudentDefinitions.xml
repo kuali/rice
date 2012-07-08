@@ -43,7 +43,8 @@
   <bean id="GenericFieldGroup" parent="Uif-VerticalFieldGroup" p:fieldLabel.cssClasses="labelTop" p:labelPlacement="TOP"
         p:fieldLabel.renderColon="false"/>
 
-  <bean id="GenericHorizontalFieldGroup" parent="Uif-HorizontalFieldGroup" p:fieldLabel.cssClasses="labelTop" p:labelPlacement="TOP"
+  <bean id="GenericHorizontalFieldGroup" parent="Uif-HorizontalFieldGroup" p:fieldLabel.cssClasses="labelTop"
+        p:labelPlacement="TOP"
         p:fieldLabel.renderColon="false"/>
 
   <bean id="GenericDateField" parent="GenericTextField">
@@ -75,7 +76,8 @@
     </property>
   </bean>
 
-  <bean id="GenericGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false" p:header.cssClasses="group_header"/>
+  <bean id="GenericGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false"
+        p:header.cssClasses="group_header"/>
 
   <bean id="genericTextGroup" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false"/>
@@ -159,12 +161,12 @@
   </bean>
 
   <bean id="AdvancedSearchQuickFinder" parent="Uif-QuickFinder">
+    <property name="lightBoxLookup">
+      <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="true"/>
+    </property>
     <property name="quickfinderAction">
       <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Advanced Search"
             p:cssClasses="kr-quickfinder action">
-        <property name="lightBoxLookup">
-          <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="true"/>
-        </property>
       </bean>
     </property>
   </bean>

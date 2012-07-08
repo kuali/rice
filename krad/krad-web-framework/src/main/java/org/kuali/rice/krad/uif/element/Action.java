@@ -21,11 +21,9 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.widget.LightBox;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,9 +54,6 @@ public class Action extends ContentElementBase {
 
     private String actionEvent;
     private Map<String, String> actionParameters;
-
-    private LightBox lightBoxLookup;
-    private LightBox lightBoxDirectInquiry;
 
     private boolean performDirtyValidation;
 
@@ -95,7 +90,7 @@ public class Action extends ContentElementBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public  void performFinalize(View view, Object model, Component parent) {
+    public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
         Map<String, String> submitData = new HashMap<String, String>();
@@ -125,128 +120,93 @@ public class Action extends ContentElementBase {
             actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
         }
 
-        // If there is no lightBox then create the on click script
-        if (lightBoxLookup == null) {
-            String prefixScript = this.getOnClickScript();
-            if (prefixScript == null) {
-                prefixScript = "";
-            }
+        String prefixScript = this.getOnClickScript();
+        if (prefixScript == null) {
+            prefixScript = "";
+        }
 
-            boolean validateFormDirty = false;
-            if (view instanceof FormView && isPerformDirtyValidation()) {
-                validateFormDirty = ((FormView) view).isApplyDirtyCheck();
-            }
+        boolean validateFormDirty = false;
+        if (view instanceof FormView && isPerformDirtyValidation()) {
+            validateFormDirty = ((FormView) view).isApplyDirtyCheck();
+        }
 
-            boolean includeDirtyCheckScript = false;
-            String writeParamsScript = "";
-            if (!actionParameters.isEmpty()) {
-                for (String key : actionParameters.keySet()) {
-                    String parameterPath = key;
-                    if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-                        parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
-                    }
-                    submitData.put(parameterPath,actionParameters.get(key));
-                     // Include dirtycheck js function call if the method to call
-                    // is refresh, navigate, cancel or close
-                    if (validateFormDirty && !includeDirtyCheckScript && key.equals(
-                            UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-                        String keyValue = (String) actionParameters.get(key);
-                        if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || StringUtils.equals(
-                                keyValue, UifConstants.MethodToCallNames.NAVIGATE) || StringUtils.equals(keyValue,
-                                UifConstants.MethodToCallNames.CANCEL) || StringUtils.equals(keyValue,
-                                UifConstants.MethodToCallNames.CLOSE)) {
-                            includeDirtyCheckScript = true;
-                        }
-                    }
-                }
-            }
-
-
-            // Map properties to data attribute
-            addDataAttribute("ajaxsubmit", Boolean.toString(ajaxSubmit));
-
-            if(StringUtils.isNotBlank(successCallback)){
-                addDataAttribute("successcallback", this.successCallback);
-            }
-            if(StringUtils.isNotBlank(errorCallback)){
-                addDataAttribute("errorcallback", this.errorCallback);
-            }
-            if(StringUtils.isNotBlank(preSubmitCall)){
-                addDataAttribute("presubmitcall", this.preSubmitCall);
-            }
-
-            addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
-
-            // TODO possibly fix some other way - this is a workaround, prevents
-            // showing history and showing home again on actions which submit
-            // the form
-            submitData.put(UifConstants.UrlParams.SHOW_HISTORY,"false");
-            submitData.put(UifConstants.UrlParams.SHOW_HOME,"false");
-
-            if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
-                // if this is blank focus this actionField by default
-                focusOnIdAfterSubmit = this.getId();
-                submitData.put("focusId",focusOnIdAfterSubmit);
-            } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
-                // Use the id passed in
-                submitData.put("focusId",focusOnIdAfterSubmit);
-            }
-
-            if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
-                jumpToIdAfterSubmit = this.getId();
-                submitData.put("jumpToId",jumpToIdAfterSubmit);
-            } else if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
-                 submitData.put("jumpToId",jumpToIdAfterSubmit);
-            } else {
-                submitData.put("jumpToName",jumpToNameAfterSubmit);
-            }
-
-            addDataAttribute("submitData",mapToString(submitData));
-
-            String postScript = "";
-            if (StringUtils.isNotBlank(actionScript)) {
-                postScript = actionScript;
-            }
-            String submitScript = "";
-
-            submitScript = "actionInvokeHandler(this);";
-
-            if (StringUtils.isBlank(postScript)) {
-                    postScript = submitScript;
-            }
-
-            if (includeDirtyCheckScript) {
-                this.setOnClickScript("e.preventDefault(); if (checkDirty(e) == false) { "
-                        + prefixScript
-                        + writeParamsScript
-                        + postScript
-                        + " ; } ");
-            } else {
-                this.setOnClickScript("e.preventDefault();" + prefixScript + writeParamsScript + postScript);
-            }
-
-        } else {
-            // When there is a light box - don't add the on click script as it
-            // will be prevented from executing
-            // Create a script map object which will be written to the form on
-            // click event
-            StringBuffer sb = new StringBuffer();
-            sb.append("{");
+        boolean includeDirtyCheckScript = false;
+        if (!actionParameters.isEmpty()) {
             for (String key : actionParameters.keySet()) {
-                String optionValue = actionParameters.get(key);
-                if (sb.length() > 1) {
-                    sb.append(",");
-                }
+                String parameterPath = key;
                 if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-                    sb.append("\"" + UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]" + "\"");
-                } else {
-                    sb.append("\"" + key + "\"");
+                    parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
                 }
-                sb.append(":");
-                sb.append("\"" + optionValue + "\"");
+                submitData.put(parameterPath, actionParameters.get(key));
+
+                // Include dirtycheck js function call if the method to call
+                // is refresh, navigate, cancel or close
+                if (validateFormDirty && !includeDirtyCheckScript && key.equals(
+                        UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+                    String keyValue = (String) actionParameters.get(key);
+                    if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || StringUtils.equals(
+                            keyValue, UifConstants.MethodToCallNames.NAVIGATE) || StringUtils.equals(keyValue,
+                            UifConstants.MethodToCallNames.CANCEL) || StringUtils.equals(keyValue,
+                            UifConstants.MethodToCallNames.CLOSE)) {
+                        includeDirtyCheckScript = true;
+                    }
+                }
             }
-            sb.append("}");
-            lightBoxLookup.setActionParameterMapString(sb.toString());
+        }
+
+        // Map properties to data attribute
+        addDataAttribute("ajaxsubmit", Boolean.toString(ajaxSubmit));
+
+        if (StringUtils.isNotBlank(successCallback)) {
+            addDataAttribute("successcallback", this.successCallback);
+        }
+        if (StringUtils.isNotBlank(errorCallback)) {
+            addDataAttribute("errorcallback", this.errorCallback);
+        }
+        if (StringUtils.isNotBlank(preSubmitCall)) {
+            addDataAttribute("presubmitcall", this.preSubmitCall);
+        }
+
+        addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
+
+        // TODO possibly fix some other way - this is a workaround, prevents
+        // showing history and showing home again on actions which submit
+        // the form
+        submitData.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
+        submitData.put(UifConstants.UrlParams.SHOW_HOME, "false");
+
+        if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
+            // if this is blank focus this actionField by default
+            focusOnIdAfterSubmit = this.getId();
+            submitData.put("focusId", focusOnIdAfterSubmit);
+        } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
+            // Use the id passed in
+            submitData.put("focusId", focusOnIdAfterSubmit);
+        }
+
+        if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
+            jumpToIdAfterSubmit = this.getId();
+            submitData.put("jumpToId", jumpToIdAfterSubmit);
+        } else if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
+            submitData.put("jumpToId", jumpToIdAfterSubmit);
+        } else {
+            submitData.put("jumpToName", jumpToNameAfterSubmit);
+        }
+
+        addDataAttribute("submitData", mapToString(submitData));
+
+        String postScript = "";
+        if (StringUtils.isNotBlank(actionScript)) {
+            postScript = actionScript;
+        } else {
+            postScript = "actionInvokeHandler(this);";
+        }
+
+        if (includeDirtyCheckScript) {
+            this.setOnClickScript(
+                    "e.preventDefault(); if (checkDirty(e) == false) { " + prefixScript + postScript + " ; } ");
+        } else {
+            this.setOnClickScript("e.preventDefault();" + prefixScript + postScript);
         }
     }
 
@@ -258,27 +218,26 @@ public class Action extends ContentElementBase {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(actionImage);
-        components.add(lightBoxLookup);
-        components.add(lightBoxDirectInquiry);
 
         return components;
     }
 
-    private String mapToString(Map<String, String> submitData){
+    private String mapToString(Map<String, String> submitData) {
         StringBuffer sb = new StringBuffer("{");
-            for (String key : submitData.keySet()) {
-                Object optionValue = submitData.get(key);
-                if (sb.length() > 1) {
-                    sb.append(",");
-                }
-                sb.append("\"" + key + "\"");
-
-                sb.append(":");
-                sb.append("\"" + optionValue + "\"");
+        for (String key : submitData.keySet()) {
+            Object optionValue = submitData.get(key);
+            if (sb.length() > 1) {
+                sb.append(",");
             }
-            sb.append("}");
+            sb.append("\"" + key + "\"");
+
+            sb.append(":");
+            sb.append("\"" + optionValue + "\"");
+        }
+        sb.append("}");
         return sb.toString();
     }
+
     /**
      * Name of the method that should be called when the action is selected
      * <p>
@@ -481,28 +440,6 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Setter for the light box lookup widget
-     *
-     * @param lightBoxLookup <code>LightBoxLookup</code> widget to set
-     */
-    public void setLightBoxLookup(LightBox lightBoxLookup) {
-        this.lightBoxLookup = lightBoxLookup;
-    }
-
-    /**
-     * LightBoxLookup widget for the field
-     * <p>
-     * The light box lookup widget will change the lookup behaviour to open the
-     * lookup in a light box.
-     * </p>
-     *
-     * @return the <code>DirectInquiry</code> field DirectInquiry
-     */
-    public LightBox getLightBoxLookup() {
-        return lightBoxLookup;
-    }
-
-    /**
      * @return the jumpToIdAfterSubmit
      */
     public String getJumpToIdAfterSubmit() {
@@ -605,28 +542,6 @@ public class Action extends ContentElementBase {
             actionScript = actionScript + ";";
         }
         this.actionScript = actionScript;
-    }
-
-    /**
-     * Setter for the light box direct inquiry widget
-     *
-     * @param lightBoxDirectInquiry <code>LightBox</code> widget to set
-     */
-    public void setLightBoxDirectInquiry(LightBox lightBoxDirectInquiry) {
-        this.lightBoxDirectInquiry = lightBoxDirectInquiry;
-    }
-
-    /**
-     * LightBox widget for the field
-     * <p>
-     * The light box widget will change the direct inquiry behaviour to open up
-     * in a light box.
-     * </p>
-     *
-     * @return the <code>LightBox</code> field LightBox
-     */
-    public LightBox getLightBoxDirectInquiry() {
-        return lightBoxDirectInquiry;
     }
 
     /**

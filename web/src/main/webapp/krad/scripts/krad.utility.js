@@ -415,7 +415,7 @@ function occursBefore(name1, name2) {
 }
 
 /**
- * Validate dirty fields on the form.
+ * Validate dirty fields on the form
  *
  * <p>Whenever the user clicks on the action field which has action methods set to <code>REFRESH,NAVIGATE,CANCEL,CLOSE</code>,
  * form dirtyness is checked. It checks for any input elements which has "dirty" class. If present, it pops a message to
@@ -845,7 +845,7 @@ function showLightboxComponent(componentId, overrideOptions) {
     // suppress scrollbar when not needed
     // undo the div.clearfix hack (KULRICE-7467)
     component.attr('class', component.attr('class').replace('clearfix', ''));
-    component.find('div').each(function() {
+    component.find('div').each(function () {
         jQuery(this).attr('class', jQuery(this).attr('class').replace('clearfix', ''));
     });
 
@@ -961,13 +961,11 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
  *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
  */
 function setupLightboxForm() {
-
     jQuery(".fancybox-inner").children().wrap("<form id='kualiLightboxForm'>");
 
     setupValidator(jQuery('#kualiLightboxForm'));
 
     jQuery('#kualiLightboxForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
-
 }
 
 /**
@@ -1043,7 +1041,7 @@ function removeIdPrefix(component, prefix) {
  *
  * @param dialogId - component id of the content for the lightbox
  */
-function openLightboxOnLoad(dialogId){
+function openLightboxOnLoad(dialogId) {
     showLightboxComponent(dialogId);
     jQuery('.uif-dialogButtons').find('.uif-checkboxesControl').button();
 }
@@ -1054,10 +1052,17 @@ function openLightboxOnLoad(dialogId){
  * <p>
  * setup common return method for lightboxes, close the fancybox, and submit the form
  * </p>
- *
  */
-function lightboxButtonScript(){
-      writeHiddenToForm('methodToCall','returnFromLightbox');
-      jQuery.fancybox.close();
-      jQuery('#kualiForm').submit();
+function lightboxButtonScript() {
+    writeHiddenToForm('methodToCall', 'returnFromLightbox');
+    jQuery.fancybox.close();
+    jQuery('#kualiForm').submit();
+}
+
+/**
+ * Just a dummy function that can be set as the action script for an Action component to prevent it
+ * from doing anything
+ */
+function voidAction() {
+
 }

@@ -182,20 +182,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setLightBoxLookup(org.kuali.rice.krad.uif.widget.LightBox)
-     */
-    public void setLightBoxLookup(LightBox lightBoxLookup) {
-        action.setLightBoxLookup(lightBoxLookup);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.element.Action#getLightBoxLookup()
-     */
-    public LightBox getLightBoxLookup() {
-        return action.getLightBoxLookup();
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.element.Action#getJumpToIdAfterSubmit()
      */
     public String getJumpToIdAfterSubmit() {
@@ -266,20 +252,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setLightBoxDirectInquiry(org.kuali.rice.krad.uif.widget.LightBox)
-     */
-    public void setLightBoxDirectInquiry(LightBox lightBoxDirectInquiry) {
-        action.setLightBoxDirectInquiry(lightBoxDirectInquiry);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.element.Action#getLightBoxDirectInquiry()
-     */
-    public LightBox getLightBoxDirectInquiry() {
-        return action.getLightBoxDirectInquiry();
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.element.Action#isPerformDirtyValidation()
      */
     public boolean isPerformDirtyValidation() {
@@ -339,16 +311,17 @@ public class ActionField extends FieldBase {
      * @see org.kuali.rice.krad.uif.element.Action#getPreSubmitCall()
      */
     public String getPreSubmitCall() {
-           return action.getPreSubmitCall();
-       }
+        return action.getPreSubmitCall();
+    }
+
     /**
      * @see org.kuali.rice.krad.uif.element.Action#setPreSubmitCall(java.lang.String)
      */
-     public void setPreSubmitCall(String preSubmitCall) {
-           action.setPreSubmitCall(preSubmitCall);
-     }
+    public void setPreSubmitCall(String preSubmitCall) {
+        action.setPreSubmitCall(preSubmitCall);
+    }
 
-     /**
+    /**
      * @see org.kuali.rice.krad.uif.element.Action#isAjaxSubmit()
      */
     public boolean isAjaxSubmit() {
@@ -363,35 +336,32 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getSuccessCallback()
-     *
      * @return
+     * @see org.kuali.rice.krad.uif.element.Action#getSuccessCallback()
      */
     public String getSuccessCallback() {
         return action.getSuccessCallback();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setSuccessCallback(java.lang.String)
-     *
      * @param successCallback
+     * @see org.kuali.rice.krad.uif.element.Action#setSuccessCallback(java.lang.String)
      */
     public void setSuccessCallback(String successCallback) {
         action.setSuccessCallback(successCallback);
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getErrorCallback()
-     *
      * @return
+     * @see org.kuali.rice.krad.uif.element.Action#getErrorCallback()
      */
     public String getErrorCallback() {
         return action.getErrorCallback();
     }
+
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setErrorCallback(java.lang.String)
-     *
      * @param errorCallback
+     * @see org.kuali.rice.krad.uif.element.Action#setErrorCallback(java.lang.String)
      */
 
     public void setErrorCallback(String errorCallback) {

@@ -17,10 +17,12 @@
 -->
 <#macro uif_quickFinder widget componentId>
 
-    <#--
-    Renders the lookup icon for a field
-    -->
+<#--
+Renders the lookup icon for a field
+-->
     <@krad.template component=widget.quickfinderAction/>
+
+    <@krad.template component=widget.lightBoxLookup componentId="${widget.quickfinderAction.id}"/>
 
 </#macro>
 

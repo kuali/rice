@@ -128,13 +128,13 @@
     <!-- TODO: change to use config krad.url -->
     <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/kr-krad/lookup"/>
     <property name="multipleValuesSelect" value="false"/>
+    <property name="lightBoxLookup">
+      <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
+    </property>
     <property name="quickfinderAction">
       <bean parent="Uif-ActionImage" p:methodToCall="performLookup">
         <property name="actionImage">
           <bean parent="Uif-QuickLookupImage"/>
-        </property>
-        <property name="lightBoxLookup">
-          <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
         </property>
       </bean>
     </property>
@@ -142,7 +142,7 @@
   </bean>
 
   <bean id="Uif-QuickFinderByScript" parent="Uif-QuickFinder-parentBean"
-        p:quickfinderAction.lightBoxLookup.lookupReturnByScript="true"/>
+        p:lightBoxLookup.lookupReturnByScript="true"/>
 
   <bean id="Uif-QuickLookupImage" parent="Uif-Image"
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
@@ -168,13 +168,13 @@
         </property>
       </bean>
     </property>
+    <property name="lightBoxDirectInquiry">
+      <bean parent="Uif-LightBox"/>
+    </property>
     <property name="directInquiryAction">
       <bean parent="Uif-ActionImage">
         <property name="actionImage">
           <bean parent="Uif-DirectInquiryImage"/>
-        </property>
-        <property name="lightBoxDirectInquiry">
-          <bean parent="Uif-LightBox"/>
         </property>
       </bean>
     </property>
@@ -300,7 +300,7 @@
   <bean id="Uif-TooltipHelp" parent="Uif-TooltipHelp-parentBean"/>
   <bean id="Uif-TooltipHelp-parentBean" abstract="true" parent="Uif-Tooltip">
     <property name="templateOptions">
-      <map merge = "true">
+      <map merge="true">
         <entry key="themeName" value="black"/>
         <entry key="selectable" value="true"/>
       </map>

@@ -21,7 +21,6 @@
  * @param component
  */
 function actionInvokeHandler(component) {
-
     var ajaxSubmit = jQuery(component).data("ajaxsubmit");
     var submitData = jQuery(component).data("submitData");
     var successCallback = jQuery(component).data("successcallback");
@@ -48,7 +47,6 @@ function actionInvokeHandler(component) {
         } else {
             submitForm(methodToCall, submitData, preSubmitCall);
         }
-
     }
 }
 /**
@@ -137,7 +135,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
 
         // change double quotes to single because escaping causes problems on URL
         jsonViewState = jsonViewState.replace(/"/g, "'");
-        jQuery.extend(data, {clientViewState: jsonViewState});
+        jQuery.extend(data, {clientViewState:jsonViewState});
     }
 
     // check if called from a lightbox.  if it is set the componentId
@@ -147,8 +145,8 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
     }
 
     var submitOptions = {
-        data: data,
-        success: function(response) {
+        data:data,
+        success:function (response) {
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = response;
             var hasError = handleIncidentReport(response);
@@ -174,33 +172,33 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
             }
 
         },
-        error: function(jqXHR, textStatus) {
+        error:function (jqXHR, textStatus) {
             alert("Request failed: " + textStatus);
         }
     };
 
     if (elementToBlock != null && elementToBlock.length) {
         var elementBlockingOptions = {
-            beforeSend: function() {
+            beforeSend:function () {
                 if (elementToBlock.hasClass("unrendered")) {
                     elementToBlock.append('<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Loading...');
                     elementToBlock.show();
                 }
                 else {
                     elementToBlock.block({
-                        message: '<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Updating...',
-                        fadeIn:  400,
-                        fadeOut:  800
+                        message:'<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Updating...',
+                        fadeIn:400,
+                        fadeOut:800
                     });
                 }
             },
-            complete: function() {
+            complete:function () {
                 // note that if you want to unblock simultaneous with showing the new retrieval
                 // you must do so in the successCallback
                 elementToBlock.unblock();
 
             },
-            error: function() {
+            error:function () {
                 if (elementToBlock.hasClass("unrendered")) {
                     elementToBlock.hide();
                 }
@@ -400,7 +398,7 @@ function successCallbackF(content) {
  */
 function handleActionLink(component, methodToCall, navigateToPageId) {
 
-    var submitData =  {};
+    var submitData = {};
     submitData = jQuery(component).data('submitData');
     submitData['navigateToPageId'] = navigateToPageId;
 
@@ -422,7 +420,7 @@ function handleActionLink(component, methodToCall, navigateToPageId) {
 function retrieveComponent(id, baseId, methodToCall) {
     var elementToBlock = jQuery("#" + id);
 
-    var updateRefreshableComponentCallback = function(htmlContent) {
+    var updateRefreshableComponentCallback = function (htmlContent) {
         var component = jQuery("#" + id + "_update", htmlContent);
 
         var displayWithId = id;
@@ -435,19 +433,19 @@ function retrieveComponent(id, baseId, methodToCall) {
             component.remove("#" + displayWithId + "_label_span");
         }
 
-        elementToBlock.unblock({onUnblock: function() {
+        elementToBlock.unblock({onUnblock:function () {
             var origColor = jQuery(component).find("#" + id).css("background-color");
             jQuery(component).find("#" + id).css("background-color", "");
             jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
 
-                // remove old stuff
-                if(jQuery("#" + id + "_errors").length){
-                    jQuery("#" + id + "_errors").remove();
-                }
+            // remove old stuff
+            if (jQuery("#" + id + "_errors").length) {
+                jQuery("#" + id + "_errors").remove();
+            }
 
-                jQuery("input[data-for='"+ id +"']").each(function () {
-                    jQuery(this).remove();
-                });
+            jQuery("input[data-for='" + id + "']").each(function () {
+                jQuery(this).remove();
+            });
 
             // replace component
             if (jQuery("#" + id).length) {
@@ -465,9 +463,9 @@ function retrieveComponent(id, baseId, methodToCall) {
                 origColor = "transparent";
             }
 
-                jQuery("#" + id).animate({backgroundColor: origColor}, 5000);
-			    }
-		});
+            jQuery("#" + id).animate({backgroundColor:origColor}, 5000);
+        }
+        });
 
         var displayWithLabel = jQuery(".displayWith-" + displayWithId);
         displayWithLabel.show();
@@ -484,7 +482,7 @@ function retrieveComponent(id, baseId, methodToCall) {
     jQuery("input[name='skipViewInit']").remove();
 
     ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
-            {updateComponentId: id, skipViewInit: "true"}, elementToBlock, null, "update-component");
+            {updateComponentId:id, skipViewInit:"true"}, elementToBlock, null, "update-component");
 }
 
 /**
@@ -499,10 +497,10 @@ function retrieveComponent(id, baseId, methodToCall) {
  */
 function toggleInactiveRecordDisplay(component, collectionGroupId, showInactive) {
     var elementToBlock = jQuery("#" + collectionGroupId);
-    var updateCollectionCallback = function(htmlContent) {
+    var updateCollectionCallback = function (htmlContent) {
         var component = jQuery("#" + collectionGroupId, htmlContent);
 
-        elementToBlock.unblock({onUnblock: function() {
+        elementToBlock.unblock({onUnblock:function () {
             //replace component
             if (jQuery("#" + collectionGroupId).length) {
                 jQuery("#" + collectionGroupId).replaceWith(component);
@@ -515,13 +513,11 @@ function toggleInactiveRecordDisplay(component, collectionGroupId, showInactive)
     // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
     jQuery("input[name='skipViewInit']").remove();
 
-    var submitData =  {};
+    var submitData = {};
     submitData = jQuery(component).data('submitData');
     submitData['updateComponentId'] = collectionGroupId;
     submitData['skipViewInit'] = "true";
     submitData['showInactiveRecords'] = showInactive;
-
-
 
     ajaxSubmitForm("toggleInactiveRecordDisplay", updateCollectionCallback,
             submitData,
@@ -531,10 +527,10 @@ function toggleInactiveRecordDisplay(component, collectionGroupId, showInactive)
 function performCollectionAction(component, collectionGroupId) {
     if (collectionGroupId) {
         var elementToBlock = jQuery("#" + collectionGroupId);
-        var updateCollectionCallback = function(htmlContent) {
+        var updateCollectionCallback = function (htmlContent) {
             var component = jQuery("#" + collectionGroupId, htmlContent);
 
-            elementToBlock.unblock({onUnblock: function() {
+            elementToBlock.unblock({onUnblock:function () {
                 //replace component
                 if (jQuery("#" + collectionGroupId).length) {
                     jQuery("#" + collectionGroupId).replaceWith(component);
@@ -548,7 +544,7 @@ function performCollectionAction(component, collectionGroupId) {
         // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
         jQuery("input[name='skipViewInit']").remove();
 
-        var submitData =  {};
+        var submitData = {};
         submitData = jQuery(component).data('submitData');
         submitData['updateComponentId'] = collectionGroupId;
         submitData['skipViewInit'] = "true";
@@ -565,7 +561,7 @@ function addLineToCollection(component, collectionGroupId, collectionBaseId) {
         jQuery.watermark.hideAll();
 
         var valid = true;
-        addFields.each(function() {
+        addFields.each(function () {
             jQuery(this).removeClass("ignoreValid");
             jQuery(this).valid();
             if (jQuery(this).hasClass("error")) {
@@ -603,7 +599,7 @@ function validateAndPerformCollectionAction(component, collectionGroupId, collec
         jQuery.watermark.hideAll();
 
         var valid = true;
-        fields.each(function() {
+        fields.each(function () {
             jQuery(this).removeClass("ignoreValid");
             jQuery(this).valid();
             if (jQuery(this).hasClass("error")) {
@@ -636,7 +632,7 @@ function validateAndPerformCollectionAction(component, collectionGroupId, collec
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
 function setupOnChangeRefresh(controlName, refreshId, baseId, methodToCall) {
-    setupRefreshCheck(controlName, refreshId, baseId, function() {
+    setupRefreshCheck(controlName, refreshId, baseId, function () {
         return true;
     }, methodToCall);
 }
@@ -654,7 +650,7 @@ function setupOnChangeRefresh(controlName, refreshId, baseId, methodToCall) {
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
 function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCall) {
-    jQuery("[name='" + escapeName(controlName) + "']").live('change', function() {
+    jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
         // visible check because a component must logically be visible to refresh
         var refreshComp = jQuery("#" + refreshId);
         if (refreshComp.length) {
@@ -680,7 +676,7 @@ function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCa
  */
 function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall) {
     if (!baseId.match("\_c0$")) {
-        jQuery("[name='" + escapeName(controlName) + "']").live('change', function() {
+        jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
             var refreshDisclosure = jQuery("#" + disclosureId);
             if (refreshDisclosure.length) {
                 var displayWithId = disclosureId;
@@ -700,7 +696,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
                         if (origColor == "") {
                             origColor = "transparent";
                         }
-                        refreshDisclosure.animate({backgroundColor: origColor}, 5000);
+                        refreshDisclosure.animate({backgroundColor:origColor}, 5000);
 
                         //re-enable validation on now shown inputs
                         hiddenInputValidationToggle(disclosureId);
@@ -738,12 +734,12 @@ function hiddenInputValidationToggle(id) {
     var element = jQuery("#" + id);
     if (element.length) {
         if (element.css("display") == "none") {
-            jQuery(":input:hidden", element).each(function() {
+            jQuery(":input:hidden", element).each(function () {
                 jQuery(this).addClass("ignoreValid");
             });
         }
         else {
-            jQuery(":input:visible", element).each(function() {
+            jQuery(":input:visible", element).each(function () {
                 jQuery(this).removeClass("ignoreValid");
             });
         }

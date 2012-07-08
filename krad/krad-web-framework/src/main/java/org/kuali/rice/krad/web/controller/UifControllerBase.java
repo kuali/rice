@@ -438,7 +438,8 @@ public abstract class UifControllerBase {
      * <p>The query form plugin  activates this request via a form post, where on the JS side,
      * {@code org.kuali.rice.krad.uif.UifParameters#RENDER_FULL_VIEW} is set to false</p>
      *
-     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to render
+     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
+     * render
      * the UI
      * @param result -   represents binding results
      * @param request - http servlet request data
@@ -821,6 +822,7 @@ public abstract class UifControllerBase {
         props.put(UifParameters.METHOD_TO_CALL, dm.getDialogReturnMethod(dialogId));
         props.put(UifParameters.VIEW_ID, form.getViewId());
         props.put(UifParameters.FORM_KEY, form.getFormKey());
+
         return performRedirect(form, form.getFormPostUrl(), props);
     }
 
@@ -838,6 +840,7 @@ public abstract class UifControllerBase {
         // indicate a redirect is occuring to prevent view processing down the line
         form.setRequestRedirect(true);
         form.setAjaxReturnType(AjaxReturnTypes.REDIRECT.getKey());
+
         // On post redirects we need to make sure we are sending the history forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
 

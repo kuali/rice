@@ -53,7 +53,7 @@ public class ExpressionUtils {
      * @param buildRefreshGraphs - indicates whether the expression graphs for component refresh should be built
      */
     public static void populatePropertyExpressionsFromGraph(Configurable configurable, boolean buildRefreshGraphs) {
-        if (configurable == null) {
+        if (configurable == null || configurable.getExpressionGraph() == null) {
             return;
         }
 

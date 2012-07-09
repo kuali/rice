@@ -139,8 +139,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * @param processedBeanNames
      */
     protected void processNestedBeanDefinition(String beanName, BeanDefinition beanDefinition,
-            String nestedPropertyName, Map<String, String> expressionGraph, ConfigurableListableBeanFactory beanFactory,
-            Set<String> processedBeanNames) {
+            String nestedPropertyName, Map<String, String> expressionGraph,
+            ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
         Class<?> beanClass = getBeanClass(beanDefinition, beanFactory);
         if ((beanClass == null) || !Configurable.class.isAssignableFrom(beanClass) || processedBeanNames.contains(
                 beanName)) {
@@ -179,7 +179,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
                 pvs.removePropertyValue(pv.getName());
             } else {
                 // process nested objects
-                Object newValue = processPropertyValue(propertyPath, pv.getValue(), parentExpressionGraph,
+                Object newValue = processPropertyValue(propertyPath, pv.getName(), pv.getValue(), parentExpressionGraph,
                         expressionGraph, beanFactory, processedBeanNames);
 
                 pvs.removePropertyValue(pv.getName());
@@ -190,6 +190,11 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             if (parentExpressionGraph.containsKey(pv.getName())) {
                 parentExpressionGraph.remove(pv.getName());
             }
+        }
+
+        // if nested bean set expression graph to null so it is not inherited from parent definition
+        if (StringUtils.isNotBlank(nestedPropertyName)) {
+            pvs.addPropertyValue(UifPropertyPaths.EXPRESSION_GRAPH, null);
         }
 
         // add remaining expressions from parent to expression graph
@@ -300,7 +305,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * Processes the given property name/value pair for complex objects, such as bean definitions or collections,
      * which if found will be processed for contained property expression values
      *
-     * @param propertyName - name of the property whose value is being processed
+     * @param nestedPropertyName - nested path of the property whose value is being processed
+     * @param propertyName - name of the property in the bean definition being processed
      * @param propertyValue - value to check
      * @param parentExpressionGraph - map that holds property expressions for the parent bean definition, used for
      * merging
@@ -309,7 +315,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * @param processedBeanNames - set of bean names that have been processed so far
      * @return Object new value to set for property
      */
-    protected Object processPropertyValue(String propertyName, Object propertyValue,
+    protected Object processPropertyValue(String nestedPropertyName, String propertyName, Object propertyValue,
             Map<String, String> parentExpressionGraph, Map<String, String> expressionGraph,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
         boolean clearExpressionsForNull = false;
@@ -326,6 +332,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         // if property is object and set to null, clear any parent expressions for the property
         if (clearExpressionsForNull) {
+            removeExpressionsByPrefix(nestedPropertyName, expressionGraph);
             removeExpressionsByPrefix(propertyName, parentExpressionGraph);
 
             return propertyValue;
@@ -343,8 +350,10 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             }
 
             // since overriding the entire bean, clear any expressions from parent that start with the bean property
+            removeExpressionsByPrefix(nestedPropertyName, expressionGraph);
             removeExpressionsByPrefix(propertyName, parentExpressionGraph);
-            processNestedBeanDefinition(beanName, beanDefinition, propertyName, expressionGraph, beanFactory,
+
+            processNestedBeanDefinition(beanName, beanDefinition, nestedPropertyName, expressionGraph, beanFactory,
                     processedBeanNames);
 
             return propertyValue;
@@ -352,16 +361,16 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         // recurse into collections
         if (propertyValue instanceof Object[]) {
-            visitArray(propertyName, parentExpressionGraph, expressionGraph, (Object[]) propertyValue, beanFactory,
+            visitArray(nestedPropertyName, parentExpressionGraph, expressionGraph, (Object[]) propertyValue, beanFactory,
                     processedBeanNames);
         } else if (propertyValue instanceof List) {
-            visitList(propertyName, parentExpressionGraph, expressionGraph, (List) propertyValue, beanFactory,
+            visitList(nestedPropertyName, parentExpressionGraph, expressionGraph, (List) propertyValue, beanFactory,
                     processedBeanNames);
         } else if (propertyValue instanceof Set) {
-            visitSet(propertyName, parentExpressionGraph, expressionGraph, (Set) propertyValue, beanFactory,
+            visitSet(nestedPropertyName, parentExpressionGraph, expressionGraph, (Set) propertyValue, beanFactory,
                     processedBeanNames);
         } else if (propertyValue instanceof Map) {
-            visitMap(propertyName, parentExpressionGraph, expressionGraph, (Map) propertyValue, beanFactory,
+            visitMap(nestedPropertyName, parentExpressionGraph, expressionGraph, (Map) propertyValue, beanFactory,
                     processedBeanNames);
         }
 
@@ -432,9 +441,21 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
                 expressionGraph.put(elemPropertyName, strValue);
                 arrayVal[i] = null;
             } else {
-                Object newElem = processPropertyValue(elemPropertyName, elem, parentExpressionGraph, expressionGraph,
-                        beanFactory, processedBeanNames);
-                arrayVal[i] = newElem;
+                // process set value bean definition as a top level bean
+                if ((elem instanceof BeanDefinition) || (elem instanceof BeanDefinitionHolder)) {
+                    String beanName = null;
+                    BeanDefinition beanDefinition;
+                    if (elem instanceof BeanDefinition) {
+                        beanDefinition = (BeanDefinition) elem;
+                    } else {
+                        beanDefinition = ((BeanDefinitionHolder) elem).getBeanDefinition();
+                        beanName = ((BeanDefinitionHolder) elem).getBeanName();
+                    }
+
+                    processBeanDefinition(beanName, beanDefinition, beanFactory, processedBeanNames);
+                }
+
+                arrayVal[i] = elem;
             }
 
             if (isMergeEnabled && parentExpressionGraph.containsKey(elemPropertyName)) {

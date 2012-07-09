@@ -117,6 +117,9 @@
             <value>uif-sequenceItem</value>
           </list>
         </property>
+        <property name="quickfinder">
+          <null/>
+        </property>
       </bean>
     </property>
     <property name="actionFieldPrototype">

@@ -301,10 +301,7 @@ public class View extends ContainerBase {
         components.add(navigation);
         components.add(breadcrumbs);
         components.add(growls);
-        for (Group dialog : getDialogs()) {
-            components.add(dialog);
-        }
-
+        components.addAll(dialogs);
         components.add(viewMenuLink);
 
         // Note super items should be added after navigation and other view components so

@@ -124,7 +124,7 @@ public class GlobalResourceLoader {
 		LOG.info("...GlobalResourceLoader successfully stopped.");
 	}
 
-	public static synchronized <T extends Object> T getService(QName serviceName) {
+	public static <T extends Object> T getService(QName serviceName) {
 		if (serviceName == null) {
 			throw new IllegalArgumentException("The service name must be non-null.");
 		}
@@ -137,28 +137,28 @@ public class GlobalResourceLoader {
 		}
 	}
 
-	public static synchronized <T extends Object> T getService(String localServiceName) {
+	public static <T extends Object> T getService(String localServiceName) {
 		if (StringUtils.isEmpty(localServiceName)) {
 			throw new IllegalArgumentException("The service name must be non-null.");
 		}
 		return GlobalResourceLoader.<T>getService(new QName(localServiceName));
 	}
 
-	public static synchronized <T extends Object> T getObject(ObjectDefinition objectDefinition) {
+	public static <T extends Object> T getObject(ObjectDefinition objectDefinition) {
 		return getResourceLoader().<T>getObject(objectDefinition);
 	}
 
-	public static synchronized boolean isInitialized() {
+	public static boolean isInitialized() {
 		return getResourceLoader() != null;
 	}
 
-	public static synchronized void logContents() {
+	public static void logContents() {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(getResourceLoader().getContents("", false));
 		}
 	}
 	
-	public static synchronized void logAllContents() {
+	public static void logAllContents() {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("######################### Logging All Contents ###########################");
 			for (ResourceLoader rl : rootResourceLoaders.values()) {

@@ -24,18 +24,12 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.layout.LineDetailSupport;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,8 +108,6 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
 
-
-
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
@@ -153,12 +145,6 @@ public class CollectionGroup extends Group implements DataBinding {
     @Override
     public void performInitialization(View view, Object model) {
         setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
-        
-        //If this collection is using a layoutManager of type LineDetailSupport, setup the details content for
-        //the collection lines
-        if(this.getLayoutManager() instanceof LineDetailSupport){
-            ((LineDetailSupport) this.getLayoutManager()).setupDetails(this, view);
-        }
 
         super.performInitialization(view, model);
 

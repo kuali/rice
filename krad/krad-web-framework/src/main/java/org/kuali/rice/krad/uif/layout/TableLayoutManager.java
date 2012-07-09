@@ -115,6 +115,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     @Override
     public void performInitialization(View view, Object model, Container container) {
+        if(container instanceof CollectionGroup){
+            this.setupDetails((CollectionGroup)container, view);
+        }
+        
         super.performInitialization(view, model, container);
 
         getRowCssClasses().clear();
@@ -954,12 +958,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * The row details info group to use when using a TableLayoutManager with the a richTable.  This group will be
-     * displayed when the user clicks the "Details" link/image on a row.  This allows extra/long data to be
-     * hidden in table rows and then revealed during interaction with the table without the need to
-     * leave the page.  Allows for any group content.
+     * The row details info group to use when using a TableLayoutManager with the a richTable.
      *
-     * Does not currently work with javascript required content.
+     * <p>This group will be displayed when the user clicks the "Details" link/image on a row.
+     * This allows extra/long data to be hidden in table rows and then revealed during interaction
+     * with the table without the need to leave the page.  Allows for any group content.</p>
+     *
+     * <p>Does not currently work with javascript required content.</p>
      *
      * @return rowDetailsGroup component
      */
@@ -970,7 +975,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Set the row details info group
      *
-     * @param rowDetailsGroup
+     * @param rowDetailsGroup row details group
      */
     public void setRowDetailsGroup(Group rowDetailsGroup) {
         this.rowDetailsGroup = rowDetailsGroup;
@@ -988,7 +993,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Row details link name
      *
-     * @param rowDetailsLinkName
+     * @param rowDetailsLinkName name of the details link
      */
     public void setRowDetailsLinkName(String rowDetailsLinkName) {
         this.rowDetailsLinkName = rowDetailsLinkName;
@@ -1007,12 +1012,19 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Sets row details link use image flag
      *
-     * @param rowDetailsUseImage
+     * @param rowDetailsUseImage true to use image for details, false otherwise
      */
     public void setRowDetailsUseImage(boolean rowDetailsUseImage) {
         this.rowDetailsUseImage = rowDetailsUseImage;
     }
 
+    /**
+     * Creates the details group for the line using the information setup through the setter methods of this
+     * interface.  Line details are currently only supported in TableLayoutManagers which use richTable.
+     *
+     * @param collectionGroup the CollectionGroup for this TableLayoutManager
+     * @param view the current view
+     */
     @Override
     public void setupDetails(CollectionGroup collectionGroup, View view) {
         if (getRowDetailsGroup() != null && this.getRichTable() != null && this.getRichTable().isRender()) {

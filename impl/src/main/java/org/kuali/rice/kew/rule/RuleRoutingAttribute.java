@@ -59,7 +59,7 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
     private static final String DOC_TYPE_NAME_LABEL = "Document type name";
 
     private static final String DOC_TYPE_NAME_XPATH = "//newMaintainableObject/businessObject/docTypeName";
-    private static final String DOC_TYPE_NAME_DEL_XPATH = "//newMaintainableObject/businessObject/delegationRuleBaseValues/docTypeName";
+    private static final String DOC_TYPE_NAME_DEL_XPATH = "//newMaintainableObject/businessObject/delegationRule/docTypeName";
 
     private String doctypeName;
     private List<Row> rows;

@@ -115,8 +115,10 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         // Set render full view to force full render
         incidentReportForm.setRenderFullView(true);
-        //Set the ajax return type
+
+        // Set the ajax return type
         incidentReportForm.setAjaxReturnType(AjaxReturnTypes.SHOWINCIDENT.getKey());
+
         ModelAndView modelAndView = UifControllerHelper.getUIFModelAndView(incidentReportForm, "");
         try {
             UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);

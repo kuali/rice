@@ -76,7 +76,7 @@ public final class ActionSet implements Serializable, ActionSetContract {
 	
 	@Override
 	public boolean hasAction(String actionCode) {
-		return actionSetList.contains(actionCode);
+		return actionSetList != null && actionSetList.contains(actionCode);
 	}
 	
 	@Override

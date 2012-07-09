@@ -33,6 +33,10 @@
           <bean class="org.kuali.rice.ksb.impl.cxf.interceptors.ServiceCallVersioningOutInterceptor"/>
       </cxf:outInterceptors>
   </cxf:bus>
+  
+  <http-conf:conduit name="*.http-conduit">
+      <http-conf:client ReceiveTimeout="${rice.ksb.cxf.client.receiveTimeout}" />
+  </http-conf:conduit>
 
 	<bean id="rice.core.config.propertyPlaceholderConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"

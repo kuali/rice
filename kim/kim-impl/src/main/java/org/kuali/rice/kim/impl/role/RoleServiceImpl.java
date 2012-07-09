@@ -704,10 +704,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : allRoleIds) {
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
             if (roleTypeService != null) {
-                List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                    copyRoleIds.remove(roleId);
-                    rms.addAll(getStoredRoleMembersForRoleIds(Collections.singletonList(roleId), null, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                try {
+                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                        copyRoleIds.remove(roleId);
+                        rms.addAll(getStoredRoleMembersForRoleIds(Collections.singletonList(roleId), null, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                    }
+                } catch (Exception e) {
+                    LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
                 }
             }
         }
@@ -727,17 +731,17 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getAttributes()).build();
 
             // if the qualification check does not need to be made, just add the result
-            if ((qualification == null || qualification.isEmpty()) || getRoleTypeService(roleMemberBo.getRoleId()) == null) {
+            RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
+            if ((qualification == null || qualification.isEmpty()) || roleTypeService == null) {
                 if (MemberType.ROLE.equals(roleMemberBo.getType())) {
                     // if a role member type, do a non-recursive role member check
                     // to obtain the group and principal members of that role
                     // given the qualification
                     Map<String, String> nestedRoleQualification = qualification;
-                    if (getRoleTypeService(roleMemberBo.getRoleId()) != null) {
+                    if (roleTypeService != null) {
                         // get the member role object
                         RoleBoLite memberRole = getRoleBoLite(mi.getMemberId());
-                        nestedRoleQualification = getRoleTypeService(roleMemberBo.getRoleId())
-                                .convertQualificationForMemberRoles(
+                        nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
                                         roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
                                         roles.get(roleMemberBo.getRoleId()).getName(),
                                         memberRole.getNamespaceCode(),
@@ -993,78 +997,57 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     public boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification, boolean checkDelegations) {
-        //want to cache if none of the roles are a derived role.  otherwise abort caching!
-        boolean cacheResults = true;
-        if (StringUtils.isBlank(principalId)) {
-            return false;
-        }
-
-
-        Set<String> allRoleIds = new HashSet<String>();
-        // remove inactive roles
-        for (String roleId : roleIds) {
-            if (this.getProxiedRoleService().isRoleActive(roleId)) {
-                allRoleIds.add(roleId);
+        try {
+            //want to cache if none of the roles are a derived role.  otherwise abort caching!
+            boolean cacheResults = true;
+            if (StringUtils.isBlank(principalId)) {
+                return false;
             }
-        }
-        // short-circuit if no roles match
-        if (allRoleIds.isEmpty()) {
-            return false;
-        }
-        // for efficiency, retrieve all roles and store in a map
-        Map<String, RoleBoLite> roles = getRoleBoLiteMap(allRoleIds);
-        // get all roles to which the principal is assigned
-        List<String> copyRoleIds = new ArrayList<String>(allRoleIds);
-        List<RoleMemberBo> rps = new ArrayList<RoleMemberBo>();
 
-        for (String roleId : allRoleIds) {
-            RoleTypeService roleTypeService = getRoleTypeService(roleId);
-            if (roleTypeService != null) {
-                List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                    copyRoleIds.remove(roleId);
-                    rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(roleId), principalId, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+
+            Set<String> allRoleIds = new HashSet<String>();
+            // remove inactive roles
+            for (String roleId : roleIds) {
+                if (this.getProxiedRoleService().isRoleActive(roleId)) {
+                    allRoleIds.add(roleId);
                 }
             }
-        }
-        if (CollectionUtils.isNotEmpty(copyRoleIds)) {
-            rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(copyRoleIds, principalId, null));
-        }
-
-        // if the qualification is null and the role list is not, then any role in the list will match
-        // so since the role ID list is not blank, we can return true at this point
-        if ((qualification == null || qualification.isEmpty()) && !rps.isEmpty()) {
-            return true;
-        }
-
-        // check each membership to see if the principal matches
-
-        // build a map of role ID to membership information
-        // this will be used for later qualification checks
-        Map<String, List<RoleMembership>> roleIdToMembershipMap = new HashMap<String, List<RoleMembership>>();
-        if (getRoleIdToMembershipMap(roleIdToMembershipMap, rps)) {
-            return true;
-        }
-
-        // perform the checks against the role type services
-        for (Map.Entry<String, List<RoleMembership>> entry : roleIdToMembershipMap.entrySet()) {
-            try {
-                RoleTypeService roleTypeService = getRoleTypeService(entry.getKey());
-                if (!roleTypeService.getMatchingRoleMemberships(qualification, entry.getValue()).isEmpty()) {
-                    return true;
-                }
-            } catch (Exception ex) {
-                LOG.warn("Unable to find role type service with id: " + entry.getKey());
+            // short-circuit if no roles match
+            if (allRoleIds.isEmpty()) {
+                return false;
             }
-        }
+            // for efficiency, retrieve all roles and store in a map
+            Map<String, RoleBoLite> roles = getRoleBoLiteMap(allRoleIds);
+            // get all roles to which the principal is assigned
+            List<String> copyRoleIds = new ArrayList<String>(allRoleIds);
+            List<RoleMemberBo> rps = new ArrayList<RoleMemberBo>();
 
-        // find the groups that the principal belongs to
-        List<String> principalGroupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
-        // find the role/group associations
-        if (!principalGroupIds.isEmpty()) {
-            List<RoleMemberBo> rgs = getStoredRoleGroupsUsingExactMatchOnQualification(principalGroupIds, allRoleIds, qualification);
-            roleIdToMembershipMap.clear(); // clear the role/member map for further use
-            if (getRoleIdToMembershipMap(roleIdToMembershipMap, rgs)) {
+            for (String roleId : allRoleIds) {
+                RoleTypeService roleTypeService = getRoleTypeService(roleId);
+                if (roleTypeService != null) {
+                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                        copyRoleIds.remove(roleId);
+                        rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(roleId), principalId, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                    }
+                }
+            }
+            if (CollectionUtils.isNotEmpty(copyRoleIds)) {
+                rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(copyRoleIds, principalId, null));
+            }
+
+            // if the qualification is null and the role list is not, then any role in the list will match
+            // so since the role ID list is not blank, we can return true at this point
+            if ((qualification == null || qualification.isEmpty()) && !rps.isEmpty()) {
+                return true;
+            }
+
+            // check each membership to see if the principal matches
+
+            // build a map of role ID to membership information
+            // this will be used for later qualification checks
+            Map<String, List<RoleMembership>> roleIdToMembershipMap = new HashMap<String, List<RoleMembership>>();
+            if (getRoleIdToMembershipMap(roleIdToMembershipMap, rps)) {
                 return true;
             }
 
@@ -1076,84 +1059,108 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         return true;
                     }
                 } catch (Exception ex) {
-                    LOG.warn("Unable to find role type service with id: " + entry.getKey(), ex);
+                    LOG.warn("Unable to find role type service with id: " + entry.getKey());
                 }
             }
-        }
 
-        // check member roles
-        // first, check that the qualifiers on the role membership match
-        // then, perform a principalHasRole on the embedded role
-        List<RoleMemberBo> roleMemberBos = getStoredRoleMembersForRoleIds(roleIds, MemberType.ROLE.getCode(), null);
-        for (RoleMemberBo roleMemberBo : roleMemberBos) {
-            RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
-            if (roleTypeService != null) {
+            // find the groups that the principal belongs to
+            List<String> principalGroupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
+            // find the role/group associations
+            if (!principalGroupIds.isEmpty()) {
+                List<RoleMemberBo> rgs = getStoredRoleGroupsUsingExactMatchOnQualification(principalGroupIds, allRoleIds, qualification);
+                roleIdToMembershipMap.clear(); // clear the role/member map for further use
+                if (getRoleIdToMembershipMap(roleIdToMembershipMap, rgs)) {
+                    return true;
+                }
+
+                // perform the checks against the role type services
+                for (Map.Entry<String, List<RoleMembership>> entry : roleIdToMembershipMap.entrySet()) {
+                    try {
+                        RoleTypeService roleTypeService = getRoleTypeService(entry.getKey());
+                        if (!roleTypeService.getMatchingRoleMemberships(qualification, entry.getValue()).isEmpty()) {
+                            return true;
+                        }
+                    } catch (Exception ex) {
+                        LOG.warn("Unable to find role type service with id: " + entry.getKey(), ex);
+                    }
+                }
+            }
+
+            // check member roles
+            // first, check that the qualifiers on the role membership match
+            // then, perform a principalHasRole on the embedded role
+            List<RoleMemberBo> roleMemberBos = getStoredRoleMembersForRoleIds(roleIds, MemberType.ROLE.getCode(), null);
+            for (RoleMemberBo roleMemberBo : roleMemberBos) {
+                RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
+                if (roleTypeService != null) {
+                    //it is possible that the the roleTypeService is coming from a remote application
+                    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+                    try {
+                        if (roleTypeService.doesRoleQualifierMatchQualification(qualification, roleMemberBo.getAttributes())) {
+                            RoleBoLite memberRole = getRoleBoLite(roleMemberBo.getMemberId());
+                            Map<String, String> nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
+                                    roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
+                                    roles.get(roleMemberBo.getRoleId()).getName(),
+                                    memberRole.getNamespaceCode(),
+                                    memberRole.getName(),
+                                    qualification);
+                            ArrayList<String> roleIdTempList = new ArrayList<String>(1);
+                            roleIdTempList.add(roleMemberBo.getMemberId());
+                            if (this.getProxiedRoleService().principalHasRole(principalId, roleIdTempList, nestedRoleQualification, true)) {
+                                return true;
+                            }
+                        }
+                    } catch (Exception ex) {
+                        LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleMemberBo.getRoleId(), ex);
+                        //return false;
+                    }
+                } else {
+                    // no qualifiers - role is always used - check membership
+                    ArrayList<String> roleIdTempList = new ArrayList<String>(1);
+                    roleIdTempList.add(roleMemberBo.getMemberId());
+                    // no role type service, so can't convert qualification - just pass as is
+                    if (this.getProxiedRoleService().principalHasRole(principalId, roleIdTempList, qualification, true)) {
+                        return true;
+                    }
+                }
+
+            }
+
+
+            // check for derived roles and extract principals and groups from that - then check them against the
+            // role type service passing in the qualification and principal - the qualifier comes from the
+            // external system (application)
+
+            // loop over the allRoleIds list
+            for (String roleId : allRoleIds) {
+                RoleBoLite role = roles.get(roleId);
+                RoleTypeService roleTypeService = getRoleTypeService(roleId);
+                // check if an derived role
                 //it is possible that the the roleTypeService is coming from a remote application
                 // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
-                    if (roleTypeService.doesRoleQualifierMatchQualification(qualification, roleMemberBo.getAttributes())) {
-                        RoleBoLite memberRole = getRoleBoLite(roleMemberBo.getMemberId());
-                        Map<String, String> nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
-                                roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
-                                roles.get(roleMemberBo.getRoleId()).getName(),
-                                memberRole.getNamespaceCode(),
-                                memberRole.getName(),
-                                qualification);
-                        ArrayList<String> roleIdTempList = new ArrayList<String>(1);
-                        roleIdTempList.add(roleMemberBo.getMemberId());
-                        if (this.getProxiedRoleService().principalHasRole(principalId, roleIdTempList, nestedRoleQualification, true)) {
+                    if (isDerivedRoleType(role.getKimTypeId(), roleTypeService)) {
+                        //cache nothing that even has a derived role in roleIds list
+                        cacheResults = false;
+                        if (roleTypeService.hasDerivedRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getName(), qualification)) {
                             return true;
                         }
                     }
                 } catch (Exception ex) {
-                    LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleMemberBo.getRoleId(), ex);
+                    LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
                     //return false;
                 }
-            } else {
-                // no qualifiers - role is always used - check membership
-                ArrayList<String> roleIdTempList = new ArrayList<String>(1);
-                roleIdTempList.add(roleMemberBo.getMemberId());
-                // no role type service, so can't convert qualification - just pass as is
-                if (this.getProxiedRoleService().principalHasRole(principalId, roleIdTempList, qualification, true)) {
+            }
+
+            // delegations
+            if (checkDelegations) {
+                if (matchesOnDelegation(allRoleIds, principalId, principalGroupIds, qualification)) {
                     return true;
                 }
             }
-
+        } catch (Exception e) {
+            LOG.warn("Caught exception during a principalHasRole check", e);
         }
-
-
-        // check for derived roles and extract principals and groups from that - then check them against the
-        // role type service passing in the qualification and principal - the qualifier comes from the
-        // external system (application)
-
-        // loop over the allRoleIds list
-        for (String roleId : allRoleIds) {
-            RoleBoLite role = roles.get(roleId);
-            RoleTypeService roleTypeService = getRoleTypeService(roleId);
-            // check if an derived role
-            //it is possible that the the roleTypeService is coming from a remote application
-            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
-            try {
-                if (isDerivedRoleType(role.getKimTypeId(), roleTypeService)) {
-                    //cache nothing that even has a derived role in roleIds list
-                    cacheResults = false;
-                    if (roleTypeService.hasDerivedRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getName(), qualification)) {
-                        return true;
-                    }
-                }
-            } catch (Exception ex) {
-                LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
-                //return false;
-            }
-        }
-
-        // delegations
-        if (checkDelegations) {
-            if (matchesOnDelegation(allRoleIds, principalId, principalGroupIds, qualification)) {
-                return true;
-            }
-        }
-
         // NOTE: this logic is a little different from the getRoleMembers method
         // If there is no primary (matching non-delegate), this method will still return true
         return false;
@@ -1183,7 +1190,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public boolean isDynamicRoleMembership(String roleId) {
         incomingParamCheck(roleId, "roleId");
         RoleTypeService service = getRoleTypeService(roleId);
-        return dynamicRoleMembership(service, getRole(roleId));
+        try {
+            return dynamicRoleMembership(service, getRole(roleId));   
+        } catch (Exception e) {
+            LOG.warn("Caught exception while invoking a role type service for role " + roleId, e);
+            // Returning true so the role won't be cached
+            return true;
+        }
     }
 
     /**

@@ -24,7 +24,7 @@
 
 <html-el:html>
 <head>
-<title>Service Registry</title>
+<title>Configuration Viewer</title>
 <style type="text/css">
 .highlightrow {
 	

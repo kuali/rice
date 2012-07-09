@@ -157,7 +157,7 @@ public class ComponentFactory {
         Component origComponent = view.getViewIndex().getComponentById(id);
 
         if (origComponent == null) {
-            throw new RuntimeException(id + " not found in view index try setting p:persistInSession=\"true\" in xml");
+            throw new RuntimeException(id + " not found in view index try setting p:forceSessionPersistence=\"true\" in xml");
         }
 
         if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getBaseId())) {

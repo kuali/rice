@@ -56,7 +56,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TableLayoutManager extends GridLayoutManager implements CollectionLayoutManager, LineDetailSupport {
+public class TableLayoutManager extends GridLayoutManager implements CollectionLayoutManager {
     private static final long serialVersionUID = 3622267585541524208L;
 
     private boolean useShortLabels;
@@ -115,10 +115,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     @Override
     public void performInitialization(View view, Object model, Container container) {
-        if(container instanceof CollectionGroup){
-            this.setupDetails((CollectionGroup)container, view);
+        if (container instanceof CollectionGroup) {
+            this.setupDetails((CollectionGroup) container, view);
         }
-        
+
         super.performInitialization(view, model, container);
 
         getRowCssClasses().clear();
@@ -1025,7 +1025,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param collectionGroup the CollectionGroup for this TableLayoutManager
      * @param view the current view
      */
-    @Override
     public void setupDetails(CollectionGroup collectionGroup, View view) {
         if (getRowDetailsGroup() != null && this.getRichTable() != null && this.getRichTable().isRender()) {
             this.getRowDetailsGroup().setHidden(true);

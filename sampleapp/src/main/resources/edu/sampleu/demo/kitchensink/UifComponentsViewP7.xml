@@ -73,7 +73,7 @@
          <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
            p:required="true" />
          <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-           p:required="true" />
+           p:required="true" p:readOnly="true"/>
          <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
            p:required="true" />
          <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"

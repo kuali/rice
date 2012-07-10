@@ -140,11 +140,7 @@ public class DialogTestViewUifController extends UifControllerBase {
 
         // clear the dialog manager entries, so when we come back, we'll ask all the questions again
         if (doRestart){
-            DialogManager dm = form.getDialogManager();
-            dm.removeDialog(dialog1);
-            dm.removeDialog(dialog2a);
-            dm.removeDialog(dialog2b);
-            dm.removeDialog(dialog3);
+            form.getDialogManager().removeAllDialogs();
             form.setField1("Ok, let's start over.");
             return getUIFModelAndView(form, "DialogView-Page1");
         }
@@ -162,12 +158,14 @@ public class DialogTestViewUifController extends UifControllerBase {
      * @param response - http response
      * @return
      */
-    @RequestMapping(params = "methodToCall=closeMe")
-    public ModelAndView closeMe(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
+    @RequestMapping(params = "methodToCall=goBack")
+    public ModelAndView goBack(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
 //      TODO: Put "Are Your Sure?" dialog here
-        return close(form, result, request, response);
+        form.getDialogManager().removeAllDialogs();
+        form.setField1("Ok, let's start over.");
+        return getUIFModelAndView(form, "DialogView-Page1");
     }
 
     /**
@@ -190,7 +188,11 @@ public class DialogTestViewUifController extends UifControllerBase {
         }
         // Get value from chosen radio button
         String choice = form.getDialogManager().getDialogExplanation(dialog1);
-        form.setField1("You chose Radio Option "+choice);
+        if (choice == null){
+            form.setField1("You didn't select one of the radio buttons");
+        } else {
+            form.setField1("You chose Radio Option "+choice);
+        }
 
         // clear dialog history so they can press the button again
         form.getDialogManager().removeDialog(dialog1);

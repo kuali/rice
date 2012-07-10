@@ -242,6 +242,14 @@ public class DialogManager implements Serializable {
     }
 
     /**
+     * Removes all dialogs from the list of dialogs used in this vew.
+     *
+     */
+    public void removeAllDialogs(){
+        dialogs.clear();
+    }
+
+    /**
      * Sets the status of the dialog tracking record to indicate that this dialog
      * has not yet been asked or answered.
      *

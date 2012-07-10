@@ -990,13 +990,7 @@
     <property name="displayExplanation" value="false"/>
     <property name="reverseButtonOrder" value="false"/>
     <property name="prompt">
-      <bean parent="Uif-MessageField">
-        <property name="cssClasses">
-          <list merge="true">
-            <value>uif-dialogPrompt</value>
-          </list>
-        </property>
-      </bean>
+      <bean parent="Uif-DialogPrompt"/>
     </property>
     <property name="explanation">
       <bean parent="Uif-DialogExplanation"/>
@@ -1013,6 +1007,14 @@
     <property name="cssClasses">
       <list merge="true">
         <value>uif-dialogGroup</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-DialogPrompt" parent="Uif-MessageField">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-dialogPrompt</value>
       </list>
     </property>
   </bean>

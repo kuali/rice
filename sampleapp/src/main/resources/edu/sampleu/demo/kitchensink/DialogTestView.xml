@@ -62,7 +62,7 @@
             <bean id="DialogTestView-Page2Footer" parent="Uif-FooterBase">
               <property name="items">
                 <list>
-                  <bean id="page2PrimaryButton" parent="Uif-PrimaryActionButton" p:methodToCall="doSomething" p:actionLabel="Go Back" p:performClientSideValidation="true"/>
+                  <bean id="page2PrimaryButton" parent="Uif-PrimaryActionButton" p:methodToCall="goBack" p:actionLabel="Go Back" p:performClientSideValidation="true"/>
                   <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="Cancel"/>
                 </list>
               </property>
@@ -147,7 +147,7 @@
     <property name="headerText" value="The end."/>
     <property name="items">
       <list>
-        <bean id='endMsg' parent="Uif-InputField" p:propertyName="field2" p:defaultValue="Hope you enjoyed the story." p:style="border:1px; font-size:2em">
+        <bean id='endMsg' parent="Uif-InputField" p:propertyName="field3" p:defaultValue="Hope you enjoyed the story." p:style="border:1px; font-size:2em">
           <property name="control">
             <bean parent="Uif-TextAreaControl"  p:readOnly="true"/>
           </property>

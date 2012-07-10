@@ -156,9 +156,17 @@ function createLightBoxLink(linkId, options, isInquiryLookup) {
         if (isInquiryLookup) {
             // Set the renderedInLightBox = true param
             if (jQuery("#" + linkId).attr('href').indexOf('&renderedInLightBox=true') == -1) {
-                jQuery("#" + linkId).attr('href', jQuery("#" + linkId).attr('href') + '&renderedInLightBox=true'
+                var href = jQuery("#" + linkId).attr('href');
+                var anchor = "";
+
+                if (jQuery("#" + linkId).attr('href').indexOf('#') != -1) {
+                    href = jQuery("#" + linkId).attr('href').substring(0, jQuery("#" + linkId).attr('href').indexOf('#'));
+                    anchor = jQuery("#" + linkId).attr('href').substring(jQuery("#" + linkId).attr('href').indexOf('#'));
+                }
+
+                jQuery("#" + linkId).attr('href', href + '&renderedInLightBox=true'
                         + '&showHome=false' + '&showHistory=' + showHistory
-                        + '&history=' + jQuery('#historyParameterString').val());
+                        + '&history=' + jQuery('#historyParameterString').val() + anchor);
             }
         }
     });

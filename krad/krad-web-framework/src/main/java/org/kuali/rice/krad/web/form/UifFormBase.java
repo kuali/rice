@@ -119,8 +119,10 @@ public class UifFormBase implements ViewModel {
 
     protected String returnFormKey;
 
+    @SessionTransient
     protected boolean ajaxRequest;
 
+    @SessionTransient
     protected String ajaxReturnType;
 
   

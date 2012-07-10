@@ -29,7 +29,7 @@
     <li><portal:portalLink displayTitle="true" title="Test View 2 (old)" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="Incident Report" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2&methodToCall=foo" /></li>
     <li><portal:portalLink displayTitle="true" title="Configuration Test View" url="${ConfigProperties.application.url}/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView&methodToCall=start" /></li>
-    <li><portal:portalLink displayTitle="true" title="Dialog Test View" url="${ConfigProperties.application.url}/kr-krad/dialog-configuration-test?viewId=DialogTestView&methodToCall=start" /></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/dialog-configuration-test?viewId=DialogTestView&methodToCall=start" />Dialog Test View</a></li>
     <li><portal:portalLink displayTitle="true" title="Generated Fields Test" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifGeneratedFields&methodToCall=start" /></li>
     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections&methodToCall=start"/>Collections Configuration Test View</a></li>
     <li><portal:portalLink displayTitle="true" title="State-based Validation (Server test)" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-StateBasedValidation-Server&methodToCall=start" /></li>

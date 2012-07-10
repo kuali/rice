@@ -26,7 +26,7 @@
          tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
-        <#local attributes='${attributes} disabled="true"'/>
+        <#local attributes='${attributes} disabled="disabled"'/>
     </#if>
 
     <#if control.readOnly>

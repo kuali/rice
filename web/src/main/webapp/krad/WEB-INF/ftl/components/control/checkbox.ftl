@@ -22,18 +22,21 @@
 
 <#macro uif_checkbox control field>
 
-    <#local attributes='id="${control.id}" label="${control.checkboxLabel!}" size="${control.size!}"
-            class="${control.styleClassesAsString!}" value="${control.value!}"
-            tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
+    <#local attributes='id="${control.id}" class="${control.styleClassesAsString!}" tabindex="${control.tabIndex!}"'/>
+    <#local attributes='${attributes} ${control.simpleDataAttributes!}' />
+
+    <#if control.value??>
+        <#local attributes='${attributes} value="${control.value}"'/>
+    </#if>
 
     <#if control.disabled>
-        <#local attributes='${attributes} disabled="true"'/>
+        <#local attributes='${attributes} disabled="disabled"'/>
     </#if>
 
     <#if control.style?has_content>
         <#local attributes='${attributes} style="${control.style}"'/>
     </#if>
 
-    <@spring.formCheckbox path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+    <@spring.formCheckbox path="KualiForm.${field.bindingInfo.bindingPath}" label="${control.checkboxLabel!}" attributes="${attributes}"/>
 
 </#macro>

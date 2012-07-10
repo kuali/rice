@@ -174,7 +174,10 @@
  -->
 <#macro formInput path attributes="" fieldType="text">
     <@bind path/>
-    <input type="${fieldType}" name="${status.expression}" value="<#if fieldType!="password">${stringStatusValue}</#if>" ${attributes}<@closeTag/>
+    <#if fieldType != "file" && fieldType != "password">
+        <#local value='value="${stringStatusValue}"'/>
+    </#if>
+    <input type="${fieldType}" name="${status.expression}" ${value!} ${attributes}<@closeTag/>
 </#macro>
 
 <#--
@@ -268,6 +271,7 @@
  *
  * Show radio buttons.
  *
+ * @param id the id for generated inputs, index is appended with underscore
  * @param path the name of the field to bind to
  * @param options a list of key value pairs of all the available options
  * @param separator the html tag or other character list that should be used to
@@ -275,10 +279,10 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formRadioButtons path options separator attributes="">
+<#macro formRadioButtons id path options separator attributes="">
     <@bind path/>
     <#list options as option>
-    <#assign id="${status.expression}${option_index}">
+    <#local id="${id}_${option_index}">
     <span>
     <input type="radio" id="${id}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
     <label for="${id}">${option.value?html}</label>
@@ -292,19 +296,19 @@
  *
  * Show checkboxes.
  *
+ * @param id the id for generated inputs, index is appended with underscore
  * @param path the name of the field to bind to
  * @param options a list of KeyValue pairs of all the available options
  * @param separator the html tag or other character list that should be used to
  *    separate each option. Typically '&nbsp;' or '<br>'
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
- * @param prefix
 -->
-<#macro formCheckboxes path options separator attributes="" prefix="">
+<#macro formCheckboxes id path options separator attributes="">
     <@bind path/>
     <#list options as option>
-    <#assign id="${prefix}${status.expression}${option_index}">
-    <#assign isSelected = contains(status.actualValue?default([""]), option.key)>
+    <#local id="${id}_${option_index}">
+    <#local isSelected = contains(status.actualValue?default([""]), option.key)>
     <span>
     <input type="checkbox" id="${id}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
     <label for="${id}">${option.value?html}</label>
@@ -323,12 +327,15 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formCheckbox path attributes="">
+<#macro formCheckbox path label="" attributes="">
 	<@bind path />
-    <#assign id="${status.expression}">
-    <#assign isSelected = status.value?? && status.value?string=="true">
+    <#local id="${status.expression}">
+    <#local isSelected = status.value?? && status.value?string=="true">
 	<input type="hidden" name="_${id}" value="on"/>
 	<input type="checkbox" name="${id}"<#if isSelected> checked="checked"</#if> ${attributes}/>
+    <#if label?has_content>
+        <label for="${id}">${label}</label>
+    </#if>
 </#macro>
 
 <#--

@@ -21,22 +21,22 @@ Standard HTML Radio Input
 -->
 <#macro uif_radiobuttons control field>
 
-    <#local attributes='id="${control.id}" class="${control.styleClassesAsString!}"
+    <#local attributes='class="${control.styleClassesAsString!}"
             tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
-        <#local attributes='${attributes} disabled="true"'/>
+        <#local attributes='${attributes} disabled="disabled"'/>
     </#if>
 
     <#if control.style?has_content>
         <#local attributes='${attributes} style="${control.style}"'/>
     </#if>
 
-    <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
-              data-type="RadioSet" id="${field.id}_fieldset">
+    <fieldset id="${field.id}_fieldset" aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
+              data-type="RadioSet">
         <legend style="display: none">${field.label!}</legend>
-        <@spring.formRadioButtons path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
-                                  separator="${control.delimiter!}" attributes="${attributes}"/>
+        <@spring.formRadioButtons id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}"
+                 options=control.options separator="${control.delimiter!}" attributes="${attributes}"/>
     </fieldset>
 
 </#macro>

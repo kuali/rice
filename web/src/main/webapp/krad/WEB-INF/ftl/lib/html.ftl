@@ -21,6 +21,8 @@
 <html lang="en">
 <head>
 
+    <meta charset="UTF-8">
+
     <#if SESSION_TIMEOUT_WARNING_MILLISECONDS?has_content>
         <script type="text/javascript">
             <!--
@@ -53,18 +55,18 @@
 
     <#list view.theme.scriptFiles as javascriptFile>
         <#if javascriptFile?starts_with('http')>
-            <script language="JavaScript" type="text/javascript" src="${javascriptFile}"></script>
+            <script type="text/javascript" src="${javascriptFile}"></script>
         <#else>
-            <script language="JavaScript" type="text/javascript"
+            <script type="text/javascript"
                     src="${request.contextPath}/${javascriptFile}"></script>
         </#if>
     </#list>
 
     <#list view.additionalScriptFiles as scriptFile>
         <#if scriptFile?starts_with('http')>
-            <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
+            <script type="text/javascript" src="${scriptFile}"></script>
         <#else>
-            <script language="JavaScript" type="text/javascript"
+            <script type="text/javascript"
                                         src="${request.contextPath}/${scriptFile}"></script>
         </#if>
     </#list>

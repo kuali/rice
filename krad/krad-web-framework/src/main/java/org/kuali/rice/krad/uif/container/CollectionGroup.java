@@ -91,11 +91,8 @@ public class CollectionGroup extends Group implements DataBinding {
     private int displayCollectionSize = -1;
 
     private boolean highlightNewItems;
-
     private boolean highlightAddItem;
-
     private String newItemsCssClass;
-
     private String addItemCssClass;
 
     private boolean renderAddBlankLineButton;

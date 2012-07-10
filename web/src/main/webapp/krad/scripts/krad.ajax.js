@@ -650,7 +650,8 @@ function validateAndPerformCollectionAction(component, collectionGroupId, collec
     if (collectionName) {
 
         // Get the fields to validate by combining the collection property name and the selected row
-        var selectedIndex = jQuery("[name='actionParameters[selectedLineIndex]']").val();
+        var submitData = jQuery(component).data("submitData");
+        var selectedIndex = submitData['actionParameters[selectedLineIndex]'];
         var fields = jQuery("[name^='" + collectionName + "[" + selectedIndex + "]']");
 
         jQuery.watermark.hideAll();

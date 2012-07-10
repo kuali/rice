@@ -102,7 +102,7 @@ public class InquiryController extends UifControllerBase {
                 redirectUrlProps.put(UifParameters.REDIRECTED_INQUIRY, "true");
 
                 // clear current form from session
-                GlobalVariables.getUifFormManager().removeSessionForm(form);
+                GlobalVariables.getUifFormManager().removeForm(form);
 
                 return performRedirect(form, inquiryUrl, redirectUrlProps);
             }

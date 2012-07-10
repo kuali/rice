@@ -25,15 +25,12 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertFalse;
 
 /**
- * ObjectUtilsTest tests {@link ObjectUtils}
+ * ObjectUtilsTest
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ObjectUtilsTest extends KRADTestCase {
     @Test
-    /**
-     * tests {@link ObjectUtils#equalByKeys(org.kuali.rice.krad.bo.PersistableBusinessObject, org.kuali.rice.krad.bo.PersistableBusinessObject)}
-     */
     public void testObjectUtils_equalsByKey() throws Exception {
         ParameterBo parameterInDB = new ParameterBo();
         parameterInDB.setNamespaceCode("KR-NS");

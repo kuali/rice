@@ -20,16 +20,13 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.SpaceField;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +58,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     private int defaultOrderSequence;
     private boolean generateCompareHeaders;
 
-    private Header headerFieldPrototype;
+    private HeaderField headerFieldPrototype;
     private List<ComparableInfo> comparables;
 
     public CompareFieldCreateModifier() {
@@ -128,18 +125,14 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
         for (ComparableInfo comparable : groupComparables) {
-            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, comparable,
-                    model, context);
+            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateObjectExpressions(comparable, model,
+                    context);
         }
 
         // generate compare header
         if (isGenerateCompareHeaders()) {
-            // add space field for label column
-            SpaceField spaceField = ComponentFactory.getSpaceField();
-            comparisonItems.add(spaceField);
-
             for (ComparableInfo comparable : groupComparables) {
-                Header compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getIdSuffix());
+                HeaderField compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getIdSuffix());
                 compareHeaderField.setHeaderText(comparable.getHeaderText());
 
                 comparisonItems.add(compareHeaderField);
@@ -159,11 +152,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
         // generate the compare items from the configured group
         Group group = (Group) component;
-        boolean changeIconShowedOnHeader = false;
         for (Component item : group.getItems()) {
             int defaultSuffix = 0;
-            boolean suppressLabel = false;
-
             for (ComparableInfo comparable : groupComparables) {
                 String idSuffix = comparable.getIdSuffix();
                 if (StringUtils.isBlank(idSuffix)) {
@@ -181,43 +171,14 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                     }
                 }
 
-                // label will be enabled for first comparable only
-                if (suppressLabel && (compareItem instanceof Field)) {
-                   ((Field) compareItem).getFieldLabel().setRender(false);
-                }
-
                 // do value comparison
                 if (performValueChangeComparison && comparable.isHighlightValueChange() && !comparable
                         .isCompareToForValueChange()) {
-                    boolean valueChanged = performValueComparison(group, compareItem, model,
-                            compareValueObjectBindingPath);
-
-                    // add icon to group header if not done so yet
-                    if (valueChanged && !changeIconShowedOnHeader && isGenerateCompareHeaders()) {
-                        Group groupToSetHeader = null;
-                        if (group.getDisclosure() != null && group.getDisclosure().isRender()) {
-                            groupToSetHeader = group;
-                        } else if (group.getContext().get(UifConstants.ContextVariableNames.PARENT) != null) {
-                            // use the parent group to set the notification if available
-                            groupToSetHeader = (Group) group.getContext().get(UifConstants.ContextVariableNames.PARENT);
-                        }
-
-                        if (groupToSetHeader.getDisclosure().isRender()) {
-                            groupToSetHeader.getDisclosure().setOnDocumentReadyScript(
-                                    "showChangeIconOnDisclosure('" + groupToSetHeader.getId() + "');");
-                        } else if (groupToSetHeader.getHeader() != null) {
-                            groupToSetHeader.getHeader().setOnDocumentReadyScript(
-                                    "showChangeIconOnHeader('" + groupToSetHeader.getHeader().getId() + "');");
-                        }
-
-                        changeIconShowedOnHeader = true;
-                    }
+                    performValueComparison(group, compareItem, model, compareValueObjectBindingPath);
                 }
 
                 comparisonItems.add(compareItem);
                 defaultSuffix++;
-
-                suppressLabel = true;
             }
         }
 
@@ -234,14 +195,11 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * @param compareItem - the compare item being generated and to pull attribute fields from
      * @param model - object containing the data
      * @param compareValueObjectBindingPath - object path for the comparison item
-     * @return true if the value in the field represented by compareItem is equal to the comparison items value, false
-     *         otherwise
      */
-    protected boolean performValueComparison(Group group, Component compareItem, Object model,
+    protected void performValueComparison(Group group, Component compareItem, Object model,
             String compareValueObjectBindingPath) {
         // get any attribute fields for the item so we can compare the values
         List<DataField> itemFields = ComponentUtils.getComponentsOfTypeDeep(compareItem, DataField.class);
-        boolean valueChanged = false;
         for (DataField field : itemFields) {
             String fieldBindingPath = field.getBindingInfo().getBindingPath();
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, fieldBindingPath);
@@ -250,6 +208,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                     field.getBindingInfo().getBindingObjectPath(), compareValueObjectBindingPath);
             Object compareValue = ObjectPropertyUtils.getPropertyValue(model, compareBindingPath);
 
+            boolean valueChanged = false;
             if (!((fieldValue == null) && (compareValue == null))) {
                 // if one is null then value changed
                 if ((fieldValue == null) || (compareValue == null)) {
@@ -259,14 +218,20 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                     valueChanged = !fieldValue.equals(compareValue);
                 }
             }
+
+            // add script to show change icon
             if (valueChanged) {
-                // add script to show change icon
                 String onReadyScript = "showChangeIcon('" + field.getId() + "');";
+
+                // add icon to group header
+                Component headerField = group.getHeader();
+                onReadyScript += "showChangeIconOnHeader('" + headerField.getId() + "');";
+
                 field.setOnDocumentReadyScript(onReadyScript);
             }
+
             // TODO: add script for value changed?
         }
-        return valueChanged;
     }
 
     /**
@@ -281,7 +246,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * @param comparable - comparable info to check for id suffix
      * @param index - sequence integer
      * @return String id suffix
-     * @see org.kuali.rice.krad.uif.modifier.ComparableInfo#getIdSuffix()
+     * @see org.kuali.rice.krad.uif.modifier.ComparableInfo.getIdSuffix()
      */
     protected String getIdSuffix(ComparableInfo comparable, int index) {
         String idSuffix = comparable.getIdSuffix();
@@ -366,7 +331,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return HeaderField header field prototype
      */
-    public Header getHeaderFieldPrototype() {
+    public HeaderField getHeaderFieldPrototype() {
         return this.headerFieldPrototype;
     }
 
@@ -375,7 +340,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @param headerFieldPrototype
      */
-    public void setHeaderFieldPrototype(Header headerFieldPrototype) {
+    public void setHeaderFieldPrototype(HeaderField headerFieldPrototype) {
         this.headerFieldPrototype = headerFieldPrototype;
     }
 

@@ -188,7 +188,7 @@ public class MessageServiceInvoker implements Runnable {
      */
     protected Object getQueueService(ServiceConfiguration serviceConfiguration) {
     	ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
-    	return serviceBus.getService(serviceConfiguration.getServiceName());
+    	return serviceBus.getService(serviceConfiguration.getServiceName(), serviceConfiguration.getApplicationId());
     }
 
     /**

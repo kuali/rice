@@ -21,6 +21,7 @@ package org.kuali.rice.krad.maintainablexml;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -58,10 +60,10 @@ import org.xml.sax.InputSource;
 
 public class FileConverter {
 
-    private ArrayList<ArrayList<String>> classNameRules;
-    private ArrayList<ArrayList<String>> packageNameRules;
-    private ArrayList<ArrayList<String>> maintImplRules;
-    private ArrayList<ArrayList> classPropertyRules;
+    private HashMap<String, String> classNameRuleMap;
+    private HashMap<String, String> packageNameRuleMap;
+    private HashMap<String, String> maintImplRuleMap;
+    private HashMap<String, HashMap<String, String>> classPropertyRuleMap;
     private JdbcTemplate jdbcTemplate;
     private int totalDocs = 0;
 
@@ -77,7 +79,7 @@ public class FileConverter {
 
         final EncryptionService encryptService = new EncryptionService((String) settingsMap.get("encryption.key"));
 
-        if (classNameRules == null) {
+        if (classNameRuleMap == null) {
             setRuleMaps();
         }
 
@@ -115,7 +117,7 @@ public class FileConverter {
      * @return the DataSource object
      */
     public static DataSource getDataSource(HashMap settingsMap) {
-        String driver;
+        String driver = "";
         if ("MySQL".equals(settingsMap.get("datasource.ojb.platform"))) {
             driver = "com.mysql.jdbc.Driver";
         } else if ("Oracle9i".equals(settingsMap.get("datasource.ojb.platform"))) {
@@ -178,13 +180,13 @@ public class FileConverter {
     public String upgradeXML(String oldXML) throws Exception {
 
         // Replace class names
-        for (ArrayList<String> rule : classNameRules) {
-            oldXML = oldXML.replaceAll(rule.get(0), rule.get(1));
+        for (String key : classNameRuleMap.keySet()) {
+            oldXML = oldXML.replaceAll(key, classNameRuleMap.get(key));
         }
 
         // Replace package names
-        for (ArrayList<String> rule : packageNameRules) {
-            oldXML = oldXML.replaceAll(rule.get(0), rule.get(1));
+        for (String key : packageNameRuleMap.keySet()) {
+            oldXML = oldXML.replaceAll(key, packageNameRuleMap.get(key));
         }
 
         // Upgrade Bo notes
@@ -197,28 +199,28 @@ public class FileConverter {
         Document doc = db.parse(is);
         doc.getDocumentElement().normalize();
         XPath xpath = XPathFactory.newInstance().newXPath();
-        for (ArrayList rule : classPropertyRules) {
-            ArrayList<ArrayList<String>> propertyRules = (ArrayList<ArrayList<String>>)rule.get(1);
-            for (ArrayList<String> propertyRule : propertyRules) {
-                XPathExpression exprMaintainableObject = xpath.compile("//" + rule.get(0) + "/" + propertyRule.get(0));
+        for (String key : classPropertyRuleMap.keySet()) {
+            HashMap<String, String> properties = classPropertyRuleMap.get(key);
+            for (String keyProperties : properties.keySet()) {
+                XPathExpression exprMaintainableObject = xpath.compile("//" + key + "/" + keyProperties);
                 NodeList propertyNodeList = (NodeList) exprMaintainableObject.evaluate(doc, XPathConstants.NODESET);
                 for (int s = 0; s < propertyNodeList.getLength(); s++) {
-                    if (propertyRule.get(1).equals("")) {
+                    if (properties.get(keyProperties).equals("")) {
                         propertyNodeList.item(s).getParentNode().removeChild(propertyNodeList.item(s));
                     } else {
-                        doc.renameNode(propertyNodeList.item(s), null, propertyRule.get(1));
+                        doc.renameNode(propertyNodeList.item(s), null, properties.get(keyProperties));
                     }
                 }
             }
         }
 
         // Replace MaintainableImplClass names
-        for (ArrayList<String> rule : maintImplRules) {
+        for (String key : maintImplRuleMap.keySet()) {
             // Only do replace for files containing the maintainable object class
-            if (oldXML.contains(rule.get(0))) {
-                String maintImpl = rule.get(1);
+            if (oldXML.contains(key)) {
+                String maintImpl = maintImplRuleMap.get(key);
                 XPathExpression exprMaintainableTest = xpath.compile(
-                        "//maintainableDocumentContents/newMaintainableObject/" + rule.get(0));
+                        "//maintainableDocumentContents/newMaintainableObject/" + key);
                 NodeList exprMaintainableTestList = (NodeList) exprMaintainableTest.evaluate(doc,
                         XPathConstants.NODESET);
                 if (exprMaintainableTestList.getLength() > 0) {
@@ -257,7 +259,6 @@ public class FileConverter {
      *
      * @param oldXML - the xml to upgrade
      * @throws Exception
-     * @return String
      */
     private String upgradeBONotes(String oldXML) throws Exception {
         // Get the old bo note xml
@@ -276,10 +277,10 @@ public class FileConverter {
      * Reads the rule xml and sets up the rule maps that will be used to transform the xml
      */
     public void setRuleMaps() {
-        classNameRules = new ArrayList();
-        packageNameRules = new ArrayList();
-        classPropertyRules = new ArrayList();
-        maintImplRules = new ArrayList();
+        classNameRuleMap = new HashMap();
+        packageNameRuleMap = new HashMap();
+        classPropertyRuleMap = new HashMap();
+        maintImplRuleMap = new HashMap();
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -296,23 +297,17 @@ public class FileConverter {
             for (int s = 0; s < classNamesList.getLength(); s++) {
                 String matchText = xpath.evaluate("match/text()", classNamesList.item(s));
                 String replaceText = xpath.evaluate("replacement/text()", classNamesList.item(s));
-                ArrayList<String> rule = new ArrayList();
-                rule.add(matchText);
-                rule.add(replaceText);
-                classNameRules.add(rule);
+                classNameRuleMap.put(matchText, replaceText);
             }
 
             // Get the package change rules
 
             XPathExpression exprPackageNames = xpath.compile("//*[@name='maint_doc_moved_packages']/pattern");
-            NodeList packageNamesList = (NodeList) exprPackageNames.evaluate(doc, XPathConstants.NODESET);
-            for (int s = 0; s < packageNamesList.getLength(); s++) {
-                String matchText = xpath.evaluate("match/text()", packageNamesList.item(s));
-                String replaceText = xpath.evaluate("replacement/text()", packageNamesList.item(s));
-                ArrayList<String> rule = new ArrayList<String>();
-                rule.add(matchText);
-                rule.add(replaceText);
-                packageNameRules.add(rule);
+            NodeList packageNamesList = (NodeList) exprClassNames.evaluate(doc, XPathConstants.NODESET);
+            for (int s = 0; s < classNamesList.getLength(); s++) {
+                String matchText = xpath.evaluate("match/text()", classNamesList.item(s));
+                String replaceText = xpath.evaluate("replacement/text()", classNamesList.item(s));
+                packageNameRuleMap.put(matchText, replaceText);
             }
 
             // Get the property changed rules
@@ -323,23 +318,15 @@ public class FileConverter {
             NodeList propertyClassList = (NodeList) exprClassProperties.evaluate(doc, XPathConstants.NODESET);
             for (int s = 0; s < propertyClassList.getLength(); s++) {
                 String classText = xpath.evaluate("class/text()", propertyClassList.item(s));
-                // Use Lists in stead of maps to keep the order of rules
-                ArrayList propertyRules = new ArrayList();
+                HashMap propertyRuleMap = new HashMap();
                 NodeList classPropertiesPatterns = (NodeList) exprClassPropertiesPatterns.evaluate(
                         propertyClassList.item(s), XPathConstants.NODESET);
                 for (int c = 0; c < classPropertiesPatterns.getLength(); c++) {
                     String matchText = xpath.evaluate("match/text()", classPropertiesPatterns.item(c));
                     String replaceText = xpath.evaluate("replacement/text()", classPropertiesPatterns.item(c));
-                    ArrayList<String> propertyRule = new ArrayList<String>();
-                    propertyRule.add(matchText);
-                    propertyRule.add(replaceText);
-                    propertyRules.add(propertyRule);
+                    propertyRuleMap.put(matchText, replaceText);
                 }
-//                classPropertyRuleMap.put(classText, propertyRules);
-                ArrayList classRule = new ArrayList();
-                classRule.add(classText);
-                classRule.add(propertyRules);
-                classPropertyRules.add(classRule);
+                classPropertyRuleMap.put(classText, propertyRuleMap);
             }
 
             // Get the maint impl class rule
@@ -349,10 +336,7 @@ public class FileConverter {
             for (int s = 0; s < maintImplList.getLength(); s++) {
                 String maintainableText = xpath.evaluate("maintainable/text()", maintImplList.item(s));
                 String maintainableImplText = xpath.evaluate("maintainableImpl/text()", maintImplList.item(s));
-                ArrayList<String> rule = new ArrayList<String>();
-                rule.add(maintainableText);
-                rule.add(maintainableImplText);
-                maintImplRules.add(rule);
+                maintImplRuleMap.put(maintainableText, maintainableImplText);
             }
 
         } catch (Exception e) {

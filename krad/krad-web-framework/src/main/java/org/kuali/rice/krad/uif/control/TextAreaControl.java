@@ -76,11 +76,6 @@ public class TextAreaControl extends ControlBase {
         return this.rows;
     }
 
-    /**
-     * Setter for the number of rows the control should span (horizontal length)
-     *
-     * @param rows
-     */
     public void setRows(int rows) {
         this.rows = rows;
     }
@@ -94,11 +89,6 @@ public class TextAreaControl extends ControlBase {
         return this.cols;
     }
 
-    /**
-     * Setter for the number of columns the control should span (vertical length)
-     *
-     * @param cols
-     */
     public void setCols(int cols) {
         this.cols = cols;
     }
@@ -180,4 +170,6 @@ public class TextAreaControl extends ControlBase {
     public void setTextExpand(boolean textExpand) {
         this.textExpand = textExpand;
     }
+
+
 }

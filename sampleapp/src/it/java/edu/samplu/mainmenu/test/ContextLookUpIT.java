@@ -26,9 +26,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
 
 /**
- * tests that user 'admin' can display the Context lookup screen, search,
- * initiate an Context maintenance document via an edit action on the search results and
- * finally cancel the maintenance document
+ * TODO vchauhan don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -39,7 +37,6 @@ public class ContextLookUpIT {
     public void setUp() throws Exception {
         selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
         selenium.start();
-        // selenium.setSpeed("2000");
     }
     
     @Test

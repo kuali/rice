@@ -21,10 +21,8 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import java.util.List;
 
 /**
- * ConstraintResolver provides a lookup of constraints for a specific constrainable attribute definition
- *
- * <p>Implemented by constraint
- * providers as a mechanism to store functional lookups in a map, keyed by constraint type, for example.</p>
+ * An interface that provides a lookup of constraints for a specific constrainable attribute definition. Implemented by constraint
+ * providers as a mechanism to store functional lookups in a map, keyed by constraint type, for example. 
  * 
  * {@see AttributeDefinitionConstraintProvider} for a number of examples. 
  * 
@@ -33,14 +31,7 @@ import java.util.List;
  * @since 1.1
  */
 public interface ConstraintResolver<T extends Constrainable> {
-
-    /**
-     * gets the list of constraints from the provided definition
-     *
-     * @param definition - a data dictionary definition
-     * @param <C> - the java type of the constraint
-     * @return - a list of constraints
-     */
+	
 	public <C extends Constraint> List<C> resolve(T definition);
 	
 }

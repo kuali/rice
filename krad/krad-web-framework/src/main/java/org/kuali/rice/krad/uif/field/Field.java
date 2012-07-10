@@ -16,9 +16,6 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.element.Label;
-
-import java.util.List;
 
 /**
  * Component that contains one or more user interface elements and can be placed
@@ -49,9 +46,9 @@ public interface Field extends Component {
 	/**
 	 * Setter for the field's label text
 	 * 
-	 * @param labelText
+	 * @param label
 	 */
-	public void setLabel(String labelText);
+	public void setLabel(String label);
 
 	/**
 	 * Short label for the field
@@ -73,7 +70,7 @@ public interface Field extends Component {
 	public void setShortLabel(String shortLabel);
 
 	/**
-	 * <code>Label</code> instance for the field
+	 * <code>LabelField</code> instance for the field
 	 * 
 	 * <p>
 	 * The label field contains the labeling text for the field in addition to
@@ -81,60 +78,32 @@ public interface Field extends Component {
 	 * for the label area)
 	 * </p>
 	 * 
-	 * @return Label instance
+	 * @return LabelField instance
 	 */
-	public Label getFieldLabel();
+	public LabelField getLabelField();
 
 	/**
 	 * Setter for the field's label field
 	 * 
-	 * @param label
+	 * @param labelField
 	 */
-	public void setFieldLabel(Label label);
+	public void setLabelField(LabelField labelField);
 
 	/**
-	 * Indicates whether the contained <code>Label</code> has been rendered
+	 * Indicates whether the contained <code>LabelField</code> has been rendered
 	 * as part of another field and thus should not be rendered with the
 	 * attribute
 	 * 
 	 * @return boolean true if the label field has been rendered, false if it
 	 *         should be rendered with the attribute
 	 */
-	public boolean isLabelRendered();
+	public boolean isLabelFieldRendered();
 
 	/**
 	 * Setter for the label field rendered indicator
 	 * 
 	 * @param labelFieldRendered
 	 */
-	public void setLabelRendered(boolean labelFieldRendered);
-
-    /**
-     * Label style classes for the field
-     *
-     * @return List<String> label style classes
-     */
-    public List<String> getLabelStyleClasses();
-
-    /**
-     * Setter for the field's label style classes
-     *
-     * @param labelStyleClasses
-     */
-    public void setLabelStyleClasses(List<String> labelStyleClasses);
-
-    /**
-     * Label column span for the field
-     *
-     * @return int label column span
-     */
-    public int getLabelColSpan();
-
-    /**
-     * Setter for the field's label column span
-     *
-     * @param labelColSpan
-     */
-    public void setLabelColSpan(int labelColSpan);
+	public void setLabelFieldRendered(boolean labelFieldRendered);
 
 }

@@ -33,7 +33,6 @@ public class UITestObject implements Serializable {
     private String field2;
     private String field3;
     private String field4;
-    private boolean bfield;
 
     private Map<String, Object> remoteFieldValuesMap;
 
@@ -139,11 +138,4 @@ public class UITestObject implements Serializable {
         this.remoteFieldValuesMap = remoteFieldValuesMap;
     }
 
-    public boolean isBfield() {
-        return bfield;
-    }
-
-    public void setBfield(boolean bfield) {
-        this.bfield = bfield;
-    }
 }

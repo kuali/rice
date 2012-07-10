@@ -676,11 +676,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 }
             }
         }
-
         // validate default existence checks
-        // TODO: Default existence checks need support for general data objects
-//        success &= getDictionaryValidationService().validateDefaultExistenceChecks((BusinessObject) dataObject);
-//        GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
+        success &= getDictionaryValidationService().validateDefaultExistenceChecks((BusinessObject) dataObject);
+        GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
+
+
 
         // explicitly remove the errorPath we've added
         GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");

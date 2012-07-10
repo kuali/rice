@@ -23,7 +23,6 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -36,13 +35,11 @@ import java.util.Map;
 
 /**
  * AttributeValueReader which can read the correct values from all InputFields which exist on the View
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewAttributeValueReader extends BaseAttributeValueReader {
+
     private View view;
     private Object form;
-
     private List<Constrainable> inputFields = new ArrayList<Constrainable>();
     private Map<String, InputField> inputFieldMap = new HashMap<String, InputField>();
 
@@ -55,9 +52,8 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     public ViewAttributeValueReader(View view, Object form) {
         this.view = view;
         this.form = form;
-        
-        List<InputField> containerInputFields = ComponentUtils.getAllInputFieldsWithinContainer(view);
-        for (InputField field : containerInputFields) {
+
+        for (InputField field : view.getAllInputFields()) {
             inputFields.add(field);
             inputFieldMap.put(field.getName(), field);
         }

@@ -38,7 +38,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
- * tests that a document, which goes through a regular or blanket approval process, is indexed correctly
+ * This is a description of what this class does - jksmith don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

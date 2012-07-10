@@ -52,7 +52,7 @@ import static org.junit.Assert.*;
 
 
 /**
- * PessimisticLockServiceTest tests {@link PessimisticLockServiceImpl}
+ * This class is used to test the {@link PessimisticLockServiceImpl} class
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -66,7 +66,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
 
     /**
-     * tests deleting {@link PessimisticLock} objects. Tests that invalid deletes throw exceptions and valid
+     * This method tests deleting {@link PessimisticLock} objects. Tests that invalid deletes throw exceptions and valid
      * deletes by owner users as well as lock admin users do work as expected
      *
      * @throws Exception
@@ -116,16 +116,6 @@ public class PessimisticLockServiceTest extends KRADTestCase {
         assertEquals("Should be 0 locks left in DB", 0, locks.size());
     }
 
-    /**
-     *  deletes the provided locks while checking for error conditions
-     *
-     * @param userId - the user id to use in creating a session
-     * @param lockIds - a list lock ids to delete
-     * @param expectedException - the expected exception's class
-     * @param expectException - true if an exception is expected on delete
-     * @see PessimisticLockService#delete(String)
-     * @throws WorkflowException
-     */
     private void verifyDelete(String userId, List<String> lockIds, Class expectedException, boolean expectException) throws WorkflowException {
         GlobalVariables.setUserSession(new UserSession(userId));
         for (String lockId : lockIds) {
@@ -149,7 +139,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
 
     /**
-     * tests the generation of new {@link PessimisticLock} objects
+     * This method tests the generation of new {@link PessimisticLock} objects
      *
      * @throws Exception
      */
@@ -199,7 +189,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
 
     /**
-     * tests retrieving {@link PessimisticLock} objects by document number
+     * This method tests retrieving {@link PessimisticLock} objects by document number
      *
      * @throws Exception
      */
@@ -226,7 +216,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
 
     /**
-     * tests releasing {@link PessimisticLock} objects for a specific user
+     * This method tests releasing {@link PessimisticLock} objects for a specific user
      *
      * @throws Exception
      */
@@ -275,7 +265,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
 
     /**
-     * tests saving {@link PessimisticLock} objects
+     * This method tests saving {@link PessimisticLock} objects
      *
      * @throws Exception
      */
@@ -301,7 +291,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
     
     /**
-     * tests the PessimisticLockService.establishLocks method and the PessimisticLockService.getDocumentActions method
+     * This method tests the PessimisticLockService.establishLocks method and the PessimisticLockService.getDocumentActions method.
      * 
      * @throws Exception
      */
@@ -355,7 +345,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
     
     /**
-     * tests the PessimistLockService's workflow pessimistic locking capabilities
+     * This method tests the PessimistLockService's workflow pessimistic locking capabilities.
      * 
      * @throws Exception
      */
@@ -385,7 +375,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
     
     /**
-     * tests the PessimisticLockService's ability to establish pessimistic locks for documents supporting custom lock descriptors
+     * This method tests the PessimisticLockService's ability to establish pessimistic locks for documents supporting custom lock descriptors.
      * 
      * @throws Exception
      */
@@ -402,8 +392,8 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
     
     /**
-     * tests the PessimisticLockService's ability to establish pessimistic locks for maintenance documents (via maintainables) that
-     * support custom lock descriptors
+     * This method tests the PessimisticLockService's ability to establish pessimistic locks for maintenance documents (via maintainables) that
+     * support custom lock descriptors.
      * 
      * @throws Exception
      */

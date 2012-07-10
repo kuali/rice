@@ -23,7 +23,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * tests DocumentAttachment getters and setters
+ * This is a description of what this class does - chang don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -37,15 +37,17 @@ public class DocumentAttachmentTest {
 		dummyDocumentAttachment = new DocumentAttachment();
 	}
 
+	/**
+	 * This method ...
+	 * 
+	 * @throws java.lang.Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
 		dummyDocumentAttachment = null;
 	}
 	
 	@Test
-    /**
-     * tests documentNumber getter and setter
-     */
 	public void testDocumentNumber(){
 		dummyDocumentAttachment.setDocumentNumber("c122");
 		assertEquals("Testing DocumentNumber in DocumnetAttchment", "c122", dummyDocumentAttachment.getDocumentNumber());

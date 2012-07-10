@@ -22,10 +22,8 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
-import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.BeanUtils;
@@ -40,7 +38,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * ComponentUtils is a utility class providing methods to help create and modify <code>Component</code> instances
+ * Utility class providing methods to help create and modify
+ * <code>Component</code> instances
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -167,21 +166,7 @@ public class ComponentUtils {
 
         return typeComponents;
     }
-
-    /**
-     * Return the components of the specified type from the given component list
-     *
-     * <p>
-     * Components that match, implement or are extended from the specified {@code componentType} are returned in
-     * the result.  If a component is a parent to other components then these child components are searched for
-     * matching component types as well.
-     * </p>
-     *
-     * @param items list of components from which to search
-     * @param componentType the class or interface of the component type to return
-     * @param <T> the type of the components that are returned
-     * @return List of matching components
-     */
+    
     public static <T extends Component> List<T> getComponentsOfTypeDeep(List<? extends Component> items,
             Class<T> componentType) {
         List<T> typeComponents = new ArrayList<T>();
@@ -229,34 +214,13 @@ public class ComponentUtils {
         return components;
     }
 
-    /**
-     * Finds the child component of the given parent component that has the required id
-     * 
-     * @param parent - parent component for component to find
-     * @param nestedId - id of the component to find
-     * @return Component instance for child (if found) or null
-     */
-    public static Component findNestedComponentById(Component parent, String nestedId) {
-        Component childComponent = null;
-
-        List<Component> children = getAllNestedComponents(parent);
-        for (Component child : children) {
-            if (StringUtils.equals(nestedId, child.getId())) {
-                childComponent = child;
-                break;
-            }
-        }
-
-        return childComponent;
-    }
-
     public static void prefixBindingPath(List<? extends Field> fields, String addBindingPrefix) {
         for (Field field : fields) {
             if (field instanceof DataBinding) {
                 prefixBindingPath((DataBinding) field, addBindingPrefix);
             }
             else if ((field instanceof FieldGroup) && (((FieldGroup) field).getItems() != null) ) {
-                List<Field> groupFields = getComponentsOfTypeDeep(((FieldGroup) field).getItems(), Field.class);
+                List<Field> groupFields = getComponentsOfType(((FieldGroup) field).getItems(), Field.class);
                 prefixBindingPath(groupFields, addBindingPrefix);
             }
         }
@@ -293,7 +257,6 @@ public class ComponentUtils {
 
     public static void updateIdsWithSuffixNested(Component component, String idSuffix) {
         updateIdWithSuffix(component, idSuffix);
-       // updateFactoryIdWithSuffix(component, idSuffix);
 
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
@@ -313,16 +276,8 @@ public class ComponentUtils {
         }        
     }
 
-    /**
-     * add a suffix to the id
-     *
-     * @param component - the component instance whose id will be changed
-     * @param idSuffix - the suffix to be appended
-     */
     public static void updateIdWithSuffix(Component component, String idSuffix) {
-        if (component != null && !StringUtils.isEmpty(idSuffix)) {
-            component.setId(component.getId() + idSuffix);
-        }
+        component.setId(component.getId() + idSuffix);
     }
 
     public static void setComponentsPropertyDeep(List<? extends Component> components, String propertyPath,
@@ -356,29 +311,12 @@ public class ComponentUtils {
         return componentProperties;
     }
 
-    /**
-     * places a key, value pair in each context map of a list of components
-     *
-     * @param components - the list components
-     * @param contextName - a value to be used as a key to retrieve the object
-     * @param contextValue - the value to be placed in the context
-     */
     public static void pushObjectToContext(List<? extends Component> components, String contextName, Object contextValue) {
         for (Component component : components) {
             pushObjectToContext(component, contextName, contextValue);
         }
     }
 
-    /**
-     * pushes object to a component's context so that it is available from {@link Component#getContext()}
-     *
-     * <p>The component's nested components that are available via {@code Component#getComponentsForLifecycle}
-     * are also updated recursively</p>
-     *
-     * @param component - the component whose context is to be updated
-     * @param contextName - a value to be used as a key to retrieve the object
-     * @param contextValue - the value to be placed in the context
-     */
     public static void pushObjectToContext(Component component, String contextName, Object contextValue) {
         if (component == null) {
             return;
@@ -390,13 +328,10 @@ public class ComponentUtils {
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
             if (layoutManager != null) {
-                // add to layout manager context only if not present
-                if (layoutManager.getContext().get(contextName) != contextValue) {
-                    layoutManager.pushObjectToContext(contextName, contextValue);
+                layoutManager.pushObjectToContext(contextName, contextValue);
 
-                    for (Component nestedComponent : layoutManager.getComponentsForLifecycle()) {
-                        pushObjectToContext(nestedComponent, contextName, contextValue);
-                    }
+                for (Component nestedComponent : layoutManager.getComponentsForLifecycle()) {
+                    pushObjectToContext(nestedComponent, contextName, contextValue);
                 }
             }
         }
@@ -406,15 +341,6 @@ public class ComponentUtils {
         }
     }
 
-    /**
-     * update the contexts of the given components
-     *
-     * <p>calls {@link #updateContextForLine(org.kuali.rice.krad.uif.component.Component, Object, int)} for each component</p>
-     *
-     * @param components - the components whose components to update
-     * @param collectionLine - an instance of the data object for the line
-     * @param lineIndex - the line index
-     */
     public static void updateContextsForLine(List<? extends Component> components, Object collectionLine,
             int lineIndex) {
         for (Component component : components) {
@@ -422,19 +348,9 @@ public class ComponentUtils {
         }
     }
 
-    /**
-     * update the context map for the given component
-     *
-     * <p>The values of {@code UifConstants.ContextVariableNames.LINE} and {@code UifConstants.ContextVariableNames.INDEX}
-     * are set to {@code collectionLine} and {@code lineIndex} respectively.</p>
-     *
-     * @param component - the component whose context is to be updated
-     * @param collectionLine - an instance of the data object for the line
-     * @param lineIndex - the line index
-     */
     public static void updateContextForLine(Component component, Object collectionLine, int lineIndex) {
         pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
-        pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
+        pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
         
         boolean isAddLine = (lineIndex == -1);
         pushObjectToContext(component, UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
@@ -475,9 +391,9 @@ public class ComponentUtils {
                 orderedItems.add(component);
             }
             // check if the order value has been used already
-            else if (!foundOrders.contains(Integer.valueOf(order))) {
+            else if (!foundOrders.contains(new Integer(order))) {
                 orderedItems.add(component);
-                foundOrders.add(Integer.valueOf(order));
+                foundOrders.add(new Integer(order));
             }
         }
 
@@ -490,7 +406,7 @@ public class ComponentUtils {
             // if order property not set assign default
             if (order == 0) {
                 defaultOrderSequence++;
-                while (foundOrders.contains(Integer.valueOf(defaultOrderSequence))) {
+                while (foundOrders.contains(new Integer(defaultOrderSequence))) {
                     defaultOrderSequence++;
                 }
                 component.setOrder(defaultOrderSequence);
@@ -501,31 +417,6 @@ public class ComponentUtils {
         Collections.sort(orderedItems, new OrderComparator());
 
         return orderedItems;
-    }
-
-    /**
-     * Gets all the input fields contained in this container, but also in
-     * every sub-container that is a child of this container.  When called from the top level
-     * View this will be every InputField across all pages.
-     *
-     * @return every InputField that is a child at any level of this container
-     */
-    public static List<InputField> getAllInputFieldsWithinContainer(Container container) {
-        List<InputField> inputFields = new ArrayList<InputField>();
-
-        for (Component c : container.getComponentsForLifecycle()) {
-            if (c instanceof InputField) {
-                inputFields.add((InputField) c);
-            } else if (c instanceof Container) {
-                inputFields.addAll(getAllInputFieldsWithinContainer((Container) c));
-            } else if (c instanceof FieldGroup) {
-                Container cb = ((FieldGroup) c).getGroup();
-
-                inputFields.addAll(getAllInputFieldsWithinContainer(cb));
-            }
-        }
-
-        return inputFields;
     }
 
 }

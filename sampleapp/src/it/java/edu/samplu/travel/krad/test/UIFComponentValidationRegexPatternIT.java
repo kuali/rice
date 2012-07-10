@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * tests that regex validation works as expected on input fields where it is configured
+ * TODO Administrator don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -54,8 +54,6 @@ public class UIFComponentValidationRegexPatternIT {
         selenium.click("//input[@value='Login']");
         selenium.waitForPageToLoad("50000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=Uif Components (Kitchen Sink)");
         selenium.waitForPageToLoad("50000");
         assertEquals("Kuali Portal Index", selenium.getTitle());

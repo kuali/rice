@@ -175,11 +175,7 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
         StringBuilder fieldValue = new StringBuilder();
         String validChars = validCharsConstraint.getValue();
 
-        if (value instanceof java.sql.Date){
-            fieldValue.append(getDateTimeService().toDateString((java.sql.Date)value));
-        } else {
-            fieldValue.append(ValidationUtils.getString(value));
-        }
+        fieldValue.append(ValidationUtils.getString(value));
 
 //        int typIdx = validChars.indexOf(":");
 //        String processorType = "regex";

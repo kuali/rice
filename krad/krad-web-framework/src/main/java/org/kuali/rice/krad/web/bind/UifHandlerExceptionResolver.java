@@ -18,11 +18,10 @@ package org.kuali.rice.krad.web.bind;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.web.controller.UifControllerHelper;
+import org.kuali.rice.krad.uif.util.UifWebUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -75,14 +74,14 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         String incidentDocId = request.getParameter(KRADConstants.DOCUMENT_DOCUMENT_NUMBER);
         String incidentViewId = "";
 
-        UifFormBase form = (UifFormBase)request.getAttribute(UifConstants.REQUEST_FORM);
+        UifFormBase form = GlobalVariables.getUifFormManager().getCurrentForm();
         if (form instanceof DocumentFormBase) {
             if (((DocumentFormBase) form).getDocument() != null) {
                 incidentDocId = ((DocumentFormBase) form).getDocument().getDocumentNumber();
             }
             incidentViewId = ((DocumentFormBase) form).getViewId();
         }
-        GlobalVariables.getUifFormManager().removeSessionForm(form);
+        GlobalVariables.getUifFormManager().removeForm(form);
 
         UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
         IncidentReportForm incidentReportForm = new IncidentReportForm();
@@ -102,7 +101,6 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
         incidentReportForm.setDevMode(!KRADUtils.isProductionEnvironment());
         incidentReportForm.setViewId("Uif-IncidentReportView");
-        incidentReportForm.setAjaxRequest(form.isAjaxRequest());
 
         // Set the view object
         incidentReportForm.setView(getViewService().getViewById("Uif-IncidentReportView"));
@@ -116,15 +114,14 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         // Set render full view to force full render
         incidentReportForm.setRenderFullView(true);
 
-        // Set the ajax return type
-        incidentReportForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.SHOWINCIDENT.getKey());
-
-        ModelAndView modelAndView = UifControllerHelper.getUIFModelAndView(incidentReportForm, "");
+        ModelAndView modelAndView = UifWebUtils.getUIFModelAndView(incidentReportForm, "");
         try {
-            UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);
+            UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
         }
+
+        GlobalVariables.getUifFormManager().setCurrentForm(incidentReportForm);
 
         return modelAndView;
     }

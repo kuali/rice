@@ -22,7 +22,7 @@
     <parent>
         <artifactId>rice-krad</artifactId>
         <groupId>org.kuali.rice</groupId>
-        <version>2.2.0-M2-SNAPSHOT</version>
+        <version>2.1.1-rc1</version>
     </parent>
     <artifactId>rice-krad-web-framework</artifactId>
 
@@ -97,6 +97,31 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-core</artifactId>
+            <version>${tiles.version}</version>  
+        </dependency>  
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-api</artifactId>
+            <version>${tiles.version}</version>  
+        </dependency>     
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-servlet</artifactId>
+            <version>${tiles.version}</version>  
+        </dependency>     
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <version>${tiles.version}</version>  
+        </dependency>    
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-template</artifactId>
+            <version>${tiles.version}</version>  
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
@@ -132,15 +157,10 @@
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjweaver</artifactId>
       </dependency>
-       <!-- test dependencies -->
+
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>1.9.0</version>
       </dependency>
     </dependencies>
 </project>

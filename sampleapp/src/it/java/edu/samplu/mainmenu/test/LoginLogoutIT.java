@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * tests that user 'quickstart' can log in and log out
+ * TODO Administrator don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -41,7 +41,7 @@ public class LoginLogoutIT {
     
     @Test
     public void testBlah() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
+        selenium.open("/portal.do");
         selenium.type("name=__login_user", "quickstart");
         selenium.click("css=input[type=\"submit\"]");
         selenium.waitForPageToLoad("30000");

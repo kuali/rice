@@ -29,10 +29,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.widget.Help;
-import org.kuali.rice.krad.uif.widget.Helpable;
 import org.kuali.rice.krad.uif.widget.Inquiry;
-import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
@@ -46,7 +43,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DataField extends FieldBase implements DataBinding, Helpable {
+public class DataField extends FieldBase implements DataBinding {
     private static final long serialVersionUID = -4129678891948564724L;
 
     // binding
@@ -59,39 +56,40 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     // value props
     private String defaultValue;
     private Class<? extends ValueFinder> defaultValueFinderClass;
-    private Object[] defaultValues;
 
     private PropertyEditor propertyEditor;
 
-    private boolean addHiddenWhenReadOnly;
+    private boolean readOnlyHidden;
 
-    // read only display properties
-    protected String readOnlyDisplayReplacementPropertyName;
-    protected String readOnlyDisplaySuffixPropertyName;
+    // alternate and additional display properties
+    protected String alternateDisplayPropertyName;
+    protected String additionalDisplayPropertyName;
 
-    private String readOnlyDisplayReplacement;
-    private String readOnlyDisplaySuffix;
+    private String alternateDisplayValue;
+    private String additionalDisplayValue;
 
-    private boolean applyMask;
+    private boolean applyValueMask;
     private MaskFormatter maskFormatter;
 
-    private List<String> additionalHiddenPropertyNames;
-    private List<String> propertyNamesForAdditionalDisplay;
+    private List<String> hiddenPropertyNames;
+    private List<String> informationalDisplayPropertyNames;
 
     private boolean escapeHtmlInPropertyValue = true;
 
+    private String helpSummary;
+    private String helpDescription;
+
     // widgets
-    private Inquiry inquiry;
-    private Help help;
+    private Inquiry fieldInquiry;
 
     public DataField() {
         super();
 
-        addHiddenWhenReadOnly = false;
-        applyMask = false;
+        readOnlyHidden = false;
+        applyValueMask = false;
 
-        additionalHiddenPropertyNames = new ArrayList<String>();
-        propertyNamesForAdditionalDisplay = new ArrayList<String>();
+        hiddenPropertyNames = new ArrayList<String>();
+        informationalDisplayPropertyNames = new ArrayList<String>();
     }
 
     /**
@@ -124,9 +122,9 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
 
-        if (isAddHiddenWhenReadOnly()) {
+        if (isReadOnlyHidden()) {
             setReadOnly(true);
-            getAdditionalHiddenPropertyNames().add(getPropertyName());
+            getHiddenPropertyNames().add(getPropertyName());
         }
     }
 
@@ -149,19 +147,19 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         // adjust the path for hidden fields
         // TODO: should this check the view#readOnly?
         List<String> hiddenPropertyPaths = new ArrayList<String>();
-        for (String hiddenPropertyName : getAdditionalHiddenPropertyNames()) {
+        for (String hiddenPropertyName : getHiddenPropertyNames()) {
             String hiddenPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(hiddenPropertyName);
             hiddenPropertyPaths.add(hiddenPropertyPath);
         }
-        this.additionalHiddenPropertyNames = hiddenPropertyPaths;
+        this.hiddenPropertyNames = hiddenPropertyPaths;
 
         // adjust paths on informational property names
         List<String> informationalPropertyPaths = new ArrayList<String>();
-        for (String infoPropertyName : getPropertyNamesForAdditionalDisplay()) {
+        for (String infoPropertyName : getInformationalDisplayPropertyNames()) {
             String infoPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(infoPropertyName);
             informationalPropertyPaths.add(infoPropertyPath);
         }
-        this.propertyNamesForAdditionalDisplay = informationalPropertyPaths;
+        this.informationalDisplayPropertyNames = informationalPropertyPaths;
 
         // Additional and Alternate display value
         setAlternateAndAdditionalDisplayValue(view, model);
@@ -192,14 +190,14 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     protected void setAlternateAndAdditionalDisplayValue(View view, Object model) {
         // if alternate or additional display values set don't use property names
-        if (StringUtils.isNotBlank(readOnlyDisplayReplacement) || StringUtils.isNotBlank(readOnlyDisplaySuffix)) {
+        if (StringUtils.isNotBlank(alternateDisplayValue) || StringUtils.isNotBlank(additionalDisplayValue)) {
             return;
         }
 
         // check whether field value needs to be masked, and if so apply masking as alternateDisplayValue
-        if (isApplyMask()) {
+        if (isApplyValueMask()) {
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-            readOnlyDisplayReplacement = getMaskFormatter().maskValue(fieldValue);
+            alternateDisplayValue = getMaskFormatter().maskValue(fieldValue);
 
             // mask values are forced to be readonly
             setReadOnly(true);
@@ -212,19 +210,19 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         }
 
         // if field is not secure, check for alternate and additional display properties
-        if (StringUtils.isNotBlank(getReadOnlyDisplayReplacementPropertyName())) {
+        if (StringUtils.isNotBlank(getAlternateDisplayPropertyName())) {
             String alternateDisplayPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(
-                    getReadOnlyDisplayReplacementPropertyName());
+                    getAlternateDisplayPropertyName());
 
             Object alternateFieldValue = ObjectPropertyUtils.getPropertyValue(model, alternateDisplayPropertyPath);
             if (alternateFieldValue != null) {
                 // TODO: format by type
-                readOnlyDisplayReplacement = alternateFieldValue.toString();
+                alternateDisplayValue = alternateFieldValue.toString();
             }
         }
 
         // perform automatic translation for code references if enabled on view
-        if (StringUtils.isBlank(getReadOnlyDisplaySuffixPropertyName()) && view.isTranslateCodesOnReadOnlyDisplay()) {
+        if (StringUtils.isBlank(getAdditionalDisplayPropertyName()) && view.isTranslateCodes()) {
             // check for any relationship present for this field and it's of type KualiCode
             Class<?> parentObjectClass = ViewModelUtils.getParentObjectClassForMetadata(view, model, this);
             DataObjectRelationship relationship =
@@ -234,20 +232,20 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
             if (relationship != null
                     && getPropertyName().startsWith(relationship.getParentAttributeName())
                     && KualiCode.class.isAssignableFrom(relationship.getRelatedClass())) {
-                readOnlyDisplaySuffixPropertyName =
+                additionalDisplayPropertyName =
                         relationship.getParentAttributeName() + "." + KRADPropertyConstants.NAME;
             }
         }
 
         // now check for an additional display property and if set get the value
-        if (StringUtils.isNotBlank(getReadOnlyDisplaySuffixPropertyName())) {
+        if (StringUtils.isNotBlank(getAdditionalDisplayPropertyName())) {
             String additionalDisplayPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(
-                    getReadOnlyDisplaySuffixPropertyName());
+                    getAdditionalDisplayPropertyName());
 
             Object additionalFieldValue = ObjectPropertyUtils.getPropertyValue(model, additionalDisplayPropertyPath);
             if (additionalFieldValue != null) {
                 // TODO: format by type
-                readOnlyDisplaySuffix = additionalFieldValue.toString();
+                additionalDisplayValue = additionalFieldValue.toString();
             }
         }
     }
@@ -274,21 +272,31 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
             setShortLabel(attributeDefinition.getShortLabel());
         }
 
+        // summary
+        if (StringUtils.isEmpty(getHelpSummary())) {
+            setHelpSummary(attributeDefinition.getSummary());
+        }
+
+        // description
+        if (StringUtils.isEmpty(getHelpDescription())) {
+            setHelpDescription(attributeDefinition.getDescription());
+        }
+
         // security
         if (getComponentSecurity().getAttributeSecurity() == null) {
             getComponentSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 
         // alternate property name
-        if (getReadOnlyDisplayReplacementPropertyName() == null && StringUtils.isNotBlank(
+        if (getAlternateDisplayPropertyName() == null && StringUtils.isNotBlank(
                 attributeDefinition.getAlternateDisplayAttributeName())) {
-            setReadOnlyDisplayReplacementPropertyName(attributeDefinition.getAlternateDisplayAttributeName());
+            setAlternateDisplayPropertyName(attributeDefinition.getAlternateDisplayAttributeName());
         }
 
         // additional property display name
-        if (getReadOnlyDisplaySuffixPropertyName() == null && StringUtils.isNotBlank(
+        if (getAdditionalDisplayPropertyName() == null && StringUtils.isNotBlank(
                 attributeDefinition.getAdditionalDisplayAttributeName())) {
-            setReadOnlyDisplaySuffixPropertyName(attributeDefinition.getAdditionalDisplayAttributeName());
+            setAdditionalDisplayPropertyName(attributeDefinition.getAdditionalDisplayAttributeName());
         }
 
         // property editor
@@ -304,8 +312,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(inquiry);
-        components.add(help);
+        components.add(fieldInquiry);
 
         return components;
     }
@@ -497,36 +504,12 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * Array of default values for the model property the field points to
-     *
-     * <p>
-     * When a new <code>View</code> instance is requested, the corresponding
-     * model will be newly created. During this initialization process the value
-     * for the model property will be set to the given default values (if set)
-     * </p>
-     *
-     * @return String default value
-     */
-    public Object[] getDefaultValues() {
-        return this.defaultValues;
-    }
-
-    /**
-     * Setter for the fields default values
-     *
-     * @param defaultValues
-     */
-    public void setDefaultValues(Object[] defaultValues) {
-        this.defaultValues = defaultValues;
-    }
-
-    /**
      * Summary help text for the field
      *
      * @return String summary help text
      */
     public String getHelpSummary() {
-        return this.help.getTooltipHelpContent();
+        return helpSummary;
     }
 
     /**
@@ -535,7 +518,25 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param helpSummary
      */
     public void setHelpSummary(String helpSummary) {
-        this.help.setTooltipHelpContent(helpSummary);
+        this.helpSummary = helpSummary;
+    }
+
+    /**
+     * Full help information text for the field
+     *
+     * @return String help description text
+     */
+    public String getHelpDescription() {
+        return this.helpDescription;
+    }
+
+    /**
+     * Setter for the help description text
+     *
+     * @param helpDescription
+     */
+    public void setHelpDescription(String helpDescription) {
+        this.helpDescription = helpDescription;
     }
 
     /**
@@ -576,17 +577,17 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return boolean true if field should be readOnly hidden, false if not
      */
-    public boolean isAddHiddenWhenReadOnly() {
-        return addHiddenWhenReadOnly;
+    public boolean isReadOnlyHidden() {
+        return readOnlyHidden;
     }
 
     /**
      * Setter for the read-only hidden indicator
      *
-     * @param addHiddenWhenReadOnly
+     * @param readOnlyHidden
      */
-    public void setAddHiddenWhenReadOnly(boolean addHiddenWhenReadOnly) {
-        this.addHiddenWhenReadOnly = addHiddenWhenReadOnly;
+    public void setReadOnlyHidden(boolean readOnlyHidden) {
+        this.readOnlyHidden = readOnlyHidden;
     }
 
     /**
@@ -602,75 +603,27 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Inquiry field inquiry
      */
-    public Inquiry getInquiry() {
-        return this.inquiry;
+    public Inquiry getFieldInquiry() {
+        return this.fieldInquiry;
     }
 
     /**
      * Setter for the inquiry widget
      *
-     * @param inquiry
+     * @param fieldInquiry
      */
-    public void setInquiry(Inquiry inquiry) {
-        this.inquiry = inquiry;
-    }
-
-    /**
-     * Help configuration object for the datafield
-     *
-     * <p>
-     * External help information can be configured for the datafield. The
-     * <code>Help</code> object can the configuration for rendering a link to
-     * that help information.
-     * </p>
-     *
-     * @return Help for datafield
-     */
-    @Override
-    public Help getHelp() {
-        return this.help;
-    }
-
-    /**
-     * Setter for the datafield help content
-     *
-     * @param help
-     */
-    @Override
-    public void setHelp(Help help) {
-        this.help = help;
-    }
-
-    /**
-     * For data fields the help tooltip is placed on the label.
-     *
-     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip))
-     */
-    @Override
-    public void setTooltipOfComponent(Tooltip tooltip) {
-        getFieldLabel().setToolTip(tooltip);
-    }
-
-    /**
-     * Return the field label for the help title
-     *
-     * @return field label
-     *
-     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
-     */
-    @Override
-    public String getHelpTitle() {
-        return this.getLabel();
+    public void setFieldInquiry(Inquiry fieldInquiry) {
+        this.fieldInquiry = fieldInquiry;
     }
 
     /**
      * Additional display attribute name, which will be displayed next to the actual field value
-     * when the field is readonly with hyphen in between like PropertyValue - AdditionalPropertyValue
+     * when the field is readonly with hypen inbetween like PropertyValue - AdditionalPropertyValue
      *
-     * @param readOnlyDisplaySuffixPropertyName - Name of the additional display property
+     * @param additionalDisplayPropertyName - Name of the additional display property
      */
-    public void setReadOnlyDisplaySuffixPropertyName(String readOnlyDisplaySuffixPropertyName) {
-        this.readOnlyDisplaySuffixPropertyName = readOnlyDisplaySuffixPropertyName;
+    public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
+        this.additionalDisplayPropertyName = additionalDisplayPropertyName;
     }
 
     /**
@@ -678,18 +631,18 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Additional Display Attribute Name
      */
-    public String getReadOnlyDisplaySuffixPropertyName() {
-        return this.readOnlyDisplaySuffixPropertyName;
+    public String getAdditionalDisplayPropertyName() {
+        return this.additionalDisplayPropertyName;
     }
 
     /**
      * Sets the alternate display attribute name to be displayed when the field is readonly.
      * This properties value will be displayed instead of actual fields value when the field is readonly.
      *
-     * @param readOnlyDisplayReplacementPropertyName - alternate display property name
+     * @param alternateDisplayPropertyName - alternate display property name
      */
-    public void setReadOnlyDisplayReplacementPropertyName(String readOnlyDisplayReplacementPropertyName) {
-        this.readOnlyDisplayReplacementPropertyName = readOnlyDisplayReplacementPropertyName;
+    public void setAlternateDisplayPropertyName(String alternateDisplayPropertyName) {
+        this.alternateDisplayPropertyName = alternateDisplayPropertyName;
     }
 
     /**
@@ -697,8 +650,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return alternate Display Property Name
      */
-    public String getReadOnlyDisplayReplacementPropertyName() {
-        return this.readOnlyDisplayReplacementPropertyName;
+    public String getAlternateDisplayPropertyName() {
+        return this.alternateDisplayPropertyName;
     }
 
     /**
@@ -706,8 +659,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return the alternate display value set for this field
      */
-    public String getReadOnlyDisplayReplacement() {
-        return readOnlyDisplayReplacement;
+    public String getAlternateDisplayValue() {
+        return alternateDisplayValue;
     }
 
     /**
@@ -715,8 +668,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @param value
      */
-    public void setReadOnlyDisplayReplacement(String value) {
-        this.readOnlyDisplayReplacement = value;
+    public void setAlternateDisplayValue(String value) {
+        this.alternateDisplayValue = value;
     }
 
     /**
@@ -724,8 +677,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return the additional display value set for this field
      */
-    public String getReadOnlyDisplaySuffix() {
-        return readOnlyDisplaySuffix;
+    public String getAdditionalDisplayValue() {
+        return additionalDisplayValue;
     }
 
     /**
@@ -733,8 +686,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @param value
      */
-    public void setReadOnlyDisplaySuffix(String value) {
-        this.readOnlyDisplaySuffix = value;
+    public void setAdditionalDisplayValue(String value) {
+        this.additionalDisplayValue = value;
     }
 
     /**
@@ -754,21 +707,21 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return boolean true if the field value should be masked, false if not
      */
-    public boolean isApplyMask() {
-        return applyMask;
+    public boolean isApplyValueMask() {
+        return applyValueMask;
     }
 
     /**
      * Setter for the apply value mask flag
      *
-     * @param applyMask
+     * @param applyValueMask
      */
-    public void setApplyMask(boolean applyMask) {
-        this.applyMask = applyMask;
+    public void setApplyValueMask(boolean applyValueMask) {
+        this.applyValueMask = applyValueMask;
     }
 
     /**
-     * MaskFormatter instance that will be used to mask the field value when {@link #isApplyMask()} is true
+     * MaskFormatter instance that will be used to mask the field value when {@link #isApplyValueMask()} is true
      *
      * <p>
      * Note in cases where the mask is applied due to security (KIM permissions), the mask or partial mask formatter
@@ -796,17 +749,17 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return List<String> hidden property names
      */
-    public List<String> getAdditionalHiddenPropertyNames() {
-        return additionalHiddenPropertyNames;
+    public List<String> getHiddenPropertyNames() {
+        return hiddenPropertyNames;
     }
 
     /**
      * Setter for the hidden property names
      *
-     * @param additionalHiddenPropertyNames
+     * @param hiddenPropertyNames
      */
-    public void setAdditionalHiddenPropertyNames(List<String> additionalHiddenPropertyNames) {
-        this.additionalHiddenPropertyNames = additionalHiddenPropertyNames;
+    public void setHiddenPropertyNames(List<String> hiddenPropertyNames) {
+        this.hiddenPropertyNames = hiddenPropertyNames;
     }
 
     /**
@@ -827,17 +780,17 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return List<String> informational property names
      */
-    public List<String> getPropertyNamesForAdditionalDisplay() {
-        return propertyNamesForAdditionalDisplay;
+    public List<String> getInformationalDisplayPropertyNames() {
+        return informationalDisplayPropertyNames;
     }
 
     /**
      * Setter for the list of informational property names
      *
-     * @param propertyNamesForAdditionalDisplay
+     * @param informationalDisplayPropertyNames
      */
-    public void setPropertyNamesForAdditionalDisplay(List<String> propertyNamesForAdditionalDisplay) {
-        this.propertyNamesForAdditionalDisplay = propertyNamesForAdditionalDisplay;
+    public void setInformationalDisplayPropertyNames(List<String> informationalDisplayPropertyNames) {
+        this.informationalDisplayPropertyNames = informationalDisplayPropertyNames;
     }
 
     /**
@@ -868,9 +821,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @return boolean true if value is secure, false if not
      */
     public boolean hasSecureValue() {
-        return isApplyMask() || ((getComponentSecurity().isViewAuthz()
+        return isApplyValueMask() || ((getComponentSecurity().isViewAuthz()
                 || getComponentSecurity().isViewInLineAuthz()
                 || ((getComponentSecurity().getAttributeSecurity() != null) && getComponentSecurity()
                 .getAttributeSecurity().isHide())) && isHidden());
     }
+
 }

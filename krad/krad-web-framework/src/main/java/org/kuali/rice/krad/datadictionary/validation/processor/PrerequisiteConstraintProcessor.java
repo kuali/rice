@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ValidationUtils;
@@ -24,7 +23,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteCons
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
-import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * 
@@ -33,7 +31,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintProcessor<PrerequisiteConstraint> {
 	
 	private static final String CONSTRAINT_NAME = "prerequisite constraint";
-    private static final String FALLBACK_KEY = "prerequisiteFallback";
 
 	
 	/**
@@ -49,13 +46,7 @@ public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintP
 		ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(constraint, attributeValueReader);
 
         if(constraint != null){
-            if(StringUtils.isNotBlank(constraint.getLabelKey())){
-                constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
-            }
-            else{
-                constraintValidationResult.setConstraintLabelKey(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX +
-                        FALLBACK_KEY);
-            }
+            constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
             constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
         }
 

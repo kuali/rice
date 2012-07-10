@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -29,9 +28,8 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
@@ -66,9 +64,7 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -76,7 +72,6 @@ import org.springframework.util.MethodInvoker;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -98,7 +93,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient DataDictionaryService dataDictionaryService;
     private transient ExpressionEvaluatorService expressionEvaluatorService;
     private transient ViewDictionaryService viewDictionaryService;
-    private transient ConfigurationService configurationService;
 
     /**
      * Uses reflection to find all fields defined on the <code>View</code> instance that have
@@ -178,10 +172,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void performInitialization(View view, Object model) {
         view.assignComponentIds(view);
-        
-        // increment the id sequence so components added later to the static view components
-        // will not conflict with components on the page when navigation happens
-        view.setIdSequence(100000);
         performComponentInitialization(view, model, view);
     }
 
@@ -199,15 +189,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     public void performComponentLifecycle(View view, Object model, Component component, String origId) {
         Component origComponent = view.getViewIndex().getComponentById(origId);
-
+        
         // run through and assign any ids starting with the id for the refreshed component (this might be
         // necessary if we are getting a new component instance from the bean factory)
         Integer currentSequenceVal = view.getIdSequence();
         Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
-        // if the component was retrieved from the initial states map in ViewIndex, startingSequenceVal is null
-        if (startingSequenceVal != null) {
-            view.setIdSequence(startingSequenceVal);
-        }
+        view.setIdSequence(startingSequenceVal);
 
         view.assignComponentIds(component);
 
@@ -215,26 +202,17 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // on existing components
         view.setIdSequence(currentSequenceVal);
 
-        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
-        String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
-        ComponentUtils.updateIdWithSuffix(component, suffix);
-
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
-
-        // update context on all components within the refresh component to catch context set by parent
         component.pushAllToContext(origComponent.getContext());
-        List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
-        for (Component nestedComponent : nestedComponents) {
-            nestedComponent.pushAllToContext(origComponent.getContext());
-        }
 
-        // the expression graph for refreshed components is captured in the view index (initially it might expressoins
-        // might have come from a parent), after getting the expression graph then we need to populate the expressions
-        // on the configurable for which they apply
-        Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
-                component.getBaseId());
-        component.setExpressionGraph(expressionGraph);
-        ExpressionUtils.populatePropertyExpressionsFromGraph(component, false);
+        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
+        String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getFactoryId(), "");
+
+        // remove attribute suffix since that gets added in lifecycle
+        if (suffix.endsWith(UifConstants.IdSuffixes.ATTRIBUTE)) {
+            suffix = StringUtils.removeEnd(suffix, UifConstants.IdSuffixes.ATTRIBUTE);
+        }
+        ComponentUtils.updateIdWithSuffix(component, suffix);
 
         // binding path should stay the same
         if (component instanceof DataBinding) {
@@ -245,7 +223,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // copy properties that are set by parent components in the full view lifecycle
         if (component instanceof Field) {
-            ((Field) component).setLabelRendered(((Field) origComponent).isLabelRendered());
+            ((Field) component).setLabelFieldRendered(((Field) origComponent).isLabelFieldRendered());
         } else if (component instanceof CollectionGroup) {
             ((CollectionGroup) component).setSubCollectionSuffix(
                     ((CollectionGroup) origComponent).getSubCollectionSuffix());
@@ -275,9 +253,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // make sure id, binding, and label settings stay the same as initial
         if (component instanceof Group || component instanceof FieldGroup) {
-            List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(component);
-            for (Component nestedComponent : nestedGroupComponents) {
-                Component origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
+            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
+            for (Component nestedComponent : nestedComponents) {
+                Component origNestedComponent = null;
+                if (nestedComponent instanceof DataField) {
+                    origNestedComponent = view.getViewIndex().getComponentById(
+                            nestedComponent.getId() + suffix + UifConstants.IdSuffixes.ATTRIBUTE);
+                } else {
+                    origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
+                }
 
                 if (origNestedComponent != null) {
                     // update binding
@@ -290,7 +274,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
                     // update label rendered flag
                     if (nestedComponent instanceof Field) {
-                        ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent).isLabelRendered());
+                        ((Field) nestedComponent).setLabelFieldRendered(
+                                ((Field) origNestedComponent).isLabelFieldRendered());
                     }
 
                     if (origNestedComponent.isRefreshedByAction()) {
@@ -340,6 +325,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * </p>
      *
      * @throws RiceRuntimeException if the component id or factoryId is not specified
+     *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
@@ -360,10 +346,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (!(component instanceof View)) {
             view.getViewIndex().addInitialComponentStateIfNeeded(component);
         }
-
-        // the component can have an expression graph for which the expressions need pulled to
-        // the list the expression service will evaluate
-        ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
 
         // invoke component to initialize itself after properties have been set
         component.performInitialization(view, model);
@@ -391,9 +373,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: initialize from dictionary
         }
 
-        // invoke initialize service hook
-        performCustomInitialization(view, component);
-
         // invoke component modifiers setup to run in the initialize phase
         runComponentModifiers(view, component, null, UifConstants.ViewPhases.INITIALIZE);
 
@@ -408,6 +387,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 performComponentInitialization(view, model, replacerComponent);
             }
         }
+
+        // invoke initialize service hook
+        performCustomInitialization(view, component);
     }
 
     /**
@@ -488,7 +470,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             if (inputField.getControl() == null) {
                 Control control = ComponentFactory.getTextControl();
                 control.setId(view.getNextId());
-                control.setBaseId(control.getId());
+                control.setFactoryId(control.getId());
 
                 inputField.setControl(control);
             }
@@ -676,25 +658,24 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
-        // set context on component for evaluating expressions
+        // evaluate expressions on component properties
         component.pushAllToContext(getCommonContext(view, component));
-
-        getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, component, model,
-                component.getContext());
+        ExpressionUtils.adjustPropertyExpressions(view, component);
+        getExpressionEvaluatorService().evaluateObjectExpressions(component, model, component.getContext());
 
         // evaluate expressions on component security
         ComponentSecurity componentSecurity = component.getComponentSecurity();
-        getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, componentSecurity, model,
-                component.getContext());
+        ExpressionUtils.adjustPropertyExpressions(view, componentSecurity);
+        getExpressionEvaluatorService().evaluateObjectExpressions(componentSecurity, model, component.getContext());
 
         // evaluate expressions on the binding info object
         if (component instanceof DataBinding) {
             BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
-            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, bindingInfo, model,
-                    component.getContext());
+            ExpressionUtils.adjustPropertyExpressions(view, bindingInfo);
+            getExpressionEvaluatorService().evaluateObjectExpressions(bindingInfo, model, component.getContext());
         }
 
-        // set context evaluate expressions on the layout manager
+        // evaluate expressions on the layout manager
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
 
@@ -703,7 +684,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
 
-                getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, layoutManager, model,
+                ExpressionUtils.adjustPropertyExpressions(view, layoutManager);
+                getExpressionEvaluatorService().evaluateObjectExpressions(layoutManager, model,
                         layoutManager.getContext());
             }
         }
@@ -728,8 +710,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
                 nestedComponent.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
-                performComponentApplyModel(view, nestedComponent, model);
             }
+
+            performComponentApplyModel(view, nestedComponent, model);
         }
     }
 
@@ -841,7 +824,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 boolean canUnmaskValue = authorizer.canUnmaskField(view, model, dataField, dataField.getPropertyName(),
                         user);
                 if (!canUnmaskValue) {
-                    dataField.setApplyMask(true);
+                    dataField.setApplyValueMask(true);
                     dataField.setMaskFormatter(dataField.getComponentSecurity().getAttributeSecurity().
                             getMaskFormatter());
                 } else {
@@ -849,7 +832,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     boolean canPartiallyUnmaskValue = authorizer.canPartialUnmaskField(view, model, dataField,
                             dataField.getPropertyName(), user);
                     if (!canPartiallyUnmaskValue) {
-                        dataField.setApplyMask(true);
+                        dataField.setApplyValueMask(true);
                         dataField.setMaskFormatter(
                                 dataField.getComponentSecurity().getAttributeSecurity().getPartialMaskFormatter());
                     }
@@ -857,16 +840,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
 
             // check authorization for actions
-            if (field instanceof Action) {
-                Action action = (Action) field;
+            if (field instanceof ActionField) {
+                ActionField actionField = (ActionField) field;
 
-                boolean canTakeAction = authorizer.canPerformAction(view, model, action, action.getActionEvent(),
-                        action.getId(), user);
+                boolean canTakeAction = authorizer.canPerformAction(view, model, actionField,
+                        actionField.getActionEvent(), actionField.getId(), user);
                 if (canTakeAction) {
-                    canTakeAction = presentationController.canPerformAction(view, model, action,
-                            action.getActionEvent(), action.getId());
+                    canTakeAction = presentationController.canPerformAction(view, model, actionField,
+                            actionField.getActionEvent(), actionField.getId());
                 }
-                action.setRender(canTakeAction);
+                actionField.setRender(canTakeAction);
             }
         }
 
@@ -960,10 +943,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performFinalize(View view, Object model) {
-        // get script for generating growl messages
-        String growlScript = buildGrowlScript(view);
-        ((ViewModel) model).setGrowlScript(growlScript);
-
         Map<String, Object> clientState = new HashMap<String, Object>();
         performComponentFinalize(view, view, model, null, clientState);
 
@@ -1039,61 +1018,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     + "');";
 
             String kradURL = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("krad.url");
-            clientStateScript +=
-                    "setConfigParam('" + UifConstants.ClientSideVariables.KRAD_URL + "','" + kradURL + "');";
+            clientStateScript += "setConfigParam('"
+                    + UifConstants.ClientSideVariables.KRAD_URL
+                    + "','"
+                    + kradURL
+                    + "');";
         }
 
         return clientStateScript;
-    }
-
-    /**
-     * Builds JS script that will invoke the show growl method to display a growl message when the page is
-     * rendered
-     *
-     * <p>
-     * A growl call will be created for any explicit growl messages added to the message map.
-     * </p>
-     *
-     * <p>
-     * Growls are only generated if @{link org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled.
-     * If not, the growl messages are set as info messages for the page
-     * </p>
-     *
-     * @param view - view instance for which growls are being generated
-     * @return String JS script string for generated growl messages
-     */
-    protected String buildGrowlScript(View view) {
-        String growlScript = "";
-
-        ConfigurationService configService = getConfigurationService();
-
-        MessageMap messageMap = GlobalVariables.getMessageMap();
-        for (GrowlMessage growl : messageMap.getGrowlMessages()) {
-            if (view.isGrowlMessagingEnabled()) {
-                String message = configService.getPropertyValueAsString(growl.getMessageKey());
-
-                if (StringUtils.isNotBlank(message)) {
-                    if (growl.getMessageParameters() != null) {
-                        message = message.replace("'", "''");
-                        message = MessageFormat.format(message, (Object[]) growl.getMessageParameters());
-                    }
-
-                    // escape single quotes in message or title since that will cause problem with plugin
-                    message = message.replace("'", "\\'");
-
-                    String title = growl.getTitle();
-                    title = title.replace("'", "\\'");
-
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + title + "', '" + growl.getTheme() + "');";
-                }
-            } else {
-                messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, growl.getMessageKey(),
-                        growl.getMessageParameters());
-            }
-        }
-
-        return growlScript;
     }
 
     /**
@@ -1114,7 +1046,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // implement readonly request overrides
         ViewModel viewModel = (ViewModel) model;
-        if ((component instanceof DataBinding) && view.isSupportsRequestOverrideOfReadOnlyFields() && !viewModel
+        if ((component instanceof DataBinding) && view.isSupportsReadOnlyFieldsOverride() && !viewModel
                 .getReadOnlyFieldsList().isEmpty()) {
             String propertyName = ((DataBinding) component).getPropertyName();
             if (viewModel.getReadOnlyFieldsList().contains(propertyName)) {
@@ -1248,7 +1180,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             finalizeMethodInvoker = new MethodInvoker();
         }
 
-        // if method not set on invoker, use finalizeMethodToCall, note staticMethod could be set(don't know since
+        // if method not set on invoker, use renderingMethodToCall, note staticMethod could be set(don't know since
         // there is not a getter), if so it will override the target method in prepare
         if (StringUtils.isBlank(finalizeMethodInvoker.getTargetMethod())) {
             finalizeMethodInvoker.setTargetMethod(finalizeMethodToCall);
@@ -1276,9 +1208,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
         finalizeMethodInvoker.setArguments(arguments);
 
-        // invoke finalize method
+        // invoke method and get render output
         try {
-            LOG.debug("Invoking finalize method: "
+            LOG.debug("Invoking render method: "
                     + finalizeMethodInvoker.getTargetMethod()
                     + " for component: "
                     + component.getId());
@@ -1291,11 +1223,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 String renderOutput = (String) finalizeMethodInvoker.invoke();
 
                 component.setSelfRendered(true);
-                component.setRenderedHtmlOutput(renderOutput);
+                component.setRenderOutput(renderOutput);
             }
         } catch (Exception e) {
-            LOG.error("Error invoking finalize method for component: " + component.getId(), e);
-            throw new RuntimeException("Error invoking finalize method for component: " + component.getId(), e);
+            LOG.error("Error invoking rendering method for component: " + component.getId(), e);
+            throw new RuntimeException("Error invoking rendering method for component: " + component.getId(), e);
         }
     }
 
@@ -1340,77 +1272,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: should check to see if there is an add line method on the
             // collection parent and if so call that instead of just adding to
             // the collection (so that sequence can be set)
-            addLine(collection, addLine, true);
+            addLine(collection, addLine);
 
             // make a new instance for the add line
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
         }
 
-        ((UifFormBase) model).getAddedCollectionItems().add(addLine);
-
         processAfterAddLine(view, collectionGroup, model, addLine);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionSaveLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, java.lang.String, int)
-     */
-    @Override
-    public void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex) {
-        // get the collection group from the view
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
-        }
-
-        // get the collection instance for adding the new line
-        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
-        if (collection == null) {
-            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
-        }
-
-        // TODO: look into other ways of identifying a line so we can deal with
-        // unordered collections
-        if (collection instanceof List) {
-            Object saveLine = ((List<Object>) collection).get(selectedLineIndex);
-
-            processBeforeSaveLine(view, collectionGroup, model, saveLine);
-
-            ((UifFormBase) model).getAddedCollectionItems().remove(saveLine);
-
-            processAfterSaveLine(view, collectionGroup, model, saveLine);
-
-        } else {
-            logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
-        }
-
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddBlankLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, java.lang.String)
-     */
-    @Override
-    public void processCollectionAddBlankLine(View view, Object model, String collectionPath) {
-        // get the collection group from the view
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
-        }
-
-        // get the collection instance for adding the new line
-        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
-        if (collection == null) {
-            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
-        }
-
-        Object newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
-        applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
-        boolean insertFirst = collectionGroup.getAddLinePlacement().equals("TOP");
-        addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
-
-        ((UifFormBase) model).getAddedCollectionItems().add(newLine);
-
     }
 
     /**
@@ -1419,15 +1287,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * @param collection - the Collection to add the given addLine to
      * @param addLine - the line to add to the given collection
-     * @param insertFirst - indicates if the item should be inserted as the first item
      */
-    protected void addLine(Collection<Object> collection, Object addLine, boolean insertFirst) {
-        if (insertFirst && (collection instanceof List)) {
+    protected void addLine(Collection<Object> collection, Object addLine) {
+        if (collection instanceof List) {
             ((List) collection).add(0, addLine);
         } else {
             collection.add(addLine);
         }
     }
+
 
     /**
      * Performs validation on the new collection line before it is added to the
@@ -1585,8 +1453,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (inquirable != null) {
             inquirable.buildInquirableLink(dataObject, propertyName, inquiry);
         } else {
-            // TODO: should we really not render the inquiry just because the top parent doesn't have an inquirable?
-            // it is possible the path is nested and there does exist an inquiry for the property
             // inquirable not found, no inquiry link can be set
             inquiry.setRender(false);
         }
@@ -1600,7 +1466,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             Object line) {
         // retrieve all data fields for the collection line
-        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineItems(),
+        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineFields(),
                 DataField.class);
         for (DataField dataField : dataFields) {
             String bindingPath = "";
@@ -1666,27 +1532,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     protected void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
         // check for configured default value
         String defaultValue = dataField.getDefaultValue();
-        Object[] defaultValues = dataField.getDefaultValues();
-
-        if (StringUtils.isBlank(defaultValue) && defaultValues != null && defaultValues.length > 0)     {
-            ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValues);
+        if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
+            ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
+            defaultValue = defaultValueFinder.getValue();
         }
-        else {
-            if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
-                ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
-                defaultValue = defaultValueFinder.getValue();
+
+        // populate default value if given and path is valid
+        if (StringUtils.isNotBlank(defaultValue) && ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
+            if (getExpressionEvaluatorService().containsElPlaceholder(defaultValue)) {
+                Map<String, Object> context = getPreModelContext(view);
+                defaultValue = getExpressionEvaluatorService().evaluateExpressionTemplate(null, context, defaultValue);
             }
 
-            // populate default value if given and path is valid
-            if (StringUtils.isNotBlank(defaultValue) && ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
-                if (getExpressionEvaluatorService().containsElPlaceholder(defaultValue)) {
-                    Map<String, Object> context = getPreModelContext(view);
-                    defaultValue = getExpressionEvaluatorService().evaluateExpressionTemplate(null, context, defaultValue);
-                }
-
-                // TODO: this should go through our formatters
-                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
-            }
+            // TODO: this should go through our formatters
+            ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
         }
     }
 
@@ -1778,34 +1637,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the save collection line before it
-     * is validated
-     *
-     * @param view - view instance that is being presented (the action was taken
-     * on)
-     * @param collectionGroup - collection group component for the collection
-     * @param model - object instance that contain's the views data
-     * @param addLine - the new line instance to be processed
-     */
-    protected void processBeforeSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-
-    }
-
-    /**
-     * Hook for service overrides to process the save collection line after it
-     * has been validated
-     *
-     * @param view - view instance that is being presented (the action was taken
-     * on)
-     * @param collectionGroup - collection group component for the collection
-     * @param model - object instance that contains the views data
-     * @param addLine - the new line that was added
-     */
-    protected void processAfterSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-
-    }
-
-    /**
      * Hook for service overrides to process the collection line after it has been deleted
      *
      * @param view - view instance that is being presented (the action was taken on)
@@ -1818,21 +1649,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     }
 
-    /**
-     * Log the error and throw a new runtime exception
-     *
-     * @param message - the error message (both to log and throw as a new exception)
-     */
     protected void logAndThrowRuntime(String message) {
         LOG.error(message);
         throw new RuntimeException(message);
     }
 
-    /**
-     * Gets the data dictionary service
-     *
-     * @return DataDictionaryService data dictionary service
-     */
     protected DataDictionaryService getDataDictionaryService() {
         if (this.dataDictionaryService == null) {
             this.dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
@@ -1841,20 +1662,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return this.dataDictionaryService;
     }
 
-    /**
-     * Sets the data dictionary service
-     *
-     * @param dataDictionaryService
-     */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
     }
 
-    /**
-     * Gets the expression evaluator service
-     *
-     * @return ExpressionEvaluatorService expression evaluator service
-     */
     protected ExpressionEvaluatorService getExpressionEvaluatorService() {
         if (this.expressionEvaluatorService == null) {
             this.expressionEvaluatorService = KRADServiceLocatorWeb.getExpressionEvaluatorService();
@@ -1863,20 +1674,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return this.expressionEvaluatorService;
     }
 
-    /**
-     * Sets the expression evaluator service
-     *
-     * @param expressionEvaluatorService
-     */
     public void setExpressionEvaluatorService(ExpressionEvaluatorService expressionEvaluatorService) {
         this.expressionEvaluatorService = expressionEvaluatorService;
     }
 
-    /**
-     * Gets the view dictionary service
-     *
-     * @return ViewDictionaryService view dictionary service
-     */
     public ViewDictionaryService getViewDictionaryService() {
         if (this.viewDictionaryService == null) {
             this.viewDictionaryService = KRADServiceLocatorWeb.getViewDictionaryService();
@@ -1884,33 +1685,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return this.viewDictionaryService;
     }
 
-    /**
-     * Sets the view dictionary service
-     *
-     * @param viewDictionaryService
-     */
     public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
         this.viewDictionaryService = viewDictionaryService;
-    }
-
-    /**
-     * Gets the configuration service
-     *
-     * @return ConfigurationService configuration service
-     */
-    public ConfigurationService getConfigurationService() {
-        if (this.configurationService == null) {
-            this.configurationService = KRADServiceLocator.getKualiConfigurationService();
-        }
-        return this.configurationService;
-    }
-
-    /**
-     * Sets the configuration service
-     *
-     * @param configurationService
-     */
-    public void setConfigurationService(ConfigurationService configurationService) {
-        this.configurationService = configurationService;
     }
 }

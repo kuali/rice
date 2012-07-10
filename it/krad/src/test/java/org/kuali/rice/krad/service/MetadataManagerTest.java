@@ -40,7 +40,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 /**
- * MetadataManagerTest tests {@link MetadataManager} methods
+ * Unit tests for MetadataManager methods
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

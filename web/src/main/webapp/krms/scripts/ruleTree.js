@@ -28,7 +28,7 @@ function getPropositionIdFromParentLi(parentLiNode) {
 
 function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
 
-    var collectionGroupDivLocator = '#' + collectionGroupId;
+    var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
 
     var elementToBlock = jq(collectionGroupDivLocator);
     var selectedItemInput = getSelectedPropositionInput();
@@ -43,15 +43,15 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
             if(jq(collectionGroupDivLocator).length){
                 jq(collectionGroupDivLocator).replaceWith(component);
             }
-            runHiddenScripts(collectionGroupId);
+            runHiddenScripts(collectionGroupId + '_div');
         }
         });
 
     };
 
     ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-            {updateComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
-            elementToBlock, null,"update-component");
+            {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
+            elementToBlock);
 }
 
 function ajaxCutPropositionTree(controllerMethod, collectionGroupId) {

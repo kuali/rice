@@ -105,9 +105,6 @@ public class CloneUtils {
         else if (original instanceof Boolean) {
             return new Boolean(((Boolean) original).booleanValue());
         }
-        else if (original instanceof Enum) {
-            return original;
-        }
 
         // To our understanding, this is a mutable object, so clone it
         Class<?> c = original.getClass();
@@ -139,7 +136,7 @@ public class CloneUtils {
             return copy;
         }
         catch (Throwable t) {
-            LOG.warn("Exception during clone (returning original): " + t.getMessage());
+            LOG.debug("Exception during clone (returning original): " + t.getMessage());
             return original;
         }
     }

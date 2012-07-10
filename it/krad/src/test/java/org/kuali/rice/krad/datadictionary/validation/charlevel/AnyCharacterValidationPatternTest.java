@@ -20,11 +20,6 @@ import org.kuali.rice.kns.datadictionary.validation.charlevel.AnyCharacterValida
 import org.kuali.rice.krad.datadictionary.validation.ValidationTestUtils;
 import org.kuali.rice.test.BaseRiceTestCase;
 
-/**
- *  AnyCharacterValidationPatternTest tests {@link AnyCharacterValidationPattern}
- *
- *  @author Kuali Rice Team (rice.collab@kuali.org)
- */
 public class AnyCharacterValidationPatternTest extends BaseRiceTestCase {
     private AnyCharacterValidationPattern pattern;
 
@@ -35,9 +30,7 @@ public class AnyCharacterValidationPatternTest extends BaseRiceTestCase {
         pattern = new AnyCharacterValidationPattern();
     }
 
-    /**
-     * tests that any sequence not containing white space matches
-     */
+
     @Test public final void testMatch_allowDefault() {
         boolean[] expected = { true, // ""
                 true, // "!!!"
@@ -61,9 +54,6 @@ public class AnyCharacterValidationPatternTest extends BaseRiceTestCase {
         ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
 
-    /**
-     * tests that sequences containing white space are allowed
-     */
     @Test public final void testMatch_allowWhitespace() {
         boolean[] expected = { true, // ""
                 true, // "!!!"

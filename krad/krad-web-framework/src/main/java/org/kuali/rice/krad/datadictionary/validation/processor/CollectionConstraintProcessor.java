@@ -20,11 +20,9 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import java.util.Collection;
 
 /**
- * CollectionConstraintProcessor is a marker interface for 'collection constraint processors'
- *
- * <p>It is a constraint processor that tests collections
+ * This is a marker interface for 'collection constraint processors', that is - a constraint processor that tests collections
  * rather than their elements. Maybe the best example of a collection-based constraint is a constraint on the number of elements 
- * in that collection -- for example, a constraint that ensures that there are between 1 and 10 elements in a collection.</p>
+ * in that collection -- for example, a constraint that ensures that there are between 1 and 10 elements in a collection. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

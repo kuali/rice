@@ -527,8 +527,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @param entryName - the qualified object name e.g. edu.sampleu.demo.kitchensink.TimeInfo
-     * @param attributeName - an attribute name e.g. startTimeAmPm
+     * @param objectClass
+     * @param attributeName
      * @return AttributeDefinition for the given dataObjectClass and attribute name, or null if there is none
      * @throws IllegalArgumentException if the given Class is null or is not a BusinessObject class
      */

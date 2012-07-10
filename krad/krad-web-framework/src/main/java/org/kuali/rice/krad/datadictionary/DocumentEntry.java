@@ -36,7 +36,7 @@ import java.util.Map;
  * general maintenance of a Document (transactional or maintenance) and its attributes
  *
  * <p>
- * The setters do validation to facilitate generating errors during the parsing process.
+ * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -86,9 +86,8 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Setter for document class associated with the document
-     *
-     * @param documentClass - the document class associated with the document
+     * The documentClass element is the name of the java class
+     * associated with the document.
      */
     public void setDocumentClass(Class<? extends Document> documentClass) {
         if (documentClass == null) {
@@ -98,57 +97,39 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         this.documentClass = documentClass;
     }
 
-    /**
-     * The {@link Document} subclass associated with the document
-     *
-     * @return Class<? extends Document>
-     */
     public Class<? extends Document> getDocumentClass() {
         return documentClass;
     }
 
     /**
-     * Setter for the optional java superclass associated with the document
-     *
-     * @param baseDocumentClass - the superclass associated with the document
+     * The optional baseDocumentClass element is the name of the java superclass
+     * associated with the document. This gives the data dictionary the ability
+     * to index by the superclass in addition to the current class.
      */
     public void setBaseDocumentClass(Class<? extends Document> baseDocumentClass) {
         this.baseDocumentClass = baseDocumentClass;
     }
 
-    /**
-     * The optional {@link Document} superclass associated with the document
-     *
-     * <p>
-     * This gives the data dictionary the ability to index by the superclass in addition to the current class.
-     * </p>
-     *
-     * @return Class<? extends Document>
-     */
     public Class<? extends Document> getBaseDocumentClass() {
         return baseDocumentClass;
     }
 
     /**
-     * Setter for the {@link BusinessRule} to execute rules for the document
+     * The businessRulesClass element is the full class name of the java
+     * class which contains the business rules for a document.
      */
     public void setBusinessRulesClass(Class<? extends BusinessRule> businessRulesClass) {
         this.businessRulesClass = businessRulesClass;
     }
 
-    /**
-     * The {@link BusinessRule} that will be used to execute business rules for the document
-     *
-     * @return BusinessRule
-     */
     public Class<? extends BusinessRule> getBusinessRulesClass() {
         return businessRulesClass;
     }
 
     /**
-     * Setter for the name of the document as defined in the workflow system
-     *
-     * @param documentTypeName - name of the document in workflow
+     * The documentTypeName element is the name of the document
+     * as defined in the workflow system.
+     * Example: "AddressTypeMaintenanceDocument"
      */
     public void setDocumentTypeName(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
@@ -157,17 +138,12 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         this.documentTypeName = documentTypeName;
     }
 
-    /**
-     * The name of the document in the workflow system
-     *
-     * @return String
-     */
     public String getDocumentTypeName() {
         return this.documentTypeName;
     }
 
     /**
-     * Validate common fields for subclass' benefit
+     * Validate common fields for subclass' benefit.
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
@@ -180,8 +156,8 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         }
 
         if (workflowProperties != null && workflowAttributes != null) {
-            throw new DataDictionaryException(documentTypeName
-                    + ": workflowProperties and workflowAttributes cannot both be defined for a document");
+            throw new DataDictionaryException(documentTypeName +
+                    ": workflowProperties and workflowAttributes cannot both be defined for a document");
         }
     }
 
@@ -205,24 +181,22 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         return getDocumentClass();
     }
 
-    @Override
     public String toString() {
         return "DocumentEntry for documentType " + documentTypeName;
     }
 
     /**
-     * Indicates whether the "Notes and Attachments" tab will render a column for a note topic
+     * Accessor method for contained displayTopicFieldInNotes
      *
-     * @return boolean
+     * @return displayTopicFieldInNotes boolean
      */
     public boolean getDisplayTopicFieldInNotes() {
         return displayTopicFieldInNotes;
     }
 
     /**
-     * Setter for the flag indicating whether the note topic field will be rendered in the notes tab
-     *
-     * @param displayTopicFieldInNotes
+     * This field contains a value of true or false.
+     * If true, then the "Notes and Attachments" tab will render a column for a note topic.
      */
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
         this.displayTopicFieldInNotes = displayTopicFieldInNotes;
@@ -282,7 +256,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.control.ControlDefinition#getValuesFinderClass()
+     * @see org.kuali.rice.krad.datadictionary.control.ControlDefinition#getKeyValuesFinder()
      */
     public Class<? extends KeyValuesFinder> getAttachmentTypesValuesFinderClass() {
         return attachmentTypesValuesFinderClass;
@@ -302,40 +276,30 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Indicates that a document screen allows notes with attachments
-     *
-     * <p>
-     * The add attachments section on notes will not be rendered when this is set to false.
-     * </p>
-     *
-     * @return boolean
+     * @return the allowsNoteAttachments
      */
     public boolean getAllowsNoteAttachments() {
         return this.allowsNoteAttachments;
     }
 
     /**
-     * Setter for flag indicating that attacments can be added to notes
-     *
-     * @param allowsNoteAttachments
+     * The allowsNoteAttachments element contains a true or false value.
+     * If true, then a document screen includes notes with attachments. Otherwise,
+     * only notes is displayed.
      */
     public void setAllowsNoteAttachments(boolean allowsNoteAttachments) {
         this.allowsNoteAttachments = allowsNoteAttachments;
     }
 
     /**
-     * Indicates whether to render the AdHoc FYI recipient box and Send FYI button
-     *
-     * @return boolean
+     * @return the allowsNoteFYI
      */
     public boolean getAllowsNoteFYI() {
         return allowsNoteFYI;
     }
 
     /**
-     * Setter for the flag indicating whether to render the AdHoc FYI recipient box and Send FYI button
-     *
-     * @param allowsNoteFYI
+     * This is an indicator for determining whether to render the AdHoc FYI recipient box and Send FYI button.
      */
     public void setAllowsNoteFYI(boolean allowsNoteFYI) {
         this.allowsNoteFYI = allowsNoteFYI;
@@ -401,38 +365,30 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * The defaultExistenceChecks element contains a list of reference object names which are required to exist when
-     * maintaining a BO
-     *
-     * <p>
-     * Optionally, the reference objects can be required to be active. The list keeps the order in which they were
-     * added. JSTL: defaultExistenceChecks is a Map of Reference elements, whose entries are keyed by attributeName.
-     * </p>
-     *
-     * @return
+     * @return List of all defaultExistenceCheck ReferenceDefinitions associated with this MaintenanceDocument, in the
+     *         order in
+     *         which they were added
      */
     public List<ReferenceDefinition> getDefaultExistenceChecks() {
         return defaultExistenceChecks;
     }
 
-    /**
-     * Setter for the list of all defaultExistenceCheck {@link ReferenceDefinition} associated with this
-     * {@link org.kuali.rice.krad.maintenance.MaintenanceDocument}
-     *
-     * @param defaultExistenceChecks
-     */
+    /*
+           The defaultExistenceChecks element contains a list of
+           reference object names which are required to exist when maintaining a BO.
+           Optionally, the reference objects can be required to be active.
+
+           JSTL: defaultExistenceChecks is a Map of Reference elements,
+           whose entries are keyed by attributeName
+    */
     public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
         this.defaultExistenceChecks = defaultExistenceChecks;
     }
 
     /**
-     * The {@code List} of all defaultExistenceCheck reference fieldNames associated with this MaintenanceDocument
-     *
-     * <p>
-     * The List keeps the order the items were added in.
-     * </p>
-     *
-     * @return List
+     * @return List of all defaultExistenceCheck reference fieldNames associated with this MaintenanceDocument, in the
+     *         order in
+     *         which they were added
      */
     public List<String> getDefaultExistenceCheckFieldNames() {
         List<String> fieldNames = new ArrayList<String>();
@@ -441,26 +397,18 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         return fieldNames;
     }
 
-    /**
-     * Indicates that the document data should be encrypted when persisted
-     *
-     * @return boolean
-     */
     public boolean isEncryptDocumentDataInPersistentSessionStorage() {
         return this.encryptDocumentDataInPersistentSessionStorage;
     }
 
-    /**
-     * Setter for flag indicating that the document data should be encrypted when persisted
-     *
-     * @param encryptDocumentDataInPersistentSessionStorage
-     */
     public void setEncryptDocumentDataInPersistentSessionStorage(
             boolean encryptDocumentDataInPersistentSessionStorage) {
         this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
     }
 
     /**
+     * This overridden method ...
+     *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
      */
     @Override

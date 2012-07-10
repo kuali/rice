@@ -46,8 +46,8 @@ public class InquiryView extends FormView {
         super();
 
         setViewTypeName(ViewType.INQUIRY);
-        setApplyDirtyCheck(false);
-        setTranslateCodesOnReadOnlyDisplay(true);
+        setValidateDirty(false);
+        setTranslateCodes(true);
     }
 
     /**
@@ -63,7 +63,7 @@ public class InquiryView extends FormView {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+        getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
     }
 
     /**

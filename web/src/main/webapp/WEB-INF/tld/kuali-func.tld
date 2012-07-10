@@ -168,6 +168,13 @@
         <example>${kfunc:getPrincpalDisplayName("1234")}</example>
     </function>
     <function>
+      <description>Fetches the display name for a role when given an ActionRequest with a role recipient.</description>
+      <name>getRoleDisplayName</name>
+      <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+      <function-signature>java.lang.String getRoleDisplayName(org.kuali.rice.kew.api.action.ActionRequest)</function-signature>
+      <example>${kfunc:getRoleDisplayName(actionRequest)}</example>
+    </function>
+  <function>
       <description>Check to see if a matching qualifier exists</description>
       <name>matchingQualifierExists</name>
       <function-class>org.kuali.rice.kim.web.utils.KimWebUtils</function-class>

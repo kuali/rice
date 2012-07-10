@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kew.util;
 
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.role.KimRoleRecipient;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 
 /**
@@ -42,10 +45,18 @@ public class WebFriendlyRecipient implements Recipient{
     	 if (recipient instanceof WebFriendlyRecipient) {
              recipientId = ((WebFriendlyRecipient) recipient).getRecipientId();
              displayName = ((WebFriendlyRecipient) recipient).getDisplayName();
+
+         // NOTE: ActionItemDAO code is constructing WebFriendlyRecipient directly w/ Person objects
+         // this should probably be changed to return only Recipients from DAO tier to web tier
          } else if(recipient instanceof Person){
          	recipientId = ((Person)recipient).getPrincipalId();
         	displayName = ((Person)recipient).getLastName() + ", " + ((Person)recipient).getFirstName();
-        }else {
+
+         } else if(recipient instanceof KimGroupRecipient){
+             recipientId = ((KimGroupRecipient)recipient).getGroupId();
+             displayName = ((KimGroupRecipient)recipient).getGroup().getNamespaceCode() + ":" + ((KimGroupRecipient)recipient).getGroup().getName();
+
+         }else {
         	throw new IllegalArgumentException("Must pass in type Recipient or Person");
         }
      }

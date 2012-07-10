@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.apache.commons.httpclient.ConnectTimeoutException;
-import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
-import org.apache.commons.httpclient.NoHttpResponseException;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.core.api.util.ContextClassLoaderProxy;
-import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.api.bus.Endpoint;
-import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-
 import java.io.InterruptedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -36,6 +25,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.httpclient.ConnectTimeoutException;
+import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
+import org.apache.commons.httpclient.NoHttpResponseException;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ContextClassLoaderProxy;
+import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
 
 
@@ -118,8 +118,14 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 		if (serviceRemovalExceptions.contains(throwable.getClass())) {
 			LOG.info("Found a Service Removal Exception: " + throwable.getClass().getName());
 			return true;
-		} else if (throwable instanceof HttpException) {
-			HttpException httpException = (HttpException)throwable;
+		} else if (throwable instanceof org.kuali.rice.ksb.messaging.HttpException) {
+			org.kuali.rice.ksb.messaging.HttpException httpException = (org.kuali.rice.ksb.messaging.HttpException)throwable;
+			if (serviceRemovalResponseCodes.contains(httpException.getResponseCode())) {
+				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + " " + throwable.getClass().getName());
+				return true;
+			}
+		} else if (throwable instanceof org.apache.cxf.transport.http.HTTPException) {
+			org.apache.cxf.transport.http.HTTPException httpException = (org.apache.cxf.transport.http.HTTPException)throwable;
 			if (serviceRemovalResponseCodes.contains(httpException.getResponseCode())) {
 				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + " " + throwable.getClass().getName());
 				return true;

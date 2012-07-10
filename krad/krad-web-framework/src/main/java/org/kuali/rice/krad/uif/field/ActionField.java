@@ -15,28 +15,231 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import org.kuali.rice.krad.uif.component.Component;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.ActionSecurity;
-import org.kuali.rice.krad.uif.element.Image;
+import org.kuali.rice.krad.uif.view.FormView;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Field that encloses an @{link org.kuali.rice.krad.uif.element.Action} element
- *
+ * Field that presents an action that can be taken on the UI such as submitting
+ * the form or invoking a script
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionField extends FieldBase {
-    private static final long serialVersionUID = -8495752159848603102L;
+    private static final long serialVersionUID = 1025672792657238829L;
 
-    private Action action;
+    private String methodToCall;
+    private String navigateToPageId;
+
+    private boolean clientSideValidate;
+    private String clientSideJs;
+
+    private String jumpToIdAfterSubmit;
+    private String jumpToNameAfterSubmit;
+    private String focusOnAfterSubmit;
+
+    private String actionLabel;
+    private ImageField actionImage;
+    private String actionImageLocation = "LEFT";
+
+    private String actionEvent;
+    private Map<String, String> actionParameters;
+
+    private LightBox lightBoxLookup;
+    private LightBox lightBoxDirectInquiry;
+
+    private boolean blockValidateDirty;
+    private boolean disabled;
+    private String disabledReason;
 
     public ActionField() {
-        action = new Action();
+        super();
+
+        disabled = false;
+
+        actionParameters = new HashMap<String, String>();
+    }
+
+    /**
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>Set the actionLabel if blank to the Field label</li>
+     * </ul>
+     * 
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        if (StringUtils.isBlank(actionLabel)) {
+            actionLabel = this.getLabel();
+        }
+    }
+
+    /**
+     * The following finalization is performed:
+     *
+     * <ul>
+     * <li>Add methodToCall action parameter if set and setup event code for
+     * setting action parameters</li>
+     * </ul>
+     * 
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+        //clear alt text to avoid screen reader confusion when using image in button with text
+        if(actionImage != null && StringUtils.isNotBlank(actionImageLocation) && StringUtils.isNotBlank(actionLabel)){
+            actionImage.setAltText("");
+        }
+
+        if (!actionParameters.containsKey(UifConstants.UrlParams.ACTION_EVENT) && StringUtils.isNotBlank(actionEvent)) {
+            actionParameters.put(UifConstants.UrlParams.ACTION_EVENT, actionEvent);
+        }
+
+        actionParameters.put(UifConstants.UrlParams.SHOW_HOME, "false");
+        actionParameters.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
+
+        if (StringUtils.isNotBlank(navigateToPageId)) {
+            actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
+            if (StringUtils.isBlank(methodToCall)) {
+                actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME,
+                        UifConstants.MethodToCallNames.NAVIGATE);
+            }
+        }
+
+        if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)
+                && StringUtils.isNotBlank(methodToCall)) {
+            actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
+        }
+
+        // If there is no lightBox then create the on click script
+        if (lightBoxLookup == null) {
+            String prefixScript = this.getOnClickScript();
+            if (prefixScript == null) {
+                prefixScript = "";
+            }
+
+            boolean validateFormDirty = false;
+            if (view instanceof FormView && !isBlockValidateDirty()) {
+                validateFormDirty = ((FormView) view).isValidateDirty();
+            }
+
+            boolean includeDirtyCheckScript = false;
+            String writeParamsScript = "";
+            if (!actionParameters.isEmpty()) {
+                for (String key : actionParameters.keySet()) {
+                    String parameterPath = key;
+                    if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+                        parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
+                    }
+
+                    writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
+                            + actionParameters.get(key) + "'); ";
+
+                    // Include dirtycheck js function call if the method to call
+                    // is refresh, navigate, cancel or close
+                    if (validateFormDirty && !includeDirtyCheckScript
+                            && key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+                        String keyValue = (String) actionParameters.get(key);
+                        if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH)
+                                || StringUtils.equals(keyValue, UifConstants.MethodToCallNames.NAVIGATE)
+                                || StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CANCEL)
+                                || StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CLOSE)) {
+                            includeDirtyCheckScript = true;
+                        }
+                    }
+                }
+            }
+
+            // TODO possibly fix some other way - this is a workaround, prevents
+            // showing history and showing home again on actions which submit
+            // the form
+            writeParamsScript = writeParamsScript + "writeHiddenToForm('" + UifConstants.UrlParams.SHOW_HISTORY
+                    + "', '" + "false" + "'); ";
+            writeParamsScript = writeParamsScript + "writeHiddenToForm('" + UifConstants.UrlParams.SHOW_HOME + "' , '"
+                    + "false" + "'); ";
+
+            if (StringUtils.isBlank(focusOnAfterSubmit)) {
+                // if this is blank focus this actionField by default
+                focusOnAfterSubmit = this.getId();
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + this.getId() + "'); ";
+            } else if (!focusOnAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
+                // Use the id passed in
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + focusOnAfterSubmit + "'); ";
+            } else {
+                // First input will be focused, must be first field set to empty
+                // string
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , ''); ";
+            }
+
+            if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
+                jumpToIdAfterSubmit = this.getId();
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '" + this.getId() + "'); ";
+            } else if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '" + jumpToIdAfterSubmit
+                        + "'); ";
+            } else {
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToName' , '" + jumpToNameAfterSubmit
+                        + "'); ";
+            }
+            
+            String postScript = "";
+            if (StringUtils.isNotBlank(clientSideJs)) {
+                postScript = clientSideJs;
+            }
+            if (isClientSideValidate()) {
+                postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
+            }
+            if (StringUtils.isBlank(postScript)) {
+                postScript = "writeHiddenToForm('renderFullView' , 'true'); jq('#kualiForm').submit();";
+            }
+
+            if (includeDirtyCheckScript) {
+                this.setOnClickScript("e.preventDefault(); if (checkDirty(e) == false) { " + prefixScript
+                        + writeParamsScript + postScript + " ; } ");
+            } else {
+                this.setOnClickScript("e.preventDefault();" + prefixScript + writeParamsScript + postScript);
+            }
+
+        } else {
+            // When there is a light box - don't add the on click script as it
+            // will be prevented from executing
+            // Create a script map object which will be written to the form on
+            // click event
+            StringBuffer sb = new StringBuffer();
+            sb.append("{");
+            for (String key : actionParameters.keySet()) {
+                String optionValue = actionParameters.get(key);
+                if (sb.length() > 1) {
+                    sb.append(",");
+                }
+                if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+                    sb.append("\"" + UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]" + "\"");
+                } else {
+                    sb.append("\"" + key + "\"");
+                }
+                sb.append(":");
+                sb.append("\"" + optionValue + "\"");
+            }
+            sb.append("}");
+            lightBoxLookup.setActionParameterMapString(sb.toString());
+        }
     }
 
     /**
@@ -46,325 +249,443 @@ public class ActionField extends FieldBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(action);
+        components.add(actionImage);
+        components.add(lightBoxLookup);
+        components.add(lightBoxDirectInquiry);
 
         return components;
     }
 
     /**
-     * Nested action component
-     *
-     * @return Action instance
-     */
-    public Action getAction() {
-        return action;
-    }
-
-    /**
-     * Setter for the nested action component
-     *
-     * @param action
-     */
-    public void setAction(Action action) {
-        this.action = action;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.element.Action#getMethodToCall()
+     * Name of the method that should be called when the action is selected
+     * <p>
+     * For a server side call (clientSideCall is false), gives the name of the
+     * method in the mapped controller that should be invoked when the action is
+     * selected. For client side calls gives the name of the script function
+     * that should be invoked when the action is selected
+     * </p>
+     * 
+     * @return String name of method to call
      */
     public String getMethodToCall() {
-        return action.getMethodToCall();
+        return this.methodToCall;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setMethodToCall(java.lang.String)
+     * Setter for the actions method to call
+     * 
+     * @param methodToCall
      */
     public void setMethodToCall(String methodToCall) {
-        action.setMethodToCall(methodToCall);
+        this.methodToCall = methodToCall;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionLabel()
+     * Label text for the action
+     * <p>
+     * The label text is used by the template renderers to give a human readable
+     * label for the action. For buttons this generally is the button text,
+     * while for an action link it would be the links displayed text
+     * </p>
+     * 
+     * @return String label for action
      */
     public String getActionLabel() {
-        return action.getActionLabel();
+        return this.actionLabel;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionLabel(java.lang.String)
+     * Setter for the actions label
+     * 
+     * @param actionLabel
      */
     public void setActionLabel(String actionLabel) {
-        action.setActionLabel(actionLabel);
+        this.actionLabel = actionLabel;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionImage()
+     * Image to use for the action
+     * <p>
+     * When the action image field is set (and render is true) the image will be
+     * used to present the action as opposed to the default (input submit). For
+     * action link templates the image is used for the link instead of the
+     * action link text
+     * </p>
+     * 
+     * @return ImageField action image
      */
-    public Image getActionImage() {
-        return action.getActionImage();
+    public ImageField getActionImage() {
+        return this.actionImage;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionImage(org.kuali.rice.krad.uif.element.Image)
+     * Setter for the action image field
+     * 
+     * @param actionImage
      */
-    public void setActionImage(Image actionImage) {
-        action.setActionImage(actionImage);
+    public void setActionImage(ImageField actionImage) {
+        this.actionImage = actionImage;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getNavigateToPageId()
+     * For an <code>ActionField</code> that is part of a
+     * <code>NavigationGroup</code, the navigate to page id can be set to
+     * configure the page that should be navigated to when the action is
+     * selected
+     * <p>
+     * Support exists in the <code>UifControllerBase</code> for handling
+     * navigation between pages
+     * </p>
+     * 
+     * @return String id of page that should be rendered when the action item is
+     *         selected
      */
     public String getNavigateToPageId() {
-        return action.getNavigateToPageId();
+        return this.navigateToPageId;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setNavigateToPageId(java.lang.String)
+     * Setter for the navigate to page id
+     * 
+     * @param navigateToPageId
      */
     public void setNavigateToPageId(String navigateToPageId) {
-        action.setNavigateToPageId(navigateToPageId);
+        this.navigateToPageId = navigateToPageId;
+        actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
+        this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionEvent()
+     * Name of the event that will be set when the action is invoked
+     *
+     * <p>
+     * Action events can be looked at by the view or components in order to render differently depending on
+     * the action requested.
+     * </p>
+     *
+     * @return String action event name
+     * @see org.kuali.rice.krad.uif.UifConstants.ActionEvents
      */
     public String getActionEvent() {
-        return action.getActionEvent();
+        return actionEvent;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionEvent(java.lang.String)
+     * Setter for the action event
+     *
+     * @param actionEvent
      */
     public void setActionEvent(String actionEvent) {
-        action.setActionEvent(actionEvent);
+        this.actionEvent = actionEvent;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionParameters()
+     * Parameters that should be sent when the action is invoked
+     * <p>
+     * Action renderer will decide how the parameters are sent for the action
+     * (via script generated hiddens, or script parameters, ...)
+     * </p>
+     * <p>
+     * Can be set by other components such as the <code>CollectionGroup</code>
+     * to provide the context the action is in (such as the collection name and
+     * line the action applies to)
+     * </p>
+     * 
+     * @return Map<String, String> action parameters
      */
     public Map<String, String> getActionParameters() {
-        return action.getActionParameters();
+        return this.actionParameters;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionParameters(java.util.Map<java.lang.String,java.lang.String>)
+     * Setter for the action parameters
+     * 
+     * @param actionParameters
      */
     public void setActionParameters(Map<String, String> actionParameters) {
-        action.setActionParameters(actionParameters);
+        this.actionParameters = actionParameters;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#addActionParameter(java.lang.String, java.lang.String)
+     * Convenience method to add a parameter to the action parameters Map
+     * 
+     * @param parameterName
+     *            - name of parameter to add
+     * @param parameterValue
+     *            - value of parameter to add
      */
     public void addActionParameter(String parameterName, String parameterValue) {
-        action.addActionParameter(parameterName, parameterValue);
+        if (actionParameters == null) {
+            this.actionParameters = new HashMap<String, String>();
+        }
+
+        this.actionParameters.put(parameterName, parameterValue);
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionParameter(java.lang.String)
+     * Get an actionParameter by name
      */
     public String getActionParameter(String parameterName) {
-        return action.getActionParameter(parameterName);
+        return this.actionParameters.get(parameterName);
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getComponentSecurity()
+     * Action Field Security object that indicates what authorization (permissions) exist for the action
+     *
+     * @return ActionFieldSecurity instance
      */
-    public ActionSecurity getComponentSecurity() {
-        return action.getComponentSecurity();
+    @Override
+    public ActionFieldSecurity getComponentSecurity() {
+        return (ActionFieldSecurity) super.getComponentSecurity();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setComponentSecurity(org.kuali.rice.krad.uif.component.ComponentSecurity)
+     * Override to assert a {@link ActionFieldSecurity} instance is set
+     *
+     * @param componentSecurity - instance of ActionFieldSecurity
      */
+    @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        action.setComponentSecurity(componentSecurity);
+        if (!(componentSecurity instanceof ActionFieldSecurity)) {
+            throw new RiceRuntimeException(
+                    "Component security for ActionField should be instance of ActionFieldSecurity");
+        }
+
+        super.setComponentSecurity(componentSecurity);
+    }
+
+    @Override
+    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
+        return ActionFieldSecurity.class;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getJumpToIdAfterSubmit()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnClick()
+     */
+    @Override
+    public boolean getSupportsOnClick() {
+        return true;
+    }
+
+    /**
+     * Setter for the light box lookup widget
+     * 
+     * @param lightBoxLookup
+     *            <code>LightBoxLookup</code> widget to set
+     */
+    public void setLightBoxLookup(LightBox lightBoxLookup) {
+        this.lightBoxLookup = lightBoxLookup;
+    }
+
+    /**
+     * LightBoxLookup widget for the field
+     * <p>
+     * The light box lookup widget will change the lookup behaviour to open the
+     * lookup in a light box.
+     * </p>
+     * 
+     * @return the <code>DirectInquiry</code> field DirectInquiry
+     */
+    public LightBox getLightBoxLookup() {
+        return lightBoxLookup;
+    }
+
+    /**
+     * @return the jumpToIdAfterSubmit
      */
     public String getJumpToIdAfterSubmit() {
-        return action.getJumpToIdAfterSubmit();
+        return this.jumpToIdAfterSubmit;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setJumpToIdAfterSubmit(java.lang.String)
+     * The id to jump to in the next page, the element with this id will be
+     * jumped to automatically when the new page is retrieved after a submit.
+     * Using "TOP" or "BOTTOM" will jump to the top or the bottom of the
+     * resulting page. Passing in nothing for both jumpToIdAfterSubmit and
+     * jumpToNameAfterSubmit will result in this ActionField being jumped to by
+     * default if it is present on the new page. WARNING: jumpToIdAfterSubmit
+     * always takes precedence over jumpToNameAfterSubmit, if set.
+     * 
+     * @param jumpToIdAfterSubmit
+     *            the jumpToIdAfterSubmit to set
      */
     public void setJumpToIdAfterSubmit(String jumpToIdAfterSubmit) {
-        action.setJumpToIdAfterSubmit(jumpToIdAfterSubmit);
+        this.jumpToIdAfterSubmit = jumpToIdAfterSubmit;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getJumpToNameAfterSubmit()
+     * The name to jump to in the next page, the element with this name will be
+     * jumped to automatically when the new page is retrieved after a submit.
+     * Passing in nothing for both jumpToIdAfterSubmit and jumpToNameAfterSubmit
+     * will result in this ActionField being jumped to by default if it is
+     * present on the new page. WARNING: jumpToIdAfterSubmit always takes
+     * precedence over jumpToNameAfterSubmit, if set.
+     * 
+     * @return the jumpToNameAfterSubmit
      */
     public String getJumpToNameAfterSubmit() {
-        return action.getJumpToNameAfterSubmit();
+        return this.jumpToNameAfterSubmit;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setJumpToNameAfterSubmit(java.lang.String)
+     * @param jumpToNameAfterSubmit
+     *            the jumpToNameAfterSubmit to set
      */
     public void setJumpToNameAfterSubmit(String jumpToNameAfterSubmit) {
-        action.setJumpToNameAfterSubmit(jumpToNameAfterSubmit);
+        this.jumpToNameAfterSubmit = jumpToNameAfterSubmit;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getFocusOnIdAfterSubmit()
+     * The id of the field to place focus on in the new page after the new page
+     * is retrieved. Passing in "FIRST" will focus on the first visible input
+     * element on the form. Passing in the empty string will result in this
+     * ActionField being focused.
+     * 
+     * @return the focusOnAfterSubmit
      */
-    public String getFocusOnIdAfterSubmit() {
-        return action.getFocusOnIdAfterSubmit();
+    public String getFocusOnAfterSubmit() {
+        return this.focusOnAfterSubmit;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setFocusOnIdAfterSubmit(java.lang.String)
+     * @param focusOnAfterSubmit
+     *            the focusOnAfterSubmit to set
      */
-    public void setFocusOnIdAfterSubmit(String focusOnAfterSubmit) {
-        action.setFocusOnIdAfterSubmit(focusOnAfterSubmit);
+    public void setFocusOnAfterSubmit(String focusOnAfterSubmit) {
+        this.focusOnAfterSubmit = focusOnAfterSubmit;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#isPerformClientSideValidation()
+     * Indicates whether the form data should be validated on the client side
+     *
+     * return true if validation should occur, false otherwise
      */
-    public boolean isPerformClientSideValidation() {
-        return action.isPerformClientSideValidation();
+    public boolean isClientSideValidate() {
+        return this.clientSideValidate;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setPerformClientSideValidation(boolean)
+     * Setter for the client side validation flag
+     * @param clientSideValidate
      */
-    public void setPerformClientSideValidation(boolean clientSideValidate) {
-        action.setPerformClientSideValidation(clientSideValidate);
+    public void setClientSideValidate(boolean clientSideValidate) {
+        this.clientSideValidate = clientSideValidate;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionScript()
+     * Client side javascript to be executed when this actionField is clicked.
+     * This overrides the default action for this ActionField so the method
+     * called must explicitly submit, navigate, etc. through js, if necessary.
+     * In addition, this js occurs AFTER onClickScripts set on this field, it
+     * will be the last script executed by the click event. Sidenote: This js is
+     * always called after hidden actionParameters and methodToCall methods are
+     * written by the js to the html form.
+     * 
+     * @return the clientSideJs
      */
-    public String getActionScript() {
-        return action.getActionScript();
+    public String getClientSideJs() {
+        return this.clientSideJs;
     }
 
     /**
-     * @seeorg.kuali.rice.krad.uif.element.Action#setactionScript(java.lang.String)
+     * @param clientSideJs
+     *            the clientSideJs to set
      */
-    public void setActionScript(String actionScript) {
-        action.setActionScript(actionScript);
+    public void setClientSideJs(String clientSideJs) {
+        if (!StringUtils.endsWith(clientSideJs, ";")) {
+            clientSideJs = clientSideJs + ";";
+        }
+        this.clientSideJs = clientSideJs;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#isPerformDirtyValidation()
+     * Setter for the light box direct inquiry widget
+     * 
+     * @param lightBoxDirectInquiry
+     *            <code>LightBox</code> widget to set
      */
-    public boolean isPerformDirtyValidation() {
-        return action.isPerformDirtyValidation();
+    public void setLightBoxDirectInquiry(LightBox lightBoxDirectInquiry) {
+        this.lightBoxDirectInquiry = lightBoxDirectInquiry;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setPerformDirtyValidation(boolean)
+     * LightBox widget for the field
+     * <p>
+     * The light box widget will change the direct inquiry behaviour to open up
+     * in a light box.
+     * </p>
+     * 
+     * @return the <code>LightBox</code> field LightBox
      */
-    public void setPerformDirtyValidation(boolean blockValidateDirty) {
-        action.setPerformDirtyValidation(blockValidateDirty);
+    public LightBox getLightBoxDirectInquiry() {
+        return lightBoxDirectInquiry;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#isDisabled()
+     * @param blockValidateDirty
+     *            the blockValidateDirty to set
+     */
+    public void setBlockValidateDirty(boolean blockValidateDirty) {
+        this.blockValidateDirty = blockValidateDirty;
+    }
+
+    /**
+     * @return the blockValidateDirty
+     */
+    public boolean isBlockValidateDirty() {
+        return blockValidateDirty;
+    }
+
+    /**
+     * Indicates whether the action (input or button) is disabled (doesn't allow interaction)
+     *
+     * @return boolean true if the action field is disabled, false if not
      */
     public boolean isDisabled() {
-        return action.isDisabled();
+        return disabled;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setDisabled(boolean)
-     */
-    public void setDisabled(boolean disabled) {
-        action.setDisabled(disabled);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.element.Action#getDisabledReason()
+     * If the action field is disabled, gives a reason for why which will be displayed as a tooltip
+     * on the action field (button)
+     *
+     * @return String disabled reason text
+     * @see {@link #isDisabled()}
      */
     public String getDisabledReason() {
-        return action.getDisabledReason();
+        return disabledReason;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setDisabledReason(java.lang.String)
+     * Setter for the disabled reason text
+     *
+     * @param disabledReason
      */
     public void setDisabledReason(String disabledReason) {
-        action.setDisabledReason(disabledReason);
+        this.disabledReason = disabledReason;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionImagePlacement()
+     * Setter for the disabled indicator
+     *
+     * @param disabled
      */
-    public String getActionImagePlacement() {
-        return action.getActionImagePlacement();
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public String getActionImageLocation() {
+        return actionImageLocation;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionImagePlacement(java.lang.String)
-     */
-    public void setActionImagePlacement(String actionImageLocation) {
-        action.setActionImagePlacement(actionImageLocation);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.element.Action#getPreSubmitCall()
-     */
-    public String getPreSubmitCall() {
-        return action.getPreSubmitCall();
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.element.Action#setPreSubmitCall(java.lang.String)
-     */
-    public void setPreSubmitCall(String preSubmitCall) {
-        action.setPreSubmitCall(preSubmitCall);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.element.Action#isAjaxSubmit()
-     */
-    public boolean isAjaxSubmit() {
-        return action.isAjaxSubmit();
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.element.Action#setAjaxSubmit(boolean)
-     */
-    public void setAjaxSubmit(boolean ajaxSubmit) {
-        action.setAjaxSubmit(ajaxSubmit);
-    }
-
-    /**
+     * Set to TOP, BOTTOM, LEFT, RIGHT to position image at that location within the button.
+     * For the subclass ActionLinkField only LEFT and RIGHT are allowed.  When set to blank/null/IMAGE_ONLY, the image
+     * itself will be the ActionField, if no value is set the default is ALWAYS LEFT, you must explicitly set
+     * blank/null/IMAGE_ONLY to use ONLY the image as the ActionField.
      * @return
-     * @see org.kuali.rice.krad.uif.element.Action#getSuccessCallback()
      */
-    public String getSuccessCallback() {
-        return action.getSuccessCallback();
-    }
-
-    /**
-     * @param successCallback
-     * @see org.kuali.rice.krad.uif.element.Action#setSuccessCallback(java.lang.String)
-     */
-    public void setSuccessCallback(String successCallback) {
-        action.setSuccessCallback(successCallback);
-    }
-
-    /**
-     * @return
-     * @see org.kuali.rice.krad.uif.element.Action#getErrorCallback()
-     */
-    public String getErrorCallback() {
-        return action.getErrorCallback();
-    }
-
-    /**
-     * @param errorCallback
-     * @see org.kuali.rice.krad.uif.element.Action#setErrorCallback(java.lang.String)
-     */
-
-    public void setErrorCallback(String errorCallback) {
-        action.setErrorCallback(errorCallback);
+    public void setActionImageLocation(String actionImageLocation) {
+        this.actionImageLocation = actionImageLocation;
     }
 }

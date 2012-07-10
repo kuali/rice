@@ -23,11 +23,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
-/**
- * A {@link Collection} that may be truncated
- *
- * @param <T> The type that the collection stores internally
- */
+
 public class CollectionIncomplete<T> implements List<T>, RandomAccess, Serializable {
 
     private static final long serialVersionUID = 8683452581122892189L;
@@ -36,10 +32,8 @@ public class CollectionIncomplete<T> implements List<T>, RandomAccess, Serializa
 
 
     /**
-     * Collection that may be incomplete/truncated
-     *
      * @param collection
-     * @param actualSizeIfTruncated the actual collection size before truncation.  Zero if the collection is not truncated.
+     * @param actualSizeIfTruncated
      */
     public CollectionIncomplete(Collection<T> collection, Long actualSizeIfTruncated) {
         super();
@@ -48,194 +42,214 @@ public class CollectionIncomplete<T> implements List<T>, RandomAccess, Serializa
     }
 
     /**
-     * @see java.util.List#add(int, Object)
+     * @param arg0
+     * @param arg1
      */
     public void add(int arg0, T arg1) {
         list.add(arg0, arg1);
     }
 
     /**
-     * @see java.util.List#add(Object)
+     * @param arg0
+     * @return
      */
     public boolean add(T arg0) {
         return list.add(arg0);
     }
 
     /**
-     * @see java.util.List#addAll(int, java.util.Collection)
+     * @param arg0
+     * @param arg1
+     * @return
      */
     public boolean addAll(int arg0, Collection<? extends T> arg1) {
         return list.addAll(arg0, arg1);
     }
 
     /**
-     * @see java.util.List#addAll(java.util.Collection)
+     * @param arg0
+     * @return
      */
     public boolean addAll(Collection<? extends T> arg0) {
         return list.addAll(arg0);
     }
 
     /**
-     * @see java.util.List#clear()
+     * 
      */
     public void clear() {
         list.clear();
     }
 
     /**
-     * @see java.util.List#contains(Object)
+     * @param arg0
+     * @return
      */
     public boolean contains(Object arg0) {
         return list.contains(arg0);
     }
 
     /**
-     *  @see java.util.List#containsAll(java.util.Collection)
+     * @param arg0
+     * @return
      */
     public boolean containsAll(Collection<?> arg0) {
         return list.containsAll(arg0);
     }
 
-    /**
-     * @see java.util.List#equals(Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object arg0) {
         return list.equals(arg0);
     }
 
     /**
-     * @see java.util.List#get(int)
+     * @param arg0
+     * @return
      */
     public T get(int arg0) {
         return list.get(arg0);
     }
 
-    /**
-     * @see java.util.List#hashCode()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
         return list.hashCode();
     }
 
     /**
-     * @see java.util.List#indexOf(Object)
+     * @param arg0
+     * @return
      */
     public int indexOf(Object arg0) {
         return list.indexOf(arg0);
     }
 
     /**
-     * @see java.util.List#isEmpty()
+     * @return
      */
     public boolean isEmpty() {
         return list.isEmpty();
     }
 
     /**
-     * @see java.util.List#iterator()
+     * @return
      */
     public Iterator<T> iterator() {
         return list.iterator();
     }
 
     /**
-     * @see java.util.List#lastIndexOf(Object)
+     * @param arg0
+     * @return
      */
     public int lastIndexOf(Object arg0) {
         return list.lastIndexOf(arg0);
     }
 
     /**
-     * @see java.util.List#listIterator()
+     * @return
      */
     public ListIterator<T> listIterator() {
         return list.listIterator();
     }
 
     /**
-     * @see java.util.List#listIterator(int)
+     * @param arg0
+     * @return
      */
     public ListIterator listIterator(int arg0) {
         return list.listIterator(arg0);
     }
 
     /**
-     * @see java.util.List#remove(int)
+     * @param arg0
+     * @return
      */
     public T remove(int arg0) {
         return list.remove(arg0);
     }
 
     /**
-     * @see java.util.List#remove(Object)
+     * @param arg0
+     * @return
      */
     public boolean remove(Object arg0) {
         return list.remove(arg0);
     }
 
     /**
-     * @see java.util.List#removeAll(java.util.Collection)
+     * @param arg0
+     * @return
      */
     public boolean removeAll(Collection<?> arg0) {
         return list.removeAll(arg0);
     }
 
     /**
-     * @see java.util.List#retainAll(java.util.Collection)
+     * @param arg0
+     * @return
      */
     public boolean retainAll(Collection<?> arg0) {
         return list.retainAll(arg0);
     }
 
     /**
-     * @see java.util.List#set(int, Object)
+     * @param arg0
+     * @param arg1
+     * @return
      */
     public T set(int arg0, T arg1) {
         return list.set(arg0, arg1);
     }
 
     /**
-     * @see java.util.List#size()
+     * @return
      */
     public int size() {
         return list.size();
     }
 
     /**
-     * @see java.util.List#subList(int, int)
+     * @param arg0
+     * @param arg1
+     * @return
      */
     public List<T> subList(int arg0, int arg1) {
         return list.subList(arg0, arg1);
     }
 
     /**
-     * @see java.util.List#toArray()
+     * @return
      */
     public Object[] toArray() {
         return list.toArray();
     }
 
     /**
-     * @see java.util.List#toArray(Object[])
+     * @param arg0
+     * @return
      */
     public <T> T[] toArray(T[] arg0) {
         return list.toArray(arg0);
     }
 
-    /**
-     * @see java.util.List#toString()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
      */
     public String toString() {
         return list.toString();
     }
 
     /**
-     * Get the actual collection size if the collection was truncated
-     *
-     * <p>
-     * For non-truncated collection the <code>getActualSizeIfTruncated</code> is zero.
-     * </p>
-     *
      * @return Returns the actualSizeIfTruncated.
      */
     public Long getActualSizeIfTruncated() {
@@ -243,9 +257,7 @@ public class CollectionIncomplete<T> implements List<T>, RandomAccess, Serializa
     }
 
     /**
-     * Set the actual collection size if the collection was truncated
-     *
-     * @param actualSizeIfTruncated The actualSizeIfTruncated to set.
+     * @param actualSize The actualSizeIfTruncated to set.
      */
     public void setActualSizeIfTruncated(Long actualSizeIfTruncated) {
         this.actualSizeIfTruncated = actualSizeIfTruncated;

@@ -27,15 +27,10 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 /**
- * DateTimeServiceTest tests {@link org.kuali.rice.core.api.datetime.DateTimeService}
+ * This class tests the DateTime service.
  */
 public class DateTimeServiceTest extends KRADTestCase {
 
-    /**
-     * tests that DateTimeService returns a correct current date
-     *
-     * @see org.kuali.rice.core.api.datetime.DateTimeService#getCurrentDate()
-     */
     @Test public void testGetCurrentDate() {
         Date beforeServiceDate = new Date();
         Date serviceDate = CoreApiServiceLocator.getDateTimeService().getCurrentDate();
@@ -45,11 +40,6 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertTrue("afterServiceDate not >= serviceDate", afterServiceDate.after(serviceDate) || afterServiceDate.equals(serviceDate));
     }
 
-    /**
-     * tests that DateTimeService returns a correct current SQL date
-     *
-     * @see org.kuali.rice.core.api.datetime.DateTimeService#getCurrentSqlDate()
-     */
     @Test public void testGetCurrentSqlDate() {
         java.sql.Date serviceDate = CoreApiServiceLocator.getDateTimeService().getCurrentSqlDate();
 
@@ -60,10 +50,6 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertTrue("afterServiceDate not >= serviceDate", afterServiceDate.after(serviceDate) || afterServiceDate.equals(serviceDate));
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#getCurrentSqlDateMidnight()}
-     * @throws InterruptedException
-     */
     @SuppressWarnings("deprecation")
     @Test public void testGetCurrentSqlDateMidnight() throws InterruptedException {
         // this test is invalid within 1 second of midnight, so wait for it
@@ -82,11 +68,6 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertEquals(0, afterUtil.getSeconds());
     }
 
-    /**
-     * {@link #testGetCurrentSqlDateMidnight()} is invalid within 1 second of midnight, so wait for it
-     *
-     * @throws InterruptedException
-     */
     @SuppressWarnings("deprecation")
     private static void waitForMidnightIfWithinOneSecond() throws InterruptedException {
         java.util.Date now = new java.util.Date();
@@ -96,9 +77,6 @@ public class DateTimeServiceTest extends KRADTestCase {
         }
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#getCurrentCalendar()}
-     */
     @Test public void testGetCurrentCalendar() {
         Date beforeServiceDate = new Date();
         Calendar serviceCalendar = CoreApiServiceLocator.getDateTimeService().getCurrentCalendar();
@@ -111,18 +89,11 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertTrue("afterServiceDate not >= serviceDate", afterServiceDate.after(serviceDate) || afterServiceDate.equals(serviceDate));
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlTimestamp(String)} with a null value
-     *
-     * @throws ParseException
-     */
+
     @Test public void testConvertToSqlTimestamp_blankTimeString() throws ParseException {
         assertNull(CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(null));
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlTimestamp(String)} with an invalid time value
-     */
     @Test public void testConvertToSqlTimestamp_invalidTimeString() {
         boolean failedAsExpected = false;
         try {
@@ -134,11 +105,6 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertTrue("invalid timeString failed to fail", failedAsExpected);
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlTimestamp(String)} with a valid time string
-     *
-     * @throws ParseException
-     */
     @Test public void testConvertToSqlTimestamp_validTimeString() throws ParseException {
         java.sql.Timestamp serviceTimestamp = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp("05/01/1966 02:41 PM");
         Calendar serviceCalendar = Calendar.getInstance();
@@ -152,11 +118,6 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertEquals("unexpected milliseconds", serviceTimestamp.getNanos(), 0);
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlDate(String)} with a blank value
-     *
-     * @throws ParseException
-     */
     @Test public void testConvertToSqlDate_blankDateString() throws ParseException {
         boolean failedAsExpected = false;
 
@@ -170,9 +131,6 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertTrue("blank dateString failed to fail", failedAsExpected);
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlDate(String)} with an invalid date string
-     */
     @Test public void testConvertToSqlDate_invalidDateString() {
         boolean failedAsExpected = false;
 
@@ -186,9 +144,6 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertTrue("invalid dateString failed to fail", failedAsExpected);
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlDate(String)} with a valid date string
-     */
     @Test public void testConvertToSqlDate_validDateString() throws ParseException {
         java.sql.Date serviceDate = CoreApiServiceLocator.getDateTimeService().convertToSqlDate("05/01/1966");
 
@@ -203,11 +158,7 @@ public class DateTimeServiceTest extends KRADTestCase {
         assertEquals("unexpected seconds", 0, serviceCalendar.get(Calendar.SECOND));
     }
 
-    /**
-     * tests {@link org.kuali.rice.core.api.datetime.DateTimeService#dateDiff(java.util.Date, java.util.Date, boolean)}
-     *
-     * @throws ParseException
-     */
+
     @Test public void testDateDiff() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 

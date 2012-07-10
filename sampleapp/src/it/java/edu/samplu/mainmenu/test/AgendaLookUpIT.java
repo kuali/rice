@@ -27,9 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * tests that user 'admin' can display the Agenda lookup screen, search,
- * initiate an Agenda maintenance document via a copy action on the search results and
- * finally cancel the maintenance document
+ * TODO vchauhan don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

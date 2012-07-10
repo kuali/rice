@@ -20,11 +20,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.util.SessionTransient;
-import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +43,7 @@ import java.util.UUID;
  * Base form class for views within the KRAD User Interface Framework
  *
  * <p>
- * Holds properties necessary to determine the {@code View} instance that
+ * Holds properties necessary to determine the <code>View</code> instance that
  * will be used to render the UI
  * </p>
  *
@@ -54,107 +53,49 @@ public class UifFormBase implements ViewModel {
     private static final long serialVersionUID = 8432543267099454434L;
 
     // current view
-
     protected String viewId;
-
     protected String viewName;
-
     protected ViewType viewTypeName;
-
     protected String pageId;
-
     protected String methodToCall;
-
     protected String formKey;
-
-    @SessionTransient
     protected String jumpToId;
-
-    @SessionTransient
     protected String jumpToName;
-
-    @SessionTransient
     protected String focusId;
-
     protected String formPostUrl;
 
-    protected String state;
-
     protected boolean defaultsApplied;
-
-    protected boolean validateDirty;
-
-    @SessionTransient
-    protected String growlScript;
-
-    @SessionTransient
-    protected String lightboxScript;
+    protected boolean skipViewInit;
 
     protected View view;
-
     protected View postedView;
 
     protected Map<String, String> viewRequestParameters;
-
     protected List<String> readOnlyFieldsList;
 
     protected Map<String, Object> newCollectionLines;
-
-    @SessionTransient
     protected Map<String, String> actionParameters;
-
-    @SessionTransient
     protected Map<String, Object> clientStateForSyncing;
-
-    @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
-
-    private List addedCollectionItems;
 
     protected MultipartFile attachmentFile;
 
     // navigation
-
     protected String returnLocation;
-
     protected String returnFormKey;
 
-    @SessionTransient
-    protected boolean ajaxRequest;
-
-    @SessionTransient
-    protected String ajaxReturnType;
-
-  
     protected History formHistory;
 
-    // dialog fields
-    @SessionTransient
-    protected String dialogExplanation;
-
-    @SessionTransient
-    protected String dialogResponse;
-
-    private DialogManager dialogManager;
-
-    @SessionTransient
-    protected boolean skipViewInit;
-
-    @SessionTransient
-    protected boolean requestRedirect;
-
-    @SessionTransient
-    protected String updateComponentId;
-
-    @SessionTransient
     protected boolean renderFullView;
+    protected boolean validateDirty;
 
     public UifFormBase() {
         formKey = generateFormKey();
         renderFullView = true;
         defaultsApplied = false;
         skipViewInit = false;
-        requestRedirect = false;
+
+        formHistory = new History();
 
         readOnlyFieldsList = new ArrayList<String>();
         viewRequestParameters = new HashMap<String, String>();
@@ -162,8 +103,6 @@ public class UifFormBase implements ViewModel {
         actionParameters = new HashMap<String, String>();
         clientStateForSyncing = new HashMap<String, Object>();
         selectedCollectionLines = new HashMap<String, Set<String>>();
-        addedCollectionItems = new ArrayList();
-        dialogManager = new DialogManager();
     }
 
     /**
@@ -177,9 +116,11 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#postBind(javax.servlet.http.HttpServletRequest)
+     * Called after Spring binds the request to the form and before the
+     * controller method is invoked.
+     *
+     * @param request - request object containing the query parameters
      */
-    @Override
     public void postBind(HttpServletRequest request) {
         // default form post URL to request URL
         formPostUrl = request.getRequestURL().toString();
@@ -215,7 +156,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getViewId()
      */
-    @Override
     public String getViewId() {
         return this.viewId;
     }
@@ -223,7 +163,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setViewId(java.lang.String)
      */
-    @Override
     public void setViewId(String viewId) {
         this.viewId = viewId;
     }
@@ -231,7 +170,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getViewName()
      */
-    @Override
     public String getViewName() {
         return this.viewName;
     }
@@ -239,7 +177,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setViewName(java.lang.String)
      */
-    @Override
     public void setViewName(String viewName) {
         this.viewName = viewName;
     }
@@ -247,7 +184,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getViewTypeName()
      */
-    @Override
     public ViewType getViewTypeName() {
         return this.viewTypeName;
     }
@@ -255,7 +191,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setViewTypeName(org.kuali.rice.krad.uif.UifConstants.ViewType)
      */
-    @Override
     public void setViewTypeName(ViewType viewTypeName) {
         this.viewTypeName = viewTypeName;
     }
@@ -263,7 +198,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getPageId()
      */
-    @Override
     public String getPageId() {
         return this.pageId;
     }
@@ -271,7 +205,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setPageId(java.lang.String)
      */
-    @Override
     public void setPageId(String pageId) {
         this.pageId = pageId;
     }
@@ -279,7 +212,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getFormPostUrl()
      */
-    @Override
     public String getFormPostUrl() {
         return this.formPostUrl;
     }
@@ -287,7 +219,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setFormPostUrl(java.lang.String)
      */
-    @Override
     public void setFormPostUrl(String formPostUrl) {
         this.formPostUrl = formPostUrl;
     }
@@ -311,7 +242,7 @@ public class UifFormBase implements ViewModel {
     /**
      * Identifies the controller method that should be invoked to fulfill a
      * request. The value will be matched up against the 'params' setting on the
-     * {@code RequestMapping} annotation for the controller method
+     * <code>RequestMapping</code> annotation for the controller method
      *
      * @return String method to call
      */
@@ -331,7 +262,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getViewRequestParameters()
      */
-    @Override
     public Map<String, String> getViewRequestParameters() {
         return this.viewRequestParameters;
     }
@@ -339,7 +269,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setViewRequestParameters(java.util.Map<java.lang.String,java.lang.String>)
      */
-    @Override
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
         this.viewRequestParameters = viewRequestParameters;
     }
@@ -347,7 +276,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getReadOnlyFieldsList()
      */
-    @Override
     public List<String> getReadOnlyFieldsList() {
         return readOnlyFieldsList;
     }
@@ -355,7 +283,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setReadOnlyFieldsList(java.util.List<java.lang.String>)
      */
-    @Override
     public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
         this.readOnlyFieldsList = readOnlyFieldsList;
     }
@@ -363,7 +290,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getNewCollectionLines()
      */
-    @Override
     public Map<String, Object> getNewCollectionLines() {
         return this.newCollectionLines;
     }
@@ -371,7 +297,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setNewCollectionLines(java.util.Map<java.lang.String,java.lang.Object>)
      */
-    @Override
     public void setNewCollectionLines(Map<String, Object> newCollectionLines) {
         this.newCollectionLines = newCollectionLines;
     }
@@ -379,13 +304,12 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getActionParameters()
      */
-    @Override
     public Map<String, String> getActionParameters() {
         return this.actionParameters;
     }
 
     /**
-     * Returns the action parameters map as a {@code Properties} instance
+     * Returns the action parameters map as a <code>Properties</code> instance
      *
      * @return Properties action parameters
      */
@@ -396,7 +320,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setActionParameters(java.util.Map<java.lang.String,java.lang.String>)
      */
-    @Override
     public void setActionParameters(Map<String, String> actionParameters) {
         this.actionParameters = actionParameters;
     }
@@ -439,7 +362,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getClientStateForSyncing()
      */
-    @Override
     public Map<String, Object> getClientStateForSyncing() {
         return clientStateForSyncing;
     }
@@ -447,7 +369,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getSelectedCollectionLines()
      */
-    @Override
     public Map<String, Set<String>> getSelectedCollectionLines() {
         return selectedCollectionLines;
     }
@@ -455,7 +376,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setSelectedCollectionLines(java.util.Map<java.lang.String,java.util.Set<java.lang.String>>)
      */
-    @Override
     public void setSelectedCollectionLines(Map<String, Set<String>> selectedCollectionLines) {
         this.selectedCollectionLines = selectedCollectionLines;
     }
@@ -487,7 +407,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#isDefaultsApplied()
      */
-    @Override
     public boolean isDefaultsApplied() {
         return this.defaultsApplied;
     }
@@ -495,7 +414,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setDefaultsApplied(boolean)
      */
-    @Override
     public void setDefaultsApplied(boolean defaultsApplied) {
         this.defaultsApplied = defaultsApplied;
     }
@@ -519,24 +437,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Indicates whether a redirect has been requested for the view
-     *
-     * @return boolean true if redirect was requested, false if not
-     */
-    public boolean isRequestRedirect() {
-        return requestRedirect;
-    }
-
-    /**
-     * Setter for the request redirect indicator
-     *
-     * @param requestRedirect
-     */
-    public void setRequestRedirect(boolean requestRedirect) {
-        this.requestRedirect = requestRedirect;
-    }
-
-    /**
      * Holder for files that are attached through the view
      *
      * @return MultipartFile representing the attachment
@@ -555,27 +455,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Id for the component that should be updated for a component refresh process
-     *
-     * @return String component id
-     */
-    public String getUpdateComponentId() {
-        return updateComponentId;
-    }
-
-    /**
-     * Setter for the component id that should be refreshed
-     *
-     * @param updateComponentId
-     */
-    public void setUpdateComponentId(String updateComponentId) {
-        this.updateComponentId = updateComponentId;
-    }
-
-    /**
-     * Indicates if the full view is to be rendered or if its just a component that
-     * needs to be refreshed
-     *
      * @return the renderFullView
      */
     public boolean isRenderFullView() {
@@ -583,8 +462,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Setter for renderFullView
-     *
      * @param renderFullView
      */
     public void setRenderFullView(boolean renderFullView) {
@@ -594,7 +471,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getView()
      */
-    @Override
     public View getView() {
         return this.view;
     }
@@ -602,7 +478,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setView(org.kuali.rice.krad.uif.view.View)
      */
-    @Override
     public void setView(View view) {
         this.view = view;
     }
@@ -610,7 +485,6 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getPostedView()
      */
-    @Override
     public View getPostedView() {
         return this.postedView;
     }
@@ -618,14 +492,13 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setPostedView(org.kuali.rice.krad.uif.view.View)
      */
-    @Override
     public void setPostedView(View postedView) {
         this.postedView = postedView;
     }
 
     /**
-     * Instance of the {@code ViewService} that can be used to retrieve
-     * {@code View} instances
+     * Instance of the <code>ViewService</code> that can be used to retrieve
+     * <code>View</code> instances
      *
      * @return ViewService implementation
      */
@@ -734,189 +607,6 @@ public class UifFormBase implements ViewModel {
      */
     public void setValidateDirty(boolean validateDirty) {
         this.validateDirty = validateDirty;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getGrowlScript()
-     */
-    @Override
-    public String getGrowlScript() {
-        return growlScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setGrowlScript(java.lang.String)
-     */
-    @Override
-    public void setGrowlScript(String growlScript) {
-        this.growlScript = growlScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getState() 
-     */
-    public String getState() {
-        return state;
-    }
-
-    /**
-     * @see ViewModel#setState(String)
-     */
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getLightboxScript()
-     */
-    @Override
-    public String getLightboxScript() {
-        return lightboxScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setLightboxScript(java.lang.String)
-     */
-    @Override
-    public void setLightboxScript(String lightboxScript) {
-        this.lightboxScript = lightboxScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#isAjaxRequest()
-     */
-    @Override
-    public boolean isAjaxRequest() {
-        return ajaxRequest;
-    }
-
-     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxRequest(boolean)
-     */
-    @Override
-    public void setAjaxRequest(boolean ajaxRequest) {
-        this.ajaxRequest = ajaxRequest;
-    }
-
-     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getAjaxReturnType()
-     */
-    @Override
-    public String getAjaxReturnType() {
-        return ajaxReturnType;
-    }
-
-
-     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxReturnType(java.lang.String)
-     */
-    @Override
-    public void setAjaxReturnType(String ajaxReturnType) {
-        this.ajaxReturnType = ajaxReturnType;
-    }
-
-    /**
-     * Returns the String entered by the user when presented a dialog
-     *
-     * <p>
-     * Field defined here so all forms will be able to bind to a dialog using the same property
-     * </p>
-     *
-     * @return String - the text entered by a user as a reply in a modal dialog.
-     */
-    public String getDialogExplanation() {
-        return dialogExplanation;
-    }
-
-    /**
-     * Sets the dialogExplanation text value.
-     *
-     * @param dialogExplanation - text entered by user when replying to a modal dialog
-     */
-    public void setDialogExplanation(String dialogExplanation) {
-        this.dialogExplanation = dialogExplanation;
-    }
-
-    /**
-     * Represents the option chosen by the user when interacting with a modal dialog
-     *
-     * <p>
-     * This is used to determine which option was chosen by the user. The value is the key in the key/value pair
-     * selected in the control.
-     * </p>
-     *
-     * @return - String key selected by the user
-     */
-    public String getDialogResponse() {
-        return dialogResponse;
-    }
-
-    /**
-     * Sets the response key text selected by the user as a response to a modal dialog
-     *
-     * @param dialogResponse - the key of the option chosen by the user
-     */
-    public void setDialogResponse(String dialogResponse) {
-        this.dialogResponse = dialogResponse;
-    }
-
-    /**
-     * Gets the DialogManager for this view/form
-     *
-     * <p>
-     * The DialogManager tracks modal dialog interactions with the user
-     * </p>
-     * @return
-     */
-    public DialogManager getDialogManager() {
-        return dialogManager;
-    }
-
-    /**
-     * Sets the DialogManager for this view
-     *
-     * @param dialogManager - DialogManager instance for this view
-     */
-    public void setDialogManager(DialogManager dialogManager) {
-        this.dialogManager = dialogManager;
-    }
-
-
-    /**
-     * The {@code List} that contains all newly added items for the collections on the model
-     * 
-     * <p>
-     * This list contains the new items for all the collections on the model.    
-     * </p>
-     *
-     * @return List of the newly added item lists
-     */
-    public List getAddedCollectionItems() {
-        return addedCollectionItems;
-    }
-
-    /**
-     * Setter for the newly added item list
-     *
-     * @param addedCollectionItems
-     */
-    public void setAddedCollectionItems(List addedCollectionItems) {
-        this.addedCollectionItems = addedCollectionItems;
-    }
-
-    /**
-     * Indicates whether an collection item has been newly added
-     *
-     * <p>
-     * Tests collection items against the list of newly added items on the model. This list gets cleared when the view 
-     * is submitted and the items are persisted.
-     * </p>
-     *
-     * @param item - the item to test against list of newly added items
-     * @return boolean true if the item has been newly added
-     */
-    public boolean isAddedCollectionItem(Object item) {
-        return addedCollectionItems.contains(item);
     }
 
 }

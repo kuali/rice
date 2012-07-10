@@ -103,9 +103,8 @@ function publishHeight(){
         parentUrl = decodeURIComponent(parentUrl);
     }
 
-    var height = jQuery("body").outerHeight();
-    jQuery("body").attr("style", "overflow-x: auto; padding-right: 20px;");
-    if (parentUrl && !isNaN(height) && height > 0) {
+    var height = jQuery('#view_div:first').outerHeight();
+    if (parentUrl && !isNaN(height) && height > 0 && height !== bodyHeight) {
         jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;
     }
@@ -114,7 +113,7 @@ function publishHeight(){
 jQuery(function(){
   publishHeight();
   window.onresize = publishHeight;
-  window.setInterval(publishHeight, 249);
+  window.setInterval(publishHeight, 500);
 });
 </script>
 
@@ -144,7 +143,7 @@ jQuery(function(){
 			</c:if>
 		</c:if>
 		">
-    <div id="Uif-Application">
+    <div id="view_div">
 		<kul:backdoor />
 
 			<c:if
@@ -177,7 +176,7 @@ jQuery(function(){
 		</c:if>
 		<body onload="if ( !restoreScrollPosition() ) { ${anchorScript} }"
 			onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
-    <div id="Uif-Application">
+    <div id="view_div">
 			<kul:backdoor />
 			${headerMenuBar}
 	</c:otherwise>

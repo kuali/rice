@@ -27,10 +27,11 @@ import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.test.BaseMaintenanceDocumentTest;
 
 /**
- * CountryMaintenanceDocumentTest tests some maintenance document operations on the document type 'CountryMaintenanceDocument'
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * This class...
+ * 
+ * 
  */
+
 public class CountryMaintenanceDocumentTest extends BaseMaintenanceDocumentTest {
 
     @Override

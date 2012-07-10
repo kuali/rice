@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -28,8 +27,8 @@ import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
-import org.kuali.rice.krad.uif.element.Header;
-import org.kuali.rice.krad.uif.element.Link;
+import org.kuali.rice.krad.uif.field.HeaderField;
+import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -75,25 +74,21 @@ import java.util.Set;
 public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
 
-    private String namespaceCode;
+    private String viewNamespaceCode;
     private String viewName;
     private ViewTheme theme;
 
     private int idSequence;
 
-    private String stateObjectBindingPath;
-    private StateMapping stateMapping;
-
     // application
-    private Header applicationHeader;
+    private HeaderField applicationHeader;
     private Group applicationFooter;
 
     // Breadcrumbs
     private BreadCrumbs breadcrumbs;
-    private String breadcrumbTitlePropertyName;
-    private String breadcrumbTitleDisplayOption;
-
-    private boolean renderBreadcrumbsInView;
+    private String viewLabelFieldPropertyName;
+    private String appendOption;
+    private boolean breadcrumbsInApplicationHeader;
 
     // Growls support
     private Growls growls;
@@ -108,18 +103,17 @@ public class View extends ContainerBase {
 
     private Class<?> formClass;
     private String defaultBindingObjectPath;
-    private Map<String, Class<?>> objectPathToConcreteClassMapping;
+    private Map<String, Class<?>> abstractTypeClasses;
 
     private List<String> additionalScriptFiles;
     private List<String> additionalCssFiles;
 
     private ViewType viewTypeName;
+    private Class<? extends ViewHelperService> viewHelperServiceClassName;
 
     private String viewStatus;
     private ViewIndex viewIndex;
     private Map<String, String> viewRequestParameters;
-
-    private boolean persistFormToSession;
 
     private ViewPresentationController presentationController;
     private ViewAuthorizer authorizer;
@@ -133,52 +127,43 @@ public class View extends ContainerBase {
     private PageGroup page;
 
     private List<? extends Group> items;
-    private List<? extends Group> dialogs;
 
-    private Link viewMenuLink;
-    private String viewMenuGroupName;
+    private LinkField viewMenuLink;
+    private String viewMenuGrouping;
 
-    private boolean applyDirtyCheck;
-    private boolean translateCodesOnReadOnlyDisplay;
-    private boolean supportsRequestOverrideOfReadOnlyFields;
-
+    private boolean validateDirty;
+    private boolean translateCodes;
     private String preLoadScript;
     private Map<String, Object> clientSideState;
 
-    @RequestParameter
-    private boolean renderedInLightBox;
-    
-    private int preloadPoolSize;
+    private boolean supportsReadOnlyFieldsOverride;
 
-    private Class<? extends ViewHelperService> viewHelperServiceClass;
+    @RequestParameter
+    private boolean dialogMode;
 
     @ReferenceCopy
     private ViewHelperService viewHelperService;
 
     public View() {
-        renderedInLightBox = false;
+        dialogMode = false;
         singlePageView = false;
-        translateCodesOnReadOnlyDisplay = false;
+        translateCodes = false;
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
         formClass = UifFormBase.class;
-        renderBreadcrumbsInView = true;
-        supportsRequestOverrideOfReadOnlyFields = true;
-        persistFormToSession = true;
+        breadcrumbsInApplicationHeader = false;
+        supportsReadOnlyFieldsOverride = true;
 
         idSequence = 0;
         this.viewIndex = new ViewIndex();
-        preloadPoolSize = 0;
 
         additionalScriptFiles = new ArrayList<String>();
         additionalCssFiles = new ArrayList<String>();
         items = new ArrayList<Group>();
-        objectPathToConcreteClassMapping = new HashMap<String, Class<?>>();
+        abstractTypeClasses = new HashMap<String, Class<?>>();
         viewRequestParameters = new HashMap<String, String>();
         expressionVariables = new HashMap<String, String>();
         clientSideState = new HashMap<String, Object>();
-
-        dialogs = new ArrayList<Group>();
     }
 
     /**
@@ -239,8 +224,8 @@ public class View extends ContainerBase {
 
         String growlScript = "";
         Growls gw = view.getGrowls();
-        if (!gw.getTemplateOptions().isEmpty()) {
-            growlScript = "setGrowlDefaults(" + gw.getTemplateOptionsJSString() + ");";
+        if (!gw.getComponentOptions().isEmpty()) {
+            growlScript = "setGrowlDefaults(" + gw.getComponentOptionsJSString() + ");";
         }
 
         this.setPreLoadScript(prefixScript + growlScript);
@@ -281,6 +266,14 @@ public class View extends ContainerBase {
             }
         }
 
+        // check if component has already been initialized to prevent cyclic references
+        // TODO: move to VHS initialize
+        //        if (initializedComponentIds.contains(component.getId())) {
+        //            throw new RiceRuntimeException(
+        //                    "Circular reference or duplicate id found for component with id: " + component.getId());
+        //        }
+        //        initializedComponentIds.add(component.getId());
+
         // assign id to nested components
         List<Component> allNested = new ArrayList<Component>(component.getComponentsForLifecycle());
         allNested.addAll(component.getComponentPrototypes());
@@ -294,19 +287,14 @@ public class View extends ContainerBase {
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
+        List<Component> components = super.getComponentsForLifecycle();
 
         components.add(applicationHeader);
         components.add(applicationFooter);
         components.add(navigation);
         components.add(breadcrumbs);
         components.add(growls);
-        components.addAll(dialogs);
         components.add(viewMenuLink);
-
-        // Note super items should be added after navigation and other view components so
-        // conflicting ids between nav and page do not occur on page navigation via ajax
-        components.addAll(super.getComponentsForLifecycle());
 
         // remove all pages that are not the current page
         if (!singlePageView) {
@@ -378,17 +366,17 @@ public class View extends ContainerBase {
      *
      * @return String namespace code
      */
-    public String getNamespaceCode() {
-        return namespaceCode;
+    public String getViewNamespaceCode() {
+        return viewNamespaceCode;
     }
 
     /**
      * Setter for the view's namespace code
      *
-     * @param namespaceCode
+     * @param viewNamespaceCode
      */
-    public void setNamespaceCode(String namespaceCode) {
-        this.namespaceCode = namespaceCode;
+    public void setViewNamespaceCode(String viewNamespaceCode) {
+        this.viewNamespaceCode = viewNamespaceCode;
     }
 
     /**
@@ -429,7 +417,7 @@ public class View extends ContainerBase {
      *
      * @return HeaderField application header
      */
-    public Header getApplicationHeader() {
+    public HeaderField getApplicationHeader() {
         return applicationHeader;
     }
 
@@ -438,7 +426,7 @@ public class View extends ContainerBase {
      *
      * @param applicationHeader
      */
-    public void setApplicationHeader(Header applicationHeader) {
+    public void setApplicationHeader(HeaderField applicationHeader) {
         this.applicationHeader = applicationHeader;
     }
 
@@ -638,17 +626,17 @@ public class View extends ContainerBase {
      *
      * @return Map<String, Class> of class implementations keyed by path
      */
-    public Map<String, Class<?>> getObjectPathToConcreteClassMapping() {
-        return this.objectPathToConcreteClassMapping;
+    public Map<String, Class<?>> getAbstractTypeClasses() {
+        return this.abstractTypeClasses;
     }
 
     /**
      * Setter for the Map of class implementations keyed by path
      *
-     * @param objectPathToConcreteClassMapping
+     * @param abstractTypeClasses
      */
-    public void setObjectPathToConcreteClassMapping(Map<String, Class<?>> objectPathToConcreteClassMapping) {
-        this.objectPathToConcreteClassMapping = objectPathToConcreteClassMapping;
+    public void setAbstractTypeClasses(Map<String, Class<?>> abstractTypeClasses) {
+        this.abstractTypeClasses = abstractTypeClasses;
     }
 
     /**
@@ -705,53 +693,12 @@ public class View extends ContainerBase {
         this.additionalCssFiles = additionalCssFiles;
     }
 
-    /**
-     * Indicates whether the view is rendered within a lightbox
-     *
-     * <p>
-     * Some discussion (for example how a close button behaves) need to change based on whether the
-     * view is rendered within a lightbox or the standard browser window. This boolean is true when it is
-     * within a lightbox
-     * </p>
-     *
-     * @return boolean true if view is rendered within a lightbox, false if not
-     */
-    public boolean isRenderedInLightBox() {
-        return this.renderedInLightBox;
+    public boolean isDialogMode() {
+        return this.dialogMode;
     }
 
-    /**
-     * Setter for the rendered within lightbox indicator
-     *
-     * @param renderedInLightBox
-     */
-    public void setRenderedInLightBox(boolean renderedInLightBox) {
-        this.renderedInLightBox = renderedInLightBox;
-    }
-
-    /**
-     * Specifies the size of the pool that will contain pre-loaded views
-     *
-     * <p>
-     * The spring loading of some views can take a few seconds which hurts performance. The framework supports
-     * pre-loading of view instances so they are available right away when a request is made. This property configures
-     * how many view instances will be pre-loaded. A value of 0 (the default) means no view instances will be
-     * pre-loaded
-     * </p>
-     *
-     * @return int number of view instances to pre-load
-     */
-    public int getPreloadPoolSize() {
-        return preloadPoolSize;
-    }
-
-    /**
-     * Setter for the preloaded view pool size
-     *
-     * @param preloadPoolSize
-     */
-    public void setPreloadPoolSize(int preloadPoolSize) {
-        this.preloadPoolSize = preloadPoolSize;
+    public void setDialogMode(boolean dialogMode) {
+        this.dialogMode = dialogMode;
     }
 
     /**
@@ -787,17 +734,17 @@ public class View extends ContainerBase {
      * @return Class for the spring bean
      * @see org.kuali.rice.krad.uif.service.ViewHelperService
      */
-    public Class<? extends ViewHelperService> getViewHelperServiceClass() {
-        return this.viewHelperServiceClass;
+    public Class<? extends ViewHelperService> getViewHelperServiceClassName() {
+        return this.viewHelperServiceClassName;
     }
 
     /**
      * Setter for the <code>ViewHelperService</code> class name
      *
-     * @param viewHelperServiceClass
+     * @param viewHelperServiceClassName
      */
-    public void setViewHelperServiceClass(Class<? extends ViewHelperService> viewHelperServiceClass) {
-        this.viewHelperServiceClass = viewHelperServiceClass;
+    public void setViewHelperServiceClassName(Class<? extends ViewHelperService> viewHelperServiceClassName) {
+        this.viewHelperServiceClassName = viewHelperServiceClassName;
     }
 
     /**
@@ -806,8 +753,8 @@ public class View extends ContainerBase {
      * @return ViewHelperService instance
      */
     public ViewHelperService getViewHelperService() {
-        if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
-            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClass);
+        if (this.viewHelperService == null) {
+            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClassName);
         }
 
         return viewHelperService;
@@ -861,47 +808,6 @@ public class View extends ContainerBase {
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
         this.viewRequestParameters = viewRequestParameters;
-    }
-
-    /**
-     * Indicates whether the form (model) associated with the view should be stored in the user session
-     *
-     * <p>
-     * The form class (or model) is used to hold the data that backs the view along with the built view object. Storing
-     * the form instance in session allows many things:
-     *
-     * <ul>
-     *   <li>Data does not need to be rebuilt for each server request (for example a collection)</li>
-     *   <li>Data that does not need to go to the user can remain on the form, reducing the size of the response and
-     *   improving security</li>
-     *   <li>Data can be keep around in a 'pre-save' state. When requested by the user changes can then be persisted to
-     *   the database</li>
-     *   <li>Certain information about the view that was rendered, such as input fields, collection paths, and refresh
-     *   components can be kept on the form to support UI interaction</li>
-     * </ul>
-     *
-     * Setting this flag to false will prevent the form from being kept in session and as a result will limit what can
-     * be done by the framework. In almost all cases this is not recommended.
-     * </p>
-     *
-     * <p>
-     * Note all forms will be cleared when the user session expires (based on the rice configuration). In addition, the
-     * framework enables clear points on certain actions to remove the form when it is no longer needed
-     * </p>
-     *
-     * @return boolean true if the form should be stored in the user session, false if only request based
-     */
-    public boolean isPersistFormToSession() {
-        return persistFormToSession;
-    }
-
-    /**
-     * Setter for the persist form to session indicator
-     *
-     * @param persistFormToSession
-     */
-    public void setPersistFormToSession(boolean persistFormToSession) {
-        this.persistFormToSession = persistFormToSession;
     }
 
     /**
@@ -1114,30 +1020,12 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Provide a list of dialog groups associated with this view
-     *
-     * @return List of dialog Groups
-     */
-    public List<? extends Group> getDialogs() {
-        return dialogs;
-    }
-
-    /**
-     * Sets the list of dialog groups for this view
-     *
-     * @param dialogs - List of dialog groups
-     */
-    public void setDialogs(List<? extends Group> dialogs) {
-        this.dialogs = dialogs;
-    }
-
-    /**
      * Provides configuration for displaying a link to the view from an
      * application menu
      *
-     * @return Link view link field
+     * @return LinkField view link field
      */
-    public Link getViewMenuLink() {
+    public LinkField getViewMenuLink() {
         return this.viewMenuLink;
     }
 
@@ -1146,7 +1034,7 @@ public class View extends ContainerBase {
      *
      * @param viewMenuLink
      */
-    public void setViewMenuLink(Link viewMenuLink) {
+    public void setViewMenuLink(LinkField viewMenuLink) {
         this.viewMenuLink = viewMenuLink;
     }
 
@@ -1156,17 +1044,17 @@ public class View extends ContainerBase {
      *
      * @return String menu grouping
      */
-    public String getViewMenuGroupName() {
-        return this.viewMenuGroupName;
+    public String getViewMenuGrouping() {
+        return this.viewMenuGrouping;
     }
 
     /**
      * Setter for the views menu grouping
      *
-     * @param viewMenuGroupName
+     * @param viewMenuGrouping
      */
-    public void setViewMenuGroupName(String viewMenuGroupName) {
-        this.viewMenuGroupName = viewMenuGroupName;
+    public void setViewMenuGrouping(String viewMenuGrouping) {
+        this.viewMenuGrouping = viewMenuGrouping;
     }
 
     /**
@@ -1216,6 +1104,39 @@ public class View extends ContainerBase {
     }
 
     /**
+     * onSubmit script configured on the <code>View</code> gets placed on the
+     * form element
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnSubmit()
+     */
+    @Override
+    public boolean getSupportsOnSubmit() {
+        return true;
+    }
+
+    /**
+     * onLoad script configured on the <code>View</code> gets placed in a load
+     * call
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
+     */
+    @Override
+    public boolean getSupportsOnLoad() {
+        return true;
+    }
+
+    /**
+     * onDocumentReady script configured on the <code>View</code> gets placed in
+     * a document ready jQuery block
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
+     */
+    @Override
+    public boolean getSupportsOnDocumentReady() {
+        return true;
+    }
+
+    /**
      * Breadcrumb widget used for displaying homeward path and history
      *
      * @return the breadcrumbs
@@ -1232,28 +1153,28 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Indicates whether the breadcrumbs should be rendered in the view or if they have been rendered in
-     * the application header
+     * Indicates whether the breadcrumbs are rendered in the application header and should not
+     * be rendered as part of the view template
      *
      * <p>
      * For layout purposes it is sometimes necessary to render the breadcrumbs in the application header. This flag
-     * indicates that is being done (by setting to false) and therefore should not be rendered in the view template.
+     * indicates that is being done and therefore should not be rendered in the view template.
      * </p>
      *
-     * @return boolean true if breadcrumbs should be rendered in the view, false if not (are rendered in the
-     * application header)
+     * @return boolean true if breadcrumbs are rendered in the application header, false if not and they should be
+     *         rendered with the view
      */
-    public boolean isRenderBreadcrumbsInView() {
-        return renderBreadcrumbsInView;
+    public boolean isBreadcrumbsInApplicationHeader() {
+        return breadcrumbsInApplicationHeader;
     }
 
     /**
-     * Setter for the render breadcrumbs in view indicator
+     * Setter for the breadcrumbs in application header indicator
      *
-     * @param renderBreadcrumbsInView
+     * @param breadcrumbsInApplicationHeader
      */
-    public void setRenderBreadcrumbsInView(boolean renderBreadcrumbsInView) {
-        this.renderBreadcrumbsInView = renderBreadcrumbsInView;
+    public void setBreadcrumbsInApplicationHeader(boolean breadcrumbsInApplicationHeader) {
+        this.breadcrumbsInApplicationHeader = breadcrumbsInApplicationHeader;
     }
 
     /**
@@ -1274,17 +1195,13 @@ public class View extends ContainerBase {
     }
 
     /**
-     * whether to use growls to show messages - info, warning and error
-     *
-     * <p>Growls use the messages contained in the message map. If enabled, info
+     * Growls use the messages contained in the message map. If enabled, info
      * messages in their entirety will be displayed in growls, for warning and
      * error messages a growl message will notify the user that these messages
-     * exist on the page.</p>
-     *
-     * <p> If this setting is disabled, it is recommended that
-     * infoMessage display be enabled for the page ValidationMessages bean in order to
+     * exist on the page. If this setting is disabled, it is recommended that
+     * infoMessage display be enabled for the page ErrorsField bean in order to
      * display relevant information to the user. Note: the growl scripts are
-     * built out in the PageGroup class.</p>
+     * built out in the PageGroup class.
      *
      * @return the growlMessagingEnabled
      */
@@ -1293,8 +1210,6 @@ public class View extends ContainerBase {
     }
 
     /**
-     * enable or disable showing of messages using growls
-     *
      * @param growlMessagingEnabled the growlMessagingEnabled to set
      */
     public void setGrowlMessagingEnabled(boolean growlMessagingEnabled) {
@@ -1313,24 +1228,24 @@ public class View extends ContainerBase {
      *
      * @return true if dirty validation is set
      */
-    public boolean isApplyDirtyCheck() {
-        return this.applyDirtyCheck;
+    public boolean isValidateDirty() {
+        return this.validateDirty;
     }
 
     /**
      * Setter for dirty validation.
      */
-    public void setApplyDirtyCheck(boolean applyDirtyCheck) {
-        this.applyDirtyCheck = applyDirtyCheck;
+    public void setValidateDirty(boolean validateDirty) {
+        this.validateDirty = validateDirty;
     }
 
     /**
      * Indicates whether the Name of the Code should be displayed when a property is of type <code>KualiCode</code>
      *
-     * @param translateCodesOnReadOnlyDisplay - indicates whether <code>KualiCode</code>'s name should be included
+     * @param translateCodes - indicates whether <code>KualiCode</code>'s name should be included
      */
-    public void setTranslateCodesOnReadOnlyDisplay(boolean translateCodesOnReadOnlyDisplay) {
-        this.translateCodesOnReadOnlyDisplay = translateCodesOnReadOnlyDisplay;
+    public void setTranslateCodes(boolean translateCodes) {
+        this.translateCodes = translateCodes;
     }
 
     /**
@@ -1338,8 +1253,8 @@ public class View extends ContainerBase {
      *
      * @return true if the current view supports
      */
-    public boolean isTranslateCodesOnReadOnlyDisplay() {
-        return translateCodesOnReadOnlyDisplay;
+    public boolean isTranslateCodes() {
+        return translateCodes;
     }
 
     /**
@@ -1360,17 +1275,17 @@ public class View extends ContainerBase {
      *
      * @return String property name whose value should be displayed in view label
      */
-    public String getBreadcrumbTitlePropertyName() {
-        return this.breadcrumbTitlePropertyName;
+    public String getViewLabelFieldPropertyName() {
+        return this.viewLabelFieldPropertyName;
     }
 
     /**
      * Setter for the view label property name
      *
-     * @param breadcrumbTitlePropertyName the viewLabelFieldPropertyName to set
+     * @param viewLabelFieldPropertyName the viewLabelFieldPropertyName to set
      */
-    public void setBreadcrumbTitlePropertyName(String breadcrumbTitlePropertyName) {
-        this.breadcrumbTitlePropertyName = breadcrumbTitlePropertyName;
+    public void setViewLabelFieldPropertyName(String viewLabelFieldPropertyName) {
+        this.viewLabelFieldPropertyName = viewLabelFieldPropertyName;
     }
 
     /**
@@ -1381,17 +1296,17 @@ public class View extends ContainerBase {
      *
      * @return the appendOption
      */
-    public String getBreadcrumbTitleDisplayOption() {
-        return this.breadcrumbTitleDisplayOption;
+    public String getAppendOption() {
+        return this.appendOption;
     }
 
     /**
      * Setter for the append option
      *
-     * @param breadcrumbTitleDisplayOption the appendOption to set
+     * @param appendOption the appendOption to set
      */
-    public void setBreadcrumbTitleDisplayOption(String breadcrumbTitleDisplayOption) {
-        this.breadcrumbTitleDisplayOption = breadcrumbTitleDisplayOption;
+    public void setAppendOption(String appendOption) {
+        this.appendOption = appendOption;
     }
 
     /**
@@ -1456,17 +1371,17 @@ public class View extends ContainerBase {
      *
      * @return boolean true if read only request overrides are allowed, false if not
      */
-    public boolean isSupportsRequestOverrideOfReadOnlyFields() {
-        return supportsRequestOverrideOfReadOnlyFields;
+    public boolean isSupportsReadOnlyFieldsOverride() {
+        return supportsReadOnlyFieldsOverride;
     }
 
     /**
      * Setter for the the read only field override indicator
      *
-     * @param supportsRequestOverrideOfReadOnlyFields
+     * @param supportsReadOnlyFieldsOverride
      */
-    public void setSupportsRequestOverrideOfReadOnlyFields(boolean supportsRequestOverrideOfReadOnlyFields) {
-        this.supportsRequestOverrideOfReadOnlyFields = supportsRequestOverrideOfReadOnlyFields;
+    public void setSupportsReadOnlyFieldsOverride(boolean supportsReadOnlyFieldsOverride) {
+        this.supportsReadOnlyFieldsOverride = supportsReadOnlyFieldsOverride;
     }
 
     /**
@@ -1507,49 +1422,4 @@ public class View extends ContainerBase {
         this.theme = theme;
     }
 
-    /**
-     * The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
-     * determine what field in the model state information is stored in for this view.  Used during View validation.
-     *
-     * @return stateObjectBindingPath path to the object storing state information
-     */
-    public String getStateObjectBindingPath() {
-        return stateObjectBindingPath;
-    }
-
-    /**
-     *  The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
-     * determine what field in the model state information is stored in for this view.  Used during View validation.
-     *
-     * @param stateObjectBindingPath
-     */
-    public void setStateObjectBindingPath(String stateObjectBindingPath) {
-        this.stateObjectBindingPath = stateObjectBindingPath;
-    }
-
-    /**
-     * Gets the stateMapping.
-     *
-     * <p>The state mapping object is used to determine the state information for a view,
-     * it must include an ordered list of states, and where to find the state information for the view.
-     * A stateMapping must be set for state based validation to occur.  When stateMapping information is
-     * not included, the view's model is considered stateless and all constraints will apply regardless of their
-     * state information or replacements (ie, they will function as they did in version 2.1).</p>
-     *
-     * @since 2.2
-     * @return StateMapping information needed for state based validation, if null no state based validation functionality
-     * will exist and configured constraints will apply regardless of state
-     */
-    public StateMapping getStateMapping() {
-        return stateMapping;
-    }
-
-    /**
-     * Set the stateMapping
-     *
-     * @param stateMapping
-     */
-    public void setStateMapping(StateMapping stateMapping) {
-        this.stateMapping = stateMapping;
-    }
 }

@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tabs;
 
 import java.util.HashSet;
@@ -49,12 +48,6 @@ public class TabGroup extends Group {
         components.add(tabsWidget);
 
         return components;
-    }
-
-    @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model,parent);
-        this.addDataAttribute("type","Uif-TabGroup");
     }
 
     /**

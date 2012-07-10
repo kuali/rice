@@ -40,7 +40,7 @@ import org.kuali.test.KRADTestCase;
 import org.kuali.test.KRADTestConstants.TestConstants;
 
 /**
- * KualiLookupableTest tests {@link KualiLookupableImpl} methods
+ * This class tests the KualiLookupable methods.
  * 
  * 
  */
@@ -77,7 +77,6 @@ public class KualiLookupableTest extends KRADTestCase {
 
     /**
      * Tests generation of lookup form rows
-     *
      * @throws Exception
      */
     @Test public void testGetRows() throws Exception {
@@ -107,7 +106,7 @@ public class KualiLookupableTest extends KRADTestCase {
     }
 
     /**
-     * Test that the return url for a business object is getting set correctly based on the defined return fields
+     * Test that the return url for a business object is getting set correctly based on the defined return fields.
      * 
      * @throws Exception
      */
@@ -144,11 +143,11 @@ public class KualiLookupableTest extends KRADTestCase {
 
 
     /**
-     * Checks the url string contains a substring
+     * Checks the url string contains a substring.
      * 
-     * @param message - an informational message to show if the test fails
-     * @param containString - the string to check for in the url
-     * @param url - a url to look for a string in
+     * @param message
+     * @param containString
+     * @param url
      */
     private void checkURLContains(String message, String containString, String url) {
         assertTrue(message, url.indexOf(containString) > 0);

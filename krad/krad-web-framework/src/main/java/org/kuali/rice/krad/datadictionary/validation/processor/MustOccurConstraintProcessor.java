@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
@@ -27,7 +26,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteCons
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
-import org.kuali.rice.krad.uif.UifConstants;
 
 import java.util.List;
 
@@ -38,7 +36,6 @@ import java.util.List;
 public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProcessor<MustOccurConstraint> {
 
 	private static final String CONSTRAINT_NAME = "must occur constraint";
-    private static final String FALLBACK_KEY = "mustoccursFallback";
 	
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
@@ -53,14 +50,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 		
 
 		ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
-        if(StringUtils.isNotBlank(constraint.getLabelKey())){
-            constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
-        }
-        else{
-            constraintValidationResult.setConstraintLabelKey(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX +
-                    FALLBACK_KEY);
-        }
-
+        constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
         constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
 
         // If the processing of this constraint is not successful then it's an error

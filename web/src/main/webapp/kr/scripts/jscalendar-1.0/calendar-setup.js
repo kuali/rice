@@ -110,10 +110,8 @@ Calendar.setup = function (params) {
 			if (typeof p.flatCallback == "function")
 				p.flatCallback(cal);
 		}
-		if (update && p.singleClick && cal.dateClicked) {
+		if (update && p.singleClick && cal.dateClicked)
 			cal.callCloseHandler();
-            p.inputField.focus();
-        }
 	};
 
 	if (params.flat != null) {

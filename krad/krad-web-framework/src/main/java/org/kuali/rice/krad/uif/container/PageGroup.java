@@ -15,9 +15,20 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Growls;
+import org.kuali.rice.krad.util.ErrorMessage;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.MessageMap;
+import org.springframework.util.AutoPopulatingList;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,7 +36,7 @@ import org.kuali.rice.krad.uif.view.View;
 public class PageGroup extends Group {
     private static final long serialVersionUID = 7571981300587270274L;
 
-    private boolean autoFocus = false;
+    private boolean autoFocus;
 
     /**
      * Perform finalize here adds to its document ready script the
@@ -37,8 +48,6 @@ public class PageGroup extends Group {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-        
-        this.addDataAttribute("type", "Page");
 
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {

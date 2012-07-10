@@ -20,11 +20,6 @@ import org.kuali.rice.kns.datadictionary.validation.charlevel.NumericValidationP
 import org.kuali.rice.krad.datadictionary.validation.ValidationTestUtils;
 import org.kuali.rice.test.BaseRiceTestCase;
 
-/**
- * tests {@link NumericValidationPattern}
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
 public class NumericValidationPatternTest extends BaseRiceTestCase {
     private NumericValidationPattern pattern;
 
@@ -33,9 +28,7 @@ public class NumericValidationPatternTest extends BaseRiceTestCase {
         pattern = new NumericValidationPattern();
     }
 
-    /**
-     * tests that sequences containing only numbers match
-     */
+
     @Test public final void testMatch_allowDefault() {
         boolean[] expected = { true, // ""
                 false, // "!!!"

@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -27,7 +26,7 @@ import java.util.Map;
 
 /**
  * The breadcrumb widget contains various settings for setting up
- * Breadcrumb/History support on the view
+ * Breadcrumb/History support on the view.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -37,18 +36,17 @@ public class BreadCrumbs extends WidgetBase {
     private boolean displayHomewardPath;
     private boolean displayPassedHistory;
     private boolean displayBreadcrumbsWhenOne;
-
     private List<HistoryEntry> homewardPathList;
 
     /**
      * The following updates are done here:
      *
      * <ul>
-     * <li>Evaluate expression on homeward path list</li>
+     * <li>Evaluate expression on howeward path list</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     *      java.lang.Object)
      */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
@@ -59,9 +57,8 @@ public class BreadCrumbs extends WidgetBase {
             context.putAll(view.getContext());
 
             for (HistoryEntry historyEntry : homewardPathList) {
-                ExpressionUtils.populatePropertyExpressionsFromGraph(historyEntry, false);
-                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view,
-                        historyEntry, model, context);
+                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateObjectExpressions(historyEntry, model,
+                        context);
             }
         }
     }

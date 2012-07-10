@@ -17,9 +17,9 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
-<tiles:useAttribute name="element" classname="org.kuali.rice.krad.uif.element.Header"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.HeaderField"/>
 
-<krad:div component="${element}">
+<krad:div component="${field}">
 
   <h1>
     Learning

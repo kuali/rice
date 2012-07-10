@@ -16,14 +16,14 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.uif.component.ConfigurableBase;
-import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.field.MessageField;
 
 import java.io.Serializable;
 
 public class NodePrototype extends ConfigurableBase implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Message labelPrototype;
+    private MessageField labelPrototype;
     private Group dataGroupPrototype;
 
     public NodePrototype() {
@@ -33,14 +33,14 @@ public class NodePrototype extends ConfigurableBase implements Serializable {
     /**
      * @param labelPrototype the labelPrototype to set
      */
-    public void setLabelPrototype(Message labelPrototype) {
+    public void setLabelPrototype(MessageField labelPrototype) {
         this.labelPrototype = labelPrototype;
     }
 
     /**
      * @return the labelPrototype
      */
-    public Message getLabelPrototype() {
+    public MessageField getLabelPrototype() {
         return this.labelPrototype;
     }
 

@@ -20,16 +20,18 @@ import java.util.HashMap;
 /**
  * Used for rendering a lightbox in the UI to display action links in dialog
  * popups
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LightBox extends WidgetBase {
+
     private static final long serialVersionUID = -4004284762546700975L;
+
+    private String actionParameterMapString;
 
     private String height;
     private String width;
 
-    private boolean inquiryLookup;
     private boolean lookupReturnByScript;
 
     public LightBox() {
@@ -37,24 +39,25 @@ public class LightBox extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getTemplateOptionsJSString()
+     * Setter for the action parameter map javascript string
+     *
+     * @param actionParameterMapString the action parameter map javascript string
      */
-    @Override
-    public String getTemplateOptionsJSString() {
-        if (getTemplateOptions() == null) {
-            setTemplateOptions(new HashMap<String, String>());
-        }
+    public void setActionParameterMapString(String actionParameterMapString) {
+        this.actionParameterMapString = actionParameterMapString;
+    }
 
-        // Add the width and height properties to the ComponentOptions
-        // before the JS String gets generated.
-        if (width != null) {
-            getTemplateOptions().put("width", width);
-        }
-        if (height != null) {
-            getTemplateOptions().put("height", height);
-        }
-
-        return super.getTemplateOptionsJSString();
+    /**
+     * Action parameter map javascript string
+     * <p>
+     * The action parameter map string will be used to write these parameters to
+     * the form.
+     * </p>
+     *
+     * @return the action parameter map javascript string
+     */
+    public String getActionParameterMapString() {
+        return actionParameterMapString;
     }
 
     /**
@@ -81,7 +84,7 @@ public class LightBox extends WidgetBase {
         return width;
     }
 
-    /**
+     /**
      * Setter for the width of the light box
      * Can be percentage. ie. 75%
      *
@@ -91,22 +94,24 @@ public class LightBox extends WidgetBase {
         this.width = width;
     }
 
-    /**
-     * Indicates if the light box is for an inquiry or lookup.
-     *
-     * @return true if the link is part of an inquiry or lookup, false otherwise
+     /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentOptionsJSString()
      */
-    public boolean isInquiryLookup() {
-        return inquiryLookup;
-    }
+    @Override
+    public String getComponentOptionsJSString() {
+        if (getComponentOptions() == null) {
+            setComponentOptions(new HashMap<String, String>());
+        }
 
-    /**
-     * Setter for the inquiryLookup.
-     *
-     * @param inquiryLookup
-     */
-    public void setInquiryLookup(boolean inquiryLookup) {
-        this.inquiryLookup = inquiryLookup;
+        // Add the width and height properties to the ComponentOptions
+        // before the JS String gets generated.
+        if (width != null) {
+            getComponentOptions().put("width", width);
+        }
+        if (height != null) {
+            getComponentOptions().put("height", height);
+        }
+        return super.getComponentOptionsJSString();
     }
 
     /**
@@ -116,7 +121,7 @@ public class LightBox extends WidgetBase {
         return lookupReturnByScript;
     }
 
-    /**
+/**
      * Setter for the flag to indicate that lookups will return the value
      * by script and not a post
      *

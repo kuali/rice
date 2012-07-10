@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * tests creating and cancelling the new Postal Code maintenance screen
+ * TODO Administrator don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,9 +40,6 @@ public class LocationPostCodeIT {
     }
 
     @Test
-    /**
-     * tests that a new Postal Code maintenance document can be cancelled
-     */
     public void testCreateNew() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import org.kuali.rice.krad.uif.element.ContentElement;
+import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Represents an interactive element in the UI (typically an HTML control)
@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.element.ContentElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface Control extends ContentElement {
+public interface Control extends Component {
 
     /**
      * Unique index of the control within the tab order

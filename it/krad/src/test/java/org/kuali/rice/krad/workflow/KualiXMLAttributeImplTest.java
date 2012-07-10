@@ -58,7 +58,7 @@ import static org.junit.Assert.*;
 
 
 /**
- * KualiXMLAttributeImplTest tests the {@link KualiXmlAttributeHelper} operations of getting data from the data dictionary for workflow
+ * This class tests the {@link KualiXmlAttributeHelper} operations of getting data from the data dictionary for workflow
  * attributes
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -165,7 +165,7 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
     }
 
     /**
-     * goes through all of the ruleAttributes in the inputSource and tries to get a label out of the data dictionary
+     * This method goes through all of the ruleAttributes in the inputSource and tries to get a label out of the data dictionary.
      */
     @Test public void testConfirmLabels() {
         boolean failed = false;
@@ -179,13 +179,11 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
     }
 
     /**
-     * accepts a Node, and if all goes well, returns the exact same Node with expected changes
-     *
-     * <p>The node should have the name and title attributes added to
-     * the fieldDef element. This exercises the getConfigXML method on the class under test.</p>
+     * This method accepts a Node, and if all goes well, returns the exact same Node, with the name and title attributes added to
+     * the fieldDef element. This exercises the getConfigXML method on the class under test.
      * 
-     * @param xmlNode - an input node
-     * @return the input node with attributes added
+     * @param xmlNode
+     * @return
      * @throws TransformerException
      */
     private Node configureRuleAttribute(Node xmlNode, KualiXmlAttribute myAttribute) throws TransformerException {
@@ -212,14 +210,11 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
     }
 
     /**
-     * compares the label from the test to the expected, or not expected, value for all of the rule attributes in the file
-     *
-     * <p>The inputSource file should be as close to the production version as possible, as described by the class comments. It
-     * accepts the string to test against as a parameter.</p>
+     * This method compares the label from the test to the expected, or not expected, value for all of the rule attributes in the
+     * file. The inputSource file should be as close to the production version as possible, as described by the class comments. It
+     * accepts the string to test against as a parameter.
      * 
      * @param testString
-     * @param attributeXml
-     * @param configNodeName
      */
     private boolean confirmLabels(String testString, String attributeXml, String configNodeName) {
         boolean testFailed = false;
@@ -308,11 +303,9 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
     }
 
     /**
-     * confirms that the labels are coming from the data dictionary
-     *
-     * <p>This is done by modifying all the dictionary values
+     * This method confirms that the labels are coming from the data dictionary by modifing all the dictionary values
      * programatically to a nonsense value. It then rebuilds the Hash Table and runs confirmLabels() to make sure the labels have
-     * changed.</p>
+     * changed.
      */
     @Test public void testLabelSource() {
         DataDictionaryService myDDService = KRADServiceLocatorWeb.getDataDictionaryService();
@@ -347,9 +340,6 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
         assertFalse("At least one label was incorrect", failed);
     }
 
-    /*
-    unused method
-
     private void loadDataDictionaryEntries() throws Exception {
         KualiXmlRuleAttributeImpl myAttribute = new KualiXmlRuleAttributeImpl();
         NamedNodeMap fieldDefAttributes = null;
@@ -363,5 +353,5 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
         for (int i = 0; i < tempList.getLength(); i++) {
             Node xmlNode = configureRuleAttribute(tempList.item(i), mySearchAttribute);
         }
-    }*/
+    }
 }

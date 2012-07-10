@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -23,16 +26,14 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.DataFieldSecurity;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -65,21 +66,20 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean renderAddLine;
     private String addLinePropertyName;
     private BindingInfo addLineBindingInfo;
-
-    private Label addLineLabel;
-    private List<? extends Component> addLineItems;
-    private List<Action> addLineActions;
+    private LabelField addLineLabelField;
+    private List<? extends Component> addLineFields;
+    private List<ActionField> addLineActionFields;
 
     private boolean renderLineActions;
-    private List<Action> lineActions;
+    private List<ActionField> actionFields;
 
-    private boolean includeLineSelectionField;
-    private String lineSelectPropertyName;
+    private boolean renderSelectField;
+    private String selectPropertyName;
 
     private QuickFinder collectionLookup;
 
-    private boolean renderInactiveToggleButton;
-    private boolean showInactiveLines;
+    private boolean showHideInactiveButton;
+    private boolean showInactive;
     private CollectionFilter activeCollectionFilter;
     private List<CollectionFilter> filters;
 
@@ -88,38 +88,17 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private CollectionGroupBuilder collectionGroupBuilder;
 
-    private int displayCollectionSize = -1;
-
-    private boolean highlightNewItems;
-    private boolean highlightAddItem;
-    private String newItemsCssClass;
-    private String addItemCssClass;
-
-    private boolean renderAddBlankLineButton;
-    private Action addBlankLineAction;
-    private String addLinePlacement;
-
-    private boolean renderSaveLineActions;
-    private List<Action> validatedLineActions;
-
-    private boolean addViaLightBox;
-    private Action addViaLightBoxAction;
-
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
-        renderSaveLineActions = false;
-        showInactiveLines = false;
-        renderInactiveToggleButton = true;
-        includeLineSelectionField = false;
-        highlightNewItems = true;
-        addLinePlacement = "TOP";
+        showInactive = false;
+        showHideInactiveButton = true;
+        renderSelectField = false;
 
         filters = new ArrayList<CollectionFilter>();
-        lineActions = new ArrayList<Action>();
-        validatedLineActions = new ArrayList<Action>();
-        addLineItems = new ArrayList<Field>();
-        addLineActions = new ArrayList<Action>();
+        actionFields = new ArrayList<ActionField>();
+        addLineFields = new ArrayList<Field>();
+        addLineActionFields = new ArrayList<ActionField>();
         subCollections = new ArrayList<CollectionGroup>();
     }
 
@@ -170,7 +149,7 @@ public class CollectionGroup extends Group implements DataBinding {
             }
         }
 
-        for (Component addLineField : addLineItems) {
+        for (Component addLineField : addLineFields) {
             if (addLineField instanceof DataField) {
                 DataField field = (DataField) addLineField;
 
@@ -180,8 +159,8 @@ public class CollectionGroup extends Group implements DataBinding {
             }
         }
 
-        if ((addLineItems == null) || addLineItems.isEmpty()) {
-            addLineItems = getItems();
+        if ((addLineFields == null) || addLineFields.isEmpty()) {
+            addLineFields = getItems();
         }
 
         // if active collection filter not set use default
@@ -204,14 +183,14 @@ public class CollectionGroup extends Group implements DataBinding {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
 
-        List<DataField> addLineCollectionFields = ComponentUtils.getComponentsOfTypeDeep(addLineItems, DataField.class);
+        List<DataField> addLineCollectionFields = ComponentUtils.getComponentsOfTypeDeep(addLineFields, DataField.class);
         for (DataField collectionField : addLineCollectionFields) {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
 
         // add collection entry to abstract classes
-        if (!view.getObjectPathToConcreteClassMapping().containsKey(collectionPath)) {
-            view.getObjectPathToConcreteClassMapping().put(collectionPath, getCollectionObjectClass());
+        if (!view.getAbstractTypeClasses().containsKey(collectionPath)) {
+            view.getAbstractTypeClasses().put(collectionPath, getCollectionObjectClass());
         }
 
         // initialize container items and sub-collections (since they are not in
@@ -221,22 +200,13 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         // initialize addLineFields
-        for (Component item : addLineItems) {
+        for (Component item : addLineFields) {
             view.getViewHelperService().performComponentInitialization(view, model, item);
         }
 
         for (CollectionGroup collectionGroup : getSubCollections()) {
             collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
             view.getViewHelperService().performComponentInitialization(view, model, collectionGroup);
-        }
-
-        if (renderAddBlankLineButton && (addBlankLineAction != null)) {
-            String actionScript = "performCollectionAction(this, '" + getId() + "');";
-            if (StringUtils.isNotBlank(addBlankLineAction.getActionScript())) {
-                actionScript = addBlankLineAction.getActionScript() + actionScript;
-            }
-            addBlankLineAction.setActionScript(actionScript);
-            addBlankLineAction.setJumpToIdAfterSubmit(getId());
         }
     }
 
@@ -259,7 +229,6 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         // TODO: is this necessary to call again?
-        // This may be necessary to call in case getCollectionGroupBuilder().build resets the context map
         pushCollectionGroupToReference();
     }
 
@@ -268,13 +237,14 @@ public class CollectionGroup extends Group implements DataBinding {
      * instance, and sets name as parameter for an action fields in the group
      */
     protected void pushCollectionGroupToReference() {
-        List<Component> components = this.getComponentsForLifecycle(true);
+        List<Component> components = this.getComponentsForLifecycle();
 
         ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
-        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(components, Action.class);
-        for (Action action : actions) {
-            action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, this.getBindingInfo().getBindingPath());
+        List<ActionField> actionFields = ComponentUtils.getComponentsOfTypeDeep(components, ActionField.class);
+        for (ActionField actionField : actionFields) {
+            actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
+                    this.getBindingInfo().getBindingPath());
         }
     }
 
@@ -301,39 +271,20 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
-        return getComponentsForLifecycle(false);
-    }
-
-    /**
-     * Retrieve list of components that are contained within the component and should be sent through
-     * the lifecycle
-     *
-     * <p>The items need to be included when an object is being copied to all the groups nested components
-     *
-     * @param includeItems - whether the components items should be included.
-     * @see #pushCollectionGroupToReference()
-     *      The items are left out when the components are being retrieved for the <code>ViewHelperService</code></p>
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
-     */
-    public List<Component> getComponentsForLifecycle(boolean includeItems) {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(addLineLabel);
+        components.add(addLineLabelField);
         components.add(collectionLookup);
-        components.add(addBlankLineAction);
-        components.addAll(validatedLineActions);
-        components.add(addViaLightBoxAction);
 
-        if (!includeItems) {
-            // remove the containers items because we don't want them as children
-            // (they will become children of the layout manager as the rows are
-            // created)
-            for (Component item : getItems()) {
-                if (components.contains(item)) {
-                    components.remove(item);
-                }
+        // remove the containers items because we don't want them as children
+        // (they will become children of the layout manager as the rows are
+        // created)
+        for (Component item : getItems()) {
+            if (components.contains(item)) {
+                components.remove(item);
             }
         }
+
         return components;
     }
 
@@ -344,12 +295,11 @@ public class CollectionGroup extends Group implements DataBinding {
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
 
-        components.addAll(lineActions);
-        components.addAll(addLineActions);
-        components.addAll(validatedLineActions);
+        components.addAll(actionFields);
+        components.addAll(addLineActionFields);
         components.addAll(getItems());
         components.addAll(getSubCollections());
-        components.addAll(addLineItems);
+        components.addAll(addLineFields);
 
         return components;
     }
@@ -413,26 +363,26 @@ public class CollectionGroup extends Group implements DataBinding {
      * Action fields that should be rendered for each collection line. Example
      * line action is the delete action
      *
-     * @return List<Action> line action fields
+     * @return List<ActionField> line action fields
      */
-    public List<Action> getLineActions() {
-        return this.lineActions;
+    public List<ActionField> getActionFields() {
+        return this.actionFields;
     }
 
     /**
      * Setter for the line action fields list
      *
-     * @param lineActions
+     * @param actionFields
      */
-    public void setLineActions(List<Action> lineActions) {
-        this.lineActions = lineActions;
+    public void setActionFields(List<ActionField> actionFields) {
+        this.actionFields = actionFields;
     }
 
     /**
      * Indicates whether the action column for the collection should be rendered
      *
      * @return boolean true if the actions should be rendered, false if not
-     * @see #getLineActions()
+     * @see #getActionFields()
      */
     public boolean isRenderLineActions() {
         return this.renderLineActions;
@@ -469,8 +419,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Convenience getter for the add line label field text. The text is used to
      * label the add line when rendered and its placement depends on the
-     * <code>LayoutManager</code>
-     *
+     * <code>LayoutManager</code>.
      * <p>
      * For the <code>TableLayoutManager</code> the label appears in the sequence
      * column to the left of the add line fields. For the
@@ -480,9 +429,9 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String add line label
      */
-    public String getAddLabel() {
-        if (getAddLineLabel() != null) {
-            return getAddLineLabel().getLabelText();
+    public String getAddLineLabel() {
+        if (getAddLineLabelField() != null) {
+            return getAddLineLabelField().getLabelText();
         }
 
         return null;
@@ -491,32 +440,32 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Setter for the add line label text
      *
-     * @param addLabelText
+     * @param addLineLabel
      */
-    public void setAddLabel(String addLabelText) {
-        if (getAddLineLabel() != null) {
-            getAddLineLabel().setLabelText(addLabelText);
+    public void setAddLineLabel(String addLineLabel) {
+        if (getAddLineLabelField() != null) {
+            getAddLineLabelField().setLabelText(addLineLabel);
         }
     }
 
     /**
-     * <code>Label</code> instance for the add line label
+     * <code>LabelField</code> instance for the add line label
      *
-     * @return Label add line label field
-     * @see #getAddLabel
+     * @return LabelField add line label field
+     * @see #getAddLineLabel()
      */
-    public Label getAddLineLabel() {
-        return this.addLineLabel;
+    public LabelField getAddLineLabelField() {
+        return this.addLineLabelField;
     }
 
     /**
-     * Setter for the <code>Label</code> instance for the add line label
+     * Setter for the <code>LabelField</code> instance for the add line label
      *
-     * @param addLineLabel
-     * @see #getAddLabel
+     * @param addLineLabelField
+     * @see #getAddLineLabel()
      */
-    public void setAddLineLabel(Label addLineLabel) {
-        this.addLineLabel = addLineLabel;
+    public void setAddLineLabelField(LabelField addLineLabelField) {
+        this.addLineLabelField = addLineLabelField;
     }
 
     /**
@@ -543,7 +492,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * <code>BindingInfo</code> instance for the add line property used to
      * determine the full binding path. If add line name given
-     * {@link #getAddLabel} then it is set as the binding name on the
+     * {@link #getAddLineLabel()} then it is set as the binding name on the
      * binding info. Add line label and binding info are not required, in which
      * case the framework will manage the new add line instances through a
      * generic map (model must extend UifFormBase)
@@ -569,19 +518,18 @@ public class CollectionGroup extends Group implements DataBinding {
      * list will be used
      *
      * @return List<? extends Component> add line field list
-     * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
-    public List<? extends Component> getAddLineItems() {
-        return this.addLineItems;
+    public List<? extends Component> getAddLineFields() {
+        return this.addLineFields;
     }
 
     /**
      * Setter for the add line field list
      *
-     * @param addLineItems
+     * @param addLineFields
      */
-    public void setAddLineItems(List<? extends Component> addLineItems) {
-        this.addLineItems = addLineItems;
+    public void setAddLineFields(List<? extends Component> addLineFields) {
+        this.addLineFields = addLineFields;
     }
 
     /**
@@ -589,19 +537,19 @@ public class CollectionGroup extends Group implements DataBinding {
      * the add action (button) but can be configured to contain additional
      * actions
      *
-     * @return List<Action> add line action fields
+     * @return List<ActionField> add line action fields
      */
-    public List<Action> getAddLineActions() {
-        return this.addLineActions;
+    public List<ActionField> getAddLineActionFields() {
+        return this.addLineActionFields;
     }
 
     /**
      * Setter for the add line action fields
      *
-     * @param addLineActions
+     * @param addLineActionFields
      */
-    public void setAddLineActions(List<Action> addLineActions) {
-        this.addLineActions = addLineActions;
+    public void setAddLineActionFields(List<ActionField> addLineActionFields) {
+        this.addLineActionFields = addLineActionFields;
     }
 
     /**
@@ -615,21 +563,21 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true if select field should be rendered, false if not
      */
-    public boolean isIncludeLineSelectionField() {
-        return includeLineSelectionField;
+    public boolean isRenderSelectField() {
+        return renderSelectField;
     }
 
     /**
      * Setter for the render selected field indicator
      *
-     * @param includeLineSelectionField
+     * @param renderSelectField
      */
-    public void setIncludeLineSelectionField(boolean includeLineSelectionField) {
-        this.includeLineSelectionField = includeLineSelectionField;
+    public void setRenderSelectField(boolean renderSelectField) {
+        this.renderSelectField = renderSelectField;
     }
 
     /**
-     * When {@link #isIncludeLineSelectionField()} is true, gives the name of the property the select field
+     * When {@link #isRenderSelectField()} is true, gives the name of the property the select field
      * should bind to
      *
      * <p>
@@ -646,17 +594,17 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String property name for select field
      */
-    public String getLineSelectPropertyName() {
-        return lineSelectPropertyName;
+    public String getSelectPropertyName() {
+        return selectPropertyName;
     }
 
     /**
      * Setter for the property name that will bind to the select field
      *
-     * @param lineSelectPropertyName
+     * @param selectPropertyName
      */
-    public void setLineSelectPropertyName(String lineSelectPropertyName) {
-        this.lineSelectPropertyName = lineSelectPropertyName;
+    public void setSelectPropertyName(String selectPropertyName) {
+        this.selectPropertyName = selectPropertyName;
     }
 
     /**
@@ -695,17 +643,17 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true to show inactive records, false to not render inactive records
      */
-    public boolean isShowInactiveLines() {
-        return showInactiveLines;
+    public boolean isShowInactive() {
+        return showInactive;
     }
 
     /**
      * Setter for the show inactive indicator
      *
-     * @param showInactiveLines boolean show inactive
+     * @param showInactive boolean show inactive
      */
-    public void setShowInactiveLines(boolean showInactiveLines) {
-        this.showInactiveLines = showInactiveLines;
+    public void setShowInactive(boolean showInactive) {
+        this.showInactive = showInactive;
     }
 
     /**
@@ -842,249 +790,17 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @param renderInactiveToggleButton the showHideInactiveButton to set
+     * @param showHideInactiveButton the showHideInactiveButton to set
      */
-    public void setRenderInactiveToggleButton(boolean renderInactiveToggleButton) {
-        this.renderInactiveToggleButton = renderInactiveToggleButton;
+    public void setShowHideInactiveButton(boolean showHideInactiveButton) {
+        this.showHideInactiveButton = showHideInactiveButton;
     }
 
     /**
      * @return the showHideInactiveButton
      */
-    public boolean isRenderInactiveToggleButton() {
-        return renderInactiveToggleButton;
-    }
-
-    /**
-     * The number of records to display for a collection
-     *
-     * @return int
-     */
-    public int getDisplayCollectionSize() {
-        return this.displayCollectionSize;
-    }
-
-    /**
-     * Setter for the display collection size
-     *
-     * @param displayCollectionSize
-     */
-    public void setDisplayCollectionSize(int displayCollectionSize) {
-        this.displayCollectionSize = displayCollectionSize;
-    }
-
-    /**
-     * Indicates whether new items should be styled with the #newItemsCssClass
-     *
-     * @return boolean true if new items must be highlighted
-     */
-    public boolean isHighlightNewItems() {
-        return highlightNewItems;
-    }
-
-    /**
-     * Setter for the flag that allows for different styling of new items
-     *
-     * @param highlightNewItems
-     */
-    public void setHighlightNewItems(boolean highlightNewItems) {
-        this.highlightNewItems = highlightNewItems;
-    }
-
-    /**
-     * The css style class that will be added on new items
-     *
-     * @return String - the new items css style class
-     */
-    public String getNewItemsCssClass() {
-        return newItemsCssClass;
-    }
-
-    /**
-     * Setter for the new items css style class
-     *
-     * @param newItemsCssClass
-     */
-    public void setNewItemsCssClass(String newItemsCssClass) {
-        this.newItemsCssClass = newItemsCssClass;
-    }
-
-    /**
-     * The css style class that will be added on the add item group or row
-     *
-     * @return String - the add item group or row css style class
-     */
-    public String getAddItemCssClass() {
-        return addItemCssClass;
-    }
-
-    /**
-     * Setter for the add item css style class
-     *
-     * @param addItemCssClass
-     */
-    public void setAddItemCssClass(String addItemCssClass) {
-        this.addItemCssClass = addItemCssClass;
-    }
-
-    /**
-     * Indicates whether the add item group or row should be styled with the #addItemCssClass
-     *
-     * @return boolean true if add item group or row must be highlighted
-     */
-    public boolean isHighlightAddItem() {
-        return highlightAddItem;
-    }
-
-    /**
-     * Setter for the flag that allows for different styling of the add item group or row
-     *
-     * @param highlightAddItem
-     */
-    public void setHighlightAddItem(boolean highlightAddItem) {
-        this.highlightAddItem = highlightAddItem;
-    }
-
-    /**
-     * Indicates that a button will be rendered that allows the user to add blank lines to the collection
-     *
-     * <p>
-     * The button will be added separately from the collection items. The default add line wil not be rendered. The
-     * action of the button will call the controller, add the blank line to the collection and do a component refresh.
-     * </p>
-     *
-     * @return boolean
-     */
-    public boolean isRenderAddBlankLineButton() {
-        return renderAddBlankLineButton;
-    }
-
-    /**
-     * Setter for the flag indicating that the add blank line button must be rendered
-     *
-     * @param renderAddBlankLineButton
-     */
-    public void setRenderAddBlankLineButton(boolean renderAddBlankLineButton) {
-        this.renderAddBlankLineButton = renderAddBlankLineButton;
-    }
-
-    /**
-     * The add blank line {@link Action} field rendered when renderAddBlankLineButton is true
-     *
-     * @return boolean
-     */
-    public Action getAddBlankLineAction() {
-        return addBlankLineAction;
-    }
-
-    /**
-     * Setter for the add blank line {@link Action} field
-     *
-     * @param addBlankLineAction
-     */
-    public void setAddBlankLineAction(Action addBlankLineAction) {
-        this.addBlankLineAction = addBlankLineAction;
-    }
-
-    /**
-     * Indicates the add line placement
-     *
-     * <p>
-     * Valid values are 'TOP' or 'BOTTOM'. The default is 'TOP'. When the value is 'BOTTOM' the blank line will be
-     * added
-     * to the end of the collection.
-     * </p>
-     *
-     * @return String - the add blank line action placement
-     */
-    public String getAddLinePlacement() {
-        return addLinePlacement;
-    }
-
-    /**
-     * Setter for the add line placement
-     *
-     * @param addLinePlacement - add line placement string
-     */
-    public void setAddLinePlacement(String addLinePlacement) {
-        this.addLinePlacement = addLinePlacement;
-    }
-
-    /**
-     * Indicates whether the save line actions should be rendered
-     *
-     * @return boolean
-     */
-    public boolean isRenderSaveLineActions() {
-        return renderSaveLineActions;
-    }
-
-    /**
-     * Setter for the flag indicating whether the save actions should be rendered
-     *
-     * @param renderSaveLineActions
-     */
-    public void setRenderSaveLineActions(boolean renderSaveLineActions) {
-        this.renderSaveLineActions = renderSaveLineActions;
-    }
-
-    /**
-     * {@link Action} fields that should do client side validation on the line before doing post
-     *
-     * <p>
-     * These actions will get an actionScript script added that does a call to validateAndPerformCollectionAction in
-     * krad.ajax.js.
-     * </p>
-     *
-     * @return List<Action>
-     */
-    public List<Action> getValidatedLineActions() {
-        return validatedLineActions;
-    }
-
-    /**
-     * Setter for the new line {@link Action} fields
-     *
-     * @param validatedLineActions
-     */
-    public void setValidatedLineActions(List<Action> validatedLineActions) {
-        this.validatedLineActions = validatedLineActions;
-    }
-
-    /**
-     * Indicates that a add action should be rendered and that the add group be displayed in a lightbox
-     *
-     * @return boolean
-     */
-    public boolean isAddViaLightBox() {
-        return addViaLightBox;
-    }
-
-    /**
-     * Setter for the flag to indicate that add groups should be displayed in a light box
-     *
-     * @param addViaLightBox
-     */
-    public void setAddViaLightBox(boolean addViaLightBox) {
-        this.addViaLightBox = addViaLightBox;
-    }
-
-    /**
-     * The {@link Action} that will be displayed that will open the add line group in a lightbox
-     *
-     * @return Action
-     */
-    public Action getAddViaLightBoxAction() {
-        return addViaLightBoxAction;
-    }
-
-    /**
-     * Setter for the add line via lightbox {@link Action}
-     *
-     * @param addViaLightBoxAction
-     */
-    public void setAddViaLightBoxAction(Action addViaLightBoxAction) {
-        this.addViaLightBoxAction = addViaLightBoxAction;
+    public boolean isShowHideInactiveButton() {
+        return showHideInactiveButton;
     }
 
 }

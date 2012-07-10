@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.criteria.CountFlag;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -348,7 +349,15 @@ public class PersonServiceImpl implements PersonService {
 
         QueryByCriteria.Builder queryBuilder = QueryByCriteria.Builder.create();
         queryBuilder.setPredicates(predicate);
-
+        
+		if (!unbounded) {
+			Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit(PersonImpl.class);
+    		if (searchResultsLimit != null && searchResultsLimit >= 0) {
+    			queryBuilder.setMaxResults(searchResultsLimit);
+    			queryBuilder.setCountFlag(CountFlag.INCLUDE);
+			}
+		}
+		
 		List<Person> people = new ArrayList<Person>();
 
 		EntityDefaultQueryResults qr = getIdentityService().findEntityDefaults( queryBuilder.build() );

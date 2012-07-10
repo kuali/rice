@@ -1507,7 +1507,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     }
 
     public boolean getHasLookupable() {
-        if (quickFinderClassNameImpl == null) {
+        if (StringUtils.isBlank(quickFinderClassNameImpl) ) {
             return false;
         } else {
             return true;

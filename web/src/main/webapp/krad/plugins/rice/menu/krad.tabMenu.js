@@ -23,13 +23,8 @@
 			}, options);
 			
 			if(options.selectPage){
-                var oldTab = $(this).find(".ui-state-active");
-                if(oldTab.length){
-                    oldTab.removeClass("ui-state-active");
-                }
-
 				var currentTab = $(this).find("a[name='" + options.selectPage + "']");
-				if(currentTab.length){
+				if(currentTab){
 					currentTab.parent().addClass("ui-state-active");
 				}
 			}
@@ -52,7 +47,7 @@
 			
 			//Styling
 			$(this).parent().addClass("ui-tabs tab-navigation-block");
-			$(this).addClass("ui-helper-reset ui-helper-clearfix uif-tabMenu");
+			$(this).addClass("ui-helper-reset ui-helper-clearfix tabMenu");
 			$(list_elements).addClass("ui-state-default ui-corner-top");
 			if(options.currentPage){
 				var currentTab = $(this).find("a[name='" + options.currentPage + "']");

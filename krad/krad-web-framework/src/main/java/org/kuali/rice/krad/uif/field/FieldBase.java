@@ -16,10 +16,10 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
@@ -36,7 +36,7 @@ import java.util.List;
  * </p>
  *
  * <p>
- * Holds a nested <code>Label</code> with configuration for rendering the
+ * Holds a nested <code>LabelField</code> with configuration for rendering the
  * label and configuration on label placement.
  * </p>
  *
@@ -46,14 +46,14 @@ public class FieldBase extends ComponentBase implements Field {
     private static final long serialVersionUID = -5888414844802862760L;
 
     private String shortLabel;
-    private Label fieldLabel;
+    private LabelField labelField;
 
     private Position labelPlacement;
 
-    private boolean labelRendered;
+    private boolean labelFieldRendered;
 
     public FieldBase() {
-        labelRendered = false;
+        labelFieldRendered = false;
         labelPlacement = Position.LEFT;
     }
 
@@ -89,49 +89,28 @@ public class FieldBase extends ComponentBase implements Field {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        if (fieldLabel != null) {
-            fieldLabel.setLabelForComponentId(this.getId());
+        if (labelField != null) {
+            labelField.setLabelForComponentId(this.getId());
 
             if ((getRequired() != null) && getRequired().booleanValue()) {
-                fieldLabel.getRequiredMessage().setRender(!isReadOnly());
+                labelField.getRequiredMessageField().setRender(true);
             } else {
                 setRequired(new Boolean(false));
-                fieldLabel.getRequiredMessage().setRender(true);
-
+                labelField.getRequiredMessageField().setRender(true);
                 String prefixStyle = "";
-                if (StringUtils.isNotBlank(fieldLabel.getRequiredMessage().getStyle())) {
-                    prefixStyle = fieldLabel.getRequiredMessage().getStyle();
+                if (StringUtils.isNotBlank(labelField.getRequiredMessageField().getStyle())) {
+                    prefixStyle = labelField.getRequiredMessageField().getStyle();
                 }
-                fieldLabel.getRequiredMessage().setStyle(prefixStyle + ";" + "display: none;");
+                labelField.getRequiredMessageField().setStyle(prefixStyle + ";" + "display: none;");
             }
 
             if (labelPlacement.equals(Position.RIGHT)) {
-                fieldLabel.setRenderColon(false);
+                labelField.setRenderColon(false);
             }
             
             if (labelPlacement.equals(Position.TOP) || labelPlacement.equals(Position.BOTTOM)){
-                fieldLabel.addStyleClass("uif-labelBlock");
+                labelField.addStyleClass("uif-labelBlock");
             }
-
-            fieldLabel.addDataAttribute("labelFor", this.getId());
-            if(StringUtils.isNotBlank(this.getFieldLabel().getLabelText())){
-                this.addDataAttribute("label", this.getFieldLabel().getLabelText());
-            }
-        }
-    }
-
-    /**
-     * Helper method for suffixing the ids of the fields nested components
-     *
-     * @param component - component to adjust id for
-     * @param suffix - suffix to append to id
-     */
-    protected void setNestedComponentIdAndSuffix(Component component, String suffix) {
-        if (component != null) {
-            String fieldId = getId();
-            fieldId += suffix;
-
-            component.setId(fieldId);
         }
     }
 
@@ -150,80 +129,32 @@ public class FieldBase extends ComponentBase implements Field {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(fieldLabel);
+        components.add(labelField);
 
         return components;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.Field#getLabel
+     * @see org.kuali.rice.krad.uif.field.Field#getLabel()
      */
     public String getLabel() {
-        if (fieldLabel != null) {
-            return fieldLabel.getLabelText();
+        if (labelField != null) {
+            return labelField.getLabelText();
         }
 
         return null;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.Field#setFieldLabel(java.lang.String)
+     * @see org.kuali.rice.krad.uif.field.Field#setLabel(java.lang.String)
      */
-    public void setLabel(String labelText) {
-        if (StringUtils.isNotBlank(labelText) && this.fieldLabel == null) {
-            this.fieldLabel = ComponentFactory.getLabel();
+    public void setLabel(String label) {
+        if (StringUtils.isNotBlank(label) && labelField == null) {
+            labelField = ComponentFactory.getLabelField();
         }
 
-        if (this.fieldLabel != null) {
-            this.fieldLabel.setLabelText(labelText);
-        }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.field.Field#getLabelStyleClasses
-     */
-    public List<String> getLabelStyleClasses() {
-        if (fieldLabel != null) {
-            return fieldLabel.getCssClasses();
-        }
-
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.field.Field#setLabelStyleClasses
-     */
-    public void setLabelStyleClasses(List<String> labelStyleClasses) {
-        if (labelStyleClasses != null && this.fieldLabel == null) {
-            this.fieldLabel = ComponentFactory.getLabel();
-        }
-
-        if (this.fieldLabel != null) {
-            this.fieldLabel.setCssClasses(labelStyleClasses);
-        }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.field.Field#getLabelColSpan
-     */
-    public int getLabelColSpan() {
-        if (fieldLabel != null) {
-            return fieldLabel.getColSpan();
-        }
-
-        return 1;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.field.Field#setLabelColSpan
-     */
-    public void setLabelColSpan(int labelColSpan) {
-        if (this.fieldLabel == null) {
-            this.fieldLabel = ComponentFactory.getLabel();
-        }
-
-        if (this.fieldLabel != null) {
-            this.fieldLabel.setColSpan(labelColSpan);
+        if (labelField != null) {
+            labelField.setLabelText(label);
         }
     }
 
@@ -246,30 +177,30 @@ public class FieldBase extends ComponentBase implements Field {
      *
      * <p>
      * Convenience method for configuration that sets the render indicator on
-     * the fields <code>Label</code> instance
+     * the fields <code>LabelField</code> instance
      * </p>
      *
      * @param showLabel boolean true if label should be displayed, false if the label
      * should not be displayed
      */
     public void setShowLabel(boolean showLabel) {
-        if (fieldLabel != null) {
-            fieldLabel.setRender(showLabel);
+        if (labelField != null) {
+            labelField.setRender(showLabel);
         }
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.Field#getLabel
+     * @see org.kuali.rice.krad.uif.field.Field#getLabelField()
      */
-    public Label getFieldLabel() {
-        return this.fieldLabel;
+    public LabelField getLabelField() {
+        return this.labelField;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.Field#setFieldLabel
+     * @see org.kuali.rice.krad.uif.field.Field#setLabelField(org.kuali.rice.krad.uif.field.LabelField)
      */
-    public void setFieldLabel(Label fieldLabel) {
-        this.fieldLabel = fieldLabel;
+    public void setLabelField(LabelField labelField) {
+        this.labelField = labelField;
     }
 
     /**
@@ -292,17 +223,17 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.Field#isLabelRendered()
+     * @see org.kuali.rice.krad.uif.field.Field#isLabelFieldRendered()
      */
-    public boolean isLabelRendered() {
-        return this.labelRendered;
+    public boolean isLabelFieldRendered() {
+        return this.labelFieldRendered;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.Field#setLabelRendered(boolean)
+     * @see org.kuali.rice.krad.uif.field.Field#setLabelFieldRendered(boolean)
      */
-    public void setLabelRendered(boolean labelRendered) {
-        this.labelRendered = labelRendered;
+    public void setLabelFieldRendered(boolean labelFieldRendered) {
+        this.labelFieldRendered = labelFieldRendered;
     }
 
     /**

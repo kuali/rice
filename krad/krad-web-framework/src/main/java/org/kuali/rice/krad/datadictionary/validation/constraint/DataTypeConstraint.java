@@ -25,11 +25,6 @@ import org.kuali.rice.core.api.uif.DataType;
  */
 public interface DataTypeConstraint extends Constraint {
 
-    /**
-     * gets the type of an attribute definition
-     *
-     * @return the data type
-     */
 	public DataType getDataType();
 	
 }

@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
+import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.view.View;
@@ -46,16 +47,16 @@ public interface DataDictionaryService {
      * thrown, hence service-initialization failure.
      *
      * @param baselinePackages
-     * @throws IOException if any of the given packages can't be located
+     * @throws SourceException if any of the given packages can't be located
      */
-    void setBaselinePackages(List baselinePackages) throws IOException;
+    public void setBaselinePackages(List baselinePackages) throws IOException;
 
     /**
      * @return current DataDictionary
      */
-    DataDictionary getDataDictionary();
+    public DataDictionary getDataDictionary();
 
-    void addDataDictionaryLocations(List<String> locations) throws IOException;
+    public void addDataDictionaryLocations(List<String> locations) throws IOException;
 
 //    /**
 //     * Hook to allow the dataDictionary service to perform any post-build initialization tasks needed before the dataDictionary
@@ -66,248 +67,248 @@ public interface DataDictionaryService {
     /**
      * the html control type used to render the field
      */
-    ControlDefinition getAttributeControlDefinition(Class dataObjectClass, String attributeName);
+    public ControlDefinition getAttributeControlDefinition(Class dataObjectClass, String attributeName);
 
     /**
      * the display size of the field if text control
      */
-    Integer getAttributeSize(Class dataObjectClass, String attributeName);
+    public Integer getAttributeSize(Class dataObjectClass, String attributeName);
 
     /**
      * the max length defined for the given attribute name.
      */
-    Integer getAttributeMaxLength(Class dataObjectClass, String attributeName);
+    public Integer getAttributeMaxLength(Class dataObjectClass, String attributeName);
 
     /**
      * the regular expression defined to validate the given attribute name.
      */
-    Pattern getAttributeValidatingExpression(Class dataObjectClass, String attributeName);
+    public Pattern getAttributeValidatingExpression(Class dataObjectClass, String attributeName);
 
     /**
      * the label to be used for displaying the attribute.
      */
-    String getAttributeLabel(Class dataObjectClass, String attributeName);
+    public String getAttributeLabel(Class dataObjectClass, String attributeName);
 
     /**
      * the short label to be used for displaying the attribute.
      */
-    String getAttributeShortLabel(Class dataObjectClass, String attributeName);
+    public String getAttributeShortLabel(Class dataObjectClass, String attributeName);
 
     /**
      * the "label (short label)" used for displaying error messages
      */
-    String getAttributeErrorLabel(Class dataObjectClass, String attributeName);
+    public String getAttributeErrorLabel(Class dataObjectClass, String attributeName);
 
     /**
      * the formatter class used to format the attribute value
      */
-    Class<? extends Formatter> getAttributeFormatter(Class dataObjectClass, String attributeName);
+    public Class<? extends Formatter> getAttributeFormatter(Class dataObjectClass, String attributeName);
 
     /**
      * indicates whether or not to force input text into uppercase
      */
-    Boolean getAttributeForceUppercase(Class dataObjectClass, String attributeName);
+    public Boolean getAttributeForceUppercase(Class dataObjectClass, String attributeName);
 
     /**
      * short help text for attribute
      */
-    String getAttributeSummary(Class dataObjectClass, String attributeName);
+    public String getAttributeSummary(Class dataObjectClass, String attributeName);
 
     /**
      * detailed help text for attribute
      */
-    String getAttributeDescription(Class dataObjectClass, String attributeName);
+    public String getAttributeDescription(Class dataObjectClass, String attributeName);
 
     /**
      * indicates whether or not the named attribute is required
      */
-    Boolean isAttributeRequired(Class dataObjectClass, String attributeName);
+    public Boolean isAttributeRequired(Class dataObjectClass, String attributeName);
 
     /**
      * indicates whether or not the named attribute is defined in the business object xml
      */
-    Boolean isAttributeDefined(Class dataObjectClass, String attributeName);
+    public Boolean isAttributeDefined(Class dataObjectClass, String attributeName);
 
     /**
      * the Class that returns a values list for this attribute
      */
-    Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(Class dataObjectClass, String attributeName);
+    public Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(Class dataObjectClass, String attributeName);
 
     /**
      * the label to be used for displaying the collection.
      */
-    String getCollectionLabel(Class dataObjectClass, String collectionName);
+    public String getCollectionLabel(Class dataObjectClass, String collectionName);
 
     /**
      * the short label to be used for displaying the collection.
      */
-    String getCollectionShortLabel(Class dataObjectClass, String collectionName);
+    public String getCollectionShortLabel(Class dataObjectClass, String collectionName);
 
     /**
      * short help text for collection
      */
-    String getCollectionSummary(Class dataObjectClass, String collectionName);
+    public String getCollectionSummary(Class dataObjectClass, String collectionName);
 
     /**
      * detailed help text for collection
      */
-    String getCollectionDescription(Class dataObjectClass, String collectionName);
+    public String getCollectionDescription(Class dataObjectClass, String collectionName);
 
     /**
      * the html control type used to render the field
      */
-    ControlDefinition getAttributeControlDefinition(String entryName, String attributeName);
+    public ControlDefinition getAttributeControlDefinition(String entryName, String attributeName);
 
     /**
      * the display size of the field if text control
      */
-    Integer getAttributeSize(String entryName, String attributeName);
+    public Integer getAttributeSize(String entryName, String attributeName);
 
     /**
      * the min length defined for the given attribute name.
      */
-    Integer getAttributeMinLength(String entryName, String attributeName);
+    public Integer getAttributeMinLength(String entryName, String attributeName);
 
     /**
      * the max length defined for the given attribute name.
      */
-    Integer getAttributeMaxLength(String entryName, String attributeName);
+    public Integer getAttributeMaxLength(String entryName, String attributeName);
 
     /**
      * @param entryName
      * @param attributeName
-     * @return the exclusive minimum for the specified attribute, or {@code null} if none.
+     * @return the exclusive minimum for the specified attribute, or <code>null</code> if none.
      */
-    /*BigDecimal*/ String getAttributeExclusiveMin(String entryName, String attributeName);
+    public /*BigDecimal*/ String getAttributeExclusiveMin(String entryName, String attributeName);
 
     /**
      * @param entryName
      * @param attributeName
-     * @return the inclusive maximum for the specified attribute, or {@code null} if none.
+     * @return the inclusive maximum for the specified attribute, or <code>null</code> if none.
      */
-    /*BigDecimal*/ String getAttributeInclusiveMax(String entryName, String attributeName);
+    public /*BigDecimal*/ String getAttributeInclusiveMax(String entryName, String attributeName);
 
     /**
      * the regular expression defined to validate the given attribute name.
      */
-    Pattern getAttributeValidatingExpression(String entryName, String attributeName);
+    public Pattern getAttributeValidatingExpression(String entryName, String attributeName);
 
     /**
      * the label to be used for displaying the attribute.
      */
-    String getAttributeLabel(String entryName, String attributeName);
+    public String getAttributeLabel(String entryName, String attributeName);
 
     /**
      * the short label to be used for displaying the attribute.
      */
-    String getAttributeShortLabel(String entryName, String attributeName);
+    public String getAttributeShortLabel(String entryName, String attributeName);
 
     /**
      * the "label (short label)" used for displaying error messages
      */
-    String getAttributeErrorLabel(String entryName, String attributeName);
+    public String getAttributeErrorLabel(String entryName, String attributeName);
 
     /**
      * the formatter class used to format the attribute value
      */
-    Class<? extends Formatter> getAttributeFormatter(String entryName, String attributeName);
+    public Class<? extends Formatter> getAttributeFormatter(String entryName, String attributeName);
 
     /**
      * indicates whether or not to force input text into uppercase
      */
-    Boolean getAttributeForceUppercase(String entryName, String attributeName);
+    public Boolean getAttributeForceUppercase(String entryName, String attributeName);
 
     /**
      * the AttributeSecurity object defined for the attribute's data value
      */
-    AttributeSecurity getAttributeSecurity(String entryName, String attributeName);
+    public AttributeSecurity getAttributeSecurity(String entryName, String attributeName);
 
     /**
      * short help text for attribute
      */
-    String getAttributeSummary(String entryName, String attributeName);
+    public String getAttributeSummary(String entryName, String attributeName);
 
     /**
      * detailed help text for attribute
      */
-    String getAttributeDescription(String entryName, String attributeName);
+    public String getAttributeDescription(String entryName, String attributeName);
 
-    String getAttributeValidatingErrorMessageKey(String entryName, String attributeName);
+    public String getAttributeValidatingErrorMessageKey(String entryName, String attributeName);
 
-    String[] getAttributeValidatingErrorMessageParameters(String entryName, String attributeName);
+    public String[] getAttributeValidatingErrorMessageParameters(String entryName, String attributeName);
 
     /**
      * indicates whether or not the named attribute is required
      */
-    Boolean isAttributeRequired(String entryName, String attributeName);
+    public Boolean isAttributeRequired(String entryName, String attributeName);
 
     /**
      * indicates whether or not the named attribute is defined in the business object xml
      */
-    Boolean isAttributeDefined(String entryName, String attributeName);
+    public Boolean isAttributeDefined(String entryName, String attributeName);
 
     /**
      * the Class that returns a values list for this attribute
      */
-    Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(String entryName, String attributeName);
+    public Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(String entryName, String attributeName);
 
     /**
      * AttributeDefinition associated with the given attributeName within the given entry
      */
-    AttributeDefinition getAttributeDefinition(String entryName, String attributeName);
+    public AttributeDefinition getAttributeDefinition(String entryName, String attributeName);
 
     /**
      * the label to be used for displaying the collection.
      */
-    String getCollectionLabel(String entryName, String collectionName);
+    public String getCollectionLabel(String entryName, String collectionName);
 
     /**
      * the short label to be used for displaying the collection.
      */
-    String getCollectionShortLabel(String entryName, String collectionName);
+    public String getCollectionShortLabel(String entryName, String collectionName);
 
     /**
      * the element label to be used for displaying the collection.
      */
-    String getCollectionElementLabel(String entryName, String collectionName, Class dataObjectClass);
+    public String getCollectionElementLabel(String entryName, String collectionName, Class dataObjectClass);
 
     /**
      * short help text for collection
      */
-    String getCollectionSummary(String entryName, String collectionName);
+    public String getCollectionSummary(String entryName, String collectionName);
 
     /**
      * detailed help text for collection
      */
-    String getCollectionDescription(String entryName, String collectionName);
+    public String getCollectionDescription(String entryName, String collectionName);
 
     /**
      * @param entryName
      * @param relationshipName
      * @return source Class for the given relationship, or null if there is no relationship with that name
      */
-    Class<? extends BusinessObject> getRelationshipSourceClass(String entryName, String relationshipName);
+    public Class<? extends BusinessObject> getRelationshipSourceClass(String entryName, String relationshipName);
 
     /**
      * @param entryName
      * @param relationshipName
      * @return target Class for the given relationship, or null if there is no relationship with that name
      */
-    Class<? extends BusinessObject> getRelationshipTargetClass(String entryName, String relationshipName);
+    public Class<? extends BusinessObject> getRelationshipTargetClass(String entryName, String relationshipName);
 
     /**
      * @param entryName
      * @param relationshipName
      * @return List<String> of source attributeNames for the given relationship, or null if there is no relationship with that name
      */
-    List<String> getRelationshipSourceAttributes(String entryName, String relationshipName);
+    public List<String> getRelationshipSourceAttributes(String entryName, String relationshipName);
 
     /**
      * @param entryName
      * @param relationshipName
      * @return List<String> of target attributeNames for the given relationship, or null if there is no relationship with that name
      */
-    List<String> getRelationshipTargetAttributes(String entryName, String relationshipName);
+    public List<String> getRelationshipTargetAttributes(String entryName, String relationshipName);
 
     /**
      * returns a Map that specifies the attributes of the relationship
@@ -316,7 +317,7 @@ public interface DataDictionaryService {
      * @param relationshipName - Name of the relationship
      * @return Map - Target field as key, source field as value
      */
-    Map<String, String> getRelationshipAttributeMap(String entryName, String relationshipName);
+    public Map<String, String> getRelationshipAttributeMap(String entryName, String relationshipName);
 
     /**
      * returns a list of names for all entries whose source parameter matches the parameter
@@ -325,7 +326,7 @@ public interface DataDictionaryService {
      * @param sourceAttributeName name of the source attribute
      * @return the names of all entries that use the sourceAttributeName as a primitive attribute
      */
-    List<String> getRelationshipEntriesForSourceAttribute(String entryName, String sourceAttributeName);
+    public List<String> getRelationshipEntriesForSourceAttribute(String entryName, String sourceAttributeName);
 
     /**
      * returns a list of names for all entries whose source parameter matches the parameter
@@ -334,7 +335,7 @@ public interface DataDictionaryService {
      * @param targetAttributeName name of the target attribute
      * @return the names of all entries that use the targetAttributeName as a primitive attribute
      */
-    List<String> getRelationshipEntriesForTargetAttribute(String entryName, String targetAttributeName);
+    public List<String> getRelationshipEntriesForTargetAttribute(String entryName, String targetAttributeName);
 
     /**
      * Determines whether there is a relationship defined for the given entry with the given name
@@ -343,15 +344,15 @@ public interface DataDictionaryService {
      * @param relationshipName name of the relationship for the entry
      * @return true iff there is a relationship with the given name defined for the BO entry in the DD
      */
-    boolean hasRelationship(String entryName, String relationshipName);
+    public boolean hasRelationship(String entryName, String relationshipName);
 
     /**
      * Returns all of the relationships defined for a BO in the DD
      *
-     * @param entryName of the BO entry
+     * @param name of the BO entry
      * @return a list of all DD defined mappings
      */
-    List<String> getRelationshipNames(String entryName);
+    public List<String> getRelationshipNames(String entryName);
 
 //    /**
 //     * Returns the list of document class names
@@ -366,15 +367,15 @@ public interface DataDictionaryService {
      * @param documentTypeName
      * @return label
      */
-    String getDocumentLabelByTypeName(String documentTypeName);
+    public String getDocumentLabelByTypeName(String documentTypeName);
 
     /**
      * This method returns the user friendly label based on the document or business object class
      *
-     * @param documentOrBusinessObjectClass
+     * @param documentTypeName
      * @return label
      */
-    String getDocumentLabelByClass(Class documentOrBusinessObjectClass);
+    public String getDocumentLabelByClass(Class documentOrBusinessObjectClass);
 
     /**
      * Returns the document type name declared in the dd for the given document
@@ -383,17 +384,17 @@ public interface DataDictionaryService {
      * @param documentClass
      * @return documentTypeName
      */
-    String getDocumentTypeNameByClass(Class documentClass);
+    public String getDocumentTypeNameByClass(Class documentClass);
 
     /**
      * Returns the document type name declared in the dd for the given document
      * class. If no valid document type is found an
-     * {@link org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException} is thrown.
+     * {@link UnknownDocumentTypeException} is thrown.
      *
      * @param documentClass
      * @return documentTypeName
      */
-    String getValidDocumentTypeNameByClass(Class documentClass);
+    public String getValidDocumentTypeNameByClass(Class documentClass);
 
     /**
      * Returns the document class declared in the dd for the given document type
@@ -403,17 +404,17 @@ public interface DataDictionaryService {
      * @param documentTypeName
      * @return document Class
      */
-    Class<? extends Document> getDocumentClassByTypeName(String documentTypeName);
+    public Class<? extends Document> getDocumentClassByTypeName(String documentTypeName);
 
     /**
      * Returns the document class declared in the dd for the given document type
      * name. If no document entry is found with given document type name, and
-     * {@link org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException} will be thrown.
+     * {@link UnknownDocumentTypeException} will be thrown.
      *
      * @param documentTypeName
      * @return document Class
      */
-    Class<? extends Document> getValidDocumentClassByTypeName(String documentTypeName);
+    public Class<? extends Document> getValidDocumentClassByTypeName(String documentTypeName);
 
     /**
      * Returns the list of attributes that should be used for grouping when determining the current
@@ -422,7 +423,7 @@ public interface DataDictionaryService {
      * @param businessObjectClass - business object class to get configured list for
      * @return List of string attribute names that gives the group by list
      */
-    List<String> getGroupByAttributesForEffectiveDating(Class businessObjectClass);
+    public List<String> getGroupByAttributesForEffectiveDating(Class businessObjectClass);
 
     /**
      * Returns all of the inactivation blocks registered for a particular business object
@@ -430,7 +431,7 @@ public interface DataDictionaryService {
      * @param inactivationBlockedBusinessObjectClass
      * @return a set of all registered inactivation blocks for a particular business object
      */
-    Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(
+    public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(
             Class inactivationBlockedBusinessObjectClass);
 
     /**
@@ -439,7 +440,7 @@ public interface DataDictionaryService {
      * @param viewId - unique id for view
      * @return View instance associated with the id
      */
-    View getViewById(String viewId);
+    public View getViewById(String viewId);
 
     /**
      * Returns an object from the dictionary by its spring bean name or id
@@ -447,7 +448,7 @@ public interface DataDictionaryService {
      * @param id - id or name for the bean definition
      * @return Object object instance created or the singleton being maintained
      */
-    Object getDictionaryObject(String id);
+    public Object getDictionaryObject(String id);
 
     /**
      * Indicates whether the data dictionary contains a bean with the given id
@@ -455,7 +456,7 @@ public interface DataDictionaryService {
      * @param id - id of the bean to check for
      * @return boolean true if dictionary contains bean, false otherwise
      */
-    boolean containsDictionaryObject(String id);
+    public boolean containsDictionaryObject(String id);
 
     /**
      * Returns View instance identified by the view type name and index
@@ -466,5 +467,5 @@ public interface DataDictionaryService {
      * an unique view instance
      * @return View instance that matches the given index
      */
-    View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey);
+    public View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey);
 }

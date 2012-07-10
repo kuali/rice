@@ -20,7 +20,9 @@ import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.actionlist.web.ActionListUtil;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -469,10 +471,12 @@ public class ActionListTest extends KEWTestCase {
         assertTrue("Should have found user " + user2, foundUser2);
         assertTrue("Should have found user " + user3, foundUser3);
 
-    	recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
-    	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 1, recipients.size());
-    	WebFriendlyRecipient recipient = (WebFriendlyRecipient)recipients.iterator().next();
-    	assertEquals("Wrong employee id of primary delegate", "bmcgough", getPrincipalNameForId(recipient.getRecipientId()));
+        recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
+    	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 2, recipients.size());
+        Iterator<Recipient> recipientsIt = recipients.iterator();
+    	WebFriendlyRecipient recipient = (WebFriendlyRecipient) recipientsIt.next();
+    	assertEquals("Wrong employee id of delegator", "bmcgough", getPrincipalNameForId(recipient.getRecipientId()));
+        assertEquals("Wrong group id of delegator", getGroupIdForName("KR-WKFLW", "NonSIT"), ((KimGroupRecipient) recipientsIt.next()).getGroupId());
     }
 
     @Test
@@ -557,6 +561,31 @@ public class ActionListTest extends KEWTestCase {
             ActionItem actionItem = iterator.next();
             assertEquals("NewTitle",actionItem.getDocTitle());
          }
+    }
+
+    /**
+     * KULRICE-7615
+     * bmcgough is a secondary delegate *for* the NonSIT group; getWebFriendlyRecipients should handle this
+     */
+    @Test
+    public void testGetWebFriendlyRecipientsWithGroup() {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+        document.route("");
+        Person bmcgough = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        Collection<Recipient> delegators = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
+        String nonSITGroupId = getGroupIdForName("KR-WKFLW", "NonSIT");
+        assertFalse(delegators.isEmpty());
+        boolean nonSITGroupFound = false;
+        for (Recipient d: delegators) {
+            if (d instanceof KimGroupRecipient) {
+                if (nonSITGroupId.equals(((KimGroupRecipient) d).getGroupId())) {
+                    nonSITGroupFound = true;
+                }
+            }
+        }
+        assertTrue("NonSIT group was not found as a delegator to bmcgough (has test config changed?)", nonSITGroupFound);
+        // now test that it can actually deal with the KimGroupRecipient
+        ActionListUtil.getWebFriendlyRecipients(delegators);
     }
 
     private DocumentRouteHeaderValue generateDocRouteHeader() {

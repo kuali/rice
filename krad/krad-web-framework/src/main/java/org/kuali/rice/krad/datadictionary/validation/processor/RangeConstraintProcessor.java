@@ -32,11 +32,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * RangeConstraintProcessor enforces range constraints - that is, constraints that keep a number or a date within a specific range
- *
- * <p> An attribute
+ * This class enforces range constraints - that is, constraints that keep a number or a date within a specific range. An attribute 
  * that is {@link RangeConstrainable} will expose a minimum and maximum value, and these will be validated against the passed
- * value in the code below.</p>
+ * value in the code below. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
@@ -48,7 +46,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
     private static final String RANGE_KEY = "validation.range";
 
 	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.capability.Validatable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
@@ -69,16 +67,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 	public Class<? extends Constraint> getConstraintType() {
 		return RangeConstraint.class;
 	}
-
-    /**
-     *  validates the value provided using {@code RangeConstraint}
-     *
-     * @param result - a holder for any already run validation results
-     * @param value - the value to validate
-     * @param constraint - the range constraint to use
-     * @param attributeValueReader - provides access to the attribute being validated
-     * @return  the passed in result, updated with the results of the processing
-     */
+	
 	protected ConstraintValidationResult processSingleRangeConstraint(DictionaryValidationResult result, Object value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// Can't process any range constraints on null values
 		if (ValidationUtils.isNullOrEmpty(value) ||
@@ -113,17 +102,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 		
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 	}
-
-    /**
-     * validates the date value using the range constraint provided
-     *
-     * @param result - a holder for any already run validation results
-     * @param value - the value to validate
-     * @param constraint - the range constraint to use
-     * @param attributeValueReader - provides access to the attribute being validated
-     * @return the passed in result, updated with the results of the processing
-     * @throws IllegalArgumentException
-     */
+	
 	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Date value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {	
 
 		Date date = value != null ? ValidationUtils.getDate(value, dateTimeService) : null;
@@ -136,19 +115,8 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
         
 		return isInRange(result, date, inclusiveMax, inclusiveMaxText, exclusiveMin, exclusiveMinText, attributeValueReader);
 	}
-
-    /**
-     * validates the number value using the range constraint provided
-     *
-     * @param result - a holder for any already run validation results
-     * @param value - the value to validate
-     * @param constraint - the range constraint to use
-     * @param attributeValueReader - provides access to the attribute being validated
-     * @return the passed in result, updated with the results of the processing
-     * @throws IllegalArgumentException
-     */
+	
 	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Number value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {
-
 
 		// TODO: JLR - need a code review of the conversions below to make sure this is the best way to ensure accuracy across all numerics
         // This will throw NumberFormatException if the value is 'NaN' or infinity... probably shouldn't be a NFE but something more intelligible at a higher level
@@ -163,18 +131,6 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 		return isInRange(result, number, inclusiveMax, inclusiveMaxText, exclusiveMin, exclusiveMinText, attributeValueReader);
 	}
 
-    /**
-     * checks whether the value provided is in the range specified by inclusiveMax and exclusiveMin
-     *
-     * @param - a holder for any already run validation results
-     * @param value - the value to check
-     * @param inclusiveMax - the maximum value of the attribute
-     * @param inclusiveMaxText - the string representation of inclusiveMax
-     * @param exclusiveMin -  the minimum value of the attribute
-     * @param exclusiveMinText - the string representation of exclusiveMin
-     * @param attributeValueReader - provides access to the attribute being validated
-     * @return the passed in result, updated with the results of the range check
-     */
 	private <T> ConstraintValidationResult isInRange(DictionaryValidationResult result, T value, Comparable<T> inclusiveMax, String inclusiveMaxText, Comparable<T> exclusiveMin, String exclusiveMinText, AttributeValueReader attributeValueReader) {
         // What we want to know is that the maximum value is greater than or equal to the number passed (the number can be equal to the max, i.e. it's 'inclusive')
         Result lessThanMax = ValidationUtils.isLessThanOrEqual(value, inclusiveMax); 

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.kuali.rice.krad.datadictionary.state.StateMapping;
-
 import java.util.List;
 
 
@@ -80,17 +78,4 @@ public interface DataDictionaryEntry {
      * @return a Map containing all RelationshipDefinitions associated with this BusinessObjectEntry, indexed by relationshipName
      */
     public List<RelationshipDefinition> getRelationships();
-
-    /**
-     * StateMapping for this DataDictionaryEntry, this represents the states of this entry, their names, and where
-     * to find the state information on the model
-     * @return StateMapping object
-     */
-    public StateMapping getStateMapping();
-
-    /**
-     * Set the StateMapping object which represents state information for this entry
-     * @param stateMapping StateMapping object
-     */
-    public void setStateMapping(StateMapping stateMapping);
 }

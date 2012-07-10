@@ -62,7 +62,7 @@ public class MustOccurConstraintProcessorTest extends BaseConstraintProcessorTes
 	}
 
 	/**
-	 * @see BaseConstraintProcessorTest#newProcessor()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.BaseConstraintProcessorTest#newProcessor()
 	 */
 	@Override
 	protected MustOccurConstraintProcessor newProcessor() {

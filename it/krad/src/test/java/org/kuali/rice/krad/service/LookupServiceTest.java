@@ -33,12 +33,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * LookupServiceTest tests KULRICE-984: Lookups - Relative Limit Gap
- *
- * <p>Making sure that lookup resultSetLimits set in the DD for
- * a BO will override the system wide default.</p>
+ * This class tests KULRICE-984: Lookups - Relative Limit Gap
+ * making sure that lookup resultSetLimits set in the DD for
+ * a BO will override the system wide default.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
  */
 
 @PerTestUnitTestData(
@@ -66,7 +66,7 @@ public class LookupServiceTest extends KRADTestCase {
     public LookupServiceTest() {}
 
     /**
-     * tests lookup return limits
+     * This method tests lookup return limits
      *
      * @throws Exception
      */
@@ -83,7 +83,7 @@ public class LookupServiceTest extends KRADTestCase {
     }
 
     /**
-     * tests a lookup with the default limit
+     * This method tests a lookup with the default limit
      *
      * @throws Exception
      */
@@ -100,7 +100,7 @@ public class LookupServiceTest extends KRADTestCase {
     }
 
     /**
-     * tests an unbounded lookup
+     * This method tests an unbounded lookup
      *
      * @throws Exception
      */
@@ -119,7 +119,7 @@ public class LookupServiceTest extends KRADTestCase {
     }
 
     /**
-     * tests an unbounded lookup
+     * This method tests an unbounded lookup
      *
      * @throws Exception
      */

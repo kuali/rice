@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.core.convert.ConversionService;
@@ -95,12 +96,6 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         throw new RuntimeException("Direct Field access is not allowed in Kuali");
     }
 
-    /**
-     * Performs data binding from servlet request parameters to the form and then calls
-     * <code>postBind(request)</code>.
-     *
-     * @param request
-     */
     @Override
     @SuppressWarnings("unchecked")
     public void bind(ServletRequest request) {
@@ -108,9 +103,9 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 
         UifFormBase form = (UifFormBase) this.getTarget();
 
-       // check for request param that indicates to skip view initialize
-        Boolean skipViewInitialization = KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT);
-        if ((skipViewInitialization == null) || !skipViewInitialization.booleanValue()) {
+        // check for request param that indicates to skip view initialize
+        Boolean skipViewInit = KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT);
+        if ((skipViewInit == null) || !skipViewInit.booleanValue()) {
             // initialize new view for request
             View view = null;
 
@@ -150,6 +145,9 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         }
 
         form.postBind((HttpServletRequest) request);
+
+        // add form to manager
+        GlobalVariables.getUifFormManager().addForm(form);
     }
 
     protected View getViewFromPreviousModel(UifFormBase form) {
@@ -165,10 +163,4 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         return KRADServiceLocatorWeb.getViewService();
     }
 
-
-
-
-
- }
-
-
+}

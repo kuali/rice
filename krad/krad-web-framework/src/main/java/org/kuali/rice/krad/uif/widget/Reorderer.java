@@ -58,10 +58,10 @@ public class Reorderer extends WidgetBase {
             }
 
             // add the default movable class to the selectors option if not already configured
-            if (!getTemplateOptions().containsKey(UifConstants.ReordererOptionKeys.SELECTORS)) {
+            if (!getComponentOptions().containsKey(UifConstants.ReordererOptionKeys.SELECTORS)) {
                 String selectorsOption =
                         "{" + UifConstants.ReordererOptionKeys.MOVABLES + " : 'span." + movableStyleClass + "' }";
-                getTemplateOptions().put(UifConstants.ReordererOptionKeys.SELECTORS, selectorsOption);
+                getComponentOptions().put(UifConstants.ReordererOptionKeys.SELECTORS, selectorsOption);
             }
         }
     }

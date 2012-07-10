@@ -47,28 +47,28 @@ public class GroupControl extends TextControl {
         InputField field = (InputField) parent;
 
         if (StringUtils.isNotBlank(groupIdPropertyName)) {
-            field.getAdditionalHiddenPropertyNames().add(groupIdPropertyName);
+            field.getHiddenPropertyNames().add(groupIdPropertyName);
         }
 
-        if (StringUtils.isBlank(field.getQuickfinder().getDataObjectClassName())) {
-            field.getQuickfinder().setDataObjectClassName("org.kuali.rice.kim.impl.group.GroupBo");
+        if (StringUtils.isBlank(field.getFieldLookup().getDataObjectClassName())) {
+            field.getFieldLookup().setDataObjectClassName("org.kuali.rice.kim.impl.group.GroupBo");
         }
 
-        if (field.getQuickfinder().getFieldConversions().isEmpty()) {
+        if (field.getFieldLookup().getFieldConversions().isEmpty()) {
             if (StringUtils.isNotBlank(groupIdPropertyName)) {
-                field.getQuickfinder().getFieldConversions().put("id", groupIdPropertyName);
+                field.getFieldLookup().getFieldConversions().put("id", groupIdPropertyName);
             }
 
-            field.getQuickfinder().getFieldConversions().put("name", field.getPropertyName());
+            field.getFieldLookup().getFieldConversions().put("name", field.getPropertyName());
 
             if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
-                field.getQuickfinder().getFieldConversions().put("namespaceCode", namespaceCodePropertyName);
+                field.getFieldLookup().getFieldConversions().put("namespaceCode", namespaceCodePropertyName);
             }
         }
 
-        if (field.getQuickfinder().getLookupParameters().isEmpty()) {
+        if (field.getFieldLookup().getLookupParameters().isEmpty()) {
             if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
-                field.getQuickfinder().getLookupParameters().put(namespaceCodePropertyName, "namespaceCode");
+                field.getFieldLookup().getLookupParameters().put(namespaceCodePropertyName, "namespaceCode");
             }
         }
     }

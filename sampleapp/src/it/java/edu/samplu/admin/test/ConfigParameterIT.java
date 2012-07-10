@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * tests new and edit Parameter maintenance screens
+ * TODO Administrator don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,9 +40,6 @@ public class ConfigParameterIT {
     }
 
     @Test
-    /**
-     * tests that a new Parameter maintenance document can be cancelled
-     */
     public void testCreateNew() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
@@ -68,9 +65,6 @@ public class ConfigParameterIT {
     }
 
     @Test
-    /**
-     * tests that a Parameter maintenance document is created for an edit operation originating from a lookup screen
-     */
     public void testEditParameter() throws Exception {
         selenium.open("http://localhost:8080/kr-dev/portal.do");
         assertEquals("Login", selenium.getTitle());

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.widget;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.krad.datadictionary.validation.Account;
 import org.kuali.rice.krad.datadictionary.validation.Employee;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * test the RichTable widget
@@ -53,7 +55,7 @@ public class RichTableTest {
         TableLayoutManager layoutManager = new TableLayoutManager();
         layoutManager.setRenderSequenceField(true);
         group.setLayoutManager(layoutManager);
-        group.setIncludeLineSelectionField(false);
+        group.setRenderSelectField(false);
         group.setRenderLineActions(false);
 
         List<Component> items = new ArrayList<Component>(1);
@@ -110,9 +112,9 @@ public class RichTableTest {
 
     @Test
     /**
-     * test that sortableColumns and hiddenColumns, when set on layoutManager, will not override those properties on the richTable
+     * test that sortableColumns and hiddenColumns, when set on layoutManager, override those properties on the richTable
      */
-    public void testComponentOptionsHideColumnOnLayoutManager() {
+     public void testComponentOptionsHideColumnOnLayoutManager() {
         // set rich table properties
         Set<String> richTableHiddenColumns = new HashSet<String>();
         richTableHiddenColumns.add("employeeId");
@@ -128,7 +130,7 @@ public class RichTableTest {
         ((TableLayoutManager)group.getLayoutManager()).setSortableColumns(lmSortableColumns);
         ((TableLayoutManager)group.getLayoutManager()).setHiddenColumns(lmHiddenColumns);
 
-        String expected = "[ null ,{bVisible: false}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable': false}]";
+        String expected = "[ null ,{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable': false}, {bVisible: false}]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
     }
 
@@ -140,8 +142,8 @@ public class RichTableTest {
      * @param optionKey - a string with the rich table option key being tested
      */
     private void assertRichTableComponentOptions(String optionsOnGroup, String optionsOnRichTable, String optionKey) {
-        richTable.getTemplateOptions().put(optionKey, optionsOnGroup);
+        richTable.getComponentOptions().put(optionKey, optionsOnGroup);
         richTable.performFinalize(new View(), new UifFormBase(), group);
-        assertEquals(optionsOnRichTable,richTable.getTemplateOptions().get(optionKey));
+        assertEquals(optionsOnRichTable,richTable.getComponentOptions().get(optionKey));
     }
 }

@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * tests creating and cancelling new and edit Permission maintenance screens
+ * TODO Administrator don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,9 +40,6 @@ public class IdentityPermissionIT {
     }
 
     @Test
-    /**
-     * tests that a new Permission maintenance document can be cancelled
-     */
     public void testCreateNew() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
@@ -68,9 +65,6 @@ public class IdentityPermissionIT {
     }
     
     @Test
-    /**
-     * tests that a Permission maintenance document is created for an edit operation originating from a lookup screen
-     */
     public void testEditPermission() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());

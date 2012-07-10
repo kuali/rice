@@ -92,38 +92,42 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
             Exception ex) throws Exception {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
-
         UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
 
-        if (uifForm != null) {
-            if (uifForm.isRequestRedirect()) {
-                // view wasn't rendered, just set to null and leave previous posted view
-                uifForm.setView(null);
-            } else if (uifForm.isSkipViewInit()) {
-                // partial refresh or query
-                View postedView = uifForm.getPostedView();
-                if (postedView != null) {
-                    postedView.getViewHelperService().cleanViewAfterRender(postedView);
-                }
-            } else {
-                // full view render
-                View view = uifForm.getView();
-                if (view != null) {
-                    view.getViewHelperService().cleanViewAfterRender(view);
+        if (uifForm == null) {
+            return;
+        }
 
-                    // check whether form should be keep in session or not
-                    if (view.isPersistFormToSession()) {
-                        // Remove the session transient variables from the request form before adding it to the list of
-                        // Uifsession forms
-                        uifFormManager.purgeForm(uifForm);
-                        uifFormManager.addSessionForm(uifForm);
-                    }
-                }
+        // perform form session handling
+        boolean persistFormToSession = uifForm.getView() != null ? uifForm.getView().isPersistFormToSession() :
+                uifForm.getPostedView().isPersistFormToSession();
 
-                uifForm.setPostedView(view);
-                uifForm.setView(null);
+        if (persistFormToSession) {
+            // Remove the session transient variables from the request form before adding it to the list of
+            // Uif session forms
+            uifFormManager.purgeForm(uifForm);
+            uifFormManager.addSessionForm(uifForm);
+        }
+
+        // cleaning of view structure
+        if (uifForm.isRequestRedirect()) {
+            // view wasn't rendered, just set to null and leave previous posted view
+            uifForm.setView(null);
+        } else if (uifForm.isSkipViewInit()) {
+            // partial refresh or query
+            View postedView = uifForm.getPostedView();
+            if (postedView != null) {
+                postedView.getViewHelperService().cleanViewAfterRender(postedView);
+            }
+        } else {
+            // full view render
+            View view = uifForm.getView();
+            if (view != null) {
+                view.getViewHelperService().cleanViewAfterRender(view);
             }
 
+            uifForm.setPostedView(view);
+            uifForm.setView(null);
         }
     }
 

@@ -1047,8 +1047,8 @@
     <property name="headerText" value="Warning: Sensitive Data"/>
     <property name="items">
       <list>
-        <bean id="imageWarning" parent="Uif-ImageField" p:fieldLabel.render="false" p:width="50px" p:height="50px"
-              p:source="@{#ConfigProperties['krad.externalizable.images.url']}/validation/warning.png"/>
+        <bean id="imageWarning" parent="Uif-ImageField" p:width="75px" p:height="75px"
+              p:source="@{#ConfigProperties['krad.externalizable.images.url']}warning.png"/>
       </list>
     </property>
     <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>

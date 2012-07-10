@@ -44,6 +44,7 @@ jQuery(document).ready(function () {
     jQuery("input:button").button();
     jQuery("a.button").button();
     jQuery(".uif-dialogButtons").button();
+    jQuery(".uif-dialogButtons").next('label').addClass('uif-primaryDialogButton');
 
     // common ajax setup
     jQuery.ajaxSetup({

@@ -68,7 +68,7 @@ img.uif-disclosure-image[alt="expand"] {
 
 /** Buttons *********************************************************************************************/
 
-button.uif-primaryActionButton:hover {
+button.uif-primaryActionButton:hover, label.uif-primaryDialogButton:hover {
     border-color: #07662a;
     /*defines gradient background*/
     background: #07662a; /* Old browsers */
@@ -99,7 +99,7 @@ button.uif-secondaryActionButton:hover {
     border: 1px solid #999;
 }
 
-button.uif-primaryActionButton {
+button.uif-primaryActionButton, label.uif-primaryDialogButton {
     border: 1px solid #3F7826;
 
     /*Background styling*/

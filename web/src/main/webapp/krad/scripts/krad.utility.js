@@ -1024,7 +1024,7 @@ function removeIdPrefix(component, prefix) {
  */
 function openLightboxOnLoad(dialogId) {
     showLightboxComponent(dialogId);
-    jQuery('.uif-dialogButtons').find('.uif-checkboxesControl').button();
+    jQuery('.uif-dialogButtons').button();
 }
 
 /**

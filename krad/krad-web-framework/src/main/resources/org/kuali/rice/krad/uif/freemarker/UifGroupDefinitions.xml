@@ -1032,14 +1032,15 @@
 
   <bean id="Uif-DialogResponse" parent="Uif-InputField" p:propertyName="dialogResponse">
     <property name="control">
-      <bean parent="Uif-HorizontalCheckboxesControl"/>
+      <bean parent="Uif-HorizontalCheckboxesControl">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>uif-dialogButtons</value>
+          </list>
+        </property>
+      </bean>
     </property>
     <property name="onChangeScript" value="lightboxButtonScript();"/>
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-dialogButtons</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup">

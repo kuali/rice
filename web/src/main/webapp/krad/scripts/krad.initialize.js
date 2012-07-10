@@ -43,7 +43,7 @@ jQuery(document).ready(function () {
     jQuery("input:submit").button();
     jQuery("input:button").button();
     jQuery("a.button").button();
-    jQuery(".uif-dialogButtons").find(".uif-checkboxesControl").button();
+    jQuery(".uif-dialogButtons").button();
 
     // common ajax setup
     jQuery.ajaxSetup({

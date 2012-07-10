@@ -821,6 +821,7 @@ public abstract class UifControllerBase {
         props.put(UifParameters.METHOD_TO_CALL, dm.getDialogReturnMethod(dialogId));
         props.put(UifParameters.VIEW_ID, form.getViewId());
         props.put(UifParameters.FORM_KEY, form.getFormKey());
+        props.put(UifParameters.AJAX_REQUEST,"false");
 
         return performRedirect(form, form.getFormPostUrl(), props);
     }

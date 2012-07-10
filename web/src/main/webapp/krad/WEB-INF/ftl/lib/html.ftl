@@ -34,7 +34,9 @@
 
     <title>
         <@spring.message "app.title"/>
+        <#if view.headerText?has_content>
         :: ${view.headerText}
+        </#if>
     </title>
 
     <#list view.theme.cssFiles as cssFile>

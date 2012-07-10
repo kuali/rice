@@ -340,10 +340,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * @return The text that should be displayed on the header
      */
     public String getHeaderText () {
-        if (header != null) {
+        if (header != null && header.getHeaderText() != null) {
             return header.getHeaderText();
         } else {
-            return null;
+            return "";
         }
     }
 

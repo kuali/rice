@@ -26,7 +26,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
   <bean id="CacheAdmin-view1" parent="Uif-FormView">
-    <property name="title" value="Cache Management"/>
+    <property name="headerText" value="Cache Management"/>
     <property name="items">
       <list>
         <bean parent="Uif-Page">

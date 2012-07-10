@@ -107,9 +107,9 @@ public class DialogGroup extends Group {
         // move dialogGroup custom properties into the items property.
         // where they will be rendered by group.jsp
         List<Component> myItems = new ArrayList<Component>();
-        myItems.addAll(getItems());
         myItems.add(prompt);
         myItems.add(explanation);
+        myItems.addAll(getItems());
         myItems.add(responseInputField);
         this.setItems(myItems);
     }

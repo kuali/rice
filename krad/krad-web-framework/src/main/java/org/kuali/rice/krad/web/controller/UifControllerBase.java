@@ -702,7 +702,7 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Handles a modal dialog interaction with the client user when the response back is a string.
+     * Handles a modal dialog interaction with the client user when a String response is desired
      *
      * <p>
      * Similar to askYesOrNoQuestion() but returns a string instead of a boolean.  The string value is the key

@@ -82,10 +82,12 @@
         <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup"
               p:promptText="Would you like to continue?" />
         <bean id="preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup"
-              p:useAjaxCallForContent="true"
+              p:useAjaxCallForContent="true" p:forceSessionPersistence="true"
               p:promptText="Is this a correct statement?" />
         <bean id="sampleRadioButtonDialog" parent="Uif-RadioButton-DialogGroup" p:promptText="Select" />
         <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
+        <bean id="myRegularGroup" parent="DTV-SampleGroup"/>
+        <bean id="extendedDialogGroup" parent="DTV-ExtendedDialog"/>
 <!--
         <bean id="myCheckboxDialog" parent="sampleCheckboxDialog" p:promptText="Select Applicable" />
 -->
@@ -108,18 +110,18 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="bField1" p:label="See dialog" p:defaultValue="false"
               p:instructionalText="show/hide dialog content">
-          <property name="onChangeScript" value="jQuery('#myDialog').toggle();" />
+          <property name="onChangeScript" value="jQuery('#chooseAuthorDialog').toggle();" />
           <property name="control">
             <bean parent="Uif-CheckboxControl"/>
           </property>
         </bean>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group" p:actionScript="showLightboxComponent('mySensitiveDialog');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with overrides" p:actionScript="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with overrides" p:actionScript="showLightboxComponent('chooseAuthorDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from HTML" p:actionScript="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined OK/Cancel" p:actionScript="showLightboxComponent('preDefinedDialogOkCancel');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Checkboxes" p:actionScript="showLightboxComponent('sampleCheckboxDialog');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Radiobuttons" p:actionScript="showLightboxComponent('sampleRadioButtonDialog');"/>
-
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="doOkCancelExample" p:actionLabel="Predefined OK/Cancel"
+              p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="doRadioDialogExample" p:actionLabel="Radio Buttons"
+              p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with progressive rendering" p:actionScript="showLightboxComponent('myProgressiveDialog');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:actionScript="showLightboxComponent('myImage');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Client Ajax Dialog" p:actionScript="showLightboxComponent('preDefinedDialogTrueFalse');"/>
@@ -289,6 +291,47 @@
         <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
         <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
 
+      </list>
+    </property>
+  </bean>
+
+  <bean id="DTV-ExtendedDialog" parent="Uif-DialogGroup" p:promptText="Adding some custom items to a Dialog">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Label" p:labelText="This is always displayed" />
+        <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
+        <bean parent="GenericTextField" p:label="Field2" p:propertyName="field2" />
+        <bean parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
+              <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
+              <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
+              <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="DTV-SampleGroup" parent="Uif-VerticalBoxSection">
+    <property name="hidden" value="true"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Label" p:labelText="This group does not inherit from Uif-DialogGroup" />
+        <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
+        <bean parent="GenericTextField" p:label="Field2" p:propertyName="field2" />
+        <bean parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
+              <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
+              <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
+              <bean parent="Uif-Label" p:labelText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor. Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum sed nunc." />
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

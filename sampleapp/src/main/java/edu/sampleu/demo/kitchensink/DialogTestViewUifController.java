@@ -156,10 +156,10 @@ public class DialogTestViewUifController extends UifControllerBase {
     /**
      * not used at this time
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
+     * @param form - test form
+     * @param result - Spring form binding result
+     * @param request - http request
+     * @param response - http response
      * @return
      */
     @RequestMapping(params = "methodToCall=closeMe")
@@ -173,20 +173,62 @@ public class DialogTestViewUifController extends UifControllerBase {
     /**
      * Test method for a controller that invokes a dialog lightbox.
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
+     * @param form - test form
+     * @param result - Spring form binding result
+     * @param request - http request
+     * @param response - http response
      * @return
      * @throws Exception
      */
-    @RequestMapping(params = "methodToCall=" + "doSomething")
-    public ModelAndView doSomething(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    @RequestMapping(params = "methodToCall=" + "doRadioDialogExample")
+    public ModelAndView doSomething(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String dialog1 = "sampleRadioButtonDialog";
+        if (!hasDialogBeenAnswered(dialog1, form)){
+            // redirect back to client to display lightbox
+            return showDialog(dialog1, form, request, response);
+        }
+        // Get value from chosen radio button
+        String choice = form.getDialogManager().getDialogExplanation(dialog1);
+        form.setField1("You chose Radio Option "+choice);
 
-        // just load page1
+        // clear dialog history so they can press the button again
+        form.getDialogManager().removeDialog(dialog1);
+        // reload page1
         return getUIFModelAndView(form, "DialogView-Page1");
     }
 
+    /**
+     * Test method for a controller that invokes a dialog lightbox.
+     *
+     * @param form - test form
+     * @param result - Spring form binding result
+     * @param request - http request
+     * @param response - http response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(params = "methodToCall=" + "doOkCancelExample")
+    public ModelAndView doOKCancelExample(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String dialog1 = "preDefinedDialogOkCancel";
+        if (!hasDialogBeenAnswered(dialog1, form)){
+            // redirect back to client to display lightbox
+            return showDialog(dialog1, form, request, response);
+        }
+        // Get value from chosen radio button
+        boolean choice = getBooleanDialogResponse(dialog1, form, request, response);
+        StringBuilder sb = new StringBuilder("You selected ");
+        if (choice){
+            sb.append("OK.");
+        } else {
+            sb.append("Cancel");
+        }
+        form.setField1(sb.toString());
 
+        // clear dialog history so they can press the button again
+        form.getDialogManager().removeDialog(dialog1);
+        // reload page1
+        return getUIFModelAndView(form, "DialogView-Page1");
+    }
 }

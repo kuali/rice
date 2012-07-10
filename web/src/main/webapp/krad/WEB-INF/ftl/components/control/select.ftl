@@ -21,7 +21,7 @@ Standard HTML Select Input
 -->
 <#macro uif_select control field>
 
-    <#local attributes='id="${control.id}" size="${control.size!}" class="${control.styleClassesAsString!}"
+    <#local attributes='size="${control.size!}" class="${control.styleClassesAsString!}"
             tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
@@ -33,10 +33,10 @@ Standard HTML Select Input
     </#if>
 
     <#if control.multiple>
-        <@spring.formMultiSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
+        <@spring.formMultiSelect id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
                                  attributes="${attributes}"/>
     <#else>
-        <@spring.formSingleSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
+        <@spring.formSingleSelect id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
                                   attributes="${attributes}"/>
     </#if>
 

@@ -23,12 +23,12 @@
     <!-- PAGE RELATED VARS -->
     <#if KualiForm.view.renderForm>
 
-        <@spring.formHiddenInput path="KualiForm.view.currentPageId" attributes="id=\"pageId\""/>
+        <@spring.formHiddenInput id="pageId" path="KualiForm.view.currentPageId"/>
         <#if KualiForm.view.currentPage.header??>
-            <@spring.formHiddenInput path="KualiForm.view.currentPage.header.headerText" attributes="id=\"pageTitle\""/>
+            <@spring.formHiddenInput id="pageTitle" path="KualiForm.view.currentPage.header.headerText"/>
         </#if>
 
-        <@spring.formHiddenInput path="KualiForm.formHistory.historyParameterString" attributes="id=\"historyParameterString\""/>
+        <@spring.formHiddenInput id="historyParameterString" path="KualiForm.formHistory.historyParameterString"/>
 
     </#if>
 

@@ -22,7 +22,7 @@
 
 <#macro uif_text control field>
 
-    <#local attributes='id="${control.id}" size="${control.size!}" class="${control.styleClassesAsString!}"
+    <#local attributes='size="${control.size!}" class="${control.styleClassesAsString!}"
          tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
@@ -45,7 +45,7 @@
         <#local attributes='${attributes} minLength="${control.minLength}"'/>
     </#if>
 
-    <@spring.formInput path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+    <@spring.formInput id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 
     <#if control.watermarkText?has_content>
         <@krad.script value="createWatermark('${control.id}', '${control.watermarkText?js_string}');"/>

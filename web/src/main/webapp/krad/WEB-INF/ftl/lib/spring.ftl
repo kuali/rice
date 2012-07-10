@@ -172,12 +172,12 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
-<#macro formInput path attributes="" fieldType="text">
+<#macro formInput path id="" attributes="" fieldType="text">
     <@bind path/>
     <#if fieldType != "file" && fieldType != "password">
         <#local value='value="${stringStatusValue}"'/>
     </#if>
-    <input type="${fieldType}" name="${status.expression}" ${value!} ${attributes}<@closeTag/>
+    <input id="${id!}" type="${fieldType}" name="${status.expression}" ${value!} ${attributes}<@closeTag/>
 </#macro>
 
 <#--
@@ -192,8 +192,8 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
-<#macro formPasswordInput path attributes="">
-    <@formInput path, attributes, "password"/>
+<#macro formPasswordInput path id="" attributes="">
+    <@formInput path, id, attributes, "password"/>
 </#macro>
 
 <#--
@@ -207,8 +207,8 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
-<#macro formHiddenInput path attributes="">
-    <@formInput path, attributes, "hidden"/>
+<#macro formHiddenInput path id="" attributes="">
+    <@formInput path, id, attributes, "hidden"/>
 </#macro>
 
 <#--
@@ -220,9 +220,9 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
-<#macro formTextarea path attributes="">
+<#macro formTextarea path id="" attributes="">
     <@bind path/>
-    <textarea name="${status.expression}" ${attributes}>${stringStatusValue}</textarea>
+    <textarea id="${id!}" name="${status.expression}" ${attributes}>${stringStatusValue}</textarea>
 </#macro>
 
 <#--
@@ -236,9 +236,9 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formSingleSelect path options attributes="">
+<#macro formSingleSelect path options id="" attributes="">
     <@bind path/>
-    <select name="${status.expression}" ${attributes}>
+    <select id="${id!}" name="${status.expression}" ${attributes}>
        <#list options as option>
           <option value="${option.key?html}"<@checkSelected option.key/>>${option.value?html}</option>
        </#list>
@@ -256,9 +256,9 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formMultiSelect path options attributes="">
+<#macro formMultiSelect path options id="" attributes="">
     <@bind path/>
-    <select multiple="multiple" name="${status.expression}" ${attributes}>
+    <select multiple="multiple" id="${id!}" name="${status.expression}" ${attributes}>
         <#list options as option>
         <#assign isSelected = contains(status.actualValue?default([""]), option.key)>
         <option value="${option.key?html}"<#if isSelected> selected="selected"</#if>>${option.value?html}</option>
@@ -327,12 +327,12 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formCheckbox path label="" attributes="">
+<#macro formCheckbox path id="" label="" attributes="">
 	<@bind path />
-    <#local id="${status.expression}">
+    <#local name="${status.expression}">
     <#local isSelected = status.value?? && status.value?string=="true">
 	<input type="hidden" name="_${id}" value="on"/>
-	<input type="checkbox" name="${id}"<#if isSelected> checked="checked"</#if> ${attributes}/>
+	<input type="checkbox" id="${id!}" name="${id}"<#if isSelected> checked="checked"</#if> ${attributes}/>
     <#if label?has_content>
         <label for="${id}">${label}</label>
     </#if>

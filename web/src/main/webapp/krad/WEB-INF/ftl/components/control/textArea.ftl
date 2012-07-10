@@ -22,7 +22,7 @@ Standard HTML TextArea Input
 
 <#macro uif_textarea control field>
 
-    <#local attributes='id="${control.id}" rows="${control.rows!}" cols="${control.cols!}"
+    <#local attributes='rows="${control.rows!}" cols="${control.cols!}"
             class="${control.styleClassesAsString!}" tabindex="${control.tabIndex!}" ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
@@ -45,7 +45,7 @@ Standard HTML TextArea Input
         <#local attributes='${attributes} minLength="${control.minLength}"'/>
     </#if>
 
-    <@spring.formTextarea path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+    <@spring.formTextarea id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 
     <#if control.watermarkText?has_content>
         <@krad.script value="createWatermark('${control.id}', '${control.watermarkText?js_string}');"/>

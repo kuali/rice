@@ -22,7 +22,7 @@
 
 <#macro uif_checkbox control field>
 
-    <#local attributes='id="${control.id}" class="${control.styleClassesAsString!}" tabindex="${control.tabIndex!}"'/>
+    <#local attributes='class="${control.styleClassesAsString!}" tabindex="${control.tabIndex!}"'/>
     <#local attributes='${attributes} ${control.simpleDataAttributes!}' />
 
     <#if control.value??>
@@ -37,6 +37,7 @@
         <#local attributes='${attributes} style="${control.style}"'/>
     </#if>
 
-    <@spring.formCheckbox path="KualiForm.${field.bindingInfo.bindingPath}" label="${control.checkboxLabel!}" attributes="${attributes}"/>
+    <@spring.formCheckbox id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}"
+             label="${control.checkboxLabel!}" attributes="${attributes}"/>
 
 </#macro>

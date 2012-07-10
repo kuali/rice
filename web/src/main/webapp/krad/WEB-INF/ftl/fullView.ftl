@@ -43,13 +43,13 @@
 
         <#if view.renderForm>
         <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
-            <@spring.formHiddenInput path="KualiForm.viewId" attributes="id=\"viewId\""/>
+            <@spring.formHiddenInput id="viewId" path="KualiForm.viewId"/>
 
         <#-- all forms will be stored in session, this is the conversation key -->
-            <@spring.formHiddenInput path="KualiForm.formKey" attributes="id=\"formKey\""/>
+            <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
 
         <#-- Based on its value, form elements will be checked for dirtyness -->
-            <@spring.formHiddenInput path="KualiForm.validateDirty" attributes="id=\"validateDirty\""/>
+            <@spring.formHiddenInput id="validateDirty" path="KualiForm.validateDirty"/>
         </#if>
 
         <@krad.template component=view/>

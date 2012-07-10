@@ -107,8 +107,8 @@
         <#-- render hidden fields -->
         <#-- TODO: always render hiddens if configured? -->
         <#list field.additionalHiddenPropertyNames as hiddenPropertyName>
-            <@spring.formHiddenInput path="KualiForm.${hiddenPropertyName}"
-            attributes='id="${field.id}_h${hiddenPropertyName_index}"'/>
+            <@spring.formHiddenInput id="${field.id}_h${hiddenPropertyName_index}"
+            path="KualiForm.${hiddenPropertyName}"/>
         </#list>
 
         <#-- transform all text on attribute field to uppercase -->

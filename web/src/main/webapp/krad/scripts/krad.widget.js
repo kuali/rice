@@ -242,7 +242,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                 data['actionParameters[showHistory]'] = 'true';
                 data['actionParameters[showHome]'] = 'false';
 
-                submitForm(data['methodToCall'], data);
+                submitForm(data['methodToCall'], data, null);
             });
         }
     });

@@ -23,7 +23,6 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.uif.AjaxReturnTypes;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -839,7 +838,7 @@ public abstract class UifControllerBase {
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
         // indicate a redirect is occuring to prevent view processing down the line
         form.setRequestRedirect(true);
-        form.setAjaxReturnType(AjaxReturnTypes.REDIRECT.getKey());
+        form.setAjaxReturnType(UifConstants.AjaxReturnTypes.REDIRECT.getKey());
 
         // On post redirects we need to make sure we are sending the history forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());

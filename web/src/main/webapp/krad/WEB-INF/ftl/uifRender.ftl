@@ -19,100 +19,29 @@
 
 <#compress>
 
-<#if KualiForm.renderFullView>
+    <#if KualiForm.ajaxRequest>
+        <#if KualiForm.ajaxReturnType == "update-view">
 
-    <#assign view=KualiForm.view/>
+            <div data-handler="update-view">
+                <#include "fullView.ftl"  parse=true/>
+            </div>
 
-    <@krad.html view=view>
+        <#elseif KualiForm.ajaxReturnType == "update-component">
 
-         <#if !view.renderedInLightBox>
-             <@krad.script value="
-                 jQuery(function(){
-                   publishHeight();
-                   window.onresize = publishHeight;
-                   window.setInterval(publishHeight, 249);
-                 });
-             "/>
-         </#if>
+            <div data-handler="update-component" data-updateComponentId="${Component.id!}">
+                <#include "updateComponent.ftl"  parse=true/>
+            </div>
 
-         <@krad.script value="${KualiForm.growlScript!}"/>
+        <#elseif KualiForm.ajaxReturnType == "update-page">
 
-         <div id="Uif-Application" style="display:none;" class="uif-application">
+            <div data-handler="update-page">
+                <#include "updatePage.ftl"  parse=true/>
+            </div>
 
-             <!-- APPLICATION HEADER -->
-             <@krad.template component=view.applicationHeader/>
-             <@krad.backdoor/>
-
-             <@krad.form render=view.renderForm postUrl="${view.formPostUrl!KualiForm.formPostUrl}"
-             onSubmitScript="${view.onSubmitScript}">
-
-                 <#if view.renderForm>
-                     <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
-                     <@spring.formHiddenInput path="KualiForm.viewId" attributes="id=\"viewId\""/>
-
-                     <#-- all forms will be stored in session, this is the conversation key -->
-                     <@spring.formHiddenInput path="KualiForm.formKey" attributes="id=\"formKey\""/>
-
-                     <#-- Based on its value, form elements will be checked for dirtyness -->
-                     <@spring.formHiddenInput path="KualiForm.validateDirty" attributes="id=\"validateDirty\""/>
-                 </#if>
-
-                 <@krad.template component=view/>
-             </@krad.form>
-
-             <@krad.script value="${KualiForm.lightboxScript!}"/>
-
-             <#-- set focus and perform jump to -->
-             <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, '${KualiForm.focusId!}',
-                                  '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
-
-         </div>
-
-         <!-- APPLICATION FOOTER -->
-         <@krad.template component=view.applicationFooter/>
-
-     </@krad.html>
-
-<#else>
-
-    <#-- render component only -->
-    <html>
-
-        <#assign isPageRefresh=!KualiForm.updateComponentId?has_content/>
-
-        <#assign view=KualiForm.view/>
-        <#if !isPageRefresh>
-            <#assign view=KualiForm.postedView/>
-
-            <#-- need to render the pages errors since the component could have added errors for the page -->
-            <@krad.template component=view.currentPage.validationMessages/>
         </#if>
 
-        <#-- now render the updated component (or page) wrapped in an update div -->
-        <div id="${Component.id}_update" data-handler="update-component">
-            <#-- rerun view pre-load script to get new state variables for component -->
-            <@krad.script value="${view.preLoadScript!}" component=Component/>
-
-            <@krad.template componentUpdate=true component=Component/>
-
-            <@krad.script value="${KualiForm.lightboxScript!}" component=Component/>
-
-            <#-- show added growls -->
-            <@krad.script value="${KualiForm.growlScript!}" component=Component/>
-
-
-            <#assign autoJump="false"/>
-            <#if isPageRefresh>
-                <#assign autoJump="true"/>
-            </#if>
-
-            <#-- set focus and perform jump to -->
-            <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, ${autoJump}, '${KualiForm.focusId!}',
-                                 '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
-        </div>
-
-    </html>
-
-</#if>
+    <#else>
+        <#include "fullView.ftl" parse=true/>
+    </#if>
 
 </#compress>

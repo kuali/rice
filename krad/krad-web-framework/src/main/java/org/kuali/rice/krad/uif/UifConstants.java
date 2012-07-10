@@ -72,6 +72,24 @@ public class UifConstants {
         SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE, COMPLETE
     }
 
+    public enum AjaxReturnTypes {
+         UPADATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("update-view"), SHOWINCIDENT("update-view");
+
+         private String key;
+
+         AjaxReturnTypes(String key) {
+             this.key = key;
+         }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+    }
+
     public static class MethodToCallNames {
         public static final String NAVIGATE = "navigate";
         public static final String START = "start";

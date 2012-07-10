@@ -741,7 +741,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             props.put(returnKey, returnValue);
         }
-
+        props.put(UifParameters.AJAX_REQUEST,"false");
         return props;
     }
 

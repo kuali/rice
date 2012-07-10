@@ -17,7 +17,7 @@
 /**
  * Submits the form via ajax or does a normal form submit depending on whether the for was submitted via ajax or not.
  * By default ajaxsubmit is true.
- * sd
+ *
  * @param component
  */
 function actionInvokeHandler(component) {
@@ -30,10 +30,6 @@ function actionInvokeHandler(component) {
     var validate = jQuery(component).data("validate");
 
     var methodToCall = submitData['methodToCall'];
-
-    if (successCallback == null || successCallback == "") {
-        successCallback = updatePageCallback;
-    }
 
     if (ajaxSubmit) {
         if (validate) {
@@ -81,13 +77,20 @@ function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData
  * Submits the form through an ajax submit, the response is the new page html
  * runs all hidden scripts passed back (this is to get around a bug with premature script evaluation)
  *
- * If a form has the properties enctype or encoding set to multipart/form-data, an iframe is created to hold the response
+ * <p>
+ * If a form has the properties enctype or encoding set to multipart/form-data, an iframe is created
+ * to hold the response
  * If the returned response contains scripts that are meant to be run on page load,
  * they will be executed within the iframe since the jquery ready event is triggered
+ * </p>
  *
- * For the above reason, the renderFullView below is set to false so that the script content between <head></head> is left out
+ * <p>
+ * For the above reason, the renderFullView below is set to false so that the script content between
+ * <head></head> is left out
+ * </p>
  */
-function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate, preSubmitCall, returnType) {
+function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate,
+                                preSubmitCall, returnType) {
     var data = {};
     // invoke validateForm if validate flag is true, if returns false do not continue
     if (validate && !validateForm()) {
@@ -105,14 +108,10 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
         data.methodToCall = methodToCall;
     }
 
-    if (returnType != null || returnType !== "") {
+    if (returnType != null && returnType !== "") {
         data.ajaxReturnType = returnType;
     } else {
         data.ajaxReturnType = "update-page";
-    }
-
-    if (successCallback == null) {
-        successCallback = ajaxSuccessReturnHandler;
     }
 
     // Since we are explicitly setting renderFullView to false, we need to remove any input renderFullViewParam
@@ -150,12 +149,15 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = response;
             var hasError = handleIncidentReport(response);
+            invokeAjaxReturnHandler(tempDiv);
+
             if (!hasError) {
-                // alert("Type :: "+typeof successCallback)
-                if (typeof successCallback == "string") {
-                    eval(successCallback + "(tempDiv)");
-                } else {
-                    successCallback(tempDiv);
+                if(successCallback != null)  {
+                    if (typeof successCallback == "string") {
+                        eval(successCallback + "(tempDiv)");
+                    } else {
+                        successCallback(tempDiv);
+                    }
                 }
             } else if (errorCallback != null) {
                 eval(errorCallback + "(tempDiv)");
@@ -238,7 +240,6 @@ function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCal
     }
 
     // if presubmit call given, invoke. If returns false don't continue
-
     if (preSubmitCall != null && preSubmitCall !== "") {
         if (!eval(preSubmitCall)) {
             return;
@@ -246,6 +247,7 @@ function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCal
     }
     // write out methodToCall as hidden
     writeHiddenToForm("methodToCall", methodToCall);
+    writeHiddenToForm("ajaxRequest", "false");
 
     // if additional data write out as hiddens
     for (key in additionalData) {
@@ -280,15 +282,6 @@ function validateAndSubmitUsingFormMethodToCall() {
 }
 
 /**
- * Submits a form via ajax using the jquery form plugin
- * The methodToCall parameter is used to determine the controller method to invoke
- */
-//function submitForm(){
-//	var methodToCall = jQuery("input[name='methodToCall']").val();
-//	ajaxSubmitForm(methodToCall, updatePageCallback, null, null, null);
-//}
-
-/**
  * Invoked on success of an ajax call that refreshes the page
  *
  * <p>
@@ -314,17 +307,22 @@ function updatePageCallback(content) {
     jQuery(pageInLayout).show();
 }
 
-function ajaxSuccessReturnHandler(content) {
-    var divs = jQuery("div", content);
-    for (var i = 0; i < divs.length; i++) {
-        var div = divs[i];
-        var handler = jQuery(div).data("handler");
-        var handlerFunc = ajaxReturnHandlers[handler];
-        if (handlerFunc != null) {
-            handlerFunc(div.innerHTML);
-        }
-    }
+/**
+ * Iterates over the divs in the contents and reads the data-handler to
+ * obtain the respective handler function to call
+ *
+ * @param content
+ */
+function invokeAjaxReturnHandler(content) {
+    jQuery(content).children().each(function () {
+        var div = jQuery(this);
 
+        var handler = div.data("handler");
+        var handlerFunc = ajaxReturnHandlers[handler];
+        if (handlerFunc) {
+            handlerFunc(div, div.data());
+        }
+    });
 }
 
 /**
@@ -337,8 +335,8 @@ function ajaxSuccessReturnHandler(content) {
  *
  * @param content - content returned from response
  */
-function updatePageHandler(content) {
-    var page = jQuery("[data-handler='update-page']", content);
+function updatePageHandler(content, dataAttr) {
+    var page = jQuery("#page_update", content);
     page.hide();
 
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
@@ -353,32 +351,90 @@ function updatePageHandler(content) {
     jQuery(pageInLayout).show();
 }
 
-function updateComponentHandler(content) {
-    // code from updateRefreshableComponentCallback goes here
+/**
+ * Invoked on success of an ajax call that refreshes the component
+ *
+ * <p>
+ * Retrieves the component with the matching id from the server and replaces a matching
+ * _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label
+ * and a displayWith marker span has a matching id, that span will be replaced with the label content
+ * and removed from the component.  This allows for label and component content seperation on fields
+ * </p>
+ *
+ * @param content - content returned from response
+ */
+function updateComponentHandler(content, dataAttr) {
+    var id = dataAttr.updatecomponentid;
+    var elementToBlock = jQuery("#" + id);
+
+    var component = jQuery("#" + id + "_update", content);
+
+        var displayWithId = id;
+
+        // special label handling, if any
+        var theLabel = jQuery("#" + displayWithId + "_label_span", component);
+        if (jQuery(".displayWith-" + displayWithId).length && theLabel.length) {
+            theLabel.addClass("displayWith-" + displayWithId);
+            jQuery("span.displayWith-" + displayWithId).replaceWith(theLabel);
+            component.remove("#" + displayWithId + "_label_span");
+        }
+
+        elementToBlock.unblock({onUnblock: function() {
+            var origColor = jQuery(component).find("#" + id).css("background-color");
+            jQuery(component).find("#" + id).css("background-color", "");
+            jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+
+                // remove old stuff
+                if(jQuery("#" + id + "_errors").length){
+                    jQuery("#" + id + "_errors").remove();
+                }
+
+                jQuery("input[data-for='"+ id +"']").each(function () {
+                    jQuery(this).remove();
+                });
+
+            // replace component
+            if (jQuery("#" + id).length) {
+                jQuery("#" + id).replaceWith(component.html());
+            }
+
+            if (jQuery("#" + id).parent().is("td")) {
+                jQuery("#" + id).parent().show();
+            }
+
+            //runs scripts on the span or div with id
+            runHiddenScripts(id);
+
+            if (origColor == "") {
+                origColor = "transparent";
+            }
+
+                jQuery("#" + id).animate({backgroundColor: origColor}, 5000);
+			    }
+		});
+
+        var displayWithLabel = jQuery(".displayWith-" + displayWithId);
+        displayWithLabel.show();
+        if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
+            displayWithLabel.parent().show();
+        }
+
+
 }
 
 /**
- * If the content is an incident report view, replaces the current view with the incident report and
- * returns true, otherwise returns false
+ *  Replaces the view with the given content.
  *
  * @param content
- * @returns {Boolean} true if there was an incident, false otherwise
+ * @param dataAttr
  */
-function showIncidentReportHandler(content) {
-    // code from handleIncidentReport goes here
-
-    var viewId = jQuery("#viewId", content);
-    if (viewId.length && viewId.val() === kradVariables.INCIDENT_REPORT_VIEW_CLASS) {
-        jQuery('#' + kradVariables.APP_ID).replaceWith(content);
+function updateViewHandler(content, dataAttr){
+    jQuery('#' + kradVariables.APP_ID).replaceWith(content);
         runHiddenScriptsAgain();
-        return true;
-    }
-    else {
-        return false;
-    }
-}
 
-function redirectHandler(content) {
+ }
+
+function redirectHandler(content, dataAttr) {
 // get contents between div and do window.location = “parsed href”
     window.location.href = encodeURI(jQuery.trim(content));
 }
@@ -397,12 +453,11 @@ function successCallbackF(content) {
  *          the id for the page that the link should navigate to
  */
 function handleActionLink(component, methodToCall, navigateToPageId) {
-
     var submitData = {};
     submitData = jQuery(component).data('submitData');
     submitData['navigateToPageId'] = navigateToPageId;
 
-    ajaxSubmitForm(methodToCall, "updatePageCallback", submitData, null, null, null);
+    ajaxSubmitForm(methodToCall, updatePageCallback, submitData, null, null, null);
 }
 
 /**

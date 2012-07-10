@@ -18,7 +18,6 @@ package org.kuali.rice.krad.web.bind;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.AjaxReturnTypes;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
@@ -103,6 +102,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
         incidentReportForm.setDevMode(!KRADUtils.isProductionEnvironment());
         incidentReportForm.setViewId("Uif-IncidentReportView");
+        incidentReportForm.setAjaxRequest(form.isAjaxRequest());
 
         // Set the view object
         incidentReportForm.setView(getViewService().getViewById("Uif-IncidentReportView"));
@@ -117,7 +117,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setRenderFullView(true);
 
         // Set the ajax return type
-        incidentReportForm.setAjaxReturnType(AjaxReturnTypes.SHOWINCIDENT.getKey());
+        incidentReportForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.SHOWINCIDENT.getKey());
 
         ModelAndView modelAndView = UifControllerHelper.getUIFModelAndView(incidentReportForm, "");
         try {

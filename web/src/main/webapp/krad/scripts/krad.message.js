@@ -162,8 +162,8 @@ function createWatermark(id, watermark) {
 function handleIncidentReport(content) {
     var viewId = jQuery("#viewId", content);
     if (viewId.length && viewId.val() === kradVariables.INCIDENT_REPORT_VIEW_CLASS) {
-        jQuery('#' + kradVariables.APP_ID).replaceWith(content);
-        runHiddenScriptsAgain();
+//        jQuery('#' + kradVariables.APP_ID).replaceWith(content);
+//        runHiddenScriptsAgain();
         return true;
     }
     else {

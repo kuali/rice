@@ -68,10 +68,11 @@ jQuery(document).ready(function () {
         createLoading(false);
     });
 
-    //setup the various event handlers for fields - THIS IS IMPORTANT
+    // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
-    //ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler};
+    // initialize the handlers for the ajax calls
+    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler, "update-view": updateViewHandler};
 });
 
 /**
@@ -415,6 +416,7 @@ function setupPage(validate) {
     jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
     pageValidatorReady = true;
 
+    jQuery.watermark.showAll();
     jQuery.watermark.showAll();
 }
 

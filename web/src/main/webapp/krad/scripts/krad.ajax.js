@@ -629,10 +629,12 @@ function addLineToCollection(component, collectionGroupId, collectionBaseId) {
 
         if (valid) {
             performCollectionAction(component, collectionGroupId);
+            return true;
         }
         else {
             jQuery("#formComplete").html("");
             alert("This addition contains errors.  Please correct these errors and try again.");
+            return false;
         }
     }
 }

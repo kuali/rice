@@ -712,11 +712,11 @@ public class CollectionGroupBuilder implements Serializable {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }
 
-            String actionScript = "addLineToCollection(this, '" + collectionGroup.getId() + "', '" + baseId + "');";
+            String actionScript = "addLineToCollection(this, '" + collectionGroup.getId() + "', '" + baseId + "')";
             if (collectionGroup.isAddViaLightBox()) {
-                actionScript = "closeLightbox();" + actionScript;
+                actionScript = "if (" + actionScript + ") {closeLightbox();}";
             }
-            action.setActionScript(actionScript);
+            action.setActionScript(actionScript + ";");
             
         }
 

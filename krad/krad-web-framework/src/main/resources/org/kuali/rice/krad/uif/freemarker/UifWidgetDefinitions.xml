@@ -168,9 +168,6 @@
         </property>
       </bean>
     </property>
-    <property name="lightBoxDirectInquiry">
-      <bean parent="Uif-LightBox"/>
-    </property>
     <property name="directInquiryAction">
       <bean parent="Uif-ActionImage">
         <property name="actionImage">

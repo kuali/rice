@@ -77,8 +77,6 @@ public class Inquiry extends WidgetBase {
     private boolean adjustInquiryParameters;
     private BindingInfo fieldBindingInfo;
 
-    private LightBox lightBoxDirectInquiry;
-
     public Inquiry() {
         super();
 
@@ -206,6 +204,11 @@ public class Inquiry extends WidgetBase {
         urlParameters.setProperty(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
         urlParameters.setProperty(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
 
+        // add inquiry specific parms to url
+        if (getInquiryLink().getLightBox() != null) {
+            getInquiryLink().getLightBox().setInquiryLookup(true);
+        }
+
         // configure inquiry when read only
         if (isReadOnly()) {
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
@@ -289,9 +292,9 @@ public class Inquiry extends WidgetBase {
 
             // Check if lightbox is set. Get lightbox options.
             String lightBoxOptions = "";
-            boolean lightBoxShow = getLightBoxDirectInquiry() != null;
+            boolean lightBoxShow = getInquiryLink().getLightBox() != null;
             if (lightBoxShow) {
-                lightBoxOptions = getLightBoxDirectInquiry().getTemplateOptionsJSString();
+                lightBoxOptions = getInquiryLink().getLightBox().getTemplateOptionsJSString();
             }
 
             // Create onlick script to open the inquiry window on the click event
@@ -346,7 +349,6 @@ public class Inquiry extends WidgetBase {
 
         components.add(getInquiryLink());
         components.add(getDirectInquiryAction());
-        components.add(lightBoxDirectInquiry);
 
         return components;
     }
@@ -502,27 +504,5 @@ public class Inquiry extends WidgetBase {
      */
     public void setEnableDirectInquiry(boolean enableDirectInquiry) {
         this.enableDirectInquiry = enableDirectInquiry;
-    }
-
-    /**
-     * Setter for the light box direct inquiry widget
-     *
-     * @param lightBoxDirectInquiry <code>LightBox</code> widget to set
-     */
-    public void setLightBoxDirectInquiry(LightBox lightBoxDirectInquiry) {
-        this.lightBoxDirectInquiry = lightBoxDirectInquiry;
-    }
-
-    /**
-     * LightBox widget for the field
-     * <p>
-     * The light box widget will change the direct inquiry behaviour to open up
-     * in a light box.
-     * </p>
-     *
-     * @return the <code>LightBox</code> field LightBox
-     */
-    public LightBox getLightBoxDirectInquiry() {
-        return lightBoxDirectInquiry;
     }
 }

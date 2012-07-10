@@ -21,7 +21,7 @@
     Invokes JS method to implement a script linking the lightbox (fancybox)
     -->
     <@krad.script value="
-       createLightBoxLink('${componentId}', ${widget.templateOptionsJSString});
+       createLightBoxLink('${componentId}', ${widget.templateOptionsJSString}, ${widget.inquiryLookup?string});
     "/>
 
 </#macro>

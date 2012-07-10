@@ -29,6 +29,7 @@ public class LightBox extends WidgetBase {
     private String height;
     private String width;
 
+    private boolean inquiryLookup;
     private boolean lookupReturnByScript;
 
     public LightBox() {
@@ -88,6 +89,24 @@ public class LightBox extends WidgetBase {
      */
     public void setWidth(String width) {
         this.width = width;
+    }
+
+    /**
+     * Indicates if the light box is for an inquiry or lookup.
+     *
+     * @return true if the link is part of an inquiry or lookup, false otherwise
+     */
+    public boolean isInquiryLookup() {
+        return inquiryLookup;
+    }
+
+    /**
+     * Setter for the inquiryLookup.
+     *
+     * @param inquiryLookup
+     */
+    public void setInquiryLookup(boolean inquiryLookup) {
+        this.inquiryLookup = inquiryLookup;
     }
 
     /**

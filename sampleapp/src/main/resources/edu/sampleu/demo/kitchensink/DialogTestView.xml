@@ -122,7 +122,6 @@
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with progressive rendering" p:actionScript="showLightboxComponent('myProgressiveDialog');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:actionScript="showLightboxComponent('myImage');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from URL" p:actionScript="showLightboxUrl('http://kuali.org');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Client Ajax Dialog" p:actionScript="showLightboxComponent('preDefinedDialogTrueFalse');"/>
       </list>
     </property>

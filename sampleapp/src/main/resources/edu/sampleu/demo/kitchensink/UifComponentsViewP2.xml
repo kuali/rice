@@ -270,6 +270,13 @@
         <bean parent="Uif-LinkField" p:linkText="Kuali Website"
               p:href="http://www.kuali.org" p:label="LinkField is used for href links"/>
 
+        <bean parent="Uif-LinkField" p:linkText="Kuali Website in a lightbox" p:target="_blank"
+              p:href="http://www.kuali.org" p:label="LinkField can be used with lightboxes">
+          <property name="lightBox">
+            <bean parent="Uif-LightBox"/>
+          </property>
+        </bean>
+
         <bean parent="Uif-LinkGroup" p:headerText="LinkGroup"
               p:instructionalText="LinkGroup with | delimiter and [] begin and end delimiter"
               p:groupBeginDelimiter="[" p:groupEndDelimiter="]" p:linkSeparator="|">

@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.LightBox;
+
+import java.util.List;
 
 /**
  * Content element that renders a link
@@ -33,6 +36,18 @@ public class Link extends ContentElementBase {
 
     public Link() {
         super();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+
+        components.add(lightBox);
+
+        return components;
     }
 
     /**

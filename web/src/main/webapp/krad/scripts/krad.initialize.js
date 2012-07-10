@@ -370,7 +370,7 @@ function setupPage(validate) {
     validateClient = validate;
 
     //select current page
-    var pageId = jQuery("[name='pageId']").val();
+    var pageId = jQuery("[name='view.currentPageId']").val();
     jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage : pageId});
     jQuery("ul.uif-tabMenu").selectTab({selectPage : pageId});
 

@@ -57,6 +57,12 @@
     <property name="readOnly" value="true"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="layoutManager.rowDetailsUseImage" value="true"/>
+    <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+    <property name="layoutManager.richTable.templateOptions">
+      <map merge="true">
+        <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+      </map>
+    </property>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">

@@ -82,7 +82,7 @@ KradVariables.prototype = {
      WARNING_HIGHLIGHT_SECTION_CLASS : "uif-warningHighlight-section",
      WARNING_MESSAGE_ITEM_CLASS : "uif-warningMessageItem-field",
      GROUP_CLASS : "uif-group",
-     ROW_DETAILS_CLASS : "uif-rowDetails",
+     ROW_DETAILS_CLASS : "uif-rowDetails"
 }
 
 var kradVariables = new KradVariables();

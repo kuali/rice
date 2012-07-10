@@ -21,7 +21,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -35,6 +37,8 @@ import java.util.Map;
 public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implements KimAttributeDataContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimAttributeDataBo.class);
     private static final long serialVersionUID = 1L;
+
+    private static KimTypeInfoService kimTypeInfoService;
 
     private String id;
     private String attributeValue;
@@ -92,13 +96,15 @@ public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase i
         List<T> attrs = new ArrayList<T>();
         for (Map.Entry<String, String> it : attributes.entrySet()) {
         //return attributes.entrySet().collect {
-            KimTypeAttribute attr = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(it.getKey());
+            KimTypeAttribute attr = getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(it.getKey());
+            KimType theType = getKimTypeInfoService().getKimType(kimTypeId);
             if (attr != null && StringUtils.isNotBlank(it.getValue())) {
                 try {
                     T newDetail = type.newInstance();
                     newDetail.setKimAttributeId(attr.getKimAttribute().getId());
                     newDetail.setKimAttribute(KimAttributeBo.from(attr.getKimAttribute()));
                     newDetail.setKimTypeId(kimTypeId);
+                    newDetail.setKimType(KimTypeBo.from(theType));
                     newDetail.setAttributeValue(it.getValue());
                     attrs.add(newDetail);
                 } catch (InstantiationException e) {
@@ -154,4 +160,17 @@ public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase i
     public void setKimAttribute(KimAttributeBo kimAttribute) {
         this.kimAttribute = kimAttribute;
     }
+
+
+    public static KimTypeInfoService getKimTypeInfoService() {
+        if (kimTypeInfoService==null) {
+            kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
+        }
+        return kimTypeInfoService;
+    }
+
+    public static void setKimTypeInfoService(KimTypeInfoService kimTypeInfoService) {
+        KimAttributeDataBo.kimTypeInfoService = kimTypeInfoService;
+    }
+
 }

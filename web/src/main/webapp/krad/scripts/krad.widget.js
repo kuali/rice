@@ -548,7 +548,7 @@ function expandDataTableDetail(actionComponent, tableId, useImages) {
             if (useImages && jQuery(actionComponent).find("img").length) {
                 jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
             }
-            jQuery(nTr).next().first().find(".uif-group").first().slideUp(function () {
+            jQuery(nTr).next().first().find("." + KradVariables.GROUP_CLASS).first().slideUp(function () {
                 oTable.fnClose(nTr);
             });
         }
@@ -556,8 +556,8 @@ function expandDataTableDetail(actionComponent, tableId, useImages) {
             if (useImages && jQuery(actionComponent).find("img").length) {
                 jQuery(actionComponent).find("img").replaceWith(detailsCloseImage.clone());
             }
-            var newRow = oTable.fnOpen(nTr, fnFormatDetails(actionComponent), 'uif-rowDetails');
-            jQuery(newRow).find(".uif-group").first().slideDown();
+            var newRow = oTable.fnOpen(nTr, fnFormatDetails(actionComponent), KradVariables.ROW_DETAILS_CLASS);
+            jQuery(newRow).find("." + KradVariables.GROUP_CLASS).first().slideDown();
         }
     }
 }
@@ -569,7 +569,7 @@ function expandDataTableDetail(actionComponent, tableId, useImages) {
  * @param actionComponent the action that was clicked to open the row
  */
 function fnFormatDetails(actionComponent) {
-    var hiddens = jQuery(actionComponent).parent().find(".uif-group");
+    var hiddens = jQuery(actionComponent).parent().find("." + KradVariables.GROUP_CLASS);
     var html = "";
     jQuery(hiddens).each(function () {
         html = jQuery(this).clone().wrap("<div>").parent().html();

@@ -55,24 +55,24 @@
           </property>
         </bean>
 
-        <!--<bean parent="Uif-Page" p:id="page3" p:headerText="Basic Layout - Grid">-->
-        <!--<property name="items">-->
-        <!--<list>-->
-        <!--<ref bean="gridGroup-1"/>-->
-        <!--<ref bean="gridGroup-2"/>-->
-        <!--<ref bean="gridGroup-3"/>-->
-        <!--</list>-->
-        <!--</property>-->
-        <!--</bean>-->
+        <bean parent="Uif-Page" p:id="UifLayoutView-Page3" p:headerText="Basic Layout - Grid">
+        <property name="items">
+        <list>
+        <ref bean="gridGroup-1"/>
+        <ref bean="gridGroup-2"/>
+        <ref bean="gridGroup-3"/>
+        </list>
+        </property>
+        </bean>
 
-        <!--<bean parent="Uif-Page" p:id="page4" p:headerText="Nested Layouts - Grid">-->
-        <!--<property name="items">-->
-        <!--<list>-->
-        <!--<ref bean="gridGroupNested-1"/>-->
-        <!--<ref bean="gridGroupNested-2"/>-->
-        <!--</list>-->
-        <!--</property>-->
-        <!--</bean>-->
+        <bean parent="Uif-Page" p:id="UifLayoutView-Page4" p:headerText="Nested Layouts - Grid">
+        <property name="items">
+        <list>
+        <ref bean="gridGroupNested-1"/>
+        <ref bean="gridGroupNested-2"/>
+        </list>
+        </property>
+        </bean>
       </list>
     </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
@@ -445,117 +445,113 @@
     </property>
   </bean>
 
-  <!--<bean id="horizontalWithVerticalGroups-2" parent="Uif-VerticalBoxSection"-->
-  <!--p:layoutManager.orientation="HORIZONTAL">-->
-  <!--<property name="headerText" value="Section Title"/>-->
-  <!--<property name="instructionalText" value="Horizontal layout with 3 vertical groupings"/>-->
-  <!--<property name="cssClasses" value="group_header"/>-->
-  <!--<property name="items">-->
-  <!--<list>-->
-  <!--<bean parent="vertical-Section1"/>-->
-  <!--<bean parent="vertical-Section1"/>-->
-  <!--<bean parent="vertical-Section1"/>-->
-  <!--</list>-->
-  <!--</property>-->
-  <!--</bean>-->
+<!--  <bean id="horizontalWithVerticalGroups-2" parent="Uif-VerticalBoxSection"
+  p:layoutManager.orientation="HORIZONTAL">
+  <property name="headerText" value="Section Title"/>
+  <property name="instructionalText" value="Horizontal layout with 3 vertical groupings"/>
+  <property name="cssClasses" value="group_header"/>
+  <property name="items">
+  <list>
+  <bean parent="vertical-Section1"/>
+  <bean parent="vertical-Section1"/>
+  <bean parent="vertical-Section1"/>
+  </list>
+  </property>
+  </bean>-->
 
-  <!--<bean id="verticalWithHorizontalGroups-1" parent="Uif-VerticalBoxSection"-->
-  <!--p:layoutManager.orientation="HORIZONTAL">-->
-  <!--<property name="headerText" value="Section Title"/>-->
-  <!--<property name="instructionalText" value="Vertical layout with 2 horizontal groupings"/>-->
-  <!--<property name="cssClasses" value="group_header"/>-->
-  <!--<property name="items">-->
-  <!--<list>-->
-  <!--<bean parent="horizontal-Section2"/>-->
-  <!--<bean parent="horizontal-Section3"/>-->
-  <!--</list>-->
-  <!--</property>-->
-  <!--</bean>-->
+<!--  <bean id="verticalWithHorizontalGroups-1" parent="Uif-VerticalBoxSection"
+  p:layoutManager.orientation="HORIZONTAL">
+  <property name="headerText" value="Section Title"/>
+  <property name="instructionalText" value="Vertical layout with 2 horizontal groupings"/>
+  <property name="cssClasses" value="group_header"/>
+  <property name="items">
+  <list>
+  <bean parent="horizontal-Section2"/>
+  <bean parent="horizontal-Section3"/>
+  </list>
+  </property>
+  </bean>-->
 
-  <!--<bean id="gridGroup-1" parent="Uif-GridSection">-->
-  <!--<property name="headerText" value="Section Title"/>-->
-  <!--<property name="instructionalText" value="GroupGridLayout default settings"/>-->
-  <!--<property name="disclosure.render" value="false"/>-->
-  <!--<property name="cssClasses" value="group_header"/>-->
-  <!--<property name="items">-->
-  <!--<list>-->
-  <!--<bean parent="TextTestField" p:propertyName="field25"/>-->
-  <!--<bean parent="TextAreaTestField" p:propertyName="field26"/>-->
-  <!--<bean parent="TextTestField" p:propertyName="field27"/>-->
-  <!--</list>-->
-  <!--</property>-->
-  <!--</bean>-->
+  <bean id="gridGroup-1" parent="Uif-GridSection">
+  <property name="headerText" value="Section Title"/>
+  <property name="instructionalText" value="GroupGridLayout default settings"/>
+  <property name="disclosure.render" value="false"/>
+  <property name="cssClasses" value="group_header"/>
+  <property name="items">
+  <list>
+  <bean parent="TestInputField" p:propertyName="field25"/>
+  <bean parent="TextAreaTestField" p:propertyName="field26"/>
+  <bean parent="TestInputField" p:propertyName="field27"/>
+  </list>
+  </property>
+  </bean>
 
-  <!--<bean id="gridGroup-2" parent="Uif-GridSection">-->
-  <!--<property name="headerText" value="Section Title"/>-->
-  <!--<property name="layoutManager.numberOfColumns" value="4"/>-->
-  <!--<property name="instructionalText" value="GroupGridLayout number of columns = 4"/>-->
-  <!--<property name="disclosure.render" value="false"/>-->
-  <!--<property name="cssClasses" value="group_header"/>-->
-  <!--<property name="items">-->
-  <!--<list>-->
-  <!--<bean parent="TextTestField" p:propertyName="field28"/>-->
-  <!--<bean parent="TextAreaTestField" p:propertyName="field29"/>-->
-  <!--<bean parent="TextTestField" p:propertyName="field30"/>-->
-  <!--<bean parent="TextAreaTestField" p:propertyName="field31"/>-->
-  <!--<bean parent="TextTestField" p:propertyName="field32"/>-->
-  <!--<bean parent="TextAreaTestField" p:propertyName="field33"/>-->
-  <!--</list>-->
-  <!--</property>-->
-  <!--</bean>-->
+  <bean id="gridGroup-2" parent="Uif-GridSection">
+  <property name="headerText" value="Section Title"/>
+  <property name="layoutManager.numberOfColumns" value="4"/>
+  <property name="instructionalText" value="GroupGridLayout number of columns = 4"/>
+  <property name="disclosure.render" value="false"/>
+  <property name="cssClasses" value="group_header"/>
+  <property name="items">
+  <list>
+  <bean parent="TestInputField" p:propertyName="field28"/>
+  <bean parent="TextAreaTestField" p:propertyName="field29"/>
+  <bean parent="TestInputField" p:propertyName="field30"/>
+  <bean parent="TextAreaTestField" p:propertyName="field31"/>
+  <bean parent="TestInputField" p:propertyName="field32"/>
+  <bean parent="TextAreaTestField" p:propertyName="field33"/>
+  </list>
+  </property>
+  </bean>
 
-  <!--<bean id="gridGroup-3" parent="Uif-GridSection">-->
-  <!--<property name="headerText" value="Section Title"/>-->
-  <!--<property name="layoutManager.numberOfColumns" value="4"/>-->
-  <!--<property name="instructionalText"-->
-  <!--value="GroupGridLayout number of columns = 4, fields have colspan settings"/>-->
-  <!--<property name="disclosure.render" value="false"/>-->
-  <!--<property name="cssClasses" value="group_header"/>-->
-  <!--<property name="items">-->
-  <!--<list>-->
-  <!--<bean parent="TextTestField" p:propertyName="field34"/>-->
-  <!--<bean parent="TextAreaTestField" p:propertyName="field35"/>-->
-  <!--<bean parent="TextTestField" p:instructionalText="Colspan 2"-->
-  <!--p:propertyName="field36" p:colSpan="2" p:fieldLabel.colSpan="2"/>-->
-  <!--<bean parent="TextAreaTestField" p:instructionalText="Colspan 3"-->
-  <!--p:propertyName="field37" p:colSpan="3" p:fieldLabel.colSpan="1"/>-->
-  <!--<bean parent="TextTestField" p:instructionalText="Colspan 2"-->
-  <!--p:propertyName="field38" p:colSpan="2" p:fieldLabel.colSpan="2"/>-->
-  <!--<bean parent="TextAreaTestField" p:instructionalText="Rowspan 2"-->
-  <!--p:propertyName="field39" p:rowSpan="2" p:fieldLabel.rowSpan="2"/>-->
-  <!--<bean parent="TextTestField" p:propertyName="field40"/>-->
-  <!--<bean parent="TextTestField" p:propertyName="field41"/>-->
-  <!--</list>-->
-  <!--</property>-->
-  <!--</bean>-->
+  <bean id="gridGroup-3" parent="Uif-GridSection">
+  <property name="headerText" value="Section Title"/>
+  <property name="layoutManager.numberOfColumns" value="4"/>
+  <property name="instructionalText"
+  value="GroupGridLayout number of columns = 4, fields have colspan settings"/>
+  <property name="disclosure.render" value="false"/>
+  <property name="cssClasses" value="group_header"/>
+  <property name="items">
+  <list>
+  <bean parent="TestInputField" p:propertyName="field34"/>
+  <bean parent="TextAreaTestField" p:propertyName="field35"/>
+  <bean parent="TestInputField" p:instructionalText="Colspan 2"
+  p:propertyName="field36" p:colSpan="2" p:fieldLabel.colSpan="2"/>
+  <bean parent="TextAreaTestField" p:instructionalText="Colspan 3"
+  p:propertyName="field37" p:colSpan="3" p:fieldLabel.colSpan="1"/>
+  <bean parent="TestInputField" p:instructionalText="Colspan 2"
+  p:propertyName="field38" p:colSpan="2" p:fieldLabel.colSpan="2"/>
+  </list>
+  </property>
+  </bean>
 
-  <!--<bean id="gridGroupNested-1" parent="Uif-GridSection">-->
-  <!--<property name="headerText" value="Section Title"/>-->
-  <!--<property name="layoutManager.numberOfColumns" value="2"/>-->
-  <!--<property name="instructionalText"-->
-  <!--value="GroupGridLayout 2 columns with two nested groups"/>-->
-  <!--<property name="disclosure.render" value="false"/>-->
-  <!--<property name="cssClasses" value="group_header"/>-->
-  <!--<property name="items">-->
-  <!--<list>-->
-  <!--<bean parent="gridGroup-1"/>-->
-  <!--<bean parent="gridGroup-1"/>-->
-  <!--</list>-->
-  <!--</property>-->
-  <!--</bean>-->
+  <bean id="gridGroupNested-1" parent="Uif-GridSection">
+  <property name="headerText" value="Section Title"/>
+  <property name="layoutManager.numberOfColumns" value="2"/>
+  <property name="instructionalText"
+  value="GroupGridLayout 2 columns with two nested groups"/>
+  <property name="disclosure.render" value="false"/>
+  <property name="cssClasses" value="group_header"/>
+  <property name="items">
+  <list>
+  <bean parent="gridGroup-1"/>
+  <bean parent="gridGroup-1"/>
+  </list>
+  </property>
+  </bean>
 
-  <!--<bean id="gridGroupNested-2" parent="Uif-GridSection">-->
-  <!--<property name="headerText" value="Section Title"/>-->
-  <!--<property name="instructionalText"-->
-  <!--value="GroupGridLayout default settings, 2 nested groups"/>-->
-  <!--<property name="disclosure.render" value="false"/>-->
-  <!--<property name="cssClasses" value="group_header"/>-->
-  <!--<property name="items">-->
-  <!--<list>-->
-  <!--<bean parent="gridGroup-2"/>-->
-  <!--<bean parent="gridGroup-3"/>-->
-  <!--</list>-->
-  <!--</property>-->
-  <!--</bean>-->
+  <bean id="gridGroupNested-2" parent="Uif-GridSection">
+  <property name="headerText" value="Section Title"/>
+  <property name="instructionalText"
+  value="GroupGridLayout default settings, 2 nested groups"/>
+  <property name="disclosure.render" value="false"/>
+  <property name="cssClasses" value="group_header"/>
+  <property name="items">
+  <list>
+  <bean parent="gridGroup-2"/>
+  <bean parent="gridGroup-3"/>
+  </list>
+  </property>
+  </bean>
 
 </beans>

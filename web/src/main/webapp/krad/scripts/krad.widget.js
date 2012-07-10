@@ -28,8 +28,8 @@ function setPageBreadcrumb() {
 
         jQuery("#breadcrumbs").find("#page_breadcrumb").remove();
 
-        // if page title note set attempt to find from navigation
-        if (!pageTitle || pageTitle == "&nbsp;") {
+        // if page title not set attempt to find from navigation
+        if ((!pageTitle || pageTitle == "&nbsp;") && pageId) {
             pageTitle = jQuery("a[name='" + escapeName(pageId) + "']").text();
         }
 

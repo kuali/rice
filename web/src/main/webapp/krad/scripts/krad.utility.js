@@ -906,6 +906,25 @@ function showLightboxContent(content, overrideOptions) {
 }
 
 /**
+ * Display the url inside a lightbox
+ *
+ * <p>
+ * The specified content is used as the content of the fancy box.
+ * The second argument is optional and allows the FancyBox options to be overridden.
+ * </p>
+ *
+ * @param url of the page that is displayed inside the lightbox.
+ * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
+ */
+function showLightboxUrl(url, overrideOptions) {
+    if (overrideOptions === undefined) {
+        overrideOptions = {};
+    }
+
+    _initAndOpenLightbox({type:'iframe', href:url}, overrideOptions);
+}
+
+/**
  * Internal function to initialize and open lightbox
  *
  * <p>

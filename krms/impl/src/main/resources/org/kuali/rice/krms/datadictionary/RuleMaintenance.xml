@@ -390,7 +390,7 @@
           }
           "
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
-          <property name="styleClasses">
+          <property name="cssClasses">
             <list merge="true">
               <value>tree-bar-button</value>
               <value>kr-cut-button</value>
@@ -407,7 +407,7 @@
           }
           "
               p:actionLabel="Paste">
-          <property name="styleClasses">
+          <property name="cssClasses">
             <list merge="true">
               <value>tree-bar-button</value>
               <value>kr-paste-button</value>

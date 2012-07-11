@@ -151,11 +151,14 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     }
 
     protected EmailTo getEmailTo(Person user) {
-        String address = isProduction() ? user.getEmailAddressUnmasked() :
-            CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
+        String address = user.getEmailAddressUnmasked();
+        if (!isProduction()) {
+            LOG.info("If this were production, email would be sent to "+ user.getEmailAddressUnmasked());
+            address = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
                 KewApiConstants.KEW_NAMESPACE,
                 KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
                 KewApiConstants.ACTIONLIST_EMAIL_TEST_ADDRESS);
+        }
         return new EmailTo(address);
     }
 

@@ -842,6 +842,18 @@ function showLightboxComponent(componentId, overrideOptions) {
     var component = jQuery('#' + componentId);
     var cssDisplay = component.css('display');
 
+    // set renderedInLightBox indicator and remove it when lightbox is closed
+    if (jQuery("[name='renderedInLightBox']").val() != true) {
+        jQuery("[name='renderedInLightBox']").val(true);
+        _appendCallbackFunctions(overrideOptions, {afterClose: function () {
+            jQuery("[name='renderedInLightBox']").val(false);
+        }});
+    }
+
+    if (component.hasClass('uif-placeholder')) {
+        retrieveComponent(componentId);
+    }
+
     // suppress scrollbar when not needed
     // undo the div.clearfix hack (KULRICE-7467)
     component.attr('class', component.attr('class').replace('clearfix', ''));
@@ -944,9 +956,9 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
 function setupLightboxForm() {
     jQuery(".fancybox-inner").children().wrap("<form id='kualiLightboxForm' class='uif-lightbox'>");
 
-    setupValidator(jQuery('#kualiLightboxForm'));
-
-    jQuery('#kualiLightboxForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+    var kualiLightboxForm = jQuery('#kualiLightboxForm');
+    setupValidator(kualiLightboxForm);
+    kualiLightboxForm.dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 }
 
 /**

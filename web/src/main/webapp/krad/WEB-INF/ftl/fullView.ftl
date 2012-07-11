@@ -20,7 +20,7 @@
 
 <@krad.html view=view>
 
-    <#if !view.renderedInLightBox>
+    <#if !KualiForm.renderedInLightBox>
         <@krad.script value="
                  jQuery(function(){
                    publishHeight();
@@ -50,6 +50,9 @@
 
         <#-- Based on its value, form elements will be checked for dirtyness -->
             <@spring.formHiddenInput id="validateDirty" path="KualiForm.validateDirty"/>
+
+        <#-- Indicator which is set to true when content is being rendered inside a lightbox -->
+            <@spring.formHiddenInput path="KualiForm.renderedInLightBox" attributes="id=\"renderedInLightBox\""/>
         </#if>
 
         <@krad.template component=view/>

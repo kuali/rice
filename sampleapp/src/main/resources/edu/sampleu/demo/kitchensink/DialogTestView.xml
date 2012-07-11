@@ -82,7 +82,7 @@
         <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup"
               p:promptText="Would you like to continue?" />
         <bean id="preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup"
-              p:useAjaxCallForContent="true" p:forceSessionPersistence="true"
+              p:progressiveRenderViaAJAX="true" p:progressiveRender="@{#form.renderedInLightBox}" p:hidden="false"
               p:promptText="Is this a correct statement?" />
         <bean id="sampleRadioButtonDialog" parent="Uif-RadioButton-DialogGroup" p:promptText="Select" />
         <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>

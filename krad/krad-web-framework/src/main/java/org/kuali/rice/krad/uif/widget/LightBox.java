@@ -29,7 +29,7 @@ public class LightBox extends WidgetBase {
     private String height;
     private String width;
 
-    private boolean inquiryLookup;
+    private boolean addAppParms;
     private boolean lookupReturnByScript;
 
     public LightBox() {
@@ -92,21 +92,21 @@ public class LightBox extends WidgetBase {
     }
 
     /**
-     * Indicates if the light box is for an inquiry or lookup.
+     * Indicates that the light box link should have application parameters added to it.
      *
-     * @return true if the link is part of an inquiry or lookup, false otherwise
+     * @return true if the link should have application parameters added, false otherwise
      */
-    public boolean isInquiryLookup() {
-        return inquiryLookup;
+    public boolean isAddAppParms() {
+        return addAppParms;
     }
 
     /**
-     * Setter for the inquiryLookup.
+     * Setter for the addAppParms.
      *
-     * @param inquiryLookup
+     * @param addAppParms
      */
-    public void setInquiryLookup(boolean inquiryLookup) {
-        this.inquiryLookup = inquiryLookup;
+    public void setAddAppParms(boolean addAppParms) {
+        this.addAppParms = addAppParms;
     }
 
     /**

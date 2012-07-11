@@ -192,12 +192,12 @@
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
-              p:render="@{!#view.renderedInLightBox}"/>
+              p:render="@{!#form.renderedInLightBox}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToPrevious" p:actionLabel="Cancel"
-              p:render="@{#view.renderedInLightBox and formHistory != null and !formHistory?.historyEntries?.empty}"/>
+              p:render="@{#form.renderedInLightBox and formHistory != null and !formHistory?.historyEntries?.empty}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToHub" p:actionLabel="Home"
-              p:render="@{#view.renderedInLightBox and formHistory != null and (formHistory?.historyEntries?.size() > 1)}"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#view.renderedInLightBox}"
+              p:render="@{#form.renderedInLightBox and formHistory != null and (formHistory?.historyEntries?.size() > 1)}"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
               p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
       </list>
     </property>

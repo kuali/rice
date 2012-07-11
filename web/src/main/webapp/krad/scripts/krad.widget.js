@@ -120,10 +120,10 @@ function setupTextPopout(id, label, summary, constraint, imageUrl) {
  *          id for the link that the fancybox should be linked to
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
- * @parm isInquiryLookup -
- *          true if the link is part of an inquiry or lookup, false otherwise
+ * @parm isAddAppParms -
+ *          true if application parameters should be added to the link, false otherwise
  */
-function createLightBoxLink(linkId, options, isInquiryLookup) {
+function createLightBoxLink(linkId, options, addAppParms) {
     jQuery(function () {
         // first time content is brought up in lightbox we don't want to show history
         var showHistory = false;
@@ -153,7 +153,7 @@ function createLightBoxLink(linkId, options, isInquiryLookup) {
             showHistory = true;
         }
 
-        if (isInquiryLookup) {
+        if (addAppParms) {
             // Set the renderedInLightBox = true param
             if (jQuery("#" + linkId).attr('href').indexOf('&renderedInLightBox=true') == -1) {
                 var href = jQuery("#" + linkId).attr('href');

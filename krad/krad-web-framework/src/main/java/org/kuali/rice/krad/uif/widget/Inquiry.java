@@ -206,7 +206,7 @@ public class Inquiry extends WidgetBase {
 
         // add inquiry specific parms to url
         if (getInquiryLink().getLightBox() != null) {
-            getInquiryLink().getLightBox().setInquiryLookup(true);
+            getInquiryLink().getLightBox().setAddAppParms(true);
         }
 
         // configure inquiry when read only

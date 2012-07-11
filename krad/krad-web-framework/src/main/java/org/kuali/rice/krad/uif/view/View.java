@@ -145,9 +145,6 @@ public class View extends ContainerBase {
     private String preLoadScript;
     private Map<String, Object> clientSideState;
 
-    @RequestParameter
-    private boolean renderedInLightBox;
-    
     private int preloadPoolSize;
 
     private Class<? extends ViewHelperService> viewHelperServiceClass;
@@ -156,7 +153,6 @@ public class View extends ContainerBase {
     private ViewHelperService viewHelperService;
 
     public View() {
-        renderedInLightBox = false;
         singlePageView = false;
         translateCodesOnReadOnlyDisplay = false;
         viewTypeName = ViewType.DEFAULT;
@@ -703,30 +699,6 @@ public class View extends ContainerBase {
      */
     public void setAdditionalCssFiles(List<String> additionalCssFiles) {
         this.additionalCssFiles = additionalCssFiles;
-    }
-
-    /**
-     * Indicates whether the view is rendered within a lightbox
-     *
-     * <p>
-     * Some discussion (for example how a close button behaves) need to change based on whether the
-     * view is rendered within a lightbox or the standard browser window. This boolean is true when it is
-     * within a lightbox
-     * </p>
-     *
-     * @return boolean true if view is rendered within a lightbox, false if not
-     */
-    public boolean isRenderedInLightBox() {
-        return this.renderedInLightBox;
-    }
-
-    /**
-     * Setter for the rendered within lightbox indicator
-     *
-     * @param renderedInLightBox
-     */
-    public void setRenderedInLightBox(boolean renderedInLightBox) {
-        this.renderedInLightBox = renderedInLightBox;
     }
 
     /**

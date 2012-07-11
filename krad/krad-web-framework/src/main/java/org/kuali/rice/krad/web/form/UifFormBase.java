@@ -84,6 +84,8 @@ public class UifFormBase implements ViewModel {
 
     protected boolean validateDirty;
 
+    protected boolean renderedInLightBox;
+
     @SessionTransient
     protected String growlScript;
 
@@ -153,6 +155,7 @@ public class UifFormBase implements ViewModel {
         formKey = generateFormKey();
         renderFullView = true;
         defaultsApplied = false;
+        renderedInLightBox = false;
         skipViewInit = false;
         requestRedirect = false;
 
@@ -734,6 +737,30 @@ public class UifFormBase implements ViewModel {
      */
     public void setValidateDirty(boolean validateDirty) {
         this.validateDirty = validateDirty;
+    }
+
+    /**
+     * Indicates whether the view is rendered within a lightbox
+     *
+     * <p>
+     * Some discussion (for example how a close button behaves) need to change based on whether the
+     * view is rendered within a lightbox or the standard browser window. This boolean is true when it is
+     * within a lightbox
+     * </p>
+     *
+     * @return boolean true if view is rendered within a lightbox, false if not
+     */
+    public boolean isRenderedInLightBox() {
+        return this.renderedInLightBox;
+    }
+
+    /**
+     * Setter for the rendered within lightbox indicator
+     *
+     * @param renderedInLightBox
+     */
+    public void setRenderedInLightBox(boolean renderedInLightBox) {
+        this.renderedInLightBox = renderedInLightBox;
     }
 
     /**

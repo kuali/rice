@@ -409,8 +409,8 @@ function updateComponentHandler(content, dataAttr) {
                 origColor = "transparent";
             }
 
-                jQuery("#" + id).animate({backgroundColor: origColor}, 5000);
-			    }
+            jQuery("#" + id).animate({backgroundColor: origColor}, 5000);
+		}
 		});
 
         var displayWithLabel = jQuery(".displayWith-" + displayWithId);
@@ -526,6 +526,11 @@ function retrieveComponent(id, baseId, methodToCall) {
         displayWithLabel.show();
         if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
             displayWithLabel.parent().show();
+        }
+
+        // lightbox specific processing
+        if (jQuery("[name='renderedInLightBox']").val() == 'true') {
+            component.find('.uif-dialogButtons').button();
         }
     };
 

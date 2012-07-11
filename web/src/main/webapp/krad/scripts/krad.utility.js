@@ -942,7 +942,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
  *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
  */
 function setupLightboxForm() {
-    jQuery(".fancybox-inner").children().wrap("<form id='kualiLightboxForm'>");
+    jQuery(".fancybox-inner").children().wrap("<form id='kualiLightboxForm' class='uif-lightbox'>");
 
     setupValidator(jQuery('#kualiLightboxForm'));
 

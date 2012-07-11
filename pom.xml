@@ -94,6 +94,7 @@
     <commons-io.version>2.1</commons-io.version>
     <commons-lang.version>2.6</commons-lang.version>
     <commons-pool.version>1.5.7</commons-pool.version>
+    <commons-digester.version>2.0</commons-digester.version>
     <commons-validator.version>1.3.1</commons-validator.version>
     <connector-api.version>1.5</connector-api.version>
     <cxf.version>2.3.8</cxf.version>
@@ -145,7 +146,6 @@
     <spring.security.version>3.1.0.RELEASE</spring.security.version>
     <struts.version>1.3.10</struts.version>
     <subethasmtp.version>3.1.6</subethasmtp.version>
-    <tiles.version>2.2.2</tiles.version>
 
     <!-- Version 2.3.6 of cxf requires wss4j 1.5.11 and does not work with 1.6.0 -->
     <wss4j.version>1.5.11</wss4j.version>
@@ -1147,6 +1147,12 @@
       </dependency>
 
       <dependency>
+        <groupId>commons-digester</groupId>
+        <artifactId>commons-digester</artifactId>
+        <version>${commons-digester.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>commons-validator</groupId>
         <artifactId>commons-validator</artifactId>
         <version>${commons-validator.version}</version>
@@ -1503,86 +1509,6 @@
         <groupId>org.apache.struts</groupId>
         <artifactId>struts-taglib</artifactId>
         <version>${struts.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.tiles</groupId>
-        <artifactId>tiles-core</artifactId>
-        <version>${tiles.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.tiles</groupId>
-        <artifactId>tiles-api</artifactId>
-        <version>${tiles.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.tiles</groupId>
-        <artifactId>tiles-servlet</artifactId>
-        <version>${tiles.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.tiles</groupId>
-        <artifactId>tiles-jsp</artifactId>
-        <version>${tiles.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.tiles</groupId>
-        <artifactId>tiles-template</artifactId>
-        <version>${tiles.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>

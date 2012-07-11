@@ -150,9 +150,10 @@ public class RouteLogDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBa
 	}
 
 	/**
-	 * Returns false, as the Route Log changes often enough that role membership is highly volatile
+     * Determines if the role specified by the given namespace and role name has a dynamic role membership.
+	 * Returns true, as the Route Log changes often enough that role membership is highly volatile
 	 * 
-	 * @see org.kuali.rice.kns.kim.role.RoleTypeServiceBase#dynamicRoleMembership(java.lang.String, java.lang.String)
+	 * @see RoleTypeService#dynamicRoleMembership(String, String) dynamicRoleMembership(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public boolean dynamicRoleMembership(String namespaceCode, String roleName) {
@@ -164,6 +165,6 @@ public class RouteLogDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBa
             throw new RiceIllegalArgumentException("roleName was null or blank");
         }
 
-        return false;
+        return true;
 	}
 }

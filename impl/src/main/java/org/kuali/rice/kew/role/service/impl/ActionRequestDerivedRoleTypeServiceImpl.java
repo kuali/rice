@@ -142,9 +142,10 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 	}
 
 	/**
-	 * Returns false, as action requests change quite often so membership in this role is highly volatile
-	 * 
-	 * @see org.kuali.rice.kns.kim.role.RoleTypeServiceBase#dynamicRoleMembership(java.lang.String, java.lang.String)
+	 * Determines if the role specified by the given namespace and role name has a dynamic role membership.
+     * Returns true, as action requests change quite often so membership in this role is highly volatile
+     *
+     * @see RoleTypeService#dynamicRoleMembership(String, String)
 	 */
 	@Override
 	public boolean dynamicRoleMembership(String namespaceCode, String roleName) {
@@ -156,7 +157,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
             throw new RiceIllegalArgumentException("roleName was null or blank");
         }
 
-        return false;
+        return true;
 	}
 	
 }

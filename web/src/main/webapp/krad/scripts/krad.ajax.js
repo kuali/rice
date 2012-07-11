@@ -15,7 +15,7 @@
  */
 
 /**
- * Submits the form via ajax or does a normal form submit depending on whether the for was submitted via ajax or not.
+ * Submits the form via ajax or does a normal form submit depending on whether the form was submitted via ajax or not.
  * By default ajaxsubmit is true.
  *
  * @param component
@@ -48,12 +48,13 @@ function actionInvokeHandler(component) {
 /**
  * Invokes ajaxSubmitFormFullOpts with null callbacks besides success and validate set to false
  *
- * @param methodToCall
- * @param successCallback
- * @param additionalData
- * @param elementToBlock
- * @param preSubmitCall
- * @param returnType
+ * @param methodToCall - the controller method to be called
+ * @param successCallback - hook for any calls to be made on success
+ * @param additionalData  - any additional data that needs to be passed to the server
+ * @param elementToBlock  -
+ * @param preSubmitCall -  hook to execute a call which if returns true the processing moves forward else return
+ * @param returnType - this is used to indicate to the server a requested return type. The client requests a return
+ *                     type but the server can change it. Defaults to update-page
  */
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false, preSubmitCall, returnType);
@@ -107,7 +108,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
     if (methodToCall != null || methodToCall !== "") {
         data.methodToCall = methodToCall;
     }
-
+    // Set the ajaxReturnType. Default to update-page if none provided
     if (returnType != null && returnType !== "") {
         data.ajaxReturnType = returnType;
     } else {
@@ -149,6 +150,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = response;
             var hasError = handleIncidentReport(response);
+            //invoke the invokeAjaxReturnHandler to determine which data handler to use
             invokeAjaxReturnHandler(tempDiv);
 
             if (!hasError) {
@@ -247,7 +249,6 @@ function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCal
     }
     // write out methodToCall as hidden
     writeHiddenToForm("methodToCall", methodToCall);
-    writeHiddenToForm("ajaxRequest", "false");
 
     // if additional data write out as hiddens
     for (key in additionalData) {
@@ -311,7 +312,7 @@ function updatePageCallback(content) {
  * Iterates over the divs in the contents and reads the data-handler to
  * obtain the respective handler function to call
  *
- * @param content
+ * @param content - response sent from the server
  */
 function invokeAjaxReturnHandler(content) {
     jQuery(content).children().each(function () {
@@ -435,8 +436,8 @@ function updateViewHandler(content, dataAttr){
  }
 
 function redirectHandler(content, dataAttr) {
-// get contents between div and do window.location = “parsed href”
-    window.location.href = encodeURI(jQuery.trim(content));
+// get contents between div and do window.location = parsed href
+   window.location.href = jQuery(content).text();
 }
 
 function successCallbackF(content) {

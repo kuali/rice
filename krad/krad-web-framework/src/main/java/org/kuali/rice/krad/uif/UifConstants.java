@@ -73,7 +73,7 @@ public class UifConstants {
     }
 
     public enum AjaxReturnTypes {
-         UPADATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("update-view"), SHOWINCIDENT("update-view");
+         UPADATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"), SHOWINCIDENT("update-view");
 
          private String key;
 

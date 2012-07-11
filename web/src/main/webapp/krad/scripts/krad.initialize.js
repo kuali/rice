@@ -73,7 +73,7 @@ jQuery(document).ready(function () {
     initFieldHandlers();
 
     // initialize the handlers for the ajax calls
-    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler, "update-view": updateViewHandler};
+    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler, "update-view": updateViewHandler, "redirect": redirectHandler};
 });
 
 /**

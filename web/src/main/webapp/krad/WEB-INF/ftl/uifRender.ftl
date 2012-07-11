@@ -38,7 +38,15 @@
                 <#include "updatePage.ftl"  parse=true/>
             </div>
 
+       <#elseif KualiForm.ajaxReturnType == "redirect">
+
+            <div data-handler="redirect">
+                <#include "redirect.ftl"  parse=true/>
+            </div>
+
         </#if>
+
+
 
     <#else>
         <#include "fullView.ftl" parse=true/>

@@ -841,25 +841,34 @@ public abstract class UifControllerBase {
         form.setRequestRedirect(true);
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.REDIRECT.getKey());
 
-        // On post redirects we need to make sure we are sending the history forward:
-        urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
+        if(urlParameters != null){
+            // On post redirects we need to make sure we are sending the history forward:
+            urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
 
-        // If this is an Light Box call only return the redirectURL view with the URL
-        // set this is to avoid automatic redirect when using light boxes
-        if (urlParameters.get(UifParameters.LIGHTBOX_CALL) != null && urlParameters.get(UifParameters.LIGHTBOX_CALL)
-                .equals("true")) {
-            urlParameters.remove(UifParameters.LIGHTBOX_CALL);
-            String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
+            // If this is an Light Box call only return the redirectURL view with the URL
+            // set this is to avoid automatic redirect when using light boxes
+            if (urlParameters.get(UifParameters.LIGHTBOX_CALL) != null && urlParameters.get(UifParameters.LIGHTBOX_CALL)
+                    .equals("true")) {
+                urlParameters.remove(UifParameters.LIGHTBOX_CALL);
+                String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 
-            ModelAndView modelAndView = new ModelAndView(UifConstants.SPRING_REDIRECT_ID);
+                ModelAndView modelAndView = new ModelAndView(UifConstants.SPRING_REDIRECT_ID);
+                modelAndView.addObject("redirectUrl", redirectUrl);
+                return modelAndView;
+            }
+        }
+        String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
+
+        //If this is an ajax redirect get the model and view from the form
+        if(form.isAjaxRequest()) {
+            ModelAndView modelAndView = getUIFModelAndView(form, form.getPageId());
             modelAndView.addObject("redirectUrl", redirectUrl);
+            return modelAndView ;
+        }  else {
+            ModelAndView modelAndView = new ModelAndView(UifConstants.REDIRECT_PREFIX + redirectUrl);
             return modelAndView;
         }
 
-        String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
-        ModelAndView modelAndView = new ModelAndView(UifConstants.REDIRECT_PREFIX + redirectUrl);
-
-        return modelAndView;
     }
 
     protected ModelAndView getUIFModelAndView(UifFormBase form) {

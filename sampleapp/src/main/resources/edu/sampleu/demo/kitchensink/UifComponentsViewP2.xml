@@ -185,6 +185,9 @@
 
               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField errorCallBack"  p:methodToCall="errorCheck" p:ajaxSubmit="true" p:errorCallback="function(htmlContent) {alert('Error Call back eg');}"/>
 
+              <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField ajax redirect"  p:methodToCall="redirectCheck" p:ajaxSubmit="true"  />
+
+
         <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField image right" p:actionImagePlacement="RIGHT"
               p:actionScript="alert('You clicked a button');">
           <property name="actionImage">

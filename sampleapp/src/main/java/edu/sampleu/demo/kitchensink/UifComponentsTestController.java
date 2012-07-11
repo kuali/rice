@@ -46,6 +46,7 @@ import java.beans.PropertyEditor;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 
 /**
@@ -348,5 +349,15 @@ public class UifComponentsTestController extends UifControllerBase {
 
         return getUIFModelAndView(form);
     }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=redirectCheck")
+    public ModelAndView redirectCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        Properties props = new Properties();
+        props.put(UifParameters.VIEW_ID, form.getViewId());
+        props.put(UifParameters.FORM_KEY, form.getFormKey());
+        return performRedirect(form, "http://localhost:8080/kr-dev", props);
+    }
+
 
 }

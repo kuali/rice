@@ -116,7 +116,7 @@ h4 img.uif-disclosure-image[alt="collapse"] {
 }
 
 /* Buttons ********************************************************************************************/
-.uif-primaryActionButton:hover, .uif-secondaryActionButton:hover {
+.uif-primaryActionButton:hover, .uif-secondaryActionButton:hover, label.uif-primaryDialogButton:hover {
     background: #a90329; /* Old browsers */
     background: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a90329), color-stop(44%, #8f0222), color-stop(100%, #6d0019)); /* Chrome,Safari4+ */
@@ -128,7 +128,7 @@ h4 img.uif-disclosure-image[alt="collapse"] {
     color: #FFFFFF
 }
 
-.uif-primaryActionButton, .uif-secondaryActionButton {
+.uif-primaryActionButton, .uif-secondaryActionButton, label.uif-primaryDialogButton {
     font-weight: bold;
     text-transform: lowercase;
     -moz-border-radius: 10px;
@@ -311,6 +311,25 @@ h4 img.uif-disclosure-image[alt="collapse"] {
     color: #ffffff;
     border: 1px solid #999;
     cursor: pointer;
+}
+
+/** Dialog Box *********************************************************************************************/
+.uif-dialogHeader {
+/*    background: #99de80; *//* for non-css3 browsers *//*
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4FAA2D', endColorstr='#99de80'); *//* for IE *//*
+    background: -webkit-gradient(linear, left top, left bottom, from(#4FAA2D), to(#99de80)); *//* for webkit browsers *//*
+    background: -moz-linear-gradient(top,  #4FAA2D,  #99de80); *//* for firefox 3.6+ */
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 15px;
+}
+.uif-dialogPrompt {
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 10px;
+}
+
+.uif-dialogExplanation {
+    padding: 0px 5px 5px 5px;
+    margin-bottom: 10px;
 }
 
 /** Navigation Menu ****************************************************************************************/

@@ -211,31 +211,6 @@ h6.uif-headerText {
     padding: 0;
 }
 
-.uif-dialogHeader {
-    background: #99de80; /* for non-css3 browsers */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4FAA2D', endColorstr='#99de80'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#4FAA2D), to(#99de80)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #4FAA2D,  #99de80); /* for firefox 3.6+ */
-
-/*    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    border-radius: 5px;*/
-
-    padding: 5px 5px 5px 5px;
-    margin-bottom: 15px;
-}
-.uif-dialogPrompt {
-    padding: 5px 5px 5px 5px;
-    margin-bottom: 10px;
-}
-
-.uif-dialogExplanation {
-    padding: 0px 5px 5px 5px;
-    margin-bottom: 10px;
-}
-
-
 /** header disclosure image style **/
 img.uif-disclosure-image {
     padding-right: 0.25em;

@@ -1030,6 +1030,12 @@
   <bean id="Uif-DialogResponse" parent="Uif-InputField" p:propertyName="dialogResponse">
     <property name="control">
       <bean parent="Uif-HorizontalCheckboxesControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
+            <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
+          </list>
+        </property>
         <property name="cssClasses">
           <list merge="true">
             <value>uif-dialogButtons</value>

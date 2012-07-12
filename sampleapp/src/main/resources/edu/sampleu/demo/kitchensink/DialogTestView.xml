@@ -126,6 +126,10 @@
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:actionScript="showLightboxComponent('myImage');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from URL" p:actionScript="showLightboxUrl('http://kuali.org');"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Client Ajax Dialog" p:actionScript="showLightboxComponent('preDefinedDialogTrueFalse');"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="doRegularGroupAsDialog" p:actionLabel="Regular Group"
+              p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="doExtendedDialog" p:actionLabel="Extended Dialog"
+              p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
       </list>
     </property>
   </bean>
@@ -261,7 +265,7 @@
         </bean>
 
         <bean parent="Uif-InputField" p:label="Progressive Disclose"
-              p:width="auto" p:propertyName="field1">
+              p:width="auto" p:propertyName="field4">
           <property name="control">
             <bean parent="Uif-VerticalRadioControl">
               <property name="options">
@@ -277,7 +281,7 @@
         </bean>
 
         <bean parent="Uif-HorizontalBoxSection"
-              p:progressiveRender="field1 eq 'show'" p:headerText="Group"
+              p:progressiveRender="field4 eq 'show'" p:headerText="Group"
               p:disclosure.render="false">
           <property name="items">
             <list>
@@ -301,7 +305,7 @@
       <list>
         <bean parent="Uif-Label" p:labelText="This is always displayed" />
         <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
-        <bean parent="GenericTextField" p:label="Field2" p:propertyName="field2" />
+        <bean parent="GenericTextField" p:label="Field5" p:propertyName="field5" />
         <bean parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
@@ -322,7 +326,7 @@
       <list>
         <bean parent="Uif-Label" p:labelText="This group does not inherit from Uif-DialogGroup" />
         <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
-        <bean parent="GenericTextField" p:label="Field2" p:propertyName="field2" />
+        <bean parent="GenericTextField" p:label="Field6" p:propertyName="field6"/>
         <bean parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
@@ -333,6 +337,7 @@
             </list>
           </property>
         </bean>
+        <bean parent="Uif-DialogResponse"/>
       </list>
     </property>
   </bean>

@@ -30,7 +30,12 @@ class ActionSetTest {
             <actionSetList>${ACTION}</actionSetList>
         </actionSet>
         """
-    
+
+    private static final String EXPECTED_XML2 = """
+        <actionSet xmlns="http://rice.kuali.org/kew/v2_0">
+        </actionSet>
+        """
+
     @Test
     void happy_path(){
         ActionSet.Builder.create()
@@ -68,12 +73,38 @@ class ActionSetTest {
     }
 
     @Test
+    public void testXmlMarshalingEmptyActionSet() {
+        ActionSet actionSet =  ActionSet.Builder.create().build()
+        JAXBContext jc = JAXBContext.newInstance(ActionSet.class)
+        Marshaller marshaller = jc.createMarshaller()
+        StringWriter sw = new StringWriter()
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
+        marshaller.marshal(actionSet, sw)
+        String xml = sw.toString()
+        print xml
+
+        Unmarshaller unmarshaller = jc.createUnmarshaller();
+        ActionSet actual = (ActionSet)unmarshaller.unmarshal(new StringReader(xml))
+        ActionSet expected = (ActionSet)unmarshaller.unmarshal(new StringReader(EXPECTED_XML2))
+        Assert.assertEquals(expected.actionSetList, actual.actionSetList)
+    }
+
+    @Test
     public void testXmlUnmarshal() {
         JAXBContext jc = JAXBContext.newInstance(ActionSet.class)
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         ActionSet actionSet = (ActionSet) unmarshaller.unmarshal(new StringReader(EXPECTED_XML))
-        actionSet.addAction(ACTION);
+        Assert.assertEquals(1, actionSet.actionSetList.size)
         Assert.assertEquals(ACTION, actionSet.actionSetList.get(0))
+        Assert.assertTrue(actionSet.hasAction(ACTION))
+    }
+
+    @Test
+    public void testXmlUnmarshalEmptyActionSet() {
+        JAXBContext jc = JAXBContext.newInstance(ActionSet.class)
+        Unmarshaller unmarshaller = jc.createUnmarshaller();
+        ActionSet actionSet = (ActionSet) unmarshaller.unmarshal(new StringReader(EXPECTED_XML2))
+        Assert.assertFalse(actionSet.hasAction(ACTION))
     }
     
     public static ActionSet buildActionSet() {

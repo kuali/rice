@@ -146,6 +146,7 @@
         <groupId>commons-digester</groupId>
         <artifactId>commons-digester</artifactId>
         <version>${commons-digester.version}</version>
+        <scope>runtime</scope>
       </dependency>
     </dependencies>
 </project>

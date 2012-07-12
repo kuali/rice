@@ -1340,7 +1340,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: should check to see if there is an add line method on the
             // collection parent and if so call that instead of just adding to
             // the collection (so that sequence can be set)
-            addLine(collection, addLine, true);
+            addLine(collection, addLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
             // make a new instance for the add line
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
@@ -1406,7 +1406,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Object newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
         applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
-        boolean insertFirst = collectionGroup.getAddLinePlacement().equals("TOP");
         addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
         ((UifFormBase) model).getAddedCollectionItems().add(newLine);

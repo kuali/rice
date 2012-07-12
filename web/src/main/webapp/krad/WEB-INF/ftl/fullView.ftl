@@ -52,7 +52,7 @@
             <@spring.formHiddenInput id="validateDirty" path="KualiForm.validateDirty"/>
 
         <#-- Indicator which is set to true when content is being rendered inside a lightbox -->
-            <@spring.formHiddenInput path="KualiForm.renderedInLightBox" attributes="id=\"renderedInLightBox\""/>
+            <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
         </#if>
 
         <@krad.template component=view/>

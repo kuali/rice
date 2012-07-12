@@ -470,10 +470,10 @@ function handleActionLink(component, methodToCall, navigateToPageId) {
  * and removed from the component.  This allows for label and component content seperation on fields
  *
  * @param id - id for the component to retrieve
- * @param baseId - base id (without suffixes) for the component that should be refreshed
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
+ * @param addCallbackFunc - additional callback function to be executed (optional)
  */
-function retrieveComponent(id, baseId, methodToCall) {
+function retrieveComponent(id, methodToCall, addCallbackFunc) {
     var elementToBlock = jQuery("#" + id);
 
     var updateRefreshableComponentCallback = function (htmlContent) {
@@ -487,6 +487,11 @@ function retrieveComponent(id, baseId, methodToCall) {
             theLabel.addClass("displayWith-" + displayWithId);
             jQuery("span.displayWith-" + displayWithId).replaceWith(theLabel);
             component.remove("#" + displayWithId + "_label_span");
+        }
+
+        // lightbox specific processing
+        if (jQuery('#renderedInLightBox').val() == 'true') {
+            component.find('.uif-dialogButtons').button();
         }
 
         elementToBlock.unblock({onUnblock:function () {
@@ -515,11 +520,21 @@ function retrieveComponent(id, baseId, methodToCall) {
             //runs scripts on the span or div with id
             runHiddenScripts(id);
 
+            // lightbox specific processing
+            if (jQuery('#renderedInLightBox').val() == 'true') {
+                jQuery("#" + id).css('display', 'none');
+            }
+
             if (origColor == "") {
                 origColor = "transparent";
             }
 
             jQuery("#" + id).animate({backgroundColor:origColor}, 5000);
+
+            // execute additional callback function if specified
+            if (addCallbackFunc) {
+                addCallbackFunc();
+            }
         }
         });
 
@@ -529,10 +544,6 @@ function retrieveComponent(id, baseId, methodToCall) {
             displayWithLabel.parent().show();
         }
 
-        // lightbox specific processing
-        if (jQuery("[name='renderedInLightBox']").val() == 'true') {
-            component.find('.uif-dialogButtons').button();
-        }
     };
 
     if (!methodToCall) {
@@ -692,11 +703,10 @@ function validateAndPerformCollectionAction(component, collectionGroupId, collec
  *
  * @param controlName - value for the name attribute for the control the event should be generated for
  * @param refreshId - id for the component that should be refreshed when change occurs
- * @param baseId - base id (without suffixes) for the component that should be refreshed
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
-function setupOnChangeRefresh(controlName, refreshId, baseId, methodToCall) {
-    setupRefreshCheck(controlName, refreshId, baseId, function () {
+function setupOnChangeRefresh(controlName, refreshId, methodToCall) {
+    setupRefreshCheck(controlName, refreshId, function () {
         return true;
     }, methodToCall);
 }
@@ -709,17 +719,16 @@ function setupOnChangeRefresh(controlName, refreshId, baseId, methodToCall) {
  *
  * @param controlName - value for the name attribute for the control the event should be generated for
  * @param refreshId - id for the component that should be refreshed when condition occurs
- * @param baseId - base id (without suffixes) for the component that should be refreshed
  * @param condition - function which returns true to refresh, false otherwise
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
-function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCall) {
+function setupRefreshCheck(controlName, refreshId, condition, methodToCall) {
     jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
         // visible check because a component must logically be visible to refresh
         var refreshComp = jQuery("#" + refreshId);
         if (refreshComp.length) {
             if (condition()) {
-                retrieveComponent(refreshId, baseId, methodToCall);
+                retrieveComponent(refreshId, methodToCall);
             }
         }
     });
@@ -747,7 +756,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 
                 if (condition()) {
                     if (refreshDisclosure.data("role") == "placeholder" || alwaysRetrieve) {
-                        retrieveComponent(disclosureId, baseId, methodToCall);
+                        retrieveComponent(disclosureId, methodToCall);
                     }
                     else {
                         var origColor = refreshDisclosure.css("background-color");

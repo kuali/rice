@@ -839,20 +839,27 @@ function showLightboxComponent(componentId, overrideOptions) {
         overrideOptions = {};
     }
 
-    var component = jQuery('#' + componentId);
-    var cssDisplay = component.css('display');
-
     // set renderedInLightBox indicator and remove it when lightbox is closed
-    if (jQuery("[name='renderedInLightBox']").val() != true) {
-        jQuery("[name='renderedInLightBox']").val(true);
+    if (jQuery('#renderedInLightBox').val() != true) {
+        jQuery('#renderedInLightBox').val(true);
         _appendCallbackFunctions(overrideOptions, {afterClose: function () {
-            jQuery("[name='renderedInLightBox']").val(false);
+            jQuery('#renderedInLightBox').val(false);
         }});
     }
 
-    if (component.hasClass('uif-placeholder')) {
-        retrieveComponent(componentId);
+    if (jQuery('#' + componentId).hasClass('uif-placeholder')) {
+        retrieveComponent(componentId, undefined, function(){_showLightboxComponentHelper(componentId, overrideOptions)});
+    } else {
+        _showLightboxComponentHelper(componentId, overrideOptions)
     }
+}
+
+/**
+ * This internal function continues the showLightboxComponent processing after the ajax content has been rendered.
+ */
+function _showLightboxComponentHelper(componentId, overrideOptions) {
+    var component = jQuery('#' + componentId);
+    var cssDisplay = component.css('display');
 
     // suppress scrollbar when not needed
     // undo the div.clearfix hack (KULRICE-7467)

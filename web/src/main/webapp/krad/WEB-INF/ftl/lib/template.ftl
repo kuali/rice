@@ -82,14 +82,14 @@ still render, but render in a hidden container -->
     <#if component.conditionalRefresh?has_content>
         <#list component.conditionalRefreshControlNames as cName>
             <@krad.script value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
-                 setupRefreshCheck('${cName?js_string}', '${component.id}', '${component.baseId}', condition,
+                 setupRefreshCheck('${cName?js_string}', '${component.id}', condition,
                  '${component.methodToCallOnRefresh!}');"/>
         </#list>
     </#if>
 
 <#-- refresh when changed setup -->
     <#list component.refreshWhenChangedPropertyNames as cName>
-        <@krad.script value="setupOnChangeRefresh('${cName?js_string}', '${component.id}', '${component.baseId}',
+        <@krad.script value="setupOnChangeRefresh('${cName?js_string}', '${component.id}',
         '${component.methodToCallOnRefresh!}');"/>
     </#list>
 

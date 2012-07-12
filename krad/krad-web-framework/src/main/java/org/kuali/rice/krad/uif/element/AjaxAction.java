@@ -85,8 +85,7 @@ public class AjaxAction extends Action {
             }
 
             // refresh component for action
-            actionScript = "retrieveComponent('" + refreshComponent.getId() + "','" + refreshComponent.getBaseId()
-                    + "','" + getMethodToCall() + "');";
+            actionScript = "retrieveComponent('" + refreshComponent.getId() + "','" + getMethodToCall() + "');";
         }
         else {
             // refresh page

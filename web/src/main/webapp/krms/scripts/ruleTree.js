@@ -128,7 +128,7 @@ function initRuleTree(componentId){
         // refresh the proposition tree on parameterized term selection
         jq('select.termSelect').change( function() {
             if (this.value.match(/parameterized:.*/)) {
-                retrieveComponent('RuleEditorView-TreeGroup', 'RuleEditorView-TreeGroup', 'ajaxRefresh');
+                retrieveComponent('RuleEditorView-TreeGroup', 'ajaxRefresh');
             }
         });
 

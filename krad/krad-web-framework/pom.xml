@@ -142,5 +142,10 @@
         <artifactId>mockito-core</artifactId>
         <version>1.9.0</version>
       </dependency>
+      <dependency>
+        <groupId>commons-digester</groupId>
+        <artifactId>commons-digester</artifactId>
+        <version>${commons-digester.version}</version>
+      </dependency>
     </dependencies>
 </project>

@@ -117,6 +117,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public void performInitialization(View view, Object model, Container container) {
         if (container instanceof CollectionGroup) {
             this.setupDetails((CollectionGroup) container, view);
+
+            if (((CollectionGroup) container).isAddViaLightBox()) {
+                setSeparateAddLine(true);
+            }
         }
 
         super.performInitialization(view, model, container);
@@ -931,7 +935,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Indicates the actions column placement
      *
      * <p>
-     * Valid values are 'LEFT', 'RIGHT' or any valid number. The default is 'RIGHT' or '-1'.
+     * Valid values are 'LEFT', 'RIGHT' or any valid number. The default is 'RIGHT' or '-1'. The column placement index
+     * takes all displayed columns, including sequence and selection columns, into account.
      * </p>
      *
      * @return String - the action column placement

@@ -727,60 +727,64 @@ function time(start, testingText) {
 /**
  * Adds a class to the collection item related to the delete action
  *
- * @param deleteButton
+ * @param deleteButton - the delete button that this event was triggered from
  * @param highlightItemClass - the class to add to the item that should be highlighted
  */
 function deleteLineMouseOver(deleteButton, highlightItemClass) {
-    var innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
-    if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
+    var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
+            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         jQuery(deleteButton).closest('tr').addClass(highlightItemClass);
     } else {
-        jQuery(deleteButton).closest('.uif-collectionItem').addClass(highlightItemClass);
+        jQuery(deleteButton).closest('.' + kradVariables.COLLECTION_ITEM_CLASS).addClass(highlightItemClass);
     }
 }
 
 /**
  * Removes a class from the collection item related to the delete action
  *
- * @param deleteButton
+ * @param deleteButton - the delete button that this event was triggered from
  * @param highlightItemClass - the class remove from the collection item
  */
 function deleteLineMouseOut(deleteButton, highlightItemClass) {
-    var innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
-    if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
+    var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
+            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         jQuery(deleteButton).closest('tr').removeClass(highlightItemClass);
     } else {
-        jQuery(deleteButton).closest('.uif-collectionItem').removeClass(highlightItemClass);
+        jQuery(deleteButton).closest('.' + kradVariables.COLLECTION_ITEM_CLASS).removeClass(highlightItemClass);
     }
 }
 
 /**
  * Adds a class to the collection group related to the add action
  *
- * @param addButton
+ * @param addButton - the add button that this event was triggered from
  * @param highlightItemClass - the class to add to the group that should be highlighted
  */
 function addLineMouseOver(addButton, highlightItemClass) {
-    var innerLayout = jQuery(addButton).parent().find('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
-    if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
+    var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
+            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         jQuery(addButton).parent().find('table').addClass(highlightItemClass);
     } else {
-        jQuery(addButton).parent().find('.uif-stackedCollectionLayout').addClass(highlightItemClass).children().addClass(highlightItemClass);
+        jQuery(addButton).parent().find('.' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).addClass(highlightItemClass).children().addClass(highlightItemClass);
     }
 }
 
 /**
  * Removes a class from the collection group related to the add action
  *
- * @param addButton
+ * @param addButton - the add button that this event was triggered from
  * @param highlightItemClass - the class remove from the collection group
  */
 function addLineMouseOut(addButton, highlightItemClass) {
-    var innerLayout = jQuery(addButton).parent().find('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
-    if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
+    var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
+            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         jQuery(addButton).parent().find('table').removeClass(highlightItemClass);
     } else {
-        jQuery(addButton).parent().find('.uif-stackedCollectionLayout').removeClass(highlightItemClass).children().removeClass(highlightItemClass);
+        jQuery(addButton).parent().find('.' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).removeClass(highlightItemClass).children().removeClass(highlightItemClass);
     }
 }
 
@@ -796,12 +800,13 @@ function collectionLineChanged(inputField, highlightItemClass) {
     jQuery(inputField).triggerHandler('blur');
 
     // Get the innerlayout to see if we are dealing with table or stack group
-    innerLayout = jQuery(inputField).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
+    var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
+            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
 
-    if (innerLayout == 'uif-tableCollectionLayout') {
+    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         var row = jQuery(inputField).closest('tr');
         var enabled = row.find('.dirty').length > 0;
-        var saveButton = row.find('.uif-saveLineAction');
+        var saveButton = row.find('.' + kradVariables.SAVE_LINE_ACTION_CLASS);
 
         if (enabled) {
             saveButton.removeAttr('disabled');
@@ -810,9 +815,9 @@ function collectionLineChanged(inputField, highlightItemClass) {
         }
 
     } else {
-        var itemGroup = jQuery(inputField).closest('.uif-collectionItem');
+        var itemGroup = jQuery(inputField).closest('.' + kradVariables.COLLECTION_ITEM_CLASS);
         var enabled = itemGroup.find('.dirty').length > 0;
-        var saveButton = itemGroup.find('.uif-saveLineAction');
+        var saveButton = itemGroup.find('.' + kradVariables.SAVE_LINE_ACTION_CLASS);
 
         if (enabled) {
             saveButton.removeAttr('disabled');

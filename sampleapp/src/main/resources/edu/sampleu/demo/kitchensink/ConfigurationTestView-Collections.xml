@@ -195,7 +195,6 @@
 
   <bean id="Collections-AddViaLightbox-TableTop" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout Add Via Lightbox TOP" />
-    <property name="layoutManager.separateAddLine" value="true" />
     <property name="addViaLightBox" value="true" />
   </bean>
 
@@ -226,12 +225,13 @@
 
   <bean id="Collections-ColumnSequence-TableLeft" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout Action Column Left" />
+    <property name="propertyName" value="list2" />
     <property name="layoutManager.actionColumnPlacement" value="LEFT" />
   </bean>
 
   <bean id="Collections-ColumnSequence-TableThird" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout Action Column 3" />
-    <property name="propertyName" value="list2" />
+    <property name="propertyName" value="list3" />
     <property name="layoutManager.actionColumnPlacement" value="3" />
   </bean>
 

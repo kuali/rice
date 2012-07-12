@@ -111,7 +111,7 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
 
-    private List addedCollectionItems;
+    private List<Object> addedCollectionItems;
 
     protected MultipartFile attachmentFile;
 

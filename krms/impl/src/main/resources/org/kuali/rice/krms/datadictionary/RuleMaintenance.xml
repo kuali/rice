@@ -337,7 +337,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-MessageField" p:messageText="Move: [" p:style="display: inline;"/>
+        <bean parent="Uif-Message" p:messageText="Move: [" p:style="display: inline;"/>
         <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('left');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-TreeGroup');
@@ -662,7 +662,7 @@
                   <bean parent="Uif-InputField-LabelTop" p:propertyName="proposition.parameters[1].value"
                         p:showLabel="true" p:label="Value" p:maxLength="255" p:required="@{#np.proposition.parameters[2].value == null or #np.proposition.parameters[2].value matches '(?:.|..)'}"
                         p:progressiveRenderAndRefresh="true"
-                        p:refreshWhenChanged="#proposition.parameters[2].value"
+                        p:refreshWhenChangedPropertyNames="#proposition.parameters[2].value"
                         p:progressiveRender="@{#np.proposition.parameters[2].value == null or #np.proposition.parameters[2].value matches '(?:.|..)'}">
                     <property name="control">
                       <bean parent="Uif-TextControl" p:style="margin-top:null 2px;" p:watermarkText="Enter a Literal Value" />

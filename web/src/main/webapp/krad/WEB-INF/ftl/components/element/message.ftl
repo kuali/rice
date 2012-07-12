@@ -23,7 +23,7 @@
 
     <@krad.span component=element>
 
-        ${element.messageText}
+        ${element.messageText!}
 
     </@krad.span>
 

@@ -127,7 +127,7 @@
     </property>
   </bean>
 
-  <bean id="TermSpec-MainSection" parent="Uif-MaintenanceVerticalBoxSection">
+  <bean id="TermSpec-MainSection" parent="Uif-VerticalBoxSection">
     <property name="headerText" value="Term Specification" />
     <property name="items">
       <list>

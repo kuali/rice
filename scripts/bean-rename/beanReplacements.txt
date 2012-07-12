@@ -241,4 +241,4 @@ viewMenuGrouping,viewMenuGroupName
 dialogMode,renderedInLightBox
 fieldInquiry,inquiry
 fieldDirectInquiry.render,inquiry.enableDirectInquiry
-
+clientSideJs,actionScript

@@ -213,6 +213,25 @@
         <listitem>
           <para> By default when using ajax action field the page is refreshed </para>
         </listitem>
+        <listitem>
+          <para>Some more properties have been added to the action component which are hooks that
+            provide more flexibility to the user <itemizedlist>
+              <listitem>
+                <para>preSubmitCall – This property is a script which needs to be invoked before the form is submitted. The script should
+                  return a boolean indicating if the form should be submitted or not. </para>
+              </listitem>
+              <listitem>
+                <para>ajaxSubmit – boolean property which indicates if the data is to be submitted via ajax or
+                  otherwise </para>
+              </listitem>
+              <listitem>
+                <para>successCallback – This property is a script which will be invoked for successful ajax calls </para>
+              </listitem>
+              <listitem>
+                <para>errorCallback – script which will be invoked on error in ajax calls </para>
+              </listitem>
+            </itemizedlist></para>
+        </listitem>
       </itemizedlist>
     </section>
   </section>

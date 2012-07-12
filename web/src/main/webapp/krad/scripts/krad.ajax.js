@@ -21,6 +21,7 @@
  * @param component
  */
 function actionInvokeHandler(component) {
+    // Read the data attributes. All simple data attributes are lower-cased.
     var ajaxSubmit = jQuery(component).data("ajaxsubmit");
     var submitData = jQuery(component).data("submitData");
     var successCallback = jQuery(component).data("successcallback");
@@ -29,6 +30,7 @@ function actionInvokeHandler(component) {
     var preSubmitCall = jQuery(component).data("presubmitcall");
     var validate = jQuery(component).data("validate");
 
+    // methodToCall comes as a part of submitData
     var methodToCall = submitData['methodToCall'];
 
     if (ajaxSubmit) {
@@ -48,13 +50,12 @@ function actionInvokeHandler(component) {
 /**
  * Invokes ajaxSubmitFormFullOpts with null callbacks besides success and validate set to false
  *
- * @param methodToCall - the controller method to be called
- * @param successCallback - hook for any calls to be made on success
- * @param additionalData  - any additional data that needs to be passed to the server
- * @param elementToBlock  -
- * @param preSubmitCall -  hook to execute a call which if returns true the processing moves forward else return
- * @param returnType - this is used to indicate to the server a requested return type. The client requests a return
- *                     type but the server can change it. Defaults to update-page
+ * @param methodToCall
+ * @param successCallback
+ * @param additionalData
+ * @param elementToBlock
+ * @param preSubmitCall
+ * @param returnType
  */
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false, preSubmitCall, returnType);
@@ -89,6 +90,15 @@ function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData
  * For the above reason, the renderFullView below is set to false so that the script content between
  * <head></head> is left out
  * </p>
+ *
+ * @param methodToCall - the controller method to be called
+ * @param successCallback - hook for any calls to be made on success
+ * @param additionalData  - any additional data that needs to be passed to the server
+ * @param elementToBlock  - element to be blocked while loading
+ * @param errorCallback - hook for any calls to be made on error.
+ * @param preSubmitCall -  hook to execute a call which if returns true the processing moves forward else return
+ * @param returnType - this is used to indicate to the server a requested return type. The client requests a return
+ *                     type but the server can change it. Defaults to update-page
  */
 function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate,
                                 preSubmitCall, returnType) {
@@ -225,16 +235,39 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
     form.ajaxSubmit(submitOptions);
 }
 
+/**
+ * Calls the submitFormFullOpts with validate set to false
+ *
+ * @param methodToCall
+ * @param additionalData
+ * @param preSubmitCall
+ */
 function submitForm(methodToCall, additionalData, preSubmitCall) {
-    // invoke submitFormFullOpts with null callback, validate false
+    // invoke submitFormFullOpts , validate false
     submitFormFullOpts(methodToCall, additionalData, false, preSubmitCall);
 }
 
+/**
+ * Calls the submitFormFullOpts with validate set to true
+ *
+ * @param methodToCall
+ * @param additionalData
+ * @param preSubmitCall
+ */
 function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts with null callback, validate true
     submitFormFullOpts(methodToCall, additionalData, true, preSubmitCall);
 }
-
+/**
+ * Does a non ajax submit. If validate is set to true then it validates the form before proceeding.
+ * If the preSubmitCall is provided then if it evaluates to true, it proceeds else the function returns.
+ * The data attributes that are passed in as additional data are written to the form before the form is submitted.
+ *
+ * @param methodToCall
+ * @param additionalData
+ * @param validate
+ * @param preSubmitCall
+ */
 function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall) {
     // invoke validateForm if validate flag is true, if returns false do not continue
     if (validate && !validateForm()) {
@@ -309,8 +342,8 @@ function updatePageCallback(content) {
 }
 
 /**
- * Iterates over the divs in the contents and reads the data-handler to
- * obtain the respective handler function to call
+ * Iterates over the divs in the content and reads the data-handler to
+ * obtain the respective handler function to call.
  *
  * @param content - response sent from the server
  */
@@ -327,14 +360,11 @@ function invokeAjaxReturnHandler(content) {
 }
 
 /**
- * Invoked on success of an ajax call that refreshes the page
- *
- * <p>
- * Finds the page content in the returned content and updates on the page, then processes breadcrumbs and hidden
+ * Finds the page content in the returned content and updates the page, then processes breadcrumbs and hidden
  * scripts. While processing, the page contents are hidden
- * </p>
  *
  * @param content - content returned from response
+ * @param dataAttr -  any additional data attributes that the server needs to send
  */
 function updatePageHandler(content, dataAttr) {
     var page = jQuery("#page_update", content);
@@ -353,16 +383,13 @@ function updatePageHandler(content, dataAttr) {
 }
 
 /**
- * Invoked on success of an ajax call that refreshes the component
- *
- * <p>
  * Retrieves the component with the matching id from the server and replaces a matching
  * _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label
  * and a displayWith marker span has a matching id, that span will be replaced with the label content
  * and removed from the component.  This allows for label and component content seperation on fields
- * </p>
  *
  * @param content - content returned from response
+ * @param dataAttr -  any additional data attributes that the server needs to send
  */
 function updateComponentHandler(content, dataAttr) {
     var id = dataAttr.updatecomponentid;
@@ -424,10 +451,10 @@ function updateComponentHandler(content, dataAttr) {
 }
 
 /**
- *  Replaces the view with the given content.
+ *  Replaces the view with the given content and run the hidden scripts.
  *
- * @param content
- * @param dataAttr
+ * @param content  - server response
+ * @param dataAttr -  any additional data attributes that the server needs to send
  */
 function updateViewHandler(content, dataAttr){
     jQuery('#' + kradVariables.APP_ID).replaceWith(content);
@@ -435,6 +462,12 @@ function updateViewHandler(content, dataAttr){
 
  }
 
+/**
+ * Redirect to the url sent as a response when an ajax redirect is requested.
+ *
+ * @param content  - server response
+ * @param dataAttr -  any additional data attributes that the server needs to send
+ */
 function redirectHandler(content, dataAttr) {
 // get contents between div and do window.location = parsed href
    window.location.href = jQuery(content).text();

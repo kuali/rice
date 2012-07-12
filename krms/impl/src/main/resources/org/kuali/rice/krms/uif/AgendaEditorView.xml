@@ -46,7 +46,8 @@
   </util:list>
 
   <bean id="AgendaTreeWidget" parent="Uif-Tree">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/agendaTree.ftl"/>
+    <property name="templateName" value="uif_agendaTree"/>
   </bean>
 
   <bean id="Editor-MaintenanceView" parent="Uif-MaintenanceView">

@@ -51,7 +51,7 @@
     <kuali.release.goals>deploy</kuali.release.goals>
     <kuali.release.arguments>-DskipTests</kuali.release.arguments>
 
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!--project.build.sourceEncoding>UTF-8</project.build.sourceEncoding-->
 
     <appserver.port>8080</appserver.port>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>

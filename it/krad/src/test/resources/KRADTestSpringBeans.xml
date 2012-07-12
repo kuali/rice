@@ -194,21 +194,21 @@
          <value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml</value>
          <value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml</value>
          <value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifViewPageDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifHeaderFooterDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifGroupDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifLayoutManagerDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifMaintenanceDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifDocumentDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifInquiryDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifLookupDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifIncidentReportDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifFieldDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifControlDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifWidgetDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifConfigurationDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifRiceDefinitions.xml</value>
-         <value>classpath:org/kuali/rice/krad/uif/freemarker/UifElementDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifLookupDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifIncidentReportDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
+         <value>classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml</value>
        </list>
      </property>
   </bean>

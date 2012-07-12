@@ -90,6 +90,11 @@ public class WebUtils {
 	private static final String APPLICATION_IMAGE_URL_PROPERTY_PREFIX = "application.custom.image.url";
 	private static final String DEFAULT_IMAGE_URL_PROPERTY_NAME = "kr.externalizable.images.url";
 
+    /**
+     * Prefixes indicating an absolute url
+     */
+    private static final String[] SCHEMES = { "http://", "https://" };
+
 	/**
 	 * A request attribute name that indicates that a
 	 * {@link org.kuali.rice.kns.exception.FileUploadLimitExceededException} has already been thrown for the
@@ -864,6 +869,31 @@ public class WebUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Returns an absolute URL which is a combination of a base part plus path,
+     * or in the case that the path is already an absolute URL, the path alone
+     * @param base the url base path
+     * @param path the path to append to base
+     * @return an absolute URL representing the combination of base+path, or path alone if it is already absolute
+     */
+    public static String toAbsoluteURL(String base, String path) {
+        boolean abs = false;
+        if (StringUtils.isBlank(path)) {
+            path = "";
+        } else {
+            for (String scheme: SCHEMES) {
+                if (path.startsWith(scheme)) {
+                    abs = true;
+                    break;
+                }
+            }
+        }
+        if (abs) {
+            return path;
+        }
+        return base + path;
     }
 
 }

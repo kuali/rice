@@ -103,4 +103,15 @@ public class WebUtilsTest extends KRADTestCase {
 		assertEquals("Table cell with class tag not translated to markup", "<td class=\"leftTd\"></td>", filteredText);
 	}
 
+    @Test
+    public void testToAbsoluteURL() {
+        assertEquals("base/relative", WebUtils.toAbsoluteURL("base", "/relative"));
+        assertEquals("http://base/relative", WebUtils.toAbsoluteURL("http://base", "/relative"));
+        assertEquals("http://absolute", WebUtils.toAbsoluteURL("http://base", "http://absolute"));
+        assertEquals("https://absolute", WebUtils.toAbsoluteURL("http://base", "https://absolute"));
+        assertEquals("https://absolute", WebUtils.toAbsoluteURL(null, "https://absolute"));
+        assertEquals("", WebUtils.toAbsoluteURL("", ""));
+        assertEquals("base", WebUtils.toAbsoluteURL("base", ""));
+        assertEquals("base", WebUtils.toAbsoluteURL("base", null));
+    }
 }

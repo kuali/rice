@@ -124,9 +124,11 @@ public class DialogManager implements Serializable {
      */
     public void setDialogAnswer(String dialogId, String answer){
         DialogInfo dialogInfo = dialogs.get(dialogId);
-        dialogInfo.answer = answer;
-        dialogInfo.answered = true;
-        dialogs.put(dialogId,dialogInfo);
+        if (dialogInfo != null){
+            dialogInfo.answer = answer;
+            dialogInfo.answered = true;
+            dialogs.put(dialogId,dialogInfo);
+        }
     }
 
     /**
@@ -148,8 +150,10 @@ public class DialogManager implements Serializable {
      */
     public void setDialogExplanation(String dialogId, String explanation){
         DialogInfo dialogInfo = dialogs.get(dialogId);
-        dialogInfo.explanation = explanation;
-        dialogs.put(dialogId,dialogInfo);
+        if (dialogInfo != null){
+            dialogInfo.explanation = explanation;
+            dialogs.put(dialogId,dialogInfo);
+        }
     }
 
     /**

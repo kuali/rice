@@ -218,14 +218,10 @@ public class DialogTestViewUifController extends UifControllerBase {
             // redirect back to client to display lightbox
             return showDialog(dialog1, form, request, response);
         }
-        // Get value from chosen radio button
+        // Get user choice
         boolean choice = getBooleanDialogResponse(dialog1, form, request, response);
         StringBuilder sb = new StringBuilder("You selected ");
-        if (choice){
-            sb.append("OK.");
-        } else {
-            sb.append("Cancel");
-        }
+        sb.append((choice)?"OK":"Cancel");
         form.setField1(sb.toString());
 
         // clear dialog history so they can press the button again
@@ -255,11 +251,7 @@ public class DialogTestViewUifController extends UifControllerBase {
         // Get value from chosen radio button
         boolean choice = getBooleanDialogResponse(dialog1, form, request, response);
         StringBuilder sb = new StringBuilder("You selected ");
-        if (choice){
-            sb.append("OK.");
-        } else {
-            sb.append("Cancel");
-        }
+        sb.append((choice)?"Yes":"No");
         form.setField1(sb.toString());
 
         // clear dialog history so they can press the button again
@@ -290,11 +282,7 @@ public class DialogTestViewUifController extends UifControllerBase {
         // Get value from chosen radio button
         boolean choice = getBooleanDialogResponse(dialog1, form, request, response);
         StringBuilder sb = new StringBuilder("You selected ");
-        if (choice){
-            sb.append("OK.");
-        } else {
-            sb.append("Cancel");
-        }
+        sb.append((choice)?"Yes":"No");
         form.setField1(sb.toString());
 
         // clear dialog history so they can press the button again

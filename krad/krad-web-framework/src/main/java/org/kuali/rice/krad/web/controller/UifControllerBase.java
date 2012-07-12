@@ -810,15 +810,24 @@ public abstract class UifControllerBase {
     @RequestMapping(params = "methodToCall=returnFromLightbox")
     public ModelAndView returnFromLightbox(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String newMethodToCall = "";
         // Save user responses from dialog
         DialogManager dm = form.getDialogManager();
         String dialogId = dm.getCurrentDialogId();
-        dm.setDialogAnswer(dialogId, form.getDialogResponse());
-        dm.setDialogExplanation(dialogId, form.getDialogExplanation());
+        if (dialogId == null){
+            // may have been invoked by client.
+            // TODO:  handle this case (scheduled for 2.2-m3)
+            // for now, log WARNING and default to start, can we add a growl?
+            newMethodToCall = "start";
+        } else {
+            dm.setDialogAnswer(dialogId, form.getDialogResponse());
+            dm.setDialogExplanation(dialogId, form.getDialogExplanation());
+            newMethodToCall = dm.getDialogReturnMethod(dialogId);
+        }
 
         // call intended controller method
         Properties props = new Properties();
-        props.put(UifParameters.METHOD_TO_CALL, dm.getDialogReturnMethod(dialogId));
+        props.put(UifParameters.METHOD_TO_CALL, newMethodToCall);
         props.put(UifParameters.VIEW_ID, form.getViewId());
         props.put(UifParameters.FORM_KEY, form.getFormKey());
         props.put(UifParameters.AJAX_REQUEST,"false");

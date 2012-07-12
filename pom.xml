@@ -1150,6 +1150,16 @@
         <groupId>commons-digester</groupId>
         <artifactId>commons-digester</artifactId>
         <version>${commons-digester.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>commons-beanutils</artifactId>
+            <groupId>commons-beanutils</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>

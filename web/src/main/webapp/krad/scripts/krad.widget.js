@@ -131,8 +131,11 @@ function createLightBoxLink(linkId, options, addAppParms) {
         // Check if this is called within a light box
         // TODO: utility function for checking whether in a lightbox
         if (!jQuery(".fancybox-iframe", parent.document).length) {
-            // Perform cleanup when lightbox is closed
-            options['beforeClose'] = cleanupClosedLightboxForms;
+            // Check if this is called within a krad light box
+            if (jQuery('#renderedInLightBox').val() == true) {
+                // Perform cleanup when lightbox is closed
+                options['beforeClose'] = cleanupClosedLightboxForms;
+            }
 
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window

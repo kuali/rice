@@ -331,8 +331,8 @@
 	<@bind path />
     <#local name="${status.expression}">
     <#local isSelected = status.value?? && status.value?string=="true">
-	<input type="hidden" name="_${id}" value="on"/>
-	<input type="checkbox" id="${id!}" name="${id}"<#if isSelected> checked="checked"</#if> ${attributes}/>
+	<input type="hidden" name="_${name}" value="on"/>
+	<input type="checkbox" id="${id!}" name="${name}"<#if isSelected> checked="checked"</#if> ${attributes}/>
     <#if label?has_content>
         <label for="${id}">${label}</label>
     </#if>

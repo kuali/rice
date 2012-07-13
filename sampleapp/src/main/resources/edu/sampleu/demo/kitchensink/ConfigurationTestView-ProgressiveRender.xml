@@ -46,8 +46,9 @@
             </list>
           </property>
         </bean>
+        <!-- TODO: Not sure how we can test this -->
         <bean parent="Uif-InputField" p:label="Field Label" p:propertyName="field2"
-              p:refreshWhenChangedPropertyNames="field1" p:disableSessionPersistence="true"
+              p:disableSessionPersistence="true"
               p:instructionalText="Test of disable session persistence flag">
           <property name="control">
             <bean parent="Uif-TextControl">
@@ -153,9 +154,10 @@
   </bean>
 
   <bean id="ConfigurationTestView-ProgressiveRender-StartTimeInputField" parent="Uif-InputField"
-        p:propertyName="startTime" p:label="Start Time"  p:refreshWhenChangedPropertyNames="#lp.allDay" p:required="@{#lp.allDay eq false}" >
+        p:propertyName="startTime" p:label="Start Time"  p:refreshWhenChangedPropertyNames="#lp.allDay"
+        p:resetDataOnRefresh="true" p:required="@{#lp.allDay eq false}" >
     <property name="control">
-      <bean parent="Uif-TextControl" p:size="4" p:watermarkText="hh:mm"/>
+      <bean parent="Uif-TextControl" p:size="4" p:watermarkText="hh:mm" p:disabled="@{!#lp.allDay}"/>
     </property>
     <property name="validCharactersConstraint">
       <bean parent="TimePatternConstraint" />
@@ -166,7 +168,7 @@
         p:propertyName="startTimeAmPm" p:refreshWhenChangedPropertyNames="#lp.allDay" p:required="@{#lp.allDay eq false}">
 
     <property name="control">
-      <bean parent="Uif-DropdownControl"  p:disabled="@{#empty(#line.startTime)}">
+      <bean parent="Uif-DropdownControl" p:disabled="@{!#lp.allDay}">
         <property name="options">
           <list>
             <bean parent="Uif-KeyLabelPair" p:key="AM" p:value="AM"/>

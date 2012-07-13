@@ -236,12 +236,39 @@
     </section>
   </section>
   <section>
+    <title>Lightbox</title>
+    <para>The recommended way to use lightboxes is through the <link linkend='linkAndLinkField'>Uif-Link</link> or
+      the Uif-Dialog beans. For cases where this isn't possible the following JavaScript functions can be used to
+      open lightboxes.</para>
+    <variablelist>
+      <varlistentry>
+        <term>showLightboxUrl(url)</term>
+        <listitem>The content for the lightbox is loaded from the specified url.</listitem>
+      </varlistentry>
+    </variablelist>
+    <variablelist>
+      <varlistentry>
+        <term>showLightboxComponent(componentId)</term>
+        <listitem>The content for the lightbox is a Uif component (e.g. a section) and is specified via the component id.</listitem>
+      </varlistentry>
+    </variablelist>
+    <variablelist>
+      <varlistentry>
+        <term>showLightboxContent(content)</term>
+        <listitem>The content of the lightbox is passed as the parameter which could be either plain or html formatted text.</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>Each of the three function can accept a second <emphasis role="bold">overrideOptions</emphasis> parameter
+      which allows for additional lightbox styling.  This parameter is optional and should only be used if it is
+      unavoidable since its specific to the underlying implementation which could change.  If possible use the
+      "uif-lightbox" CSS class for styling.</para>
+  </section>
+  <section>
     <title>Working in the Client with jQuery </title>
-<!-- TODO: Add content here -->    <para/>
+<!-- TODO: Add content here -->
   </section>
   <section>
     <title>Data Attributes</title>
-    <listitem>
       <para>HTML 5 data attributes are a way of adding custom attributes to tags. Data attributes are prefixed with
         a &apos;data-&apos; prefix e.g &apos;data-role&apos;. JQuery makes data attributes available on the jQuery data object for use
         in scripting manipulations.
@@ -281,7 +308,6 @@
 17.     &lt;/property&gt;
 18.    &lt;/bean&gt;
       </programlisting>
-    </listitem>
   </section>
   <section>
     <title>Configuring Event Handling </title>

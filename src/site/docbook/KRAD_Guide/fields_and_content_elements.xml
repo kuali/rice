@@ -4086,7 +4086,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
             </para>
     </section>
   </section>
-  <section>
+  <section id='linkAndLinkField'>
     <title>Link and Link Field </title>
     <para>The Link and Link Field components are used to generate the HTML a (link) tag. The a
             tag is used to link to another document (the primary mechanism of navigation in the
@@ -4113,21 +4113,24 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
     <para>When using a link component we can also choose the frame target the linked document
             will open up in. This is done by setting the <emphasis role="bold">target</emphasis>
             property and is used to populate the target attribute on the corresponding element.
-            Possible values are:</para>
-    <para>_blank - Opens the linked document in a new window or tab</para>
-    <para>_self - Opens the linked document in the same frame as it was clicked (this is
-            default)</para>
-    <para>_parent - Opens the linked document in the parent frame</para>
-    <para>_top - Opens the linked document in the full body of the window</para>
-<!-- TODO: Add content here
-        <note>
-            <title>Lightbox Target</title>
-            <para>For 2.2 enhanced support will be added for using lightboxes. As part of this support, 
-                the target for link components can be set to lightbox.</para>
-        </note>
-        -->    <para>If we want to put a link in a field, we can use the Link Field component with base bean name 
-            ‘Uif-LinkField’. All of the above properties are available along with the field’s label property.
-        </para>
+            Possible values are:
+      <literallayout>    _blank - Opens the linked document in a new window or tab</literallayout>
+      <literallayout>    _self - Opens the linked document in the same frame as it was clicked (this is default)</literallayout>
+      <literallayout>    _parent - Opens the linked document in the parent frame</literallayout>
+      <literallayout>    _top - Opens the linked document in the full body of the window</literallayout>
+    </para>
+    <para>By setting the <emphasis role="bold">lightBox</emphasis> property to "Uif-LightBox", the link will be opened
+      in a lightbox.</para>
+    <programlisting>
+      &lt;bean parent=”Uif-Link” p:hrefText=”www.kuali.org”&#160; p:linkLabel=”Kuali Website”/&gt;
+        &lt;property name=”lightBox”&gt;
+          &lt;bean parent=”Uif-LightBox”/&gt;
+        &lt;/property&gt;
+      &lt;/bean&gt;
+    </programlisting>
+    <para>If we want to put a link in a field, we can use the Link Field component with base bean name
+      ‘Uif-LinkField’. All of the above properties are available along with the field’s label property.
+    </para>
     <section>
       <title>Recap</title>
       <para>

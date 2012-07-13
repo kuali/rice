@@ -66,7 +66,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -579,14 +578,14 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
                     throw new KimTypeAttributeException(e);
                 }
 
-                String baseLookupUrl = LookupUtils.getBaseLookupUrl(false) + "?methodToCall=start&";
+                String baseLookupUrl = LookupUtils.getBaseLookupUrl(false) + "?methodToCall=start";
 
                 if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(lookupClass)) {
                     ModuleService moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(lookupClass);
                     if (moduleService.isExternalizableBusinessObjectLookupable(lookupClass)) {
-                        baseLookupUrl = moduleService.getExternalizableDataObjectLookupUrl(lookupClass, new Properties());
+                        baseLookupUrl = moduleService.getExternalizableBusinessObjectLookupUrl(lookupClass, Collections.<String,String>emptyMap());
                         // XXX: I'm not proud of this:
-                        baseLookupUrl = baseLookupUrl.substring(0,baseLookupUrl.indexOf("?")) + "?methodToCall=start&";
+                        baseLookupUrl = baseLookupUrl.substring(0,baseLookupUrl.indexOf("?")) + "?methodToCall=start";
                     }
                 }
 

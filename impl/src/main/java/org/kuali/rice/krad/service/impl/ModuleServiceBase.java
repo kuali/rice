@@ -20,8 +20,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
-import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -201,7 +199,11 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
      */
     @Override
     protected String getBaseLookupUrl() {
-        return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
+        if (goToCentralRiceForInquiry()) {
+            return BaseLookupUrlsHolder.remoteKradBaseLookupUrl;
+        } else {
+            return BaseLookupUrlsHolder.localKradBaseLookupUrl;
+        }
     }
 
     protected RunMode getRunMode(String module) {

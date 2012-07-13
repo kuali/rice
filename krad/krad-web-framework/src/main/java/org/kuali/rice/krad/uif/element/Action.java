@@ -65,6 +65,9 @@ public class Action extends ContentElementBase {
 
     private String successCallback;
     private String errorCallback;
+    
+    private String loadingMessageText;
+    private String updatingMessageText;
 
     public Action() {
         super();
@@ -165,6 +168,12 @@ public class Action extends ContentElementBase {
         }
         if (StringUtils.isNotBlank(preSubmitCall)) {
             addDataAttribute("presubmitcall", this.preSubmitCall);
+        }
+        if (StringUtils.isNotBlank(loadingMessageText)) {
+            addDataAttribute("loadingMessageText", this.loadingMessageText);
+        }
+        if (StringUtils.isNotBlank(updatingMessageText)) {
+            addDataAttribute("updatingMessageText", this.updatingMessageText);
         }
 
         addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
@@ -648,6 +657,42 @@ public class Action extends ContentElementBase {
      */
     public void setAjaxSubmit(boolean ajaxSubmit) {
         this.ajaxSubmit = ajaxSubmit;
+    }
+
+    /**
+     * get loading message used by action's blockUI
+     *
+     * @returns String if String is not null, used in place of loading message
+     */
+    public String getLoadingMessageText() {
+        return loadingMessageText;
+    }
+
+    /**
+     * When this property is set, it is used in place of the loading message text used by the blockUI
+     *
+     * @param loadingMessageText
+     */
+    public void setLoadingMessageText(String loadingMessageText) {
+        this.loadingMessageText = loadingMessageText;
+    }
+
+    /**
+     * get updating message used by action's blockUI
+     *
+     * @returns String if String is not null, used in place of updating message
+     */
+    public String getUpdatingMessageText() {
+        return updatingMessageText;
+    }
+
+    /**
+     * When this property is set, it is used in place of the updating message text used by the blockUI
+     *
+     * @param updatingMessageText
+     */
+    public void setUpdatingMessageText(String updatingMessageText) {
+        this.updatingMessageText = updatingMessageText;
     }
 
     /**

@@ -186,7 +186,7 @@
 
   <bean id="WorkflowStateMapping"
           abstract="true"
-          p:statePropertyName="document.documentHeader.workflowDocument.status"
+          p:statePropertyName="document.documentHeader.workflowDocument.status.code"
           class="org.kuali.rice.krad.datadictionary.state.StateMappingBase">
     <property name="states">
       <list>

@@ -510,6 +510,20 @@ function writeMessagesForGroup(id, data){
 
             var newList = jQuery("<ul class='" + kradVariables.VALIDATION_MESSAGES_CLASS + "'></ul>");
 
+            if(data.messageTotal == undefined){
+                //init empty params
+                if (!data.errors) {
+                    data.errors = [];
+                }
+                if (!data.warnings) {
+                    data.warnings = [];
+                }
+                if (!data.info) {
+                    data.info = [];
+                }
+                calculateMessageTotals(data);
+            }
+
             if(data.messageTotal){
                 if(data.hasOwnMessages){
                     newList = generateSectionLevelMessages(id, data, newList);

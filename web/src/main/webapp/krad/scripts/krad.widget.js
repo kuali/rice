@@ -365,11 +365,13 @@ function closeLightbox() {
  * Cleanup form data from server when lightbox window is closed
  */
 function cleanupClosedLightboxForms() {
-    // get the formKey of the lightbox (fancybox)
-    var context = getContext();
-    var formKey = context('iframe.fancybox-iframe').contents().find('input#formKey').val();
+    if (jQuery('#formKey').length) {
+        // get the formKey of the lightbox (fancybox)
+        var context = getContext();
+        var formKey = context('iframe.fancybox-iframe').contents().find('input#formKey').val();
 
-    clearServerSideForm(formKey);
+        clearServerSideForm(formKey);
+    }
 }
 
 /**

@@ -823,6 +823,7 @@ public abstract class UifControllerBase {
             dm.setDialogAnswer(dialogId, form.getDialogResponse());
             dm.setDialogExplanation(dialogId, form.getDialogExplanation());
             newMethodToCall = dm.getDialogReturnMethod(dialogId);
+            dm.setCurrentDialogId(null);
         }
 
         // call intended controller method

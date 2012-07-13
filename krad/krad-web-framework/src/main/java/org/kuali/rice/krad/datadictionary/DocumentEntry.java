@@ -102,9 +102,9 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * The optional baseDocumentClass element is the name of the java superclass
+     * The optional baseDocumentClass element is the name of the java base class
      * associated with the document. This gives the data dictionary the ability
-     * to index by the superclass in addition to the current class.
+     * to index by the base class in addition to the current class.
      */
     public void setBaseDocumentClass(Class<? extends Document> baseDocumentClass) {
         this.baseDocumentClass = baseDocumentClass;
@@ -149,11 +149,6 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      */
     public void completeValidation() {
         super.completeValidation();
-
-        if (baseDocumentClass != null && !baseDocumentClass.isAssignableFrom(documentClass)) {
-            throw new ClassValidationException("The baseDocumentClass " + baseDocumentClass.getName() +
-                    " is not a superclass of the documentClass " + documentClass.getName());
-        }
 
         if (workflowProperties != null && workflowAttributes != null) {
             throw new DataDictionaryException(documentTypeName +

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
@@ -133,8 +134,7 @@ public class DataDictionaryIndex implements Runnable {
 
             if ((entry instanceof TransactionalDocumentEntry) 
                     && (documentEntries.get(entry.getFullClassName()) != null) 
-                    && !((DocumentEntry)documentEntries.get(entry.getFullClassName())).getDocumentTypeName()
-                            .equals(entry.getDocumentTypeName())) {
+                    && !StringUtils.equals(documentEntries.get(entry.getFullClassName()).getDocumentTypeName(), entry.getDocumentTypeName())) {
                 throw new DataDictionaryException(new StringBuffer("Two transactional document types may not share the same document class: this=")
                         .append(entry.getDocumentTypeName())
                         .append(" / existing=")
@@ -144,7 +144,9 @@ public class DataDictionaryIndex implements Runnable {
                 throw new DataDictionaryException(new StringBuffer("Two document types may not share the same jstl key: this=").append(entry.getDocumentTypeName()).append(" / existing=").append(((DocumentEntry)documentEntries.get(entry.getJstlKey())).getDocumentTypeName()).toString());
             }
 
-            documentEntries.put(entryName, entry);
+            if (entryName != null) {
+                documentEntries.put(entryName, entry);
+            }
             //documentEntries.put(entry.getFullClassName(), entry);
             documentEntries.put(entry.getDocumentClass().getName(), entry);
             if (entry.getBaseDocumentClass() != null) {

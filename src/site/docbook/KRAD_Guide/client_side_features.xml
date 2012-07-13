@@ -426,6 +426,70 @@
     </section>
   </section>
   <section>
+    <title>Ajax Improvements </title>
+    <para>Ajax is a group of web development client side technologies which are used to create asynchronous web applications. Web applications can send
+      and retrieve data asynchronously without affecting the display of the current page.</para>
+    <para>The ajax calls have been made cleaner.ajaxSubmitForm(), standard submitForm() and methods to do validation before hand have been added.
+      writeHiddenToForm() which was earlier used to write the data as hidden params on the form has been replaced by data-attributes</para>
+    <itemizedlist>
+        <listitem>
+          <para>actionInvokeHandler() - The actionInvokeHandler method checks based on the data-attributes whether it is an ajax submit or a non ajax one and
+            then calls one of the submit methods.</para>
+        </listitem>
+        <listitem>
+          <para>ajaxSubmitForm() - This in turn calls the ajaxSubmitFormFullOpts method with the validate flag set to false.</para>
+        </listitem>
+        <listitem>
+          <para>validateAndAjaxSubmitForm() -	This in turn calls the ajaxSubmitFormFullOpts method with the validate flag set to true.</para>
+        </listitem>
+        <listitem>
+          <para>ajaxSubmitFormFullOpts() - Submits the form through an ajax submit, the response is the new page html and runs all hidden scripts passed back.
+            It is similar to the old ajaxSubmitForm method but has some additional parameters which allow for providing hooks for successCallback,
+            errorCallback and preSubmitCalls. It also takes a validate flag as well as a returnType. A returnType is used to request data from the
+            server but the server may override it. If the validate flag is set it validates the form and  proceeds only if the form is valid. If a preSubmitcall
+            is specified then it executes that and proceeds if it returns true. If the returnType is not given then it defaults to "update-page" and
+            sets it on the data which is submitted to the server. It then calls the invokeAjaxReturnHandler to determine which handler function to call.
+            The successCallback and errorCallback are handled as they were before in ajaxSubmitForm. The elementToBlock and the lightBox processing also remain the same.</para>
+        </listitem>
+        <listitem>
+          <para>submitForm() - This is used for non-ajax calls. This in turn calls the submitFormFullOpts with the validate flag set to false.</para>
+        </listitem>
+        <listitem>
+          <para>validateAndSubmitForm() -	This is used for non-ajax calls. This in turn calls the submitFormFullOpts with the validate flag set to true.</para>
+        </listitem>
+        <listitem>
+          <para>submitFormFullOpts() - Does a non ajax submit. The data-attributes that are passed in as additional data are written as hidden params to the form before it is submitted.</para>
+        </listitem>
+        <listitem>
+          <para>invokeAjaxReturnHandler -	This method iterates over divs in the content that is passed in to determine which handler functions to call. The handler functions are initialized in krad.initialize.js</para>
+        </listitem>
+    </itemizedlist>
+    <para>As part of the improvements ajax returns were made smarter. This essentially means when sending back an ajax response, we need to write data that is used by the ajax call to determine how the response should be handled. The content is wrapped in a handler that indicates how the ajax call should handle the content. Here is an example of how it is done</para>
+    <programlisting>
+      &lt;div data-handler=&quot;update-title&quot;&gt;
+          &lt;div ..&gt; title contents &lt;/div&gt;
+      &lt;/div&gt;
+    </programlisting>
+    <para>The following methods have been added to handle the ajax response based on the returnType</para>
+    <itemizedlist>
+      <listitem>
+         <para>updatePageHandler - Called if the returnType is "update-page". Finds the page content in the returned content and updates the page, then processes	breadcrumbs and hidden scripts. While processing, the page contents are hidden.</para>
+      </listitem>
+      <listitem>
+         <para>updateViewHandler - Replaces the view with the given content and runs the hidden scripts. Called when the returnType is "update-view".</para>
+      </listitem>
+      <listitem>
+         <para>redirectHandler - Called when the returnType is "redirect". Replaces the contents of the window with those of the redirected URL.</para>
+      </listitem>
+      <listitem>
+         <para>updateComponentHandler -	Called when the returnType is "update-component". Retrieves the component with the matching id from the server
+           and replaces a matching _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label and a
+           displayWith marker span has a matching id, that span will be replaced with the label content and removed from the component.  This allows
+           for label and component content separation on fields</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section>
     <title>Utilities </title>
 <!-- TODO: Add content here -->    <para/>
   </section>

@@ -46,7 +46,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="IntegerPatternConstraint"
-					p:instructionalText="Floating point number, allow negative on"
+					p:instructionalText="Integer, allow negative on"
 					p:propertyName="field77">
 					<property name="validCharactersConstraint">
 						<bean parent="IntegerPatternConstraint" p:allowNegative="true" />

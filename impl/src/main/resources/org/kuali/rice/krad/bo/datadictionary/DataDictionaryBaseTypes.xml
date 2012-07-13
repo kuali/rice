@@ -183,6 +183,36 @@
         abstract="true"
         p:statePropertyName="state"
         class="org.kuali.rice.krad.datadictionary.state.StateMappingBase"/>
+
+  <bean id="WorkflowStateMapping"
+          abstract="true"
+          p:statePropertyName="document.documentHeader.workflowDocument.status"
+          class="org.kuali.rice.krad.datadictionary.state.StateMappingBase">
+    <property name="states">
+      <list>
+        <value>I</value>
+        <value>S</value>
+        <value>R</value>
+        <value>P</value>
+        <value>F</value>
+      </list>
+    </property>
+    <property name="customClientSideValidationStates">
+      <map>
+        <entry key="I" value="R"/>
+      </map>
+    </property>
+    <property name="stateNameMessageKeyMap">
+      <map>
+        <entry key="I" value="state.workflow.initiated"/>
+        <entry key="S" value="state.workflow.saved"/>
+        <entry key="R" value="state.workflow.enroute"/>
+        <entry key="P" value="state.workflow.processed"/>
+        <entry key="F" value="state.workflow.final"/>
+      </map>
+    </property>
+  </bean>
+
   <bean id="UTF8AnyCharacterPatternConstraint"
         abstract="true"
         class="org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint" />

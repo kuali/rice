@@ -80,8 +80,8 @@ public interface ViewValidationService {
 
     /**
      * Simulate view validation - this will run all validations against all states from the current state to
-     * the last state in the list of states in the view's stateMapping.  Validation errors received will be converted
-     * to warnings and added to the MessageMap.
+     * the last state in the list of states in the view's stateMapping.  Validation errors received for the current
+     * state will be added as errors to the MessageMap. Validation errors for future states will be warnings.
      *
      * @param view
      * @param model
@@ -90,9 +90,8 @@ public interface ViewValidationService {
 
     /**
      * Simulate view validation - this will run all validations against all states from the current state to
-     * the untilState specified in the list of states in the view's stateMapping.  Validation errors received will be
-     * converted
-     * to warnings and added to the MessageMap.
+     * the untilState specified in the list of states in the view's stateMapping.  Validation errors received for the
+     * current state will be added as errors to the MessageMap. Validation errors for future states will be warnings.
      *
      * @param view
      * @param model

@@ -81,6 +81,7 @@
               <bean parent="Uif-PrimaryActionButton" p:methodToCall="gotoState4"
                     p:actionLabel="Change to State 4"/>
               <bean parent="Uif-CheckForm-Button"/>
+              <bean parent="Uif-StateBased-RequiredInstructionsMessage"/>
               <bean parent="Uif-InputField-LabelTop" p:propertyName="state" p:label="State" p:readOnly="true"/>
               <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1" p:constraintText="Required
                                         for state2 only">
@@ -110,7 +111,7 @@
                     p:constraintText="For state 1 and 2 max 50 characters, for state 3 max 25 characters, for
                     state4 and after 15 characters">
                 <property name="simpleConstraint">
-                  <bean parent="SimpleConstraint" p:maxLength="50" p:states="state1-state2">
+                  <bean parent="SimpleConstraint" p:maxLength="50" p:states="state1>state2">
                     <property name="constraintStateOverrides">
                       <list>
                         <bean parent="SimpleConstraint" p:maxLength="25" p:states="state3"/>
@@ -123,7 +124,7 @@
               <bean parent="Uif-InputField-LabelTop" p:propertyName="field6" p:label="Field 6"
                     p:constraintText="Alpha only, state4 and after only upperCase allowed">
                 <property name="validCharactersConstraint">
-                  <bean parent="AlphaPatternConstraint" p:states="state1-state3">
+                  <bean parent="AlphaPatternConstraint" p:states="state1>state3">
                     <property name="constraintStateOverrides">
                       <list>
                         <bean parent="AlphaPatternConstraint" p:upperCase="true" p:states="state4+"/>
@@ -136,7 +137,7 @@
                     p:constraintText="AlphaNumeric only, state3 and after
                                         only Numeric allowed">
                 <property name="validCharactersConstraint">
-                  <bean parent="AlphaNumericPatternConstraint" p:states="state1-state2">
+                  <bean parent="AlphaNumericPatternConstraint" p:states="state1>state2">
                     <property name="constraintStateOverrides">
                       <list>
                         <bean parent="NumericPatternConstraint" p:states="state3+"/>
@@ -159,14 +160,17 @@
   </bean>
 
   <bean id="Demo-StateBasedValidation-Client" parent="Demo-StateBasedValidation-Server">
+    <property name="headerText" value="State-based Validation client-side Test View"/>
     <property name="validateClientSide" value="true"/>
   </bean>
 
   <bean id="Demo-StateBasedValidation-Client-KNS" parent="Demo-StateBasedValidation-Server-KNS">
+    <property name="headerText" value="State-based Validation client-side Test View"/>
     <property name="validateClientSide" value="true"/>
   </bean>
 
   <bean id="Demo-StateBasedValidation-ClientCustom" parent="Demo-StateBasedValidation-Server">
+    <property name="headerText" value="State-based Validation Custom client-side Test View"/>
     <property name="validateClientSide" value="true"/>
           <property name="instructionalText" value="Demonstration of custom client side validation settings: when in
                           either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after
@@ -180,6 +184,7 @@
   </bean>
 
   <bean id="Demo-StateBasedValidation-ClientCustom-KNS" parent="Demo-StateBasedValidation-Server-KNS">
+    <property name="headerText" value="State-based Validation Custom client-side Test View"/>
     <property name="validateClientSide" value="true"/>
     <property name="instructionalText" value="Demonstration of custom client side validation settings: when in
                     either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after

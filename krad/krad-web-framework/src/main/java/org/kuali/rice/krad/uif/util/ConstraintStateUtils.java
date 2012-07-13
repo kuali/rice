@@ -130,12 +130,12 @@ public class ConstraintStateUtils {
                 StringUtils.isNotBlank(validationState)) {
             if (((BaseConstraint) constraint).getConstraintStateOverrides() != null && !((BaseConstraint) constraint)
                     .getConstraintStateOverrides().isEmpty()) {
-                for (BaseConstraint bc : ((BaseConstraint) constraint).getConstraintStateOverrides()) {
+                BaseConstraint theConstraint = ((BaseConstraint) constraint);
+                for (BaseConstraint bc : theConstraint.getConstraintStateOverrides()) {
                     if (!bc.getStates().isEmpty() && ConstraintStateUtils.constraintAppliesForState(validationState, bc,
                             stateMapping)) {
                         try {
                             constraint = (T) bc;
-                            break;
                         } catch (ClassCastException e) {
                             throw new RuntimeException("Replacement state constraint for this constraint is not an "
                                     + "appropriate type: "

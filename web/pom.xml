@@ -146,12 +146,14 @@
               <jsSourceFiles>
                 <jsSourceFile>plugins/jquery/jquery-1.7.2.js</jsSourceFile>
                 <jsSourceFile>plugins/jqueryUI/jquery-ui-1.8.19.js</jsSourceFile>
-                <jsSourceFile>plugins/blockUI/jquery.blockUI.js</jsSourceFile>
-                <jsSourceFile>plugins/validate/jquery.validate.js</jsSourceFile>
                 <jsSourceFile>plugins/cookie/jquery.cookie.js</jsSourceFile>
                 <jsSourceFile>plugins/postmsg/jquery.ba-postmessage.js</jsSourceFile>
                 <jsSourceFile>plugins/jgrowl/jquery.jgrowl.js</jsSourceFile>
+                <jsSourceFile>plugins/blockUI/jquery.blockUI.js</jsSourceFile>
                 <jsSourceFile>plugins/watermark/jquery.watermark.js</jsSourceFile>
+                <jsSourceFile>plugins/validate/jquery.validate.js</jsSourceFile>
+                <jsSourceFile>plugins/tooltip/jquery.tools.min.js</jsSourceFile>
+                <jsSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/spinner/smartspinner.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/menu/krad.navigationMenu.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/textpopout/krad.textareaPopout.js</jsSourceFile>
@@ -167,21 +169,21 @@
                 <jsSourceFile>plugins/fancybox/jquery.fancybox.pack.js</jsSourceFile>
                 <jsSourceFile>plugins/easydrag/jquery.easydrag.js</jsSourceFile>
                 <jsSourceFile>plugins/easing/jquery.easing-1.3.pack.js</jsSourceFile>
-                <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
-                <jsSourceFile>scripts/krad.initialize.js</jsSourceFile>
                 <jsSourceFile>plugins/json/jquery.json-2.2.js</jsSourceFile>
                 <jsSourceFile>plugins/infusion/infusion-1.4.js</jsSourceFile>
                 <jsSourceFile>plugins/infusion/infusion.reorderer.js</jsSourceFile>
-                <jsSourceFile>scripts/krad.ajax.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.message.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.widget.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.initialize.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.ajax.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.utility.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.validate.js</jsSourceFile>
-                <jsSourceFile>scripts/krad.widget.js</jsSourceFile>
               </jsSourceFiles>
               <cssTargetDir>krad/css</cssTargetDir>
-              <cssFinalFile>krad.css</cssFinalFile>
+              <cssFinalFile>krad_2.2.0.css</cssFinalFile>
               <jsTargetDir>krad/scripts</jsTargetDir>
-              <jsFinalFile>krad.js</jsFinalFile>
+              <jsFinalFile>krad_2.2.0.js</jsFinalFile>
             </configuration>
             <goals>
               <goal>minify</goal>

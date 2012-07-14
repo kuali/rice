@@ -150,6 +150,18 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         return new EmailFrom(getDocumentTypeEmailAddress(documentType));
     }
 
+    protected EmailTo getEmailTo(Person user) {
+        String address = user.getEmailAddressUnmasked();
+        if (!isProduction()) {
+            LOG.info("If this were production, email would be sent to "+ user.getEmailAddressUnmasked());
+            address = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
+                KewApiConstants.KEW_NAMESPACE,
+                KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                KewApiConstants.ACTIONLIST_EMAIL_TEST_ADDRESS);
+        }
+        return new EmailTo(address);
+    }
+
     protected void sendEmail(Person user, EmailSubject subject,
             EmailBody body) {
         sendEmail(user, subject, body, null);
@@ -158,24 +170,13 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     protected void sendEmail(Person user, EmailSubject subject,
             EmailBody body, DocumentType documentType) {
         try {
-            if (isProduction()) {
-                mailer.sendEmail(getEmailFrom(documentType),
-                        new EmailTo(user.getEmailAddressUnmasked()),
-                        subject,
-                        body,
-                        false);
-            } else {
-                LOG.info("If this were production, email would be sent to "+ user.getEmailAddressUnmasked());
-                mailer.sendEmail(
-                        getEmailFrom(documentType),
-                        new EmailTo(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                                KewApiConstants.KEW_NAMESPACE,
-                                KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
-                                KewApiConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
-                        subject,
-                        body,
-                        false);
-            }
+
+            mailer.sendEmail(getEmailFrom(documentType),
+                                getEmailTo(user),
+                                subject,
+                                body,
+                                false);
+
         } catch (Exception e) {
             LOG.error("Error sending Action List email to " + user.getEmailAddressUnmasked(), e);
         }

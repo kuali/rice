@@ -34,6 +34,7 @@ import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.KualiHelpForm;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -236,7 +237,7 @@ public class KualiHelpAction extends KualiAction {
             label = docType.getLabel();
             description = docType.getDescription();
             if (StringUtils.isNotBlank(docType.getHelpDefinitionUrl())) {
-            	apcHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getHelpDefinitionUrl();
+            	apcHelpUrl = WebUtils.toAbsoluteURL(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.EXTERNALIZABLE_HELP_URL_KEY), docType.getHelpDefinitionUrl());
             }
         }
 
@@ -405,7 +406,7 @@ public class KualiHelpAction extends KualiAction {
     	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
     	    DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(helpForm.getSearchDocumentTypeName());
     	    if (docType != null && !StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
-    	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
+    	        String docSearchHelpUrl = WebUtils.toAbsoluteURL(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.EXTERNALIZABLE_HELP_URL_KEY), docType.getDocSearchHelpUrl());
 
     	        if ( StringUtils.isNotBlank(docSearchHelpUrl) ) {
     	            response.sendRedirect(docSearchHelpUrl);
@@ -429,7 +430,7 @@ public class KualiHelpAction extends KualiAction {
     		            return null;
     		        }
     			} else if (!StringUtils.isBlank(lookupDefinition.getHelpUrl())) {
-    				final String apcHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url")+lookupDefinition.getHelpUrl();
+    				final String apcHelpUrl = WebUtils.toAbsoluteURL(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.EXTERNALIZABLE_HELP_URL_KEY), lookupDefinition.getHelpUrl());
     				response.sendRedirect(apcHelpUrl);
     				return null;
     			}
@@ -449,7 +450,7 @@ public class KualiHelpAction extends KualiAction {
     }
 
     private String getHelpUrl(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {
-        return getConfigurationService().getPropertyValueAsString(KRADConstants.EXTERNALIZABLE_HELP_URL_KEY) + getParameterService().getParameterValueAsString(parameterNamespace, parameterDetailTypeCode, parameterName);
+        return WebUtils.toAbsoluteURL(getConfigurationService().getPropertyValueAsString(KRADConstants.EXTERNALIZABLE_HELP_URL_KEY), getParameterService().getParameterValueAsString(parameterNamespace, parameterDetailTypeCode, parameterName));
     }    
     
     /**

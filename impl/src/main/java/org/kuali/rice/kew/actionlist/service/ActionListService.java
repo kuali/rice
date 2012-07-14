@@ -41,8 +41,18 @@ public interface ActionListService {
 
     public Collection<ActionItemActionListExtension> getActionListForSingleDocument(String documentId);
 
+    /**
+     * Returns a list of recipients <i>which secondary-delegate to</i> the target principalId
+     * @param principalId the target principalId/delegate
+     * @return a list of recipients <i>which secondary-delegate to</i> the target principalId
+     */
     public Collection<Recipient> findUserSecondaryDelegators(String principalId);
 
+    /**
+     * Retruns a list of recipients <i>which are primary-delegated to by</i> the source principalId
+     * @param principalId the source principalId to query for primary delegates
+     * @return a list of recipients <i>which are primary-delegated to by</i> the source principalId
+     */
     public Collection<Recipient> findUserPrimaryDelegations(String principalId);
 
     public void saveActionItem(ActionItem actionItem);

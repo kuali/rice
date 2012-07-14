@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+  Copyright 2005-2012 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -123,8 +123,8 @@
     <jsr311-api.version>1.1.1</jsr311-api.version>
 
     <!--
-    KULRICE-7262: Bad jstl version in maven repository
-    When we are able to bump this version from 1.2, go back to the javax.servlet artifact
+      KULRICE-7262: Bad jstl version in maven repository
+      When we are able to bump this version from 1.2, go back to the javax.servlet artifact
     -->
     <jstl.version>1.2</jstl.version>
 
@@ -541,8 +541,8 @@
                       <exclude>net.sf.ehcache</exclude>
 
                       <!--
-                      KULRICE-7262: Bad jstl version in maven repository
-                      When we go back to the javax.servlet artifact, we'll need to remove this
+                        KULRICE-7262: Bad jstl version in maven repository
+                        When we go back to the javax.servlet artifact, we'll need to remove this
                       -->
                       <exclude>javax.servlet:jstl</exclude>
                     </excludes>
@@ -551,8 +551,8 @@
                       <!-- only allow in this specific version -->
 
                       <!--
-                      KULRICE-7262: Bad jstl version in maven repository
-                      When we are able to bump this version, go back to the javax.servlet artifact
+                        KULRICE-7262: Bad jstl version in maven repository
+                        When we are able to bump this version, go back to the javax.servlet artifact
                       -->
                       <!-- <include>javax.servlet:jstl:${jstl.version}</include> -->
                       <include>org.glassfish.web:jstl-impl:${jstl.version}</include>
@@ -1249,14 +1249,14 @@
 
       <dependency>
         <!--
-        KULRICE-7262: Bad jstl version in maven repository
-        When we are able to bump this version, go back to the javax.servlet artifact.
+          KULRICE-7262: Bad jstl version in maven repository
+          When we are able to bump this version, go back to the javax.servlet artifact.
 
-        Note that the rice-core-impl, rice-core-service-impl, and rice-impl poms also need
-        to have this changed.  Search on the Jira tag to easily find all the changes.
+          Note that the rice-core-impl, rice-core-service-impl, and rice-impl poms also need
+          to have this changed. Search on the Jira tag to easily find all the changes.
         -->
         <!-- <groupId>javax.servlet</groupId>
-        <artifactId>jstl</artifactId> -->
+          <artifactId>jstl</artifactId> -->
         <groupId>org.glassfish.web</groupId>
         <artifactId>jstl-impl</artifactId>
         <version>${jstl.version}</version>
@@ -1970,9 +1970,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.kuali.org/repos/rice/trunk</connection>
-    <developerConnection>scm:svn:http://svn.kuali.org/repos/rice/trunk</developerConnection>
-    <url>http://svn.kuali.org/repos/rice/trunk</url>
+    <connection>scm:svn:https://svn.kuali.org/repos/repos/rice/branches/rice-2.1</connection>
+    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.1</developerConnection>
+    <url>https://svn.kuali.org/repos/repos/rice/branches/rice-2.1</url>
   </scm>
 
 </project>

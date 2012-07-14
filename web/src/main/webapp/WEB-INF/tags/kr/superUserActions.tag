@@ -1,5 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<c:if test="${KualiForm.superUserDocument && KualiForm.stateAllowsSuperUserAction && KualiForm.superUserAuthorized}">
+<c:if test="${KualiForm.stateAllowsSuperUserAction && KualiForm.superUserAuthorized}">
 <c:set var="tabTitle"><bean:message key="superuser.tab.label" /></c:set>
 <c:set var="actionLabel"><bean:message key="superuser.action.column.label" /></c:set>
 <c:set var="requestedLabel"><bean:message key="superuser.requested.column.label" /></c:set>
@@ -27,14 +27,17 @@
 				    <td class="datacell">${actionRequest.actionRequested}</td>
 				    <td class="datacell">
 				        <c:choose>
-                            <c:when test="${actionRequest.userRequest}">
-                                <c:out value="${kfunc:getPrincipalDisplayName(actionRequest.principalId)}" />
-                            </c:when>
-                            <c:otherwise>
-                                <c:out value="${kfunc:getKimGroupDisplayName(actionRequest.groupId)}"/>
-                             </c:otherwise>
-                         </c:choose>
-                    </td>
+                    <c:when test="${actionRequest.userRequest}">
+                        <c:out value="${kfunc:getPrincipalDisplayName(actionRequest.principalId)}" />
+                    </c:when>
+                    <c:when test="${actionRequest.groupRequest}">
+                        <c:out value="${kfunc:getKimGroupDisplayName(actionRequest.groupId)}" />
+                    </c:when>
+                    <c:otherwise>
+                        <c:out value="${kfunc:getRoleDisplayName(actionRequest)}" />
+                    </c:otherwise>
+                 </c:choose>
+            </td>
 				    <td class="datacell"><joda:format value="${actionRequest.dateCreated}" pattern="MM/dd/yyyy hh:mm a"/>&nbsp;</td>
 				    <td class="datacell">${actionRequest.annotation}</td>
 				</tr>

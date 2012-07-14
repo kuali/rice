@@ -28,6 +28,8 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentBase;
+import org.kuali.rice.krad.impls.RiceTestTransactionalDocumentDivergent;
+import org.kuali.rice.krad.impls.RiceTestTransactionalDocumentDivergentParent;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 import org.kuali.rice.krad.impls.RiceTestTransactionalDocument2;
@@ -35,6 +37,8 @@ import org.kuali.rice.krad.impls.RiceTestTransactionalDocument2Parent;
 import org.kuali.rice.krad.test.document.AccountRequestDocument;
 import org.kuali.rice.krad.test.document.bo.AccountType2;
 import org.kuali.rice.krad.test.document.bo.AccountType2Parent;
+import org.kuali.rice.krad.test.document.bo.AccountTypeDivergent;
+import org.kuali.rice.krad.test.document.bo.AccountTypeDivergentParent;
 import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.*;
@@ -114,11 +118,11 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 	 */
 	@Test
 	public void testValidAndInvalidDDEntries() throws Exception {
-		// Ensure that we cannot specify a base class that is not the superclass of the document/businessObject class.
-		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, DocumentBase.class, false);
-		assertExpectedOutcomeOfDocEntryConstruction(TransactionalDocumentBase.class, MaintenanceDocumentBase.class, false);
-		assertExpectedOutcomeOfBOEntryConstruction(TransactionalDocumentBase.class, AdHocRouteRecipient.class, false);
-		assertExpectedOutcomeOfDocEntryConstruction(AccountRequestDocument.class, IdentityManagementKimDocument.class, false);
+		// Ensure that we can specify a base class that is not the superclass of the document/businessObject class.
+		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, DocumentBase.class, true);
+		assertExpectedOutcomeOfDocEntryConstruction(TransactionalDocumentBase.class, MaintenanceDocumentBase.class, true);
+		assertExpectedOutcomeOfBOEntryConstruction(TransactionalDocumentBase.class, AdHocRouteRecipient.class, true);
+		assertExpectedOutcomeOfDocEntryConstruction(AccountRequestDocument.class, IdentityManagementKimDocument.class, true);
 		
 		// Ensure that we can specify a base class that is the superclass of the document/businessObject class.
 		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, AdHocRouteRecipient.class, true);
@@ -126,9 +130,9 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 		assertExpectedOutcomeOfBOEntryConstruction(AdHocRouteWorkgroup.class, AdHocRouteRecipient.class, true);
 		assertExpectedOutcomeOfDocEntryConstruction(IdentityManagementPersonDocument.class, IdentityManagementKimDocument.class, true);
 		
-		// Ensure that we cannot specify a document/businessObject class that is a superclass of the base class.
-		assertExpectedOutcomeOfBOEntryConstruction(AdHocRouteRecipient.class, AdHocRoutePerson.class, false);
-		assertExpectedOutcomeOfDocEntryConstruction(IdentityManagementKimDocument.class, IdentityManagementGroupDocument.class, false);
+		// Ensure that we can specify a document/businessObject class that is a superclass of the base class.
+		assertExpectedOutcomeOfBOEntryConstruction(AdHocRouteRecipient.class, AdHocRoutePerson.class, true);
+		assertExpectedOutcomeOfDocEntryConstruction(IdentityManagementKimDocument.class, IdentityManagementGroupDocument.class, true);
 		
 		// Ensure that we can specify the same class for both the document/businessObject class and the base class
 		// (as permitted by the use of Class.isAssignableFrom in the BO and doc entry validations).
@@ -144,23 +148,39 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 	@Test
 	public void testRetrieveDDEntriesByBaseClass() throws Exception {
 		// Test the ability to retrieve a BusinessObjectEntry by "base" class, using both the full name and the simple name.
-		String[] baseClassNames = {"AccountType2Parent", "AccountType2Parent"};
-		String[] actualClassNames = {"AccountType2", "AccountType2"};
-		for (int i = 0; i < baseClassNames.length; i++) {
-			// Attempt to retrieve a BusinessObjectEntry that is indexed under AccountType2Parent, the "base" class of AccountType2.
-			assertBusinessObjectEntryIsAccountType2(dd.getBusinessObjectEntry(baseClassNames[i]));
+        Object[][] tests = {
+            { "AccountType2Parent", "AccountType2",
+               AccountType2.class, AccountType2Parent.class, "accountTypeCode2", "Account Type 2" },
+            { "org.kuali.rice.krad.test.document.bo.AccountType2Parent", "org.kuali.rice.krad.test.document.bo.AccountType2",
+               AccountType2.class, AccountType2Parent.class, "accountTypeCode2", "Account Type 2" },
+            { "AccountTypeDivergentParent", "AccountTypeDivergent",
+               AccountTypeDivergent.class, AccountTypeDivergentParent.class, "accountTypeCode Divergent", "Account Type Divergent" },
+            { "org.kuali.rice.krad.test.document.bo.AccountTypeDivergentParent", "org.kuali.rice.krad.test.document.bo.AccountTypeDivergent",
+               AccountTypeDivergent.class, AccountTypeDivergentParent.class, "accountTypeCode Divergent", "Account Type Divergent" }
+        };
+		for (Object[] test: tests) {
+			// Attempt to retrieve a BusinessObjectEntry that is indexed under the "base" class.
+			assertBusinessObjectEntry(dd.getBusinessObjectEntry((String) test[0]), (Class) test[2], (Class) test[3], (String) test[4], (String) test[5]);
 			// Now check to ensure that the same BusinessObjectEntry can still be retrieved by specifying the actual BO class name.
-			assertBusinessObjectEntryIsAccountType2(dd.getBusinessObjectEntry(actualClassNames[i]));
+            assertBusinessObjectEntry(dd.getBusinessObjectEntry((String) test[1]), (Class) test[2], (Class) test[3], (String) test[4], (String) test[5]);
 		}
 		
 		// Test the ability to retrieve a DocumentEntry by "base" class, using both the full name and the simple name.
-		baseClassNames = new String[] {"org.kuali.rice.krad.impls.RiceTestTransactionalDocument2Parent", "org.kuali.rice.krad.impls.RiceTestTransactionalDocument2Parent"};
-		actualClassNames = new String[] {"org.kuali.rice.krad.impls.RiceTestTransactionalDocument2", "org.kuali.rice.krad.impls.RiceTestTransactionalDocument2"};
-		for (int i = 0; i < baseClassNames.length; i++) {
-			// Attempt to retrieve a DocumentEntry indexed under RiceTestTransactionalDocument2Parent, the "base" class of RiceTestTransactionalDocument2.
-			assertDocumentEntryIsRiceTestTransactionalDocument2(dd.getDocumentEntry(baseClassNames[i]));
+        tests = new Object[][] {
+            { "RiceTestTransactionalDocument2Parent", "RiceTestTransactionalDocument2",
+               RiceTestTransactionalDocument2.class, RiceTestTransactionalDocument2Parent.class },
+            { "org.kuali.rice.krad.impls.RiceTestTransactionalDocument2Parent", "org.kuali.rice.krad.impls.RiceTestTransactionalDocument2",
+               RiceTestTransactionalDocument2.class, RiceTestTransactionalDocument2Parent.class },
+            { "RiceTestTransactionalDocumentDivergentParent", "RiceTestTransactionalDocumentDivergent",
+               RiceTestTransactionalDocumentDivergent.class, RiceTestTransactionalDocumentDivergentParent.class },
+            { "org.kuali.rice.krad.impls.RiceTestTransactionalDocumentDivergentParent", "org.kuali.rice.krad.impls.RiceTestTransactionalDocumentDivergent",
+               RiceTestTransactionalDocumentDivergent.class, RiceTestTransactionalDocumentDivergentParent.class }
+        };
+        for (Object[] test: tests) {
+			// Attempt to retrieve a DocumentEntry indexed under the "base" class
+            assertDocumentEntry(dd.getDocumentEntry((String) test[0]), (Class) test[2], (Class) test[3]);
 			// Now check to ensure that the same DocumentEntry can still be retrieved by specifying the actual document class name.
-			assertDocumentEntryIsRiceTestTransactionalDocument2(dd.getDocumentEntry(actualClassNames[i]));
+            assertDocumentEntry(dd.getDocumentEntry((String) test[1]), (Class) test[2], (Class) test[3]);
 		}
 		
 		// Test the ability to retrieve a BusinessObjectEntry by JSTL key, where the "base" class's simple name is the JSTL key if it is defined. However,
@@ -240,23 +260,33 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 	 * @throws Exception
 	 */
 	private void assertBusinessObjectEntryIsAccountType2(BusinessObjectEntry boEntry) throws Exception {
-		assertNotNull("The AccountType2 DD entry should not be null", boEntry);
-		assertEquals("The DD entry does not represent the AccountType2 entry", AccountType2.class, boEntry.getBusinessObjectClass());
-		assertEquals("The DD entry does not have the expected base class", AccountType2Parent.class, boEntry.getBaseBusinessObjectClass());
-		assertEquals("The DD entry does not have the expected title attribute", "accountTypeCode2", boEntry.getTitleAttribute());
-		assertEquals("The DD entry does not have the expected object label", "Account Type 2", boEntry.getObjectLabel());
+        assertBusinessObjectEntry(boEntry, AccountType2.class, AccountType2Parent.class, "accountTypeCode2", "Account Type 2");
 	}
-	
-	/**
-	 * A convenience method for checking if a DocumentEntry represents the RiceTestTransactionalDocument2 DD entry.
-	 * 
-	 * @param docEntry The DocumentEntry to test.
-	 * @throws Exception
-	 */
-	private void assertDocumentEntryIsRiceTestTransactionalDocument2(DocumentEntry docEntry) throws Exception {
-		assertNotNull("The RiceTestTransactionalDocument2 DD entry should not be null", docEntry);
-		assertEquals("The DD entry does not represent the RiceTestTransactionalDocument2 entry",
-				RiceTestTransactionalDocument2.class, docEntry.getDocumentClass());
-		assertEquals("The DD entry does not have the expected base class", RiceTestTransactionalDocument2Parent.class, docEntry.getBaseDocumentClass());
-	}
+
+    /**
+     * A convenience method for checking if a BusinessObjectEntry represents the correct DD entry.
+     *
+     * @param boEntry The BusinessObjectEntry to test.
+     * @throws Exception
+     */
+    private void assertBusinessObjectEntry(BusinessObjectEntry boEntry, Class boClass, Class boBaseClass, String title, String label) throws Exception {
+        assertNotNull("The DD entry should not be null", boEntry);
+        assertEquals("The DD entry does not represent the " + boClass.getName() + " entry", boClass, boEntry.getBusinessObjectClass());
+        assertEquals("The DD entry does not have the expected base class", boBaseClass, boEntry.getBaseBusinessObjectClass());
+        assertEquals("The DD entry does not have the expected title attribute", title, boEntry.getTitleAttribute());
+        assertEquals("The DD entry does not have the expected object label", label, boEntry.getObjectLabel());
+    }
+
+    /**
+     * A convenience method for checking if a DocumentEntry represents the correct DD entry.
+     *
+     * @param docEntry The DocumentEntry to test.
+     * @throws Exception
+     */
+    private void assertDocumentEntry(DocumentEntry docEntry, Class docClass, Class baseDocClass) throws Exception {
+        assertNotNull("The RiceTestTransactionalDocument2 DD entry should not be null", docEntry);
+        assertEquals("The DD entry does not represent the RiceTestTransactionalDocument2 entry",
+                docClass, docEntry.getDocumentClass());
+        assertEquals("The DD entry does not have the expected base class", baseDocClass, docEntry.getBaseDocumentClass());
+    }
 }

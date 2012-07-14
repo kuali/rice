@@ -232,8 +232,21 @@ public class DTOConverter {
         if (definition == null) {
             return null;
         }
-
-        ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(definition.getAttributeName());
+        //KULRICE-7643
+        ExtensionDefinition extensionDefinition = null;
+        List<RuleAttribute> ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByClassName(definition.getAttributeName());
+        if (ruleAttribute == null || ruleAttribute.isEmpty()) {
+            extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(definition.getAttributeName());
+        }else{
+            //TODO: Should we do something more intelligent here? Rice 1.x returned only a single entry but we can now have a list
+            RuleAttribute tmpAttr = ruleAttribute.get(0);
+            extensionDefinition = RuleAttribute.to(tmpAttr);
+            if(ruleAttribute.size() > 1){
+                LOG.warn("AttributeDefinition lookup (findByClassName) returned multiple attribute for the same class name. This should not happen, investigation recommended for classname: " 
+            + definition.getAttributeName() + " which has " + ruleAttribute.size() + " entries.");
+            }
+        }
+        
         if (extensionDefinition == null) {
             throw new WorkflowRuntimeException("Extension " + definition.getAttributeName() + " not found");
         }

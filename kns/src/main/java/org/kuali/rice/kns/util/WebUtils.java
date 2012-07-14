@@ -51,6 +51,9 @@ import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
@@ -86,6 +89,11 @@ public class WebUtils {
 
 	private static final String APPLICATION_IMAGE_URL_PROPERTY_PREFIX = "application.custom.image.url";
 	private static final String DEFAULT_IMAGE_URL_PROPERTY_NAME = "kr.externalizable.images.url";
+
+    /**
+     * Prefixes indicating an absolute url
+     */
+    private static final String[] SCHEMES = { "http://", "https://" };
 
 	/**
 	 * A request attribute name that indicates that a
@@ -540,8 +548,9 @@ public class WebUtils {
 
 	public static int getIndexOfCoordinateExtension(String parameter) {
 		int indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_X_EXTENSION);
-		if (indexOfCoordinateExtension == -1)
-			indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
+        if (indexOfCoordinateExtension == -1) {
+            indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
+        }
 		return indexOfCoordinateExtension;
 	}
 
@@ -830,4 +839,61 @@ public class WebUtils {
     	}
     	return KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(principalId).getDefaultName().getCompositeName();
     }
+
+    /**
+     * Takes an {@link org.kuali.rice.kew.api.action.ActionRequest} with a recipient type of
+     * {@link org.kuali.rice.kew.api.action.RecipientType#ROLE} and returns the display name for the role.
+     *
+     * @param actionRequest the action request
+     * @return the display name for the role
+     * @throws IllegalArgumentException if the action request is null, or the recipient type is not ROLE
+     */
+    public static String getRoleDisplayName(ActionRequest actionRequest) {
+        String result;
+
+        if(actionRequest == null) {
+            throw new IllegalArgumentException("actionRequest must be non-null");
+        }
+        if (RecipientType.ROLE != actionRequest.getRecipientType()) {
+            throw new IllegalArgumentException("actionRequest recipient must be a Role");
+        }
+
+        Role role = KimApiServiceLocator.getRoleService().getRole(actionRequest.getRoleName());
+
+        if (role != null) {
+            result = role.getName();
+        } else if (!StringUtils.isBlank(actionRequest.getQualifiedRoleNameLabel())) {
+            result = actionRequest.getQualifiedRoleNameLabel();
+        } else {
+            result = actionRequest.getRoleName();
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns an absolute URL which is a combination of a base part plus path,
+     * or in the case that the path is already an absolute URL, the path alone
+     * @param base the url base path
+     * @param path the path to append to base
+     * @return an absolute URL representing the combination of base+path, or path alone if it is already absolute
+     */
+    public static String toAbsoluteURL(String base, String path) {
+        boolean abs = false;
+        if (StringUtils.isBlank(path)) {
+            path = "";
+        } else {
+            for (String scheme: SCHEMES) {
+                if (path.startsWith(scheme)) {
+                    abs = true;
+                    break;
+                }
+            }
+        }
+        if (abs) {
+            return path;
+        }
+        return base + path;
+    }
+
 }

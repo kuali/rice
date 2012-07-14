@@ -31,13 +31,18 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-final class ActionListUtil {
+public final class ActionListUtil {
 	
 	private ActionListUtil() {
 		throw new UnsupportedOperationException("do not call");
 	}
-	
-    static List<WebFriendlyRecipient> getWebFriendlyRecipients(Collection<Recipient> recipients) {
+
+    /**
+     * Converts a collection of Recipients into a collection of WebFriendlyRecipients which can be displayed in the UI
+     * @param recipients recipients to convert
+     * @return a collection of WebFriendlyRecipients which can be displayed in the UI
+     */
+    public static List<WebFriendlyRecipient> getWebFriendlyRecipients(Collection<Recipient> recipients) {
         Collection<WebFriendlyRecipient> newRecipients = new ArrayList<WebFriendlyRecipient>(recipients.size());
         for (Recipient recipient : recipients) {
             newRecipients.add(new WebFriendlyRecipient(recipient));

@@ -293,7 +293,14 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 //    }
 
     public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
-        XPath xpath = XPathHelper.newXPath(docContent.getDocument());
+        XPath xpath = null;
+        String xPathCacheKey = "xPath" + docContent.getRouteContext().getNodeInstance().getRouteNodeInstanceId() + "-" + docContent.getRouteContext().getNodeInstance().getName();
+        if(docContent.getRouteContext().getParameters().containsKey(xPathCacheKey)) {
+                xpath = (XPath)docContent.getRouteContext().getParameters().get(xPathCacheKey);
+        } else {
+                xpath = XPathHelper.newXPath(docContent.getDocument());
+                docContent.getRouteContext().getParameters().put(xPathCacheKey, xpath);
+        }
         WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
         resolver.setRuleExtensions(ruleExtensions);
         List<String> xPathExpressionsToEvaluate = extractExpressionsToEvaluate(xpath, docContent, ruleExtensions);

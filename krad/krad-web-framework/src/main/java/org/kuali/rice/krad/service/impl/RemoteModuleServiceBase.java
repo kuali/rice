@@ -180,7 +180,19 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
      * @return String base lookup URL
      */
     protected String getRiceBaseLookupUrl() {
-        return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_SERVER_LOOKUP_URL_KEY);
+        return BaseLookupUrlsHolder.remoteKradBaseLookupUrl;
+    }
+
+    // Lazy initialization holder class idiom, see Effective Java item #71
+    protected static final class BaseLookupUrlsHolder {
+
+        public static final String localKradBaseLookupUrl;
+        public static final String remoteKradBaseLookupUrl;
+
+        static {
+            remoteKradBaseLookupUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_SERVER_LOOKUP_URL_KEY);
+            localKradBaseLookupUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
+        }
     }
 
     /**

@@ -310,9 +310,30 @@
 					<responsibility>
 						<user>bmcgough</user>
 					</responsibility>
-				</responsibilities>
+          <responsibility>
+            <groupName namespace="KR-WKFLW">NonSIT</groupName>
+          </responsibility>
+        </responsibilities>
 			</rule>
 		</ruleDelegation>
+    <ruleDelegation>
+      <parentResponsibility>
+        <parentRuleName>ActionListConfig-Rule1</parentRuleName>
+        <groupName namespace="KR-WKFLW">NonSIT</groupName>
+      </parentResponsibility>
+      <delegationType>S</delegationType>
+      <rule>
+        <documentType>ActionListDocumentType</documentType>
+        <ruleTemplate>RuleTemplate1</ruleTemplate>
+        <description>Action List Test Secondary Delegation From Group</description>
+        <forceAction>false</forceAction>
+        <responsibilities>
+          <responsibility>
+            <user>bmcgough</user>
+          </responsibility>
+        </responsibilities>
+      </rule>
+    </ruleDelegation>
 		<ruleDelegation>
 			<parentResponsibility>
 				<parentRuleName>ActionListConfig-Rule1</parentRuleName>

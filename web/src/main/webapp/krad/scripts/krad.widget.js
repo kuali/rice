@@ -130,7 +130,7 @@ function createLightBoxLink(linkId, options, addAppParms) {
 
         // Check if this is called within a light box
         // TODO: utility function for checking whether in a lightbox
-        if (!jQuery(".fancybox-iframe", parent.document).length) {
+        if (!jQuery(".fancybox-opened", parent.document).length) {
             // Check if this is called within a krad light box
             if (jQuery('#renderedInLightBox').val() == true) {
                 // Perform cleanup when lightbox is closed
@@ -200,7 +200,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
         jQuery.extend(data, submitData);
 
         // Check if this is not called within a lightbox
-        if (!jQuery(".fancybox-iframe", parent.document).length) {
+        if (!jQuery(".fancybox-opened", parent.document).length) {
             jQuery("#" + componentId).click(function (e) {
                 // Prevent the default submit
                 e.preventDefault();

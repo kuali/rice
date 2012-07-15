@@ -43,8 +43,8 @@ public class History implements Serializable {
     private static final long serialVersionUID = -8279297694371557335L;
     private static final Logger LOG = Logger.getLogger(History.class);
 
-    public static final String ENTRY_TOKEN = "$";
-    public static final String VAR_TOKEN = ",";
+    public static final String ENTRY_TOKEN = "$^$";
+    public static final String VAR_TOKEN = "^$^";
 
     private boolean appendHomewardPath;
     private boolean appendPassedHistory;
@@ -194,7 +194,11 @@ public class History implements Serializable {
             String key = params.nextElement();
             if (!key.equals(UifConstants.UrlParams.HISTORY)) {
                 for (String value : request.getParameterValues(key)) {
-                    queryString = queryString + "&" + key + "=" + value;
+                    try {
+                        queryString = queryString + "&" + key + "=" + URLEncoder.encode(value, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException("Unable to encode parameter value", e);
+                    }
                 }
             }
 
@@ -209,11 +213,18 @@ public class History implements Serializable {
 
         // add formKey and pageId to url
         if (StringUtils.isNotBlank(form.getFormKey()) && !formKeyValue) {
-            queryString = queryString + "&" + UifConstants.UrlParams.FORM_KEY + "=" + form.getFormKey();
+            try {
+                queryString = queryString + "&" + UifConstants.UrlParams.FORM_KEY + "=" + URLEncoder.encode(
+                        form.getFormKey(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("Unable to encode form key", e);
+            }
         }
+
         if (StringUtils.isNotBlank(form.getPageId()) && !pageIdValue) {
             queryString = queryString + "&" + UifConstants.UrlParams.PAGE_ID + "=" + form.getPageId();
         }
+
         if (!showHomeValue) {
             queryString = queryString + "&" + UifConstants.UrlParams.SHOW_HOME + "=false";
         }
@@ -245,9 +256,9 @@ public class History implements Serializable {
 
             historyEntries = new ArrayList<HistoryEntry>();
             if (appendPassedHistory) {
-                String[] historyTokens = parameterString.split("\\" + ENTRY_TOKEN);
+                String[] historyTokens = StringUtils.splitByWholeSeparator(parameterString, ENTRY_TOKEN);
                 for (String token : historyTokens) {
-                    String[] params = token.split(VAR_TOKEN);
+                    String[] params = StringUtils.splitByWholeSeparator(token, VAR_TOKEN);
                     pushToHistory(params[0], params[1], params[2], params[3], params[4]);
                 }
             }

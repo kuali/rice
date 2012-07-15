@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.krad.web.bind;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
@@ -102,7 +104,15 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
         incidentReportForm.setDevMode(!KRADUtils.isProductionEnvironment());
         incidentReportForm.setViewId("Uif-IncidentReportView");
-        incidentReportForm.setAjaxRequest(form.isAjaxRequest());
+
+        if (form != null) {
+            incidentReportForm.setAjaxRequest(form.isAjaxRequest());
+        } else {
+            String ajaxRequestParm = request.getParameter(UifParameters.AJAX_REQUEST);
+            if (StringUtils.isNotBlank(ajaxRequestParm)) {
+                incidentReportForm.setAjaxRequest(Boolean.parseBoolean(ajaxRequestParm));
+            }
+        }
 
         // Set the view object
         incidentReportForm.setView(getViewService().getViewById("Uif-IncidentReportView"));

@@ -511,6 +511,8 @@ public abstract class UifControllerBase {
                             lookupParameterValue);
                 }
             }
+
+            lookupParameters.remove(UifParameters.LOOKUP_PARAMETERS);
         }
 
         // TODO: lookup anchors and doc number?

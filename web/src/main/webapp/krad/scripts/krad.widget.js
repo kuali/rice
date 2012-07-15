@@ -125,18 +125,13 @@ function setupTextPopout(id, label, summary, constraint, imageUrl) {
  */
 function createLightBoxLink(linkId, options, addAppParms) {
     jQuery(function () {
+        var renderedInLightBox = jQuery('#renderedInLightBox').val() == 'true';
+
         // first time content is brought up in lightbox we don't want to show history
-        var showHistory = false;
+        var showHistory = renderedInLightBox;
 
         // Check if this is called within a light box
-        // TODO: utility function for checking whether in a lightbox
-        if (!jQuery(".fancybox-opened", parent.document).length) {
-            // Check if this is called within a krad light box
-            if (jQuery('#renderedInLightBox').val() == true) {
-                // Perform cleanup when lightbox is closed
-                options['beforeClose'] = cleanupClosedLightboxForms;
-            }
-
+        if (!renderedInLightBox) {
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
             if (top == self) {
@@ -200,7 +195,8 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
         jQuery.extend(data, submitData);
 
         // Check if this is not called within a lightbox
-        if (!jQuery(".fancybox-opened", parent.document).length) {
+        var renderedInLightBox = jQuery('#renderedInLightBox').val() == 'true';
+        if (!renderedInLightBox) {
             jQuery("#" + componentId).click(function (e) {
                 // Prevent the default submit
                 e.preventDefault();

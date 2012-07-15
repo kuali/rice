@@ -51,7 +51,7 @@
     <kuali.release.goals>deploy</kuali.release.goals>
     <kuali.release.arguments>-DskipTests</kuali.release.arguments>
 
-    <!--project.build.sourceEncoding>UTF-8</project.build.sourceEncoding-->
+    <!--project.build.sourceEncoding>UTF-8</project.build.sourceEncoding -->
 
     <appserver.port>8080</appserver.port>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
@@ -249,6 +249,7 @@
                 <exclude>db/impex/**</exclude>
                 <exclude>config/ide/**</exclude>
                 <exclude>it/**</exclude>
+                <exclude>src/site/docbook/**</exclude>
                 <exclude>**/src/it/**</exclude>
                 <exclude>web/src/main/webapp/krad/plugins</exclude>
 

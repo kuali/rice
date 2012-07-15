@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -210,6 +211,22 @@ public class View extends ContainerBase {
             if (StringUtils.isBlank(group.getId())) {
                 group.setId(view.getNextId());
             }
+        }
+    }
+
+    /**
+     * The following updates are done here:
+     *
+     * <ul>
+     * <li>Invoke expression evaluation on view theme</li>
+     * </ul>
+     */
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        if (theme != null) {
+            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, theme, model,
+                    getContext());
         }
     }
 

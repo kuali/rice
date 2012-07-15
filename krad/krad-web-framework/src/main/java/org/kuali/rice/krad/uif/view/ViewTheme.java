@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.uif.component.ConfigurableBase;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,7 +26,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ViewTheme implements Serializable{
+public class ViewTheme extends ConfigurableBase implements Serializable{
     private static final long serialVersionUID = 7063256242857896580L;
 
     private List<String> cssFiles;

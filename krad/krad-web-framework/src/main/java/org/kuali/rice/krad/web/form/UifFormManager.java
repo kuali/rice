@@ -16,11 +16,12 @@
 package org.kuali.rice.krad.web.form;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  * Manages Uif form objects for a session
@@ -38,30 +40,57 @@ import java.util.Map;
 public class UifFormManager implements Serializable {
     private static final long serialVersionUID = -6323378881342207080L;
 
+    private int maxNumberOfSessionForms = 5;
+
+    private Vector accessedFormKeys;
+
     private Map<String, UifFormBase> sessionForms;
 
     /**
      * Create a new form manager with an empty list of forms for the session.
      */
     public UifFormManager() {
+        this.accessedFormKeys = new Vector();
         this.sessionForms = new HashMap<String, UifFormBase>();
+
+        String maxNumberOfSessionFormsConfig =
+                KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("maxNumberOfSessionForms");
+        if (StringUtils.isNotBlank(maxNumberOfSessionFormsConfig)) {
+            maxNumberOfSessionForms = Integer.parseInt(maxNumberOfSessionFormsConfig);
+        }
     }
 
     /**
-     * Add a form to the session.
+     * Add a form to the session
      *
      * @param form to be added to the session
      */
     public void addSessionForm(UifFormBase form) {
-        if (form == null) {
-            return;
+        if (form == null || StringUtils.isBlank(form.getFormKey())) {
+            throw new RiceIllegalArgumentException("Form or form key was null");
         }
 
         sessionForms.put(form.getFormKey(), form);
+
+        // add form key to top of vector indicating it is most recent
+        if (accessedFormKeys.contains(form.getFormKey())) {
+            accessedFormKeys.removeElement(form.getFormKey());
+        }
+        accessedFormKeys.add(form.getFormKey());
+
+        // check if we have too many forms and need to remove an old one
+        if (sessionForms.size() > maxNumberOfSessionForms) {
+            // get the oldest form we have
+            String removeFormKey = (String) accessedFormKeys.get(0);
+            if (sessionForms.containsKey(removeFormKey)) {
+                sessionForms.remove(removeFormKey);
+            }
+            accessedFormKeys.removeElementAt(0);
+        }
     }
 
     /**
-     * Retrieve a form from the session.
+     * Retrieve a form from the session
      *
      * @param formKey of the form to retrieve from the session
      * @return UifFormBase
@@ -75,31 +104,20 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Removes the stored form data and the forms from the breadcrumb history from the session.
+     * Removes the stored form data and the forms from the breadcrumb history from the session
      *
      * @param form to be removed
      */
     public void removeSessionForm(UifFormBase form) {
-        if (form == null) {
+        if (form == null || StringUtils.isBlank(form.getFormKey())) {
             return;
         }
 
-        removeFormWithHistoryFormsByKey(form.getFormKey());
+        removeSessionFormByKey(form.getFormKey());
     }
 
     /**
-     * Removes the stored form data from the session.
-     *
-     * @param formKey of the form to be removed
-     */
-    public void removeSessionFormByKey(String formKey) {
-        if (sessionForms.containsKey(formKey)) {
-            sessionForms.remove(formKey);
-        }
-    }
-
-    /**
-     * Removes the stored form data and the forms from the breadcrumb history from the session.
+     * Removes the stored form data and the forms from the breadcrumb history from the session
      *
      * @param formKey of the form to be removed
      */
@@ -107,7 +125,7 @@ public class UifFormManager implements Serializable {
         if (sessionForms.containsKey(formKey)) {
             // Remove forms from breadcrumb history as well
             for (HistoryEntry historyEntry : sessionForms.get(formKey).getFormHistory().getHistoryEntries()) {
-                sessionForms.remove(historyEntry.getFormKey());
+                removeSessionFormByKey(historyEntry.getFormKey());
             }
 
             removeSessionFormByKey(formKey);
@@ -115,8 +133,23 @@ public class UifFormManager implements Serializable {
     }
 
     /**
+     * Removes the stored form data from the session
+     *
+     * @param formKey of the form to be removed
+     */
+    public void removeSessionFormByKey(String formKey) {
+        if (accessedFormKeys.contains(formKey)) {
+            accessedFormKeys.removeElement(formKey);
+        }
+
+        if (sessionForms.containsKey(formKey)) {
+            sessionForms.remove(formKey);
+        }
+    }
+
+    /**
      * Retrieves the session form based on the formkey and updates the non session transient
-     * variables on the request form from the session form.
+     * variables on the request form from the session form
      *
      * @param requestForm
      * @param formKey
@@ -150,7 +183,6 @@ public class UifFormManager implements Serializable {
                                 "Error copying values from the session form to request form for " + field.getName());
                     }
                 }
-
             }
 
             updatedForm = requestForm;
@@ -186,7 +218,41 @@ public class UifFormManager implements Serializable {
             }
 
         }
+
         return form;
+    }
+
+    /**
+     * Internal vector maintained to keep track of accessed form and the order in which they were accessed
+     *
+     * <p>
+     * Used for the form clearing process. When forms are added to the manager their key is added to the top of
+     * the vector. When a form needs to be cleared, the form identified by the key at the botton of this vector
+     * is removed
+     * </p>
+     *
+     * @return Vector instance holding form key strings
+     */
+    protected Vector getAccessedFormKeys() {
+        return accessedFormKeys;
+    }
+
+    /**
+     * Maximum number of forms that can be stored at one time by the manager
+     *
+     * @return int max number of forms
+     */
+    public int getMaxNumberOfSessionForms() {
+        return maxNumberOfSessionForms;
+    }
+
+    /**
+     * Setter for the maximum number of forms
+     *
+     * @param maxNumberOfSessionForms
+     */
+    public void setMaxNumberOfSessionForms(int maxNumberOfSessionForms) {
+        this.maxNumberOfSessionForms = maxNumberOfSessionForms;
     }
 
 }

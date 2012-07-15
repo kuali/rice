@@ -29,7 +29,7 @@ Standard HTML Hidden Input
         <#local attributes='${attributes} style="${control.style}"'/>
     </#if>
 
-    <@spring.formHidden id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}"
+    <@spring.formHiddenInput id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}"
             attributes="${attributes}"/>
 
 </#macro>

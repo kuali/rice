@@ -337,7 +337,7 @@ public class Book {
                 we just want to display the view for the user to begin completing. Being able to set
                 default values that will display on the initial view is convenient in that we don’t
                 have to override the controller method to do the same in code.</para>
-      <para>There are two properties available on data field that allows us to configure a
+      <para>There are three properties available on data field that allows us to configure a
                 default value. The first is the property ‘defaultValue’ which takes the actual value
                 to use. For example, suppose we want to set a default value of ‘2012’ for the
                 bookYear property. This would be done as follows:</para>
@@ -355,14 +355,25 @@ public class Book {
                     As of Rice 2.0, any custom editor is not used to apply the default value. This 
                     is being looked at for a potential enhancement in 2.2.</para>
             </note>
-            -->      <para>A very powerful feature we will be looking at later on in this training manual is
+            -->
+      <para>A very powerful feature we will be looking at later on in this training manual is
                 the Spring Expression Language (EL). KRAD allows you to use expressions for most
                 component properties, including the defaultValue. There are many things you can do
                 with EL, but to give you a taste here are a couple:</para>
       <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookYear” p:defaultValue=”@{2010 + 2}”/&gt;</programlisting>
       <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookYear” p:defaultValue=”@{bookId &lt; 1000 ? 2011 : 2012}”/&gt;</programlisting>
       <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookTitle” p:defaultValue=”New Book for @{bookYear}”/&gt;</programlisting>
-      <para>The second way to configure a default value is by setting the <emphasis role="bold">defaultValueFinderClass</emphasis> property. This is the full class
+      <para>The second way to configure default values is by setting the ‘defaultValues’ property (notice the 's' on the end).  This
+        property provides the ability to set multiple default values. For example, if you wanted to default items with values of
+        either 2 or 3 you could add the following.</para>
+      <programlisting>&lt;property name=”defaultValues” &gt;
+        &lt;list&gt;
+        &lt;value>2&lt;/value&gt;
+        &lt;value>3&lt;/value&gt;
+        &lt;/list&gt;
+        &lt;/property&gt;
+      </programlisting>
+      <para>The third way to configure a default value is by setting the <emphasis role="bold">defaultValueFinderClass</emphasis> property. This is the full class
                 name for the class that implements the <emphasis role="bold">org.kuali.rice.krad.valuefinder.ValueFinder</emphasis> interface. This
                 interface is very simple with just the one method:</para>
       <programlisting>public String getValue();</programlisting>

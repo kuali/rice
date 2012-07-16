@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.xml.export;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -35,7 +36,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -148,10 +152,21 @@ public class RuleXmlExporter implements XmlExporter {
         }
     }
 
-    private void exportRuleExtensionValues(Element parent, List extensionValues) {
+    // sorts by rule extension value key in order to establish a deterministic order
+    private void exportRuleExtensionValues(Element parent, List<RuleExtensionValue> extensionValues) {
         if (!extensionValues.isEmpty()) {
+            List<RuleExtensionValue> sorted = new ArrayList<RuleExtensionValue>(extensionValues);
+            // establish deterministic ordering of keys
+            Collections.sort(sorted, new Comparator<RuleExtensionValue>() {
+                @Override
+                public int compare(RuleExtensionValue o1, RuleExtensionValue o2) {
+                    if (o1 == null) return -1;
+                    if (o2 == null) return 1;
+                    return ObjectUtils.compare(o1.getKey(), o2.getKey());
+                }
+            });
             Element extValuesElement = renderer.renderElement(parent, RULE_EXTENSION_VALUES);
-            for (Iterator iterator = extensionValues.iterator(); iterator.hasNext();) {
+            for (Iterator iterator = sorted.iterator(); iterator.hasNext();) {
                 RuleExtensionValue extensionValue = (RuleExtensionValue) iterator.next();
                 Element extValueElement = renderer.renderElement(extValuesElement, RULE_EXTENSION_VALUE);
                 renderer.renderTextElement(extValueElement, KEY, extensionValue.getKey());

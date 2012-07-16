@@ -168,6 +168,11 @@
                                     is being rendered for</para>
                             </listitem>
                             <listitem>
+                                <para>parentLine - Refers to the parent collection line (parent to a sub
+                                    collection) allowing access to the sub collection size with
+                                    ‘@{#parentLine.subCollectionName.size()}’ from within the sub collection.</para>
+                            </listitem>
+                            <listitem>
                                 <para>readOnlyLine - When on a component within a collection group
                                     line indicates if the line for which the component is being
                                     rendered for is read-only</para>

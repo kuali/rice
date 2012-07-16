@@ -111,7 +111,7 @@ public abstract class UifControllerBase {
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
         if (StringUtils.isNotBlank(formKeyParam)) {
             // retrieves the session form and updates the request from with the session transient attributes
-            requestForm = uifFormManager.updateFormWithSession(requestForm, formKeyParam);
+            uifFormManager.updateFormWithSession(requestForm, formKeyParam);
         }
 
         // if form exist, remove unused forms from breadcrumb history

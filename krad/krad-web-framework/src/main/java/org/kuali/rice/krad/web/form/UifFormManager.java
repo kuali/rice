@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -153,53 +154,40 @@ public class UifFormManager implements Serializable {
      *
      * @param requestForm
      * @param formKey
-     * @return UifFormBase the updated form
      */
-    public UifFormBase updateFormWithSession(UifFormBase requestForm, String formKey) {
-        UifFormBase updatedForm = null;
-        Object fieldValue = null;
-
+    public void updateFormWithSession(UifFormBase requestForm, String formKey) {
         UifFormBase sessionForm = sessionForms.get(formKey);
         if (sessionForm == null) {
-            updatedForm = requestForm;
-        } else {
-            List<Field> fields = new ArrayList<Field>();
-            for (Field field : ObjectUtils.getAllFields(fields, sessionForm.getClass(), UifFormBase.class)) {
-                boolean copyValue = true;
-                for (Annotation an : field.getAnnotations()) {
-                    if (an instanceof SessionTransient) {
-                        copyValue = false;
-                    }
-                }
+            return;
+        }
 
-                if (copyValue) {
-                    try {
-                        fieldValue = PropertyUtils.getProperty(sessionForm, field.getName());
-                        PropertyUtils.setProperty(requestForm, field.getName(), fieldValue);
-                    } catch (NoSuchMethodException e1) {
-                        // Eat it
-                    } catch (Exception e) {
-                        throw new RuntimeException(
-                                "Error copying values from the session form to request form for " + field.getName());
-                    }
+        List<Field> fields = new ArrayList<Field>();
+        fields = ObjectUtils.getAllFields(fields, sessionForm.getClass(), UifFormBase.class);
+        for (Field field : fields) {
+            boolean copyValue = true;
+            for (Annotation an : field.getAnnotations()) {
+                if (an instanceof SessionTransient) {
+                    copyValue = false;
                 }
             }
 
-            updatedForm = requestForm;
+            if (copyValue && ObjectPropertyUtils.isReadableProperty(sessionForm, field.getName()) && ObjectPropertyUtils
+                    .isWritableProperty(sessionForm, field.getName())) {
+                Object fieldValue = ObjectPropertyUtils.getPropertyValue(sessionForm, field.getName());
+                ObjectPropertyUtils.setPropertyValue(requestForm, field.getName(), fieldValue);
+            }
         }
-
-        return updatedForm;
     }
 
     /**
      * Removes the values that are marked @SessionTransient from the form.
      *
-     * @param form
-     * @return UifFormBase the form from which the session transient values have been purged
+     * @param form - the form from which the session transient values have been purged
      */
-    public UifFormBase purgeForm(UifFormBase form) {
+    public void purgeForm(UifFormBase form) {
         List<Field> fields = new ArrayList<Field>();
-        for (Field field : ObjectUtils.getAllFields(fields, form.getClass(), UifFormBase.class)) {
+        fields = ObjectUtils.getAllFields(fields, form.getClass(), UifFormBase.class);
+        for (Field field : fields) {
             boolean purgeValue = false;
 
             if (!field.getType().isPrimitive()) {
@@ -209,17 +197,11 @@ public class UifFormManager implements Serializable {
                     }
                 }
             }
-            try {
-                if (purgeValue) {
-                    PropertyUtils.setProperty(form, field.getName(), null);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("Unable to purge the field " + field.getName());
+
+            if (purgeValue && ObjectPropertyUtils.isWritableProperty(form, field.getName())) {
+                ObjectPropertyUtils.setPropertyValue(form, field.getName(), null);
             }
-
         }
-
-        return form;
     }
 
     /**

@@ -74,23 +74,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * @see Document
  */
 @MappedSuperclass
 public abstract class DocumentBase extends PersistableBusinessObjectBase implements Document {
     private static final Logger LOG = Logger.getLogger(DocumentBase.class);
-    
-    @Id
-    @Column(name="DOC_HDR_ID")
-    protected String documentNumber;
-    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
-    protected DocumentHeader documentHeader;    
 
-    @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+    @Id @Column(name = "DOC_HDR_ID")
+    protected String documentNumber;
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) @JoinColumn(
+            name = "DOC_HDR_ID", insertable = false, updatable = false)
+    protected DocumentHeader documentHeader;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) @JoinColumn(
+            name = "DOC_HDR_ID", insertable = false, updatable = false)
     private List<PessimisticLock> pessimisticLocks;
 
     @Transient
@@ -99,7 +97,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     private List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
     @Transient
     private List<Note> notes;
-    
+
     private transient NoteService noteService;
     private transient AttachmentService attachmentService;
 
@@ -109,17 +107,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public DocumentBase() {
         try {
             // create a new document header object
-            Class<? extends DocumentHeader> documentHeaderClass = KRADServiceLocatorWeb.getDocumentHeaderService().getDocumentHeaderBaseClass();
+            Class<? extends DocumentHeader> documentHeaderClass =
+                    KRADServiceLocatorWeb.getDocumentHeaderService().getDocumentHeaderBaseClass();
             setDocumentHeader(documentHeaderClass.newInstance());
             pessimisticLocks = new ArrayList<PessimisticLock>();
             adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
             adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
             notes = new ArrayList<Note>();
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             throw new RuntimeException("Error instantiating DocumentHeader", e);
-        }
-        catch (InstantiationException e) {
+        } catch (InstantiationException e) {
             throw new RuntimeException("Error instantiating DocumentHeader", e);
         }
     }
@@ -136,25 +133,29 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * Retrieves the title of the document
      *
      * <p>
-     * This is the default document title implementation. It concatenates the document's data dictionary file label attribute and
-     * the document's document header description together. This title is used to populate workflow and will show up in document
+     * This is the default document title implementation. It concatenates the document's data dictionary file label
+     * attribute and
+     * the document's document header description together. This title is used to populate workflow and will show up in
+     * document
      * search results and user action lists.
      * </p>
      *
      * return String representing the title of the document
+     *
      * @see org.kuali.rice.krad.document.Document#getDocumentTitle()
      */
     public String getDocumentTitle() {
-        String documentTypeLabel = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(this.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()).getLabel();
+        String documentTypeLabel = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(
+                this.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()).getLabel();
         if (null == documentTypeLabel) {
             documentTypeLabel = "";
         }
-    
+
         String description = this.getDocumentHeader().getDocumentDescription();
         if (null == description) {
             description = "";
         }
-    
+
         return documentTypeLabel + " - " + description;
     }
 
@@ -176,8 +177,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void refreshIfEmpty() {
         if (null == this.getDocumentHeader()) {
             this.refresh();
-        }
-        else if (StringUtils.isEmpty(this.getDocumentHeader().getObjectId())) {
+        } else if (StringUtils.isEmpty(this.getDocumentHeader().getObjectId())) {
             this.refresh();
         }
     }
@@ -203,11 +203,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.krad.document.Document#processAfterRetrieve()
      */
     public void processAfterRetrieve() {
-    	// do nothing
+        // do nothing
     }
 
     /**
-     * The the default implementation for RouteLevelChange does nothing, but is meant to provide a hook for documents to implement
+     * The the default implementation for RouteLevelChange does nothing, but is meant to provide a hook for documents to
+     * implement
      * for other needs.
      *
      * @see org.kuali.rice.krad.document.Document#doRouteLevelChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange)
@@ -215,15 +216,17 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) {
         // do nothing
     }
-    
+
     /**
      * @see org.kuali.rice.krad.document.Document#doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
     public void doActionTaken(ActionTakenEvent event) {
-        if ( (KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken().getCode())) ) {
+        if ((KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(
+                this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes()
+                .contains(event.getActionTaken().getActionTaken().getCode()))) {
             //DocumentAuthorizer documentAuthorizer = KRADServiceLocatorInternal.getDocumentAuthorizationService().getDocumentAuthorizer(this);
             //documentAuthorizer.establishWorkflowPessimisticLocking(this);
-        	KRADServiceLocatorWeb.getPessimisticLockService().establishWorkflowPessimisticLocking(this);
+            KRADServiceLocatorWeb.getPessimisticLockService().establishWorkflowPessimisticLocking(this);
         }
     }
 
@@ -233,7 +236,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void afterActionTaken(ActionType performed, ActionTakenEvent event) {
         // do nothing
     }
-    
+
     protected List<String> getNonLockingActionTakenCodes() {
         List<String> actionTakenStatusCodes = new ArrayList<String>();
         actionTakenStatusCodes.add(KewApiConstants.ACTION_TAKEN_SAVED_CD);
@@ -248,15 +251,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * The the default implementation for afterWorkflowEngineProcess does nothing, but is meant to provide a hook for
      * documents to implement for other needs.
-     * 
+     *
      * @see org.kuali.rice.krad.document.Document#afterWorkflowEngineProcess(boolean)
      */
     public void afterWorkflowEngineProcess(boolean successfullyProcessed) {
-        if (KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) {
+        if (KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(
+                this.getClass().getName()).getUseWorkflowPessimisticLocking()) {
             if (successfullyProcessed) {
                 //DocumentAuthorizer documentAuthorizer = KRADServiceLocatorInternal.getDocumentAuthorizationService().getDocumentAuthorizer(this);
                 //documentAuthorizer.releaseWorkflowPessimisticLocking(this);
-            	KRADServiceLocatorWeb.getPessimisticLockService().releaseWorkflowPessimisticLocking(this);
+                KRADServiceLocatorWeb.getPessimisticLockService().releaseWorkflowPessimisticLocking(this);
             }
         }
     }
@@ -264,25 +268,23 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * The the default implementation for beforeWorkflowEngineProcess does nothing, but is meant to provide a hook for
      * documents to implement for other needs.
-     * 
+     *
      * @see org.kuali.rice.krad.document.Document#beforeWorkflowEngineProcess()
      */
     public void beforeWorkflowEngineProcess() {
-    // do nothing
+        // do nothing
     }
-    
-    
 
     /**
      * The default implementation returns no additional ids for the workflow engine to lock prior to processing.
-     * 
+     *
      * @see org.kuali.rice.krad.document.Document#getWorkflowEngineDocumentIdsToLock()
      */
     public List<String> getWorkflowEngineDocumentIdsToLock() {
-		return null;
-	}
+        return null;
+    }
 
-	/**
+    /**
      * @see org.kuali.rice.krad.document.Copyable#toCopy()
      */
     public void toCopy() throws WorkflowException, IllegalStateException {
@@ -291,7 +293,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         }
         String sourceDocumentHeaderId = getDocumentNumber();
         setNewDocumentHeader();
-                
+
         getDocumentHeader().setDocumentTemplateNumber(sourceDocumentHeaderId);
 
         //clear out notes from previous bo
@@ -301,20 +303,23 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 
     /**
      * Gets a new document header for this documents type and sets in the document instance.
-     * 
+     *
      * @throws WorkflowException
      */
     protected void setNewDocumentHeader() throws WorkflowException {
-        TransactionalDocument newDoc = (TransactionalDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument(getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
+        TransactionalDocument newDoc =
+                (TransactionalDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument(
+                        getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
         newDoc.getDocumentHeader().setDocumentDescription(getDocumentHeader().getDocumentDescription());
         newDoc.getDocumentHeader().setOrganizationDocumentNumber(getDocumentHeader().getOrganizationDocumentNumber());
 
         try {
-            ObjectUtils.setObjectPropertyDeep(this, KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(), newDoc.getDocumentNumber());
-        }
-        catch (Exception e) {
-            LOG.error("Unable to set document number property in copied document " + e.getMessage(),e);
-            throw new RuntimeException("Unable to set document number property in copied document " + e.getMessage(),e);
+            ObjectUtils.setObjectPropertyDeep(this, KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(),
+                    newDoc.getDocumentNumber());
+        } catch (Exception e) {
+            LOG.error("Unable to set document number property in copied document " + e.getMessage(), e);
+            throw new RuntimeException("Unable to set document number property in copied document " + e.getMessage(),
+                    e);
         }
 
         // replace current documentHeader with new documentHeader
@@ -323,17 +328,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 
     /**
      * Adds a note to the document indicating it was created by a copy or error correction.
-     * 
+     *
      * @param noteText - text for note
      */
     protected void addCopyErrorDocumentNote(String noteText) {
         Note note = null;
         try {
-            note = KRADServiceLocatorWeb.getDocumentService().createNoteFromDocument(this,noteText);
-        }
-        catch (Exception e) {
-         logErrors();
-         throw new RuntimeException("Couldn't create note on copy or error",e);
+            note = KRADServiceLocatorWeb.getDocumentService().createNoteFromDocument(this, noteText);
+        } catch (Exception e) {
+            logErrors();
+            throw new RuntimeException("Couldn't create note on copy or error", e);
         }
         addNote(note);
     }
@@ -342,9 +346,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.krad.document.Document#getXmlForRouteReport()
      */
     public String getXmlForRouteReport() {
-	prepareForSave();
-	populateDocumentForRouting();
-	return getDocumentHeader().getWorkflowDocument().getApplicationContent();
+        prepareForSave();
+        populateDocumentForRouting();
+        return getDocumentHeader().getWorkflowDocument().getApplicationContent();
     }
 
     /**
@@ -353,7 +357,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void populateDocumentForRouting() {
         getDocumentHeader().getWorkflowDocument().setApplicationContent(serializeDocumentToXml());
     }
-    
+
     /**
      * @see org.kuali.rice.krad.document.Document#serializeDocumentToXml()
      */
@@ -364,8 +368,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * Wraps a document in an instance of KualiDocumentXmlMaterializer, that provides additional metadata for serialization
-     * 
+     * Wraps a document in an instance of KualiDocumentXmlMaterializer, that provides additional metadata for
+     * serialization
+     *
      * @see org.kuali.rice.krad.document.Document#wrapDocumentWithMetadataForXmlSerialization()
      */
     public KualiDocumentXmlMaterializer wrapDocumentWithMetadataForXmlSerialization() {
@@ -382,42 +387,46 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * If workflowProperties have been defined within the data dictionary for this document, then it returns an instance of 
-     * {@link BusinessObjectPropertySerializibilityEvaluator} initialized with the properties.  If none have been defined, then returns 
+     * If workflowProperties have been defined within the data dictionary for this document, then it returns an instance
+     * of
+     * {@link BusinessObjectPropertySerializibilityEvaluator} initialized with the properties.  If none have been
+     * defined, then returns
      * {@link AlwaysTruePropertySerializibilityEvaluator}.
-     * 
+     *
      * @see org.kuali.rice.krad.document.Document#getDocumentPropertySerizabilityEvaluator()
      */
     public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
         String docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
-        DocumentEntry documentEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(docTypeName);
+        DocumentEntry documentEntry =
+                KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(docTypeName);
         WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
         WorkflowAttributes workflowAttributes = documentEntry.getWorkflowAttributes();
         return createPropertySerializabilityEvaluator(workflowProperties, workflowAttributes);
     }
-    
-    protected PropertySerializabilityEvaluator createPropertySerializabilityEvaluator(WorkflowProperties workflowProperties, WorkflowAttributes workflowAttributes) {
-    	if (workflowAttributes != null) {
-    		return new AlwaysFalsePropertySerializabilityEvaluator();
-    	}
-    	if (workflowProperties == null) {
-    		return new AlwaysTruePropertySerializibilityEvaluator();
-    	}
-    	PropertySerializabilityEvaluator evaluator = new BusinessObjectPropertySerializibilityEvaluator();
-    	evaluator.initializeEvaluatorForDocument(this);
-    	return evaluator;
+
+    protected PropertySerializabilityEvaluator createPropertySerializabilityEvaluator(
+            WorkflowProperties workflowProperties, WorkflowAttributes workflowAttributes) {
+        if (workflowAttributes != null) {
+            return new AlwaysFalsePropertySerializabilityEvaluator();
+        }
+        if (workflowProperties == null) {
+            return new AlwaysTruePropertySerializibilityEvaluator();
+        }
+        PropertySerializabilityEvaluator evaluator = new BusinessObjectPropertySerializibilityEvaluator();
+        evaluator.initializeEvaluatorForDocument(this);
+        return evaluator;
     }
-    
+
     /**
-     * Returns the POJO property name of "this" document in the object returned by {@link #wrapDocumentWithMetadataForXmlSerialization()}
-     * 
+     * Returns the POJO property name of "this" document in the object returned by {@link
+     * #wrapDocumentWithMetadataForXmlSerialization()}
+     *
      * @see org.kuali.rice.krad.document.Document#getBasePathToDocumentDuringSerialization()
      */
     public String getBasePathToDocumentDuringSerialization() {
         return "document";
     }
-    
-    
+
     /**
      * @see org.kuali.rice.krad.document.Document#getDocumentHeader()
      */
@@ -458,7 +467,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public void setAdHocRoutePersons(List<AdHocRoutePerson> adHocRoutePersons) {
         this.adHocRoutePersons = adHocRoutePersons;
-}
+    }
+
     /**
      * @see org.kuali.rice.krad.document.Document#getAdHocRouteWorkgroups()
      */
@@ -476,15 +486,15 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void postProcessSave(KualiDocumentEvent event) {
         // TODO Auto-generated method stub
 
-	}
+    }
 
     /**
      * Override this method with implementation specific prepareForSave logic
-     * 
+     *
      * @see org.kuali.rice.krad.document.Document#prepareForSave(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
      */
     public void prepareForSave(KualiDocumentEvent event) {
-    	// do nothing by default
+        // do nothing by default
     }
 
     public void validateBusinessRules(KualiDocumentEvent event) {
@@ -504,10 +514,10 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             // TODO: better error handling at the lower level and a better error message are
             // needed here
             throw new ValidationException("business rule evaluation failed");
-        }
-        else if (GlobalVariables.getMessageMap().hasErrors()) {
+        } else if (GlobalVariables.getMessageMap().hasErrors()) {
             logErrors();
-            throw new ValidationException("Unreported errors occured during business rule evaluation (rule developer needs to put meaningful error messages into global ErrorMap)");
+            throw new ValidationException(
+                    "Unreported errors occured during business rule evaluation (rule developer needs to put meaningful error messages into global ErrorMap)");
         }
         LOG.debug("validation completed");
 
@@ -517,38 +527,38 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * This method logs errors.
      */
     protected void logErrors() {
-    	if ( LOG.isInfoEnabled() ) {
-	        if (GlobalVariables.getMessageMap().hasErrors()) {
-	
-	            for (Iterator<Map.Entry<String, AutoPopulatingList<ErrorMessage>>> i = GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext();) {
-	                Map.Entry<String, AutoPopulatingList<ErrorMessage>> e = i.next();
-	
-	                StringBuffer logMessage = new StringBuffer();
-	                logMessage.append("[" + e.getKey() + "] ");
-	                boolean first = true;
-	
-	                AutoPopulatingList<ErrorMessage> errorList = e.getValue();
-	                for (Iterator<ErrorMessage> j = errorList.iterator(); j.hasNext();) {
-	                    ErrorMessage em = j.next();
-	
-	                    if (first) {
-	                        first = false;
-	                    }
-	                    else {
-	                        logMessage.append(";");
-	                    }
-	                    logMessage.append(em);
-	                }
-	
-	                LOG.info(logMessage);
-	            }
-	        }
-    	}
+        if (LOG.isInfoEnabled()) {
+            if (GlobalVariables.getMessageMap().hasErrors()) {
+
+                for (Iterator<Map.Entry<String, AutoPopulatingList<ErrorMessage>>> i =
+                             GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext(); ) {
+                    Map.Entry<String, AutoPopulatingList<ErrorMessage>> e = i.next();
+
+                    StringBuffer logMessage = new StringBuffer();
+                    logMessage.append("[" + e.getKey() + "] ");
+                    boolean first = true;
+
+                    AutoPopulatingList<ErrorMessage> errorList = e.getValue();
+                    for (Iterator<ErrorMessage> j = errorList.iterator(); j.hasNext(); ) {
+                        ErrorMessage em = j.next();
+
+                        if (first) {
+                            first = false;
+                        } else {
+                            logMessage.append(";");
+                        }
+                        logMessage.append(em);
+                    }
+
+                    LOG.info(logMessage);
+                }
+            }
+        }
     }
 
     /**
      * Hook for override
-     * 
+     *
      * @see org.kuali.rice.krad.document.Document#generateSaveEvents()
      */
     public List<KualiDocumentEvent> generateSaveEvents() {
@@ -561,116 +571,114 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) {
         // do nothing
     }
-    
+
     /**
      * Returns the business object with which notes related to this document should be associated.
      * By default, the {@link DocumentHeader} of this document will be returned as the note target.
-     * 
+     *
      * <p>Sub classes can override this method if they want notes to be associated with something
      * other than the document header.  If this method is overridden, the {@link #getNoteType()}
      * method should be overridden to return {@link NoteType#BUSINESS_OBJECT}
-     * 
+     *
      * @return Returns the documentBusinessObject.
      */
     @Override
     public PersistableBusinessObject getNoteTarget() {
         return getDocumentHeader();
     }
-    
-    /**
-	 * Returns the {@link NoteType} to use for notes associated with this document.
-	 * By default this returns {@link NoteType#DOCUMENT_HEADER} since notes are
-	 * associated with the {@link DocumentHeader} record by default.
-	 * 
-	 * <p>The case in which this should be overridden is if {@link #getNoteTarget()} is
-	 * overridden to return an object other than the DocumentHeader.
-	 *
-	 * @return the note type to use for notes associated with this document
-	 * 
-	 * @see org.kuali.rice.krad.document.Document#getNoteType()
-	 */
-	@Override
-	public NoteType getNoteType() {
-		return NoteType.DOCUMENT_HEADER;
-	}
 
-	/**
-	 * @see org.kuali.rice.krad.document.Document#addNote(org.kuali.rice.krad.bo.Note)
-	 */
+    /**
+     * Returns the {@link NoteType} to use for notes associated with this document.
+     * By default this returns {@link NoteType#DOCUMENT_HEADER} since notes are
+     * associated with the {@link DocumentHeader} record by default.
+     *
+     * <p>The case in which this should be overridden is if {@link #getNoteTarget()} is
+     * overridden to return an object other than the DocumentHeader.
+     *
+     * @return the note type to use for notes associated with this document
+     * @see org.kuali.rice.krad.document.Document#getNoteType()
+     */
     @Override
-	public void addNote(Note note) {
-    	if (note == null) {
-    		throw new IllegalArgumentException("Note cannot be null.");
-    	}
-		notes.add(note);
-	}
+    public NoteType getNoteType() {
+        return NoteType.DOCUMENT_HEADER;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.document.Document#addNote(org.kuali.rice.krad.bo.Note)
+     */
+    @Override
+    public void addNote(Note note) {
+        if (note == null) {
+            throw new IllegalArgumentException("Note cannot be null.");
+        }
+        notes.add(note);
+    }
 
     /**
      * @see org.kuali.rice.krad.document.Document#removeNote(org.kuali.rice.krad.bo.Note)
      */
-	@Override
-	public boolean removeNote(Note note) {
-		if (note == null) {
-    		throw new IllegalArgumentException("Note cannot be null.");
-    	}
-		return notes.remove(note);
-	}
+    @Override
+    public boolean removeNote(Note note) {
+        if (note == null) {
+            throw new IllegalArgumentException("Note cannot be null.");
+        }
+        return notes.remove(note);
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.document.Document#getNote(int)
-	 */
-	@Override
-	public Note getNote(int index) {
-		return notes.get(index);
-	}
+    /**
+     * @see org.kuali.rice.krad.document.Document#getNote(int)
+     */
+    @Override
+    public Note getNote(int index) {
+        return notes.get(index);
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.document.Document#getNotes()
-	 */
-	@Override
-	public List<Note> getNotes() {
-        if (CollectionUtils.isEmpty(notes)
-                && getNoteType().equals(NoteType.BUSINESS_OBJECT)
-                && StringUtils.isNotBlank(getNoteTarget().getObjectId()) ) {
+    /**
+     * @see org.kuali.rice.krad.document.Document#getNotes()
+     */
+    @Override
+    public List<Note> getNotes() {
+        if (CollectionUtils.isEmpty(notes) && getNoteType().equals(NoteType.BUSINESS_OBJECT) && StringUtils.isNotBlank(
+                getNoteTarget().getObjectId())) {
             notes = getNoteService().getByRemoteObjectId(getNoteTarget().getObjectId());
         }
 
-		return notes;
-	}
-	
-	/**
-	 * @see org.kuali.rice.krad.document.Document#setNotes(java.util.List)
-	 */
-	@Override
-	public void setNotes(List<Note> notes) {
-		if (notes == null) {
-			throw new IllegalArgumentException("List of notes must be non-null.");
-		}
-		this.notes = notes;
-	}
+        return notes;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.document.Document#setNotes(java.util.List)
+     */
+    @Override
+    public void setNotes(List<Note> notes) {
+        if (notes == null) {
+            throw new IllegalArgumentException("List of notes must be non-null.");
+        }
+        this.notes = notes;
+    }
 
     @Override
     protected void postLoad() {
         super.postLoad();
         refreshPessimisticLocks();
     }
-    
-	/**
+
+    /**
      * @see org.kuali.rice.krad.document.Document#getPessimisticLocks()
      */
     public List<PessimisticLock> getPessimisticLocks() {
         return this.pessimisticLocks;
     }
-    
+
     /**
      * @see org.kuali.rice.krad.document.Document#refreshPessimisticLocks()
-     * @deprecated
-     * This is not needed with the relationship set up with JPA annotations
+     * @deprecated This is not needed with the relationship set up with JPA annotations
      */
-    @Deprecated 
+    @Deprecated
     public void refreshPessimisticLocks() {
         this.pessimisticLocks.clear();
-        this.pessimisticLocks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForDocument(this.documentNumber);
+        this.pessimisticLocks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForDocument(
+                this.documentNumber);
     }
 
     /**
@@ -679,14 +687,14 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void setPessimisticLocks(List<PessimisticLock> pessimisticLocks) {
         this.pessimisticLocks = pessimisticLocks;
     }
-    
+
     /**
      * @see org.kuali.rice.krad.document.Document#addPessimisticLock(org.kuali.rice.krad.document.authorization.PessimisticLock)
      */
     public void addPessimisticLock(PessimisticLock lock) {
         this.pessimisticLocks.add(lock);
     }
-    
+
     /**
      * @see org.kuali.rice.krad.document.Document#getLockClearningMethodNames()
      */
@@ -694,7 +702,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         List<String> methodToCalls = new ArrayList<String>();
         methodToCalls.add(KRADConstants.CLOSE_METHOD);
         methodToCalls.add(KRADConstants.CANCEL_METHOD);
-//        methodToCalls.add(RiceConstants.BLANKET_APPROVE_METHOD);
+        //        methodToCalls.add(RiceConstants.BLANKET_APPROVE_METHOD);
         methodToCalls.add(KRADConstants.ROUTE_METHOD);
         methodToCalls.add(KRADConstants.APPROVE_METHOD);
         methodToCalls.add(KRADConstants.DISAPPROVE_METHOD);
@@ -702,37 +710,39 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * This default implementation simply returns false to indicate that custom lock descriptors are not supported by DocumentBase. If custom lock
+     * This default implementation simply returns false to indicate that custom lock descriptors are not supported by
+     * DocumentBase. If custom lock
      * descriptors are needed, the appropriate subclasses should override this method.
-     * 
+     *
      * @see org.kuali.rice.krad.document.Document#useCustomLockDescriptors()
      */
     public boolean useCustomLockDescriptors() {
-    	return false;
+        return false;
     }
 
     /**
-     * This default implementation just throws a PessimisticLockingException. Subclasses of DocumentBase that need support for custom lock descriptors
+     * This default implementation just throws a PessimisticLockingException. Subclasses of DocumentBase that need
+     * support for custom lock descriptors
      * should override this method.
-     * 
+     *
      * @see org.kuali.rice.krad.document.Document#getCustomLockDescriptor(org.kuali.rice.kim.api.identity.Person)
      */
     public String getCustomLockDescriptor(Person user) {
-    	throw new PessimisticLockingException("Document " + getDocumentNumber() +
-    			" is using pessimistic locking with custom lock descriptors, but the document class has not overriden the getCustomLockDescriptor method");
+        throw new PessimisticLockingException("Document " + getDocumentNumber() +
+                " is using pessimistic locking with custom lock descriptors, but the document class has not overriden the getCustomLockDescriptor method");
     }
-    
+
     protected AttachmentService getAttachmentService() {
-		if ( attachmentService == null ) {
-			attachmentService = KRADServiceLocator.getAttachmentService();
-		}
-		return attachmentService;
-	}
-    
+        if (attachmentService == null) {
+            attachmentService = KRADServiceLocator.getAttachmentService();
+        }
+        return attachmentService;
+    }
+
     protected NoteService getNoteService() {
-		if ( noteService == null ) {
-			noteService = KRADServiceLocator.getNoteService();
-		}
-		return noteService;
-	}
+        if (noteService == null) {
+            noteService = KRADServiceLocator.getNoteService();
+        }
+        return noteService;
+    }
 }

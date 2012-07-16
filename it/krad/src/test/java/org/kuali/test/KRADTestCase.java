@@ -24,6 +24,8 @@ import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.xml.namespace.QName;
 import java.util.HashSet;
@@ -41,9 +43,7 @@ public abstract class KRADTestCase extends BaselineTestCase {
     private static final String XML_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.xml";
     private static final String KRAD_MODULE_NAME = "krad";
 
-    private SpringResourceLoader kradTestSpringResourceLoader;
-
-    protected DataDictionary dd = null;
+    protected DataDictionary dd;
 
     public KRADTestCase() {
         super(KRAD_MODULE_NAME);
@@ -64,9 +64,10 @@ public abstract class KRADTestCase extends BaselineTestCase {
         List<Class> classes = TestUtilities.getHierarchyClassesToHandle(getClass(),
                 new Class[]{TestDictionaryConfig.class}, new HashSet<String>());
 
-        // if annotation is present then initialize test data dictionary
+        // if annotation is present then initialize test data dictionary (setup once per suite)
         if (!classes.isEmpty()) {
-            dd = (DataDictionary) kradTestSpringResourceLoader.getContext().getBean("testDataDictionary");
+            ConfigurableApplicationContext context  = new ClassPathXmlApplicationContext("TestDataDictionary.xml");
+            dd = (DataDictionary) context.getBean("testDataDictionary");
 
             // add any additional dictionary files required by the test
             for (Class c : classes) {
@@ -104,6 +105,7 @@ public abstract class KRADTestCase extends BaselineTestCase {
     protected List<Lifecycle> getSuiteLifecycles() {
         List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
         suiteLifecycles.add(new KEWXmlDataLoaderLifecycle(XML_FILE));
+
         return suiteLifecycles;
     }
 
@@ -115,14 +117,9 @@ public abstract class KRADTestCase extends BaselineTestCase {
 
     @Override
     protected Lifecycle getLoadApplicationLifecycle() {
-        return getKRADTestSpringResourceLoader();
-    }
-
-    public SpringResourceLoader getKRADTestSpringResourceLoader() {
-        if (kradTestSpringResourceLoader == null) {
-            kradTestSpringResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"),
-                    "classpath:KRADTestSpringBeans.xml", null);
-        }
-        return kradTestSpringResourceLoader;
+        SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"),
+                "classpath:KradTestSpringBeans.xml", null);
+        springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+        return springResourceLoader;
     }
 }

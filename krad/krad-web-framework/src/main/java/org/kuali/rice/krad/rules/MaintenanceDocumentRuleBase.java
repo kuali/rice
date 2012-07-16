@@ -154,13 +154,14 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
 
-        boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(maintenanceDocument);
+        boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(
+                maintenanceDocument);
 
         // Validate the document if the header is valid and no pending completion requests
         if (completeRequestPending) {
             return true;
         }
-        
+
         // get the documentAuthorizer for this document
         MaintenanceDocumentAuthorizer documentAuthorizer =
                 (MaintenanceDocumentAuthorizer) getDocumentDictionaryService().getDocumentAuthorizer(document);
@@ -180,20 +181,21 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         boolean success = true;
 
         WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.isInitiated() || workflowDocument.isSaved()){
+        if (workflowDocument.isInitiated() || workflowDocument.isSaved()) {
             try {
-                success &= documentAuthorizer.canCreateOrMaintain((MaintenanceDocument)document, GlobalVariables.getUserSession().getPerson());
+                success &= documentAuthorizer.canCreateOrMaintain((MaintenanceDocument) document,
+                        GlobalVariables.getUserSession().getPerson());
                 if (success == false) {
-                    GlobalVariables.getMessageMap()
-                            .putError(KRADConstants.DOCUMENT_ERRORS, RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT,
-                                    new String[]{GlobalVariables.getUserSession().getPerson().getPrincipalName(),
-                                            "Create/Maintain", getDocumentDictionaryService()
-                                            .getMaintenanceDocumentTypeName(newDataObject.getClass())});
+                    GlobalVariables.getMessageMap().putError(KRADConstants.DOCUMENT_ERRORS,
+                            RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT,
+                            new String[]{GlobalVariables.getUserSession().getPerson().getPrincipalName(),
+                                    "Create/Maintain", getDocumentDictionaryService().getMaintenanceDocumentTypeName(
+                                    newDataObject.getClass())});
                 }
             } catch (RiceIllegalArgumentException e) {
                 // TODO error message the right way
-                GlobalVariables.getMessageMap()
-                        .putError("Unable to determine authorization due to previous errors","Unable to determine authorization due to previous errors");
+                GlobalVariables.getMessageMap().putError("Unable to determine authorization due to previous errors",
+                        "Unable to determine authorization due to previous errors");
             }
         }
         // apply rules that are common across all maintenance documents, regardless of class
@@ -277,11 +279,12 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 inactivationBlockingDetectionServiceBeanName =
                         KRADServiceLocatorWeb.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
             }
-            InactivationBlockingDetectionService inactivationBlockingDetectionService = KRADServiceLocatorWeb
-                    .getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
+            InactivationBlockingDetectionService inactivationBlockingDetectionService =
+                    KRADServiceLocatorWeb.getInactivationBlockingDetectionService(
+                            inactivationBlockingDetectionServiceBeanName);
 
-            boolean foundBlockingRecord = inactivationBlockingDetectionService
-                    .hasABlockingRecord((PersistableBusinessObject) newDataObject, inactivationBlockingMetadata);
+            boolean foundBlockingRecord = inactivationBlockingDetectionService.hasABlockingRecord(
+                    (PersistableBusinessObject) newDataObject, inactivationBlockingMetadata);
 
             if (foundBlockingRecord) {
                 putInactivationBlockingErrorOnPage(maintenanceDocument, inactivationBlockingMetadata);
@@ -308,8 +311,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         Properties parameters = new Properties();
         parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE,
                 inactivationBlockingMetadata.getBlockedBusinessObjectClass().getName());
-        parameters
-                .put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.METHOD_DISPLAY_ALL_INACTIVATION_BLOCKERS);
+        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER,
+                KRADConstants.METHOD_DISPLAY_ALL_INACTIVATION_BLOCKERS);
 
         List keys = new ArrayList();
         if (getPersistenceStructureService().isPersistable(newDataObject.getClass())) {
@@ -339,7 +342,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
             // Encrypt value if it is a secure field
             if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(
-                    inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)){
+                    inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)) {
                 try {
                     keyValue = CoreApiServiceLocator.getEncryptionService().encrypt(keyValue);
                 } catch (GeneralSecurityException e) {
@@ -351,12 +354,12 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             parameters.put(keyName, keyValue);
         }
 
-        String blockingUrl =
-                UrlFactory.parameterizeUrl(KRADConstants.DISPLAY_ALL_INACTIVATION_BLOCKERS_ACTION, parameters);
+        String blockingUrl = UrlFactory.parameterizeUrl(KRADConstants.DISPLAY_ALL_INACTIVATION_BLOCKERS_ACTION,
+                parameters);
 
         // post an error about the locked document
-        GlobalVariables.getMessageMap()
-                .putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INACTIVATION_BLOCKED, blockingUrl);
+        GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
+                RiceKeyConstants.ERROR_INACTIVATION_BLOCKED, blockingUrl);
     }
 
     /**
@@ -418,8 +421,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putGlobalError(String errorConstant, String parameter) {
         if (!errorAlreadyExists(KRADConstants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getMessageMap()
-                    .putErrorWithoutFullErrorPath(KRADConstants.DOCUMENT_ERRORS, errorConstant, parameter);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRADConstants.DOCUMENT_ERRORS, errorConstant,
+                    parameter);
         }
     }
 
@@ -433,8 +436,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putGlobalError(String errorConstant, String[] parameters) {
         if (!errorAlreadyExists(KRADConstants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getMessageMap()
-                    .putErrorWithoutFullErrorPath(KRADConstants.DOCUMENT_ERRORS, errorConstant, parameters);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRADConstants.DOCUMENT_ERRORS, errorConstant,
+                    parameters);
         }
     }
 
@@ -451,8 +454,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putFieldError(String propertyName, String errorConstant) {
         if (!errorAlreadyExists(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant)) {
-            GlobalVariables.getMessageMap()
-                    .putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName,
+                    errorConstant);
         }
     }
 
@@ -473,8 +476,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putFieldError(String propertyName, String errorConstant, String parameter) {
         if (!errorAlreadyExists(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant)) {
-            GlobalVariables.getMessageMap()
-                    .putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant, parameter);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName,
+                    errorConstant, parameter);
         }
     }
 
@@ -494,8 +497,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putFieldError(String propertyName, String errorConstant, String[] parameters) {
         if (!errorAlreadyExists(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant)) {
-            GlobalVariables.getMessageMap()
-                    .putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant, parameters);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName,
+                    errorConstant, parameters);
         }
     }
 
@@ -666,21 +669,22 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         // check if there are errors in validating the business object
         GlobalVariables.getMessageMap().addToErrorPath("dataObject");
-        DictionaryValidationResult dictionaryValidationResult = getDictionaryValidationService().validate(newDataObject);
+        DictionaryValidationResult dictionaryValidationResult = getDictionaryValidationService().validate(
+                newDataObject);
         if (dictionaryValidationResult.getNumberOfErrors() > 0) {
             success &= false;
 
             for (ConstraintValidationResult cvr : dictionaryValidationResult) {
-                if (cvr.getStatus() == ErrorLevel.ERROR){
+                if (cvr.getStatus() == ErrorLevel.ERROR) {
                     GlobalVariables.getMessageMap().putError(cvr.getAttributePath(), cvr.getErrorKey());
                 }
             }
         }
 
         // validate default existence checks
-        // TODO: Default existence checks need support for general data objects
-//        success &= getDictionaryValidationService().validateDefaultExistenceChecks((BusinessObject) dataObject);
-//        GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
+        // TODO: Default existence checks need support for general data objects, see KULRICE-7666
+        //        success &= getDictionaryValidationService().validateDefaultExistenceChecks((BusinessObject) dataObject);
+        //        GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
 
         // explicitly remove the errorPath we've added
         GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
@@ -750,8 +754,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 // DB call that may not be necessary, and we want to minimize these.
 
                 // attempt to do a lookup, see if this object already exists by these Primary Keys
-                PersistableBusinessObject testBo = getBoService()
-                        .findByPrimaryKey(dataObjectClass.asSubclass(PersistableBusinessObject.class), newPkFields);
+                PersistableBusinessObject testBo = getBoService().findByPrimaryKey(dataObjectClass.asSubclass(
+                        PersistableBusinessObject.class), newPkFields);
 
                 // if the retrieve was successful, then this object already exists, and we need
                 // to complain
@@ -1171,8 +1175,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         if (newDataObject instanceof PersistableBusinessObject) {
             ForeignKeyFieldsPopulationState fkFieldsState;
-            fkFieldsState = getPersistenceStructureService()
-                    .getForeignKeyFieldsPopulationState((PersistableBusinessObject) newDataObject, referenceName);
+            fkFieldsState = getPersistenceStructureService().getForeignKeyFieldsPopulationState(
+                    (PersistableBusinessObject) newDataObject, referenceName);
 
             // determine result
             if (fkFieldsState.isAnyFieldsPopulated() && !fkFieldsState.isAllFieldsPopulated()) {
@@ -1190,7 +1194,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                     String fieldName = (String) iter.next();
 
                     // get the human-readable name
-                    String fieldNameReadable = getDataDictionaryService().getAttributeLabel(newDataObject.getClass(), fieldName);
+                    String fieldNameReadable = getDataDictionaryService().getAttributeLabel(newDataObject.getClass(),
+                            fieldName);
 
                     // add a field error
                     putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS,
@@ -1330,6 +1335,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     public final void setDictionaryValidationService(DictionaryValidationService dictionaryValidationService) {
         this.dictionaryValidationService = dictionaryValidationService;
     }
+
     public PersonService getPersonService() {
         if (personService == null) {
             this.personService = KimApiServiceLocator.getPersonService();

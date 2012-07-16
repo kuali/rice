@@ -123,12 +123,14 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Transient
     protected String attachmentCollectionName;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "DOC_HDR_ID", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) @JoinColumn(name = "DOC_HDR_ID",
+            insertable = false, updatable = false)
     protected DocumentAttachment attachment;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "DOC_HDR_ID", insertable = false, updatable = false)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) @JoinColumn(name = "DOC_HDR_ID",
+            insertable = false, updatable = false)
     protected List<MultiDocumentAttachment> attachments;
 
     public String getAttachmentPropertyName() {
@@ -271,8 +273,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public boolean isNewWithExisting() {
-        if (KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION
-                .equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
+        if (KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equalsIgnoreCase(
+                newMaintainableObject.getMaintenanceAction())) {
             return true;
         } else {
             return false;
@@ -376,8 +378,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @return list of <code>Note</code>s
      */
     private List<Note> getNotesFromXml(String notesTagName) {
-        String notesXml =
-                StringUtils.substringBetween(xmlDocumentContents, "<" + notesTagName + ">", "</" + notesTagName + ">");
+        String notesXml = StringUtils.substringBetween(xmlDocumentContents, "<" + notesTagName + ">",
+                "</" + notesTagName + ">");
         if (StringUtils.isBlank(notesXml)) {
             return Collections.emptyList();
         }
@@ -412,8 +414,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     public void populateXmlDocumentContentsFromMaintainables() {
         StringBuilder docContentBuffer = new StringBuilder();
-        docContentBuffer.append("<maintainableDocumentContents maintainableImplClass=\"")
-                .append(newMaintainableObject.getClass().getName()).append("\">");
+        docContentBuffer.append("<maintainableDocumentContents maintainableImplClass=\"").append(
+                newMaintainableObject.getClass().getName()).append("\">");
 
         // if business objects notes are enabled then we need to persist notes to the XML
         if (getNewMaintainableObject().isNotesEnabled()) {
@@ -440,8 +442,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 ObjectUtils.materializeAllSubObjects((PersistableBusinessObject) oldBo);
             }
 
-            docContentBuffer.append(KRADServiceLocator.getBusinessObjectSerializerService()
-                    .serializeBusinessObjectToXml(oldBo));
+            docContentBuffer.append(
+                    KRADServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
 
             // add the maintainable's maintenanceAction
             docContentBuffer.append("<" + MAINTENANCE_ACTION_TAG_NAME + ">");
@@ -459,8 +461,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             ObjectUtils.materializeAllSubObjects((PersistableBusinessObject) newBo);
         }
 
-        docContentBuffer
-                .append(KRADServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(newBo));
+        docContentBuffer.append(KRADServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(
+                newBo));
 
         // add the maintainable's maintenanceAction
         docContentBuffer.append("<" + MAINTENANCE_ACTION_TAG_NAME + ">");
@@ -496,7 +498,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             if (newMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
                 populateBoAttachmentListBeforeSave();
             }
-
 
             newMaintainableObject.saveDataObject();
 
@@ -565,10 +566,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (newMaintainableObject != null) {
             newMaintainableObject.setDocumentNumber(documentNumber);
             newMaintainableObject.processAfterRetrieve();
-            if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+            if (newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
                 populateAttachmentForBO();
             }
-            if(newMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
+            if (newMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
                 populateAttachmentListForBO();
             }
             // If a maintenance lock exists, warn the user.
@@ -694,19 +695,20 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
-        if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+        if (newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
             populateDocumentAttachment();
             populateAttachmentForBO();
             //clear out attachment file for old data object so it isn't serialized in doc content
             if (oldMaintainableObject.getDataObject() instanceof PersistableAttachment) {
-                ((PersistableAttachment)oldMaintainableObject.getDataObject()).setAttachmentContent(null);
+                ((PersistableAttachment) oldMaintainableObject.getDataObject()).setAttachmentContent(null);
             }
         }
-        if(newMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
+        if (newMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
             populateDocumentAttachmentList();
             populateAttachmentListForBO();
             if (oldMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
-                for (PersistableAttachment pa : ((PersistableAttachmentList<PersistableAttachment>)oldMaintainableObject.getDataObject()).getAttachments()) {
+                for (PersistableAttachment pa : ((PersistableAttachmentList<PersistableAttachment>) oldMaintainableObject
+                        .getDataObject()).getAttachments()) {
                     pa.setAttachmentContent(null);
                 }
             }
@@ -740,43 +742,41 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     public void populateAttachmentForBO() {
-    // TODO: need to convert this from using struts form file
+        // TODO: need to convert this from using struts form file
 
     }
 
-
-
     public void populateDocumentAttachment() {
         // TODO: need to convert this from using struts form file
-//        refreshAttachment();
-//
-//        if (fileAttachment != null && StringUtils.isNotEmpty(fileAttachment.getFileName())) {
-//            //Populate DocumentAttachment BO
-//            if (attachment == null) {
-//                attachment = new DocumentAttachment();
-//            }
-//
-//            byte[] fileContents;
-//            try {
-//                fileContents = fileAttachment.getFileData();
-//                if (fileContents.length > 0) {
-//                    attachment.setFileName(fileAttachment.getFileName());
-//                    attachment.setContentType(fileAttachment.getContentType());
-//                    attachment.setAttachmentContent(fileAttachment.getFileData());
-//                    attachment.setDocumentNumber(getDocumentNumber());
-//                }
-//            } catch (FileNotFoundException e) {
-//                LOG.error("Error while populating the Document Attachment", e);
-//                throw new RuntimeException("Could not populate DocumentAttachment object", e);
-//            } catch (IOException e) {
-//                LOG.error("Error while populating the Document Attachment", e);
-//                throw new RuntimeException("Could not populate DocumentAttachment object", e);
-//            }
-//        }
-////        else if(attachment != null) {
-////            //Attachment has been deleted - Need to delete the Attachment Reference Object
-////            deleteAttachment();
-////        }
+        //        refreshAttachment();
+        //
+        //        if (fileAttachment != null && StringUtils.isNotEmpty(fileAttachment.getFileName())) {
+        //            //Populate DocumentAttachment BO
+        //            if (attachment == null) {
+        //                attachment = new DocumentAttachment();
+        //            }
+        //
+        //            byte[] fileContents;
+        //            try {
+        //                fileContents = fileAttachment.getFileData();
+        //                if (fileContents.length > 0) {
+        //                    attachment.setFileName(fileAttachment.getFileName());
+        //                    attachment.setContentType(fileAttachment.getContentType());
+        //                    attachment.setAttachmentContent(fileAttachment.getFileData());
+        //                    attachment.setDocumentNumber(getDocumentNumber());
+        //                }
+        //            } catch (FileNotFoundException e) {
+        //                LOG.error("Error while populating the Document Attachment", e);
+        //                throw new RuntimeException("Could not populate DocumentAttachment object", e);
+        //            } catch (IOException e) {
+        //                LOG.error("Error while populating the Document Attachment", e);
+        //                throw new RuntimeException("Could not populate DocumentAttachment object", e);
+        //            }
+        //        }
+        ////        else if(attachment != null) {
+        ////            //Attachment has been deleted - Need to delete the Attachment Reference Object
+        ////            deleteAttachment();
+        ////        }
     }
 
     public void populateAttachmentListForBO() { }
@@ -786,7 +786,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void populateDocumentAttachmentList() { }
 
     public void populateBoAttachmentListBeforeSave() { }
-
 
     public void deleteDocumentAttachment() {
         KRADServiceLocator.getBusinessObjectService().delete(attachment);
@@ -813,22 +812,21 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
 
         // check for locking documents for MaintenanceDocuments
-        // TODO: Why is this here.  This "if" will always be true
-        if (this instanceof MaintenanceDocument) {
-            checkForLockingDocument(true);
-        }
+        checkForLockingDocument(true);
 
-        // Make sure the business object's version number matches that of the database's copy.
+        // Make sure the business object's version number matches that of the databases copy.
         if (newMaintainableObject != null) {
-            if (KRADServiceLocator.getPersistenceStructureService()
-                    .isPersistable(newMaintainableObject.getDataObject().getClass())) {
-                PersistableBusinessObject pbObject = KRADServiceLocator.getBusinessObjectService()
-                        .retrieve((PersistableBusinessObject) newMaintainableObject.getDataObject());
+            if (KRADServiceLocator.getPersistenceStructureService().isPersistable(
+                    newMaintainableObject.getDataObject().getClass())) {
+                PersistableBusinessObject pbObject = KRADServiceLocator.getBusinessObjectService().retrieve(
+                        (PersistableBusinessObject) newMaintainableObject.getDataObject());
                 Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
-                Long newObjectVerNbr = ((PersistableBusinessObject) newMaintainableObject.getDataObject()).getVersionNumber();
+                Long newObjectVerNbr =
+                        ((PersistableBusinessObject) newMaintainableObject.getDataObject()).getVersionNumber();
+
                 if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
-                    GlobalVariables.getMessageMap()
-                            .putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_VERSION_MISMATCH);
+                    GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
+                            RiceKeyConstants.ERROR_VERSION_MISMATCH);
                     throw new ValidationException(
                             "Version mismatch between the local business object and the database business object");
                 }
@@ -839,6 +837,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (LOG.isInfoEnabled()) {
             LOG.info("invoking rules engine on document " + getDocumentNumber());
         }
+
         boolean isValid = true;
         isValid = KRADServiceLocatorWeb.getKualiRuleService().applyRules(event);
 
@@ -862,6 +861,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                         "Unreported errors occured during business rule evaluation (rule developer needs to put meaningful error messages into global ErrorMap)");
             }
         }
+
         LOG.debug("validation completed");
     }
 
@@ -927,7 +927,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * The {@link NoteType} for maintenance documents is determined by whether or not the underlying {@link
      * Maintainable} supports business object notes or not.  This is determined via a call to {@link
-     * Maintainable#   isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the {@link
+     * Maintainable#   isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the
+     * {@link
      * Maintainable} supports business object notes, return {@link NoteType#BUSINESS_OBJECT}. <li>Otherwise, delegate
      * to
      * {@link DocumentBase#getNoteType()} </ul>
@@ -947,8 +948,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
         String docTypeName = "";
         if (newMaintainableObject != null) {
-            docTypeName = getDocumentDictionaryService()
-                    .getMaintenanceDocumentTypeName(this.newMaintainableObject.getDataObjectClass());
+            docTypeName = getDocumentDictionaryService().getMaintenanceDocumentTypeName(
+                    this.newMaintainableObject.getDataObjectClass());
         } else { // I don't know why we aren't just using the header in the first place
             // but, in the case where we can't get it in the way above, attempt to get
             // it off the workflow document header
@@ -957,8 +958,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             }
         }
         if (!StringUtils.isBlank(docTypeName)) {
-            DocumentEntry documentEntry =
-                    getDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+            DocumentEntry documentEntry = getDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
             if (documentEntry != null) {
                 WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
                 WorkflowAttributes workflowAttributes = documentEntry.getWorkflowAttributes();
@@ -1104,8 +1104,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     //for issue KULRice3070
     protected boolean checkAllowsRecordDeletion() {
-        Boolean allowsRecordDeletion = KRADServiceLocatorWeb.getDocumentDictionaryService()
-                .getAllowsRecordDeletion(this.getNewMaintainableObject().getDataObjectClass());
+        Boolean allowsRecordDeletion = KRADServiceLocatorWeb.getDocumentDictionaryService().getAllowsRecordDeletion(
+                this.getNewMaintainableObject().getDataObjectClass());
         if (allowsRecordDeletion != null) {
             return allowsRecordDeletion.booleanValue();
         } else {
@@ -1122,12 +1122,12 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     protected boolean checkDeletePermission(Object dataObject) {
         boolean allowsMaintain = false;
 
-        String maintDocTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
-                .getMaintenanceDocumentTypeName(dataObject.getClass());
+        String maintDocTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(
+                dataObject.getClass());
 
         if (StringUtils.isNotBlank(maintDocTypeName)) {
-            allowsMaintain = KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                    .canMaintain(dataObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+            allowsMaintain = KRADServiceLocatorWeb.getDataObjectAuthorizationService().canMaintain(dataObject,
+                    GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
         }
         return allowsMaintain;
     }

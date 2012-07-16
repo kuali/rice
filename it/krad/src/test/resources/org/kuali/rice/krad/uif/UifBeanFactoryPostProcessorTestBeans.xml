@@ -112,6 +112,36 @@
     </property>
   </bean>
 
+  <bean id="testListExpressions" class="org.kuali.rice.krad.uif.UifTestBeanObject">
+    <property name="list1">
+      <list>
+        <value>val1</value>
+        <value>@{expr2} before val</value>
+        <value>@{expr3}</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="testListExpressionMerging" parent="testListExpressions">
+    <property name="list1">
+      <list merge="true">
+        <value>@{expr4}</value>
+        <value>val5</value>
+        <value>@{expr6}</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="testListExpressionNonMerging" parent="testListExpressions">
+    <property name="list1">
+      <list>
+        <value>@{expr1}</value>
+        <value>val2</value>
+        <value>@{expr3}</value>
+      </list>
+    </property>
+  </bean>
+
   <bean class="org.kuali.rice.krad.uif.UifTestBeanObject" id="testSimpleBean1" name="SimpleBean1">
     <property name="property3" value="@{1 eq 1}"/>
   </bean>

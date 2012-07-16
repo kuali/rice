@@ -496,12 +496,16 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
         ManagedList newList = new ManagedList();
         newList.setMergeEnabled(isMergeEnabled);
 
+
+        int parentListSize = -1;
         for (int i = 0; i < listVal.size(); i++) {
             Object elem = listVal.get(i);
             String elemPropertyName = propertyName + "[" + i + "]";
 
             if (hasExpression(elem)) {
                 String strValue = getStringValue(elem);
+
+
                 expressionGraph.put(elemPropertyName, strValue);
                 newList.add(i, null);
             } else {

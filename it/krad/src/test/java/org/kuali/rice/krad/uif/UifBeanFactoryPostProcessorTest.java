@@ -1,6 +1,5 @@
 package org.kuali.rice.krad.uif;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -8,7 +7,7 @@ import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.test.KRADTestCase;
 import org.kuali.test.TestDictionaryConfig;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -130,6 +129,28 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
                 rootListBean.getExpressionGraph().get("reference1.map1['key1']"));
         assertEquals("Bean does not contain expression for property key1", "@{expr4}",
                 rootListBean.getExpressionGraph().get("reference1.map1['key4']"));
+    }
+
+    /**
+     * Tests list property types with expressions, including non-inheritance, inheritance with and without merging
+     *
+     * TODO: this test is currently failing due to list handling in post processor
+     *
+     * @throws Exception
+     */
+    public void testListExpressions() throws Exception {
+        // test expressions with no inheritance
+        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testListExpressions");
+        assertNotNull("No bean exists with id: testListExpressions", testBean);
+
+        List<String> list1 = testBean.getList1();
+        assertTrue("List with expressions is not correct size", list1.size() == 1);
+        assertTrue("Expression graph for non-inheritance list not correct size",
+                testBean.getExpressionGraph().size() == 2);
+        assertEquals("First expression in expression graph not correct", "${expr2} before val",
+                testBean.getExpressionGraph().get("list1[0]"));
+        assertEquals("Second expression in expression graph not correct", "${expr3}", testBean.getExpressionGraph().get(
+                "list1[2]"));
     }
 
     /**

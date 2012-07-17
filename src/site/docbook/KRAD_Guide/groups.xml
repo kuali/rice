@@ -1449,7 +1449,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
 &#160;&#160;&#160;&#160;&#160;       &lt;bean parent=”Uif-Link” p:href=”http:myapp/about” p:linkLabel=”About”/&gt;
 &#160;&#160;&#160;     &lt;/list&gt;
 &#160;   &lt;/property&gt;
-&lt;/bean&gt; 
+&lt;/bean&gt;
         </programlisting>
   </section>
   <section>
@@ -1481,8 +1481,8 @@ public class Test1Object {
 &#160;   private String t1Field;
 &#160;   private Test2Object test2Object;
 &#160;   private List&lt;Test2Object&gt; test2List;
-}  
-                
+}
+
 public class Test2Object {
 &#160;   private String t2Field;
 &#160;   private String t2Field2;
@@ -1564,8 +1564,8 @@ public class Test2Object {
                 class type using the <emphasis role="bold">collectionObjectClass</emphasis>
                 property:</para>
       <programlisting>
-&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection” 
-    p:propertyName=”test1Object.test2List” 
+&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection”
+    p:propertyName=”test1Object.test2List”
     p:collectionObjectClass=”edu.myedu.sample.Test2Object”/&gt;
             </programlisting>
       <para>The class given must be a concrete (non-abstract) class that follows the JavaBean
@@ -1604,8 +1604,8 @@ public class Test1Object {
             </programlisting>
       <para>We can configure this as follows:</para>
       <programlisting>
-&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection” 
-    p:propertyName=”test1Object.test2List” 
+&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection”
+    p:propertyName=”test1Object.test2List”
     p:collectionObjectClass=”edu.myedu.sample.Test2Object”&gt;
 &#160;   &lt;property name=”addLinePropertyName” value=”test1Object.test2Object”/&gt;
 &lt;/bean&gt;
@@ -1629,6 +1629,72 @@ public class Test1Object {
                 example the table layout manager uses this to label the add line row). </para>
     </section>
     <section>
+      <title>Collection Add Blank Line</title>
+      <para>Collections can be configured to allow the user to add blank editable lines to the collection.
+              This way the user is forced to add the line to the collection before entering data. In this case
+              the blank line will already be part of the collection data.</para>
+      <para>To enable this feature the <emphasis role="bold">renderAddBlankLineButton</emphasis> property
+              on CollectionGroup must be set to true. This can be set on stacked as well as table collection layouts.
+              This will cause the default add line actions not to be rendered inside the items and instead an Add Line
+              action button will be rendered once for the collection.</para>
+      <para>The placement of this button can be set using the <emphasis role="bold">addLinePlacement</emphasis>
+              property. Valid values are 'TOP' and 'BOTTOM'. The default will always be 'TOP'. This will also
+              determine where the blank will be added to the collection, 'TOP' will insert the line first and
+              'BOTTOM' will insert the line last.</para>
+      <para>The newly added line will be highlighted until the collection
+              is saved in order to differentiate it from the original items.</para>
+      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if 'TOP')...</para>
+      <programlisting>
+        &lt;bean id="Collections-AddBlankLine-TableLayout" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"&gt;
+            ...
+            &lt;property name="renderAddBlankLineButton" value="true" /&gt;
+            &lt;property name="addLinePlacement" value="TOP" /&gt;
+            ...
+        &lt;/bean&gt;
+      </programlisting>
+      <figure>
+        <title>Collection Add Blank Line Example - TableLayout with TOP add line placement</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/KRAD_Collection_AddBlank.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+    <section>
+      <title>Collection Add Via Lightbox</title>
+      <para>Collections can be configured to allow the user to add items to the collection via a modal dialog.</para>
+      <para>The add button in the dialog will execute client side checks just like the add action in normal collection
+          setup would do and not allow the user to add invalid content.</para>
+      <para>To enable this feature the <emphasis role="bold">addViaLightBox</emphasis> property
+        on CollectionGroup must be set to true. This can be set on stacked as well as table collection layouts.
+        This will cause the default add line actions not to be rendered inside the items and instead an Add Line
+        action button will be rendered once for the collection.</para>
+      <para>The placement of this button can be set using the <emphasis role="bold">addLinePlacement</emphasis>
+        property. Valid values are 'TOP' and 'BOTTOM'. The default will always be 'TOP'. This will also
+        determine where the blank will be added to the collection, 'TOP' will insert the line first and
+        'BOTTOM' will insert the line last.</para>
+      <para>The newly added line will be highlighted until the collection
+        is saved in order to differentiate it from the original items.</para>
+      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if 'TOP') : </para>
+      <programlisting>
+        &lt;bean id="Collections-AddViaLightBox-TableLayout" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"&gt;
+            ...
+            &lt;property name="addViaLightBox" value="true" /&gt;
+            &lt;property name="addLinePlacement" value="TOP" /&gt;
+            ...
+        &lt;/bean&gt;
+      </programlisting>
+      <figure>
+        <title>Collection Add Via Lightbox Example - TableLayout with TOP add line placement</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/KRAD_Collection_AddViaLightbox.PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+    <section>
       <title>Line Actions</title>
       <para>In Chapter 6 we learned about the action component which is used to render buttons
                 or links for our view. These allow the user to perform some action such as making a
@@ -1648,8 +1714,8 @@ public class Test1Object {
                 server side controller method named ‘copyLine’, and the second will call a server
                 side controller method named ‘deleteLine’:</para>
       <programlisting>
-&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection” 
-    p:propertyName=”test1Object.test2List” 
+&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection”
+    p:propertyName=”test1Object.test2List”
     p:collectionObjectClass=”edu.myedu.sample.Test2Object”&gt;
     &lt;property name=”lineActions”&gt;
 &#160;&#160;&#160;     &lt;list&gt;
@@ -1681,8 +1747,8 @@ public class Test1Object {
                 find here is of course the ‘add’ action. This is used to make the server call for
                 adding the line to the collection. Let’s see how we add this:</para>
       <programlisting>
-&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection” 
-    p:propertyName=”test1Object.test2List” 
+&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection”
+    p:propertyName=”test1Object.test2List”
     p:collectionObjectClass=”edu.myedu.sample.Test2Object”&gt;
 &#160;   &lt;property name=”addLineActions”&gt;
 &#160;&#160;&#160;     &lt;list&gt;
@@ -1723,6 +1789,68 @@ public class Test1Object {
       </tip>
     </section>
     <section>
+      <title>Validated Line Actions</title>
+      <para>A special type of Line Actions are the Validated Line Actions. They do client side validation on the
+          related item before the action can be fired. If the validation fails a message dialog will be displayed
+          informing the user that the item contains errors and that the action will not be executed.</para>
+      <para>We specify the validated line actions using the collection group’s
+        <emphasis role="bold">validatedLineActions</emphasis> property. Similar to line actions the property holds a
+        list of Action components that are rendered when the collection group
+        <emphasis role="bold">renderLineActions</emphasis> property is true (this property gives us a way to
+        turn off all actions conditionally). Example : </para>
+      <programlisting>
+        &lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection”
+        p:propertyName=”test1Object.test2List”
+        p:collectionObjectClass=”edu.myedu.sample.Test2Object”&gt;
+        &#160;   &lt;property name=”validatedLineActions”&gt;
+        &#160;&#160;&#160;     &lt;list&gt;
+        &#160;&#160;&#160;&#160;&#160;       &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;updateLine&quot; p:actionLabel=&quot;update&quot;/&gt;
+        &#160;&#160;&#160;     &lt;/list&gt;
+        &#160;   &lt;/property&gt;
+        &lt;/bean&gt;
+      </programlisting>
+      <section>
+        <title>Collection Save Action</title>
+        <para>A type of Validated Line Action that is configured on collections is the save action. This action
+          is not rendered by default. This action will call the saveLine method on the UifControllerBase controller
+          which will call the ViewHelperService processCollectionSaveLine method which can be overridden by the client.
+          This will allow for processing single collections item.</para>
+        <para>The save actions can be rendered by setting the <emphasis role="bold">renderSaveLineActions</emphasis>
+          property to true. Example : </para>
+        <programlisting>
+          &lt;bean id="Collections-SaveLines-TableLayout" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"&gt;
+          ...
+          &lt;property name="renderSaveLineActions" value="true" /&gt;
+          ...
+          &lt;/bean&gt;
+        </programlisting>
+      </section>
+    </section>
+    <section>
+      <title>Collection Action Column Sequence</title>
+      <para>Collections using TableLayoutManager can be configured to set the action column placement. </para>
+      <para>The <emphasis role="bold">layoutManager.actionColumnPlacement</emphasis> property on the CollectionGroup
+          can be set to specify the placement of the action column. The default placement will be 'RIGHT'. Other valid
+          placement values are 'LEFT' or any valid column number. Values higher than the number of columns or a
+          value of -1 will default to 'RIGHT'. </para>
+      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if 'TOP')...</para>
+      <programlisting>
+        &lt;bean id="Collections-ActionColumnPlacement-TableLayout" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"&gt;
+            ...
+            &lt;property name="layoutManager.actionColumnPlacement" value="3" /&gt;
+            ...
+        &lt;/bean&gt;
+      </programlisting>
+      <figure>
+        <title>Collection Action Column Placement Example</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/KRAD_Collection_ActionColumnPlacement.PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+    <section>
       <title>SubCollections</title>
       <para>So we have seen how to bind to primitive types
                 (data field), and collection types (collection group), and primitives within a
@@ -1743,8 +1871,8 @@ public class Test1Object {
 public class Test3Object {
 &#160;   private String t3Field;
 &#160;   private String t3Field2;
-} &#160; 
-                
+} &#160;
+
 public class Test2Object {
 &#160;   private String t2Field;
 &#160;   private String t2Field2;
@@ -1756,13 +1884,13 @@ public class Test2Object {
       <para>We can then configure the collection group for the sub-collection as
                 follows:</para>
       <programlisting>
-&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection” 
-    p:propertyName=”test1Object.test2List” 
+&lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection”
+    p:propertyName=”test1Object.test2List”
     p:collectionObjectClass=”edu.myedu.sample.Test2Object”&gt;
 &#160;   &lt;property name=”subCollections”&gt;
 &#160;&#160;&#160;     &lt;list&gt;
-&#160;&#160;&#160;&#160;&#160;       &lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection” 
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;     p:propertyName=”test3List” 
+&#160;&#160;&#160;&#160;&#160;       &lt;bean parent=”Uif-CollectionGroupBase” p:title=”My First Collection”
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;     p:propertyName=”test3List”
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;     p:collectionObjectClass=”edu.myedu.sample.Test3Object”&gt;
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;        &lt;property name=”items”&gt;
 &#160;&#160;&#160;&#160;&#160;&#160; &#160;&#160;&#160;&#160;         &lt;list&gt;
@@ -1870,6 +1998,17 @@ public class Test2Object {
                         property</para>
         </listitem>
         <listitem>
+          <para>Collections can be configured to allow the user to add blank editable lines to the collection.
+            This way the user is forced to add the line to the collection before entering data. To enable this
+            feature the <emphasis role="bold">renderAddBlankLineButton</emphasis> property
+            on CollectionGroup must be set to true.</para>
+        </listitem>
+        <listitem>
+          <para>Collections can be configured to allow the user to add items to the collection via a modal dialog.
+            To enable this feature the <emphasis role="bold">addViaLightBox</emphasis> property
+            on CollectionGroup must be set to true.</para>
+        </listitem>
+        <listitem>
           <para>The collection group provides the property <emphasis role="bold">addLineLabel</emphasis> which is used by layout managers to label the
                         add line</para>
         </listitem>
@@ -1881,8 +2020,17 @@ public class Test2Object {
                         line</para>
         </listitem>
         <listitem>
-          <para>The display of the actions is controlled by the property <emphasis role="bold">renderLineActions</emphasis> (by default is true when the
+          <para>Validated Action fields that perform an validation and an action related to an existing line can be
+            given using the <emphasis role="bold">validatedLineActions</emphasis> property.</para>
+        </listitem>
+        <listitem>
+          <para>The display of the actions is controlled by the property
+            <emphasis role="bold">renderLineActions</emphasis> (by default is true when the
                         group is not read-only)</para>
+        </listitem>
+        <listitem>
+          <para>We can specify the placement of the action column on collection groups using TableLayoutManager
+            by setting the <emphasis role="bold">layoutManager.actionColumnPlacement</emphasis> property.</para>
         </listitem>
         <listitem>
           <para>Collection group beans can extend the base bean ‘Uif-CollectionGroupBase’
@@ -2032,7 +2180,7 @@ If neither a name nor images are set to be used, the link will be called “Deta
           <para>Sample code using the images option, the group defined is a vertical box group with 2 input fields, these are fields of the collection item:
 </para>
           <programlisting>&lt;bean id=&quot;Demo-RowDetails-Section2&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
-...    
+...
    &lt;property name=&quot;layoutManager.rowDetailsUseImage&quot; value=&quot;true&quot;/&gt;
     &lt;property name=&quot;layoutManager.rowDetailsGroup&quot;&gt;
       &lt;bean parent=&quot;Uif-VerticalBoxGroup&quot;&gt;

@@ -53,17 +53,17 @@
   <bean id="Editor-MaintenanceView" parent="Uif-MaintenanceView">
     <property name="additionalScriptFiles">
       <list>
-        <value>/krms/scripts/ruleTree.js</value>
-        <value>/krms/scripts/agendaTree.js</value>
-        <value>/krms/scripts/requiredAlerts.js</value>
-        <value>/krms/scripts/disableButtons.js</value>
-        <value>/krms/scripts/countdownInputs.js</value>
+        <value>krms/scripts/ruleTree.js</value>
+        <value>krms/scripts/agendaTree.js</value>
+        <value>krms/scripts/requiredAlerts.js</value>
+        <value>krms/scripts/disableButtons.js</value>
+        <value>krms/scripts/countdownInputs.js</value>
       </list>
     </property>
     <property name="additionalCssFiles">
       <list>
-        <value>/krms/css/agendaTree.css</value>
-        <value>/krms/css/disableButtons.css</value>
+        <value>krms/css/agendaTree.css</value>
+        <value>krms/css/disableButtons.css</value>
       </list>
     </property>
     <property name="headerText" value="Agenda Editor"/>

@@ -118,7 +118,7 @@ public abstract class KRADTestCase extends BaselineTestCase {
     @Override
     protected Lifecycle getLoadApplicationLifecycle() {
         SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"),
-                "classpath:KradTestSpringBeans.xml", null);
+                "classpath:KRADTestSpringBeans.xml", null);
         springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
         return springResourceLoader;
     }

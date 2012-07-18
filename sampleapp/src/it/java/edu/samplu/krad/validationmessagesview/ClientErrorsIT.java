@@ -112,7 +112,7 @@ public class ClientErrorsIT {
         Assert.assertFalse(selenium.isElementPresent("//select[@name='field3']/../img[@alt='Error']"));
         selenium.fireEvent("name=field114", "focus");
         selenium.removeAllSelections("name=field114");
-        selenium.fireEvent("name=field4", "blur");
+        selenium.fireEvent("name=field114", "blur");
         Assert.assertEquals("true", selenium.getAttribute("name=field114@aria-invalid"));
         Assert.assertTrue(selenium.getAttribute("name=field114@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
         Assert.assertTrue(selenium.isElementPresent("//select[@name='field114']/../img[@alt='Error']"));

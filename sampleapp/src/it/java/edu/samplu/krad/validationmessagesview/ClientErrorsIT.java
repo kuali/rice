@@ -33,15 +33,12 @@ public class ClientErrorsIT {
         String baseUrl = SeUtil.getBaseUrlString();
         WebDriver driver = new FirefoxDriver();
         selenium = new WebDriverBackedSelenium(driver,
-                baseUrl + "/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
+                baseUrl + "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
 
         // Login
         selenium.open(
-                baseUrl + "/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
-        Assert.assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+                baseUrl + "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
+        SeUtil.login(selenium);
     }
 
     @Test

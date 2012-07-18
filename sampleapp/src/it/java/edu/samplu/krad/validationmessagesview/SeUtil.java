@@ -16,6 +16,9 @@
 
 package edu.samplu.krad.validationmessagesview;
 
+import com.thoughtworks.selenium.Selenium;
+import junit.framework.Assert;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -31,6 +34,13 @@ public class SeUtil {
             baseUrl = "http://" + baseUrl;
         }
         return baseUrl;
+    }
+
+    public static void login(Selenium selenium) {
+        Assert.assertEquals("Login", selenium.getTitle());
+        selenium.type("__login_user", "admin");
+        selenium.click("//input[@value='Login']");
+        selenium.waitForPageToLoad("30000");
     }
 }
 

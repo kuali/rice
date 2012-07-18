@@ -24,7 +24,7 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.fail;
 
 /**
- * This class is used to test the {@link NoteService} implementation 
+ * NoteServiceTest is used to test the {@link NoteService} implementation
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -32,7 +32,7 @@ import static org.junit.Assert.fail;
 public class NoteServiceTest extends KRADTestCase {
 
     /**
-     * This method tests saving notes when using the {@link RiceKNSDefaultUserDAOImpl} as the implementation of {@link PersonDao}
+     * tests saving notes
      * 
      * @throws Exception
      */

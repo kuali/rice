@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.uif.component.ConfigurableBase;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,25 +26,47 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ViewTheme implements Serializable{
+public class ViewTheme extends ConfigurableBase implements Serializable{
     private static final long serialVersionUID = 7063256242857896580L;
 
-    private List<String> stylesheets;
-    private List<String> jsFiles;
+    private List<String> cssFiles;
+    private List<String> scriptFiles;
 
-    public List<String> getStylesheets() {
-        return stylesheets;
+    /**
+     * Get the css stylesheets to be imported for this view, this must be a list of .css files
+     * with their relative paths
+     *
+     * @return List<String>
+     */
+    public List<String> getCssFiles() {
+        return cssFiles;
     }
 
-    public void setStylesheets(List<String> stylesheets) {
-        this.stylesheets = stylesheets;
+    /**
+     * Set the css stylesheets
+     *
+     * @param cssFiles
+     */
+    public void setCssFiles(List<String> cssFiles) {
+        this.cssFiles = cssFiles;
     }
 
-    public List<String> getJsFiles() {
-        return jsFiles;
+    /**
+     * Get the javascript files to be imported for this view, these must be a list of .js files
+     * with their relative paths
+     *
+     * @return List<String>
+     */
+    public List<String> getScriptFiles() {
+        return scriptFiles;
     }
 
-    public void setJsFiles(List<String> jsFiles) {
-        this.jsFiles = jsFiles;
+    /**
+     * Set the js files
+     *
+     * @param scriptFiles
+     */
+    public void setScriptFiles(List<String> scriptFiles) {
+        this.scriptFiles = scriptFiles;
     }
 }

@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * This class is used to test the DataDictionaryBuilder.
+ * DataDictionaryBuilderTest tests the DataDictionaryBuilder
  * 
  * 
  */

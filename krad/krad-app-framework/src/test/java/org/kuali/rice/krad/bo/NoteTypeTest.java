@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * This is a description of what this class does - chang don't forget to fill this in. 
+ * tests NoteType getters and setters
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -46,18 +46,27 @@ public class NoteTypeTest{
 	}
 	
 	@Test
+    /**
+     * tests noteTypeCode getter and setter
+     */
 	public void testNoteTypeCode(){
 		dummyNoteType.setNoteTypeCode("plain");
 		assertEquals("Testing NoteTypeCode in NoteTypeTest","plain",dummyNoteType.getNoteTypeCode());
 	}
 	
 	@Test
+    /**
+     * tests noteTypeDescription getter and setter
+     */
 	public void testNoteTypeDescription(){
 		dummyNoteType.setNoteTypeDescription("This note is plain");
 		assertEquals("Testing NoteTypeDescription in NoteTypeTest","This note is plain",dummyNoteType.getNoteTypeDescription());
 	}
 	
 	@Test
+    /**
+     * tests noteTypeActiveIndicator getter and setter
+     */
 	public void testNoteTypeActiveIndicator(){
 		dummyNoteType.setNoteTypeActiveIndicator(true);
 		assertTrue("Testing setNoteTypeActiveIndicator in NoteTypeTest",dummyNoteType.isNoteTypeActiveIndicator());

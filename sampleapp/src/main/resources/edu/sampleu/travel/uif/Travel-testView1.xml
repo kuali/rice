@@ -24,7 +24,7 @@
 
   <bean id="Travel-testView1" parent="Uif-FormView">
     <property name="id" value="Travel-testView1"/>
-    <property name="title" value="Test View 1"/>
+    <property name="headerText" value="Test View 1"/>
     <property name="entryPageId" value="page1"/>
     <property name="items">
       <list>
@@ -43,10 +43,13 @@
     </property>
     <property name="formClass" value="edu.sampleu.travel.krad.form.UITestForm"/>
     <property name="defaultBindingObjectPath" value="travelAccount1"/>
+    <property name="footer">
+      <bean parent="Uif-FormFooter"/>
+    </property>
   </bean>
 
   <bean id="testSection1-cgrid" parent="testSection1">
-    <property name="title" value="Bank Setup - Non Table"/>
+    <property name="headerText" value="Bank Setup - Non Table"/>
     <property name="componentModifiers">
       <list>
       </list>
@@ -60,7 +63,7 @@
   </bean>
 
   <bean id="testSection1" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Bank Setup"/>
+    <property name="headerText" value="Bank Setup"/>
     <property name="items">
       <list>
         <ref bean="testGroup1"/>
@@ -80,32 +83,32 @@
   </bean>
 
   <bean id="testGroup1" parent="Uif-GridSection">
-    <property name="title" value="Bank Information"/>
+    <property name="headerText" value="Bank Information"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="Bank Id" p:maxLength="4" p:minLength="2"
               p:instructionalText="Please provide the established federal Id" p:constraintText="Must be 4 chars" p:readOnly="false"
-              p:alternateDisplayPropertyName="field2">
+              p:readOnlyDisplayReplacementPropertyName="field2">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean id="myField" parent="Uif-TextControl" p:size="15" p:watermarkText="####"/>
           </property>
-          <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-          <property name="fieldLookup.fieldConversions">
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+          <property name="quickfinder.fieldConversions">
             <map>
               <entry key="number" value="field1"/>
             </map>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field2" p:label="Bank Name" p:required="true"
-              p:maxLength="25" p:readOnly="true" p:additionalDisplayPropertyName="field1">
+              p:maxLength="25" p:readOnly="true" p:readOnlyDisplaySuffixPropertyName="field1">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextControl" p:size="26"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="Account Open Date" p:maxLength="9"
-              p:hiddenPropertyNames="hidden1,hidden2">
+              p:additionalHiddenPropertyNames="hidden1,hidden2">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
@@ -136,7 +139,7 @@
   </bean>
 
   <bean id="testGroup2" parent="Uif-GridSection">
-    <property name="title" value="Test Group 2"/>
+    <property name="headerText" value="Test Group 2"/>
     <property name="layoutManager">
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4" p:style="width: 50%"/>
     </property>
@@ -148,8 +151,8 @@
           <property name="control">
             <bean parent="Uif-TextControl" p:size="5"/>
           </property>
-          <property name="fieldInquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-          <property name="fieldInquiry.inquiryParameters">
+          <property name="inquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+          <property name="inquiry.inquiryParameters">
             <map>
               <entry key="field5" value="number"/>
             </map>
@@ -167,10 +170,10 @@
           <property name="control">
             <bean parent="Uif-TextControl" p:size="10"/>
           </property>
-          <property name="fieldSuggest.render" value="true"/>
-          <property name="fieldSuggest.sourcePropertyName" value="accountTypeCode"/>
-          <property name="fieldSuggest.suggestQuery.dataObjectClassName"
-                    value="edu.sampleu.travel.bo.TravelAccountType"/>
+          <property name="suggest">
+              <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="accountTypeCode"
+                    p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
+          </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field34" p:label="Field 34" p:width="auto">
           <property name="bindingInfo.bindToForm" value="true"/>
@@ -185,7 +188,7 @@
     </property>
     <property name="propertyReplacers">
       <list>
-        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="title"
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="headerText"
               p:condition="#view.id eq 'Travel-testView1'" p:replacement="Subs Test Group"/>
       </list>
     </property>
@@ -193,7 +196,7 @@
   </bean>
 
   <bean id="testSection6" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Test Collections"/>
+    <property name="headerText" value="Test Collections"/>
     <property name="items">
       <list>
         <ref bean="testGroup4"/>
@@ -204,8 +207,8 @@
     </property>
   </bean>
 
-  <bean id="testGroup4" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6">
-    <property name="title" value="Collection Group 1"/>
+  <bean id="testGroup4" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6" p:collectionLookup.render="false">
+    <property name="headerText" value="Collection Group 1"/>
     <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="layoutManager.sequencePropertyName" value="number"/>
@@ -224,7 +227,7 @@
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="subsidizedPercent"
-              p:readOnly="@{#line?.number ne null and #line?.number ne ''}" p:refreshWhenChanged="#line?.number"/>
+              p:readOnly="@{#line?.number ne null and #line?.number ne ''}" p:refreshWhenChangedPropertyNames="#line?.number"/>
         <bean parent="Uif-InputField" p:propertyName="createDate"/>
         <bean parent="Uif-InputField" p:propertyName="foId" p:required="true"/>
       </list>
@@ -244,7 +247,7 @@
   </bean>
 
   <bean id="testGroup5" parent="Uif-StackedCollectionSection">
-    <property name="title" value="Collection Group 2"/>
+    <property name="headerText" value="Collection Group 2"/>
     <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="bindingInfo.bindingObjectPath" value="travelAccount2"/>
@@ -255,7 +258,7 @@
         <bean parent="Uif-InputField" p:propertyName="foId" p:defaultValue="1"/>
       </list>
     </property>
-    <property name="addLineLabel" value="New @{#component.title}"/>
+    <property name="addLabel" value="New @{#component.title}"/>
     <property name="layoutManager.summaryTitle" value="Account"/>
     <property name="layoutManager.summaryFields">
       <list>
@@ -267,7 +270,7 @@
   </bean>
 
   <bean id="testGroup10" parent="Uif-StackedCollectionSection">
-    <property name="title" value="Sub Collections Stacked"/>
+    <property name="headerText" value="Sub Collections Stacked"/>
     <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
@@ -278,7 +281,7 @@
         <bean parent="Uif-InputField" p:propertyName="foId"/>
       </list>
     </property>
-    <property name="addLineLabel" value="New Account"/>
+    <property name="addLabel" value="New Account"/>
     <property name="layoutManager.summaryTitle" value="Account"/>
     <property name="layoutManager.summaryFields">
       <list>
@@ -289,7 +292,7 @@
     <property name="subCollections">
       <list>
         <bean parent="testGroup5">
-          <property name="title" value="Sub Collection 1"/>
+          <property name="headerText" value="Sub Collection 1"/>
           <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
           <property name="instructionalText" value="Sub collection stacked layout"/>
         </bean>
@@ -299,7 +302,7 @@
   </bean>
 
   <!--    <bean id="testGroup11" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6">
-       <property name="title" value="Sub Collection Table"/>
+       <property name="headerText" value="Sub Collection Table"/>
        <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
        <property name="propertyName" value="fiscalOfficer.accounts"/>
        <property name="layoutManager.sequencePropertyName" value="number"/>
@@ -335,7 +338,7 @@
   </bean>
 
   <bean id="testGroup3" parent="Uif-GridSection">
-    <property name="title" value="Test Group 3"/>
+    <property name="headerText" value="Test Group 3"/>
     <property name="layoutManager">
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4"/>
     </property>
@@ -355,28 +358,28 @@
           <property name="defaultValue" value="Def VAL"/>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field14" p:label="Bank Route Number" p:colSpan="2"
-              p:labelField.colSpan="2" p:maxLength="29">
+              p:fieldLabel.colSpan="2" p:maxLength="29">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:watermarkText="XXXXYYYYC"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field15" p:label="Bank Address" p:colSpan="3"
-              p:labelField.colSpan="1" p:maxLength="69">
+              p:fieldLabel.colSpan="1" p:maxLength="69">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextControl" p:size="70"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field16" p:label="Bank Zip" p:colSpan="2"
-              p:labelField.colSpan="2" p:maxLength="4">
+              p:fieldLabel.colSpan="2" p:maxLength="4">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextControl" p:size="5" p:watermarkText="00000"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field17" p:label="Bank Description" p:rowSpan="2"
-              p:labelField.rowSpan="2">
+              p:fieldLabel.rowSpan="2">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40" p:watermarkText="Key in bank description here..."/>
@@ -400,7 +403,7 @@
   </bean>
 
   <bean id="testSection5-cgrid" parent="testSection5">
-    <property name="title" value="Banking Info - Non Table"/>
+    <property name="headerText" value="Banking Info - Non Table"/>
     <property name="componentModifiers">
       <list>
       </list>
@@ -413,7 +416,7 @@
   </bean>
 
   <bean id="testSection5" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Banking Info"/>
+    <property name="headerText" value="Banking Info"/>
     <property name="items">
       <list>
         <ref bean="testGroup3"/>
@@ -421,22 +424,22 @@
     </property>
   </bean>
 
-  <bean id="testSection2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.styleClasses="layout_center"
+  <bean id="testSection2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.cssClasses="layout_center"
         p:layoutManager.padding="5px">
-    <property name="title" value="Test Section 2"/>
+    <property name="headerText" value="Test Section 2"/>
     <property name="fieldBindingObjectPath" value="travelAccount3"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="number" p:labelPlacement="TOP"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
-          <property name="informationalDisplayPropertyNames" value="name,subAccountName"/>
-          <property name="fieldAttributeQuery">
+              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
+          <property name="propertyNamesForAdditionalDisplay" value="name,subAccountName"/>
+          <property name="attributeQuery">
             <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   p:queryFieldMapping="number:number" p:returnFieldMapping="name:name,subAccountName:subAccountName"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="name" p:labelPlacement="TOP"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"/>
+              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"/>
       </list>
     </property>
     <property name="instructionalText" value="Section without nested group, labels top"/>
@@ -453,13 +456,13 @@
   </bean>
 
   <bean id="testSection4" parent="Uif-Disclosure-GridSection">
-    <property name="title" value="Test Section 4"/>
+    <property name="headerText" value="Test Section 4"/>
     <property name="layoutManager">
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4"/>
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 1" p:width="40%" p:labelField.width="10%">
+        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 1" p:width="40%" p:fieldLabel.width="10%">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field20" p:label="Field 11" p:maxLength="4"
@@ -491,7 +494,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Currency Type" p:width="40%" p:labelField.width="10%">
+        <bean parent="Uif-VerticalFieldGroup" p:label="Currency Type" p:width="40%" p:fieldLabel.width="10%">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field24" p:label="Checks" p:labelPlacement="RIGHT">
@@ -515,7 +518,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 3" p:width="40%" p:labelField.width="10%"
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 3" p:width="40%" p:fieldLabel.width="10%"
               p:render="@{field28 eq 'joe'}">
           <property name="items">
             <list>
@@ -536,7 +539,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 4" p:width="40%" p:labelField.width="10%">
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 4" p:width="40%" p:fieldLabel.width="10%">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field29" p:label="Field 8" p:labelPlacement="RIGHT">
@@ -566,7 +569,7 @@
   </bean>
 
   <bean id="testSection3" parent="Uif-Disclosure-GridSection">
-    <property name="title" value="Test Section 3"/>
+    <property name="headerText" value="Test Section 3"/>
     <property name="fieldBindingObjectPath" value="travelAccount3"/>
     <property name="items">
       <list>

@@ -16,10 +16,8 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 
@@ -79,8 +77,8 @@ public class MaintenanceView extends DocumentView {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
-        getAbstractTypeClasses().put(getOldObjectBindingPath(), getDataObjectClassName());
+        getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+        getObjectPathToConcreteClassMapping().put(getOldObjectBindingPath(), getDataObjectClassName());
     }
 
     /**

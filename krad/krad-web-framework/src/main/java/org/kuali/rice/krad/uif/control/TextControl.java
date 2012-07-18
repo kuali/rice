@@ -147,18 +147,25 @@ public class TextControl extends ControlBase implements SizedControl {
 		return this.datePicker;
 	}
 
+    /**
+     * Setter for the date picker
+     *
+     * @param datePicker
+     */
 	public void setDatePicker(DatePicker datePicker) {
 		this.datePicker = datePicker;
 	}
 
 	/**
      * Gets the watermark text for this TextControl.
+     *
      * <p>
      * A watermark typically appears as light gray text within the text input element whenever the
      * element is empty and does not have focus. This provides a hint to the user as to what the input
      * is used for, or the type of input that is required.
      * </p>
-	 * @return the watermarkText
+	 *
+     * @return the watermarkText
 	 */
 	public String getWatermarkText() {
 		return this.watermarkText;
@@ -166,6 +173,7 @@ public class TextControl extends ControlBase implements SizedControl {
 
 	/**
      * Sets the watermark text for this TextControl
+     *
 	 * @param watermarkText the watermarkText to set
 	 */
 	public void setWatermarkText(String watermarkText) {
@@ -189,6 +197,7 @@ public class TextControl extends ControlBase implements SizedControl {
 
     /**
      * Sets whether this control will have a button to expand the text area through a popup window.
+     *
      * @param textExpand the textExpand to set
      */
     public void setTextExpand(boolean textExpand) {

@@ -24,10 +24,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
    <bean id="KEW-IngesterView" parent="Uif-FormView-KnsTheme">
       <property name="id" value="KEW-IngesterView"/>
-      <property name="title" value="Ingester"/>
+      <property name="headerText" value="Ingester"/>
       <property name="items">
         <list>
-          <bean parent="Uif-Page" p:id="page1" p:autoFocus="false" p:errorsField.combineMessages="false" p:errorsField.displayFieldLabelWithMessages="false">
+          <bean parent="Uif-Page" p:id="page1" p:autoFocus="false" p:validationMessages.displayFieldLabelWithMessages="false">
              <property name="items">
                <list>
 		       		<ref bean="uploadSection"/>   

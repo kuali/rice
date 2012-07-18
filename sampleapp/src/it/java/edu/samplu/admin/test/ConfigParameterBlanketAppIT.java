@@ -27,7 +27,8 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests that user admin's blanket approve of the Parameter maintenance document results in a final document
+ * The component is chosen from a lookup screen
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -37,6 +38,7 @@ public class ConfigParameterBlanketAppIT {
     public void setUp() throws Exception {
         selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
         selenium.start();
+        //selenium.setSpeed("1000");
     }
 
     @Test
@@ -60,7 +62,7 @@ public class ConfigParameterBlanketAppIT {
         assertEquals("", selenium.getText("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter");          
         selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=Kuali Nervous System");
-        selenium.click("methodToCall.performLookup.(!!ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "/kr/lookup.do;::::).anchor4");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

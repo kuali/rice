@@ -1,0 +1,715 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<chapter xml:id="the_view" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+    <title>The View </title>
+    <section>
+        <title>Putting It Together with Views </title>
+        <section>
+            <title>The View Component</title>
+            <para>The view component sets at the very top of the component tree. It holds one more
+                pages that allow the user to complete a course grained task. In addition to the
+                pages it hold, the view also contains the standard container header, footer, and
+                errors field. We also configure navigation for the pages through the view
+                component.</para>
+            <para>In addition to the interface related configuration, many properties exist on the
+                view component for configuring backend processing. Some example of this include the
+                form post URL, the form (model) class, and validation flags.</para>
+            <para>The base view component is defined with the class
+                org.kuali.rice.krad.uif.view.View. For views that need to render an HTML form, the
+                subclass org.kuali.rice.krad.uif.view.FormView is used. The component beans we use
+                to configure the view are ‘Uif-View’ and ‘Uif-FormView’. The following is an example
+                of configuring a form view:</para>
+            <programlisting>
+&lt;bean id="Travel-testView1" parent="Uif-FormView"&gt;
+    &lt;property name="title" value="Test View 1"/&gt;
+    &lt;property name="items"&gt;
+        &lt;list&gt;
+            &lt;bean parent="Uif-Disclosure-Page" p:id="page1"&gt;
+                &lt;property name="items"&gt;
+                    &lt;list&gt;
+                        &lt;ref bean="testSection1"/&gt;
+                        &lt;ref bean="testSection2"/&gt;
+                        &lt;ref bean="testSection3"/&gt;
+                        &lt;ref bean="testSection4"/&gt;
+                        &lt;ref bean="testSection5"/&gt;
+                    &lt;/list&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="formClass"value="edu.sampleu.travel.krad.form.UITestForm"/&gt;
+    &lt;property name="defaultBindingObjectPath" value="travelAccount1"/&gt;
+&lt;/bean&gt;
+            </programlisting>    
+            <para>In this example we first set the title for the view (inherited from
+                ContainerBase). Then we configured one page in the view’s items list that contains
+                five sections. Finally we associated the view with the form class ‘UITestForm’ and
+                specify a default binding object path.</para>
+            <para>The id given for the view component (either by explicitly setting the id property
+                or through the bean id) is very important. For the case of general form view, this
+                is how we will request the view with a URL (custom views that extend the general
+                form view, known as view types may support other ways of retrieving a view).</para>
+        </section>
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para>The view groups together all the UI components for a course grained task
+                        (it sets at the top of the component tree)</para>
+                </listitem>
+                <listitem>
+                    <para>A view contains one or more pages, in addition to the standard container
+                        header, footer, and errors field</para>
+                </listitem>
+                <listitem>
+                    <para>Navigation between pages in configured through the view</para>
+                </listitem>
+                <listitem>
+                    <para>The view component is defined by the class
+                        org.kuali.rice.krad.uif.view.View</para>
+                </listitem>
+                <listitem>
+                    <para>org.kuali.rice.krad.uif.view.FormView extends the View class for adding
+                        HTML form functionality</para>
+                </listitem>
+                <listitem>
+                    <para>The base beans for the view component are ‘Uif-View’ and
+                        ‘Uif-FormView’</para>
+                </listitem>
+                <listitem>
+                    <para>The view id can be used to request a view instance with a URL (for the
+                        general form view this is the only way to request the view)</para>
+                </listitem>
+                <listitem>
+                    <para>The following properties are supported on the View component:</para>
+                    <itemizedlist>
+                            <listitem>
+                            <para>viewNamespaceCode – Module (or application) namespace code the
+                                view is associated with. If given this will be used when making KIM
+                                permissions checks (other future uses are planned as well)</para>
+                        </listitem>
+                        <listitem>
+                            <para>viewName – A unique name for the view within a view type. View
+                                types (covered in Chapter 13) support alternate ways of retrieving a
+                                view. For example a lookup view can be requested by passing the data
+                                object class the lookup view is associated with. If multiple lookup
+                                views exist for the same data object class, they can be
+                                differentiated by using the viewName. The viewName is then passed
+                                with the data object class through the URL. If the view name is not
+                                specified it inherits the name ‘default’</para>
+                        </listitem>
+                        <listitem>
+                            <para>theme – The ViewTheme object associated with the view. This
+                                configures the base set of style sheets and script files that are
+                                used for the rendered view</para>
+                        </listitem>
+                        <listitem>
+                            <para>applicationHeader and applicationFooter – A Header element and
+                                Group footer that will be rendered before and after the view
+                                contents. This is used to define a consistent application header and
+                                footer through all views (note most Rice applications currently use
+                                the portal header and footer instead).</para>
+                        </listitem>
+                        <listitem>
+                            <para>breadcrumbs – A Breadcrumbs widget used to provide application
+                                crumbs. Note this provide the location of the view within the
+                                application not the ‘trail’</para>
+                        </listitem>
+                        <listitem>
+                            <para>growls – Growls widget that can be used to configure growls that
+                                are displayed for the view.</para>
+                        </listitem>
+                        <listitem>
+                            <para>growlMessagingEnabled – Enables or disable growl messages. If
+                                enabled, growls will appear on refresh of a page when there are
+                                error, warning, or informational messages. If disabled, growls can
+                                still be given with the use of custom script.</para>
+                        </listitem>
+                        <listitem>
+                            <para>entryPageId – When a view contains multiple page specifies the
+                                page that should be opened for the initial request. If not specified
+                                the first page configured in the items list is used.</para>
+                        </listitem>
+                        <listitem>
+                            <para>currentPageId – Id for the page to be rendered. In the controller
+                                this property can be set to change the page that will be rendered.
+                                The default navigate method provided in UifControllerBase takes care
+                                of changing this value.</para>
+                        </listitem>
+                        <listitem>
+                            <para>navigation – The NavigationGroup that will be rendered for the
+                                view</para>
+                        </listitem>
+                        <listitem>
+                            <para>formClass – Full class name for the form (top level model object).
+                                Note this is not requirement that the form class extends UifFormBase
+                                but it must implement the ViewModel interface</para>
+                        </listitem>
+                        <listitem>
+                            <para>defaultBindingObjectPath – Default path to use for the binding
+                                object path of DataBinding components. See ‘ Data Binding’ in
+                                Chapter 6</para>
+                        </listitem>
+                        <listitem>
+                            <para>abstractTypeClasses – A map of property paths to class mappings.
+                                When a property has an abstract type (interface or abstract class)
+                                it is not possible for the framework to create instances of that
+                                class or in many cases find data dictionary or persistence metadata.
+                                In this cases a map entry can be added to specify the concrete class
+                                to use.</para>
+                        </listitem>
+                        <listitem>
+                            <para>additionalScriptFiles – A list of script (.js) file paths (either
+                                relative to the web root or full URLS) that should be included for
+                                the rendered view.</para>
+                        </listitem>
+                        <listitem>
+                            <para>additionalCssFiles - A list of style (.css) file paths (either
+                                relative to the web root or full URLS) that should be included for
+                                the rendered view</para>
+                        </listitem>
+                        <listitem>
+                            <para>viewTypeName – Name of the view type that view belongs to. This is
+                                generally set in the base beans for a view type (such as ‘LOOKUP’,
+                                or ‘INQUIRY’). When requesting a view by type this name must be
+                                sent.</para>
+                        </listitem>
+                        <listitem>
+                            <para>viewHelperServiceClass – Full class name for the
+                                ViewHelperService implementation. Defaults to
+                                org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl. Note you
+                                may also inject the ViewHelperService instance by setting the
+                                viewHelperService property.</para>
+                        </listitem>
+                        <listitem>
+                            <para>viewStatus – Lifecycle status for the view. This is generally just
+                                used by the framework.</para>
+                        </listitem>
+                        <listitem>
+                            <para>viewIndex – A class the holds indexes for various view components.
+                                This is used throughout the framework and custom code to retrieve
+                                components. For example, suppose we wanted to find the InputField
+                                for property ‘field1’ and we were given the view instance. Without
+                                the index we would need to traverse the component tree looked for
+                                InputField components and then checking the property name. Using the
+                                view index, we can simply get the InputField by the property name
+                                with the contained index. The indexes are built while carrying out
+                                the view lifecycle and traversing the tree for the phases.</para>
+                        </listitem>
+                        <listitem>
+                            <para>viewRequestParameters – A Map of request parameters that were used
+                                to initialize the view component (see upcoming section ‘View Request
+                                Parameters’. These must be maintained on the form in the case of
+                                view reinitialization (for example in the case of a session
+                                timeout).</para>
+                        </listitem>
+                        <listitem>
+                            <para>presentationController – ViewPresentationController instance used
+                                to perform logic for edit, read-only, and hidden state of
+                                components.</para>
+                        </listitem>
+                        <listitem>
+                            <para>authorizer – ViewAuthorizer instance used to perform user based
+                                authorization for a component’s edit or view state.</para>
+                        </listitem>
+                        <listitem>
+                            <para>expressionVariables – A map of custom variables that can be used
+                                in expressions. The map key gives the variable name and the value
+                                gives the expression to evaluate for the variable value. These are
+                                evaluated at the beginning of the perform model phase and then
+                                available in any expression on the views contained
+                                components.</para>
+                        </listitem>
+                        <listitem>
+                            <para>singlePageView – Indicates whether the view only contains one page
+                                group. In this case the items configured are assumed to be section
+                                groups, and the sections are inserted into a page through code. This
+                                allows simpler configuration for views that typically don’t have
+                                multiple pages (such as a lookup view).</para>
+                        </listitem>
+                        <listitem>
+                            <para>page – When singlePageView is true, this property holds the page
+                                group that will be rendered. The items configured on the view are
+                                then inserted into this group through code.</para>
+                        </listitem>
+                        <listitem>
+                            <para>viewMenuGrouping – A string that identifier the group the view
+                                belongs to. This is currently not being used by KRAD but is in place
+                                for future portal improvements (in portal terms we can think of this
+                                as the channel the view link will be placed in).</para>
+                        </listitem>
+                        <listitem>
+                            <para>validateDirty – Boolean this enables or disable the dirty fields
+                                check.</para>
+                        </listitem>
+                        <listitem>
+                            <para>translateCodes – Boolean that indicates whether code properties
+                                should automatically be translated to their name property for read
+                                only display. This is similar to the function of DataField’s
+                                additionalDisplayPropertyName, however the framework will attempt to
+                                do this automatically.</para>
+                        </listitem>
+                        </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para> The following additional properties are supported on the FormView component:</para>
+                    <itemizedlist>
+                            <listitem>
+                            <para>renderForm – Boolean that determines whether the HTML form will be
+                                rendered. In some cases a view might need to conditionally render a
+                                form for which this property can be used. By default is set to
+                                true.</para>
+                        </listitem>
+                            <listitem>
+                            <para>validateClientSide – Boolean that indicates whether client side
+                                validation should be performed.</para>
+                        </listitem>
+                            <listitem>
+                            <para>validateServerSide – Boolean that indicates whether automatic
+                                validation should be performed when the view is posted. This is
+                                currently not supported but is planned for the future. The
+                                validation will be performed against any constraints defined on the
+                                data fields (which could be inherited from the data dictionary
+                                attribute definition).</para>
+                        </listitem>
+                        <listitem>
+                            <para>formPostUrl – The relative or absolute URL the form should post
+                                to. If not set, the framework will set this to the request URL (not
+                                including the request parameter string) </para>
+                        </listitem>
+                        </itemizedlist>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </section>
+    <section><title>Navigation </title><para>The following view example shows a multi-page view with
+            a navigation component:</para>
+        <programlisting>
+&lt;bean id="Travel-testView2" parent="Travel-testView1"&gt;
+   &lt;property name="title" value="Test View 2"/&gt;
+   &lt;property name="navigation"&gt;
+      &lt;ref bean="testViewMenu"/&gt;
+   &lt;/property&gt;
+   &lt;property name="items"&gt;
+      &lt;list&gt;
+         &lt;bean parent="Uif-Page" p:id="page1" p:title="Page 1"/&gt;
+         &lt;bean parent="Uif-Page" p:id="page1" p:title="Page 1"/&gt;
+         &lt;bean parent="Uif-Page" p:id="page1" p:title="Page 1"/&gt;
+       &lt;/list&gt;
+    &lt;/property&gt;
+ &lt;/bean&gt;
+        
+ &lt;bean id="testViewMenu"
+            parent="Uif-MenuNavigationGroup"&gt;
+    &lt;property name="items"&gt;
+       &lt;list&gt;
+         &lt;bean parent="Uif-HeaderTwo" p:headerText="Navigation"/&gt;
+         &lt;bean parent="Uif-NavigationActionLink" p:navigateToPageId="page1" 
+               p:actionLabel="Page 1"/&gt;
+         &lt;bean parent="Uif-NavigationActionLink"
+            p:navigateToPageId="page2"             
+               p:actionLabel="Page 2"/&gt;
+         &lt;bean parent="Uif-NavigationActionLink" p:navigateToPageId="page3"
+               p:actionLabel="Page 3"/&gt;
+         &lt;bean parent="Uif-NavigationActionLink" p:navigateToPageId="page4" 
+               p:actionLabel="Page 4"/&gt;
+       &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+        </programlisting>
+        <section>
+            <title>Recap</title>
+
+                <itemizedlist>
+                    <listitem>
+                    <para>The NavigationGroup is a special type of group that render navigation
+                        links for a view</para>
+                </listitem>
+                    <listitem>
+                        <para>The UIF provides the following navigation group beans:</para>
+                        <itemizedlist>
+                            <listitem>
+                            <para>Uif-NavigationGroupBase – Base navigation group bean that sets the
+                                template and adds the style class ‘uif-navigationGroup’</para>
+                        </listitem>
+                        <listitem>
+                            <para>Uif-MenuNavigationGroup – Navigation group that is rendered as a
+                                menu. Adds the style class ‘uif-menuNavigationGroup’</para>
+                        </listitem>
+                        <listitem>
+                            <para>Uif-TabNavigationGroup – Navigation group that is rendered as
+                                tabs. Adds the style class ‘uif-tabNavigationGroup’</para>
+                        </listitem>
+                        </itemizedlist>
+                </listitem>
+                    <listitem>
+                    <para>To configure the navigation links, we use the bean with id
+                        ‘Uif-NavigationActionLink’. This bean sets up some default styling to the
+                        link and sets up a script call. We can also choose to use the
+                        ‘Uif-NavigationActionButton’ bean for a menu button, or the
+                        ‘Uif-SecondaryNavigationActionButton’ bean to provide a secondary
+                        styling.</para>
+                </listitem>
+                    <listitem>
+                    <para>The <emphasis role="bold">navigateToPageId</emphasis> property is set to
+                        specify the page that should be navigated to when the link is selected. By
+                        default the server side method navigate is called which will handle the
+                        navigation (we can call another method using the standard methodToCall
+                        property, and then call navigate at the end of our controller method)</para>
+                </listitem>
+                    <listitem>
+                    <para>Header components can be used in the navigation group to label groupings
+                        (really any component, such as images can be used with the menu navigation
+                        group, however this is not really practical with the tab navigation)</para>
+                </listitem>
+                    <listitem>
+                    <para>The navigation group is associated with the view by the property <emphasis
+                            role="bold">navigation</emphasis></para>
+                </listitem>
+                </itemizedlist>
+        </section>
+    </section>
+    <section>
+        <title>View Indexing </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+    </section>
+    <section>
+        <title>Requesting a View Instance </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+        <figure>
+            <title>URL Mapping</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/URLMapping.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <section>
+            <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>A view request URL contains the following parts:</para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>Application URL – Base URL to the application (domain, port,
+                                    and app context). For example ‘dev1.rice.kuali.org’</para>
+                            </listitem>
+                            <listitem>
+                                <para>Servlet Context – Mapping to the Spring servlet (configured in
+                                    the web.xml). For example ‘kr-krad’</para>
+                            </listitem>
+                            <listitem>
+                                <para>Controller Mapping – Part of the URL that maps to the
+                                    controller within the servlet. In KRAD these are configured
+                                    using the @RequestMapping(value = "/training") annotation on the
+                                    controller class</para>
+                            </listitem>
+                            <listitem>
+                                <para>Request Parameters – Key value pairs that are used to populate
+                                    the request parameters map (this is everything after the ‘?’ in
+                                    the URL where each key/value pair is separated by ‘&amp;’). Some
+                                    request parameters to know are:</para>
+                                <itemizedlist>
+                                        <listitem>
+                                            <para>viewId – The id for the view that should be
+                                                rendered</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>methodToCall – Name of the method on the
+                                                controller that should be invoked. This is
+                                                configured using the @RequestMapping(params =
+                                                "methodToCall=methodName") on the controller
+                                                method.</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>Other common request parameters are declared in
+                                                the constants class UifParameters</para>
+                                        </listitem>
+                                    </itemizedlist>
+                            </listitem>
+                        </itemizedlist>
+                </listitem>
+                </itemizedlist>
+        </section>
+    </section>
+    <section>
+        <title>View Request Parameters </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+        <section>
+            <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>A view request parameter is a property on the View component that can
+                            be set from a request URL</para>
+                    </listitem>
+                    <listitem>
+                        <para>View request parameters are declared using the annotation
+                            @RequestParameter. By default the framework will look for any request
+                            parameter with the same name as the property for which the annotation is
+                            configured on. To populate the property from a request parameter with a
+                            different name, the annotation property parameterName can be set.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Any value sent for a view request parameter will override the value
+                            configured in the UIF dictionary. </para>
+                    </listitem>
+                </itemizedlist>
+        </section>
+    </section>
+    <section>
+        <title>The View Service </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+    </section>
+    <section>
+        <title>The View Lifecycle and View Helper Services </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para>The ViewHelperService carries out the majority of the view
+                        processing</para>
+                </listitem>
+                <listitem>
+                    <para>Custom implementations of the view helper service can be set using the
+                        view properties viewHelperService and viewHelperServiceClass</para>
+                </listitem>
+                <listitem>
+                    <para>After the view object is retrieved from the Spring container, processing
+                        is done in three phases:</para>
+                    <itemizedlist>
+                            <listitem>
+                            <para>Initialize – During this phase defaults are set for component
+                                properties and things such as ID assignment occurs</para>
+                        </listitem>
+                            <listitem>
+                            <para>Apply Model – During this phase the model is looked at to perform
+                                conditional logic (including expressions) and to build dynamic
+                                components (for example collection lines)</para>
+                        </listitem>
+                            <listitem>
+                            <para>Finalize – A final phase to set state before the rendering is then
+                                performed. At this point all components should have been created and
+                                conditional logic applied</para>
+                        </listitem>
+                        </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>Common logic (for all components) is performed within the view helper
+                        service for the various phases</para>
+                </listitem>
+                <listitem>
+                    <para>In addition, the view helper delegates to each component for every
+                        phase</para>
+                </listitem>
+                <listitem>
+                    <para>Therefore customization of the processing can also be done by extending
+                        the component class (and overriding the bean definition to use the custom
+                        class)</para>
+                </listitem>
+                <listitem>
+                    <para>The view helper also contains methods for callback from the UIf base
+                        controller. For example the add and delete operations are performed through
+                        the view helper</para>
+                </listitem>
+            </itemizedlist>
+            <figure>
+                <title>RequestResponseFlow.png</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/RequestResponseFlow.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para/>
+        </section>
+    </section>
+    <section>
+        <title>ID Generation </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+    </section>
+    <section>
+        <title>Application Header and Footer </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+        <section>
+            <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>A common application header and footer can be set using the view
+                            properties applicationHeader and applicationFooter</para>
+                    </listitem>
+                </itemizedlist>
+        </section>
+    </section>
+    <section>
+        <title>Building Application Menus </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+    </section>
+    <section>
+        <title>KIM Authorization </title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+            -->
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para>KRAD allows securing any piece of the view</para>
+                </listitem>
+                <listitem>
+                    <para>By default, authorization is controlled through KIM permissions (with
+                        assigned roles)</para>
+                </listitem>
+                <listitem>
+                    <para>To enable authorization, first a KIM permission must be created with the
+                        correct template type and permissions, then the corresponding component must
+                        be marked using the ComponentSecurity object (property is named <emphasis
+                            role="bold">componentSecurity</emphasis>)</para>
+                </listitem>
+                <listitem>
+                    <para>The following permissions can be added:</para>
+                    <itemizedlist>
+                            <listitem>
+                            <para>Open View – Template Name ‘Open View’: Details viewId: Enabled by
+                                setting componentSecurity.viewAuthz to true on the view
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>Edit View – Template Name ‘Edit View’: Details viewId: Enabled by
+                                setting componentSecurity.editAuthz to true on the view
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>View Field – Template Name ‘View Field’: Details viewId and
+                                fieldId or viewId and propertyName (for data fields): Enabled by
+                                setting componentSecurity.viewAuthz to true on the field
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>Edit Field – Template Name ‘Edit Field’: Details viewId and
+                                fieldId or viewId and propertyName (for data fields): Enabled by
+                                setting componentSecurity.editAuthz to true on the field
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>View Group (applies to any group including page, section, and
+                                subsection levels) – Template Name ‘View Group’: Details viewId and
+                                groupId or viewId and propertyName (for collection groups): Enabled
+                                by setting componentSecurity.viewAuthz to true on the group
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>Edit Group (applies to any group including page, section, and
+                                subsection levels) – Template Name ‘Edit Group’: Details viewId and
+                                groupId or viewId and propertyName (for collection groups): Enabled
+                                by setting componentSecurity.editAuthz to true on the group
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>View Widget – Template Name ‘View Widget’: Details viewId and
+                                widgetId: Enabled by setting componentSecurity.viewAuthz to true on
+                                the widget component</para>
+                        </listitem>
+                        <listitem>
+                            <para>Edit Widget – Template Name ‘Edit Widget’: Details viewId and
+                                widgetId: Enabled by setting componentSecurity.editAuthz to true on
+                                the widget component</para>
+                        </listitem>
+                        <listitem>
+                            <para>Perform Action – Template Name ‘Perform Action’: Details viewId
+                                and actionId or viewId and actionEvent: Enabled by setting
+                                componentSecurity. performActionAuthz to true on the action
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>View Line – Template Name ‘View Line’: Details viewId and groupId
+                                or viewId and collectionPropertyName: Enabled by setting
+                                componentSecurity.viewLineAuthz to true on the collection group
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>Edit Line – Template Name ‘Edit Line’: Details viewId and groupId
+                                or viewId and collectionPropertyName: Enabled by setting
+                                componentSecurity.editLineAuthz to true on the collection group
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>View Line Field – Template Name ‘View Line Field’: Details viewId,
+                                groupId or collectionPropertyName, and fieldId or propertyName:
+                                Enabled by setting componentSecurity.viewInLineAuthz to true on the
+                                field component</para>
+                        </listitem>
+                        <listitem>
+                            <para>Perform Line Action – Template Name ‘Perform Line Action’: Details
+                                viewId, groupId or collectionPropertyName, and actionId or
+                                actionEvent: Enabled by setting
+                                componentSecurity.performLineActionAuthz to true on the action
+                                component</para>
+                        </listitem>
+                        <listitem>
+                            <para>Full Unmask Attribute – Template Name ‘Full Unmask Field’: Details
+                                namespaceCode, componentCode, and propertyName. Enabled by setting
+                                componentSecurity.attributeSecurity.mask to true on the data
+                                field</para>
+                        </listitem>
+                        <listitem>
+                            <para>Partial Unmask Attribute – Template Name ‘Partial Unmask Field’:
+                                Details namespaceCode, componentCode, and propertyName. Enabled by
+                                setting componentSecurity.attributeSecurity.partialMask to true on
+                                the data field</para>
+                        </listitem>
+                        <listitem>
+                            <para>View Attribute – Template Name ‘View Attribute’: Details
+                                namespaceCode, componentCode, and propertyName. Enabled by setting
+                                componentSecurity.attributeSecurity.hide to true on the data
+                                field</para>
+                        </listitem>
+                        <listitem>
+                            <para>Edit Attribute – Template Name ‘Edit Attribute’: Details
+                                namespaceCode, componentCode, and propertyName. Enabled by setting
+                                componentSecurity.attributeSecurity.readOnly to true on the data
+                                field</para>
+                        </listitem>
+                        </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>In addition to the general View permissions, all permissions that
+                        previousely existed in the KNS (document, inquiry, maintenance permissions
+                        and so on) are supported in KRAD</para>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </section>
+</chapter>

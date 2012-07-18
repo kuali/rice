@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,15 +23,19 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.Configurable;
 import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ExpressionFunctions;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.common.TemplateParserContext;
@@ -38,8 +43,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 /**
- * Evaluates expression language statements using the Spring EL engine TODO:
- * Look into using Rice KRMS for evaluation
+ * Evaluates expression language statements using the Spring EL engine
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -48,15 +52,15 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
             ExpressionEvaluatorServiceImpl.class);
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#evaluateObjectExpressions(java.lang.Object,
-     *      java.lang.Object, java.util.Map)
+     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#evaluateExpressionsOnConfigurable(org.kuali.rice.krad.uif.view.View,
+     *      org.kuali.rice.krad.uif.component.Configurable, java.lang.Object, java.util.Map<java.lang.String,java.lang.Object>)
      */
-    public void evaluateObjectExpressions(Object object, Object contextObject,
+    public void evaluateExpressionsOnConfigurable(View view, Configurable configurable, Object contextObject,
             Map<String, Object> evaluationParameters) {
-        if ((object instanceof Component) || (object instanceof LayoutManager)) {
-            evaluatePropertyReplacers(object, contextObject, evaluationParameters);
+        if ((configurable instanceof Component) || (configurable instanceof LayoutManager)) {
+            evaluatePropertyReplacers(view, configurable, contextObject, evaluationParameters);
         }
-        evaluatePropertyExpressions(object, contextObject, evaluationParameters);
+        evaluatePropertyExpressions(view, configurable, contextObject, evaluationParameters);
     }
 
     /**
@@ -156,25 +160,30 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      * evaluates the given condition. If the condition is met, the replacement value is set on the
      * corresponding property
      *
-     * @param object - object instance with property replacers list, should be either a component or layout manager
+     * @param view - view instance being rendered
+     * @param configurable - configurable instance with property replacers list, should be either a component or layout
+     * manager
      * @param contextObject - context for el evaluation
      * @param evaluationParameters - parameters for el evaluation
      */
-    protected void evaluatePropertyReplacers(Object object, Object contextObject,
+    protected void evaluatePropertyReplacers(View view, Configurable configurable, Object contextObject,
             Map<String, Object> evaluationParameters) {
         List<PropertyReplacer> replacers = null;
-        if (Component.class.isAssignableFrom(object.getClass())) {
-            replacers = ((Component) object).getPropertyReplacers();
-        } else if (LayoutManager.class.isAssignableFrom(object.getClass())) {
-            replacers = ((LayoutManager) object).getPropertyReplacers();
+        if (Component.class.isAssignableFrom(configurable.getClass())) {
+            replacers = ((Component) configurable).getPropertyReplacers();
+        } else if (LayoutManager.class.isAssignableFrom(configurable.getClass())) {
+            replacers = ((LayoutManager) configurable).getPropertyReplacers();
         }
 
         for (PropertyReplacer propertyReplacer : replacers) {
+            String expression = propertyReplacer.getCondition();
+            String adjustedExpression = replaceBindingPrefixes(view, configurable, expression);
+
             String conditionEvaluation = evaluateExpressionTemplate(contextObject, evaluationParameters,
-                    propertyReplacer.getCondition());
+                    adjustedExpression);
             boolean conditionSuccess = Boolean.parseBoolean(conditionEvaluation);
             if (conditionSuccess) {
-                ObjectPropertyUtils.setPropertyValue(object, propertyReplacer.getPropertyName(),
+                ObjectPropertyUtils.setPropertyValue(configurable, propertyReplacer.getPropertyName(),
                         propertyReplacer.getReplacement());
             }
         }
@@ -189,41 +198,55 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      * part will be replaced with the result. More than one expressions may be contained within the template
      * </p>
      *
-     * @param object - object instance to evaluate expressions for
+     * @param view - view instance that is being rendered
+     * @param configurable - object instance to evaluate expressions for
      * @param contextObject - object providing the default context for expressions
      * @param evaluationParameters - map of additional parameters that may be used within the expressions
      */
-    protected void evaluatePropertyExpressions(Object object, Object contextObject,
+    protected void evaluatePropertyExpressions(View view, Configurable configurable, Object contextObject,
             Map<String, Object> evaluationParameters) {
-        Map<String, String> propertyExpressions = new HashMap<String, String>();
-        if (Configurable.class.isAssignableFrom(object.getClass())) {
-            propertyExpressions = ((Configurable) object).getPropertyExpressions();
-        }
-
+        Map<String, String> propertyExpressions = configurable.getPropertyExpressions();
         for (Entry<String, String> propertyExpression : propertyExpressions.entrySet()) {
             String propertyName = propertyExpression.getKey();
             String expression = propertyExpression.getValue();
 
             // check whether expression should be evaluated or property should retain the expression
-            if (CloneUtils.fieldHasAnnotation(object.getClass(), propertyName, KeepExpression.class)) {
+            if (CloneUtils.fieldHasAnnotation(configurable.getClass(), propertyName, KeepExpression.class)) {
                 // set expression as property value to be handled by the component
-                ObjectPropertyUtils.setPropertyValue(object, propertyName, expression);
+                ObjectPropertyUtils.setPropertyValue(configurable, propertyName, expression);
                 continue;
             }
 
             Object propertyValue = null;
 
+            // replace binding prefixes (lp, dp, fp) in expression before evaluation
+            String adjustedExpression = replaceBindingPrefixes(view, configurable, expression);
+
             // determine whether the expression is a string template, or evaluates to another object type
-            if (StringUtils.startsWith(expression, UifConstants.EL_PLACEHOLDER_PREFIX) && StringUtils.endsWith(
-                    expression, UifConstants.EL_PLACEHOLDER_SUFFIX) && (StringUtils.countMatches(expression,
-                    UifConstants.EL_PLACEHOLDER_PREFIX) == 1)) {
-                propertyValue = evaluateExpression(contextObject, evaluationParameters, expression);
+            if (StringUtils.startsWith(adjustedExpression, UifConstants.EL_PLACEHOLDER_PREFIX) && StringUtils.endsWith(
+                    adjustedExpression, UifConstants.EL_PLACEHOLDER_SUFFIX) && (StringUtils.countMatches(
+                    adjustedExpression, UifConstants.EL_PLACEHOLDER_PREFIX) == 1)) {
+                propertyValue = evaluateExpression(contextObject, evaluationParameters, adjustedExpression);
             } else {
                 // treat as string template
-                propertyValue = evaluateExpressionTemplate(contextObject, evaluationParameters, expression);
+                propertyValue = evaluateExpressionTemplate(contextObject, evaluationParameters, adjustedExpression);
             }
 
-            ObjectPropertyUtils.setPropertyValue(object, propertyName, propertyValue);
+            // if property name has the special indicator then we need to add the expression result to the property
+            // value instead of replace
+            if (StringUtils.endsWith(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR)) {
+                StringUtils.removeEnd(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR);
+
+                Collection collectionValue = ObjectPropertyUtils.getPropertyValue(configurable, propertyName);
+                if (collectionValue == null) {
+                    throw new RuntimeException("Property name: "
+                            + propertyName
+                            + " with collection type was not initialized. Cannot add expression result");
+                }
+                collectionValue.add(propertyValue);
+            } else {
+                ObjectPropertyUtils.setPropertyValue(configurable, propertyName, propertyValue);
+            }
         }
     }
 
@@ -242,6 +265,102 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         }
 
         return containsElPlaceholder;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#replaceBindingPrefixes(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, java.lang.String)
+     */
+    public String replaceBindingPrefixes(View view, Object object, String expression) {
+        String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
+
+        // replace the field path prefix for DataFields
+        if (object instanceof DataField) {
+
+            // Get the binding path from the object
+            BindingInfo bindingInfo = ((DataField) object).getBindingInfo();
+            String fieldPath = bindingInfo.getBindingPath();
+
+            // Remove the property name from the binding path
+            fieldPath = StringUtils.removeEnd(fieldPath, "." + bindingInfo.getBindingName());
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
+                    fieldPath + ".");
+        } else {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
+                    "");
+        }
+
+        // replace the default path prefix if there is one set on the view
+        if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
+                    view.getDefaultBindingObjectPath() + ".");
+
+        } else {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
+                    "");
+        }
+
+        // replace line path binding prefix with the actual line path
+        if (adjustedExpression.contains(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
+            String linePath = getLinePathPrefixValue((Component) object);
+
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
+                    linePath + ".");
+        }
+
+        // replace node path binding prefix with the actual node path
+        if (adjustedExpression.contains(UifConstants.NODE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
+            String nodePath = "";
+
+            Map<String, Object> context = ((Component) object).getContext();
+            if (context.containsKey(UifConstants.ContextVariableNames.NODE_PATH)) {
+                nodePath = (String) context.get(UifConstants.ContextVariableNames.NODE_PATH);
+            }
+
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.NODE_PATH_BIND_ADJUST_PREFIX,
+                    nodePath + ".");
+        }
+
+        return adjustedExpression;
+    }
+
+    /**
+     * Determines the value for the {@link org.kuali.rice.krad.uif.UifConstants#LINE_PATH_BIND_ADJUST_PREFIX} binding
+     * prefix
+     * based on collection group found in the component context
+     *
+     * @param component - component instance for which the prefix is configured on
+     * @return String line binding path or empty string if path not found
+     */
+    protected static String getLinePathPrefixValue(Component component) {
+        String linePath = "";
+
+        CollectionGroup collectionGroup = (CollectionGroup) (component.getContext().get(
+                UifConstants.ContextVariableNames.COLLECTION_GROUP));
+        if (collectionGroup == null) {
+            LOG.warn("collection group not found for " + component + "," + component.getId() + ", " + component
+                    .getComponentTypeName());
+            return linePath;
+        }
+
+        Object indexObj = component.getContext().get(UifConstants.ContextVariableNames.INDEX);
+        if (indexObj != null) {
+            int index = (Integer) indexObj;
+            boolean addLine = false;
+            Object addLineObj = component.getContext().get(UifConstants.ContextVariableNames.IS_ADD_LINE);
+
+            if (addLineObj != null) {
+                addLine = (Boolean) addLineObj;
+            }
+
+            if (addLine) {
+                linePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
+            } else {
+                linePath = collectionGroup.getBindingInfo().getBindingPath() + "[" + index + "]";
+            }
+        }
+
+        return linePath;
     }
 
 }

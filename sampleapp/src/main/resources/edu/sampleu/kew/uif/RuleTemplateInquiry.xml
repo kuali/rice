@@ -17,7 +17,7 @@
 
 -->
 <bean id="RuleTemplate-InquiryView" parent="Uif-InquiryView">
-   <property name="title" value="Rule Template"/>
+   <property name="headerText" value="Rule Template"/>
    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleTemplateBo"/>
    <property name="Items">
        <list>
@@ -33,7 +33,7 @@
            </property>
          </bean>
           <!-- <bean parent="Uif-StackedCollectionSection">
-             <property name="title" value="Rule Attributes"/>  
+             <property name="headerText" value="Rule Attributes"/>
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo"/>
              <property name="propertyName" value="activeRuleTemplateAttributes"/>
              <property name="layoutManager.summaryTitle" value="Rule Attribute"/>

@@ -22,7 +22,13 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
+/**
+ * ZipcodeValidationPatternTest tests {@link ZipcodeValidationPattern}
+ *
+ * <p>Valid zip code values should match</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class ZipcodeValidationPatternTest extends KRADTestCase {
     private ZipcodeValidationPattern pattern;
 

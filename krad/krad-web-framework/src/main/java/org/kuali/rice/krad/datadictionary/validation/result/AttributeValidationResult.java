@@ -24,20 +24,41 @@ public class AttributeValidationResult implements Serializable {
 
 	private String attributeName;
 	private Map<String, ConstraintValidationResult> constraintValidationResultMap;
-	
+
+    /**
+     * creates a new instance with the given attribute name
+     *
+     * @param attributeName - the attribute name
+     */
 	public AttributeValidationResult(String attributeName) {
 		this.attributeName = attributeName;
 		this.constraintValidationResultMap = new LinkedHashMap<String, ConstraintValidationResult>();
 	}
-	
+
+    /**
+     * adds a constraint validation result
+     *
+     * @param constraintValidationResult - the constraint validation result to set
+     */
 	public void addConstraintValidationResult(ConstraintValidationResult constraintValidationResult) {
 		constraintValidationResultMap.put(constraintValidationResult.getConstraintName(), constraintValidationResult);
 	}
 
+    /**
+     * gets an iterator over the constraint validation results added to this class
+     *
+     * @return an iterator to stored constraint validation results
+     */
 	public Iterator<ConstraintValidationResult> iterator() {
 		return constraintValidationResultMap.values().iterator();
 	}
-	
+
+    /**
+     * gets a constraint validation result with the given constraintName
+     *
+     * @param constraintName - a descriptive name of the current constraint processor
+     * @return
+     */
 	protected ConstraintValidationResult getConstraintValidationResult(String constraintName) {
 		ConstraintValidationResult constraintValidationResult = constraintValidationResultMap.get(constraintName);
 		if (constraintValidationResult == null) {

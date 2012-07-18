@@ -432,7 +432,7 @@ public class DataTypeConstraintProcessorTest {
 		}
 		
 		/**
-		 * @see org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint#getDataType()
+		 * @see org.kuali.rice.krad.datadictionary.validation.constraint.DataTypeConstraint#getDataType()
 		 */
 		@Override
 		public DataType getDataType() {

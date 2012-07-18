@@ -60,7 +60,7 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
             if (StringUtils.isBlank(component.getId())) {
                 if (!StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName, "#")) {
                     component.setId(beanName);
-                    component.setFactoryId(beanName);
+                    component.setBaseId(beanName);
                 }
             }
         }

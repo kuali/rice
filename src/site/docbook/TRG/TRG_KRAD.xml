@@ -1119,7 +1119,7 @@
                                     &lt;/property> &lt;property name="items"> &lt;list> &lt;/list>
                                     &lt;/property> &lt;property name="additionalCssFiles" ref=""/>
                                     &lt;property name="additionalJsFiles" ref=""/> &lt;property
-                                    name="viewHelperServiceClassName" value=""/> &lt;property
+                                    name="viewHelperServiceClass" value=""/> &lt;property
                                     name="defaultBindingObjectPath" vaue=""/> &lt;property
                                     name="formClass" value=""/> &lt;/bean></entry>
                             </row>

@@ -34,7 +34,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * This class tests the PersistableBusinessObjectValuesFinder.
+ *PersistableBusinessObjectValuesFinderTest tests the {@link PersistableBusinessObjectValuesFinder}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -87,8 +87,8 @@ public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
     }
 
     /**
-     * This method tests to make sure teh PersistableBusinessObjectValuesFinder works
-     * as expected for the TravelAccountType BO.
+     * tests to make sure the <code>PersistableBusinessObjectValuesFinder</code> works
+     * as expected for the TravelAccountType BO
      *
      * @throws Exception
      */
@@ -106,8 +106,8 @@ public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
     }
 
     /**
-     * This method tests to make sure teh PersistableBusinessObjectValuesFinder works
-     * as expected for the TravelAccountType BO with the key included in the label.
+     * tests to make sure the <code>PersistableBusinessObjectValuesFinder</code> works
+     * as expected for the TravelAccountType BO with the key included in the label
      *
      * @throws Exception
      */
@@ -125,7 +125,7 @@ public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
     }
 
     /**
-     * This method tests to make sure teh PersistableBusinessObjectValuesFinder works
+     * tests to make sure the <code>PersistableBusinessObjectValuesFinder</code> works
      * as expected for the FiscalOfficer BO.
      *
      * @throws Exception
@@ -144,8 +144,8 @@ public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
     }
 
     /**
-     * This method tests to make sure teh PersistableBusinessObjectValuesFinder works
-     * as expected for the FiscalOfficer BO with the key included in the label.
+     * tests that <code>PersistableBusinessObjectValuesFinder</code> works
+     * as expected for the FiscalOfficer BO with the key included in the label
      *
      * @throws Exception
      */

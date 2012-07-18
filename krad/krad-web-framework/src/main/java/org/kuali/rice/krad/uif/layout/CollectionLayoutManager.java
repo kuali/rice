@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
 
 import java.util.List;
@@ -81,7 +81,7 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 *            the add line
 	 */
 	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-			List<FieldGroup> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
+			List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
 			Object currentLine, int lineIndex);
 
 	/**

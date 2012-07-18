@@ -21,12 +21,16 @@ import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * tests {@link org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService}
+ */
 public class MaintenanceDocumentDictionaryServiceTest extends KRADTestCase {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentDictionaryServiceTest.class);
 
-    // tests to make sure IllegalArgumentExceptions are being thrown on
-    // null parameters
+    /**
+     * tests to make sure <code>IllegalArgumentExceptions</code> are being thrown on null parameters
+     */
     @Test public void testGetFieldDefaultValue_NullArguments() {
 
         boolean exceptionThrown;

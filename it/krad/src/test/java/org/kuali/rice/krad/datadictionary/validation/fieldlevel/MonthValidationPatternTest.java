@@ -22,6 +22,13 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * MonthValidationPatternTest tests {@link MonthValidationPattern}
+ *
+ * <p>Valid months (01-12) should match</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class MonthValidationPatternTest extends KRADTestCase {
     MonthValidationPattern pattern;
 

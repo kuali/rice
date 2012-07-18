@@ -18,6 +18,7 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests that user 'admin', on blanket approving a new Document Type maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -41,7 +42,12 @@ public class WorkFlowDocTypeBlanketAppIT {
 
     @Test
     public void testDocType() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
+        String remotePublicUrl = System.getProperty("remote.public.url");
+        // remove the trailing slash to allow for correction concatenation in locating the lookup buttons below
+        if (StringUtils.endsWith(remotePublicUrl, "/")) {
+            remotePublicUrl = StringUtils.removeEnd(remotePublicUrl, "/");
+        }
+        selenium.open(remotePublicUrl);
         assertEquals("Login", selenium.getTitle());
         selenium.type("__login_user", "admin");
         selenium.click("//input[@value='Login']");
@@ -59,7 +65,7 @@ public class WorkFlowDocTypeBlanketAppIT {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + remotePublicUrl + "/kr/lookup.do;::::).anchor4");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

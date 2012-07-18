@@ -23,7 +23,7 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for the KNS WebUtils
+ * Unit tests for the KNS {@link WebUtils}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

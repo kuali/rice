@@ -63,6 +63,11 @@
     <filter-class>org.kuali.rice.core.web.Log4JContextClearingFilter</filter-class>
   </filter>
 
+  <filter>
+      <filter-name>encodingFilter</filter-name>
+      <filter-class>org.kuali.rice.krad.web.CharsetFilter</filter-class>
+  </filter>
+
   ${monitoring.mapping}
 
   <filter-mapping>
@@ -117,6 +122,11 @@
 
   <filter-mapping>
     <filter-name>UserPreferencesFilter</filter-name>
+    <servlet-name>krad</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
     <servlet-name>krad</servlet-name>
   </filter-mapping>
 
@@ -176,10 +186,6 @@
 
   <listener>
     <listener-class>org.kuali.rice.krad.web.listener.KualiHttpSessionListener</listener-class>
-  </listener>
-
-  <listener>
-    <listener-class>org.apache.tiles.web.startup.simple.SimpleTilesListener</listener-class>
   </listener>
 
   <listener>

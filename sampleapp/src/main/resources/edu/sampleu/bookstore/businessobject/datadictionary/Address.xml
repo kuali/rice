@@ -173,7 +173,7 @@
     <property name="description" value="This attribute is used to describe whether the associated object is active or inactive."/>
   </bean>
   <bean id="Address-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Address Lookup"/>
+    <property name="headerText" value="Address Lookup"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Address"/>
     <property name="criteriaFields">
       <list>
@@ -200,7 +200,7 @@
     <property name="Items">
       <list>
         <bean parent="Uif-Disclosure-GridSection">
-          <property name="title" value="Address Information"/>
+          <property name="headerText" value="Address Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>

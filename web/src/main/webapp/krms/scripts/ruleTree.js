@@ -28,7 +28,7 @@ function getPropositionIdFromParentLi(parentLiNode) {
 
 function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
 
-    var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
+    var collectionGroupDivLocator = '#' + collectionGroupId;
 
     var elementToBlock = jq(collectionGroupDivLocator);
     var selectedItemInput = getSelectedPropositionInput();
@@ -43,15 +43,15 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
             if(jq(collectionGroupDivLocator).length){
                 jq(collectionGroupDivLocator).replaceWith(component);
             }
-            runHiddenScripts(collectionGroupId + '_div');
+            runHiddenScripts(collectionGroupId);
         }
         });
 
     };
 
     ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-            {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
-            elementToBlock);
+            {updateComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
+            elementToBlock, null,"update-component");
 }
 
 function ajaxCutPropositionTree(controllerMethod, collectionGroupId) {
@@ -128,7 +128,7 @@ function initRuleTree(componentId){
         // refresh the proposition tree on parameterized term selection
         jq('select.termSelect').change( function() {
             if (this.value.match(/parameterized:.*/)) {
-                retrieveComponent('RuleEditorView-TreeGroup', 'RuleEditorView-TreeGroup', 'ajaxRefresh');
+                retrieveComponent('RuleEditorView-TreeGroup', 'ajaxRefresh');
             }
         });
 

@@ -22,18 +22,17 @@
 
 
   <bean id="TravelAccount-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Travel Account Lookup" />
+    <property name="headerText" value="Travel Account Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
     <property name="criteriaFields">
       <list>
-<!-- p:dictionaryObjectEntry=edu.sampleu.travel.bo.TravelAccount -->
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccountName" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" /> <!-- p:forceLookup="true" -->
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="extension.accountTypeCode">
           <property name="control">
             <bean parent="Uif-DropdownControl" />

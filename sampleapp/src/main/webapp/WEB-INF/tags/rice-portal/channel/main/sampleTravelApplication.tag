@@ -14,20 +14,25 @@
   ~ limitations under the License.
   --%>
 
-<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
+<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp" %>
 
-<channel:portalChannelTop channelTitle="Sample Travel Application" />
+<channel:portalChannelTop channelTitle="Sample Travel Application"/>
 <div class="body">
-  
+
   <ul class="chan">
-	   <%-- <li><portal:portalLink displayTitle="true" title="Create New Sample Application Travel Request (KualiDocumentActionBase)" url="${ConfigProperties.application.url}/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest" /></li> --%>
-     <li><portal:portalLink displayTitle="true" title="Travel Account" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&criteriaFields['number']=a*&readOnlyFields=number&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-     <li><portal:portalLink displayTitle="true" title="Travel Fiscal Officer" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-     <li><portal:portalLink displayTitle="true" title="Travel Account Type" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccountType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-  	 <li><portal:portalLink displayTitle="true" title="Travel Account Use Rate" url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.TravelAccountUseRate&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
-     <li><portal:portalLink displayTitle="true" title="Attachment Test" url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.AttachmentSample&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
+    <%-- <li><portal:portalLink displayTitle="true" title="Create New Sample Application Travel Request (KualiDocumentActionBase)" url="${ConfigProperties.application.url}/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest" /></li> --%>
+    <li><portal:portalLink displayTitle="true" title="Travel Account"
+                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&lookupCriteria['number']=a*&readOnlyFields=number&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Travel Fiscal Officer"
+                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Travel Account Type"
+                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccountType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Travel Account Use Rate"
+                           url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.TravelAccountUseRate&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888"/></li>
+    <li><portal:portalLink displayTitle="true" title="Attachment Test"
+                           url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.AttachmentSample&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888"/></li>
   </ul>
 
-  
+
 </div>
-<channel:portalChannelBottom />
+<channel:portalChannelBottom/>

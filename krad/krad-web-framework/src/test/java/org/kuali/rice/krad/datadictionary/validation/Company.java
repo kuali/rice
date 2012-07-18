@@ -105,7 +105,7 @@ public class Company {
 	}
 
 	/**
-	 * @param employee the employee to set
+	 * @param employees the employee to set
 	 */
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;

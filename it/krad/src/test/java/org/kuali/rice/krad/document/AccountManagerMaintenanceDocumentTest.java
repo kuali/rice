@@ -23,9 +23,9 @@ import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.test.BaseMaintenanceDocumentTest;
 
 /**
- * This class...
- * 
- * 
+ * AccountManagerMaintenanceDocumentTest tests some maintenance document operations on the document type 'AccountManagerMaintenanceDocument'
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AccountManagerMaintenanceDocumentTest extends BaseMaintenanceDocumentTest {
 
@@ -54,7 +54,8 @@ public class AccountManagerMaintenanceDocumentTest extends BaseMaintenanceDocume
 
      @Test
     /**
-     * test submitting
+     * tests that user {@link #getInitiatorPrincipalName()}, on routing a new maintenance document,
+     * results in a final document
      */
     public void testRouteNewDoc() throws WorkflowException {
         setupNewAccountMaintDoc(getDocument());

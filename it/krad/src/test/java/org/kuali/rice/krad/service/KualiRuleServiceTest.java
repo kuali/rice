@@ -22,11 +22,11 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This class tests the KualiRuleService.
+ * KualiRuleServiceTest tests {@link KualiRuleService}
  * <p>
  * Testing applyRules( event ) has proven to be too strongly dependent on an actual document type, and business rule, and XML
  * document which binds them together, to be really useful. Instead, we'll test each of the applyRules( rule, event ) methods which
- * are called by applyRules( event ), since they do the actual work involved in applying a rule.
+ * are called by applyRules( event ), since they do the actual work involved in applying a rule.</p>
  */
 public class KualiRuleServiceTest extends KRADTestCase {
     private static boolean entriesAdded = false;

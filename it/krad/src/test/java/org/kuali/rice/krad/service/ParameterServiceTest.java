@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * This class is used to test the {@link NoteService} implementation 
+ * ParameterServiceTest tests the {@link org.kuali.rice.coreservice.framework.parameter.ParameterService} implementation
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -32,6 +32,9 @@ import static org.junit.Assert.assertNotNull;
 public class ParameterServiceTest extends KRADTestCase {
 
     @Test
+    /**
+     * tests {@link org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameter(String, String, String)}
+     */
     public void testRetrieveParameter() throws Exception {
     	String namespaceCode = "KR-NS";
     	String parameterDetailTypeCode = "Lookup";
@@ -46,8 +49,5 @@ public class ParameterServiceTest extends KRADTestCase {
     	assertNotNull("Should have a detail type: " + detailType);
     	
     }
-
-
-    
 }
 

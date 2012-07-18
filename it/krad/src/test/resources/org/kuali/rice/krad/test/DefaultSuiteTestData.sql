@@ -34,3 +34,12 @@ INSERT INTO KRNS_NTE_TYP_T (ACTV_IND,NTE_TYP_CD,OBJ_ID,TYP_DESC_TXT,VER_NBR)
   VALUES ('Y','BO','53680C68F5A9AD9BE0404F8189D80A6C','DOCUMENT BUSINESS OBJECT',1)
 ;
 
+-- needed by edu.samplu.travel.krad.test.TravelAccountMaintenanceDocumentTest
+insert into krms_cntxt_t
+(cntxt_id, nmspc_cd, nm, typ_id, actv, ver_nbr)
+values ('trav-acct-test-ctxt','KR-SAP', 'Travel Account', 'T4', 'Y', 1)
+;
+
+INSERT INTO TRV_ACCT_TYPE (ACCT_TYPE,ACCT_TYPE_NAME)
+  VALUES ('EAT','Expense Account Type')
+;

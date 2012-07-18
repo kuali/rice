@@ -23,7 +23,7 @@
 
   	<bean id="minMaxSection" parent="Uif-HorizontalBoxSection">
 		<property name="disclosure.render" value="false" />
-		<property name="title" value="MinMax length and value" />
+		<property name="headerText" value="MinMax length and value" />
 		<property name="instructionalText"
 			value="You can set the min and max length of a field and the min and max value of a field.  Min and
 			Max value will only work properly on numeric value fields so it is also a good idea to require those types of
@@ -49,7 +49,7 @@
 
   	<bean id="requiredSection" parent="Uif-HorizontalBoxSection">
 		<property name="disclosure.render" value="false" />
-		<property name="title" value="Required constraint" />
+		<property name="headerText" value="Required constraint" />
 		<property name="instructionalText"
 			value="An input field can be defined as required by setting its required property to true.  Note required fields are marked with an asterisk." />
 		
@@ -57,12 +57,12 @@
 			<list>
 				<bean parent="GenericTextField" p:required="true"
 					p:propertyName="field2" />
-				<bean parent="GenericTextArea" p:required="true" p:labelField.requiredMessageField.messageText="Required"
+				<bean parent="GenericTextArea" p:required="true" p:fieldLabel.requiredMessage.messageText="Required"
               p:instructionalText="different text for required indicator"
 					p:propertyName="field3" />
 				<bean parent="GenericRadio" p:required="true" p:propertyName="field4"
 					p:instructionalText="Interesting note is that radios and checkboxes will not check requiredness until a submit event, other constraints dealing with non-null values will still apply as normal" />
-				<bean parent="GenericSelection" p:required="true" p:instructionalText="different required indicator location" p:labelField.requiredMessagePlacement="RIGHT"
+				<bean parent="GenericSelection" p:required="true" p:instructionalText="different required indicator location" p:fieldLabel.requiredMessagePlacement="RIGHT"
 					p:propertyName="field5" />
 			</list>
 		</property>
@@ -70,7 +70,7 @@
 
 	<bean id="preReqSection" parent="Uif-HorizontalBoxSection">
 		<property name="disclosure.render" value="false" />
-		<property name="title" value="PreRequisite constraint" />
+		<property name="headerText" value="PreRequisite constraint" />
 		<property name="instructionalText"
 			value="When a field is filled out, it can require another field to be filled out as a result.  This is called a PrerequisiteConstraint.
 		Whether that field comes after or before that field is irrelevant, as the ui will only notify the user when appropriate.  For example, if you havent yet
@@ -111,7 +111,7 @@
 
   <bean id="mustOccursSection" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false" />
-    <property name="title" value="MustOccursConstraint" />
+    <property name="headerText" value="MustOccursConstraint" />
     <property name="instructionalText"
       value="Must Occurs constraint is used to identify fields that are required before this field can be filled out.
         This is different from prerequisite constraints because the number of fields required from a set of fields can be set, as
@@ -280,7 +280,7 @@
   <bean id="caseConstraintSection" parent="Uif-VerticalBoxSection"
     p:layoutManager.orientation="VERTICAL">
     <property name="disclosure.render" value="false" />
-    <property name="title" value="CaseConstraint" />
+    <property name="headerText" value="CaseConstraint" />
     <property name="instructionalText"
       value="A case constraint can make a constraint applicable only when a certain case is satisfied." />
     

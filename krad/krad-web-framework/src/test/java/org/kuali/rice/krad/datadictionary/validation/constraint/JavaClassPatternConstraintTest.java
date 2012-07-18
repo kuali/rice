@@ -41,10 +41,10 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 2. value with valid java class. (success) {@link #testValueValidJavaClass()}
  * 3. value with valid java class. (success) {@link #testValueValidJavaClass1()}
  * 4. value with valid java class. (success) {@link #testValueValidJavaClass2()}
- * 5. value with invalid java class. (failure) {@link testValueInvalidJavaClass()}
- * 6. value with invalid java class. (failure) {@link testValueInvalidJavaClass1()}
- * 7. value with invalid java class. (failure) {@link testValueInvalidJavaClass2()}
- * 8. value with invalid java class. (failure) {@link testValueInvalidJavaClass3()}  
+ * 5. value with invalid java class. (failure) {@link #testValueInvalidJavaClass()}
+ * 6. value with invalid java class. (failure) {@link #testValueInvalidJavaClass1()}
+ * 7. value with invalid java class. (failure) {@link #testValueInvalidJavaClass2()}
+ * 8. value with invalid java class. (failure) {@link #testValueInvalidJavaClass3()}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

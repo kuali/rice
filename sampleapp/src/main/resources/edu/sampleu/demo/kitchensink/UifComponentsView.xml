@@ -31,14 +31,24 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView" parent="Uif-FormView">
-    <property name="title" value="Uif Components"/>
+    <property name="headerText" value="Uif Components"/>
+    <property name="help">
+      <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
+    </property>
     <property name="entryPageId" value="UifCompView-Page1"/>
     <property name="navigation">
       <ref bean="UifCompView-Menu"/>
     </property>
     <property name="items">
       <list>
-        <bean id="UifCompView-Page1" parent="Uif-Page" p:title="Input Fields and Controls">
+        <bean id="UifCompView-Page1" parent="UifCompViewPageWithFooter" p:headerText="Input Fields and Controls">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="helpDefinition">
+                <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
+              </property>
+            </bean>
+          </property>
           <property name="items">
             <list>
               <ref bean="UifCompView-AnchorLinks"/>
@@ -51,7 +61,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page2" parent="Uif-Page" p:title="Other Fields">
+        <bean id="UifCompView-Page2" parent="UifCompViewPageWithFooter" p:headerText="Other Fields">
           <property name="items">
             <list>
               <ref bean="UifCompView-FieldGroups"/>
@@ -61,11 +71,12 @@
               <ref bean="UifCompView-ActionFields"/>
               <ref bean="UifCompView-LinkFields"/>
               <ref bean="UifCompView-OtherFields"/>
+              <ref bean="UifCompView-ScrollableGroups"/>
             </list>
           </property>
         </bean>
 
-        <bean id="UifCompView-Page3" parent="Uif-Page" p:title="Validation"
+        <bean id="UifCompView-Page3" parent="UifCompViewPageWithFooter" p:headerText="Validation"
               p:instructionalText="Take note of the constraintText text underneath field inputs, they describe the validation constraint for that field.  Validation constraints are evaluated by default when a user leaves a field, if the user has not satisfied the requirement, the ui will alert them of their error.  When they return to a field the ui will dynamically remove the error as they correct it and note any additional errors they may have caused.">
           <property name="items">
             <list>
@@ -78,8 +89,8 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page4" parent="Uif-Page"
-              p:title="Validation - Regex Patterns, the ValidCharactersConstraint">
+        <bean id="UifCompView-Page4" parent="UifCompViewPageWithFooter"
+              p:headerText="Validation - Regex Patterns, the ValidCharactersConstraint">
           <property name="items">
             <list>
               <ref bean="regex1"/>
@@ -87,7 +98,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page5" parent="Uif-Page" p:title="Progressive Disclosure and Conditional Refresh"
+        <bean id="UifCompView-Page5" parent="UifCompViewPageWithFooter" p:headerText="Progressive Disclosure and Conditional Refresh"
               p:instructionalText="Fields and Groups (ONLY!) can have conditions in which they show themselves on the page or in which they refresh themselves.  Refreshing is defined as requesting an new component from the server (which may or may not be the same element ui wise).">
           <property name="items">
             <list>
@@ -99,7 +110,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page6" parent="Uif-Page" p:title="Lookups, Inquiry, and SuggestBoxes inline"
+        <bean id="UifCompView-Page6" parent="UifCompViewPageWithFooter" p:headerText="Lookups, Inquiry, and SuggestBoxes inline"
               p:instructionalText="Lookups and Inquiries backed by BO searches can be used on fields to fill in their values, as well as SuggestBoxes backed by a query">
           <property name="items">
             <list>
@@ -108,7 +119,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page7" parent="Uif-Page" p:title="Collections" p:instructionalText="Lists of Data Objects">
+        <bean id="UifCompView-Page7" parent="UifCompViewPageWithFooter" p:headerText="Collections" p:instructionalText="Lists of Data Objects">
           <property name="items">
             <list>
               <bean parent="Uif-AjaxActionButton" p:actionLabel="Cause Server Messages" p:methodToCall="genCollectionServerMessages"/>
@@ -121,23 +132,22 @@
             </list>
           </property>
           <property name="header">
-            <bean parent="Uif-EditablePageHeaderField"/>
+            <bean parent="Uif-EditablePageHeader"/>
           </property>
         </bean>
 
-        <bean id="UifCompView-Page8" parent="Uif-Page" p:title="Errors"
-              p:instructionalText="ErrorsField options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  ErrorsField options are also available on InputFields.">
+        <bean id="UifCompView-Page8" parent="UifCompViewPageWithFooter" p:headerText="H2 Header Title">
           <property name="items">
             <list>
-              <ref bean="errors1"/>
-              <ref bean="errors2"/>
-              <ref bean="errors3"/>
-              <ref bean="errors4"/>
+              <ref bean="Demo-ButtonLevels"/>
+              <ref bean="Demo-HeaderLevels"/>
+              <ref bean="Demo-Disclosure-HeaderLevels"/>
+              <ref bean="Demo-HeaderGroups"/>
             </list>
           </property>
         </bean>
 
-        <bean id="UifCompView-Page9" parent="Uif-Page" p:title="Authorization"
+        <bean id="UifCompView-Page9" parent="UifCompViewPageWithFooter" p:headerText="Authorization"
               p:instructionalText="Examples of view authorization checks. Login as 'admin' to view this page. Login as 'dev1' for additional permissions.">
           <property name="items">
             <list>
@@ -156,13 +166,26 @@
           <property name="componentSecurity.viewAuthz" value="true"/>
         </bean>
 
-        <bean id="UifCompView-Page10" parent="Uif-Page" p:title="Other Examples"
+        <bean id="UifCompView-Page10" parent="UifCompViewPageWithFooter" p:headerText="Other Examples"
               p:instructionalText="Other examples for developer reference">
           <property name="items">
             <list>
               <ref bean="remotableFieldsGroup"/>
               <ref bean="remotableFieldsCollection"/>
               <ref bean="miscGroup"/>
+              <ref bean="toolTipGroup"/>
+              <ref bean="UifCompDataTable"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page11" parent="UifCompViewPageWithFooter" p:headerText="Script Events">
+          <property name="items">
+            <list>
+              <ref bean="UifCompView-EventsIntroGroup"/>
+              <ref bean="UifCompView-WindowEventsGroup"/>
+              <ref bean="UifCompView-MouseEventsGroup"/>
+              <ref bean="UifCompView-KeyEventsGroup"/>
             </list>
           </property>
         </bean>
@@ -171,9 +194,15 @@
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
     </property>
-    <property name="viewHelperServiceClassName"
+    <property name="viewHelperServiceClass"
               value="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl"/>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+  </bean>
+  
+  <bean id="UifCompViewPageWithFooter" parent="Uif-Page">
+    <property name="footer">
+      <bean parent="Uif-FormFooter"/>
+    </property>
   </bean>
 
   <bean id="UifCompView_KNS" parent="UifCompView">
@@ -190,7 +219,7 @@
   <bean id="UifCompView-Menu" parent="Uif-MenuNavigationGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-HeaderField-Two" p:headerText="Navigation"/>
+        <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page1"
               p:actionLabel="Input Fields"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page2"
@@ -206,11 +235,13 @@
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page7"
               p:actionLabel="Collections"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page8"
-              p:actionLabel="Error Layout"/>
+              p:actionLabel="Button/Header Levels"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page9"
               p:actionLabel="Authorization"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page10"
               p:actionLabel="Other Examples"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page11"
+              p:actionLabel="Event Examples"/>
       </list>
     </property>
   </bean>
@@ -226,15 +257,15 @@
         <bean parent="Uif-JumpToBottomLink" p:actionLabel="Jump To Bottom Demo"/>
 
         <bean id="ActionLinkField_JumpToField3" parent="Uif-ActionLink"
-              p:clientSideJs="jumpToElementByName('field80');"
+              p:actionScript="jumpToElementByName('field80');"
               p:actionLabel="Jump to field with property name Field80 (first field of FieldGroup1)"/>
 
         <bean id="ActionLinkField_FocusOnField79" parent="Uif-ActionLink"
-              p:clientSideJs="focusOnElementByName('field79');"
+              p:actionScript="focusOnElementByName('field79');"
               p:actionLabel="Focus on field with property name Field79 (size 60 text field)"/>
 
         <bean id="ActionLinkField_FocusOnIdTest123" parent="Uif-ActionLink"
-              p:clientSideJs="focusOnElementById('Test123');"
+              p:actionScript="focusOnElementById('Test123');"
               p:actionLabel="Focus on field with id Test123 (Date1 field)"/>
       </list>
     </property>
@@ -245,7 +276,9 @@
                                            UIF Comp - Text Fields Section
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-TextFields" parent="Uif-Disclosure-VerticalBoxSection" p:title="Text Controls">
+  <bean id="UifCompView-TextFields" parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Text Controls"
+          p:help.tooltipHelpContent="Section and sub-sections can have tooltip helps like this here or use external
+          help like it is shown with the View and Page.  Tooltip help supports &lt;u&gt;HTML&lt;/u&gt; formatting as well.">
     <property name="items">
       <list>
         <bean parent="UifCompView-TextFields1"/>
@@ -262,27 +295,27 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextFields1" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="Field Label Options"/>
+    <property name="headerText" value="Field Label Options"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field Label" p:labelPlacement="TOP"
-              p:instructionalText="Label top, no colon" p:labelField.styleClasses="labelTop"
-              p:labelField.renderColon="false">
+              p:instructionalText="Label top, no colon" p:fieldLabel.cssClasses="labelTop"
+              p:fieldLabel.renderColon="false" p:help.tooltipHelpContent="Sample field level help.">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field100" p:label="Field Label" p:labelPlacement="TOP"
-              p:instructionalText="Label top, with colon" p:labelField.styleClasses="labelTop"
-              p:labelField.renderColon="true">
+              p:instructionalText="Label top, with colon" p:fieldLabel.cssClasses="labelTop"
+              p:fieldLabel.renderColon="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field101" p:label="Field Label" p:defaultValue="val"
-              p:instructionalText="Label left, with colon" p:labelField.renderColon="true">
+              p:instructionalText="Label left, with colon" p:fieldLabel.renderColon="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -297,7 +330,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextFields2" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="Field Label Options"/>
+    <property name="headerText" value="Field Label Options"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="RIGHT"
@@ -309,20 +342,20 @@
 
         <bean parent="Uif-InputField" p:propertyName="field103" p:label="Field Label" p:labelPlacement="TOP"
               p:instructionalText="With constraintText text" p:constraintText="Constraint text"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field104" p:labelPlacement="TOP" p:instructionalText="No label"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field105" p:labelField.renderColon="false">
+        <bean parent="Uif-InputField" p:propertyName="field105" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -337,34 +370,41 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextFields3" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="Text Control Options"/>
+    <property name="headerText" value="Text Control Options"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field106" p:label="Field Label" p:labelPlacement="TOP"
-              p:labelField.renderColon="false" p:instructionalText="With watermark text, and size=&quot;30&quot;">
+              p:fieldLabel.renderColon="false" p:instructionalText="With watermark text, size=&quot;30&quot;, and maxLength=&quot;40&quot;">
           <property name="control">
-            <bean parent="Uif-TextControl" p:size="30" p:watermarkText="It's watermarked"/>
+            <bean parent="Uif-TextControl" p:size="30" p:maxLength="40" p:watermarkText="It's watermarked"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field107" p:label="Field Label" p:labelPlacement="TOP"
-              p:labelField.renderColon="false" p:instructionalText="Size=&quot;60&quot;">
+              p:fieldLabel.renderColon="false" p:instructionalText="Size=&quot;60&quot;">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="60"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field108" p:label="Field Label" p:labelPlacement="TOP"
-              p:labelField.renderColon="false" p:instructionalText="Text expand option">
+              p:fieldLabel.renderColon="false" p:instructionalText="Text expand option">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:textExpand="true"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field109" p:label="Field Label" p:labelPlacement="TOP"
-              p:labelField.renderColon="false" p:instructionalText="Disabled">
+              p:fieldLabel.renderColon="false" p:instructionalText="Disabled">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:disabled="true"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field109" p:label="Field Label" p:labelPlacement="TOP"
+              p:fieldLabel.renderColon="false" p:instructionalText="Perform uppercase" p:uppercaseValue="true">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="30"/>
           </property>
         </bean>
       </list>
@@ -377,21 +417,21 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextAreas" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="TextArea Control Options"/>
+    <property name="headerText" value="TextArea Control Options"/>
     <property name="instructionalText"
               value="TextAreas have basically the same options as text controls, so only a couple examples"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field110" p:label="Field Label" p:labelPlacement="TOP"
               p:instructionalText="With watermark, rows=&quot;5&quot;, cols=&quot;40&quot;"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40" p:watermarkText="Watermark..."/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field111" p:label="Field Label"
-              p:labelPlacement="TOP" p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+              p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
               p:instructionalText="No watermark, textExpand option, rows=&quot;10&quot;, cols=&quot;50&quot;">
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="10" p:cols="50" p:textExpand="true"/>
@@ -407,23 +447,138 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-DateFields" parent="Uif-Disclosure-HorizontalBoxSection">
-    <property name="title" value="Date Control"/>
+    <property name="headerText" value="Date Control"/>
     <property name="instructionalText"
               value="DateControl configuration options, date control uses the jQuery date picker plugin see its plugin page for more info"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field112" p:label="Date 1"
-              p:instructionalText="Default DateControl options">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="date1" p:label="Date 1"
+              p:instructionalText="Default DateControl options" p:required="true">
           <property name="control">
             <bean parent="Uif-DateControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field113" p:label="Date 2"
+        <bean id="myDate" parent="Uif-InputField-LabelTop" p:propertyName="date2" p:label="date2 format: mm/dd/yyyy"
+              p:instructionalText="constraintInput off" p:required="false">
+          <property name="control">
+            <bean parent="Uif-DateControl" p:watermarkText="mm/dd/yyyy">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="constrainInput" value="false"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean id="date3" parent="Uif-InputField-LabelTop"  p:propertyName="field132" p:label="field132: mm-dd-yy"
+              p:instructionalText="datepicker constraintInput false, no altField, no krad constraints" p:required="false">
+          <property name="control">
+            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yy">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="dateFormat" value="mm-dd-y"/>
+                <entry key="constrainInput" value="false"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean id="myDate4" parent="Uif-InputField-LabelTop" p:propertyName="field133" p:label="field133: mm-dd-yyyy"
+              p:instructionalText="krad constraints on, datepicker off" p:required="false">
+          <property name="validCharactersConstraint">
+            <bean parent="BasicDatePatternConstraint" />
+          </property>
+          <property name="control">
+            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yyyy">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="dateFormat" value="mm-dd-yy"/>
+                <entry key="constrainInput" value="false"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean id="myDate4B" parent="Uif-InputField-LabelTop" p:propertyName="date4" p:label="date4: mm-dd-yyyy"
+              p:instructionalText="bound to date" p:required="false">
+          <property name="control">
+            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yyyy">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="dateFormat" value="mm-dd-yy"/>
+                <entry key="constrainInput" value="false"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean id="myDate5" parent="Uif-InputField-LabelTop" p:propertyName="date5" p:label="Test Date 5: mm/dd/yyyy"
+              p:instructionalText="krad AND datepicker BOTH constraints ON" p:required="false">
+          <property name="validCharactersConstraint">
+            <bean parent="BasicDatePatternConstraint" />
+          </property>
+          <property name="control">
+            <bean parent="Uif-DateControl">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="constrainInput" value="true"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="date6" p:label="2 months"
               p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
           <property name="control">
             <bean parent="Uif-DateControl">
-              <property name="datePicker.componentOptions">
+              <property name="datePicker.templateOptions">
                 <map>
                   <entry key="showOn" value="both"/>
                   <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
@@ -438,6 +593,13 @@
             </bean>
           </property>
         </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="date7" p:label="Date 7"
+              p:instructionalText="Disabled DateControl" >
+          <property name="control">
+            <bean parent="Uif-DateControl" p:disabled="true"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -448,7 +610,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-SelectFields" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Selection Controls"/>
+    <property name="headerText" value="Selection Controls"/>
     <property name="instructionalText" value="Controls used for selection of 1 or multiple items"/>
     <property name="items">
       <list>

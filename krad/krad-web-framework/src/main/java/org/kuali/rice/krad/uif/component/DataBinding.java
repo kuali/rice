@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-
 /**
  * Components that bind to a model (hold model data) should implement this
  * interface
@@ -52,5 +51,4 @@ public interface DataBinding {
 	 * @return String property name
 	 */
 	public String getPropertyName();
-
 }

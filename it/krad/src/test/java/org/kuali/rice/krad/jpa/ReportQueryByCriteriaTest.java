@@ -25,13 +25,17 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Junit test cases for org.kuali.rice.core.jpa.criteria.ReportQueryByCriteria
+ * ReportQueryByCriteriaTest tests {@link Criteria#Criteria(String, String)} and
+ * {@link Criteria#toQuery(org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType, String[])}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReportQueryByCriteriaTest extends KRADTestCase {
     
     @Test
+    /**
+     * test that a query without attribute values is constructed using the given entity name
+     */
     public void testCriteriaToReportQuery_emptySelect() throws Exception {
         Criteria criteria = new Criteria(Account.class.getName().substring(Account.class.getPackage().getName().length()+1), "a");
         
@@ -40,6 +44,10 @@ public class ReportQueryByCriteriaTest extends KRADTestCase {
     }
 
     @Test
+
+    /**
+     * test that a query with one attribute value is constructed as expected using the given entity name
+     */
     public void testCriteriaToReportQuery_singleFieldSelect() throws Exception {
         Criteria criteria = new Criteria(Account.class.getName().substring(Account.class.getPackage().getName().length()+1), "a");
         
@@ -51,6 +59,9 @@ public class ReportQueryByCriteriaTest extends KRADTestCase {
     }
     
     @Test
+    /**
+     * test that a query with multiple attribute values is constructed as expected using the given entity name
+     */
     public void testCriteriaToReportQuery_multipleFieldSelect() throws Exception {
         Criteria criteria = new Criteria(Account.class.getName().substring(Account.class.getPackage().getName().length()+1), "a");
         

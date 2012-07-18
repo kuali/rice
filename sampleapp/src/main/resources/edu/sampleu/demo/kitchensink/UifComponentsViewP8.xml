@@ -21,88 +21,145 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="errors1" parent="genericTextGroup">
-      <property name="title" value="Group Errors" />
-      <property name="instructionalText"
-        value="Group with displayMessages turned on (off by default because messages are displayed at page level and at field level normally)" />
-      <property name="errorsField">
-        <bean parent="Uif-GroupValidationMessages">
-          <property name="displayMessages" value="true" />
+  <bean id="Demo-ButtonLevels" parent="Uif-HorizontalBoxSection" p:headerText="Button/Link Levels">
+    <property name="items">
+      <list>
+        <bean parent="Uif-VerticalBoxSubSection" p:headerText="Primary">
+          <property name="items">
+            <list>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Normal"
+                    p:actionScript="alert('You clicked a button');"/>
+              <bean parent="Uif-PrimaryActionButton" p:disabled="true" p:actionLabel="Normal"
+                    p:actionScript="alert('You clicked a button');"/>
+              <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Small"
+                    p:actionScript="alert('You clicked a button');"/>
+              <bean parent="Uif-PrimaryActionButton-Small" p:disabled="true" p:actionLabel="Small"
+                    p:actionScript="alert('You clicked a button');"/>
+            </list>
+          </property>
         </bean>
-      </property>
-    </bean>
+        <bean parent="Uif-VerticalBoxSubSection" p:headerText="Secondary">
+          <property name="items">
+            <list>
+              <bean parent="Uif-SecondaryActionButton" p:actionLabel="Normal"
+                    p:actionScript="alert('You clicked a button');"/>
+              <bean parent="Uif-SecondaryActionButton" p:disabled="true" p:actionLabel="Normal"
+                    p:actionScript="alert('You clicked a button');"/>
+              <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Small"
+                    p:actionScript="alert('You clicked a button');"/>
+              <bean parent="Uif-SecondaryActionButton-Small" p:disabled="true" p:actionLabel="Small"
+                    p:actionScript="alert('You clicked a button');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-VerticalBoxSubSection" p:headerText="Links">
+          <property name="items">
+            <list>
+              <bean parent="Uif-ActionLink" p:actionLabel="Action link" p:actionScript="alert('You clicked a link');"/>
+              <!--          TODO Does not work yet
+     <bean parent="Uif-ActionLink" p:disabled="true" p:actionLabel="Action link disabled"
+           p:actionScript="alert('You clicked a link');"/>-->
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="errors2" parent="genericTextGroup">
-      <property name="title" value="Group Errors" />
-      <property name="instructionalText"
-        value="Group with displayMessages turned on, highlight on, and allowMessageRepeat off (don't allow same messages to show up below this level, ie at the field level)" />
-      <property name="errorsField">
-        <bean parent="Uif-GroupValidationMessages">
-          <property name="displayMessages" value="true" />
-          <property name="allowMessageRepeat" value="false" />
-          <property name="highlightOnError" value="true" />
+  <bean id="Demo-HeaderLevels" parent="Uif-VerticalBoxSection" p:headerText="H3 Header Title">
+    <property name="items">
+      <list>
+        <bean parent="Uif-VerticalBoxSubSection" p:headerText="H4 Header Title">
+          <property name="items">
+            <list>
+              <bean parent="Uif-VerticalBoxGroup" p:headerText="H5 Header Title">
+                <property name="header">
+                  <bean parent="Uif-HeaderFive"/>
+                </property>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-VerticalBoxGroup" p:headerText="H6 Header Title">
+                      <property name="header">
+                        <bean parent="Uif-HeaderSix"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
         </bean>
-      </property>
-    </bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="errors3" parent="genericTextGroup">
-      <property name="title" value="Group Errors" />
-      <property name="instructionalText"
-        value="Group with combineMessages off(messages for the same field will be multiple lines instead of one) and displayErrorTitle, displayWarningTitle, displayInfoTitle on" />
-      <property name="errorsField">
-        <bean parent="Uif-GroupValidationMessages">
-          <property name="displayMessages" value="true" />
-          <property name="displayErrorTitle" value="true" />
-          <property name="errorTitle" value="Errors in this Group:" />
-          <property name="displayWarningTitle" value="true" />
-          <property name="warningTitle" value="Warnings in this Group:" />
-          <property name="combineMessages" value="false" />
+  <bean id="Demo-Disclosure-HeaderLevels" parent="Uif-Disclosure-VerticalBoxSection" p:headerText="H3 Header Title">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="H4 Header Title">
+          <property name="items">
+            <list>
+              <bean parent="Uif-VerticalBoxGroup" p:headerText="H5 Header Title">
+                <property name="cssClasses">
+                  <list merge="true">
+                    <value>uif-disclosure</value>
+                  </list>
+                </property>
+                <property name="disclosure.render" value="true"/>
+                <property name="header">
+                  <bean parent="Uif-HeaderFive"/>
+                </property>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-VerticalBoxGroup" p:headerText="H6 Header Title">
+                      <property name="cssClasses">
+                        <list merge="true">
+                          <value>uif-disclosure</value>
+                        </list>
+                      </property>
+                      <property name="disclosure.render" value="true"/>
+                      <property name="header">
+                        <bean parent="Uif-HeaderSix"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
         </bean>
-      </property>
-    </bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="errors4" parent="genericTextGroup">
-      <property name="title" value="Group Errors" />
-      <property name="instructionalText"
-        value="Group with ErrorsField's displayCounts off, displayFieldErrorIcon on and highlightOnError off for its InputFields, and displayInfoMessages on (off by default because info messages only appear in growls)" />
-      <property name="errorsField">
-        <bean parent="Uif-GroupValidationMessages">
-          <property name="displayMessages" value="true" />
-          <property name="displayCounts" value="false" />
-          <property name="displayInfoMessages" value="true" />
-        </bean>
-      </property>
-      <property name="items">
-        <list>
-          <bean parent="GenericTextField" p:label="Field 1" p:required="true"
-            p:propertyName="gField1">
-            <property name="errorsField">
-              <bean parent="Uif-FieldValidationMessages">
-                <property name="highlightOnError" value="false" />
-                <property name="displayFieldErrorIcon" value="true" />
-              </bean>
-            </property>
-          </bean>
-          <bean parent="GenericTextField" p:label="Field 2" p:required="true"
-            p:propertyName="gField2">
-            <property name="errorsField">
-              <bean parent="Uif-FieldValidationMessages">
-                <property name="highlightOnError" value="false" />
-                <property name="displayFieldErrorIcon" value="true" />
-              </bean>
-            </property>
-          </bean>
-          <bean parent="GenericTextField" p:label="Field 3" p:required="true"
-            p:propertyName="gField3">
-            <property name="errorsField">
-              <bean parent="Uif-FieldValidationMessages">
-                <property name="highlightOnError" value="false" />
-                <property name="displayFieldErrorIcon" value="true" />
-              </bean>
-            </property>
-          </bean>
-        </list>
-      </property>
-    </bean>
+  <bean id="Demo-HeaderGroups" parent="Uif-VerticalBoxSection" p:headerText="Header Groups Demo">
+    <property name="header.upperGroup">
+      <bean parent="Uif-HeaderUpperGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Upper Group"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.rightGroup">
+      <bean parent="Uif-HeaderRightGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Right Group"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.lowerGroup">
+      <bean parent="Uif-HeaderLowerGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Lower Group"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
 
 </beans>

@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -115,10 +115,10 @@ public class ViewPresentationControllerBase implements ViewPresentationControlle
 
     /**
      * @see ViewPresentationController#canPerformAction(org.kuali.rice.krad.uif.view.View,
-     * org.kuali.rice.krad.uif.view.ViewModel, org.kuali.rice.krad.uif.field.ActionField, java.lang.String,
+     * org.kuali.rice.krad.uif.view.ViewModel, org.kuali.rice.krad.uif.element.Action, java.lang.String,
      * java.lang.String)
      */
-    public boolean canPerformAction(View view, ViewModel model, ActionField actionField, String actionEvent,
+    public boolean canPerformAction(View view, ViewModel model, Action action, String actionEvent,
             String actionId) {
         return true;
     }
@@ -166,11 +166,11 @@ public class ViewPresentationControllerBase implements ViewPresentationControlle
     /**
      * @see ViewPresentationController#canPerformLineAction(org.kuali.rice.krad.uif.view.View,
      * org.kuali.rice.krad.uif.view.ViewModel, org.kuali.rice.krad.uif.container.CollectionGroup,
-     * java.lang.String, java.lang.Object, org.kuali.rice.krad.uif.field.ActionField, java.lang.String,
+     * java.lang.String, java.lang.Object, org.kuali.rice.krad.uif.element.Action, java.lang.String,
      * java.lang.String)
      */
     public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
-            String collectionPropertyName, Object line, ActionField actionField, String actionEvent, String actionId) {
+            String collectionPropertyName, Object line, Action action, String actionEvent, String actionId) {
         return true;
     }
 

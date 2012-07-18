@@ -13,162 +13,135 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function($) {
-	$.fn.selectMenuItem = function(options){
-		return this.each(function(){
-			options = options || {};
-			//default setting
-			options = $.extend({
-				selectPage: ""
-			}, options);
-			
-			if(options.selectPage){
-				var current = $(this).find("a[name='" + options.selectPage + "']");
-				if(current){
-					current.addClass("current");
-				}
-			}
-		});
-	}
-	
-	$.fn.navMenu = function(options){
-		return this.each(function(){
-			options = options || {};
-			//default setting
-			options = $.extend({
-				parent_div: "viewlayout_div",
-				nav_div: "viewnavigation_div",
-				defaultSelectFirst: true,
-				currentPage: "",
-				animate: false,
-				slideout: true,
-				pad_out: 25,
-				pad_in: 18
-			}, options);
-			
-			//element id strings
-			var id = $(this).parent().attr('id');
-			var list_elements = "#" + id + " li";
-			var link_elements = list_elements + " a";
-			
-			//Styling
-			$(this).parent().addClass("navigation-block");
-			$("#" + options.parent_div).addClass("navigation-parent-div");
-			$("#" + options.nav_div).addClass("navigation-div");
-			if (options.animate) {
-				//Animated menu
-				$("li", this).addClass("animated-element");
-				$(this).addClass("animated-navigation");
-			}
-			else{
-				//Plain menu
-				$("li", this).addClass("basic-element");
-				$(this).addClass("basic-navigation");
-			}
+(function ($) {
+    $.fn.selectMenuItem = function (options) {
+        return this.each(function () {
+            options = options || {};
+            //default setting
+            options = $.extend({
+                selectPage:"",
+                resetPageMargin: false
+            }, options);
 
-			if(options.slideout){
-				$(this).before("<a id='collapseLink' class='collapseLink' alt='Close Navigation'>Collapse Navigation</a>");
-				$(".navigation-block").after("<a id='controlbtn' class='slideLink' alt='Close Navigation'><<</a>");
-			}
-			
-			if(options.defaultSelectFirst && !options.currentPage){
-				$(link_elements).first().addClass("current");
-			}
-			
-			if(options.currentPage){
-				var current = $(this).find("a[name='" + options.currentPage + "']");
-				if(current){
-					current.addClass("current");
-				}
-			}
-			
-			//Handlers and animation
-			$(document).ready(function()
-			{
-				if(options.animate){
-					
-					$(link_elements).each(function(i)
-					{
-						$(this).click(
-						function()
-						{
-						$("li.animated-element a").removeClass("current");
-						$(this).addClass("current");
-						});
-				
-						/*$(this).hover(
-						function()
-						{
-							if (!$(this).is(':animated')) {
-								$(this).animate({
-									paddingLeft: options.pad_out
-								}, 150);
-							}
-						},		
-						function()
-						{
-								$(this).animate({
-									paddingLeft: options.pad_in
-								}, 150);
-						});
+            //if(options.resetPageMargin)
 
-						$(this).focus(
-						function()
-						{
-							$(this).animate({ paddingLeft: options.pad_out }, 150);
-						});
-				
-						$(this).blur(
-						function()
-						{
-							$(this).animate({ paddingLeft: options.pad_in }, 150);
-						});  */
-					});
-				}
-				else{
-					$(link_elements).each(function(i){
-						$(this).click(
-							function()
-							{
-								$("li.basic-element a").removeClass("current");
-								$(this).addClass("current");
-							});
-					});
-				}
-				
-				if(options.slideout){
-					//Slideout animation
-					$("a#controlbtn", this).click(function(e) {
-			            e.preventDefault();
-			            var slidepx = $(".navigation-block").width();
-			            if (!$("#" + options.parent_div).is(':animated')) {
-			                if ($(this).hasClass('closed')) {
-			                    $(this).removeClass('closed').html('<<');
-			                    margin = "+=" + slidepx;
-			                } else {
-			                    $(this).addClass('closed').html('>>');
-			                    margin = "-=" + slidepx;
-			                }
-			                $("#" + options.parent_div).animate({marginLeft: margin}, "slow");
-			            }
-			        });
-					
-					$("a#collapseLink", this).click(function(e) {
-			            e.preventDefault();
-			            var slidepx = $(".navigation-block").width();
-			            if (!$("#" + options.parent_div).is(':animated')) {
-			                if ($("a#controlbtn").hasClass('closed')) {
-			                    $("a#controlbtn").removeClass('closed').html('<<');
-			                    margin = "+=" + slidepx;
-			                } else {
-			                    $("a#controlbtn").addClass('closed').html('>>');
-			                    margin = "-=" + slidepx;
-			                }
-			                $("#" + options.parent_div).animate({marginLeft: margin}, "slow");
-			            }
-			        });
-				}
-			});
-		});
-	}
+            if (options.selectPage) {
+                var old = $(this).find("li.uif-navigationItem-current");
+                if(old.length){
+                    old.removeClass("uif-navigationItem-current");
+                }
+
+                var current = $(this).find("a[name='" + options.selectPage + "']");
+                if (current.length) {
+                    current.parent().addClass("uif-navigationItem-current");
+                }
+            }
+        });
+    }
+
+    $.fn.navMenu = function (options) {
+        return this.each(function () {
+            options = options || {};
+            //default setting
+            options = $.extend({
+                defaultSelectFirst:true,
+                currentPage:"",
+                animate:false,
+                slideout:true
+            }, options);
+
+            //element id strings
+            var id = $(this).parent().attr('id');
+            var list_elements = "#" + id + " li";
+            var link_elements = list_elements + " a";
+
+            //Styling
+            $(this).parent().addClass("uif-navigation");
+
+            //Plain menu
+            $("li", this).addClass("uif-navigationItem");
+            $(this).addClass("uif-navigationMenu");
+            $(this).wrap("<div class='uif-navigationMenu-wrapper'/>");
+
+            var menuWidth = $(".uif-navigation").outerWidth(true);
+
+            if (options.slideout) {
+                $(this).before("<a id='uif-collapseLink' class='uif-collapseLink' "
+                        + "alt='Close Navigation'>Collapse Navigation</a>");
+                $(".uif-navigationMenu-wrapper").before("<a id='uif-collapseSmall' "
+                        + "style='position: absolute; left:" + menuWidth + "px; "
+                        + "margin-right: 5px; margin-left: 5px;'"
+                        + "class='uif-collapseLink' alt='Close Navigation'><<</a>");
+            }
+
+            if (options.defaultSelectFirst && !options.currentPage) {
+                $(link_elements).first().parent().addClass("uif-navigationItem-current");
+            }
+
+            if (options.currentPage) {
+                var current = $(this).find("a[name='" + options.currentPage + "']");
+                if (current) {
+                    current.parent().addClass("uif-navigationItem-current");
+                }
+            }
+
+            //automatic width calculations for page margin
+            var slideIconWidth = $("#uif-collapseSmall").outerWidth(true);
+            var currentPageMarginLeft = $(".uif-pageContentWrapper").css("margin-left");
+            var pageMarginLeft;
+            var collapsedPageMargin;
+            if(currentPageMarginLeft && currentPageMarginLeft != "auto"){
+                pageMarginLeft = (menuWidth + slideIconWidth + parseInt(currentPageMarginLeft)) + "px";
+                collapsedPageMargin = (slideIconWidth + parseInt(currentPageMarginLeft)) + "px";
+            }
+            else{
+                pageMarginLeft = (menuWidth + slideIconWidth) + "px";
+                collapsedPageMargin = (slideIconWidth) + "px";
+            }
+
+            $(".uif-pageContentWrapper").css("margin-left", pageMarginLeft);
+
+            //Handlers and animation
+            $(document).ready(function () {
+                $(link_elements).each(function (i) {
+                    $(this).click(
+                            function () {
+                                $("uif-navigationMenu li.uif-navigationItem-current").removeClass(
+                                        "uif-navigationItem-current");
+                                $(this).addClass("uif-navigationItem-current");
+                            });
+                });
+
+                if (options.slideout) {
+                    //Slideout animation
+                    var inProcess = false;
+
+
+                    $(".uif-collapseLink").click(function () {
+                        if ($(".uif-navigationMenu-wrapper").is(":visible") && !inProcess) {
+                            inProcess = true;
+
+
+                            $(".uif-navigationMenu-wrapper").hide("slide", {direction:"left"}, 1000);
+                            $("#uif-collapseSmall").animate({left:"0px"}, 1000);
+                            $(".uif-pageContentWrapper").animate({marginLeft: collapsedPageMargin}, 1000, function () {
+                                inProcess = false;
+                                $("#uif-collapseSmall").html(">>");
+                            });
+                        }
+                        else if (!inProcess) {
+                            inProcess = true;
+
+                            $(".uif-navigationMenu-wrapper").show("slide", {direction:"left"}, 1000);
+                            $("#uif-collapseSmall").animate({left: menuWidth + "px"}, 1000);
+                            $(".uif-pageContentWrapper").animate({marginLeft: pageMarginLeft}, 1000, function () {
+                                inProcess = false;
+                                $("#uif-collapseSmall").html("<<");
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    }
 })(jQuery);

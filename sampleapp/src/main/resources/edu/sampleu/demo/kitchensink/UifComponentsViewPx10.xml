@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="remotableFieldsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
-    <property name="title" value="Fields created by Fetching Remotable Fields"/>
+    <property name="headerText" value="Fields created by Fetching Remotable Fields"/>
     <property name="items">
       <list>
         <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="remoteFieldValuesMap"
@@ -40,7 +40,7 @@
 
   <bean id="remotableFieldsCollection" parent="Uif-Disclosure-TableCollectionSection"
         p:layoutManager.suppressLineWrapping="true">
-    <property name="title" value="Collection Group Remote Fields"/>
+    <property name="headerText" value="Collection Group Remote Fields"/>
     <property name="instructionalText" value="A collection group that has remote fields."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list1"/>
@@ -57,7 +57,10 @@
   </bean>
 
   <bean id="miscGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
-    <property name="title" value="Various configuration and feature examples"/>
+    <property name="headerText" value="Various configuration and feature examples"/>
+    <property name="header">
+      <bean parent="Uif-SectionHeader"/>
+    </property>
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
@@ -78,8 +81,8 @@
         <bean parent="GenericTextField" p:label="Field Query w Progressive"
               p:instructionalText="Progressively renders a field when a hidden field is populated by a field query"
               p:propertyName="field72" p:defaultValue="a3">
-          <property name="hiddenPropertyNames" value="field73,field74"/>
-          <property name="fieldAttributeQuery">
+          <property name="additionalHiddenPropertyNames" value="field73,field74"/>
+          <property name="attributeQuery">
             <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74"/>
           </property>
@@ -89,6 +92,121 @@
               p:progressiveRender="@{!#empty(field73)}">
           <property name="control">
             <bean parent="Uif-CheckboxControl"/>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+
+  <bean id="toolTipGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
+    <property name="headerText" value="Tooltip examples"/>
+    <property name="header">
+      <bean parent="Uif-SectionHeader">
+        <property name="toolTip">
+          <bean parent="Uif-Tooltip" p:tooltipContent="This is a header tooltip">
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="GenericTextField" p:label="Field 1" p:required="false" p:propertyName="field1" p:readOnly="false"
+              p:exclusiveMin="2" p:instructionalText="Hover mouse over label or select control to display tooltip. Default tooltip should not display when field contains a message.">
+          <property name="fieldLabel">
+            <bean parent="Uif-Label">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:tooltipContent='&lt;p&gt;Example of HTML rich tooltip content.&lt;p&gt;&lt;p&gt;&lt;font color="#660033"&gt;&lt;a href="http://www.vegabit.com/jquery_bubble_popup_v2/#examples" target="_blank"&gt;jQuery Bubble Popup&lt;/a&gt;&lt;/font&gt;&lt;/p&gt;'>
+                </bean>
+              </property>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl">
+              <property name="toolTip">
+                <bean parent="Uif-TooltipFocus" p:onMouseHover = "true" p:tooltipContent="This tooltip is triggered by focus or and mouse over."/>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="GenericTextField" p:label="Field 2" p:required="false" p:propertyName="field2" p:readOnly="false"
+              p:instructionalText="Mouse over control tooltip">
+          <property name="control">
+            <bean parent="Uif-TextControl">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:tooltipContent="This is a tool-tip with different position and tail options">
+                  <property name="templateOptions">
+                    <map merge = "true">
+                      <entry key="position" value="right"/>
+                      <entry key="align" value="center"/>
+                      <entry key="tail" value="{ align:'center', hidden: true }"/>
+                    </map>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="GenericTextField" p:propertyName="field119" p:label="Select Control" p:width="auto"
+              p:defaultValue="4">
+          <property name="control">
+            <bean parent="Uif-DropdownControl">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:tooltipContent="This is a Select Control tooltip">
+                </bean>
+              </property>
+            </bean>
+          </property>
+          <property name="optionsFinder">
+            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+          </property>
+        </bean>
+
+        <bean parent="GenericTextField" p:propertyName="field120" p:label="Multi Select Control" p:width="auto" >
+          <property name="control">
+            <bean parent="Uif-DropdownControl" p:multiple="true" p:size="3" p:options-ref="test-options">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:tooltipContent="This is a Multi Select Control tooltip">
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+
+  <bean id="UifCompDataTable" parent="Uif-VerticalBoxSection" p:headerText="Data Table - Ajax Source">
+    <property name="instructionalText"
+              value="Standard section with a DataTable (builds table using Ajax source) with infinite scrolling enabled"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-DataTable"
+              p:ajaxSource="@{#ConfigProperties['serviceServletUrl']}dataTableRestServiceTest/TableData">
+          <property name="richTable.templateOptions">
+            <map merge="true">
+              <entry key="aoColumns"
+                     value="[
+                                {'sTitle':'Course Id', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Course Name', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Credits', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Subject', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Dept', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Professor', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Days', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Fee', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Min Credits', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Grading', 'bSortable':true, 'bSearchable':false}
+                            ]"/>
+              <!-- infinite scrolling settings from http://datatables.net/examples/basic_init/scroll_y_infinite.html -->
+              <entry key="'bScrollInfinite'" value="true"/>
+              <entry key="'bScrollCollapse'" value="true"/>
+              <entry key="'sScrollY'" value="200px"/>
+              <!-- end of infinite scrolling settings -->
+            </map>
           </property>
         </bean>
       </list>

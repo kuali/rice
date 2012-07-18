@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -108,13 +110,113 @@ public class ScriptUtils {
     }
 
     /**
+     * Convert a string to a javascript value - especially for use for options used to initialize widgets such as the
+     * tree and rich table
+     *
+     * @param value - the string to be converted
+     * @return - the converted value
+     */
+    public static String convertToJsValue(String value) {
+        boolean isNumber = false;
+        // save input value to preserve any whitespace formatting
+        String originalValue = value;
+        // remove whitespace for correct string matching
+        value = StringUtils.strip(value);
+        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.substring(0, 1)) || value
+                .substring(0, 1).equals("-"))) {
+            try {
+                Double.parseDouble(value);
+                isNumber = true;
+            } catch (NumberFormatException e) {
+                isNumber = false;
+            }
+        }
+
+        // If an option value starts with { or [, it would be a nested value
+        // and it should not use quotes around it
+        if (StringUtils.startsWith(value, "{") || StringUtils.startsWith(value, "[")) {
+            return originalValue;
+        }
+        // need to be the base boolean value "false" is true in js - a non
+        // empty string
+        else if (value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true")) {
+            return originalValue;
+        }
+        // if it is a call back function, do not add the quotes
+        else if (StringUtils.startsWith(value, "function") && StringUtils.endsWith(value, "}")) {
+            return originalValue;
+        }
+        // for numerics
+        else if (isNumber) {
+            return originalValue;
+        } else {
+            // use single quotes since hidden scripts are placed in the value attribute which surrounds the script with double quotes
+            return "'" + originalValue + "'";
+        }
+    }
+
+    /**
      * Escapes the ' character present in collection names so it can be properly used in js without causing
      * javascript errors due to an early completion of a ' string.
+     *
      * @param name
      * @return
      */
     public static String escapeName(String name) {
         name = name.replace("'", "\\'");
         return name;
+    }
+
+    /**
+     * Converts a list of string to a valid js string array
+     *
+     * @param list - list of Strings to be converted
+     * @return String representing the js array
+     */
+    public static String convertStringListToJsArray(List<String> list) {
+        String array = "[";
+        for (String s : list) {
+            array = array + "'" + s + "',";
+        }
+        array = StringUtils.removeEnd(array, ",");
+        array = array + "]";
+        return array;
+    }
+
+    /**
+     * escapes a string using {@link org.apache.commons.lang.StringEscapeUtils#escapeHtml(String)}
+     *
+     * <p>The apostrophe character is included as <code>StringEscapeUtils#escapeHtml(String)</code>
+     * does not consider it a legal entity. </p>
+     *
+     * @param string - the string to be escaped
+     * @return - the escaped string - useful for embedding in server side generated JS scripts
+     */
+    public static String escapeHtml(String string) {
+        if (string == null) {
+            return null;
+        }  else {
+            return StringEscapeUtils.escapeHtml(string).replace("'", "&apos;");
+        }
+    }
+
+    /**
+     * escape an array of strings
+     *
+     * @param strings - an array of strings to escape
+     * @return - the array, with the strings escaped
+     */
+    public static List<String> escapeHtml(List<String> strings) {
+       if (strings == null) {
+           return null;
+       } else if (strings.isEmpty()) {
+           return strings;
+       } else {
+           List<String> result = new ArrayList<String>(strings.size());
+           for (String string: strings) {
+               result.add(escapeHtml(string));
+           }
+           return result;
+       }
     }
 }

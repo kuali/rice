@@ -112,11 +112,11 @@
           <bean parent="Uif-InputField" p:propertyName="userName"/>
         </list>
       </property>
-      <property name="title" value="Fiscal Officer Information"/>
+      <property name="headerText" value="Fiscal Officer Information"/>
   </bean>
     
   <bean id="accounts" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="3">
-      <property name="title" value="Travel Accounts"/>
+      <property name="headerText" value="Travel Accounts"/>
       <property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
       <property name="propertyName" value="accounts"/>
       <property name="instructionalText" value="Travel Accounts for Fiscal Officer"/>
@@ -133,9 +133,9 @@
 <!-- views -->
 
   <bean id="FiscalOfficerInfo-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Fiscal Officer Inquiry"/>
+    <property name="headerText" value="Fiscal Officer Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
-    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl" />
+    <property name="viewHelperServiceClass" value="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl" />
     <property name="items">
       <list>
         <ref bean="information" />
@@ -147,7 +147,7 @@
   <!-- below bean has 'viewName' defined and can be used to show example url when retrieving a view by viewName and dataObjectClassName -->
   <bean id="FiscalOfficerInfo-InquiryView2" parent="FiscalOfficerInfo-InquiryView">
   	<property name="viewName" value="FiscalOfficerInfoInquiry2"/>
-    <property name="title" value="Fiscal Officer Inquiry 2"/>
+    <property name="headerText" value="Fiscal Officer Inquiry 2"/>
     <property name="entryPageId" value="page1"/>
 	<property name="navigation">
         <ref bean="tabMenu"/>
@@ -177,13 +177,13 @@
   <bean id="FiscalOfficerInfo-InquiryView3" parent="FiscalOfficerInfo-InquiryView">
     <property name="id" value="FiscalOfficerInfoInquiry3"/>
     <property name="viewName" value="FiscalOfficerInfoInquiry3"/>
-    <property name="title" value="Fiscal Officer Inquiry 3"/>
+    <property name="headerText" value="Fiscal Officer Inquiry 3"/>
   </bean>
   
   <bean id="FiscalOfficerInfo-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Fiscal Officer Lookup" />
+    <property name="headerText" value="Fiscal Officer Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
-    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
+    <property name="viewHelperServiceClass" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
@@ -201,9 +201,9 @@
   <!-- below bean has no 'id' defined and can be used to show example url when retrieving a view by viewId -->
   <bean id="FiscalOfficerInfoLookupViewUsername" parent="Uif-LookupView">
     <property name="viewName" value="FiscalOfficerInfoLookup2"/>
-    <property name="title" value="Fiscal Officer Lookup" />
+    <property name="headerText" value="Fiscal Officer Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
-    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
+    <property name="viewHelperServiceClass" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="userName" />
@@ -219,9 +219,9 @@
   
   <bean id="FiscalOfficerInfo-LookupView_id" parent="Uif-LookupView">
     <property name="viewName" value="FiscalOfficerInfoLookup3"/>
-    <property name="title" value="Fiscal Officer Lookup" />
+    <property name="headerText" value="Fiscal Officer Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
-    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
+    <property name="viewHelperServiceClass" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
@@ -236,9 +236,9 @@
   </bean>
   
   <bean id="FiscalOfficerInfo-MaintenanceView" parent="Uif-MaintenanceView">
-    <property name="title" value="Fiscal Officer Maintenance" />
+    <property name="headerText" value="Fiscal Officer Maintenance" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
-    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl" />
+    <property name="viewHelperServiceClass" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl" />
     <property name="items">
       <list merge="true">
         <bean parent="Uif-MaintenanceGridSection">
@@ -248,7 +248,7 @@
               <bean parent="Uif-InputField" p:propertyName="userName" />
             </list>
           </property>
-          <property name="title" value="Fiscal Officer Information" />
+          <property name="headerText" value="Fiscal Officer Information" />
         </bean>
         <!--
         <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="3">
@@ -267,7 +267,7 @@
         </bean>
         -->
         <bean parent="Uif-MaintenanceStackedCollectionSection">
-            <property name="title" value="Fiscal Officer Accounts"/>  
+            <property name="headerText" value="Fiscal Officer Accounts"/>
             <property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
             <property name="propertyName" value="accounts"/>
             <property name="items">

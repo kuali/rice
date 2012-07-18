@@ -25,12 +25,12 @@
     <property name="theme">
       <bean parent="Uif-ClassicKnsTheme"/>
     </property>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-incidentReportView</value>
       </list>
     </property>
-    <property name="title" value="Incident Report"/>
+    <property name="headerText" value="Incident Report"/>
     <property name="entryPageId" value="page1"/>
     <property name="items">
       <list>
@@ -53,13 +53,13 @@
   </bean>
 
   <bean id="Uif-IncidentDetailGroup" parent="Uif-GridSection" p:disclosure.render="false">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-incidentDetailGroup</value>
       </list>
     </property>
     <property name="header.headerText" value="Incident Feedback"/>
-    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="header.cssClasses" value="uif-incidentDetailGroup-header"/>
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="footer">
       <bean parent="Uif-IncidentReportFooter"/>
@@ -88,8 +88,7 @@
         <bean parent="Uif-InputField" p:propertyName="userInput"
               p:label="User Feedback">
           <property name="control">
-            <bean parent="Uif-TextAreaControl" p:rows="8" p:cols="65"
-                  p:watermarkText="Enter user feedback here..."/>
+            <bean parent="Uif-LargeTextAreaControl" p:watermarkText="Enter user feedback here..."/>
           </property>
         </bean>
       </list>
@@ -99,8 +98,8 @@
   </bean>
 
   <bean id="Uif-IncidentStackTraceGroup" parent="Uif-Disclosure-VerticalBoxSection"
-        p:layoutManager.styleClasses="layout_center" p:render="@{devMode}" p:disclosure.render="false">
-    <property name="styleClasses">
+        p:layoutManager.cssClasses="layout_center" p:render="@{devMode}" p:disclosure.render="false">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-incidentStackGroup</value>
       </list>
@@ -109,7 +108,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="exceptionStackTrace" p:labelPlacement="TOP"
-              p:labelField.styleClasses="kr-labelTop" p:labelField.renderColon="false" p:label="" p:readOnly="true"
+              p:fieldLabel.cssClasses="kr-labelTop" p:fieldLabel.renderColon="false" p:label="" p:readOnly="true"
               p:width="auto">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="100"/>

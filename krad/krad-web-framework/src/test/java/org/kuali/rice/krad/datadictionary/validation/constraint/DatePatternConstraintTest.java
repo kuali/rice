@@ -45,10 +45,10 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 1. empty value check. (failure) {@link #testValueInvalidDateEmpty()}
  * 2. value with valid date. (success) {@link #testValueValidDate()}
  * 3. value with valid date. (success) {@link #testValueValidDate1()}
- * 4. value with invalid date. (failure) {@link testValueInvalidDate()}
- * 5. value with invalid date. (failure) {@link testValueInvalidDate1()}
- * 6. value with invalid date. (failure) {@link testValueInvalidDate2()}
- * 7. value with invalid date. (failure) {@link testValueInvalidDate3()}  
+ * 4. value with invalid date. (failure) {@link #testValueInvalidDate()}
+ * 5. value with invalid date. (failure) {@link #testValueInvalidDate1()}
+ * 6. value with invalid date. (failure) {@link #testValueInvalidDate2()}
+ * 7. value with invalid date. (failure) {@link #testValueInvalidDate3()}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

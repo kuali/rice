@@ -4,15 +4,19 @@
     <output url="file://$MODULE_DIR$/../../../core/api/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../core/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../core/api">
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/wsdl" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -25,7 +29,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.9" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:r09" level="project" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
-    <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
     <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.5.7" level="project" />

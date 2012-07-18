@@ -26,7 +26,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests creating and cancelling new and edit Group maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -39,6 +39,9 @@ public class IdentityGroupIT {
     }
 
     @Test
+    /**
+     * tests that a new Group maintenance document can be cancelled
+     */
     public void testCreateNew() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
@@ -65,6 +68,9 @@ public class IdentityGroupIT {
  
     
     @Test
+    /**
+     * tests that a Group maintenance document is created for an edit operation originating from a lookup screen
+     */
     public void testEditGroup() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());

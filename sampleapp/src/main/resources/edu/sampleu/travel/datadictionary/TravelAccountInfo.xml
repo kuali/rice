@@ -141,9 +141,9 @@
   <!-- views -->
 
   <bean id="TravelAccountInfo-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Travel Account Inquiry"/>
+    <property name="headerText" value="Travel Account Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
-    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.TravelAccountInfoInquiryViewHelperServiceImpl" />
+    <property name="viewHelperServiceClass" value="edu.sampleu.travel.service.TravelAccountInfoInquiryViewHelperServiceImpl" />
     <property name="items">
       <list>
         <bean parent="Uif-Disclosure-GridSection">
@@ -159,7 +159,7 @@
                 <bean parent="Uif-DataField" p:propertyName="foId"/>
                </list>
              </property>
-             <property name="title" value="Account Information"/>
+             <property name="headerText" value="Account Information"/>
            </bean>
       </list>
     </property>

@@ -547,7 +547,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     protected void logResponsibilityCheck(String namespaceCode, String responsibilityName, 
-                    Map<String, String> responsibilityDetails, Map<String, String> qualification ) {
+                         Map<String, String> responsibilityDetails, Map<String, String> qualification ) {
         StringBuilder sb = new StringBuilder();
         sb.append(  '\n' );
         sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
@@ -569,7 +569,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             LOG.debug(sb.toString());
         }
     }
-
+    
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {
             throw new RiceIllegalArgumentException(name + " was null");

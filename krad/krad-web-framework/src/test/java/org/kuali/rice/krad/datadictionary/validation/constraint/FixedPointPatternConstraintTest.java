@@ -38,15 +38,15 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 
  * 1. empty value check. (failure) {@link #testValueEmpty()}
  * 2. value with valid positive number within specified precision and scale. (success) {@link #testValueValidPositiveNumber()}
- * 3. value with invalid positive number as per given precision and scale. (failure) {@link testValueInvalidPositiveNumber()}
- * 4. value with invalid negative number as allowNegative set to false. (failure) {@link testValueInvalidNegativeNumber()}
- * 5. value with valid negative number within specified precision and scale, with allowNegative set to true. (success) {@link testValueValidNegativeNumber()}
- * 6. value with invalid negative number as per given precision and scale. (failure) {@link testValueInvalidNegativeNumber1()}
- * 7. value with invalid positive number as per given precision and scale. (failure) {@link testValueInvalidPositiveNumber1()}
- * 8. value with valid negative number within specified precision and scale, with allowNegative set to true. (success) {@link testValueValidNegativeNumber1()}
- * 9. zero precision and scale test. (error) {@link testZeroPrecisionAndScale()}
- * 10. precision less than scale test. (error) {@link testPrecisionLessThanScale()}
- * 11. negative precision and scale test. (error) {@link testNegativePrecisionAndScale()}
+ * 3. value with invalid positive number as per given precision and scale. (failure) {@link #testValueInvalidPositiveNumber()}
+ * 4. value with invalid negative number as allowNegative set to false. (failure) {@link #testValueInvalidNegativeNumber()}
+ * 5. value with valid negative number within specified precision and scale, with allowNegative set to true. (success) {@link #testValueValidNegativeNumber()}
+ * 6. value with invalid negative number as per given precision and scale. (failure) {@link #testValueInvalidNegativeNumber1()}
+ * 7. value with invalid positive number as per given precision and scale. (failure) {@link #testValueInvalidPositiveNumber1()}
+ * 8. value with valid negative number within specified precision and scale, with allowNegative set to true. (success) {@link #testValueValidNegativeNumber1()}
+ * 9. zero precision and scale test. (error) {@link #testZeroPrecisionAndScale()}
+ * 10. precision less than scale test. (error) {@link #testPrecisionLessThanScale()}
+ * 11. negative precision and scale test. (error) {@link #testNegativePrecisionAndScale()}
  * 
  * 
  * 

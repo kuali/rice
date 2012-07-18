@@ -41,10 +41,10 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 2. value with valid month. (success) {@link #testValueValidMonth()}
  * 3. value with valid month. (success) {@link #testValueValidMonth1()}
  * 4. value with valid month. (success) {@link #testValueValidMonth2()}
- * 5. value with invalid month. (failure) {@link testValueInvalidMonth()}
- * 6. value with invalid month. (failure) {@link testValueInvalidMonth1()}
- * 7. value with invalid month. (failure) {@link testValueInvalidMonth2()}
- * 8. value with invalid month. (failure) {@link testValueInvalidMonth3()}  
+ * 5. value with invalid month. (failure) {@link #testValueInvalidMonth()}
+ * 6. value with invalid month. (failure) {@link #testValueInvalidMonth1()}
+ * 7. value with invalid month. (failure) {@link #testValueInvalidMonth2()}
+ * 8. value with invalid month. (failure) {@link #testValueInvalidMonth3()}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

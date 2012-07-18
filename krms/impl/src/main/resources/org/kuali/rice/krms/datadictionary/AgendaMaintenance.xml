@@ -35,12 +35,12 @@
   </bean>
    
   <bean id="AgendaBo-MaintenanceView" parent="Uif-MaintenanceView">
-    <property name="title" value="Agenda Maintenance"/>
+    <property name="headerText" value="Agenda Maintenance"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
     <property name="items">
       <list merge="true">
          <bean parent="Uif-MaintenanceGridSection">
-            <property name="title" value="Agenda Information"/>
+            <property name="headerText" value="Agenda Information"/>
             <property name="items">
               <list>
                <bean parent="Uif-InputField" p:propertyName="id"/>
@@ -52,7 +52,7 @@
             </property>
          </bean> 
          <bean parent="Uif-MaintenanceStackedCollectionSection">
-           <property name="title" value="Agenda Items"/>  
+           <property name="headerText" value="Agenda Items"/>  
            <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
            <property name="propertyName" value="items"/>
              <property name="items">

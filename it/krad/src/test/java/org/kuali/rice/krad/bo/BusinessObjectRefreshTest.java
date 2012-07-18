@@ -64,6 +64,9 @@ import java.util.Map;
 public class BusinessObjectRefreshTest extends KRADTestCase {
 
 	@Test
+    /**
+     * tests that {@link PersistableBusinessObjectBase#refreshReferenceObject(String)} works for a lazy loaded reference when the foreign key is changed
+     */
 	public void testLazyRefreshField() {
 		final String accountNumber = "b101";
 		Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
@@ -79,6 +82,9 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 	}
 	
 	@Test
+    /**
+     * tests that {@link PersistableBusinessObjectBase#refresh()} works for a lazy loaded reference when the foreign key is changed
+     */
 	public void testLazyRefreshWholeObject() {
 		final String accountNumber = "b101";
 		Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
@@ -92,7 +98,7 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 		Assert.assertEquals("Account Manager should now have user name of fo-102", "fo-102", account.getAccountManager().getUserName());
 	}
 	
-	@Ignore // until BO extensions work with JPA
+	@Ignore("until BO extensions work with JPA")
 	@Test
 	public void testLazyCollectionRefresh() {
 		final Long fredManagerId = 101L;
@@ -117,8 +123,10 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
     }
 
 	@Test
+    /**
+     * tests that {@link PersistableBusinessObjectBase#refresh()} works for an non lazy loaded reference when the foreign key is changed
+     */
 	public void testEagerRefreshEboField() {
-
         Map<String, String> primaryKeys = new HashMap<String, String>();
         primaryKeys.put("code", "COCONINO");
         primaryKeys.put("countryCode", "US");

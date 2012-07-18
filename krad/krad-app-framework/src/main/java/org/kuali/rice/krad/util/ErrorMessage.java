@@ -15,22 +15,26 @@
  */
 package org.kuali.rice.krad.util;
 
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
-
 /**
- * Contains the error message key and parameters for a specific instantiation of an error message.
- * 
- * 
+ * Contains the error message key and parameters for a specific instantiation of an error message
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ErrorMessage implements Serializable {
+    private static final long serialVersionUID = 4397449554212875250L;
+
     private String errorKey;
     private String[] messageParameters;
+    private String messagePrefixKey;
+    private String[] messagePrefixParameters;
+    private String messageSuffixKey;
+    private String[] messageSuffixParameters;
 
     /**
      * Default constructor, required by AutoPopulatingList
@@ -40,7 +44,7 @@ public class ErrorMessage implements Serializable {
 
     /**
      * Convenience constructor which sets both fields
-     * 
+     *
      * @param errorKey
      * @param messageParameters
      */
@@ -53,7 +57,11 @@ public class ErrorMessage implements Serializable {
         setMessageParameters((String[]) ArrayUtils.clone(messageParameters));
     }
 
-
+    /**
+     * Sets the key to use to retrieve the message for this ErrorMessage
+     *
+     * @param errorKey
+     */
     public void setErrorKey(String errorKey) {
         if (StringUtils.isBlank(errorKey)) {
             throw new IllegalArgumentException("invalid (blank) errorKey");
@@ -62,19 +70,33 @@ public class ErrorMessage implements Serializable {
         this.errorKey = errorKey;
     }
 
+    /**
+     * Gets the message key for this ErrorMessage
+     *
+     * @return message key
+     */
     public String getErrorKey() {
         return errorKey;
     }
 
-
+    /**
+     * Sets the messageParameters for this ErrorMessage
+     *
+     * @param messageParameters
+     */
     public void setMessageParameters(String[] messageParameters) {
         this.messageParameters = messageParameters;
     }
 
+    /**
+     * Get the messageParameters which should be used when evaluating and generating the message for
+     * the ErrorMessage.
+     *
+     * @return the messageParameters
+     */
     public String[] getMessageParameters() {
         return messageParameters;
     }
-
 
     /**
      * @see java.lang.Object#toString()
@@ -97,9 +119,7 @@ public class ErrorMessage implements Serializable {
         return s.toString();
     }
 
-
     /**
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -108,8 +128,7 @@ public class ErrorMessage implements Serializable {
 
         if (this == obj) {
             equals = true;
-        }
-        else if (obj instanceof ErrorMessage) {
+        } else if (obj instanceof ErrorMessage) {
             ErrorMessage other = (ErrorMessage) obj;
 
             if (StringUtils.equals(getErrorKey(), other.getErrorKey())) {
@@ -122,7 +141,7 @@ public class ErrorMessage implements Serializable {
 
     /**
      * Defined because when you redefine equals, you must redefine hashcode.
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -134,5 +153,83 @@ public class ErrorMessage implements Serializable {
         }
 
         return hashCode;
+    }
+
+    /**
+     * Gets the messagePrefixKey which defines the message key for the message to be prefixed to the message
+     * defined by errorKey.  It is up to the code using this errorMessage to prepend the prefix message to the original
+     * message.
+     *
+     * @return the messagePrefixKey
+     */
+    public String getMessagePrefixKey() {
+        return messagePrefixKey;
+    }
+
+    /**
+     * Set the messagePrefixKey
+     *
+     * @param messagePrefixKey
+     */
+    public void setMessagePrefixKey(String messagePrefixKey) {
+        this.messagePrefixKey = messagePrefixKey;
+    }
+
+    /**
+     * Gets the messageSuffixKey which defines the message key for the message to be appended to the message
+     * defined by errorKey.  It is up to the code using this errorMessage to append the suffix message to the original
+     * message.
+     *
+     * @return the messageSuffixKey
+     */
+    public String getMessageSuffixKey() {
+        return messageSuffixKey;
+    }
+
+    /**
+     * Set the messageSuffixKey
+     *
+     * @param messageSuffixKey
+     */
+    public void setMessageSuffixKey(String messageSuffixKey) {
+        this.messageSuffixKey = messageSuffixKey;
+    }
+
+    /**
+     * Get the messagePrefixParameters which should be used when evaluating and generating the message for
+     * the messagePrefixKey.
+     *
+     * @return the messagePrefixParameters
+     */
+    public String[] getMessagePrefixParameters() {
+        return messagePrefixParameters;
+    }
+
+    /**
+     * Set the messagePrefixParameters
+     *
+     * @param messagePrefixParameters
+     */
+    public void setMessagePrefixParameters(String[] messagePrefixParameters) {
+        this.messagePrefixParameters = messagePrefixParameters;
+    }
+
+    /**
+     * Get the messagePrefixParameters which should be used when evaluating and generating the message for
+     * the messageSuffixKey.
+     *
+     * @return the messageSuffixParameters
+     */
+    public String[] getMessageSuffixParameters() {
+        return messageSuffixParameters;
+    }
+
+    /**
+     * Set the messageSuffixParameters
+     *
+     * @param messageSuffixParameters
+     */
+    public void setMessageSuffixParameters(String[] messageSuffixParameters) {
+        this.messageSuffixParameters = messageSuffixParameters;
     }
 }

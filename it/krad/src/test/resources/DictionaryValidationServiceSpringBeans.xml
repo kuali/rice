@@ -61,7 +61,7 @@
 	</bean>   	
 
 	<bean id="dictionaryValidationService" class="org.kuali.rice.krad.service.impl.DictionaryValidationServiceImpl">
-		<!-- Collection constraint processors are classes that determine if a feature of a collection of objects satisfies some constraint --> 
+    <!-- Collection constraint processors are classes that determine if a feature of a collection of objects satisfies some constraint -->
 		<property name="collectionConstraintProcessors">
 			<list>
 				<bean class="org.kuali.rice.krad.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/>

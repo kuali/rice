@@ -232,4 +232,8 @@
         OBJ_ID="5A689075D35B7AEBE0404F8189D80321"
         PARM_DESC_TXT="Time in milliseconds that the scheduleStep should wait between iterations."
         PARM_NM="STATUS_CHECK_INTERVAL" PARM_TYP_CD="CONFG" VAL="30000" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="TRAVEL" CMPNT_CD="TEST_COMPONENT"
+        EVAL_OPRTR_CD="A" NMSPC_CD="KR-SAP"
+        OBJ_ID="B6A90093AB168D60E040DC0A1F8A1116" PARM_NM="TEST_PARAM"
+        PARM_TYP_CD="HELP" VAL="http://www.kuali.org/?system_parm" VER_NBR="1"/>
 </dataset>

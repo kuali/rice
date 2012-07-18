@@ -50,9 +50,10 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
      *
      * @param collection - the Collection to add the given addLine to
      * @param addLine - the line to add to the given collection
+     * @param insertFirst - indicates if the item should be inserted as the first item
      */
     @Override
-    protected void addLine(Collection<Object> collection, Object addLine) {
+    protected void addLine(Collection<Object> collection, Object addLine, boolean insertFirst) {
         if (collection instanceof List) {
             ((List) collection).add(0, addLine);
             if (addLine instanceof PeopleFlowMemberBo) {

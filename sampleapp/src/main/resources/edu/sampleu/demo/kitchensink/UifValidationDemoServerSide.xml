@@ -31,11 +31,14 @@
   -->
   <bean id="Demo-ValidationServerSide" parent="Uif-FormView">
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
-    <property name="title" value="Validation Server-side Test View"/>
+    <property name="headerText" value="Validation Server-side Test View"/>
+    <property name="footer">
+      <bean parent="Uif-FormFooter"/>
+    </property>
     <property name="entryPageId" value="Demo-ValidationServerSide-Page1"/>
     <property name="validateClientSide" value="false"/>
-    <property name="viewHelperServiceClassName"
-                  value="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl"/>
+    <property name="viewHelperServiceClass"
+              value="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl"/>
     <property name="items">
       <list>
         <bean id="Demo-ValidationServerSide-Page1" parent="Uif-Page">
@@ -51,6 +54,12 @@
           </property>
         </bean>
       </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ValidationServerSide-KNS" parent="Demo-ValidationServerSide">
+    <property name="theme">
+      <bean parent="Uif-ClassicKnsTheme"/>
     </property>
   </bean>
 

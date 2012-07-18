@@ -27,7 +27,9 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO vchauhan don't forget to fill this in. 
+ * tests that user 'admin' can display the Term Specification lookup screen, search,
+ * initiate an Term Specification maintenance document via an edit action on the search results and
+ * finally cancel the maintenance document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

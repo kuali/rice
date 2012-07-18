@@ -17,7 +17,7 @@
 
 -->
 <bean id="DocumentType-InquiryView" parent="Uif-InquiryView">
-   <property name="title" value="Document Type"/>
+   <property name="headerText" value="Document Type"/>
    <property name="dataObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
    <property name="Items">
        <list>

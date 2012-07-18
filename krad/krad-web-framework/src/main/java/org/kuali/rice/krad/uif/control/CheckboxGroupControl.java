@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a group of HTML checkbox controls. Provides preset options for the
  * user to choose by a series of checkbox controls. Only or more options can be
@@ -27,13 +32,19 @@ public class CheckboxGroupControl extends MultiValueControlBase {
 
     private String delimiter;
 
+    private List<String> fieldsetClasses;
+
     public CheckboxGroupControl() {
         super();
+        fieldsetClasses = new ArrayList<String>();
     }
 
     /**
-     * Delimiter string to be rendered between the checkbox group options,
-     * defaults to none
+     * Delimiter string to be rendered between the checkbox group options
+     *
+     * <p>
+     * defaults to none.
+     * </p>
      * 
      * @return String delimiter string
      */
@@ -48,6 +59,36 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      */
     public void setDelimiter(String delimiter) {
         this.delimiter = delimiter;
+    }
+
+    /**
+     * Get fieldsetClasses which are the classes that will be applied to this component's fieldset when generated
+     * @return
+     */
+    public List<String> getFieldsetClasses() {
+        return fieldsetClasses;
+    }
+
+    /**
+     * Set fieldsetClasses
+     * @param fieldsetClasses
+     */
+    public void setFieldsetClasses(List<String> fieldsetClasses) {
+        this.fieldsetClasses = fieldsetClasses;
+    }
+
+    /**
+     * Builds the HTML class attribute string by combining the fieldsetClasses list
+     * with a space delimiter
+     *
+     * @return String class attribute string
+     */
+    public String getFieldsetClassesAsString() {
+        if (fieldsetClasses != null) {
+            return StringUtils.join(fieldsetClasses, " ");
+        }
+
+        return "";
     }
 
 }

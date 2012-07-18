@@ -27,7 +27,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldSecurity;
@@ -103,7 +103,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canOpenView(View view, ViewModel model, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
-        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, model.getViewId());
 
         if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
@@ -124,7 +124,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canEditView(View view, ViewModel model, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
-        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, model.getViewId());
 
         if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
@@ -298,12 +298,12 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
     /**
      * @see ViewAuthorizer#canPerformAction(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.view.ViewModel,
-     * org.kuali.rice.krad.uif.field.ActionField, java.lang.String, java.lang.String, org.kuali.rice.kim.api.identity.Person)
+     * org.kuali.rice.krad.uif.element.Action, java.lang.String, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
-    public boolean canPerformAction(View view, ViewModel model, ActionField actionField, String actionEvent,
+    public boolean canPerformAction(View view, ViewModel model, Action action, String actionEvent,
             String actionId, Person user) {
         // check action authz flag is set
-        if (!actionField.getComponentSecurity().isPerformActionAuthz()) {
+        if (!action.getComponentSecurity().isPerformActionAuthz()) {
             return true;
         }
 
@@ -312,7 +312,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_EVENT, actionEvent);
         }
 
-        return isAuthorizedByTemplate(view, actionField, model, KimConstants.PermissionTemplateNames.PERFORM_ACTION,
+        return isAuthorizedByTemplate(view, action, model, KimConstants.PermissionTemplateNames.PERFORM_ACTION,
                 user, additionalPermissionDetails, null, false);
     }
 
@@ -371,10 +371,10 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     }
 
     public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
-            String collectionPropertyName, Object line, ActionField actionField, String actionEvent, String actionId,
+            String collectionPropertyName, Object line, Action action, String actionEvent, String actionId,
             Person user) {
         // check perform line action authz flag is set
-        if (!actionField.getComponentSecurity().isPerformLineActionAuthz()) {
+        if (!action.getComponentSecurity().isPerformLineActionAuthz()) {
             return true;
         }
 
@@ -386,7 +386,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_EVENT, actionEvent);
         }
 
-        return isAuthorizedByTemplate(view, actionField, model,
+        return isAuthorizedByTemplate(view, action, model,
                 KimConstants.PermissionTemplateNames.PERFORM_LINE_ACTION, user, additionalPermissionDetails, null,
                 false);
     }
@@ -427,7 +427,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     protected Map<String, String> getFieldPermissionDetails(View view, Object dataObject, Field field) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
 
-        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
         permissionDetails.put(KimConstants.AttributeConstants.FIELD_ID, field.getId());
 
@@ -451,7 +451,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     protected Map<String, String> getGroupPermissionDetails(View view, Object dataObject, Group group) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
 
-        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
         permissionDetails.put(KimConstants.AttributeConstants.GROUP_ID, group.getId());
 
@@ -475,7 +475,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     protected Map<String, String> getWidgetPermissionDetails(View view, Object dataObject, Widget widget) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
 
-        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
         permissionDetails.put(KimConstants.AttributeConstants.WIDGET_ID, widget.getId());
 

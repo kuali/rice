@@ -37,7 +37,7 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
     private String formKey;
 
     public HistoryEntry() {
-       super();
+        super();
     }
 
     public HistoryEntry(String viewId, String pageId, String title, String url, String formKey) {
@@ -50,6 +50,11 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
         this.formKey = formKey;
     }
 
+    /**
+     * Returns a representation of the history entry as a request parameter string
+     *
+     * @return String containing the entries values
+     */
     public String toParam() {
         return viewId
                 + History.VAR_TOKEN
@@ -135,7 +140,6 @@ public class HistoryEntry extends ConfigurableBase implements Serializable {
 
     /**
      * The formKey of the form in the view
-     * TODO unsure of use
      *
      * @param formKey the formKey to set
      */

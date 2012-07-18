@@ -26,7 +26,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests that user 'admin', on blanket approving a new Role maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -65,7 +65,7 @@ public class IdentityRoleBlanketAppIT {
         selenium.select("//select[@id='document.roleNamespace']", "label=Kuali Systems");
         selenium.waitForPageToLoad("30000");
         selenium.type("//input[@id='document.roleName']", "Validation Test Role4");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.bo.impl.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

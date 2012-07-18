@@ -23,7 +23,7 @@
 <descriptor-repository version="1.0">
 
 	<jdbc-connection-descriptor
-		jcd-alias="dataSource"
+          jcd-alias="dataSource-samplepp"
 		default-connection="false"
 		jdbc-level="3.0"
 		eager-release="false"
@@ -50,7 +50,7 @@
 			auto-delete="object">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
-		<collection-descriptor name="travelAccounts" 
+		<collection-descriptor name="travelAccounts"
 		element-class-ref="edu.sampleu.travel.bo.TravelAccount"
 		auto-retrieve="true" auto-update="false"
 			auto-delete="false" indirection-table="TRAV_DOC_2_ACCOUNTS">
@@ -63,16 +63,17 @@
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
 		<field-descriptor name="foId" column="acct_fo_id" jdbc-type="BIGINT" nillable="false" />
-    
+
         <field-descriptor name="subAccount" column="sub_acct" jdbc-type="VARCHAR" />
         <field-descriptor name="subAccountName" column="sub_acct_name" jdbc-type="VARCHAR" />
         <field-descriptor name="createDate" column="create_dt" jbdc-type="TIMESTAMP" />
         <field-descriptor name="subsidizedPercent" column="subsidized_pct" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiPercentFieldConversion"/>
-        
+
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 
-		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
+    <reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer" auto-delete="object"
+                          auto-retrieve="true" auto-update="none" proxy="false">
 			<foreignkey field-ref="foId" />
 		</reference-descriptor>
 
@@ -84,7 +85,10 @@
 	<class-descriptor class="edu.sampleu.travel.bo.TravelAccountExtension" table="TRV_ACCT_EXT">
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" />
-		<reference-descriptor name="accountType" class-ref="edu.sampleu.travel.bo.TravelAccountType" auto-delete="none" auto-retrieve="true" auto-update="none" proxy="true">
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"/>
+    <reference-descriptor name="accountType" class-ref="edu.sampleu.travel.bo.TravelAccountType" auto-delete="none"
+                          auto-retrieve="true" auto-update="none" proxy="true">
 			<foreignkey field-ref="accountTypeCode" />
 		</reference-descriptor>
 	</class-descriptor>
@@ -93,7 +97,7 @@
 		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_type_name" jdbc-type="VARCHAR" />
 	</class-descriptor>
-	
+
 	<class-descriptor class="edu.sampleu.travel.bo.TravelAccountUseRate" table="TRV_ACCT_USE_RT_T">
 		<field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" />
@@ -108,10 +112,10 @@
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 
-		<collection-descriptor name="accounts" 
+		<collection-descriptor name="accounts"
 		element-class-ref="edu.sampleu.travel.bo.TravelAccount"
-		auto-retrieve="true" 
-		auto-update="true" 
+		auto-retrieve="true"
+		auto-update="true"
 		auto-delete="false" >
 			<inverse-foreignkey field-ref="foId" />
 		</collection-descriptor>
@@ -130,7 +134,7 @@
         <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"/>
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
-        
+
          <collection-descriptor name="books"
               element-class-ref="edu.sampleu.bookstore.bo.Book"
               collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
@@ -138,18 +142,18 @@
               auto-retrieve="true"
               auto-update="object"
               auto-delete="object">
-              <orderby name="title" sort="ASC" />      	
+              <orderby name="title" sort="ASC" />
            <inverse-foreignkey field-ref="typeCode" />
 		</collection-descriptor>
     </class-descriptor>
 
     <class-descriptor class="edu.sampleu.bookstore.bo.Book" table="BK_BOOK_T">
         <field-descriptor name="id" column="BOOK_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="BK_BOOK_ID_S" />
-        <field-descriptor name="title" column="TITLE" jdbc-type="VARCHAR"/>       
-        <field-descriptor name="typeCode" column="TYP_CD" jdbc-type="VARCHAR" index="true"/> 
+        <field-descriptor name="title" column="TITLE" jdbc-type="VARCHAR"/>
+        <field-descriptor name="typeCode" column="TYP_CD" jdbc-type="VARCHAR" index="true"/>
         <field-descriptor name="isbn" column="isbn" jdbc-type="VARCHAR" />
 		<field-descriptor name="publisher" column="publisher" jdbc-type="VARCHAR" />
-		<field-descriptor name="publicationDate" column="pub_date" jdbc-type="DATE" />       
+		<field-descriptor name="publicationDate" column="pub_date" jdbc-type="DATE" />
         <field-descriptor name="price" column="PRICE" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
         <field-descriptor name="rating" column="RATING" jdbc-type="BIGINT" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiIntegerFieldConversion"/>
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"/>
@@ -243,36 +247,7 @@
           <inverse-foreignkey field-ref="documentId" />
         </collection-descriptor>
 	</class-descriptor>
-
-  <class-descriptor class="edu.sampleu.travel.bo.AttachmentSample" table="TRV_ATT_SAMPLE">
-    <field-descriptor name="id" column="attachment_id" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="description" column="description" jdbc-type="varchar" />
-    <field-descriptor name="fileName" column="attachment_filename" jdbc-type="VARCHAR"/>
-    <field-descriptor name="contentType" column="attachment_file_content_type" jdbc-type="VARCHAR"/>
-    <field-descriptor name="attachmentContent" column="attachment_file" jdbc-type="LONGVARBINARY"/>
-    <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR" index="true" />
-    <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT" locking="true" />
-
-    <collection-descriptor name="attachments" element-class-ref="edu.sampleu.travel.bo.MultiAttachmentSample" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="true" auto-delete="false" >
-      <inverse-foreignkey field-ref="id" />
-    </collection-descriptor>
-    <!--    <collection-descriptor name="questionExplanations" element-class-ref="org.kuali.kra.questionnaire.question.QuestionExplanation" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="none">
-       <inverse-foreignkey field-ref="questionRefIdFk"/>
-   </collection-descriptor> -->
-
-  </class-descriptor>
-
-  <class-descriptor class="edu.sampleu.travel.bo.MultiAttachmentSample" table="TRV_MULTI_ATT_SAMPLE">
-    <field-descriptor name="genId" column="gen_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
-    <field-descriptor name="id" column="attachment_id" jdbc-type="VARCHAR" />
-    <field-descriptor name="description" column="description" jdbc-type="varchar" />
-    <field-descriptor name="fileName" column="attachment_filename" jdbc-type="VARCHAR"/>
-    <field-descriptor name="contentType" column="attachment_file_content_type" jdbc-type="VARCHAR"/>
-    <field-descriptor name="attachmentContent" column="attachment_file" jdbc-type="LONGVARBINARY"/>
-    <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR" index="true" />
-    <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT" locking="true" />
-  </class-descriptor>
-
+	
 	<class-descriptor class="edu.sampleu.bookstore.bo.BookOrder" table="bk_order_entry_t">
     	<field-descriptor name="id" column="BK_ORDER_ENTRY_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="bk_order_entry_s"/>
     	<field-descriptor name="documentId" column="DOC_HDR_ID" jdbc-type="VARCHAR" />

@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This is a composite class for all the different members that need to be returned when a {@link ConstraintProcessor}
+ * ConstraintValidationResult is a composite class for all the different members that need to be returned when a {@link ConstraintProcessor}
  * processes a {@link Constraint}. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
@@ -41,30 +41,57 @@ public class ConstraintValidationResult {
 	private String constraintLabelKey;
 	
 	private List<ConstraintValidationResult> children;
-	
-	
+
+    /**
+     * creates a constraint validation result with the given constraint name
+     *
+     * @param constraintName  - a descriptive name of the current constraint processor
+     */
 	public ConstraintValidationResult(String constraintName) {
 		this.constraintName = constraintName;
 		this.children = new LinkedList<ConstraintValidationResult>();
 		this.level = ErrorLevel.OK;
 	}
-	
+
+    /**
+     *  creates a constraint validation result with the given constraint name and error level
+     *
+     * @param constraintName - a descriptive name of the current constraint processor
+     * @param level - the applicable error level - selected from {@link ErrorLevel}
+     */
 	public ConstraintValidationResult(String constraintName, ErrorLevel level) {
 		this.constraintName = constraintName;
 		this.children = new LinkedList<ConstraintValidationResult>();
 		this.level = level;
 	}
-	
+
+    /**
+     * allows a constraint validation result to be added as a child of the current one
+     *
+     * @param child - the 'child' constraint validation result
+     */
 	public void addChild(ConstraintValidationResult child) {
 		this.children.add(child);
 	}
-	
+
+    /**
+     * provides information used to display error messages to the user concerning a constraint validation
+     *
+     * @param errorKey - a key used to fetch an error message to show the user
+     * @param errorParameters - parameters to substitute into the error message
+     */
 	public void setError(String errorKey, String... errorParameters) {
 		this.level = ErrorLevel.ERROR;
 		this.errorKey = errorKey;
 		this.errorParameters = errorParameters;
 	}
-	
+
+    /**
+     * provides information used to display warning messages to the user concerning a constraint validation
+     *
+     * @param errorKey - a key used to fetch an warning message to show the user
+     * @param errorParameters - parameters to substitute into the warning message
+     */
 	public void setWarning(String errorKey, String... errorParameters) {
 		this.level = ErrorLevel.WARN;
 		this.errorKey = errorKey;
@@ -86,6 +113,9 @@ public class ConstraintValidationResult {
 	}
 
 	/**
+     * the error key is used to retrieve a message to display to the user
+     *
+     * @see org.kuali.rice.core.api.util.RiceKeyConstants
 	 * @return the errorKey
 	 */
 	public String getErrorKey() {

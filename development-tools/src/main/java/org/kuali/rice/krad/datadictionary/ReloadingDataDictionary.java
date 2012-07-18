@@ -40,70 +40,68 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Extends the DataDictionary to add reloading of changed dictionary files
  * without a restart of the web container
- * 
+ *
  * <p>
  * To use modify the "dataDictionaryService" spring definition
  * (KRADSpringBeans.xml) and change the constructor arg bean class from
  * "org.kuali.rice.krad.datadictionary.DataDictionary" to
  * "ReloadingDataDictionary"
  * </p>
- * 
+ *
  * <p>
  * NOTE: For Development Purposes Only!
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReloadingDataDictionary extends DataDictionary implements FileListener, URLMonitor.URLContentChangedListener, ApplicationContextAware {
-	private static final Log LOG = LogFactory.getLog(DataDictionary.class);
+    private static final Log LOG = LogFactory.getLog(DataDictionary.class);
 
-	private static final String CLASS_DIR_CONFIG_PARM = "reload.data.dictionary.classes.dir";
-	private static final String SOURCE_DIR_CONFIG_PARM = "reload.data.dictionary.source.dir";
-	private static final String INTERVAL_CONFIG_PARM = "reload.data.dictionary.interval";
+    private static final String CLASS_DIR_CONFIG_PARM = "reload.data.dictionary.classes.dir";
+    private static final String SOURCE_DIR_CONFIG_PARM = "reload.data.dictionary.source.dir";
+    private static final String INTERVAL_CONFIG_PARM = "reload.data.dictionary.interval";
 
     private URLMonitor dictionaryUrlMonitor;
 
+    public ReloadingDataDictionary() {
+        super();
+    }
 
-	public ReloadingDataDictionary() {
-		super();
-	}
+    /**
+     * After dictionary has been loaded, determine the source files and add them
+     * to the monitor
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionary#parseDataDictionaryConfigurationFiles(boolean)
+     */
+    @Override
+    public void parseDataDictionaryConfigurationFiles(boolean allowConcurrentValidation) {
+        ConfigurationService configurationService = KRADServiceLocator.getKualiConfigurationService();
 
-	/**
-	 * After dictionary has been loaded, determine the source files and add them
-	 * to the monitor
-	 * 
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionary#parseDataDictionaryConfigurationFiles(boolean)
-	 */
-	@Override
-	public void parseDataDictionaryConfigurationFiles(boolean allowConcurrentValidation) {
-		ConfigurationService configurationService = KRADServiceLocator.getKualiConfigurationService();
+        // class directory part of the path that should be replaced
+        String classesDir = configurationService.getPropertyValueAsString(CLASS_DIR_CONFIG_PARM);
 
-		// class directory part of the path that should be replaced
-		String classesDir = configurationService.getPropertyValueAsString(CLASS_DIR_CONFIG_PARM);
+        // source directory where dictionary files are found
+        String sourceDir = configurationService.getPropertyValueAsString(SOURCE_DIR_CONFIG_PARM);
 
-		// source directory where dictionary files are found
-		String sourceDir = configurationService.getPropertyValueAsString(SOURCE_DIR_CONFIG_PARM);
+        // interval to poll for changes in milliseconds
+        int reloadInterval = Integer.parseInt(configurationService.getPropertyValueAsString(INTERVAL_CONFIG_PARM));
 
-		// interval to poll for changes in milliseconds
-		int reloadInterval = Integer.parseInt(configurationService.getPropertyValueAsString(INTERVAL_CONFIG_PARM));
-
-		FileMonitor dictionaryFileMonitor = new FileMonitor(reloadInterval);
+        FileMonitor dictionaryFileMonitor = new FileMonitor(reloadInterval);
 
         dictionaryUrlMonitor = new URLMonitor(reloadInterval);
         dictionaryUrlMonitor.addListener(this);
 
-		// need to copy the configFileLocations list here because it gets
-		// cleared out after processing by super
-		List<String> configLocations = new ArrayList<String>(configFileLocations);
+        // need to copy the configFileLocations list here because it gets
+        // cleared out after processing by super
+        List<String> configLocations = new ArrayList<String>(configFileLocations);
 
-		super.parseDataDictionaryConfigurationFiles(allowConcurrentValidation);
-		for (String configLocation : configLocations) {
-			Resource classFileResource = getFileResource(configLocation);
-			try {
+        super.parseDataDictionaryConfigurationFiles(allowConcurrentValidation);
+        for (String configLocation : configLocations) {
+            Resource classFileResource = getFileResource(configLocation);
+            try {
                 if (classFileResource.getURI().toString().startsWith("jar:")) {
                     LOG.debug("Monitoring dictionary file at URI: " + classFileResource.getURI().toString());
                     dictionaryUrlMonitor.addURI(classFileResource.getURL());
@@ -116,40 +114,38 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
                         dictionaryFileMonitor.addFile(dictionaryFile);
                     }
                 }
-			}
-			catch (Exception e) {
-				LOG.info("Exception in picking up dictionary file for monitoring:  " + e.getMessage(), e);
-			}
-		}
+            } catch (Exception e) {
+                LOG.info("Exception in picking up dictionary file for monitoring:  " + e.getMessage(), e);
+            }
+        }
 
-		// add the dictionary as a listener for file changes
-		dictionaryFileMonitor.addListener(this);
-	}
+        // add the dictionary as a listener for file changes
+        dictionaryFileMonitor.addListener(this);
+    }
 
-	/**
-	 * Call back when a dictionary file is changed. Calls the spring bean reader
-	 * to reload the file (which will override beans as necessary and destroy
-	 * singletons) and runs the indexer
-	 * 
-	 * @see no.geosoft.cc.io.FileListener#fileChanged(java.io.File)
-	 */
-	@Override
-	public void fileChanged(File file) {
-		LOG.info("reloading dictionary configuration for " + file.getName());
-		try {
-			Resource resource = new FileSystemResource(file);
-			xmlReader.loadBeanDefinitions(resource);
+    /**
+     * Call back when a dictionary file is changed. Calls the spring bean reader
+     * to reload the file (which will override beans as necessary and destroy
+     * singletons) and runs the indexer
+     *
+     * @see no.geosoft.cc.io.FileListener#fileChanged(java.io.File)
+     */
+    public void fileChanged(File file) {
+        LOG.info("reloading dictionary configuration for " + file.getName());
+        try {
+            Resource resource = new FileSystemResource(file);
+            xmlReader.loadBeanDefinitions(resource);
 
             UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
             factoryPostProcessor.postProcessBeanFactory(ddBeans);
 
-			// re-index
-			ddIndex.run();
-		}
-		catch (Exception e) {
-			LOG.info("Exception in dictionary hot deploy: " + e.getMessage(), e);
-		}
-	}
+            // indexing
+            ddIndex.run();
+            uifIndex.run();
+        } catch (Exception e) {
+            LOG.info("Exception in dictionary hot deploy: " + e.getMessage(), e);
+        }
+    }
 
     public void urlContentChanged(final URL url) {
         LOG.info("reloading dictionary configuration for " + url.toString());
@@ -167,8 +163,8 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
 
             // re-index
             ddIndex.run();
-        }
-        catch (Exception e) {
+            uifIndex.run();
+        } catch (Exception e) {
             LOG.info("Exception in dictionary hot deploy: " + e.getMessage(), e);
         }
     }

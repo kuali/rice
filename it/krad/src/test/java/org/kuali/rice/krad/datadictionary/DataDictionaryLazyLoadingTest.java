@@ -23,7 +23,7 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test to ensure that data dictionary lazy loading works as expected.
+ * DataDictionaryLazyLoadingTest ensures that data dictionary lazy loading works as expected
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

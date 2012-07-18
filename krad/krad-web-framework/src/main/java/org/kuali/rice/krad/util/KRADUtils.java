@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -37,6 +38,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,10 +58,25 @@ import java.util.regex.Pattern;
 public final class KRADUtils {
     private static KualiModuleService kualiModuleService;
 
+    private static final KualiDecimal ONE_HUNDRED = new KualiDecimal("100.00");
+
+    /**
+     * Prevent instantiation of the class.
+     */
     private KRADUtils() {
         throw new UnsupportedOperationException("do not call");
     }
 
+    /**
+     * Retrieve the title for a business object class
+     *
+     * <p>
+     * The title is a nicely formatted version of the simple class name.
+     * </p>
+     *
+     * @param clazz business object class
+     * @return title of the business object class
+     */
     public final static String getBusinessTitleForClass(Class<? extends Object> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException(
@@ -79,7 +96,14 @@ public final class KRADUtils {
     }
 
     /**
-     * Picks off the filename from the full path. Takes care of different OS seperators.
+     * Picks off the filename from the full path
+     *
+     * <p>
+     * The different OS path separators are being taken into consideration.
+     * </p>
+     *
+     * @param fullFileNames file name with path
+     * @return file name
      */
     public final static List<String> getFileNameFromPath(List<String> fullFileNames) {
         List<String> fileNameList = new ArrayList<String>();
@@ -95,14 +119,16 @@ public final class KRADUtils {
         return fileNameList;
     }
 
-    private static final KualiDecimal ONE_HUNDRED = new KualiDecimal("100.00");
-
     /**
-     * Convert the given monney amount into an interger string. Since the return string cannot have decimal point,
-     * multiplies the
-     * amount by 100 so the decimal places are not lost, for example, 320.15 is converted into 32015.
+     * Convert the given money amount into an integer string.
      *
-     * @return an integer string of the given money amount through multiplicating by 100 and removing the fraction
+     * <p>
+     * Since the return string cannot have decimal point, multiplies the amount by 100 so the decimal places
+     * are not lost, for example, 320.15 is converted into 32015.
+     * </p>
+     *
+     * @param decimalNumber decimal number to be converted
+     * @return an integer string of the given money amount through multiplying by 100 and removing the fraction
      *         portion.
      */
     public final static String convertDecimalIntoInteger(KualiDecimal decimalNumber) {
@@ -113,6 +139,16 @@ public final class KRADUtils {
         return StringUtils.replace(formattedAmount, ",", "");
     }
 
+    /**
+     * Return the integer value of a string
+     *
+     * <p>
+     * If the string contains a decimal value everything after the decimal point is dropped.
+     * </p>
+     *
+     * @param numberStr string
+     * @return integer representation of the given string
+     */
     public static Integer getIntegerValue(String numberStr) {
         Integer numberInt = null;
         try {
@@ -188,7 +224,16 @@ public final class KRADUtils {
         }
         return null;
     }
-
+     /**
+     * Creates a comma separated String representation of the given list.
+     *
+     * <p>
+     * For example 'a','b',c'.
+     * </p>
+     *
+     * @param list
+     * @return the joined String, empty if the list is null or has no elements
+     */
     public static String joinWithQuotes(List<String> list) {
         if (list == null || list.size() == 0)
             return "";
@@ -537,6 +582,17 @@ public final class KRADUtils {
         return properties;
     }
 
+    /**
+     * Check if data might be sensitive
+     *
+     * <p>
+     * The sensitivity of the data is checked by matching it against the sensitive data patterns that are specified
+     * in the system parameter table.
+     * </p>
+     *
+     * @param fieldValue data to be checked for sensitivity
+     * @return true if the data matches the sensitive data pattern, false otherwise
+     */
     public static boolean containsSensitiveDataPatternMatch(String fieldValue) {
         if (StringUtils.isBlank(fieldValue)) {
             return false;
@@ -567,7 +623,9 @@ public final class KRADUtils {
     }
 
     /**
-     * @return whether the deploy environment is production
+     * Check if current deployment is the production environment
+     *
+     * @return true if the deploy environment is production, false otherwise
      */
     public static boolean isProductionEnvironment() {
         return KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
@@ -576,4 +634,61 @@ public final class KRADUtils {
                         KRADConstants.ENVIRONMENT_KEY));
     }
 
+    /**
+     * Gets the message associated with ErrorMessage object passed in, using the configuration service passed in.
+     * The prefix and suffix will be appended to the retrieved message if processPrefixSuffix is true and if those
+     * settings are set on the ErrorMessage passed in.
+     *
+     * @param configService configuration service to use to retrieve the message
+     * @param errorMessage the ErrorMessage object containg the message key(s)
+     * @param processPrefixSuffix if true appends the prefix and suffix to the message if they exist on ErrorMessage
+     * @return the converted/retrieved message
+     */
+    public static String getMessage(ConfigurationService configService, ErrorMessage errorMessage,
+            boolean processPrefixSuffix) {
+        String message = "";
+        if (errorMessage != null && errorMessage.getErrorKey() != null) {
+
+            //find message by key
+            message = configService.getPropertyValueAsString(errorMessage.getErrorKey());
+            if (message == null) {
+                message = "Intended message with key: " + errorMessage.getErrorKey() + " not found.";
+            }
+
+            if (errorMessage.getMessageParameters() != null && StringUtils.isNotBlank(message)) {
+                message = message.replace("'", "''");
+                message = MessageFormat.format(message, (Object[]) errorMessage.getMessageParameters());
+            }
+
+            //add prefix
+            if (StringUtils.isNotBlank(errorMessage.getMessagePrefixKey()) && processPrefixSuffix) {
+                String prefix = configService.getPropertyValueAsString(errorMessage.getMessagePrefixKey());
+
+                if (errorMessage.getMessagePrefixParameters() != null && StringUtils.isNotBlank(prefix)) {
+                    prefix = prefix.replace("'", "''");
+                    prefix = MessageFormat.format(prefix, (Object[]) errorMessage.getMessagePrefixParameters());
+                }
+
+                if (StringUtils.isNotBlank(prefix)) {
+                    message = prefix + " " + message;
+                }
+            }
+
+            //add suffix
+            if (StringUtils.isNotBlank(errorMessage.getMessageSuffixKey()) && processPrefixSuffix) {
+                String suffix = configService.getPropertyValueAsString(errorMessage.getMessageSuffixKey());
+
+                if (errorMessage.getMessageSuffixParameters() != null && StringUtils.isNotBlank(suffix)) {
+                    suffix = suffix.replace("'", "''");
+                    suffix = MessageFormat.format(suffix, (Object[]) errorMessage.getMessageSuffixParameters());
+                }
+
+                if (StringUtils.isNotBlank(suffix)) {
+                    message = message + " " + suffix;
+                }
+            }
+        }
+
+        return message;
+    }
 }

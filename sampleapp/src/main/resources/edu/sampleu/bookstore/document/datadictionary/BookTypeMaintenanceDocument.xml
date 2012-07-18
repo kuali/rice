@@ -36,7 +36,7 @@
     <property name="items">
       <list merge="true">
         <bean parent="Uif-MaintenanceGridSection">
-          <property name="title" value="Add/Edit Book Type"/>
+          <property name="headerText" value="Add/Edit Book Type"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="typeCode"/>

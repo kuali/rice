@@ -57,7 +57,7 @@
 
 
   <bean id="sampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
-    <property name="namespaceCode" value="tv"/>
+    <property name="namespaceCode" value="KR-SAP"/>
     <property name="initializeDataDictionary" value="true"/>
     <property name="dataDictionaryPackages">
       <list>
@@ -112,10 +112,23 @@
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP8.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP9.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewPx10.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewPx11.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifValidationDemoServerSide.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifStateBasedValidation.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifRowDetailsDemo.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifLayoutView.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifStandardLayout.xml</value>
+        <value>classpath:edu/sampleu/demo/layout/UifValidationLayout.xml</value>
+        <value>classpath:edu/sampleu/demo/layout/UifGeneratedFields.xml</value>
         <value>classpath:edu/sampleu/demo/auth/TestOpenAuthView.xml</value>
+        <value>classpath:edu/sampleu/demo/data/DataAttributesView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-ProgressiveRender.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Help.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/DialogTestView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Collections.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/CollectionsM2Test.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Quickfinder.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
@@ -215,6 +228,21 @@
         p:callbackService-ref="sampleAppPeopleFlowTypeService"
         p:localServiceName="sampleAppPeopleFlowTypeService"
         p:serviceInterface="org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService"/>
+  
+  <bean id="dataTableRestServiceTest" class="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl"/>
+
+  <bean id="DataTableRestServiceTest" class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">
+    <property name="serviceNameSpaceURI" value="KR-SAP" />
+    <property name="service" ref="dataTableRestServiceTest" />
+    <property name="resourceClass"
+      value="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl" />
+    <property name="localServiceName" value="dataTableRestServiceTest" />
+  </bean>
+
+  <bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition" ref="DataTableRestServiceTest" />
+   </bean>
 
 </beans>
 

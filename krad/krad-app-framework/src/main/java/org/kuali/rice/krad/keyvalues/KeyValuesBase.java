@@ -52,6 +52,9 @@ public abstract class KeyValuesBase implements KeyValuesFinder, Serializable {
         return optionValues;
     }
 
+    /**
+     * @see KeyValuesFinder#getKeyLabelMap()
+     */
     @Override
 	public Map<String, String> getKeyLabelMap() {
         Map<String, String> keyLabelMap = new HashMap<String, String>();
@@ -64,6 +67,9 @@ public abstract class KeyValuesBase implements KeyValuesFinder, Serializable {
         return keyLabelMap;
     }
 
+    /**
+     * @see KeyValuesFinder#getKeyLabel(String)
+     */
     @Override
 	public String getKeyLabel(String key) {
         Map<String, String> keyLabelMap = getKeyLabelMap();
@@ -73,12 +79,18 @@ public abstract class KeyValuesBase implements KeyValuesFinder, Serializable {
         }
         return null;
     }
-    
+
+    /**
+     * @see KeyValuesFinder#getKeyValues(boolean)
+     */
     @Override
 	public List<KeyValue> getKeyValues(boolean includeActiveOnly){
     	return Collections.emptyList();
     }
-    
+
+    /**
+     * @see org.kuali.rice.krad.keyvalues.KeyValuesFinder#clearInternalCache()
+     */
 	@Override
 	public void clearInternalCache() {
 		// do nothing

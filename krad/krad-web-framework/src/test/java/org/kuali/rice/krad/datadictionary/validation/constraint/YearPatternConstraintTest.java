@@ -41,10 +41,10 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 2. value with valid year. (success) {@link #testValueValidYear()}
  * 3. value with valid year. (success) {@link #testValueValidYear1()}
  * 4. value with valid year. (success) {@link #testValueValidYear2()}
- * 5. value with invalid year. (failure) {@link testValueInvalidYear()}
- * 6. value with invalid year. (failure) {@link testValueInvalidYear1()}
- * 7. value with invalid year. (failure) {@link testValueInvalidYear2()}
- * 8. value with invalid year. (failure) {@link testValueInvalidYear3()}  
+ * 5. value with invalid year. (failure) {@link #testValueInvalidYear()}
+ * 6. value with invalid year. (failure) {@link #testValueInvalidYear1()}
+ * 7. value with invalid year. (failure) {@link #testValueInvalidYear2()}
+ * 8. value with invalid year. (failure) {@link #testValueInvalidYear3()}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

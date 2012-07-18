@@ -16,15 +16,39 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 /**
- * A range constraint is one that restricts a value to a specified range. This value can be numeric or it can be a date. 
+ * A range constraint that restricts a value to a specified range
+ *
+ * <p>
+ * This range can be numeric or it can be a date.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @since 1.1
+ * @since 2.0
  */
 public interface RangeConstraint extends DataTypeConstraint {
 
-	public String getInclusiveMax();
+    /**
+     * Determines the maximum value of the field
+     *
+     * <p>
+     * The inclusiveMax element determines the maximum allowable value for data entry editing purposes.
+     * Value can be an integer or decimal value such as -.001 or 99.
+     * </p>
+     *
+     * @return String specifying the maximum value
+     */
+    String getInclusiveMax();
 
-	public String getExclusiveMin();
+    /**
+     * Determines the minimum value of the field
+     *
+     * <p>
+     * The exclusiveMin element determines the minimum allowable value for data entry editing purposes.
+     * Value can be an integer or decimal value such as -.001 or 99.
+     * </p>
+     *
+     * @return String specifying the minimum value
+     */
+	String getExclusiveMin();
 	
 }

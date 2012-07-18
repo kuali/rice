@@ -79,6 +79,7 @@
     <property name="name" value="number"/>
     <property name="label" value="Travel Account Number"/>
     <property name="description" value="Travel Account Number"/>
+    <property name="required" value="true"/>
   </bean>
   
   <bean id="TravelAccount-subAccount" parent="TravelAccount-number-parentBean">

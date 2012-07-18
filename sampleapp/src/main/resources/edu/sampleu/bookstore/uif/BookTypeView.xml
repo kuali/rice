@@ -25,7 +25,7 @@
 
   <bean id="BookType-InquiryView" parent="Uif-FormView">
     <property name="id" value="BookType-InquiryView" />
-    <property name="title" value="Book Type Inquiry" />
+    <property name="headerText" value="Book Type Inquiry" />
     <property name="navigation">
       <ref bean="testViewMenu" />
     </property>
@@ -47,7 +47,7 @@
 
   <bean id="BookType-InquiryView-Section1" parent="Uif-Disclosure-GridSection">
     <property name="id" value="BookType-InquiryView-Section1" />
-    <property name="title" value="Book Type" />
+    <property name="headerText" value="Book Type" />
     <property name="instructionalText" value="A Book Type." />
     <property name="fieldBindByNamePrefix" value="dataObject" />
     <property name="items">

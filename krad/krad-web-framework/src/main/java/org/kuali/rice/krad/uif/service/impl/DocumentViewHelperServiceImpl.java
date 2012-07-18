@@ -62,6 +62,11 @@ public class DocumentViewHelperServiceImpl extends ViewHelperServiceImpl {
         return isValidLine;
     }
 
+    /**
+     * Gets the Kuali rule service
+     *
+     * @return KualiRuleService Kuali rule service
+     */
     protected KualiRuleService getKualiRuleService() {
         if (kualiRuleService == null) {
             kualiRuleService = KRADServiceLocatorWeb.getKualiRuleService();

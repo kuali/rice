@@ -164,9 +164,6 @@
 		class="org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry"
 		abstract="true" />
 
-  	<bean id="BusinessObjectEntry" class="org.kuali.rice.kns.datadictionary.BusinessObjectEntry"
-		abstract="true" />
-
   	<bean id="MaintenanceDocumentEntry"
 		class="org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry"
 		abstract="true">

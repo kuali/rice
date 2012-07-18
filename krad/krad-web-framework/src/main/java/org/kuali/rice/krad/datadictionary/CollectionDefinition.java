@@ -20,10 +20,15 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 import org.kuali.rice.krad.datadictionary.validation.capability.CollectionSizeConstrainable;
 
 /**
- * A single Collection attribute definition in the DataDictionary, which contains information relating to the display, validation,
- * and general maintenance of a specific Collection attribute of an entry.
+ * CollectionDefinition defines a single Collection attribute definition in the DataDictionary
+ *
+ * <p>It contains information relating to the display, validation,
+ * and general maintenance of a specific Collection attribute of an entry. It helps to provide meaningful labels for
+ * collections on a business or data object.
+ * It can be used to define collections that are generated at runtime and marked using @{@code Transient} in the containing
+ * business or data object class.</p>
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CollectionDefinition extends DataDictionaryDefinitionBase implements CollectionSizeConstrainable{
     private static final long serialVersionUID = -2644072136271281041L;
@@ -41,14 +46,28 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
 	protected Integer minOccurs;
 	protected Integer maxOccurs;
 
+    /**
+     * default constructor
+     */
     public CollectionDefinition() {
     	//empty
     }
 
+    /**
+     * gets the name of the collection
+     *
+     * @return the collection name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * sets the name of the collection
+     *
+     * @param name - the collection name
+     * @throws IllegalArgumentException if the name is blank
+     */
     public void setName(String name) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
@@ -56,10 +75,20 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
         this.name = name;
     }
 
+    /**
+     * gets the label
+     *
+     * @return the label
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * sets the label
+     *
+     * @param label - a descriptive string to use for a label
+     */
     public void setLabel(String label) {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("invalid (blank) label");
@@ -68,12 +97,20 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     }
 
     /**
+     * gets the short label
+     *
      * @return the shortLabel, or the label if no shortLabel has been set
      */
     public String getShortLabel() {
         return (shortLabel != null) ? shortLabel : label;
     }
 
+    /**
+     * sets the short label
+     *
+     * @param shortLabel - the short label
+     * @throws IllegalArgumentException when {@code shortLabel} is blank
+     */
     public void setShortLabel(String shortLabel) {
         if (StringUtils.isBlank(shortLabel)) {
             throw new IllegalArgumentException("invalid (blank) shortLabel");
@@ -82,41 +119,60 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     }
 
     /**
-     * Gets the elementLabel attribute. 
-     * @return Returns the elementLabel.
+     * Gets the elementLabel attribute
+     *
+     * @return the element Label
      */
     public String getElementLabel() {
         return elementLabel;
     }
 
     /**
- 	 * The elementLabel defines the name to be used for a single object
-     * within the collection.  For example: "Address" may be the name
-     * of one object within the "Addresses" collection.
+ 	 *  gets the element label
+     *
+     * <p>The elementLabel defines the name to be used for a single object within the collection.
+     * For example: "Address" may be the name
+     * of one object within the "Addresses" collection.</p>
      */
     public void setElementLabel(String elementLabel) {
         this.elementLabel = elementLabel;
     }
 
+    /**
+     * gets the summary
+     *
+     * <p>summary element is used to provide a short description of the
+     * attribute or collection. This is designed to be used for help purposes.</p>
+     *
+     * @return the summary
+     */
     public String getSummary() {
         return summary;
     }
 
     /**
-	 * The summary element is used to provide a short description of the
-     * attribute or collection.  This is designed to be used for help purposes.
+	 * gets the summary
      */
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
+    /**
+     *  gets the description
+     *
+     *  <p>The description element is used to provide a long description of the
+     * attribute or collection.  This is designed to be used for help purposes.</p>
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
     /**
-	 * The description element is used to provide a long description of the
-	 * attribute or collection.  This is designed to be used for help purposes.
+	 * sets the description
+     *
+     * @param description - the description to set
      */
     public void setDescription(String description) {
         this.description = description;
@@ -124,6 +180,10 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     
            
     /**
+     * gets the data object class
+     *
+     * <p>This is the Java class type of the object contained in this collection</p>
+     *
 	 * @return the dataObjectClass
 	 */
 	public String getDataObjectClass() {
@@ -131,14 +191,15 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
 	}
 
 	/**
-	 * @param objectClass the dataObjectClass to set
+     * sets the data object class
+	 * @param dataObjectClass the dataObjectClass to set
 	 */
 	public void setDataObjectClass(String dataObjectClass) {
 		this.dataObjectClass = dataObjectClass;
 	}
 
 	/**
-     * Directly validate simple fields, call completeValidation on Definition fields.
+     * Directly validate simple fields, call completeValidation on Definition fields
      * 
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
@@ -148,9 +209,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
         }
     }
 
-
     /**
      * @see java.lang.Object#toString()
+     * @return a descriptive string with the collection name
      */
     @Override
     public String toString() {
@@ -174,6 +235,8 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
 	}
 
     /**
+     * gets the minimum amount of items in this collection
+     *
 	 * @return the minOccurs
 	 */
 	public Integer getMinOccurs() {
@@ -181,6 +244,8 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
 	}
 
 	/**
+     * gets the minimum amount of items in this collection
+     *
 	 * @param minOccurs the minOccurs to set
 	 */
 	public void setMinOccurs(Integer minOccurs) {
@@ -188,6 +253,8 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
 	}
 
 	/**
+     * gets maximum amount of items in this collection
+     *
 	 * @return the maxOccurs
 	 */
 	public Integer getMaxOccurs() {
@@ -195,6 +262,8 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
 	}
 
 	/**
+     * sets maximum amount of items in this collection
+     *
 	 * @param maxOccurs the maxOccurs to set
 	 */
 	public void setMaxOccurs(Integer maxOccurs) {

@@ -98,10 +98,11 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     }
 
     /**
-     * Internal setUp() implementation which is invoked by the main setUp() and wrapped
-     * with exception handling.  Subclasses should override this method if they want to
+     * Internal setUp() implementation which is invoked by the main setUp() and wrapped with exception handling
+     *
+     * <p>Subclasses should override this method if they want to
      * add set up steps that should occur in the standard set up process, wrapped by
-     * exception handling.
+     * exception handling.</p>
      */
     protected void setUpInternal() throws Exception {
         assertNotNull(getModuleName());

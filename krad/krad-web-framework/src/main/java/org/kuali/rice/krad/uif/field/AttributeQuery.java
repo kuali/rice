@@ -173,7 +173,7 @@ public class AttributeQuery implements Serializable {
         String queryMethodArgsJs = "[";
 
         for (String methodArg : queryMethodArgumentFieldList) {
-            if (!StringUtils.equals(queryMethodArgsJs, "{")) {
+            if (!StringUtils.equals(queryMethodArgsJs, "[")) {
                 queryMethodArgsJs += ",";
             }
             queryMethodArgsJs += "\"" + methodArg + "\"";

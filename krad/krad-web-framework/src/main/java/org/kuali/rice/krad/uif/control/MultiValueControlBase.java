@@ -46,5 +46,4 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     public void setOptions(List<KeyValue> options) {
         this.options = options;
     }
-
 }

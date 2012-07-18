@@ -28,7 +28,7 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 /**
- * This class tests the ErrorMap methods.
+ * MessageMapTest tests the MessageMap methods
  */
 public class MessageMapTest {
 
@@ -203,10 +203,16 @@ public class MessageMapTest {
 
     private final static String MIXED_LIST_PATTERN = "document.sourceAccounting*,document.targetAccounting*,foo,bar,newSourceLine*,newTargetLine*";
 
+    /**
+     * test that the given list of keys do not exist in an empty message map
+     */
     @Test public void testContainsKeyMatchingPattern_mixedList_empty() {
         assertEquals(false, new MessageMap().containsKeyMatchingPattern(MIXED_LIST_PATTERN));
     }
 
+    /**
+     * test that the given list of keys do not exist in the message map
+     */
     @Test public void testContainsKeyMatchingPattern_mixedList_simpleNoMatch() {
     	MessageMap testMap = new MessageMap();
         testMap.putError("xxx", "error.inactive", "Chart Code");
@@ -214,6 +220,9 @@ public class MessageMapTest {
         assertEquals(false, testMap.containsKeyMatchingPattern(MIXED_LIST_PATTERN));
     }
 
+    /**
+     * test that one of the non-wildcard keys in the given list is found in the message map
+     */
     @Test public void testContainsKeyMatchingPattern_mixedList_simpleMatch() {
     	MessageMap testMap = new MessageMap();
         testMap.putError("xxx", "error.inactive", "Chart Code");
@@ -222,6 +231,9 @@ public class MessageMapTest {
         assertEquals(true, testMap.containsKeyMatchingPattern(MIXED_LIST_PATTERN));
     }
 
+    /**
+     * test that one of the wildcard keys in the given list is found in the message map
+     */
     @Test public void testContainsKeyMatchingPattern_mixedList_wildcardMatch() {
     	MessageMap testMap = new MessageMap();
         testMap.putError("xxx", "error.inactive", "Chart Code");
@@ -230,7 +242,9 @@ public class MessageMapTest {
         assertEquals(true, testMap.containsKeyMatchingPattern(MIXED_LIST_PATTERN));
     }
 
-
+    /**
+     * tests that two message maps are not equal when an additional message is added to one
+     */
     @Test public void testReplace_testEquals() {
         final MessageMap constantMap = buildReplaceErrorMap();
         MessageMap replaceMap = buildReplaceErrorMap();
@@ -244,7 +258,9 @@ public class MessageMapTest {
         assertFalse(replaceMap.equals(constantMap));
     }
 
-
+    /**
+     * test that a none existent key and none existent property are not replaceable in the message map
+     */
     @Test public void testReplace_noMatchingProperty() {
         final MessageMap constantMap = buildReplaceErrorMap();
         MessageMap replaceMap = buildReplaceErrorMap();
@@ -259,6 +275,9 @@ public class MessageMapTest {
         assertFalse(replaceMap.containsMessageKey("fooKey"));
     }
 
+    /**
+     * test that a none existent key and existing property are not replaceable in the message map
+     */
     @Test public void testReplace_matchingProperty_noMatchingKey() {
         final MessageMap constantMap = buildReplaceErrorMap();
         MessageMap replaceMap = buildReplaceErrorMap();
@@ -273,7 +292,9 @@ public class MessageMapTest {
         assertFalse(replaceMap.containsMessageKey("fooKey"));
     }
 
-
+    /**
+     * test that an existing key and existing property are replaced in the message map
+     */
     @Test public void testReplace_matchingProperty_matchingKey_noParams() {
         final MessageMap constantMap = buildReplaceErrorMap();
         MessageMap replaceMap = buildReplaceErrorMap();
@@ -308,6 +329,9 @@ public class MessageMapTest {
         assertEquals(1, replacedCount);
     }
 
+    /**
+     * test that an existing key and existing property are replaced in the message map along with the associated params
+     */
     @Test public void testReplace_matchingProperty_matchingKey_withParams() {
         final MessageMap constantMap = buildReplaceErrorMap();
         MessageMap replaceMap = buildReplaceErrorMap();
@@ -344,7 +368,11 @@ public class MessageMapTest {
         assertEquals(1, replacedCount);
     }
 
-
+    /**
+     * create a test error map
+     *
+     * @return a MessageMap with test entries
+     */
     private MessageMap buildReplaceErrorMap() {
     	MessageMap testMap = new MessageMap();
 

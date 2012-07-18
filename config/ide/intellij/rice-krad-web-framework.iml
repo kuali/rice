@@ -4,15 +4,18 @@
     <output url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../krad/krad-web-framework">
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -35,7 +38,6 @@
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
-    <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
     <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.5.7" level="project" />
@@ -111,6 +113,8 @@
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-core:1.9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:1.0" level="project" />
   </component>
 </module>
 

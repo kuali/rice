@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a group of HTML Radio controls. Provides preset options for the
  * user to choose by a series of radio controls. Only one option can be selected
@@ -23,11 +28,14 @@ package org.kuali.rice.krad.uif.control;
  */
 public class RadioGroupControl extends MultiValueControlBase {
 	private static final long serialVersionUID = 8800478332086081970L;
-
+    private List<String> fieldsetClasses;
+    
+    
 	private String delimiter;
 
 	public RadioGroupControl() {
 		super();
+        fieldsetClasses = new ArrayList<String>();
 	}
 
 	/**
@@ -49,4 +57,33 @@ public class RadioGroupControl extends MultiValueControlBase {
 		this.delimiter = delimiter;
 	}
 
+    /**
+     * Get fieldsetClasses which are the classes that will be applied to this component's fieldset when generated
+     * @return
+     */
+    public List<String> getFieldsetClasses() {
+        return fieldsetClasses;
+    }
+
+    /**
+     * Set fieldsetClasses
+     * @param fieldsetClasses
+     */
+    public void setFieldsetClasses(List<String> fieldsetClasses) {
+        this.fieldsetClasses = fieldsetClasses;
+    }
+
+    /**
+     * Builds the HTML class attribute string by combining the fieldsetClasses list
+     * with a space delimiter
+     *
+     * @return String class attribute string
+     */
+    public String getFieldsetClassesAsString() {
+        if (fieldsetClasses != null) {
+            return StringUtils.join(fieldsetClasses, " ");
+        }
+
+        return "";
+    }
 }

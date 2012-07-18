@@ -42,11 +42,11 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 
  * 1. empty value check. (failure) {@link #testValueEmpty()}
  * 2. value with valid positive number. (success) {@link #testValueValidPositiveNumber()}
- * 3. value with invalid negative number as allowNegative set to false. (failure) {@link testValueInvalidNegativeNumber()}
- * 4. value with valid negative number as allowNegative set to true. (success) {@link testValueValidNegativeNumber()}
- * 5. value with invalid negative number as allowNegative set to true.. (failure) {@link testValueInvalidNegativeNumber1()}
- * 6. value with invalid positive number. (failure) {@link testValueInvalidPositiveNumber()}
- * 7. value with valid negative number as allowNegative set to true. (success) {@link testValueValidNegativeNumber1)}
+ * 3. value with invalid negative number as allowNegative set to false. (failure) {@link #testValueInvalidNegativeNumber()}
+ * 4. value with valid negative number as allowNegative set to true. (success) {@link #testValueValidNegativeNumber()}
+ * 5. value with invalid negative number as allowNegative set to true.. (failure) {@link #testValueInvalidNegativeNumber1()}
+ * 6. value with invalid positive number. (failure) {@link #testValueInvalidPositiveNumber()}
+ * 7. value with valid negative number as allowNegative set to true. (success) {@link #testValueValidNegativeNumber1)}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

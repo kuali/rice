@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-/**
- * A single attribute definition in the DataDictionary, which contains information relating to the display, validation, and general
- * maintenance of a specific attribute of an entry.
- * 
- * 
- */
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,8 +27,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  * A single attribute definition in the DataDictionary, which contains
  * information relating to the display, validation, and general maintenance of a
  * specific attribute of an entry.
- * 
- * 
+ *
  */
 public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition {
 	private static final long serialVersionUID = -3204870440281417429L;
@@ -134,10 +127,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If forceUppercase wasn't set on this instance, use the value from its
-	 * delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getForceUppercase()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getForceUppercase()
 	 */
 	public Boolean getForceUppercase() {
 		Boolean value = super.getForceUppercase();
@@ -149,9 +139,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If name wasn't set on this instance, use the value from its delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getName()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getName()
 	 */
 	public String getName() {
 		String name = super.getName();
@@ -163,9 +151,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If label wasn't set on this instance, use the value from its delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getLabel()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getLabel()
 	 */
 	public String getLabel() {
 		String label = super.getLabel();
@@ -178,10 +164,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If shortlabel wasn't set on this instance, use the value from its
-	 * delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getShortLabel()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getShortLabel()
 	 */
 	public String getShortLabel() {
 		String shortLabel = super.getDirectShortLabel();
@@ -193,10 +176,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If maxLength wasn't set on this instance, use the value from its
-	 * delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getMaxLength()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getMaxLength()
 	 */
 	public Integer getMaxLength() {
 		Integer maxLength = super.getMaxLength();
@@ -208,19 +188,14 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * @return true if a validationPattern is available, directly or indirectly
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#hasValidationPattern()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#hasValidationPattern()
 	 */
 	public boolean hasValidationPattern() {
 		return (getValidationPattern() != null);
 	}
 
 	/**
-	 * If validationPattern wasn't set on this instance, use the value from its
-	 * delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getValidationPattern()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getValidationPattern()
 	 */
 	public ValidationPattern getValidationPattern() {
 		ValidationPattern validationPattern = super.getValidationPattern();
@@ -232,9 +207,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If required wasn't set on this instance, use the value from its delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#isRequired()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#isRequired()
 	 */
 	public Boolean isRequired() {
 		Boolean required = super.isRequired();
@@ -246,9 +219,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If control wasn't set on this instance, use the value from its delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getControl()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getControl()
 	 */
 	public ControlDefinition getControl() {
 		ControlDefinition control = super.getControl();
@@ -260,9 +231,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If summary wasn't set on this instance, use the value from its delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getSummary()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getSummary()
 	 */
 	public String getSummary() {
 		String summary = super.getSummary();
@@ -274,10 +243,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * If description wasn't set on this instance, use the value from its
-	 * delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getDescription()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getDescription()
 	 */
 	public String getDescription() {
 		String description = super.getDescription();
@@ -289,19 +255,14 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * @return true if a formatterClass is available, directly or indirectly
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#hasFormatterClass()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#hasFormatterClass()
 	 */
 	public boolean hasFormatterClass() {
 		return (getFormatterClass() != null);
 	}
 
 	/**
-	 * If a formatterClass wasn't set for this instance, use the value from its
-	 * delegate.
-	 * 
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getFormatterClass()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getFormatterClass()
 	 */
 	public String getFormatterClass() {
 		String formatterClass = super.getFormatterClass();
@@ -313,7 +274,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * @see org.kuali.core.datadictionary.AttributeDefinition#getDisplayLabelAttribute()
+	 * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getDisplayLabelAttribute()
 	 */
 	@Override
 	public String getDisplayLabelAttribute() {
@@ -325,10 +286,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	}
 
 	/**
-	 * Validate the fields associated with locating the delegate. Other
-	 * validation must be deferred until the delegate class has been assigned.
-	 * 
-	 * @see org.kuali.core.datadictionary.DataDictionaryEntry#completeValidation()
+	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
 	 */
 	@Override
 	public void completeValidation(Class rootObjectClass, Class otherObjectClass) {

@@ -21,10 +21,13 @@ import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 /**
- * A case constraint is a constraint that is imposed only when a certain condition is met, for example, if the country attribute value is "USA",
- * then a prerequisite constraint may be imposed that the 'State' attribute is non-null. 
- * 
- * This class is a direct copy of one that was in Kuali Student. 
+ * CaseConstraint is imposed only when a certain condition is met
+ *
+ * <p>For example, if the country attribute value is "USA",
+ * then a prerequisite constraint may be imposed that the 'State' attribute is non-null.</p>
+ *
+ * <p>
+ * This class is a direct copy of one that was in Kuali Student.</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
@@ -40,34 +43,76 @@ public class CaseConstraint extends BaseConstraint {
 	@XmlElement
 	protected boolean caseSensitive;
 
+    /**
+     * get the {@code WhenConstraint}'s defined by this case constraint
+     *
+     * @return a list of constraints, null if not initialized
+     */
 	public List<WhenConstraint> getWhenConstraint() {
 		return whenConstraint;
 	}
 
+    /**
+     * sets the {@code WhenConstraint}'s defined by this case constraint
+     *
+     * @param whenConstraint - the list of constraints
+     */
 	public void setWhenConstraint(List<WhenConstraint> whenConstraint) {
 		this.whenConstraint = whenConstraint;
 	}
 
+    /**
+     * gets the property name for the attribute to which the case constraint is applied to
+     *
+     * @return the property name
+     */
 	public String getPropertyName() {
 		return propertyName;
 	}
 
+    /**
+     * setter for property name
+     *
+     * @param propertyName a valid property name
+     */
 	public void setPropertyName(String propertyName) {
 		this.propertyName = propertyName;
 	}
 
+    /**
+     * specifies the kind of relationship to be checked between the actual value and the ones defined in the {@link #getWhenConstraint()}
+     *
+     * @see org.kuali.rice.krad.uif.UifConstants.CaseConstraintOperators
+     * @return an operator name
+     */
 	public String getOperator() {
 		return operator;
 	}
 
+    /**
+     * setter for the operator
+     *
+     * @see org.kuali.rice.krad.uif.UifConstants.CaseConstraintOperators
+     * @param operator
+     */
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
 
+    /**
+     * checks whether string comparison will be carried out in a case sensitive fashion
+     *
+     * @return true if string comparison is case sensitive, false if not
+     */
     public boolean isCaseSensitive() {
         return caseSensitive;
     }
 
+    /**
+     * setter for case sensitive
+     *
+     * @param caseSensitive - the case sensitive value to set
+     */
     public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
     }

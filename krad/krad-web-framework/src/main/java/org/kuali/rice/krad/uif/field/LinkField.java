@@ -16,87 +16,152 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
+import java.util.List;
+
 /**
  * Field that encloses a link element
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LinkField extends FieldBase {
-	private static final long serialVersionUID = -1908504471910271148L;
+    private static final long serialVersionUID = -1908504471910271148L;
 
-	private String linkLabel;
-	private String target;
-	private String hrefText;
-	private LightBox lightBox;
+    private Link link;
 
-	public LinkField() {
-      super();
-	}
+    public LinkField() {
+        super();
+    }
 
-	/**
-	 * The following initialization is performed:
-     *
-	 * <ul>
-	 * <li>Set the linkLabel if blank to the Field label</li>
-	 * </ul>
-	 *
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
-	 */
-	@Override
-	public void performInitialization(View view, Object model) {
-		super.performInitialization(view, model);
-
-		if (StringUtils.isBlank(linkLabel)) {
-			linkLabel = this.getLabel();
-		}
-	}
-
-	public String getLinkLabel() {
-		return this.linkLabel;
-	}
-
-	public void setLinkLabel(String linkLabel) {
-		this.linkLabel = linkLabel;
-	}
-
-	public String getTarget() {
-		return this.target;
-	}
-
-	public void setTarget(String target) {
-		this.target = target;
-	}
-
-	public String getHrefText() {
-		return this.hrefText;
-	}
-
-	public void setHrefText(String hrefText) {
-		this.hrefText = hrefText;
-	}
-
-	/**
-	 * @param lightBox the lightBox to set
-	 */
-	public void setLightBox(LightBox lightBox) {
-		this.lightBox = lightBox;
-	}
-
-	/**
-	 * @return the lightBox
-	 */
-	public LightBox getLightBox() {
-		return lightBox;
-	}
-	
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClick()
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>Set the linkLabel if blank to the Field label</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
      */
-    public boolean getSupportsOnClick() {
-        return true;
-    }	
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        if (StringUtils.isBlank(getLinkText())) {
+            setLinkText(this.getLabel());
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+
+        components.add(link);
+
+        return components;
+    }
+
+    /**
+     *  Returns the <code>Link<code/> field.
+     *
+     * @return The Link field
+     */
+    public Link getLink() {
+        return link;
+    }
+
+    /**
+     * Setter for the <code>Link<code/>  component.
+     *
+     * @param link
+     */
+    public void setLink(Link link) {
+        this.link = link;
+    }
+
+    /**
+     * Returns the label of the <code>Link<code/> field that will be used to render the label of the link.
+     *
+     * @return The link label
+     */
+    public String getLinkText() {
+        return link.getLinkText();
+    }
+
+    /**
+     * Setter for the link label. Sets the value on the <code>Link<code/> field.
+     *
+     * @param linkLabel
+     */
+    public void setLinkText(String linkLabel) {
+        link.setLinkText(linkLabel);
+    }
+
+    /**
+     *  Returns the target of the <code>Link<code/> field that will be used to specify where to open the href.
+     *
+     * @return The target
+     */
+    public String getTarget() {
+        return link.getTarget();
+    }
+
+    /**
+     * Setter for the link target. Sets the value on the <code>Link<code/> field.
+     *
+     * @param target
+     */
+    public void setTarget(String target) {
+        link.setTarget(target);
+    }
+
+    /**
+     * Returns the href text of the <code>Link<code/> field.
+     *
+     * @return The href text
+     */
+    public String getHref() {
+        return link.getHref();
+    }
+
+    /**
+     * Setter for the hrefText. Sets the value on the <code>Link<code/> field.
+     *
+     * @param hrefText
+     */
+    public void setHref(String hrefText) {
+        link.setHref(hrefText);
+    }
+
+    /**
+     * Setter for the lightBox
+     *
+     * @param lightBox
+     */
+    public void setLightBox(LightBox lightBox) {
+        if (link != null) {
+            link.setLightBox(lightBox);
+        }
+    }
+
+    /**
+     * Returns the <code>LightBox</code> used to open the link in
+     *
+     * @return The <code>LightBox</code>
+     */
+    public LightBox getLightBox() {
+        if (link != null) {
+            return link.getLightBox();
+        }
+
+        return null;
+    }
 
 }

@@ -17,7 +17,7 @@
 
 -->
 <bean id="Style-InquiryView" parent="Uif-InquiryView">
-   <property name="title" value="Rule Attribute"/>
+   <property name="headerText" value="Rule Attribute"/>
    <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.style.StyleBo"/>
    <property name="Items">
        <list>

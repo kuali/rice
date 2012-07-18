@@ -35,10 +35,9 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
- * This object processes 'case constraints', which are constraints that are imposed only in specific cases, for
- * example,
- * when a value is
- * equal to some constant, or greater than some limit.
+ * CaseConstraintProcessor processes 'case constraints', which are constraints that are imposed only in specific cases
+ *
+ * <p>For example, when a value is equal to some constant, or greater than some limit.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -47,9 +46,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
     private static final String CONSTRAINT_NAME = "case constraint";
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult,
-     *      Object, org.kuali.rice.krad.datadictionary.validation.capability.Constrainable,
-     *      org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
      */
     @Override
     public ProcessorResult process(DictionaryValidationResult result, Object value, CaseConstraint caseConstraint,
@@ -101,6 +98,17 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
         return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
     }
 
+    /**
+     * evaluates the provided {@link WhenConstraint}
+     *
+     * @param fieldValue - the value of the field
+     * @param fieldDataType - the data type of the field which caseConstraint's propertyName refers to
+     * @param operator - the relationship to check between the fieldValue and the value provided in the whenConstraint
+     * @param caseConstraint - the case constraint containing the provided whenConstraint
+     * @param wc - the whenConstraint to evaluate
+     * @param attributeValueReader - provides access to the attribute being validated
+     * @param constraints - the constraints to populate as discovered in the provided whenConstraint
+     */
     private void evaluateWhenConstraint(Object fieldValue, DataType fieldDataType, String operator,
             CaseConstraint caseConstraint, WhenConstraint wc, AttributeValueReader attributeValueReader,
             List<Constraint> constraints) {
@@ -141,6 +149,14 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
         return CaseConstraint.class;
     }
 
+    /**
+     * provides access to the attribute specified in a whenConstraint
+     *
+     * @param key - a string representation of specifically which attribute (at some depth) is being accessed
+     * @param attributeValueReader - provides access to the attribute being validated
+     * @return an attribute value reader for the path represented by the key param
+     * @throws AttributeValidationException
+     */
     private AttributeValueReader getChildAttributeValueReader(String key,
             AttributeValueReader attributeValueReader) throws AttributeValidationException {
         String[] lookupPathTokens = ValidationUtils.getPathTokens(key);

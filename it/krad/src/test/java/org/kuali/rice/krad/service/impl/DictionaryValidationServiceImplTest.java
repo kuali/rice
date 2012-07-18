@@ -42,7 +42,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 /**
- * 
+ * DictionaryValidationServiceImplTest tests {@link DictionaryValidationServiceImpl} using the data dictionary configurations in
+ * org/kuali/rice/krad/test/datadictionary/validation
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DictionaryValidationServiceImplTest {
@@ -84,6 +86,12 @@ public class DictionaryValidationServiceImplTest {
 	
 	
 	@Test
+    /**
+     * tests that a valid non US address will not generate warnings or errors
+     *
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint
+     */
 	public void testValidNonUSAddress() {
 		DictionaryValidationResult dictionaryValidationResult = service.validate(validLondonAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
 		
@@ -92,6 +100,12 @@ public class DictionaryValidationServiceImplTest {
 	}
 	
     @Test
+    /**
+     * tests that a valid US address will not generate warnings or errors
+     *
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint
+     */
 	public void testValidUSAddress() {
 		DictionaryValidationResult dictionaryValidationResult = service.validate(validUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
 		
@@ -100,6 +114,12 @@ public class DictionaryValidationServiceImplTest {
 	}
 	
 	@Test
+    /**
+     * tests that an invalid US address will generate the expected errors
+     *
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint
+     */
 	public void testInvalidUSAddress() {
 		DictionaryValidationResult dictionaryValidationResult = service.validate(invalidUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
 		
@@ -111,6 +131,12 @@ public class DictionaryValidationServiceImplTest {
 	}
 	
 	@Test
+    /**
+     * tests that a valid US address will not generate warnings or errors
+     *
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint
+     */
 	public void testValidNonDCAddress() {
 		DictionaryValidationResult dictionaryValidationResult = service.validate(validNonDCUSAddress, "org.kuali.rice.krad.datadictionary.validation.Address", addressEntry, true);
 		
@@ -119,6 +145,15 @@ public class DictionaryValidationServiceImplTest {
 	}
 	
 	@Test
+    /**
+     * tests that an invalid DC address will generate the expected errors
+     *
+     * <p>the attribute street1 has a ValidCharacters constraint that is activated when the state attribute has the value 'DC'</p>
+     *
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint
+     * @see DictionaryValidationResult
+     */
 	public void testInvalidDCAddress() {
 		DictionaryValidationResult dictionaryValidationResult = service.validate(invalidDCUSAddress, "org.kuali.rice.krad.datadictionary.validation.Address", addressEntry, true);
 		
@@ -129,6 +164,15 @@ public class DictionaryValidationServiceImplTest {
 	}
 	
 	@Test
+    /**
+     * test that the error produced for an invalid US address has the expected attributes
+     *
+     * <p>Address has a must occur constraint where either the postal code must be entered or _both_ the city and state</p>
+     *
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     * @see ConstraintValidationResult
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint
+     */
 	public void testNoStateNoZipUSAddress() {
 		DictionaryValidationResult dictionaryValidationResult = service.validate(noZipNoCityUSAddress, "org.kuali.rice.krad.datadictionary.validation.Address", addressEntry, true);
 		
@@ -170,6 +214,13 @@ public class DictionaryValidationServiceImplTest {
 	
 	
     @Test
+    /**
+     * tests that an error is generated when an address where the country attribute is 'CN' has not value for street2
+     *
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
+     */
     public void testSimpleCaseConstraints() throws IOException{
         DictionaryValidationResult dictionaryValidationResult = service.validate(invalidHKAddress, "org.kuali.rice.krad.datadictionary.validation.Address", addressEntry, true);
         
@@ -180,6 +231,12 @@ public class DictionaryValidationServiceImplTest {
     }
 
 	@Test
+    /**
+     * tests that nested attributes are validated as expected
+     *
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     * @see DictionaryValidationResult
+     */
 	public void testRequiredNestedAttribute() throws IOException{	
 		DataDictionaryService dataDictionaryService = new DataDictionaryServiceImpl(dataDictionary);
 		service.setDataDictionaryService(dataDictionaryService);
@@ -236,6 +293,12 @@ public class DictionaryValidationServiceImplTest {
 	}
 	
 	@Test
+    /**
+     * tests the collection definition as defined in org/kuali/rice/krad/test/datadictionary/validation/Company.xml
+     *
+     * @see org.kuali.rice.krad.datadictionary.CollectionDefinition
+     * @see DictionaryValidationServiceImpl#validate(Object, String, String, boolean)
+     */
     public void testCollectionConstraints() throws IOException{
         DataDictionaryService dataDictionaryService = new DataDictionaryServiceImpl(dataDictionary);
         service.setDataDictionaryService(dataDictionaryService);
@@ -294,7 +357,16 @@ public class DictionaryValidationServiceImplTest {
         Assert.assertTrue(hasError(dictionaryValidationResult, "employees[2].employeeDetails", RiceKeyConstants.ERROR_REQUIRED));
 
 	}
-	
+
+    /**
+     * checks whether a {@link DictionaryValidationResult} contains errors for a named attribute
+     *
+     * @param dvr - the dictionary validation result
+     * @param attributeName - the attribute whose validation errors are being checked
+     * @param errorKey - a constant that retrieves an informational message to display to the user
+     *
+     * @return true if an error with the error key has been found for the attribute, false otherwise
+     */
 	protected boolean hasError(DictionaryValidationResult dvr, String attributeName, String errorKey){
 	    Iterator<ConstraintValidationResult> dvrIterator = dvr.iterator();
 	    

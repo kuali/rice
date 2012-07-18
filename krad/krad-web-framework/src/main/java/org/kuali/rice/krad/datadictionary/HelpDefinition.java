@@ -79,9 +79,6 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
      * parameterNamespace: namespace of the parameter that has the path to the help page
      */
     public void setParameterNamespace(String parameterNamespace) {
-        if (StringUtils.isBlank(parameterNamespace)) {
-            throw new IllegalArgumentException("invalid (blank) parameterNamespace");
-        }
         this.parameterNamespace = parameterNamespace;
     }
 

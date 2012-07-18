@@ -46,6 +46,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-it-ksb.iml" filepath="$PROJECT_DIR$/rice-it-ksb.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-location.iml" filepath="$PROJECT_DIR$/rice-it-location.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-remote.iml" filepath="$PROJECT_DIR$/rice-it-remote.iml" group="rice-it and modules" />
+      <module fileurl="file://$PROJECT_DIR$/../../../it/vc/rice-it-vc.iml" filepath="$PROJECT_DIR$/../../../it/vc/rice-it-vc.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-ken.iml" filepath="$PROJECT_DIR$/rice-ken.iml" group="rice-ken and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ken-api.iml" filepath="$PROJECT_DIR$/rice-ken-api.iml" group="rice-ken and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kew.iml" filepath="$PROJECT_DIR$/rice-kew.iml" group="rice-kew and modules" />

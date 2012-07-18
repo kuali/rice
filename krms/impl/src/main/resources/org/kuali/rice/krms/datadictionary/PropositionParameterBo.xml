@@ -100,7 +100,7 @@
 <!--   
     
   <bean id="PropositionParameterBo-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Proposition Lookup" />
+    <property name="headerText" value="Proposition Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
     <property name="criteriaFields">
       <list>
@@ -122,7 +122,7 @@
   </bean>
 
   <bean id="PropositionParameterBo-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Rule Inquiry"/>
+    <property name="headerText" value="Rule Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
@@ -141,7 +141,7 @@
 					          <bean parent="Uif-InputField" p:propertyName="propositionTypeCode"/>
 					        </list>
 					      </property>
-					      <property name="title" value="Proposition Attributes"/>
+					      <property name="headerText" value="Proposition Attributes"/>
 					  </bean>
                     </list>
                 </property>

@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +25,7 @@ import java.util.Set;
  * Special <code>Group</code> that renders a navigation section
  *
  * <p>
- * Only supports <code>ActionField</code> instances within the container. These
+ * Only supports <code>Action</code> instances within the container. These
  * are used to provide the items (or individual links) within the navigation.
  * The navigationType determines how the navigation will be rendered (menu,
  * tabs, dropdown, ...)
@@ -48,7 +48,7 @@ public class NavigationGroup extends Group {
 	@Override
 	public Set<Class<? extends Component>> getSupportedComponents() {
 		Set<Class<? extends Component>> supportedComponents = new HashSet<Class<? extends Component>>();
-		supportedComponents.add(ActionField.class);
+		supportedComponents.add(Action.class);
 
 		return supportedComponents;
 	}

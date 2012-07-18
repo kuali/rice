@@ -17,25 +17,25 @@
 -->
 
 <html>
-<#assign view=KualiForm.postedView/>
+    <#assign view=KualiForm.postedView/>
 
-<#-- need to render the pages errors since the component could have added errors for the page -->
-<@krad.template component=view.currentPage.validationMessages/>
+    <#-- need to render the pages errors since the component could have added errors for the page -->
+    <@krad.template component=view.currentPage.validationMessages/>
 
-<#-- now render the updated component (or page) wrapped in an update div -->
-<div id="${Component.id}_update">
-<#-- rerun view pre-load script to get new state variables for component -->
-                <@krad.script value="${view.preLoadScript!}" component=Component/>
+    <#-- now render the updated component (or page) wrapped in an update div -->
+    <div id="${Component.id}_update">
+        <#-- rerun view pre-load script to get new state variables for component -->
+        <@krad.script value="${view.preLoadScript!}" component=Component/>
 
-                <@krad.template componentUpdate=true component=Component/>
+        <@krad.template componentUpdate=true component=Component/>
 
-                <@krad.script value="${KualiForm.lightboxScript!}" component=Component/>
+        <@krad.script value="${KualiForm.lightboxScript!}" component=Component/>
 
-                <#-- show added growls -->
-                <@krad.script value="${KualiForm.growlScript!}" component=Component/>
+        <#-- show added growls -->
+        <@krad.script value="${KualiForm.growlScript!}" component=Component/>
 
-                <#-- set focus and perform jump to -->
-                <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, false, '${KualiForm.focusId!}',
-                                     '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
-</div>
+        <#-- set focus and perform jump to -->
+        <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, false, '${KualiForm.focusId!}',
+                             '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
+    </div>
 </html>

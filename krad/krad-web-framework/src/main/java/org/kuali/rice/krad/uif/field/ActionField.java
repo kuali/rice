@@ -245,7 +245,7 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @seeorg.kuali.rice.krad.uif.element.Action#setactionScript(java.lang.String)
+     * @see org.kuali.rice.krad.uif.element.Action#setActionScript(java.lang.String)
      */
     public void setActionScript(String actionScript) {
         action.setActionScript(actionScript);

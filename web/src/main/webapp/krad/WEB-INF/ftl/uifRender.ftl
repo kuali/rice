@@ -21,33 +21,26 @@
 
     <#if KualiForm.ajaxRequest>
         <#if KualiForm.ajaxReturnType == "update-view">
-
             <div data-handler="update-view">
                 <#include "fullView.ftl"  parse=true/>
             </div>
 
         <#elseif KualiForm.ajaxReturnType == "update-component">
-
             <div data-handler="update-component" data-updateComponentId="${Component.id!}">
                 <#include "updateComponent.ftl"  parse=true/>
             </div>
 
         <#elseif KualiForm.ajaxReturnType == "update-page">
-
             <div data-handler="update-page">
                 <#include "updatePage.ftl"  parse=true/>
             </div>
 
        <#elseif KualiForm.ajaxReturnType == "redirect">
-
             <div data-handler="redirect">
                 <#include "redirect.ftl"  parse=true/>
             </div>
 
         </#if>
-
-
-
     <#else>
         <#include "fullView.ftl" parse=true/>
     </#if>

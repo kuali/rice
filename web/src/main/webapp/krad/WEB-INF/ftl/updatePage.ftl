@@ -17,22 +17,22 @@
 -->
 
 <html>
-<#assign view=KualiForm.view/>
+    <#assign view=KualiForm.view/>
 
-<#-- now render the updated component (or page) wrapped in an update div -->
-<div id="page_update">
-<#-- rerun view pre-load script to get new state variables for component -->
-                <@krad.script value="${view.preLoadScript!}" component=Component/>
+    <#-- now render the updated component (or page) wrapped in an update div -->
+    <div id="page_update">
+        <#-- rerun view pre-load script to get new state variables for component -->
+            <@krad.script value="${view.preLoadScript!}" component=Component/>
 
-                <@krad.template componentUpdate=true component=Component/>
+            <@krad.template componentUpdate=true component=Component/>
 
-                <@krad.script value="${KualiForm.lightboxScript!}" component=Component/>
+            <@krad.script value="${KualiForm.lightboxScript!}" component=Component/>
 
-                <#-- show added growls -->
-                <@krad.script value="${KualiForm.growlScript!}" component=Component/>
+            <#-- show added growls -->
+            <@krad.script value="${KualiForm.growlScript!}" component=Component/>
 
-                <#-- set focus and perform jump to -->
-                <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, '${KualiForm.focusId!}',
-                                     '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
-</div>
+            <#-- set focus and perform jump to -->
+            <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, '${KualiForm.focusId!}',
+                                 '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
+    </div>
 </html>

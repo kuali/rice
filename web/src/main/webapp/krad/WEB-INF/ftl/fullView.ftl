@@ -32,39 +32,39 @@
 
     <@krad.script value="${KualiForm.growlScript!}"/>
 
-<div id="Uif-Application" style="display:none;" class="uif-application">
+    <div id="Uif-Application" style="display:none;" class="uif-application">
 
-    <!-- APPLICATION HEADER -->
-    <@krad.template component=view.applicationHeader/>
-    <@krad.backdoor/>
+        <!-- APPLICATION HEADER -->
+        <@krad.template component=view.applicationHeader/>
+        <@krad.backdoor/>
 
-    <@krad.form render=view.renderForm postUrl="${view.formPostUrl!KualiForm.formPostUrl}"
-    onSubmitScript="${view.onSubmitScript}">
+        <@krad.form render=view.renderForm postUrl="${view.formPostUrl!KualiForm.formPostUrl}"
+        onSubmitScript="${view.onSubmitScript}">
 
-        <#if view.renderForm>
-        <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
-            <@spring.formHiddenInput id="viewId" path="KualiForm.viewId"/>
+            <#if view.renderForm>
+                <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
+                <@spring.formHiddenInput id="viewId" path="KualiForm.viewId"/>
 
-        <#-- all forms will be stored in session, this is the conversation key -->
-            <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
+                <#-- all forms will be stored in session, this is the conversation key -->
+                <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
 
-        <#-- Based on its value, form elements will be checked for dirtyness -->
-            <@spring.formHiddenInput id="validateDirty" path="KualiForm.validateDirty"/>
+                <#-- Based on its value, form elements will be checked for dirtyness -->
+                <@spring.formHiddenInput id="validateDirty" path="KualiForm.validateDirty"/>
 
-        <#-- Indicator which is set to true when content is being rendered inside a lightbox -->
-            <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
-        </#if>
+                S<#-- Indicator which is set to true when content is being rendered inside a lightbox -->
+                <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
+            </#if>
 
-        <@krad.template component=view/>
-    </@krad.form>
+            <@krad.template component=view/>
+        </@krad.form>
 
-    <@krad.script value="${KualiForm.lightboxScript!}"/>
+        <@krad.script value="${KualiForm.lightboxScript!}"/>
 
-<#-- set focus and perform jump to -->
-    <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, '${KualiForm.focusId!}',
-                                  '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
+        <#-- set focus and perform jump to -->
+        <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, '${KualiForm.focusId!}',
+                                      '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
 
-</div>
+    </div>
 
 <!-- APPLICATION FOOTER -->
     <@krad.template component=view.applicationFooter/>

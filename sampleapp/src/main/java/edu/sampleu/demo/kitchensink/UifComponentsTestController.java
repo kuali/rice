@@ -329,16 +329,14 @@ public class UifComponentsTestController extends UifControllerBase {
         return getUIFModelAndView(form);
     }
 
-
-
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=successCheck")
-    public ModelAndView successCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-
-        return getUIFModelAndView(form);
-    }
-
-
+    /**
+     * Generates a fake incident report to test for errorCallback
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=errorCheck")
     public ModelAndView errorCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -350,6 +348,14 @@ public class UifComponentsTestController extends UifControllerBase {
         return getUIFModelAndView(form);
     }
 
+    /**
+     * Test controller method to check for ajax redirect functionality. Redirects to the portal main page
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=redirectCheck")
     public ModelAndView redirectCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

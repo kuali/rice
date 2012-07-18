@@ -18,7 +18,7 @@
  * Submits the form via ajax or does a normal form submit depending on whether the form was submitted via ajax or not.
  * By default ajaxsubmit is true.
  *
- * @param component
+ * @param component - the component on which the action has been invoked
  */
 function actionInvokeHandler(component) {
     // Read the data attributes. All simple data attributes are lower-cased.
@@ -33,13 +33,16 @@ function actionInvokeHandler(component) {
     // methodToCall comes as a part of submitData
     var methodToCall = submitData['methodToCall'];
 
+    //if the form is submitted via ajax
     if (ajaxSubmit) {
+        //if validation needs to run before submitting the form
         if (validate) {
             validateAndAjaxSubmitForm(methodToCall, successCallback, submitData, elementToBlock, preSubmitCall, null);
         } else {
             ajaxSubmitForm(methodToCall, successCallback, submitData, elementToBlock, preSubmitCall, null);
         }
-    } else {
+    }// non-ajax submit
+    else {
         if (validate) {
             validateAndSubmitForm(methodToCall, submitData, preSubmitCall)
         } else {
@@ -48,28 +51,30 @@ function actionInvokeHandler(component) {
     }
 }
 /**
- * Invokes ajaxSubmitFormFullOpts with null callbacks besides success and validate set to false
+ * Invokes ajaxSubmitFormFullOpts with null callbacks besides successCallback and validate set to false
  *
- * @param methodToCall
- * @param successCallback
- * @param additionalData
- * @param elementToBlock
- * @param preSubmitCall
- * @param returnType
+ * @param methodToCall      - the controller method to be called
+ * @param successCallback   - hook for any calls to be made on success
+ * @param additionalData    - any additional data that needs to be passed to the server
+ * @param elementToBlock    - element to be blocked while loading
+ * @param preSubmitCall     -  hook to execute a call before submit which if returns true the processing moves forward else return
+ * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
+ *                            type but the server can change it. Defaults to update-page
  */
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false, preSubmitCall, returnType);
 }
 
 /**
- * Invokes ajaxSubmitFormFullOpts with null callbacks besides success and validate set to true
+ * Invokes ajaxSubmitFormFullOpts with null callbacks besides successCallback and validate set to true
  *
- * @param methodToCall
- * @param successCallback
- * @param additionalData
- * @param elementToBlock
- * @param preSubmitCall
- * @param returnType
+ * @param methodToCall      - the controller method to be called
+ * @param successCallback   - hook for any calls to be made on success
+ * @param additionalData    - any additional data that needs to be passed to the server
+ * @param elementToBlock    - element to be blocked while loading
+ * @param preSubmitCall     -  hook to execute a call before submit which if returns true the processing moves forward else return
+ * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
+ *                            type but the server can change it. Defaults to update-page
  */
 function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, true, preSubmitCall, returnType);
@@ -91,14 +96,14 @@ function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData
  * <head></head> is left out
  * </p>
  *
- * @param methodToCall - the controller method to be called
- * @param successCallback - hook for any calls to be made on success
- * @param additionalData  - any additional data that needs to be passed to the server
- * @param elementToBlock  - element to be blocked while loading
- * @param errorCallback - hook for any calls to be made on error.
- * @param preSubmitCall -  hook to execute a call which if returns true the processing moves forward else return
- * @param returnType - this is used to indicate to the server a requested return type. The client requests a return
- *                     type but the server can change it. Defaults to update-page
+ * @param methodToCall      - the controller method to be called
+ * @param successCallback   - hook for any calls to be made on success
+ * @param additionalData    - any additional data that needs to be passed to the server
+ * @param elementToBlock    - element to be blocked while loading
+ * @param errorCallback     - hook for any calls to be made on error.
+ * @param preSubmitCall     - hook to execute a call which if returns true the processing moves forward else return
+ * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
+ *                          type but the server can change it. Defaults to update-page
  */
 function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate,
                                 preSubmitCall, returnType) {
@@ -107,7 +112,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
     if (validate && !validateForm()) {
         return;
     }
-
+    // invoke the preSubmitCall script. If it  evaluates to false return
     if (preSubmitCall != null && preSubmitCall !== "") {
         if (!eval(preSubmitCall)) {
             return;
@@ -238,9 +243,9 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
 /**
  * Calls the submitFormFullOpts with validate set to false
  *
- * @param methodToCall
- * @param additionalData
- * @param preSubmitCall
+ * @param methodToCall     - controller method to call
+ * @param additionalData   - any additional data that needs to be sent to the server
+ * @param preSubmitCall    - hook to execute a call before submit which if returns true the processing moves forward else return
  */
 function submitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts , validate false
@@ -250,9 +255,9 @@ function submitForm(methodToCall, additionalData, preSubmitCall) {
 /**
  * Calls the submitFormFullOpts with validate set to true
  *
- * @param methodToCall
- * @param additionalData
- * @param preSubmitCall
+ * @param methodToCall     - controller method to call
+ * @param additionalData   - any additional data that needs to be sent to the server
+ * @param preSubmitCall    - hook to execute a call before submit which if returns true the processing moves forward else return
  */
 function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts with null callback, validate true
@@ -263,10 +268,10 @@ function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
  * If the preSubmitCall is provided then if it evaluates to true, it proceeds else the function returns.
  * The data attributes that are passed in as additional data are written to the form before the form is submitted.
  *
- * @param methodToCall
- * @param additionalData
- * @param validate
- * @param preSubmitCall
+ * @param methodToCall      - controller method to call
+ * @param additionalData    - any additional data that needs to be sent to the server
+ * @param validate          - if set to true then the form is validated before submission
+ * @param preSubmitCall     - hook to execute a call before submit which if returns true the processing moves forward else return
  */
 function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall) {
     // invoke validateForm if validate flag is true, if returns false do not continue
@@ -316,6 +321,26 @@ function validateAndSubmitUsingFormMethodToCall() {
 }
 
 /**
+ * Iterates over the divs in the content and reads the ajaxReturnHandler to
+ * obtain the respective handler function to call.
+ *
+ * @param content - response sent from the server
+ */
+function invokeAjaxReturnHandler(content) {
+    jQuery(content).children().each(function () {
+        var div = jQuery(this);
+        // Get the handler sent by the server
+        var handler = div.data("handler");
+        // find the handler function with the handler as the key
+        var handlerFunc = ajaxReturnHandlers[handler];
+        //invoke the handler function
+        if (handlerFunc) {
+            handlerFunc(div, div.data());
+        }
+    });
+}
+
+/**
  * Invoked on success of an ajax call that refreshes the page
  *
  * <p>
@@ -323,7 +348,7 @@ function validateAndSubmitUsingFormMethodToCall() {
  * scripts. While processing, the page contents are hidden
  * </p>
  *
- * @param content - content returned from response
+ * @param content   - content returned from response
  */
 function updatePageCallback(content) {
     var page = jQuery("[data-handler='update-component']", content);
@@ -342,29 +367,11 @@ function updatePageCallback(content) {
 }
 
 /**
- * Iterates over the divs in the content and reads the data-handler to
- * obtain the respective handler function to call.
- *
- * @param content - response sent from the server
- */
-function invokeAjaxReturnHandler(content) {
-    jQuery(content).children().each(function () {
-        var div = jQuery(this);
-
-        var handler = div.data("handler");
-        var handlerFunc = ajaxReturnHandlers[handler];
-        if (handlerFunc) {
-            handlerFunc(div, div.data());
-        }
-    });
-}
-
-/**
  * Finds the page content in the returned content and updates the page, then processes breadcrumbs and hidden
  * scripts. While processing, the page contents are hidden
  *
- * @param content - content returned from response
- * @param dataAttr -  any additional data attributes that the server needs to send
+ * @param content   - content returned from response
+ * @param dataAttr  -  any additional data attributes that the server needs to send
  */
 function updatePageHandler(content, dataAttr) {
     var page = jQuery("#page_update", content);
@@ -373,7 +380,7 @@ function updatePageHandler(content, dataAttr) {
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
     var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " > #" + kradVariables.PAGE_CONTENT_HEADER_CLASS;
     jQuery(pageInLayout).empty().append(page.find(">*"));
-
+    //process breadcrumbs
     setPageBreadcrumb();
 
     pageValidatorReady = false;
@@ -386,10 +393,10 @@ function updatePageHandler(content, dataAttr) {
  * Retrieves the component with the matching id from the server and replaces a matching
  * _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label
  * and a displayWith marker span has a matching id, that span will be replaced with the label content
- * and removed from the component.  This allows for label and component content seperation on fields
+ * and removed from the component.  This allows for label and component content separation on fields
  *
- * @param content - content returned from response
- * @param dataAttr -  any additional data attributes that the server needs to send
+ * @param content   - content returned from response
+ * @param dataAttr  -  any additional data attributes that the server needs to send
  */
 function updateComponentHandler(content, dataAttr) {
     var id = dataAttr.updatecomponentid;
@@ -446,8 +453,6 @@ function updateComponentHandler(content, dataAttr) {
         if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
             displayWithLabel.parent().show();
         }
-
-
 }
 
 /**
@@ -459,8 +464,7 @@ function updateComponentHandler(content, dataAttr) {
 function updateViewHandler(content, dataAttr){
     jQuery('#' + kradVariables.APP_ID).replaceWith(content);
         runHiddenScriptsAgain();
-
- }
+}
 
 /**
  * Redirect to the url sent as a response when an ajax redirect is requested.
@@ -849,6 +853,20 @@ function hiddenInputValidationToggle(id) {
                 jQuery(this).removeClass("ignoreValid");
             });
         }
+    }
+}
+/**
+ * Refreshes a component by calling retrieveComponent() at the given time interval
+ *
+ * @param componentId   - id of the component to be refreshed
+ * @param methodToCall  - controller method to call on refresh
+ * @param timeInterval  -  interval in seconds at which the component should be refreshed
+ */
+function refreshComponentUsingTimer(componentId,methodToCall,timeInterval){
+    var refreshTimer = refreshTimerComponentMap[componentId] ;
+    if(refreshTimer == null) {
+        refreshTimerComponentMap[componentId] = timeInterval;
+        setInterval(function(){retrieveComponent(componentId,methodToCall);}, timeInterval * 1000);
     }
 }
 

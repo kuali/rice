@@ -72,8 +72,11 @@ public class UifConstants {
         SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE, COMPLETE
     }
 
+    /**
+     * Enum of return types. Used to return the type of response being sent by the server to the client.
+     */
     public enum AjaxReturnTypes {
-         UPADATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"), SHOWINCIDENT("update-view");
+         UPADATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"), SHOWINCIDENT("update-view"), UPDATECOLLECTION("update-collection");
 
          private String key;
 

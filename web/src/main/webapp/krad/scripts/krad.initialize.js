@@ -34,7 +34,8 @@ var infoImage;
 var detailsOpenImage;
 var detailsCloseImage;
 var ajaxReturnHandlers = {};
-
+//Map of componentIds and refreshTimers
+var refreshTimerComponentMap = {};
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
     setPageBreadcrumb();

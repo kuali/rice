@@ -30,13 +30,14 @@ public class ServerErrorsIT {
 
     @Before
     public void setUp() throws Exception {
+        String baseUrl = SeUtil.getBaseUrlString();
         WebDriver driver = new FirefoxDriver();
         selenium = new WebDriverBackedSelenium(driver,
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
+                baseUrl + "/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
 
         // Login
         selenium.open(
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
+                baseUrl + "/kr-dev/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
         Assert.assertEquals("Login", selenium.getTitle());
         selenium.type("__login_user", "admin");
         selenium.click("//input[@value='Login']");

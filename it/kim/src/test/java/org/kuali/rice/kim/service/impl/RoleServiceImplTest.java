@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimApiConstants;
@@ -28,6 +29,8 @@ import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
+import org.kuali.rice.kim.api.role.RoleMembership;
+import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
@@ -46,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RoleServiceImplTest extends KIMTestCase {
 
@@ -184,4 +188,59 @@ public class RoleServiceImplTest extends KIMTestCase {
 		roleIds.add("r1");
 		roleService.assignRoleToRole("r5", "AUTH_SVC_TEST2", "RoleThree", map);
 	}
+
+    protected RoleResponsibilityAction createRoleResponsibilityAction() {
+        Role r = roleService.getRole("r1");
+        List<RoleMembership> members = roleService.getRoleMembers(Collections.singletonList("r1"), null);
+        RoleMembership rm = members.get(0);
+
+        RoleResponsibilityAction.Builder builder = RoleResponsibilityAction.Builder.create();
+        builder.setRoleMemberId(rm.getMemberId());
+
+        RoleResponsibilityAction saved = roleService.createRoleResponsibilityAction(builder.build());
+        List<RoleResponsibilityAction> rra = roleService.getRoleMemberResponsibilityActions(rm.getMemberId());
+        assertEquals(1, rra.size());
+        assertEquals(saved, rra.get(0));
+
+        return rra.get(0);
+    }
+
+    @Test
+    public void testCreateRoleResponsibilityAction() {
+        createRoleResponsibilityAction();
+    }
+
+    @Test
+    public void testUpdateRoleResponsibilityAction() {
+        RoleResponsibilityAction rra = createRoleResponsibilityAction();
+        RoleResponsibilityAction.Builder builder = RoleResponsibilityAction.Builder.create(rra);
+        assertFalse(builder.isForceAction());
+        builder.setForceAction(true);
+
+        RoleResponsibilityAction updated = roleService.updateRoleResponsibilityAction(builder.build());
+        builder.setVersionNumber(updated.getVersionNumber());
+        assertEquals(builder.build(), updated);
+
+        // test that the value for rolemember is updated and not cached
+        List<RoleResponsibilityAction> rras = roleService.getRoleMemberResponsibilityActions(rra.getRoleMemberId());
+        assertEquals(1, rras.size());
+        assertEquals(updated, rras.get(0));
+    }
+
+    @Test
+    public void testDeleteRoleResponsibilityAction() {
+        RoleResponsibilityAction rra = createRoleResponsibilityAction();
+
+        roleService.deleteRoleResponsibilityAction(rra.getId());
+
+        List<RoleResponsibilityAction> rras = roleService.getRoleMemberResponsibilityActions(rra.getRoleMemberId());
+        assertEquals(0, rras.size());
+
+        try {
+            roleService.deleteRoleResponsibilityAction(rra.getId());
+            fail("Expected to throw RiceIllegalStateException due to missing RuleResponsibilityAction");
+        } catch (RiceIllegalStateException rise) {
+            // expected
+        }
+    }
 }

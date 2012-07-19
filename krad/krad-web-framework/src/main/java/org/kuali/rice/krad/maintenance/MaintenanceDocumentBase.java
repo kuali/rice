@@ -967,7 +967,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         return this.attachments;
     }
 
-    public void setAttachments(List<MultiDocumentAttachment> attachment) {
+    public void setAttachments(List<MultiDocumentAttachment> attachments) {
         this.attachments = attachments;
     }
 

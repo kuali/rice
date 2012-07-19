@@ -91,6 +91,24 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
     }
 
     /**
+     * Utility method to check for the presence of a non blank value in the map for the given key
+     * Note: returns false if a null map is passed in.
+     *
+     * @param map the map to retrieve the value from
+     * @param key the key to use
+     * @return true if there is a non-blank value in the map for the given key.
+     */
+    protected static boolean isNonBlankValueForKey(Map<String, Object> map, String key) {
+        if (map == null) return false;
+
+        Object result = map.get(key);
+        if (result instanceof String) {
+            return !StringUtils.isBlank((String)result);
+        }
+        return result != null;
+    }
+
+    /**
      * @see org.kuali.rice.krad.service.ModuleService#isResponsibleFor(java.lang.Class)
      */
     public boolean isResponsibleForJob(String jobName) {

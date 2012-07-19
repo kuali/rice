@@ -20,7 +20,10 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
- * Validation service for KRAD views
+ * Validation service for KRAD views.  The ViewValidationService uses the DictionaryValidationService to validate the
+ * fields of the View by using the constraints that were set at either the InputField or AttributeDefinition level for
+ * that field.  If errors/warnings are found they are added to the messageMap and when the view is returned these
+ * messages are displayed.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -33,7 +36,7 @@ public interface ViewValidationService {
      * state based validation
      * is setup.
      *
-     * @param model
+     * @param model the model which contains the values (and View) to validated
      * @return DictionaryValidationResult that contains any errors/messages if any, messages will have already
      *         been added to the MessageMap
      */
@@ -46,8 +49,8 @@ public interface ViewValidationService {
      * validation
      * is setup.
      *
-     * @param view
-     * @param model
+     * @param view the View to be validated
+     * @param model the model which contains the values to validated
      * @return DictionaryValidationResult that contains any errors/messages if any,, messages will have already
      *         been added to the MessageMap
      */
@@ -58,9 +61,9 @@ public interface ViewValidationService {
      * forcedValidationState
      * is null, validates against the current state if state validation is setup.
      *
-     * @param view
-     * @param model
-     * @param forcedValidationState
+     * @param view the View to be validated
+     * @param model the model which contains the values to validated
+     * @param forcedValidationState the state being validated against
      * @return that contains any errors/messages if any,, messages will have already
      *         been added to the MessageMap
      */
@@ -71,8 +74,8 @@ public interface ViewValidationService {
      * will validate against current state + 1.  If there is no next state, this will validate against the current
      * state.
      *
-     * @param view
-     * @param model
+     * @param view the View to be validated
+     * @param model the model which contains the values to validated
      * @return that contains any errors/messages if any,, messages will have already
      *         been added to the MessageMap
      */
@@ -83,8 +86,8 @@ public interface ViewValidationService {
      * the last state in the list of states in the view's stateMapping.  Validation errors received for the current
      * state will be added as errors to the MessageMap. Validation errors for future states will be warnings.
      *
-     * @param view
-     * @param model
+     * @param view the View to be validated
+     * @param model the model which contains the values to validated
      */
     public void validateViewSimulation(View view, ViewModel model);
 
@@ -93,9 +96,9 @@ public interface ViewValidationService {
      * the untilState specified in the list of states in the view's stateMapping.  Validation errors received for the
      * current state will be added as errors to the MessageMap. Validation errors for future states will be warnings.
      *
-     * @param view
-     * @param model
-     * @param untilState
+     * @param view the View to be validated
+     * @param model the model which contains the values to validated
+     * @param untilState state to perform simulation to, if not set performs simulation up to the last state
      */
     public void validateViewSimulation(View view, ViewModel model, String untilState);
 

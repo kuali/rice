@@ -30,9 +30,30 @@ import java.util.regex.Pattern;
 public class ServerWarningsIT{
     private Selenium selenium;
 
+
+    public static String getBaseUrlString() {
+        String baseUrl = System.getProperty("remote.public.url");
+        if (baseUrl == null) {
+            baseUrl = "http://localhost:8080";
+        } else if (baseUrl.endsWith("/")) {
+            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+        } else if (!baseUrl.startsWith("http")) {
+            baseUrl = "http://" + baseUrl;
+        }
+        return baseUrl;
+    }
+
+    public static void login(Selenium selenium) {
+        Assert.assertEquals("Login", selenium.getTitle());
+        selenium.type("__login_user", "admin");
+        selenium.click("//input[@value='Login']");
+        selenium.waitForPageToLoad("30000");
+    }
+
+
     @Before
     public void setUp() throws Exception {
-        String baseUrl = SeUtil.getBaseUrlString();
+        String baseUrl = getBaseUrlString();
         WebDriver driver = new FirefoxDriver();
         selenium = new WebDriverBackedSelenium(driver,
                 baseUrl + "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
@@ -40,7 +61,7 @@ public class ServerWarningsIT{
         // Login
         selenium.open(
                 baseUrl + "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
-        SeUtil.login(selenium);
+        login(selenium);
     }
 
 	@Test

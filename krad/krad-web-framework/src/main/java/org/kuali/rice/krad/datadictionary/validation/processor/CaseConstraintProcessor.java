@@ -115,6 +115,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
         if (ValidationUtils.hasText(wc.getValuePath())) {
             Object whenValue = null;
 
+            //String originalName = attributeValueReader.getAttributeName();
             AttributeValueReader whenValueReader = getChildAttributeValueReader(wc.getValuePath(),
                     attributeValueReader);
             whenValue = whenValueReader.getValue(whenValueReader.getAttributeName());
@@ -123,6 +124,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
                     caseConstraint.isCaseSensitive(), dateTimeService) && null != wc.getConstraint()) {
                 constraints.add(wc.getConstraint());
             }
+            //whenValueReader.setAttributeName(originalName);
         } else {
             List<Object> whenValueList = wc.getValues();
 
@@ -161,7 +163,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
             AttributeValueReader attributeValueReader) throws AttributeValidationException {
         String[] lookupPathTokens = ValidationUtils.getPathTokens(key);
 
-        AttributeValueReader localAttributeValueReader = attributeValueReader;
+        AttributeValueReader localAttributeValueReader = attributeValueReader.clone();
         for (int i = 0; i < lookupPathTokens.length; i++) {
             for (Constrainable definition : localAttributeValueReader.getDefinitions()) {
                 String attributeName = definition.getName();

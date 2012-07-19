@@ -72,11 +72,17 @@ public class StateMappingBase implements StateMapping {
      */
     @Override
     public String getNextState(Object object) {
-        int index = this.getStates().indexOf(this.getCurrentState(object)) + 1;
-        if (index == this.getStates().size()) {
+        int currentStateIndex = this.getStates().indexOf(this.getCurrentState(object));
+        if(currentStateIndex != -1){
+            int index = currentStateIndex + 1;
+            if (index == this.getStates().size()) {
+                return this.getCurrentState(object);
+            } else {
+                return this.getStates().get(index);
+            }
+        }
+        else{
             return this.getCurrentState(object);
-        } else {
-            return this.getStates().get(index);
         }
     }
 

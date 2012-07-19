@@ -682,4 +682,11 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         return this.alternateDisplayAttributeName;
     }
 
+    public List<PrerequisiteConstraint> getDependencyConstraints() {
+        return dependencyConstraints;
+    }
+
+    public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
+        this.dependencyConstraints = dependencyConstraints;
+    }
 }

@@ -1720,6 +1720,17 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
     }
 
+    /**
+     * Queues ActionRequest refresh/regeneration for RoleResponsbilityAction change
+     * @param bo the changed or deleted RoleResponsibilityActionBo
+     */
+    protected void updateActionRequestsForRoleResponsibilityActionChange(RoleResponsibilityActionBo bo) {
+        RoleResponsibilityBo rr = bo.getRoleResponsibility();
+        if (rr != null) {
+            getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(Collections.singleton(rr.getResponsibilityId()));
+        }
+    }
+
     @Override
     public RoleResponsibilityAction updateRoleResponsibilityAction(RoleResponsibilityAction roleResponsibilityAction)
             throws RiceIllegalArgumentException, RiceIllegalStateException {
@@ -1730,7 +1741,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         RoleResponsibilityActionBo bo = RoleResponsibilityActionBo.from(roleResponsibilityAction);
-        return RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
+        roleResponsibilityAction = RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
+
+        // update action requests
+        updateActionRequestsForRoleResponsibilityActionChange(bo);
+
+        return roleResponsibilityAction;
     }
 
     @Override
@@ -1744,6 +1760,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         getBusinessObjectService().delete(bo);
+
+        // update action requests
+        updateActionRequestsForRoleResponsibilityActionChange(bo);
     }
 
     @Override

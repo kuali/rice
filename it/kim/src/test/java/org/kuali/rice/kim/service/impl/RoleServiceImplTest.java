@@ -17,39 +17,31 @@ package org.kuali.rice.kim.service.impl;
 
 import com.google.common.collect.Maps;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
-import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
-import org.kuali.rice.kim.impl.role.RoleServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class RoleServiceImplTest extends KIMTestCase {
 
@@ -196,6 +188,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 
         RoleResponsibilityAction.Builder builder = RoleResponsibilityAction.Builder.create();
         builder.setRoleMemberId(rm.getMemberId());
+        builder.setActionTypeCode(ActionType.APPROVE.getCode());
 
         RoleResponsibilityAction saved = roleService.createRoleResponsibilityAction(builder.build());
         List<RoleResponsibilityAction> rra = roleService.getRoleMemberResponsibilityActions(rm.getMemberId());
@@ -216,6 +209,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         RoleResponsibilityAction.Builder builder = RoleResponsibilityAction.Builder.create(rra);
         assertFalse(builder.isForceAction());
         builder.setForceAction(true);
+        builder.setActionTypeCode(ActionType.ACKNOWLEDGE.getCode());
 
         RoleResponsibilityAction updated = roleService.updateRoleResponsibilityAction(builder.build());
         builder.setVersionNumber(updated.getVersionNumber());

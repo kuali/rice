@@ -22,7 +22,7 @@ import java.util.Date;
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public class Address {
-	private String street1, street2, city, state, postalCode, country;
+	private String street1, street2, city, state, postalCode, country, validationState;
 	private Date effectiveDate;
 	
 
@@ -136,4 +136,12 @@ public class Address {
 	public void setEffectiveDate(Date effectiveDate) {
 		this.effectiveDate = effectiveDate;
 	}
+
+    public String getValidationState() {
+        return validationState;
+    }
+
+    public void setValidationState(String validationState) {
+        this.validationState = validationState;
+    }
 }

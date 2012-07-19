@@ -42,6 +42,20 @@
     <property name="dataObjectClass" value="org.kuali.rice.krad.datadictionary.validation.Address" />
     <property name="titleAttribute" value="id" />
     <property name="objectLabel" value="Course" />
+    <property name="stateMapping">
+          <bean parent="StateMapping">
+            <property name="statePropertyName" value="validationState"/>
+            <property name="states">
+              <list>
+                <value>state1</value>
+                <value>state2</value>
+                <value>state3</value>
+                <value>state4</value>
+                <value>state5</value>
+              </list>
+            </property>
+          </bean>
+        </property>
     <property name="primaryKeys">
       <list>
         <value>id</value>
@@ -64,7 +78,7 @@
         This constraint requires that at least one of the two child constraints must be satisfied.
         Either the postal code must be entered or _both_ the city and state. 
         -->
-        <bean parent="MustOccurConstraint">
+        <bean parent="MustOccurConstraint" p:states="state2">
           <property name="min" value="1"/>
           <property name="max" value="2"/>
           <property name="prerequisiteConstraints">
@@ -142,14 +156,23 @@
     <property name="description" value="Street Address Line 2" />
     <property name="minLength" value="1" />
     <property name="maxLength" value="40" />
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" />
+    <property name="validCharactersConstraint">
+      <bean parent="AlphaNumericPatternConstraint" p:validationMessageParams="whitespace" p:allowWhitespace="true">
+        <property name="states" value="state1,state2"/>
+        <property name="constraintStateOverrides">
+          <list>
+            <bean parent="AlphaPatternConstraint" p:validationMessageParams="" p:states="state3"/>
+            <bean parent="NumericPatternConstraint" p:validationMessageParams="" p:states="state4"/>
+          </list>
+        </property>
+      </bean>
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40" />
     </property>
     <property name="caseConstraint">
       <bean parent="CaseConstraint">
+        <property name="states" value="state1,state2"/>
         <property name="caseSensitive" value="false"/>
         <property name="propertyName" value="country"/>
         <property name="whenConstraint">
@@ -179,6 +202,13 @@
     <property name="maxLength" value="36" />
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="dependencyConstraints">
+      <list>
+      <bean parent="PrerequisiteConstraint" p:propertyName="country" >
+        <property name="states" value="state2>state4"/>
+      </bean>
+      </list>
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40" />

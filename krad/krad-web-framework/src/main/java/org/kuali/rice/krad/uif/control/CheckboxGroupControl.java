@@ -63,15 +63,17 @@ public class CheckboxGroupControl extends MultiValueControlBase {
 
     /**
      * Get fieldsetClasses which are the classes that will be applied to this component's fieldset when generated
-     * @return
+     *
+     * @return fieldset css classes
      */
     public List<String> getFieldsetClasses() {
         return fieldsetClasses;
     }
 
     /**
-     * Set fieldsetClasses
-     * @param fieldsetClasses
+     * Set fieldsetClasses - css classes for the element
+     *
+     * @param fieldsetClasses fieldset css classes list
      */
     public void setFieldsetClasses(List<String> fieldsetClasses) {
         this.fieldsetClasses = fieldsetClasses;

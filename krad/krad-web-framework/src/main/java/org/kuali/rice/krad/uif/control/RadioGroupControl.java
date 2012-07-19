@@ -51,7 +51,7 @@ public class RadioGroupControl extends MultiValueControlBase {
 	/**
 	 * Setter for the string delimiter for each radio option
 	 * 
-	 * @param delimiter
+	 * @param delimiter delimeter to render between options
 	 */
 	public void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
@@ -59,7 +59,8 @@ public class RadioGroupControl extends MultiValueControlBase {
 
     /**
      * Get fieldsetClasses which are the classes that will be applied to this component's fieldset when generated
-     * @return
+     *
+     * @return css classes for the fieldset
      */
     public List<String> getFieldsetClasses() {
         return fieldsetClasses;
@@ -67,7 +68,8 @@ public class RadioGroupControl extends MultiValueControlBase {
 
     /**
      * Set fieldsetClasses
-     * @param fieldsetClasses
+     *
+     * @param fieldsetClasses css classes for the fieldset
      */
     public void setFieldsetClasses(List<String> fieldsetClasses) {
         this.fieldsetClasses = fieldsetClasses;

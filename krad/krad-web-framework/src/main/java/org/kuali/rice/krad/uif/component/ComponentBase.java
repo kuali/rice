@@ -1232,18 +1232,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * When set if the condition is satisfied, the component will be refreshed.
-     * The component MUST BE a container or field type. conditionalRefresh is
+     *
+     * <p>The component MUST BE a container or field type. conditionalRefresh is
      * defined in a limited Spring EL syntax. Only valid form property names,
      * and, or, logical comparison operators (non-arithmetic), and the matches
      * clause are allowed. String and regex values must use single quotes ('),
      * booleans must be either true or false, numbers must be a valid double
-     * either negative or positive. <br>
-     * DO NOT use progressiveRender and conditionalRefresh on the same component
+     * either negative or positive.
+     *
+     * <p>DO NOT use progressiveRender and conditionalRefresh on the same component
      * unless it is known that the component will always be visible in all cases
      * when a conditionalRefresh happens (ie conditionalRefresh has
      * progressiveRender's condition anded with its own condition). <b>If a
      * component should be refreshed every time it is shown, use the
-     * progressiveRenderAndRefresh option with this property instead.</b>
+     * progressiveRenderAndRefresh option with this property instead.</b></p>
      *
      * @return the conditionalRefresh
      */
@@ -1252,6 +1254,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
+     * Set the conditional refresh condition
+     *
      * @param conditionalRefresh the conditionalRefresh to set
      */
     public void setConditionalRefresh(String conditionalRefresh) {
@@ -1301,10 +1305,11 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * When progressiveRenderViaAJAX is true, this component will be retrieved
      * from the server when it first satisfies its progressive render condition.
-     * After the first retrieval, it is hidden/shown in the html by the js when
+     *
+     * <p>After the first retrieval, it is hidden/shown in the html by the js when
      * its progressive condition result changes. <b>By default, this is false,
      * so components with progressive render capabilities will always be already
-     * within the client html and toggled to be hidden or visible.</b>
+     * within the client html and toggled to be hidden or visible.</b></p>
      *
      * @return the progressiveRenderViaAJAX
      */
@@ -1323,9 +1328,11 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * If true, when the progressiveRender condition is satisfied, the component
      * will always be retrieved from the server and shown(as opposed to being
      * stored on the client, but hidden, after the first retrieval as is the
-     * case with the progressiveRenderViaAJAX option). <b>By default, this is
+     * case with the progressiveRenderViaAJAX option).
+     *
+     * <p><b>By default, this is
      * false, so components with progressive render capabilities will always be
-     * already within the client html and toggled to be hidden or visible.</b>
+     * already within the client html and toggled to be hidden or visible.</b></p>
      *
      * @return the progressiveRenderAndRefresh
      */
@@ -1334,6 +1341,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
+     * Set the progressive render and refresh option.
+     *
      * @param progressiveRenderAndRefresh the progressiveRenderAndRefresh to set
      */
     public void setProgressiveRenderAndRefresh(boolean progressiveRenderAndRefresh) {
@@ -1429,20 +1438,27 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * Add a data attribute to the dataAttributes map
-     * @param key
-     * @param value
+     * Add a data attribute to the dataAttributes map - to be written to the html/jQuery data.
+     *
+     * @param key key of the data attribute
+     * @param value value of the data attribute
      */
     public void addDataAttribute(String key, String value){
         dataAttributes.put(key,value);    
     }
 
+    /**
+     * Get the dataAttributes setup for this component - to be written to the html/jQuery data.
+     *
+     * @return map of dataAttributes
+     */
     public Map<String, String> getDataAttributes() {
         return dataAttributes;
     }
 
     /**
-     *  the data role - used as a html5 data attribute (data-role) to specify the role
+     * The data role - used as a html5 data attribute (data-role) to specify the role
+     *
      * @return the data role attribute value
      */
     public String getDataRoleAttribute() {
@@ -1450,7 +1466,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * set the value of data-role attribute
+     * Set the value of data-role attribute
+     *
      * @param dataRoleAttribute the data role value
      */
     public void setDataRoleAttribute(String dataRoleAttribute) {
@@ -1458,7 +1475,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     *  the data type - used as a html5 data attribute (data-type)
+     * The data type - used as a html5 data attribute (data-type)
+     *
      * @return the data type attribute value
      */
     public String getDataTypeAttribute() {
@@ -1466,7 +1484,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * set the value of data-type attribute
+     * Set the value of data-type attribute
+     *
      * @param dataTypeAttribute the data type value
      */
     public void setDataTypeAttribute(String dataTypeAttribute) {
@@ -1474,7 +1493,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     *  the data meta - used as a html5 data attribute (data-meta) for custom information
+     * The data meta - used as a html5 data attribute (data-meta) for custom information
+     *
      * @return the data meta attribute value
      */
     public String getDataMetaAttribute() {
@@ -1482,7 +1502,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * set the value of data-meta attribute
+     * Set the value of data-meta attribute
+     *
      * @param dataMetaAttribute the data meta value
      */
     public void setDataMetaAttribute(String dataMetaAttribute) {
@@ -1491,11 +1512,13 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
-     * The attributes that are complex objects (contain {}) they will be written through script.
+     *
+     * <p>The attributes that are complex objects (contain {}) they will be written through script.
      * The attritubes that are simple (contain no objects) will be written directly to the html of the
      * component using standard data-.
-     * Either way they can be access through .data() call in jQuery
-     * @param dataAttributes
+     * Either way they can be access through .data() call in jQuery</p>
+     *
+     * @param dataAttributes the data attributes to set for this component
      */
     public void setDataAttributes(Map<String, String> dataAttributes) {
         this.dataAttributes = dataAttributes;
@@ -1504,6 +1527,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * Returns js that will add data to this component by the element which matches its id.
      * This will return script for only the complex data elements (containing {});
+     *
      * @return jQuery data script for adding complex data attributes
      */
     public String getComplexDataAttributesJs(){
@@ -1524,6 +1548,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * Returns a string that can be put into a the tag of a component to add data attributes inline.
      * This does not include the complex attributes which contain {}
+     *
      * @return html string for data attributes for the simple attributes
      */
     public String getSimpleDataAttributes(){
@@ -1540,10 +1565,11 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         }
     }
 
-    @Override
+
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getAllDataAttributesJs()
      */
+    @Override
     public String getAllDataAttributesJs() {
         String js = "";
         if (getDataAttributes() == null) {

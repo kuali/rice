@@ -44,7 +44,7 @@ public class HelpIT2 extends WebDriverITBase {
      */
     @Override
     public String getTestUrl() {
-        return "http://localhost:8080/kr-dev/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start";
+        return getBaseUrlString() + "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start";
     }
 
     /**

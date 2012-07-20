@@ -16,6 +16,8 @@
 
 package edu.samplu.common;
 
+import com.thoughtworks.selenium.Selenium;
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.By;
@@ -127,4 +129,15 @@ public abstract class WebDriverITBase {
         driver.switchTo().window(parentWindowHandle);
     }
 
+    public static String getBaseUrlString() {
+        String baseUrl = System.getProperty("remote.public.url");
+        if (baseUrl == null) {
+            baseUrl = "http://localhost:8080";
+        } else if (baseUrl.endsWith("/")) {
+            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+        } else if (!baseUrl.startsWith("http")) {
+            baseUrl = "http://" + baseUrl;
+        }
+        return baseUrl;
+    }
 }

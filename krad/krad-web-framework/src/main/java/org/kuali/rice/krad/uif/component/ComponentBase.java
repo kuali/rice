@@ -141,6 +141,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String dataTypeAttribute;
     private String dataMetaAttribute;
 
+    private int refreshTimer;
+
     public ComponentBase() {
         super();
 
@@ -869,7 +871,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDocumentReadyScript()
      */
     public String getOnDocumentReadyScript() {
-        return onDocumentReadyScript;
+        String onDocScript =  null;
+        // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer tp the onDocumentReadyScript.
+        // if the refreshTimer property is set then the methodToCallOnRefresh should also be set.
+        if(refreshTimer > 0) {
+            onDocScript = (null == this.onDocumentReadyScript) ? "" : this.onDocumentReadyScript;
+            onDocScript = "refreshComponentUsingTimer('"+ this.id +"','" + this.methodToCallOnRefresh + "'," + refreshTimer +");" + onDocScript;
+        }
+        return onDocScript;
     }
 
     /**
@@ -1437,6 +1446,23 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         return skipInTabOrder;
     }
 
+    /**
+     * Time in seconds that the component will be automatically refreshed.
+     *
+     * @return  refreshTimer
+     */
+    public int getRefreshTimer() {
+        return refreshTimer;
+    }
+
+    /**
+     * Setter for refreshTimer
+     *
+     * @param refreshTimer
+     */
+    public void setRefreshTimer(int refreshTimer) {
+        this.refreshTimer = refreshTimer;
+    }
     /**
      * Add a data attribute to the dataAttributes map - to be written to the html/jQuery data.
      *

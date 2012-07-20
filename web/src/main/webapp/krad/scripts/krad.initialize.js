@@ -420,7 +420,6 @@ function setupPage(validate) {
     pageValidatorReady = true;
 
     jQuery.watermark.showAll();
-    jQuery.watermark.showAll();
 }
 
 /**

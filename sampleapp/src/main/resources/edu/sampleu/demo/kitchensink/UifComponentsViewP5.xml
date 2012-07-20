@@ -127,7 +127,7 @@
 	<bean id="prog3" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
 		p:headerText="Conditional Refresh">
 		<property name="disclosure.render" value="false" />
-		
+
 		<property name="items">
 			<list>
 				<bean parent="Uif-InputField" p:label="Conditional Refresh"
@@ -187,12 +187,23 @@
               <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Field but with Server Errors" p:methodToCall="refreshWithServerMessages"
                     p:refreshPropertyName="field45"/>
               <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
-            </list>
+
+              </list>
           </property>
         </bean>
+        <bean id="UifCompView-MessageFields" p:id="timer1" parent="Uif-VerticalBoxSection" p:refreshTimer="30" p:methodToCallOnRefresh="refreshProgGroup">
+            <property name="headerText" value="Refresh based on timer"/>
+            <property name="items">
+              <list>
+                <bean parent="Uif-Message" p:messageText="This message refreshes every 30 seconds."/>
+              </list>
+            </property>
+          </bean>
+
 			</list>
 		</property>
 	</bean>
+
 
   <bean id="Uif-CollectionRefresh" parent="Uif-Disclosure-StackedCollectionSection">
     <property name="headerText" value="Collection Group With Refresh"/>

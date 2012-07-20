@@ -990,4 +990,18 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      */
     String getAllDataAttributesJs();
 
+    /**
+     *  Time in seconds after which the component is automatically refreshed
+     *
+     * @return  time in seconds
+     */
+    int getRefreshTimer();
+
+    /**
+     *  Setter for refreshTimer
+     *
+     * @param refreshTimer
+     */
+    void setRefreshTimer(int refreshTimer);
+
 }

@@ -20,7 +20,9 @@
  *
  * @param component - the component on which the action has been invoked
  */
+
 function actionInvokeHandler(component) {
+
     // Read the data attributes. All simple data attributes are lower-cased.
     var ajaxSubmit = jQuery(component).data("ajaxsubmit");
     var submitData = jQuery(component).data("submitData");
@@ -61,6 +63,7 @@ function actionInvokeHandler(component) {
  * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
  *                            type but the server can change it. Defaults to update-page
  */
+
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false, preSubmitCall, returnType);
 }
@@ -76,6 +79,7 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
  * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
  *                            type but the server can change it. Defaults to update-page
  */
+
 function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, true, preSubmitCall, returnType);
 }
@@ -105,24 +109,28 @@ function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData
  * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
  *                          type but the server can change it. Defaults to update-page
  */
+
 function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate,
                                 preSubmitCall, returnType) {
     var data = {};
+
     // invoke validateForm if validate flag is true, if returns false do not continue
     if (validate && !validateForm()) {
         return;
     }
+
     // invoke the preSubmitCall script. If it  evaluates to false return
     if (preSubmitCall != null && preSubmitCall !== "") {
         if (!eval(preSubmitCall)) {
             return;
         }
-
     }
+
     // check to see if methodToCall is still null
     if (methodToCall != null || methodToCall !== "") {
         data.methodToCall = methodToCall;
     }
+
     // Set the ajaxReturnType. Default to update-page if none provided
     if (returnType != null && returnType !== "") {
         data.ajaxReturnType = returnType;
@@ -247,6 +255,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
  * @param additionalData   - any additional data that needs to be sent to the server
  * @param preSubmitCall    - hook to execute a call before submit which if returns true the processing moves forward else return
  */
+
 function submitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts , validate false
     submitFormFullOpts(methodToCall, additionalData, false, preSubmitCall);
@@ -259,6 +268,7 @@ function submitForm(methodToCall, additionalData, preSubmitCall) {
  * @param additionalData   - any additional data that needs to be sent to the server
  * @param preSubmitCall    - hook to execute a call before submit which if returns true the processing moves forward else return
  */
+
 function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts with null callback, validate true
     submitFormFullOpts(methodToCall, additionalData, true, preSubmitCall);
@@ -273,7 +283,9 @@ function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
  * @param validate          - if set to true then the form is validated before submission
  * @param preSubmitCall     - hook to execute a call before submit which if returns true the processing moves forward else return
  */
+
 function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall) {
+
     // invoke validateForm if validate flag is true, if returns false do not continue
     if (validate && !validateForm()) {
         return;
@@ -285,6 +297,7 @@ function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCal
             return;
         }
     }
+
     // write out methodToCall as hidden
     writeHiddenToForm("methodToCall", methodToCall);
 
@@ -350,6 +363,7 @@ function invokeAjaxReturnHandler(content) {
  *
  * @param content   - content returned from response
  */
+
 function updatePageCallback(content) {
     var page = jQuery("[data-handler='update-component']", content);
     page.hide();
@@ -373,6 +387,7 @@ function updatePageCallback(content) {
  * @param content   - content returned from response
  * @param dataAttr  -  any additional data attributes that the server needs to send
  */
+
 function updatePageHandler(content, dataAttr) {
     var page = jQuery("#page_update", content);
     page.hide();
@@ -398,13 +413,14 @@ function updatePageHandler(content, dataAttr) {
  * @param content   - content returned from response
  * @param dataAttr  -  any additional data attributes that the server needs to send
  */
+
 function updateComponentHandler(content, dataAttr) {
     var id = dataAttr.updatecomponentid;
     var elementToBlock = jQuery("#" + id);
 
     var component = jQuery("#" + id + "_update", content);
 
-        var displayWithId = id;
+    var displayWithId = id;
 
         // special label handling, if any
         var theLabel = jQuery("#" + displayWithId + "_label_span", component);
@@ -461,9 +477,10 @@ function updateComponentHandler(content, dataAttr) {
  * @param content  - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
  */
+
 function updateViewHandler(content, dataAttr){
     jQuery('#' + kradVariables.APP_ID).replaceWith(content);
-        runHiddenScriptsAgain();
+    runHiddenScriptsAgain();
 }
 
 /**
@@ -472,7 +489,9 @@ function updateViewHandler(content, dataAttr){
  * @param content  - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
  */
+
 function redirectHandler(content, dataAttr) {
+
 // get contents between div and do window.location = parsed href
    window.location.href = jQuery(content).text();
 }
@@ -490,6 +509,7 @@ function successCallbackF(content) {
  * @param navigateToPageId -
  *          the id for the page that the link should navigate to
  */
+
 function handleActionLink(component, methodToCall, navigateToPageId) {
     var submitData = {};
     submitData = jQuery(component).data('submitData');
@@ -510,8 +530,20 @@ function handleActionLink(component, methodToCall, navigateToPageId) {
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  * @param addCallbackFunc - additional callback function to be executed (optional)
  */
+
 function retrieveComponent(id, methodToCall, addCallbackFunc) {
     var elementToBlock = jQuery("#" + id);
+
+    // if a call is made from refreshComponentUsingTimer() and the component does not exist on the page or is hidden
+    // then get the handle of the refreshTimer and clear the timer. Also remove it from the refreshTimerComponentMap
+    if(elementToBlock === undefined ||elementToBlock.filter(':visible').length === 0){
+        var refreshHandle = refreshTimerComponentMap[id];
+        if(refreshHandle !== null){
+            clearInterval(refreshHandle);
+            delete refreshTimerComponentMap[id];
+        }
+        return;
+    }
 
     var updateRefreshableComponentCallback = function (htmlContent) {
         var component = jQuery("#" + id + "_update", htmlContent);
@@ -604,6 +636,7 @@ function retrieveComponent(id, methodToCall, addCallbackFunc) {
  * @param showInactive - boolean indicating whether inactive records should be displayed (true) or
  * not displayed (false)
  */
+
 function toggleInactiveRecordDisplay(component, collectionGroupId, showInactive) {
     var elementToBlock = jQuery("#" + collectionGroupId);
     var updateCollectionCallback = function (htmlContent) {
@@ -700,6 +733,7 @@ function addLineToCollection(component, collectionGroupId, collectionBaseId) {
  * @param collectionGroupId - the collection group id
  * @param collectionName - the property name of the collection used to get the fields
  */
+
 function validateAndPerformCollectionAction(component, collectionGroupId, collectionName) {
     if (collectionName) {
 
@@ -742,6 +776,7 @@ function validateAndPerformCollectionAction(component, collectionGroupId, collec
  * @param refreshId - id for the component that should be refreshed when change occurs
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
+
 function setupOnChangeRefresh(controlName, refreshId, methodToCall) {
     setupRefreshCheck(controlName, refreshId, function () {
         return true;
@@ -759,6 +794,7 @@ function setupOnChangeRefresh(controlName, refreshId, methodToCall) {
  * @param condition - function which returns true to refresh, false otherwise
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
+
 function setupRefreshCheck(controlName, refreshId, condition, methodToCall) {
     jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
         // visible check because a component must logically be visible to refresh
@@ -784,6 +820,7 @@ function setupRefreshCheck(controlName, refreshId, condition, methodToCall) {
  * @param condition - function which returns true to disclose, false otherwise
  * @param methodToCall - name of the method that should be invoked for the retrieve call (if custom method is needed)
  */
+
 function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall) {
     if (!baseId.match("\_c0$")) {
         jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
@@ -840,6 +877,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
  *
  * @param id - id for the component for which the input hiddens should be processed
  */
+
 function hiddenInputValidationToggle(id) {
     var element = jQuery("#" + id);
     if (element.length) {
@@ -855,6 +893,7 @@ function hiddenInputValidationToggle(id) {
         }
     }
 }
+
 /**
  * Refreshes a component by calling retrieveComponent() at the given time interval
  *
@@ -862,18 +901,24 @@ function hiddenInputValidationToggle(id) {
  * @param methodToCall  - controller method to call on refresh
  * @param timeInterval  -  interval in seconds at which the component should be refreshed
  */
+
 function refreshComponentUsingTimer(componentId,methodToCall,timeInterval){
     var refreshTimer = refreshTimerComponentMap[componentId] ;
-    if(refreshTimer == null) {
-        refreshTimerComponentMap[componentId] = timeInterval;
-        setInterval(function(){retrieveComponent(componentId,methodToCall);}, timeInterval * 1000);
+    // if a timer already exists for the component then clear it and remove it from the map
+    // this is done so that the time interval between executions remains the same.
+    if(refreshTimer != null) {
+        clearInterval(refreshTimer);
+        delete refreshTimerComponentMap[componentId];
     }
+    //set a new timer on the component
+    refreshTimerComponentMap[componentId] = setInterval(function(){retrieveComponent(componentId,methodToCall);}, timeInterval * 1000);
 }
 
 /**
  * Makes an get request to the server so that the form with the specified formKey will
  * be cleared server side
  */
+
 function clearServerSideForm(formKey) {
     var queryData = {};
 

@@ -80,7 +80,7 @@
                     p:actionLabel="Change to State 3"/>
               <bean parent="Uif-PrimaryActionButton" p:methodToCall="gotoState4"
                     p:actionLabel="Change to State 4"/>
-              <bean parent="Uif-CheckForm-Button"/>
+              <bean parent="Uif-CheckFormAction"/>
               <bean parent="Uif-StateBased-RequiredInstructionsMessage"/>
               <bean parent="Uif-InputField-LabelTop" p:propertyName="state" p:label="State" p:readOnly="true"/>
               <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1" p:constraintText="Required

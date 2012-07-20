@@ -176,10 +176,9 @@
   <bean id="Uif-FormFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save"
-              p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
-        <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="Cancel"/>
+        <bean parent="Uif-SaveAction"/>
+        <bean parent="Uif-CloseAction"/>
+        <bean parent="Uif-CancelAction"/>
       </list>
     </property>
   </bean>

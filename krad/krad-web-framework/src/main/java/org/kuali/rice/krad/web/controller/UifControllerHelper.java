@@ -190,9 +190,6 @@ public class UifControllerHelper {
 
             // build view which will prepare for rendering
             getViewService().buildView(view, form, parameterMap);
-
-            // set dirty flag
-            form.setValidateDirty(view.isApplyDirtyCheck());
         }
     }
 

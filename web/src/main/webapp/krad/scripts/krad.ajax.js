@@ -16,7 +16,7 @@
 
 /**
  * Submits the form via ajax or does a normal form submit depending on whether the form was submitted via ajax or not.
- * By default ajaxsubmit is true.
+ * By default ajaxsubmit is true
  *
  * @param component - the component on which the action has been invoked
  */
@@ -37,19 +37,10 @@ function actionInvokeHandler(component) {
 
     //if the form is submitted via ajax
     if (ajaxSubmit) {
-        //if validation needs to run before submitting the form
-        if (validate) {
-            validateAndAjaxSubmitForm(methodToCall, successCallback, submitData, elementToBlock, preSubmitCall, null);
-        } else {
-            ajaxSubmitForm(methodToCall, successCallback, submitData, elementToBlock, preSubmitCall, null);
-        }
-    }// non-ajax submit
-    else {
-        if (validate) {
-            validateAndSubmitForm(methodToCall, submitData, preSubmitCall)
-        } else {
-            submitForm(methodToCall, submitData, preSubmitCall);
-        }
+        ajaxSubmitFormFullOpts(methodToCall, successCallback, submitData, elementToBlock, errorCallback, validate,
+                    preSubmitCall, null);
+    } else {
+        submitFormFullOpts(methodToCall, submitData, validate, preSubmitCall);
     }
 }
 /**
@@ -65,7 +56,8 @@ function actionInvokeHandler(component) {
  */
 
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
-    ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false, preSubmitCall, returnType);
+    ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false,
+            preSubmitCall, returnType);
 }
 
 /**
@@ -81,7 +73,8 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
  */
 
 function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
-    ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, true, preSubmitCall, returnType);
+    ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, true,
+            preSubmitCall, returnType);
 }
 
 /**
@@ -100,14 +93,15 @@ function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData
  * <head></head> is left out
  * </p>
  *
- * @param methodToCall      - the controller method to be called
- * @param successCallback   - hook for any calls to be made on success
- * @param additionalData    - any additional data that needs to be passed to the server
- * @param elementToBlock    - element to be blocked while loading
- * @param errorCallback     - hook for any calls to be made on error.
- * @param preSubmitCall     - hook to execute a call which if returns true the processing moves forward else return
- * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
- *                          type but the server can change it. Defaults to update-page
+ * @param methodToCall - the controller method to be called
+ * @param successCallback - hook for any calls to be made on success
+ * @param additionalData  - any additional data that needs to be passed to the server
+ * @param elementToBlock  - element to be blocked while loading
+ * @param errorCallback - hook for any calls to be made on error.
+ * @param preSubmitCall -  hook to execute a call which if returns true the processing moves forward else return
+ * form, if the check is performed and dirty fields exist, the submit will not occur
+ * @param returnType - this is used to indicate to the server a requested return type. The client requests a return
+ *                     type but the server can change it. Defaults to update-page
  */
 
 function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate,
@@ -120,19 +114,19 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
     }
 
     // invoke the preSubmitCall script. If it  evaluates to false return
-    if (preSubmitCall != null && preSubmitCall !== "") {
+    if (preSubmitCall) {
         if (!eval(preSubmitCall)) {
             return;
         }
     }
 
     // check to see if methodToCall is still null
-    if (methodToCall != null || methodToCall !== "") {
+    if (methodToCall) {
         data.methodToCall = methodToCall;
     }
 
     // Set the ajaxReturnType. Default to update-page if none provided
-    if (returnType != null && returnType !== "") {
+    if (returnType) {
         data.ajaxReturnType = returnType;
     } else {
         data.ajaxReturnType = "update-page";
@@ -148,7 +142,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
     // remove this since the methodToCall was passed in or extracted from the page, to avoid issues
     jQuery("input[name='methodToCall']").remove();
 
-    if (additionalData != null) {
+    if (additionalData) {
         jQuery.extend(data, additionalData);
     }
 
@@ -161,7 +155,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
         jQuery.extend(data, {clientViewState:jsonViewState});
     }
 
-    // check if called from a lightbox.  if it is set the componentId
+    // check if called from a lightbox, if it is set the componentId
     var componentId = undefined;
     if (jQuery('#kualiLightboxForm').children(':first').length == 1) {
         componentId = jQuery('#kualiLightboxForm').children(':first').attr('id');
@@ -172,7 +166,9 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
         success:function (response) {
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = response;
+
             var hasError = handleIncidentReport(response);
+
             //invoke the invokeAjaxReturnHandler to determine which data handler to use
             invokeAjaxReturnHandler(tempDiv);
 
@@ -234,18 +230,19 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
                 }
             }
         };
+
+        jQuery.extend(submitOptions, elementBlockingOptions);
     }
 
     //for lightbox copy data back into form
     if (componentId !== undefined) {
         var component = jQuery('#' + componentId).clone(true, true);
+
         addIdPrefix(jQuery('#' + componentId), 'tmpLightbox_');
         jQuery('#tmpForm_' + componentId).replaceWith(component);
     }
 
-    jQuery.extend(submitOptions, elementBlockingOptions);
-    var form = jQuery("#kualiForm");
-    form.ajaxSubmit(submitOptions);
+    jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
 }
 
 /**
@@ -278,10 +275,12 @@ function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
  * If the preSubmitCall is provided then if it evaluates to true, it proceeds else the function returns.
  * The data attributes that are passed in as additional data are written to the form before the form is submitted.
  *
- * @param methodToCall      - controller method to call
- * @param additionalData    - any additional data that needs to be sent to the server
- * @param validate          - if set to true then the form is validated before submission
- * @param preSubmitCall     - hook to execute a call before submit which if returns true the processing moves forward else return
+ * @param methodToCall
+ * @param additionalData
+ * @param validate
+ * @param performDirtyCheck - indicates whether the dirty fields check should be performed before submitting the
+ * form, if the check is performed and dirty fields exist, the submit will not occur
+ * @param preSubmitCall
  */
 
 function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall) {
@@ -494,10 +493,6 @@ function redirectHandler(content, dataAttr) {
 
 // get contents between div and do window.location = parsed href
    window.location.href = jQuery(content).text();
-}
-
-function successCallbackF(content) {
-    alert("Test");
 }
 
 /**
@@ -794,7 +789,6 @@ function setupOnChangeRefresh(controlName, refreshId, methodToCall) {
  * @param condition - function which returns true to refresh, false otherwise
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
-
 function setupRefreshCheck(controlName, refreshId, condition, methodToCall) {
     jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
         // visible check because a component must logically be visible to refresh
@@ -820,7 +814,6 @@ function setupRefreshCheck(controlName, refreshId, condition, methodToCall) {
  * @param condition - function which returns true to disclose, false otherwise
  * @param methodToCall - name of the method that should be invoked for the retrieve call (if custom method is needed)
  */
-
 function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall) {
     if (!baseId.match("\_c0$")) {
         jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
@@ -877,7 +870,6 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
  *
  * @param id - id for the component for which the input hiddens should be processed
  */
-
 function hiddenInputValidationToggle(id) {
     var element = jQuery("#" + id);
     if (element.length) {
@@ -901,7 +893,6 @@ function hiddenInputValidationToggle(id) {
  * @param methodToCall  - controller method to call on refresh
  * @param timeInterval  -  interval in seconds at which the component should be refreshed
  */
-
 function refreshComponentUsingTimer(componentId,methodToCall,timeInterval){
     var refreshTimer = refreshTimerComponentMap[componentId] ;
     // if a timer already exists for the component then clear it and remove it from the map
@@ -918,7 +909,6 @@ function refreshComponentUsingTimer(componentId,methodToCall,timeInterval){
  * Makes an get request to the server so that the form with the specified formKey will
  * be cleared server side
  */
-
 function clearServerSideForm(formKey) {
     var queryData = {};
 

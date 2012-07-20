@@ -84,7 +84,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private boolean headerAdded;
 
     private int actionColumnIndex = -1;
-
     private String actionColumnPlacement;
 
     private Group rowDetailsGroup;

@@ -1463,6 +1463,30 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     public void setRefreshTimer(int refreshTimer) {
         this.refreshTimer = refreshTimer;
     }
+
+    /**
+     * Get the dataAttributes setup for this component - to be written to the html/jQuery data
+     *
+     * <p>The attributes that are complex objects (contain {}) they will be written through script.
+     * The attritubes that are simple (contain no objects) will be written directly to the html of the
+     * component using standard data-.
+     * Either way they can be access through .data() call in jQuery</p>
+     *
+     * @return map of dataAttributes
+     */
+    public Map<String, String> getDataAttributes() {
+        return dataAttributes;
+    }
+
+    /**
+     * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
+     *
+     * @param dataAttributes the data attributes to set for this component
+     */
+    public void setDataAttributes(Map<String, String> dataAttributes) {
+        this.dataAttributes = dataAttributes;
+    }
+
     /**
      * Add a data attribute to the dataAttributes map - to be written to the html/jQuery data.
      *
@@ -1472,14 +1496,18 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     public void addDataAttribute(String key, String value){
         dataAttributes.put(key,value);    
     }
-
+    
     /**
-     * Get the dataAttributes setup for this component - to be written to the html/jQuery data.
+     * Add a data attribute to the dataAttributes map if the given value is non null
+     * or the empty string
      *
-     * @return map of dataAttributes
+     * @param key - key for the data attribute entry
+     * @param value - value for the data attribute
      */
-    public Map<String, String> getDataAttributes() {
-        return dataAttributes;
+    public void addDataAttributeIfNonEmpty(String key, String value) {
+        if (StringUtils.isNotBlank(value)) {
+            addDataAttribute(key, value);
+        }
     }
 
     /**
@@ -1534,20 +1562,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setDataMetaAttribute(String dataMetaAttribute) {
         this.dataMetaAttribute = dataMetaAttribute;
-    }
-
-    /**
-     * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
-     *
-     * <p>The attributes that are complex objects (contain {}) they will be written through script.
-     * The attritubes that are simple (contain no objects) will be written directly to the html of the
-     * component using standard data-.
-     * Either way they can be access through .data() call in jQuery</p>
-     *
-     * @param dataAttributes the data attributes to set for this component
-     */
-    public void setDataAttributes(Map<String, String> dataAttributes) {
-        this.dataAttributes = dataAttributes;
     }
 
     /**

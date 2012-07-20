@@ -48,10 +48,10 @@
                 <#-- all forms will be stored in session, this is the conversation key -->
                 <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
 
-                <#-- Based on its value, form elements will be checked for dirtyness -->
-                <@spring.formHiddenInput id="validateDirty" path="KualiForm.validateDirty"/>
+                <#-- Based on the view setting, form elements will be checked for dirtyness -->
+                <@spring.formHiddenInput id="validateDirty" path="KualiForm.view.applyDirtyCheck"/>
 
-                S<#-- Indicator which is set to true when content is being rendered inside a lightbox -->
+                <#-- Indicator which is set to true when content is being rendered inside a lightbox -->
                 <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
             </#if>
 
@@ -66,7 +66,7 @@
 
     </div>
 
-<!-- APPLICATION FOOTER -->
+    <!-- APPLICATION FOOTER -->
     <@krad.template component=view.applicationFooter/>
 
 </@krad.html>

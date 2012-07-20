@@ -39,22 +39,20 @@ public class Action extends ContentElementBase {
     private static final long serialVersionUID = 1025672792657238829L;
 
     private String methodToCall;
+    private String actionEvent;
     private String navigateToPageId;
 
-    private boolean performClientSideValidation;
     private String actionScript;
-
-    private String jumpToIdAfterSubmit;
-    private String jumpToNameAfterSubmit;
-    private String focusOnIdAfterSubmit;
 
     private String actionLabel;
     private Image actionImage;
     private String actionImagePlacement;
 
-    private String actionEvent;
-    private Map<String, String> actionParameters;
+    private String jumpToIdAfterSubmit;
+    private String jumpToNameAfterSubmit;
+    private String focusOnIdAfterSubmit;
 
+    private boolean performClientSideValidation;
     private boolean performDirtyValidation;
 
     private boolean disabled;
@@ -65,19 +63,24 @@ public class Action extends ContentElementBase {
 
     private String successCallback;
     private String errorCallback;
-    
+
     private String loadingMessageText;
     private String updatingMessageText;
+
+    private Map<String, String> actionParameters;
 
     public Action() {
         super();
 
         actionImagePlacement = UifConstants.Position.LEFT.name();
+
         ajaxSubmit = true;
+        disabled = false;
+
         successCallback = "";
         errorCallback = "";
         preSubmitCall = "";
-        disabled = false;
+
         actionParameters = new HashMap<String, String>();
     }
 
@@ -87,6 +90,8 @@ public class Action extends ContentElementBase {
      * <ul>
      * <li>Add methodToCall action parameter if set and setup event code for
      * setting action parameters</li>
+     * <li>Invoke method to build the data attributes and submit data for the action</li>
+     * <li>Compose the final onclick script for the action</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
@@ -96,8 +101,7 @@ public class Action extends ContentElementBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        Map<String, String> submitData = new HashMap<String, String>();
-        //clear alt text to avoid screen reader confusion when using image in button with text
+        // clear alt text to avoid screen reader confusion when using image in button with text
         if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(
                 actionLabel)) {
             actionImage.setAltText("");
@@ -106,9 +110,6 @@ public class Action extends ContentElementBase {
         if (!actionParameters.containsKey(UifConstants.UrlParams.ACTION_EVENT) && StringUtils.isNotBlank(actionEvent)) {
             actionParameters.put(UifConstants.UrlParams.ACTION_EVENT, actionEvent);
         }
-
-        actionParameters.put(UifConstants.UrlParams.SHOW_HOME, "false");
-        actionParameters.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
 
         if (StringUtils.isNotBlank(navigateToPageId)) {
             actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
@@ -123,69 +124,70 @@ public class Action extends ContentElementBase {
             actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
         }
 
-        String prefixScript = this.getOnClickScript();
-        if (prefixScript == null) {
-            prefixScript = "";
+        buildActionData(view, model, parent);
+
+        // build final onclick script
+        String onClickScript = this.getOnClickScript();
+        if (onClickScript == null) {
+            onClickScript = "";
         }
 
-        boolean validateFormDirty = false;
-        if (view instanceof FormView && isPerformDirtyValidation()) {
-            validateFormDirty = ((FormView) view).isApplyDirtyCheck();
+        if (StringUtils.isNotBlank(actionScript)) {
+            onClickScript += actionScript;
+        } else {
+            onClickScript += "actionInvokeHandler(this);";
         }
 
-        boolean includeDirtyCheckScript = false;
-        if (!actionParameters.isEmpty()) {
-            for (String key : actionParameters.keySet()) {
-                String parameterPath = key;
-                if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-                    parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
-                }
-                submitData.put(parameterPath, actionParameters.get(key));
-
-                // Include dirtycheck js function call if the method to call
-                // is refresh, navigate, cancel or close
-                if (validateFormDirty && !includeDirtyCheckScript && key.equals(
-                        UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-                    String keyValue = (String) actionParameters.get(key);
-                    if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || StringUtils.equals(
-                            keyValue, UifConstants.MethodToCallNames.NAVIGATE) || StringUtils.equals(keyValue,
-                            UifConstants.MethodToCallNames.CANCEL) || StringUtils.equals(keyValue,
-                            UifConstants.MethodToCallNames.CLOSE)) {
-                        includeDirtyCheckScript = true;
-                    }
-                }
+        // add dirty check if it is enabled for the view and the action requires it
+        if (view instanceof FormView) {
+            if (((FormView) view).isApplyDirtyCheck() && performDirtyValidation) {
+                onClickScript = "if (checkDirty(e) == false) { " + onClickScript + " ; } ";
             }
         }
 
-        // Map properties to data attribute
+        setOnClickScript("e.preventDefault();" + onClickScript);
+    }
+
+    /**
+     * Builds the data attributes that will be the will be read client side to determine how to
+     * handle the action and the additional data that should be submitted with the action
+     *
+     * <p>
+     * Note these data attributes will be exposed as a data map client side. The simple attributes (non object
+     * value) are also written out as attributes on the action element.
+     * </p>
+     *
+     * @param view - view instance the action belongs to
+     * @param model - model object containing the view data
+     * @param parent - component the holds the action
+     */
+    protected void buildActionData(View view, Object model, Component parent) {
+        // map properties to data attributes
         addDataAttribute("ajaxsubmit", Boolean.toString(ajaxSubmit));
-
-        if (StringUtils.isNotBlank(successCallback)) {
-            addDataAttribute("successcallback", this.successCallback);
-        }
-        if (StringUtils.isNotBlank(errorCallback)) {
-            addDataAttribute("errorcallback", this.errorCallback);
-        }
-        if (StringUtils.isNotBlank(preSubmitCall)) {
-            addDataAttribute("presubmitcall", this.preSubmitCall);
-        }
-        if (StringUtils.isNotBlank(loadingMessageText)) {
-            addDataAttribute("loadingMessageText", this.loadingMessageText);
-        }
-        if (StringUtils.isNotBlank(updatingMessageText)) {
-            addDataAttribute("updatingMessageText", this.updatingMessageText);
-        }
-
+        addDataAttributeIfNonEmpty("successcallback", this.successCallback);
+        addDataAttributeIfNonEmpty("errorcallback", this.errorCallback);
+        addDataAttributeIfNonEmpty("presubmitcall", this.preSubmitCall);
+        addDataAttributeIfNonEmpty("loadingMessageText", this.loadingMessageText);
+        addDataAttributeIfNonEmpty("updatingMessageText", this.updatingMessageText);
         addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
 
+        // all action parameters should be submitted with action
+        Map<String, String> submitData = new HashMap<String, String>();
+        for (String key : actionParameters.keySet()) {
+            String parameterPath = key;
+            if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+                parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
+            }
+            submitData.put(parameterPath, actionParameters.get(key));
+        }
+
         // TODO possibly fix some other way - this is a workaround, prevents
-        // showing history and showing home again on actions which submit
-        // the form
+        // showing history and showing home again on actions which submit the form
         submitData.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
         submitData.put(UifConstants.UrlParams.SHOW_HOME, "false");
 
+        // if focus id not set default to focus on action
         if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
-            // if this is blank focus this actionField by default
             focusOnIdAfterSubmit = this.getId();
             submitData.put("focusId", focusOnIdAfterSubmit);
         } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
@@ -193,6 +195,7 @@ public class Action extends ContentElementBase {
             submitData.put("focusId", focusOnIdAfterSubmit);
         }
 
+        // if jump to not set default to jump to location of the action
         if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
             jumpToIdAfterSubmit = this.getId();
             submitData.put("jumpToId", jumpToIdAfterSubmit);
@@ -203,20 +206,6 @@ public class Action extends ContentElementBase {
         }
 
         addDataAttribute("submitData", mapToString(submitData));
-
-        String postScript = "";
-        if (StringUtils.isNotBlank(actionScript)) {
-            postScript = actionScript;
-        } else {
-            postScript = "actionInvokeHandler(this);";
-        }
-
-        if (includeDirtyCheckScript) {
-            this.setOnClickScript(
-                    "e.preventDefault(); if (checkDirty(e) == false) { " + prefixScript + postScript + " ; } ");
-        } else {
-            this.setOnClickScript("e.preventDefault();" + prefixScript + postScript);
-        }
     }
 
     /**
@@ -249,6 +238,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Name of the method that should be called when the action is selected
+     *
      * <p>
      * For a server side call (clientSideCall is false), gives the name of the
      * method in the mapped controller that should be invoked when the action is
@@ -273,6 +263,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Label text for the action
+     *
      * <p>
      * The label text is used by the template renderers to give a human readable
      * label for the action. For buttons this generally is the button text,
@@ -324,6 +315,7 @@ public class Action extends ContentElementBase {
      * <code>NavigationGroup</code, the navigate to page id can be set to
      * configure the page that should be navigated to when the action is
      * selected
+     *
      * <p>
      * Support exists in the <code>UifControllerBase</code> for handling
      * navigation between pages
@@ -373,10 +365,12 @@ public class Action extends ContentElementBase {
 
     /**
      * Parameters that should be sent when the action is invoked
+     *
      * <p>
      * Action renderer will decide how the parameters are sent for the action
      * (via script generated hiddens, or script parameters, ...)
      * </p>
+     *
      * <p>
      * Can be set by other components such as the <code>CollectionGroup</code>
      * to provide the context the action is in (such as the collection name and
@@ -529,13 +523,16 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Client side javascript to be executed when this actionField is clicked.
+     * Client side javascript to be executed when this actionField is clicked
+     *
+     * <p>
      * This overrides the default action for this Action so the method
      * called must explicitly submit, navigate, etc. through js, if necessary.
      * In addition, this js occurs AFTER onClickScripts set on this field, it
      * will be the last script executed by the click event. Sidenote: This js is
      * always called after hidden actionParameters and methodToCall methods are
      * written by the js to the html form.
+     * </p>
      *
      * @return the actionScript
      */

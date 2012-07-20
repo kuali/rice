@@ -47,8 +47,8 @@
     </property>
     <property name="scriptFiles">
       <list>
-        <!--<value>krad/scripts/krad_2.2.0.min.js</value>-->
-        <!-- For Debugging, uncomment out the values below (and comment out the minimized js above) -->
+        <!--<value>krad/scripts/krad_2.2.0.js</value>-->
+         <!--For Debugging, uncomment out the values below (and comment out the minimized js above) -->
         <value>krad/plugins/jquery/jquery-1.7.2.js</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.js</value>
         <value>krad/plugins/cookie/jquery.cookie.js</value>

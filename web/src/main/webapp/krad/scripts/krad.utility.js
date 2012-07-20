@@ -69,7 +69,7 @@ function publishHeight() {
 function getContext() {
     var context;
     if (top == self) {
-        context = jq;
+        context = jQuery;
     }
     else {
         context = parent.jQuery;
@@ -417,16 +417,17 @@ function occursBefore(name1, name2) {
 /**
  * Validate dirty fields on the form
  *
- * <p>Whenever the user clicks on the action field which has action methods set to <code>REFRESH,NAVIGATE,CANCEL,CLOSE</code>,
- * form dirtyness is checked. It checks for any input elements which has "dirty" class. If present, it pops a message to
- * the user to confirm whether they want to stay on the page or want to navigate.
+ * <p>Whenever the user clicks on the action field which navigates away from the page,
+ * form dirtyness is checked. It checks for any input elements which has "dirty" class. If present,
+ * it pops a message to the user to confirm whether they want to stay on the page or want to navigate.
  * </p>
- * @param event
- * @returns true if the form has dirty fields
+ *
+ * @param event - the event which triggered the action
+ * @returns true if the form has dirty fields, false if not
  */
 function checkDirty(event) {
-    var validateDirty = jQuery("[name='validateDirty']").val()
-    var dirty = jQuery(".uif-field").find("input.dirty")
+    var validateDirty = jQuery("#validateDirty").val();
+    var dirty = jQuery("." + kradVariables.FIELD_CLASS).find("input." + kradVariables.DIRTY_CLASS);
 
     if (validateDirty == "true" && dirty.length > 0) {
         var answer = confirm("Form has unsaved data. Do you want to leave anyway?")
@@ -434,7 +435,7 @@ function checkDirty(event) {
             event.preventDefault();
             event.stopImmediatePropagation();
 
-            //Change the current nav button class to 'current' if user doesn't wants to leave the page
+            // change the current nav button class to 'current' if user doesn't wants to leave the page
             var ul = jQuery("#" + event.target.id).closest("ul");
             if (ul.length > 0) {
                 var pageId = jQuery("[name='view.currentPageId']").val();
@@ -445,16 +446,18 @@ function checkDirty(event) {
                     jQuery("#" + ul.attr("id")).selectMenuItem({selectPage:pageId});
                 }
             }
+
             return true;
         }
     }
+
     return false;
 }
+
 /**
  * Test utility function. Returns a true or a false depending on the passed in parameter
  * @param var1
  */
-
 function returnBoolean(var1) {
     var x = var1;
     alert('Value:' + x);

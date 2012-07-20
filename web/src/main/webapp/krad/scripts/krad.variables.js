@@ -59,6 +59,7 @@ KradVariables.prototype = {
      INFO_MESSAGE_ITEM_CLASS : "uif-infoMessageItem-field",
      INPUT_FIELD_CLASS : "uif-inputField",
      INPUT_FIELD_SELECTOR : "[data-role:'InputField']",
+     KUALI_FORM : "kualiForm",
      MESSAGE_COUNT_CLASS : "uif-messageCount",
      NAVIGATION_MENU_CLASS : "uif-navigationMenu",
      PAGE_CONTENT_HEADER_CLASS : "Uif-PageContentWrapper",

@@ -34,8 +34,10 @@ var infoImage;
 var detailsOpenImage;
 var detailsCloseImage;
 var ajaxReturnHandlers = {};
-//Map of componentIds and refreshTimers
+
+// map of componentIds and refreshTimers
 var refreshTimerComponentMap = {};
+
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
     setPageBreadcrumb();
@@ -74,8 +76,8 @@ jQuery(document).ready(function () {
     initFieldHandlers();
 
     // initialize the handlers for the ajax calls
-    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler,
-        "update-view": updateViewHandler, "redirect": redirectHandler};
+    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component":updateComponentHandler,
+        "update-view":updateViewHandler, "redirect":redirectHandler};
 });
 
 /**
@@ -105,7 +107,7 @@ function initFieldHandlers() {
             function (event) {
                 var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
                 var data = jQuery("#" + fieldId).data("validationMessages");
-                if(data && data.useTooltip){
+                if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
                     var tooltipElement = this;
@@ -147,7 +149,7 @@ function initFieldHandlers() {
             function (event) {
                 var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
                 var data = jQuery("#" + fieldId).data("validationMessages");
-                if(data && data.useTooltip){
+                if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
                     //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
@@ -177,7 +179,7 @@ function initFieldHandlers() {
 
                 //keep track of what errors it had on initial focus
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                if(data && data.errors){
+                if (data && data.errors) {
                     data.focusedErrors = data.errors;
                 }
 
@@ -197,7 +199,7 @@ function initFieldHandlers() {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
                 var hadError = false;
-                if (data && data.focusedErrors){
+                if (data && data.focusedErrors) {
                     hadError = data.focusedErrors.length;
                 }
                 var valid = true;
@@ -238,7 +240,7 @@ function initFieldHandlers() {
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                if(data){
+                if (data) {
                     data.fieldModified = true;
                     jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
                 }
@@ -349,7 +351,7 @@ function initBubblePopups() {
             + " label, .uif-tooltip").CreateBubblePopup(
             {   manageMouseEvents:false,
                 themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
-            } );
+            });
 }
 
 function hideBubblePopups() {
@@ -374,12 +376,12 @@ function setupPage(validate) {
 
     //select current page
     var pageId = jQuery("[name='view.currentPageId']").val();
-    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage : pageId});
-    jQuery("ul.uif-tabMenu").selectTab({selectPage : pageId});
+    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage:pageId});
+    jQuery("ul.uif-tabMenu").selectTab({selectPage:pageId});
 
     //skip input field iteration and validation message writing, if no server messages
     var hasServerMessagesData = jQuery("[data-type='Page']").data("server-messages");
-    if(hasServerMessagesData){
+    if (hasServerMessagesData) {
         //Handle messages at field, if any
         jQuery("[data-role='InputField']").each(function () {
             var id = jQuery(this).attr('id');
@@ -392,19 +394,21 @@ function setupPage(validate) {
     }
 
     //focus on pageValidation header if there are messages on this page
-    if(jQuery(".uif-pageValidationHeader").length){
+    if (jQuery(".uif-pageValidationHeader").length) {
         jQuery(".uif-pageValidationHeader").focus();
     }
 
-    //Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
-    jQuery(window).bind('beforeunload', function (evt) {
-        var validateDirty = jQuery("[name='validateDirty']").val();
-        if (validateDirty == "true") {
-            var dirty = jQuery(".uif-field").find("input.dirty");
+    // make sure form doesn't have any unsaved data when user clicks on any other portal links,
+    // closes browser or presses fwd/back browser button
+    jQuery(window).bind('beforeunload', function (event) {
+        // methodToCall check is needed to skip form posts
+        var methodToCall = jQuery("[name='methodToCall']").val();
+        if (!methodToCall) {
+            var dirty = checkDirty(event);
 
-            //methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
-            var methodToCall = jQuery("[name='methodToCall']").val();
-            if (dirty.length > 0 && methodToCall == null) {
+            // prompt does not come through in checkDirty since we are unloaded, so we
+            // need to return the question
+            if (dirty) {
                 return "Form has unsaved data. Do you want to leave anyway?";
             }
         }

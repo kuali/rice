@@ -54,100 +54,72 @@ public class UifFormBase implements ViewModel {
     private static final long serialVersionUID = 8432543267099454434L;
 
     // current view
-
     protected String viewId;
-
     protected String viewName;
-
     protected ViewType viewTypeName;
-
     protected String pageId;
-
     protected String methodToCall;
-
     protected String formKey;
 
     @SessionTransient
     protected String jumpToId;
-
     @SessionTransient
     protected String jumpToName;
-
     @SessionTransient
     protected String focusId;
 
     protected String formPostUrl;
 
     protected String state;
-
     protected boolean defaultsApplied;
-
-    protected boolean validateDirty;
-
     protected boolean renderedInLightBox;
 
     @SessionTransient
     protected String growlScript;
-
     @SessionTransient
     protected String lightboxScript;
 
     protected View view;
-
     protected View postedView;
 
     protected Map<String, String> viewRequestParameters;
-
     protected List<String> readOnlyFieldsList;
-
     protected Map<String, Object> newCollectionLines;
 
     @SessionTransient
     protected Map<String, String> actionParameters;
-
     @SessionTransient
     protected Map<String, Object> clientStateForSyncing;
-
     @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
-
     private List<Object> addedCollectionItems;
 
     protected MultipartFile attachmentFile;
 
     // navigation
-
     protected String returnLocation;
-
     protected String returnFormKey;
 
     @SessionTransient
     protected boolean ajaxRequest;
-
     @SessionTransient
     protected String ajaxReturnType;
 
-  
     protected History formHistory;
 
     // dialog fields
     @SessionTransient
     protected String dialogExplanation;
-
     @SessionTransient
     protected String dialogResponse;
-
     private DialogManager dialogManager;
 
     @SessionTransient
     protected boolean skipViewInit;
-
     @SessionTransient
     protected boolean requestRedirect;
-
     @SessionTransient
     protected String updateComponentId;
-
     @SessionTransient
     protected boolean renderFullView;
 
@@ -712,31 +684,6 @@ public class UifFormBase implements ViewModel {
      */
     public void setFormHistory(History history) {
         this.formHistory = history;
-    }
-
-    /**
-     * Indicates whether the form should be validated for dirtyness
-     *
-     * <p>
-     * For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
-     * InputFields will be validated on refresh, navigate, cancel or close Action or on form
-     * unload and if dirty, displays a message and user can decide whether to continue with
-     * the action or stay on the form
-     * </p>
-     *
-     * @return boolean true if dirty validation should be enabled
-     */
-    public boolean isValidateDirty() {
-        return this.validateDirty;
-    }
-
-    /**
-     * Setter for dirty validation indicator
-     *
-     * @param validateDirty
-     */
-    public void setValidateDirty(boolean validateDirty) {
-        this.validateDirty = validateDirty;
     }
 
     /**

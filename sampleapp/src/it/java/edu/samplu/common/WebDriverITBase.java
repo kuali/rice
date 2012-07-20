@@ -55,7 +55,7 @@ public abstract class WebDriverITBase {
     @BeforeClass
     public static void createAndStartService() throws Exception {
         String driverParam = System.getProperty("remote.public.driver");
-        if ("chrome".equals(driverParam.toLowerCase())) {
+        if (driverParam != null && "chrome".equals(driverParam.toLowerCase())) {
             if (System.getProperty("webdriver.chrome.driver") == null) {
                 if (System.getProperty("remote.public.chrome") != null) {
                     System.setProperty("webdriver.chrome.driver", System.getProperty("remote.public.chrome"));
@@ -81,7 +81,7 @@ public abstract class WebDriverITBase {
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         // Login
-        driver.get(getTestUrl());
+        driver.get(getBaseUrlString() + getTestUrl());
         driver.findElement(By.name("__login_user")).clear();
         driver.findElement(By.name("__login_user")).sendKeys("admin");
         driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
@@ -94,7 +94,11 @@ public abstract class WebDriverITBase {
      */
     @After
     public void tearDown() throws Exception {
-        driver.quit();
+        if (System.getProperty("remote.driver.dontTearDown") == null ||
+                !"f".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase()) ||
+                !"n".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase())) {
+            driver.quit(); // TODO not tested with chrome, the service stop might need this check too
+        }
     }
 
     /**

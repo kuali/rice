@@ -1609,6 +1609,10 @@
                     friendly fashion. Pending actions are displayed in a list that the super user can 
                     check off and take the actions necessary all at once (see example below). 
                     Before actions can be taken, a annotation must be provided.</para>
+                <para>By default, the new tab will not appear on a document.  
+                    <programlisting>&lt;kul:superUserActions /></programlisting>This needs to be included in the JSP of 
+                    a document for the superuser tab to be shown. The logic for whether it should actually display anything 
+                    is containted inside of this. Developers may also look at KualiMaintenanceDocument.jsp in the Rice code for an example.</para>
                 <figure><title>New Superuser Tab Example</title>
                     <mediaobject>
                         <imageobject>

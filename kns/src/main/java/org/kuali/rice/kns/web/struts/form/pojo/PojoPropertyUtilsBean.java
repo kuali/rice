@@ -682,11 +682,13 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
                     method = bean.getClass().getMethod("is" + next.substring(0, 1).toUpperCase() + next.substring(1), (Class[])null);
                 }
             	try {
-					nestedBean = method.getReturnType().newInstance();
-				} catch (InstantiationException e) {
-					throw new NestedNullException
+                    nestedBean = ObjectUtils.createNewObjectFromClass(method.getReturnType());
+				} catch (RuntimeException e) {
+					NestedNullException nne = new NestedNullException
                     ("Null property value for '" + next +
                     "' on bean class '" + bean.getClass() + "'");
+                    nne.initCause(e);
+                    throw nne;
 				}
             }
             bean = nestedBean;

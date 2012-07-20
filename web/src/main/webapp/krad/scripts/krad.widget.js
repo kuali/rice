@@ -400,6 +400,10 @@ function createDatePicker(controlId, options) {
                     jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = false;
                 });
 
+        //KULRICE-7261 fix date format passed back.  jquery expecting mm-dd-yy
+        if(options.dateFormat=="mm-dd-yy" && jQuery("#" + controlId)[0].getAttribute("value").indexOf("/") != -1  )    {
+            jQuery("#" + controlId).datepicker('setDate', new Date(jQuery("#" + controlId)[0].getAttribute("value")));
+        }
     });
 
     // in order to compensate for jQuery's "Today" functionality (which does not actually return the date to the input box), alter the functionality

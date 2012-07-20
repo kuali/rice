@@ -30,214 +30,226 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 
 import java.util.Iterator;
 
-
 /**
  * Things this test should check:
- * 
+ *
  * 1. presence of a required field value (success) {@link #testPresenceOfRequiredSingleAttributeSuccess()}
- * 2. absence of a required field value (failure) {@link #testAbsenceOfRequiredSingleAttributeFailure()} RequiredSingleAttributeFailure}
+ * 2. absence of a required field value (failure) {@link #testAbsenceOfRequiredSingleAttributeFailure()}
+ * RequiredSingleAttributeFailure}
  * 3. presence of an unrequired field value (success) {@link #testPresenceNotRequiredSingleAttributeSuccess}
  * 4. absence of an unrequired field value (success) {@link #testAbsenceNotRequiredSingleAttributeSuccess}
  * 5. presence of a no constraint field value (success) {@link #testPresenceNoConstraintSingleAttributeSuccess}
  * 6. absence of a no constraint field value (success) {@link #testAbsenceNoConstraintSingleAttributeSuccess}
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExistenceConstraintProcessorTest {
 
-	private AttributeDefinition cityRequiredDefinition;
-	private AttributeDefinition countryNotRequiredDefinition;
-	private AttributeDefinition countryNoConstraintDefinition;
-	private ExistenceConstraintProcessor processor;
-	
-	private Address noPostalCodeOrCityAddress = new Address("893 Presidential Ave", "Suite 800", "", "", "12340", "USA", null);
-	private Address noPostalCodeAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "USA", null);
-	private Address noPostalCodeOrCountryAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "", null);
-	
-	
-	@Before
-	public void setUp() throws Exception {
-		cityRequiredDefinition = new AttributeDefinition() {
+    private AttributeDefinition cityRequiredDefinition;
+    private AttributeDefinition countryNotRequiredDefinition;
+    private AttributeDefinition countryNoConstraintDefinition;
+    private ExistenceConstraintProcessor processor;
 
-			@Override
-			public DataType getDataType() {
-				return null;
-			}
+    private Address noPostalCodeOrCityAddress = new Address("893 Presidential Ave", "Suite 800", "", "", "12340", "USA",
+            null);
+    private Address noPostalCodeAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "12340",
+            "USA", null);
+    private Address noPostalCodeOrCountryAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "",
+            "12340", "", null);
 
-			@Override
-			public String getLabel() {
-				return "City";
-			}
+    @Before
+    public void setUp() throws Exception {
+        cityRequiredDefinition = new AttributeDefinition() {
 
-			@Override
-			public String getName() {
-				return "city";
-			}
+            @Override
+            public String getLabel() {
+                return "City";
+            }
 
-			@Override
-			public Boolean isRequired() {
-				return Boolean.TRUE;
-			}
-			
-		};
-		
-		countryNotRequiredDefinition  = new AttributeDefinition() {
+            @Override
+            public String getName() {
+                return "city";
+            }
 
-			@Override
-			public DataType getDataType() {
-				return DataType.STRING;
-			}
+            {
+                setDataType((DataType) null);
+                setRequired(true);
+            }
 
-			@Override
-			public String getLabel() {
-				return "Country";
-			}
+        };
 
-			@Override
-			public String getName() {
-				return "country";
-			}
+        countryNotRequiredDefinition = new AttributeDefinition() {
 
-			@Override
-			public Boolean isRequired() {
-				return Boolean.FALSE;
-			}
-			
-		};
-		
-		countryNoConstraintDefinition  = new AttributeDefinition() {
+            @Override
+            public String getLabel() {
+                return "Country";
+            }
 
-			@Override
-			public DataType getDataType() {
-				return DataType.STRING;
-			}
+            @Override
+            public String getName() {
+                return "country";
+            }
 
-			@Override
-			public String getLabel() {
-				return "Country";
-			}
+            {
+                setDataType(DataType.STRING);
+                setRequired(false);
+            }
 
-			@Override
-			public String getName() {
-				return "country";
-			}
+        };
 
-			@Override
-			public Boolean isRequired() {
-				return null;
-			}
-			
-		};
-		
-		processor = new ExistenceConstraintProcessor();
-	}
-	
-	@Test
-	public void testPresenceOfRequiredSingleAttributeSuccess() {
-		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeAddress.getCity(), "org.kuali.rice.kns.datadictionary.validation.MockAddress", "city", cityRequiredDefinition);
-		Object value = attributeValueReader.getValue();
-		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
-		// This means that we do track everything above and including 'ok' results
-		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, cityRequiredDefinition, attributeValueReader).getFirstConstraintValidationResult();
-		
-		// Make sure that the constraint we were looking for got run
-		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
-		// Make sure that it's status is OK
-		Assert.assertEquals(ErrorLevel.OK, constraintValidationResult.getStatus());
-		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
-	}
-	
-	@Test
-	public void testAbsenceOfRequiredSingleAttributeFailure() {
-		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeOrCityAddress.getCity(), "org.kuali.rice.kns.datadictionary.validation.MockAddress", "city", cityRequiredDefinition);
-		Object value = attributeValueReader.getValue();
-		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, cityRequiredDefinition, attributeValueReader).getFirstConstraintValidationResult();
-		
-		// Make sure that the constraint we were looking for got run
-		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
-		// Make sure that it's status is ERROR
-		Assert.assertEquals(ErrorLevel.ERROR, constraintValidationResult.getStatus());
-		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
-		Assert.assertEquals(RiceKeyConstants.ERROR_REQUIRED, constraintValidationResult.getErrorKey());
-		
-		// Make sure that the iterator works too
-		int countConstraints = 0;
-    	if (dictionaryValidationResult.getNumberOfErrors() > 0) {
-	    	for (Iterator<ConstraintValidationResult> iterator = dictionaryValidationResult.iterator() ; iterator.hasNext() ;) {
-	    		ConstraintValidationResult r = iterator.next();
-	    		if (r.getStatus().getLevel() >= ErrorLevel.WARN.getLevel()) 
-	    			countConstraints++;		
-	    	}
-    	}
-    	Assert.assertEquals(1, countConstraints);
-	}
-	
-	@Test
-	public void testPresenceNotRequiredSingleAttributeSuccess() {
-		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeAddress.getCountry(), "org.kuali.rice.kns.datadictionary.validation.MockAddress", "country", countryNotRequiredDefinition);
-		Object value = attributeValueReader.getValue();
-		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
-		// This means that we do track everything above and including 'ok' results
-		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNotRequiredDefinition, attributeValueReader).getFirstConstraintValidationResult();
-		
-		// Make sure that the constraint we were looking for got run
-		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
-		// Make sure that it's status is OK
-		Assert.assertEquals(ErrorLevel.INAPPLICABLE, constraintValidationResult.getStatus());
-		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
-	}
-	
-	@Test
-	public void testAbsenceNotRequiredSingleAttributeSuccess() {
-		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeOrCountryAddress.getCountry(), "org.kuali.rice.kns.datadictionary.validation.MockAddress", "country", countryNotRequiredDefinition);
-		Object value = attributeValueReader.getValue();
-		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
-		// This means that we do track everything above and including 'ok' results
-		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNotRequiredDefinition, attributeValueReader).getFirstConstraintValidationResult();
-		
-		// Make sure that the constraint we were looking for got run
-		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
-		// Make sure that it's status is OK
-		Assert.assertEquals(ErrorLevel.INAPPLICABLE, constraintValidationResult.getStatus());
-		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
-	}
-	
-	
-	@Test
-	public void testPresenceNoConstraintSingleAttributeSuccess() {
-		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeAddress.getCountry(), "org.kuali.rice.kns.datadictionary.validation.MockAddress", "country", countryNoConstraintDefinition);
-		Object value = attributeValueReader.getValue();
-		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
-		// This means that we do track everything above and including 'ok' results
-		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNoConstraintDefinition, attributeValueReader).getFirstConstraintValidationResult();
-		
-		// Make sure that the constraint we were looking for got run
-		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
-		// Make sure that it's status is OK
-		Assert.assertEquals(ErrorLevel.NOCONSTRAINT, constraintValidationResult.getStatus());
-		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
-	}
-	
-	@Test
-	public void testAbsenceNoConstraintSingleAttributeSuccess() {
-		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeOrCountryAddress.getCountry(), "org.kuali.rice.kns.datadictionary.validation.MockAddress", "country", countryNoConstraintDefinition);
-		Object value = attributeValueReader.getValue();
-		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
-		// This means that we do track everything above and including 'ok' results
-		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNoConstraintDefinition, attributeValueReader).getFirstConstraintValidationResult();
-		
-		// Make sure that the constraint we were looking for got run
-		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
-		// Make sure that it's status is OK
-		Assert.assertEquals(ErrorLevel.NOCONSTRAINT, constraintValidationResult.getStatus());
-		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
-	}
-	
-	
+        countryNoConstraintDefinition = new AttributeDefinition() {
+
+            @Override
+            public String getLabel() {
+                return "Country";
+            }
+
+            @Override
+            public String getName() {
+                return "country";
+            }
+
+            {
+                setDataType(DataType.STRING);
+                setRequired(null);
+            }
+
+        };
+
+        processor = new ExistenceConstraintProcessor();
+    }
+
+    @Test
+    public void testPresenceOfRequiredSingleAttributeSuccess() {
+        AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeAddress.getCity(),
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", "city", cityRequiredDefinition);
+        Object value = attributeValueReader.getValue();
+        DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
+        // This means that we do track everything above and including 'ok' results
+        dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
+        ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value,
+                cityRequiredDefinition.getSimpleConstraint(), attributeValueReader)
+                .getFirstConstraintValidationResult();
+
+        // Make sure that the constraint we were looking for got run
+        Assert.assertEquals(new ExistenceConstraintProcessor().getName(),
+                constraintValidationResult.getConstraintName());
+        // Make sure that it's status is OK
+        Assert.assertEquals(ErrorLevel.OK, constraintValidationResult.getStatus());
+        Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+    }
+
+    @Test
+    public void testAbsenceOfRequiredSingleAttributeFailure() {
+        AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeOrCityAddress.getCity(),
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", "city", cityRequiredDefinition);
+        Object value = attributeValueReader.getValue();
+        DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
+        ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value,
+                cityRequiredDefinition.getSimpleConstraint(), attributeValueReader)
+                .getFirstConstraintValidationResult();
+
+        // Make sure that the constraint we were looking for got run
+        Assert.assertEquals(new ExistenceConstraintProcessor().getName(),
+                constraintValidationResult.getConstraintName());
+        // Make sure that it's status is ERROR
+        Assert.assertEquals(ErrorLevel.ERROR, constraintValidationResult.getStatus());
+        Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+        Assert.assertEquals(RiceKeyConstants.ERROR_REQUIRED, constraintValidationResult.getErrorKey());
+
+        // Make sure that the iterator works too
+        int countConstraints = 0;
+        if (dictionaryValidationResult.getNumberOfErrors() > 0) {
+            for (Iterator<ConstraintValidationResult> iterator = dictionaryValidationResult.iterator();
+                 iterator.hasNext(); ) {
+                ConstraintValidationResult r = iterator.next();
+                if (r.getStatus().getLevel() >= ErrorLevel.WARN.getLevel()) {
+                    countConstraints++;
+                }
+            }
+        }
+        Assert.assertEquals(1, countConstraints);
+    }
+
+    @Test
+    public void testPresenceNotRequiredSingleAttributeSuccess() {
+        AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeAddress.getCountry(),
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", "country", countryNotRequiredDefinition);
+        Object value = attributeValueReader.getValue();
+        DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
+        // This means that we do track everything above and including 'ok' results
+        dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
+        ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value,
+                countryNotRequiredDefinition.getSimpleConstraint(), attributeValueReader)
+                .getFirstConstraintValidationResult();
+
+        // Make sure that the constraint we were looking for got run
+        Assert.assertEquals(new ExistenceConstraintProcessor().getName(),
+                constraintValidationResult.getConstraintName());
+        // Make sure that it's status is OK
+        Assert.assertEquals(ErrorLevel.INAPPLICABLE, constraintValidationResult.getStatus());
+        Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+    }
+
+    @Test
+    public void testAbsenceNotRequiredSingleAttributeSuccess() {
+        AttributeValueReader attributeValueReader = new SingleAttributeValueReader(
+                noPostalCodeOrCountryAddress.getCountry(), "org.kuali.rice.kns.datadictionary.validation.MockAddress",
+                "country", countryNotRequiredDefinition);
+        Object value = attributeValueReader.getValue();
+        DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
+        // This means that we do track everything above and including 'ok' results
+        dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
+        ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value,
+                countryNotRequiredDefinition.getSimpleConstraint(), attributeValueReader)
+                .getFirstConstraintValidationResult();
+
+        // Make sure that the constraint we were looking for got run
+        Assert.assertEquals(new ExistenceConstraintProcessor().getName(),
+                constraintValidationResult.getConstraintName());
+        // Make sure that it's status is OK
+        Assert.assertEquals(ErrorLevel.INAPPLICABLE, constraintValidationResult.getStatus());
+        Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+    }
+
+    @Test
+    public void testPresenceNoConstraintSingleAttributeSuccess() {
+        AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeAddress.getCountry(),
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", "country", countryNoConstraintDefinition);
+        Object value = attributeValueReader.getValue();
+        DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
+        // This means that we do track everything above and including 'ok' results
+        dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
+        ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value,
+                countryNoConstraintDefinition.getSimpleConstraint(), attributeValueReader)
+                .getFirstConstraintValidationResult();
+
+        // Make sure that the constraint we were looking for got run
+        Assert.assertEquals(new ExistenceConstraintProcessor().getName(),
+                constraintValidationResult.getConstraintName());
+        // Make sure that it's status is OK
+        Assert.assertEquals(ErrorLevel.NOCONSTRAINT, constraintValidationResult.getStatus());
+        Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+    }
+
+    @Test
+    public void testAbsenceNoConstraintSingleAttributeSuccess() {
+        AttributeValueReader attributeValueReader = new SingleAttributeValueReader(
+                noPostalCodeOrCountryAddress.getCountry(), "org.kuali.rice.kns.datadictionary.validation.MockAddress",
+                "country", countryNoConstraintDefinition);
+        Object value = attributeValueReader.getValue();
+        DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
+        // This means that we do track everything above and including 'ok' results
+        dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
+        ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value,
+                countryNoConstraintDefinition.getSimpleConstraint(), attributeValueReader)
+                .getFirstConstraintValidationResult();
+
+        // Make sure that the constraint we were looking for got run
+        Assert.assertEquals(new ExistenceConstraintProcessor().getName(),
+                constraintValidationResult.getConstraintName());
+        // Make sure that it's status is OK
+        Assert.assertEquals(ErrorLevel.NOCONSTRAINT, constraintValidationResult.getStatus());
+        Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+    }
 }

@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ExistenceConstra
 import org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.CaseConstraintResolver;
@@ -50,8 +51,8 @@ public class AttributeDefinitionConstraintProvider extends BaseConstraintProvide
 	@Override
 	public void init() {
 		resolverMap = new HashMap<String, ConstraintResolver<AttributeDefinition>>();
+        resolverMap.put(SimpleConstraint.class.getName(), new SimpleConstraintResolver<AttributeDefinition>());
 		resolverMap.put(CaseConstraint.class.getName(), new CaseConstraintResolver<AttributeDefinition>());
-		resolverMap.put(ExistenceConstraint.class.getName(), new DefinitionConstraintResolver<AttributeDefinition>());
 		resolverMap.put(DataTypeConstraint.class.getName(), new DefinitionConstraintResolver<AttributeDefinition>());
 		resolverMap.put(LengthConstraint.class.getName(), new DefinitionConstraintResolver<AttributeDefinition>());
 		resolverMap.put(ValidCharactersConstraint.class.getName(), new ValidCharactersConstraintResolver<AttributeDefinition>());

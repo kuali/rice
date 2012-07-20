@@ -23,10 +23,8 @@ import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
-import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.PrerequisiteConstrainable;
-import org.kuali.rice.krad.datadictionary.validation.capability.RangeConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
@@ -76,9 +74,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable,
-                                                     MustOccurConstrainable, LengthConstrainable, RangeConstrainable,
-                                                     ValidCharactersConstrainable {
+public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -3703656713706343840L;
 
     // constraint variables
@@ -132,13 +128,15 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         super.performInitialization(view, model);
 
         if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
-                constraintMessage == null)) {
+                constraintMessage
+                        == null)) {
             constraintMessage = ComponentFactory.getConstraintMessage();
             view.assignComponentIds(constraintMessage);
         }
 
         if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
-                instructionalMessage == null)) {
+                instructionalMessage
+                        == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
             view.assignComponentIds(instructionalMessage);
         }
@@ -436,6 +434,31 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // options
         if (getOptionsFinder() == null) {
             setOptionsFinder(attributeDefinition.getOptionsFinder());
+        }
+
+        //Copy over simple constraint information because we cannot directly use simpleConstraint from
+        //attributeDefinition because the settings in InputField take precedence
+        if (this.getSimpleConstraint().getConstraintStateOverrides() == null) {
+            this.getSimpleConstraint().setConstraintStateOverrides(
+                    attributeDefinition.getSimpleConstraint().getConstraintStateOverrides());
+        }
+
+        if (this.getSimpleConstraint().getStates().isEmpty()) {
+            this.getSimpleConstraint().setStates(attributeDefinition.getSimpleConstraint().getStates());
+        }
+
+        if (this.getSimpleConstraint().getLabelKey() == null) {
+            this.getSimpleConstraint().setLabelKey(attributeDefinition.getSimpleConstraint().getLabelKey());
+        }
+
+        if (this.getSimpleConstraint().getApplyClientSide() == null) {
+            this.getSimpleConstraint().setApplyClientSide(
+                    attributeDefinition.getSimpleConstraint().getApplyClientSide());
+        }
+
+        if (this.getSimpleConstraint().getValidationMessageParams() == null) {
+            this.getSimpleConstraint().setValidationMessageParams(
+                    attributeDefinition.getSimpleConstraint().getValidationMessageParams());
         }
     }
 
@@ -814,7 +837,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the maximum length of the input field
      */
-    @Override
     public Integer getMaxLength() {
         return simpleConstraint.getMaxLength();
     }
@@ -840,7 +862,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the minimum length of the input field
      */
-    @Override
     public Integer getMinLength() {
         return simpleConstraint.getMinLength();
     }
@@ -884,7 +905,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the exclusive minimum numeric value of the input field
      */
-    @Override
     public String getExclusiveMin() {
         return simpleConstraint.getExclusiveMin();
     }
@@ -912,7 +932,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the inclusive maximum numeric value of the input field
      */
-    @Override
     public String getInclusiveMax() {
         return simpleConstraint.getInclusiveMax();
     }
@@ -1013,7 +1032,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return
      */
-    @Override
     public DataType getDataType() {
         return this.simpleConstraint.getDataType();
     }

@@ -161,12 +161,12 @@ public class RangeConstraintProcessorTest {
 	}
 	
 	
-	private ConstraintValidationResult process(Object object, String attributeName, RangeConstrainable definition) {
+	private ConstraintValidationResult process(Object object, String attributeName, AttributeDefinition definition) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
 		
 		Object value = attributeValueReader.getValue();
-		return processor.process(dictionaryValidationResult, value, definition, attributeValueReader).getFirstConstraintValidationResult();
+		return processor.process(dictionaryValidationResult, value, definition.getSimpleConstraint(), attributeValueReader).getFirstConstraintValidationResult();
 	}
-	
+
 }

@@ -32,11 +32,13 @@ import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstraina
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.PrerequisiteConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.RangeConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.LookupConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.control.Control;
@@ -52,20 +54,16 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, Formatable, HierarchicallyConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
+public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, Formatable, HierarchicallyConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -2490613377818442742L;
 
     protected Boolean forceUppercase = Boolean.FALSE;
 
     protected DataType dataType;
 
-    protected Integer minLength;
-    protected Integer maxLength;
     protected Boolean unique;
 
-    protected String exclusiveMin;
-    protected String inclusiveMax;
-
+    //These are deprecated DO NOT USE with new KRAD implementations
     @Deprecated
     protected ValidationPattern validationPattern;
 
@@ -81,7 +79,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 
     protected Boolean dynamic;
 
-    // KS-style constraints
+    // KRAD constraints
     protected String customValidatorClass;
     protected ValidCharactersConstraint validCharactersConstraint;
     protected CaseConstraint caseConstraint;
@@ -129,9 +127,8 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMaxLength()
      */
-    @Override
     public Integer getMaxLength() {
-        return maxLength;
+        return this.getSimpleConstraint().getMaxLength();
     }
 
     /**
@@ -140,15 +137,14 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param maxLength
      */
     public void setMaxLength(Integer maxLength) {
-        this.maxLength = maxLength;
+        this.getSimpleConstraint().setMaxLength(maxLength);
     }
 
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getExclusiveMin()
      */
-    @Override
     public String getExclusiveMin() {
-        return exclusiveMin;
+        return this.getSimpleConstraint().getExclusiveMin();
     }
 
     /**
@@ -157,15 +153,14 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param exclusiveMin - minimum allowed value
      */
     public void setExclusiveMin(String exclusiveMin) {
-        this.exclusiveMin = exclusiveMin;
+        this.getSimpleConstraint().setExclusiveMin(exclusiveMin);
     }
 
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getInclusiveMax()
      */
-    @Override
     public String getInclusiveMax() {
-        return inclusiveMax;
+        return this.getSimpleConstraint().getInclusiveMax();
     }
 
     /**
@@ -174,7 +169,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param inclusiveMax - max allowed value
      */
     public void setInclusiveMax(String inclusiveMax) {
-        this.inclusiveMax = inclusiveMax;
+        this.getSimpleConstraint().setInclusiveMax(inclusiveMax);
     }
 
     /**
@@ -236,8 +231,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     public void setValidationPattern(ValidationPattern validationPattern) {
         this.validationPattern = validationPattern;
-
-        // TODO: JLR - need to recreate this functionality using the ValidCharsConstraint logic
     }
 
     /**
@@ -357,6 +350,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
     @Override
+    @Deprecated
     public void completeValidation(Class<?> rootObjectClass, Class<?> otherObjectClass) {
         try {
             if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
@@ -486,9 +480,8 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMinLength()
      */
-    @Override
     public Integer getMinLength() {
-        return this.minLength;
+        return this.getSimpleConstraint().getMinLength();
     }
 
     /**
@@ -497,26 +490,25 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param minLength
      */
     public void setMinLength(Integer minLength) {
-        this.minLength = minLength;
+        this.getSimpleConstraint().setMinLength(minLength);
     }
 
     /**
      * @return the dataType
      */
-    @Override
     public DataType getDataType() {
-        return this.dataType;
+        return simpleConstraint.getDataType();
     }
 
     /**
      * @param dataType the dataType to set
      */
     public void setDataType(DataType dataType) {
-        this.dataType = dataType;
+        simpleConstraint.setDataType(dataType);
     }
 
     public void setDataType(String dataType) {
-        this.dataType = DataType.valueOf(dataType);
+        simpleConstraint.setDataType(DataType.valueOf(dataType));
     }
 
     /**
@@ -689,4 +681,5 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
         this.dependencyConstraints = dependencyConstraints;
     }
+
 }

@@ -224,6 +224,17 @@
     <property name="description" value="state" />
     <property name="minLength" value="1" />
     <property name="maxLength" value="36" />
+    <property name="simpleConstraint">
+      <bean parent="SimpleConstraint">
+        <property name="minLength" value="1"/>
+        <property name="maxLength" value="36" />
+        <property name="constraintStateOverrides">
+          <list>
+            <bean parent="SimpleConstraint" p:required="true" p:minLength="2" p:maxLength="2" p:states="state5"/>
+          </list>
+        </property>
+      </bean>
+    </property>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" />
     </property>

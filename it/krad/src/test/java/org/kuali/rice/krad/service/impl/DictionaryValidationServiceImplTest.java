@@ -668,6 +668,48 @@ public class DictionaryValidationServiceImplTest {
 
     }
 
+    @Test
+    public void testStateValidationSimpleConstraintWithOverrides(){
+        Address testAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA",
+                        null);
+
+        testAddress.setValidationState("state1");
+        DictionaryValidationResult dictionaryValidationResult = service.validate(testAddress,
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+        Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+
+        //36 length should apply at state1
+        testAddress.setState("1234567890123456789012345678901234567");
+        dictionaryValidationResult = service.validate(testAddress,
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+        Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+        
+        //correct format for state at state5
+        testAddress.setValidationState("state5");
+        testAddress.setState("DC");
+        dictionaryValidationResult = service.validate(testAddress,
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+        Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+        
+        //state is required at state5 should have error
+        testAddress.setState("");
+        dictionaryValidationResult = service.validate(testAddress,
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+        Assert.assertEquals(2, dictionaryValidationResult.getNumberOfErrors());
+
+        //too long
+        testAddress.setState("fff");
+        dictionaryValidationResult = service.validate(testAddress,
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+        Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+
+        //too short
+        testAddress.setState("f");
+        dictionaryValidationResult = service.validate(testAddress,
+                "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+        Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+    }
+
     /**
      * checks whether a {@link DictionaryValidationResult} contains errors for a named attribute
      *

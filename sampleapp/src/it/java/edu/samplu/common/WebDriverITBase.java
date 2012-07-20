@@ -16,15 +16,18 @@
 
 package edu.samplu.common;
 
-import com.thoughtworks.selenium.Selenium;
-import junit.framework.Assert;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -40,6 +43,7 @@ public abstract class WebDriverITBase {
     int SHORT_IMPLICIT_WAIT_TIME = 1;
 
     public WebDriver driver;
+    static ChromeDriverService chromeDriverService;
 
     /**
      * Returns the URL to be used with this test
@@ -48,6 +52,24 @@ public abstract class WebDriverITBase {
      */
     public abstract String getTestUrl();
 
+    @BeforeClass
+    public static void createAndStartService() throws Exception {
+        String driverParam = System.getProperty("remote.public.driver");
+        if ("chrome".equals(driverParam.toLowerCase())) {
+            if (System.getProperty("webdriver.chrome.driver") == null) {
+                if (System.getProperty("remote.public.chrome") != null) {
+                    System.setProperty("webdriver.chrome.driver", System.getProperty("remote.public.chrome"));
+                }
+            }
+            ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
+                    .usingChromeDriverExecutable(new File(System.getProperty("remote.public.chrome")))
+                    .usingAnyFreePort()
+                    .build();
+            chromeDriverService.start();
+        }
+    }
+
+
     /**
      * Setup the WebDriver test, login and load the tested web page
      *
@@ -55,9 +77,7 @@ public abstract class WebDriverITBase {
      */
     @Before
     public void setUp() throws Exception {
-        FirefoxProfile profile = new FirefoxProfile();
-        profile.setEnableNativeEvents(false);
-        driver = new FirefoxDriver(profile);
+        driver = getWebDriver();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         // Login
@@ -75,6 +95,18 @@ public abstract class WebDriverITBase {
     @After
     public void tearDown() throws Exception {
         driver.quit();
+    }
+
+    /**
+     * Tear down the WebDriver test
+     *
+     * @throws Exception
+     */
+    @AfterClass
+    public static void stopService() throws Exception {
+        if (chromeDriverService != null) {
+            chromeDriverService.stop();
+        }
     }
 
     /**
@@ -140,4 +172,17 @@ public abstract class WebDriverITBase {
         }
         return baseUrl;
     }
+
+    public WebDriver getWebDriver() {
+        String driverParam = System.getProperty("remote.public.driver");
+        if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
+            FirefoxProfile profile = new FirefoxProfile();
+            profile.setEnableNativeEvents(false);
+            return new FirefoxDriver(profile);
+        } else if ("chrome".equalsIgnoreCase(driverParam)) {
+            return new ChromeDriver();
+        }
+        return null;
+    }
 }
+

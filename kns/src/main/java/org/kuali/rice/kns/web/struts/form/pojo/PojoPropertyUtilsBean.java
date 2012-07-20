@@ -24,9 +24,17 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.beanutils.WrapDynaBean;
+import org.apache.commons.beanutils.expression.DefaultResolver;
+import org.apache.commons.beanutils.expression.Resolver;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
+import org.apache.ojb.broker.metadata.ClassDescriptor;
+import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
+import org.apache.ojb.broker.metadata.CollectionDescriptor;
+import org.apache.ojb.broker.metadata.DescriptorRepository;
+import org.apache.ojb.broker.metadata.MetadataManager;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.IndexedPropertyDescriptor;
@@ -36,6 +44,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +59,39 @@ import java.util.Map;
 public class PojoPropertyUtilsBean extends PropertyUtilsBean {
 
     public static final Logger LOG = Logger.getLogger(PojoPropertyUtilsBean.class.getName());
+
+    /**
+     * Thin interface for determining the appropriate item class for a collection property
+     */
+    public static interface CollectionItemClassProvider {
+        public Class getCollectionItemClass(Object bean, String property);
+    }
+
+    /**
+     * CollectionItemClassProvider backed by OJB metadata
+     */
+    public static class OJBCollectionItemClassProvider implements CollectionItemClassProvider {
+        @Override
+        public Class getCollectionItemClass(Object bean, String property) {
+            MetadataManager metadataManager = MetadataManager.getInstance();
+            DescriptorRepository descriptorRepository = metadataManager.getGlobalRepository();
+            try {
+                ClassDescriptor classDescriptor = descriptorRepository.getDescriptorFor(bean.getClass());
+                if (classDescriptor != null) {
+                    CollectionDescriptor refDescriptor = classDescriptor.getCollectionDescriptorByName(property);
+                    if (refDescriptor != null) {
+                        return refDescriptor.getItemClass();
+                    }
+                }
+            } catch (ClassNotPersistenceCapableException cnpce) {
+                // consume and return null
+            }
+            return null;
+        }
+    }
+
+    // default is to consult OJB
+    protected CollectionItemClassProvider collectionItemClassProvider = new OJBCollectionItemClassProvider();
 
 	// begin Kuali Foundation modification
     public PojoPropertyUtilsBean() {
@@ -219,6 +261,50 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         }
         // removed commented code
         // end Kuali Foundation modification
+    }
+
+    /**
+     * Customization of superclass getNestedProperty which transparently creates indexed property items
+     * {@inheritDoc}
+     */
+    public Object getIndexedProperty(Object bean, String name, int index) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        try {
+            return super.getIndexedProperty(bean, name, index);
+        } catch (IndexOutOfBoundsException ioobe) {
+            return generateIndexedProperty(bean, name, index, ioobe);
+        }
+    }
+
+    protected Object generateIndexedProperty(Object nestedBean, String property, int index, IndexOutOfBoundsException ioobe)  throws IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
+
+        if (!(nestedBean instanceof PersistableBusinessObject)) throw ioobe;
+
+        // we can only grow lists
+        if (!List.class.isAssignableFrom(getPropertyType(nestedBean, property))) throw ioobe;
+
+        List list= (List) getProperty(nestedBean, property);
+
+        Class c = collectionItemClassProvider.getCollectionItemClass(nestedBean, property);
+
+        if (c == null) {
+            throw new RuntimeException("Unable to determined item class for collection '" + property + "' on bean of type '" + nestedBean.getClass() + "'");
+        }
+
+        Object value;
+        try {
+            value = c.newInstance();
+        } catch (InstantiationException ie) {
+            throw new RuntimeException("Error instantiating item class: " + c);
+        }
+
+        // fill any missing indices
+        while (list.size() <= index) {
+            list.add(null);
+        }
+        list.set(index, value);
+
+        return super.getIndexedProperty(nestedBean, property, index);
     }
 
     // begin Kuali Foundation modification

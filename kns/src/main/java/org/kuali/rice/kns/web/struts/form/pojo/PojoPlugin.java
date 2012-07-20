@@ -41,10 +41,7 @@ import java.util.logging.Logger;
 public class PojoPlugin implements PlugIn {
     static final Logger logger = Logger.getLogger(PojoPlugin.class.getName());
 
-    public PojoPlugin() {
-    }
-
-    public void init(ActionServlet servlet, ModuleConfig config) throws ServletException {
+    public static void initBeanUtils() {
         // begin Kuali Foundation modification
         ConvertUtilsBean convUtils = new ConvertUtilsBean();
         PropertyUtilsBean propUtils = new PojoPropertyUtilsBean();
@@ -53,6 +50,13 @@ public class PojoPlugin implements PlugIn {
         BeanUtilsBean.setInstance(pojoBeanUtils);
         logger.fine("Initialized BeanUtilsBean with " + pojoBeanUtils);
         // end Kuali Foundation modification
+    }
+
+    public PojoPlugin() {
+    }
+
+    public void init(ActionServlet servlet, ModuleConfig config) throws ServletException {
+        initBeanUtils();
     }
 
     public void destroy() {

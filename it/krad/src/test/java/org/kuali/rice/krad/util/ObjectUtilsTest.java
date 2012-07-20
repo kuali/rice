@@ -17,12 +17,20 @@ package org.kuali.rice.krad.util;
 
 import org.junit.Test;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
+import org.kuali.rice.kns.web.struts.form.pojo.PojoPlugin;
+import org.kuali.rice.kns.web.struts.form.pojo.PojoPropertyUtilsBean;
+import org.kuali.rice.krad.bo.DocumentAttachment;
+import org.kuali.rice.krad.bo.MultiDocumentAttachment;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.test.KRADTestCase;
 
-import static org.junit.Assert.assertFalse;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static org.junit.Assert.*;
 
 /**
  * ObjectUtilsTest
@@ -75,4 +83,26 @@ public class ObjectUtilsTest extends KRADTestCase {
 			attributeDefinition.setFormatterClass(formatterClass.getName());
 		}
 	}
+
+    @Test
+    public void testMissingNestedObjectCreation() throws Exception {
+        PojoPlugin.initBeanUtils();
+        MaintenanceDocumentBase m = new MaintenanceDocumentBase();
+        m.setAttachments(new ArrayList<MultiDocumentAttachment>());
+        assertNotNull(m.getAttachments());
+        Object o = ObjectUtils.getPropertyValue(m, "attachments[0]");
+        assertNotNull(o);
+        assertTrue(o instanceof MultiDocumentAttachment);
+    }
+
+    @Test
+    public void testInvalidOJBCollection() {
+        // abcd is not a collection (or any other) property
+        assertNull(new PojoPropertyUtilsBean.OJBCollectionItemClassProvider().getCollectionItemClass(new MaintenanceDocumentBase(), "abcd"));
+        // attachment is a valid property, but not a collection
+        assertNull(new PojoPropertyUtilsBean.OJBCollectionItemClassProvider().getCollectionItemClass(new MaintenanceDocumentBase(), "attachment"));
+        // attachmentContent is an array
+        assertNull(new PojoPropertyUtilsBean.OJBCollectionItemClassProvider().getCollectionItemClass(new DocumentAttachment(), "attachmentContent"));
+    }
+
 }

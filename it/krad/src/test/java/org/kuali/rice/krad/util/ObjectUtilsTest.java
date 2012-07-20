@@ -28,7 +28,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.test.KRADTestCase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -98,11 +97,11 @@ public class ObjectUtilsTest extends KRADTestCase {
     @Test
     public void testInvalidOJBCollection() {
         // abcd is not a collection (or any other) property
-        assertNull(new PojoPropertyUtilsBean.OJBCollectionItemClassProvider().getCollectionItemClass(new MaintenanceDocumentBase(), "abcd"));
+        assertNull(new PojoPropertyUtilsBean.PersistenceStructureServiceProvider().getCollectionItemClass(new MaintenanceDocumentBase(), "abcd"));
         // attachment is a valid property, but not a collection
-        assertNull(new PojoPropertyUtilsBean.OJBCollectionItemClassProvider().getCollectionItemClass(new MaintenanceDocumentBase(), "attachment"));
+        assertNull(new PojoPropertyUtilsBean.PersistenceStructureServiceProvider().getCollectionItemClass(new MaintenanceDocumentBase(), "attachment"));
         // attachmentContent is an array
-        assertNull(new PojoPropertyUtilsBean.OJBCollectionItemClassProvider().getCollectionItemClass(new DocumentAttachment(), "attachmentContent"));
+        assertNull(new PojoPropertyUtilsBean.PersistenceStructureServiceProvider().getCollectionItemClass(new DocumentAttachment(), "attachmentContent"));
     }
 
 }

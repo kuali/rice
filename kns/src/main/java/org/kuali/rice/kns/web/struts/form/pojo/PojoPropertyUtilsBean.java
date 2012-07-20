@@ -24,8 +24,6 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.beanutils.WrapDynaBean;
-import org.apache.commons.beanutils.expression.DefaultResolver;
-import org.apache.commons.beanutils.expression.Resolver;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
@@ -35,6 +33,8 @@ import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.IndexedPropertyDescriptor;
@@ -44,7 +44,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,28 +69,24 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
     /**
      * CollectionItemClassProvider backed by OJB metadata
      */
-    public static class OJBCollectionItemClassProvider implements CollectionItemClassProvider {
+    public static class PersistenceStructureServiceProvider implements CollectionItemClassProvider {
+        protected static PersistenceStructureService persistenceStructureService = null;
+        protected static PersistenceStructureService getPersistenceStructureService() {
+            if (persistenceStructureService == null) {
+                persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
+            }
+            return persistenceStructureService;
+        }
+
         @Override
         public Class getCollectionItemClass(Object bean, String property) {
-            MetadataManager metadataManager = MetadataManager.getInstance();
-            DescriptorRepository descriptorRepository = metadataManager.getGlobalRepository();
-            try {
-                ClassDescriptor classDescriptor = descriptorRepository.getDescriptorFor(bean.getClass());
-                if (classDescriptor != null) {
-                    CollectionDescriptor refDescriptor = classDescriptor.getCollectionDescriptorByName(property);
-                    if (refDescriptor != null) {
-                        return refDescriptor.getItemClass();
-                    }
-                }
-            } catch (ClassNotPersistenceCapableException cnpce) {
-                // consume and return null
-            }
-            return null;
+            Map<String, Class> collectionObjectTypes = getPersistenceStructureService().listCollectionObjectTypes(bean.getClass());
+            return collectionObjectTypes.get(property);
         }
     }
 
     // default is to consult OJB
-    protected CollectionItemClassProvider collectionItemClassProvider = new OJBCollectionItemClassProvider();
+    protected static CollectionItemClassProvider collectionItemClassProvider = new PersistenceStructureServiceProvider();
 
 	// begin Kuali Foundation modification
     public PojoPropertyUtilsBean() {

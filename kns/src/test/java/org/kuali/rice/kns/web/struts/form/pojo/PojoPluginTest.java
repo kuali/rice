@@ -21,10 +21,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.krad.bo.DocumentAttachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
+import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -109,8 +112,19 @@ public class PojoPluginTest {
     @Test
     public void testUndefinedOJBClass() {
         final Object notAnOjbObject = new HashMap();
-        // OJB should not be loaded in unit tests so this should result in a null return value
-        assertNull(new PojoPropertyUtilsBean.OJBCollectionItemClassProvider().getCollectionItemClass(notAnOjbObject, "abcd"));
+        // stub out the persistence service
+        PojoPropertyUtilsBean.PersistenceStructureServiceProvider.persistenceStructureService =
+                (PersistenceStructureService) Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                        new Class[] { PersistenceStructureService.class },
+                        new InvocationHandler() {
+                            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                                if ("listCollectionObjectTypes".equals(method.getName())) {
+                                    return new HashMap();
+                                }
+                                return null;
+                            }
+                        });
+        assertNull(new PojoPropertyUtilsBean.PersistenceStructureServiceProvider().getCollectionItemClass(notAnOjbObject, "abcd"));
     }
 
     /**

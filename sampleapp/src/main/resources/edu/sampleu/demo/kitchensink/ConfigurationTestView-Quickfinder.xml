@@ -46,10 +46,9 @@
           </property>
         </bean>
         <bean parent="GenericTextField" p:label="Lookup"
-              p:instructionalText="TravelAccounts lookup (subsidized percent should be read only)"
+              p:instructionalText="TravelAccounts lookup (account number should NOT be read only)"
               p:propertyName="field90">
           <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
-          <property name="quickfinder.readOnlySearchFields" value="subsidizedPercent"/>
           <property name="quickfinder.fieldConversions">
             <map>
               <entry key="number" value="field90" />

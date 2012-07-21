@@ -779,8 +779,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * Validates using the defined AttributeValueReader (which allows access the object being validated) against
-     * the validationState and stateMapping (if specified).  If state information is null,
-     * validates the constraints as stateless (ie all constraints apply regardless of their states attribute).
+     * the validationState and stateMapping (if specified).
+     *
+     * <p>If state information is null, validates the constraints as stateless (ie all constraints apply regardless of
+     * their states attribute).</p>
      *
      * @param valueReader - an object to validate
      * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values
@@ -990,6 +992,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+     * Validates the attribute specified by definition
+     *
      * @param definition -   the constrainable attribute definition of a specific attribute name
      * @throws AttributeValidationException
      * @see #validateAttribute(DictionaryValidationResult, AttributeValueReader, boolean) for the other parameters

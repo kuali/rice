@@ -113,9 +113,10 @@ public interface DictionaryValidationService {
             boolean doOptionalProcessing);
 
     /**
-     * Validates the object agains the next state (or current state if there is no next state).  When
-     * no stateMapping exists on the DataDictionaryEntry that applies for this object, validation is considered
-     * stateless and all constraints are processed regardless of their states attribute.
+     * Validates the object agains the next state (or current state if there is no next state).
+     *
+     * <p>When no stateMapping exists on the DataDictionaryEntry that applies for this object, validation is considered
+     * stateless and all constraints are processed regardless of their states attribute.</p>
      *
      * @param object
      * @return the dictionary validation result object associated with this validation

@@ -137,10 +137,20 @@ public class Address {
 		this.effectiveDate = effectiveDate;
 	}
 
+    /**
+     * Validation state of the address object for testing
+     *
+     * @return validation state
+     */
     public String getValidationState() {
         return validationState;
     }
 
+    /**
+     * Validation state
+     *
+     * @param validationState validation state
+     */
     public void setValidationState(String validationState) {
         this.validationState = validationState;
     }

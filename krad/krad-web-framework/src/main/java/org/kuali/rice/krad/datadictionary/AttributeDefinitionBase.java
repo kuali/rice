@@ -166,10 +166,20 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         this.displayLabelAttribute = displayLabelAttribute;
     }
 
+    /**
+     * Gets the SimpleConstraint which contains settings for required, min, max, minLength, and maxLength.
+     *
+     * @return SimpleConstraint object
+     */
     public SimpleConstraint getSimpleConstraint() {
         return simpleConstraint;
     }
 
+    /**
+     * Sets the SimpleConstraint which contains settings for required, min, max, minLength, and maxLength.
+     *
+     * @param simpleConstraint
+     */
     public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
         this.simpleConstraint = simpleConstraint;
     }

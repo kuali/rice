@@ -133,16 +133,18 @@ public class GroupValidationMessages extends ValidationMessages {
     }
 
     /**
-     * Collects all the ids from the items passed into this method.  Puts the ids of items determined to be sections
+     * Collects all the ids from the items passed into this method.
+     *
+     * <p>Puts the ids of items determined to be sections
      * into the sectionIds list, and orders all items by the order they appear on the page in the order list with
      * special identifiers
      * to determine the type of item they are (used by the client js).  When skipSections is true do not
-     * include sectionIds found in the lists.
+     * include sectionIds found in the lists.</p>
      *
-     * @param items
-     * @param sectionIds
-     * @param order
-     * @param skipSections
+     * @param items items of the group
+     * @param sectionIds list to put section ids into
+     * @param order list to put order of ids into (both fields and sections)
+     * @param skipSections skip adding sections
      */
     protected void collectIdsFromItems(List<? extends Component> items, List<String> sectionIds, List<String> order,
             boolean skipSections) {
@@ -198,6 +200,11 @@ public class GroupValidationMessages extends ValidationMessages {
     }
 
     /**
+     * If true, the error messages will display the an InputField's title
+     * alongside the error, warning, and info messages related to it. This
+     * setting has no effect on messages which do not relate directly to a
+     * single InputField.
+     *
      * @param displayFieldLabelWithMessages the displayFieldLabelWithMessages to set
      */
     public void setDisplayFieldLabelWithMessages(boolean displayFieldLabelWithMessages) {

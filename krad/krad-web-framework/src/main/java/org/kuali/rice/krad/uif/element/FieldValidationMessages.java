@@ -54,6 +54,7 @@ public class FieldValidationMessages extends ValidationMessages{
     /**
      * When true, use the tooltip on fields to display their relevant messages.  When false, these messages
      * will appear directly below the control.
+     *
      * @return true if using tooltips for messages, false to display below control
      */
     public boolean isUseTooltip() {
@@ -62,6 +63,7 @@ public class FieldValidationMessages extends ValidationMessages{
 
     /**
      * Set the useTooltip flag
+     *
      * @param useTooltip - if true show tooltip, otherwise show messages below field control
      */
     public void setUseTooltip(boolean useTooltip) {

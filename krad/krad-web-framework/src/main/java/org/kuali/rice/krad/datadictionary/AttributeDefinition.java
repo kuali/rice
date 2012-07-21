@@ -674,10 +674,20 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         return this.alternateDisplayAttributeName;
     }
 
+    /**
+     * Gets dependency constraints for this AttributeDefinition.  Same as getPrerequisiteConstraints.
+     *
+     * @return dependency constraints
+     */
     public List<PrerequisiteConstraint> getDependencyConstraints() {
         return dependencyConstraints;
     }
 
+    /**
+     * Sets dependency constraints for this AttributeDefinition.  Same as setPrerequisiteConstraints.
+     *
+     * @param dependencyConstraints dependency constraints
+     */
     public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
         this.dependencyConstraints = dependencyConstraints;
     }

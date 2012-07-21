@@ -139,10 +139,18 @@ public class UITestObject implements Serializable {
         this.remoteFieldValuesMap = remoteFieldValuesMap;
     }
 
+    /**
+     * boolean field
+     *
+     * @return bField
+     */
     public boolean isBfield() {
         return bfield;
     }
 
+    /**
+     * @param bfield boolean field
+     */
     public void setBfield(boolean bfield) {
         this.bfield = bfield;
     }

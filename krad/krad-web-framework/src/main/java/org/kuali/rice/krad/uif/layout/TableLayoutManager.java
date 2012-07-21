@@ -40,6 +40,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Layout manager that works with {@code CollectionGroup} components and
@@ -1033,7 +1034,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (getRowDetailsGroup() != null && this.getRichTable() != null && this.getRichTable().isRender()) {
             this.getRowDetailsGroup().setHidden(true);
             FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
-            detailsFieldGroup.setDataRoleAttribute("detailsFieldGroup");
+            TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
+            dataAttributes.put("detailsFieldGroup", "detailsFieldGroup");
+            detailsFieldGroup.setDataAttributes(dataAttributes);
             Action rowDetailsAction = ComponentFactory.getActionLink();
             rowDetailsAction.addStyleClass("uif-detailsAction");
             view.assignComponentIds(rowDetailsAction);
@@ -1056,7 +1059,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             List<Component> detailsItems = new ArrayList<Component>();
 
             detailsItems.add(rowDetailsAction);
-            this.getRowDetailsGroup().setDataRoleAttribute("details");
+            dataAttributes = new TreeMap<String, String>();
+            dataAttributes.put("dataRoleAttribute", "details");
+            this.getRowDetailsGroup().setDataAttributes(dataAttributes);
             detailsItems.add(getRowDetailsGroup());
             detailsFieldGroup.setItems(detailsItems);
             view.assignComponentIds(detailsFieldGroup);

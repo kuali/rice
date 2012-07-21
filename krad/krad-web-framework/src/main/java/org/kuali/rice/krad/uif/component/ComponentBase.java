@@ -137,10 +137,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private List<PropertyReplacer> propertyReplacers;
     
     private Map<String,String> dataAttributes;
-    private String dataRoleAttribute;
-    private String dataTypeAttribute;
-    private String dataMetaAttribute;
-
     private int refreshTimer;
 
     public ComponentBase() {
@@ -1508,60 +1504,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         if (StringUtils.isNotBlank(value)) {
             addDataAttribute(key, value);
         }
-    }
-
-    /**
-     * The data role - used as a html5 data attribute (data-role) to specify the role
-     *
-     * @return the data role attribute value
-     */
-    public String getDataRoleAttribute() {
-        return dataRoleAttribute;
-    }
-
-    /**
-     * Set the value of data-role attribute
-     *
-     * @param dataRoleAttribute the data role value
-     */
-    public void setDataRoleAttribute(String dataRoleAttribute) {
-        this.dataRoleAttribute = dataRoleAttribute;
-    }
-
-    /**
-     * The data type - used as a html5 data attribute (data-type)
-     *
-     * @return the data type attribute value
-     */
-    public String getDataTypeAttribute() {
-        return dataTypeAttribute;
-    }
-
-    /**
-     * Set the value of data-type attribute
-     *
-     * @param dataTypeAttribute the data type value
-     */
-    public void setDataTypeAttribute(String dataTypeAttribute) {
-        this.dataTypeAttribute = dataTypeAttribute;
-    }
-
-    /**
-     * The data meta - used as a html5 data attribute (data-meta) for custom information
-     *
-     * @return the data meta attribute value
-     */
-    public String getDataMetaAttribute() {
-        return dataMetaAttribute;
-    }
-
-    /**
-     * Set the value of data-meta attribute
-     *
-     * @param dataMetaAttribute the data meta value
-     */
-    public void setDataMetaAttribute(String dataMetaAttribute) {
-        this.dataMetaAttribute = dataMetaAttribute;
     }
 
     /**

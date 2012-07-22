@@ -52,6 +52,7 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
@@ -1711,13 +1712,57 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
 
         if (StringUtils.isNotBlank(roleResponsibilityAction.getId())
-                && getBusinessObjectService().findByPrimaryKey
-                (RoleResponsibilityActionBo.class, Collections.singletonMap("id", roleResponsibilityAction.getId()))  != null) {
+                && getRoleResponsibilityActionBo(roleResponsibilityAction.getId()) != null) {
             throw new RiceIllegalStateException("the roleResponsibilityAction to create already exists: " + roleResponsibilityAction);
         }
 
         RoleResponsibilityActionBo bo = RoleResponsibilityActionBo.from(roleResponsibilityAction);
         return RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
+    }
+
+    /**
+     * Queues ActionRequest refresh/regeneration for RoleResponsbilityAction change
+     * @param bo the changed or deleted RoleResponsibilityActionBo
+     */
+    protected void updateActionRequestsForRoleResponsibilityActionChange(RoleResponsibilityActionBo bo) {
+        RoleResponsibilityBo rr = bo.getRoleResponsibility();
+        if (rr != null) {
+            getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(Collections.singleton(rr.getResponsibilityId()));
+        }
+    }
+
+    @Override
+    public RoleResponsibilityAction updateRoleResponsibilityAction(RoleResponsibilityAction roleResponsibilityAction)
+            throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(roleResponsibilityAction, "roleResponsibilityAction");
+
+        if (StringUtils.isBlank(roleResponsibilityAction.getId()) || getRoleResponsibilityActionBo(roleResponsibilityAction.getId()) == null) {
+            throw new RiceIllegalStateException("the roleResponsibilityAction to create does not exist: " + roleResponsibilityAction);
+        }
+
+        RoleResponsibilityActionBo bo = RoleResponsibilityActionBo.from(roleResponsibilityAction);
+        roleResponsibilityAction = RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
+
+        // update action requests
+        updateActionRequestsForRoleResponsibilityActionChange(bo);
+
+        return roleResponsibilityAction;
+    }
+
+    @Override
+    public void deleteRoleResponsibilityAction(String roleResponsibilityActionId)
+            throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(roleResponsibilityActionId, "roleResponsibilityActionId");
+
+        RoleResponsibilityActionBo bo = getRoleResponsibilityActionBo(roleResponsibilityActionId);
+        if (StringUtils.isBlank(roleResponsibilityActionId) || bo == null) {
+            throw new RiceIllegalStateException("the roleResponsibilityAction to delete does not exist: " + roleResponsibilityActionId);
+        }
+
+        getBusinessObjectService().delete(bo);
+
+        // update action requests
+        updateActionRequestsForRoleResponsibilityActionChange(bo);
     }
 
     @Override

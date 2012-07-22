@@ -83,6 +83,14 @@ abstract class RoleServiceBase {
     }
 
     /**
+     * Explicitly sets the BusinessObjectService to use. For testability.
+     * @param bos the BusinessObjectService to use
+     */
+    void setBusinessObjectService(BusinessObjectService bos) {
+        businessObjectService = bos;
+    }
+
+    /**
      * Converts the Qualifier Name/Value Role qualification set into Qualifier AttributeID/Value set
      *
      * @param qualification The original role qualification attribute set
@@ -201,6 +209,18 @@ abstract class RoleServiceBase {
 
         return getBusinessObjectService().findByPrimaryKey(RoleMemberBo.class, Collections.singletonMap(
                KimConstants.PrimaryKeyConstants.ID, roleMemberId));
+    }
+
+    /**
+     * Retrieves a RoleResponsibilityActionBo object by its ID.
+     */
+    protected RoleResponsibilityActionBo getRoleResponsibilityActionBo(String roleResponsibilityActionId) {
+        if (StringUtils.isBlank(roleResponsibilityActionId)) {
+            return null;
+        }
+
+        return getBusinessObjectService().findByPrimaryKey(RoleResponsibilityActionBo.class, Collections.singletonMap(
+                KimConstants.PrimaryKeyConstants.ID, roleResponsibilityActionId));
     }
 
     /**

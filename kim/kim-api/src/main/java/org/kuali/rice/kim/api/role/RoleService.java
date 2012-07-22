@@ -715,6 +715,31 @@ public interface RoleService {
     RoleResponsibilityAction createRoleResponsibilityAction(@WebParam(name = "roleResponsibilityAction") RoleResponsibilityAction roleResponsibilityAction) throws RiceIllegalArgumentException;
 
     /**
+     * Updates the given RoleResponsibilityAction to the values in the passed in roleResponsibilityAction
+     *
+     * @since 2.1.2
+     * @param roleResponsibilityAction the new RoleResponsibilityAction to save.
+     * @return RoleResponsibilityAction as updated.
+     * @throws RiceIllegalArgumentException if roleResponsibilityAction is null.
+     * @throws RiceIllegalStateException if roleResponsibilityAction does not exist.
+     */
+    @WebMethod(operationName = "updateRoleResponsibilityAction")
+    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    RoleResponsibilityAction updateRoleResponsibilityAction(@WebParam(name = "roleResponsibilityAction") RoleResponsibilityAction roleResponsibilityAction) throws RiceIllegalArgumentException;
+
+    /**
+     * Deletes the given RoleResponsibilityAction
+     *
+     * @since 2.1.2
+     * @param roleResponsibilityActionId id of the RoleResponsibilityAction to delete.
+     * @throws RiceIllegalArgumentException if roleResponsibilityActionId is null.
+     * @throws RiceIllegalStateException if roleResponsibilityAction does not exist.
+     */
+    @WebMethod(operationName = "deleteRoleResponsibilityAction")
+    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    void deleteRoleResponsibilityAction(@WebParam(name = "roleResponsibilityActionId") String roleResponsibilityActionId) throws RiceIllegalArgumentException;
+
+    /**
      * Creates a new DelegateType.  Needs to be passed a valid DelegateType
      * object that does not currently exist.
      *

@@ -67,29 +67,29 @@ public class LocationModuleService extends ModuleServiceBase {
 
     public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass, Map<String, Object> fieldValues) {
         if(CampusEbo.class.isAssignableFrom(businessObjectClass)){
-            if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)){
+            if(isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)){
                 Campus campus = getCampusService().getCampus((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
                 return (T) CampusBo.from(campus);
             }
         } else if(StateEbo.class.isAssignableFrom(businessObjectClass)){
-            if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)) {
+            if(isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
+                    && isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)) {
                 State state = getStateService().getState((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
                 return (T) StateBo.from(state);
             }
         } else if(CountryEbo.class.isAssignableFrom(businessObjectClass)){
-            if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)) {
+            if(isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)) {
                 Country country = getCountryService().getCountry((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
                 return (T) CountryBo.from(country);
             }
         } else if (CountyEbo.class.isAssignableFrom(businessObjectClass)) {
-            if (fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.STATE_CODE)) {
+            if (isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)
+                    && isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
+                    && isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.STATE_CODE)) {
                 County county = getCountyService().getCounty((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.STATE_CODE), (String) fieldValues.get(
@@ -106,8 +106,8 @@ public class LocationModuleService extends ModuleServiceBase {
                 return (T) countyBo;
             }
         } else if (PostalCodeEbo.class.isAssignableFrom(businessObjectClass)) {
-            if (fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)) {
+            if (isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)
+                    && isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)) {
                 PostalCode postalCode = getPostalCodeService().getPostalCode((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));

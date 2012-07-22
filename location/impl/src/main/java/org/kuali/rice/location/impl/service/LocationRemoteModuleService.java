@@ -65,29 +65,29 @@ public class LocationRemoteModuleService extends RemoteModuleServiceBase {
 
     public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass, Map<String, Object> fieldValues) {
         if(CampusContract.class.isAssignableFrom(businessObjectClass)){
-            if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)){
+            if(isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)){
                 Campus campus = getCampusService().getCampus((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
                 return (T) CampusBo.from(campus);
             }
         } else if(StateContract.class.isAssignableFrom(businessObjectClass)){
-            if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)) {
+            if(isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
+                    && isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)) {
                 State state = getStateService().getState((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
                 return (T) StateBo.from(state);
             }
         } else if(CountryContract.class.isAssignableFrom(businessObjectClass)){
-            if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)) {
+            if(isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)) {
                 Country country = getCountryService().getCountry((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
                 return (T) CountryBo.from(country);
             }
         } else if (CountyContract.class.isAssignableFrom(businessObjectClass)) {
-            if (fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.STATE_CODE)) {
+            if (isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)
+                    && isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
+                    && isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.STATE_CODE)) {
                 County county = getCountyService().getCounty((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.STATE_CODE), (String) fieldValues.get(
@@ -95,8 +95,8 @@ public class LocationRemoteModuleService extends RemoteModuleServiceBase {
                 return (T)CountyBo.from(county);
             }
         } else if (PostalCodeContract.class.isAssignableFrom(businessObjectClass)) {
-            if (fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)) {
+            if (isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)
+                    && isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)) {
                 PostalCode postalCode = getPostalCodeService().getPostalCode((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
@@ -196,7 +196,7 @@ public class LocationRemoteModuleService extends RemoteModuleServiceBase {
             }
             return (List<T>)postalCodeEbos;
         }
-        // otherwise, use the default implementation
+        // Not responsible for other types -- so return empty list?
         return Collections.emptyList();
 
     }

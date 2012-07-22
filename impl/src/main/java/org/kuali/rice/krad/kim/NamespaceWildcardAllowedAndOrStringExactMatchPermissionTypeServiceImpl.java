@@ -108,8 +108,12 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 		// Check if "namespaceCode" is one of the permission detail values.
 		if (attributes.containsKey(NAMESPACE_CODE)) {
 			nonNamespaceCodeAttributes.remove(NAMESPACE_CODE);
-            final Namespace namespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(attributes.get(NAMESPACE_CODE));
-			if (namespace != null) {
+
+            final Namespace namespace =
+                    StringUtils.isBlank(attributes.get(NAMESPACE_CODE)) ?
+                            null : CoreServiceApiServiceLocator.getNamespaceService().getNamespace(attributes.get(NAMESPACE_CODE));
+
+            if (namespace != null) {
 			    errors.addAll(super.validateReferencesExistAndActive(kimType, Collections.singletonMap(NAMESPACE_CODE,
                         namespace.getCode()), previousValidationErrors));
 			} else {

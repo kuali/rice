@@ -71,15 +71,26 @@ public class KEWModuleService extends ModuleServiceBase {
 	@Override
 	public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(
 			Class<T> businessObjectClass, Map<String, Object> fieldValues) {
+
 		if(DocumentTypeEBO.class.isAssignableFrom(businessObjectClass)){
-			if ( fieldValues.containsKey( "name" ) ) {
-				return (T) DocumentType.from(getDocumentTypeService().getDocumentTypeByName((String) fieldValues.get("name")));
+
+            org.kuali.rice.kew.api.doctype.DocumentType fetchedDocumentType = null;
+
+            if ( fieldValues.containsKey( "name" ) ) {
+                fetchedDocumentType = getDocumentTypeService().getDocumentTypeByName((String) fieldValues.get("name"));
 			}else if( fieldValues.containsKey( "documentTypeId" ) ){
-				return (T) DocumentType.from(getDocumentTypeService().getDocumentTypeById(fieldValues.get("documentTypeId").toString()));
+                fetchedDocumentType = getDocumentTypeService().getDocumentTypeById(fieldValues.get("documentTypeId").toString());
 			}else if (fieldValues.containsKey( "id" ) ) {
 				// assume it's a string and convert it to a long.
-				return (T) DocumentType.from(getDocumentTypeService().getDocumentTypeById(fieldValues.get("id").toString()));
+                fetchedDocumentType = getDocumentTypeService().getDocumentTypeById(fieldValues.get("id").toString());
 			}
+
+            if (fetchedDocumentType != null) {
+                // convert to EBO
+                return (T) DocumentType.from(fetchedDocumentType);
+            } else {
+                return null;
+            }
 
 		}else if(DocumentSearchCriteriaEbo.class.isAssignableFrom( businessObjectClass )){
 			if ( fieldValues.containsKey( "documentId" ) ) {

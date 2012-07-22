@@ -42,8 +42,8 @@ public class CoreServiceRemoteModuleService extends RemoteModuleServiceBase {
     public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass,
             Map<String, Object> fieldValues) {
         T result = null;
-        if(NamespaceEbo.class.isAssignableFrom(businessObjectClass)){
-            if(fieldValues.containsKey(NAMESPACE_EBO_PK)){
+        if (NamespaceEbo.class.isAssignableFrom(businessObjectClass)) {
+            if(isNonBlankValueForKey(fieldValues, NAMESPACE_EBO_PK)) {
                 Namespace namespace = getNamespaceService().getNamespace((String)fieldValues.get(NAMESPACE_EBO_PK));
                 result = (T) NamespaceBo.from(namespace);
             }

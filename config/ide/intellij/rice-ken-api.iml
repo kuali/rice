@@ -13,7 +13,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/wsdl" />
     </content>
     <orderEntry type="inheritedJdk" />

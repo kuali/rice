@@ -1677,6 +1677,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public static DocumentType from(org.kuali.rice.kew.api.doctype.DocumentTypeContract dt) {
+        if (dt == null) return null;
+
         // DocumentType BO and DTO are not symmetric
         // set what fields we can
         DocumentType ebo = new DocumentType();

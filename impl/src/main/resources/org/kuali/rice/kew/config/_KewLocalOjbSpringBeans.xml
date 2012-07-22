@@ -39,10 +39,6 @@
     <property name="jcdAlias" value="kewDataSource" />
   </bean>
 
-  <bean id="enRuleAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-  
   <bean id="enRuleDelegationDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOOjbImpl" lazy-init="true">
     <property name="jcdAlias" value="kewDataSource" />
   </bean>

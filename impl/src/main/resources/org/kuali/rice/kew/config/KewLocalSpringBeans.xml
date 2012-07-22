@@ -89,14 +89,6 @@
     <property name="responsibilityIdService" ref="enResponsibilityIdService"/>
   </bean>
 
-  <!--  RuleAttributeService -->
-  <bean id="enRuleAttributeService" class="org.kuali.rice.kew.rule.service.impl.RuleAttributeServiceImpl"
-        lazy-init="true">
-    <property name="ruleAttributeDAO">
-      <ref bean="enRuleAttributeDAO"/>
-    </property>
-  </bean>
-
   <!--  RuleTemplateService -->
   <bean id="enRuleTemplateService" class="org.kuali.rice.kew.rule.service.impl.RuleTemplateServiceImpl"
         lazy-init="true">

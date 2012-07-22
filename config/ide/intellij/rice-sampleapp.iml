@@ -78,7 +78,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.2.0-M2-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.2.0-M3-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
     </content>
@@ -211,16 +211,11 @@
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tiles:tiles-core:2.2.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tiles:tiles-api:2.2.2" level="project" />
-    <orderEntry type="library" name="Maven: commons-digester:commons-digester:2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.8" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.8" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: commons-digester:commons-digester:2.0" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kns" />
     <orderEntry type="library" name="Maven: org.apache.struts:struts-core:1.3.10" level="project" />

@@ -72,6 +72,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private List<String> refreshWhenChangedPropertyNames;
     private boolean refreshedByAction;
 
+    private int refreshTimer;
+
     private boolean resetDataOnRefresh;
     private String methodToCallOnRefresh;
 
@@ -137,7 +139,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private List<PropertyReplacer> propertyReplacers;
     
     private Map<String,String> dataAttributes;
-    private int refreshTimer;
 
     public ComponentBase() {
         super();
@@ -867,11 +868,10 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDocumentReadyScript()
      */
     public String getOnDocumentReadyScript() {
-        String onDocScript =  null;
+        String onDocScript =  (null == this.onDocumentReadyScript) ? "" : this.onDocumentReadyScript;
         // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer tp the onDocumentReadyScript.
         // if the refreshTimer property is set then the methodToCallOnRefresh should also be set.
         if(refreshTimer > 0) {
-            onDocScript = (null == this.onDocumentReadyScript) ? "" : this.onDocumentReadyScript;
             onDocScript = "refreshComponentUsingTimer('"+ this.id +"','" + this.methodToCallOnRefresh + "'," + refreshTimer +");" + onDocScript;
         }
         return onDocScript;
@@ -1383,6 +1383,27 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
+     * Time in seconds that the component will be automatically refreshed
+     * <p>
+     *     This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
+     *     When using this property methodToCallOnRefresh and id should also be specified
+     * </p>
+     * @return  refreshTimer
+     */
+    public int getRefreshTimer() {
+        return refreshTimer;
+    }
+
+    /**
+     * Setter for refreshTimer
+     *
+     * @param refreshTimer
+     */
+    public void setRefreshTimer(int refreshTimer) {
+        this.refreshTimer = refreshTimer;
+    }
+
+    /**
      * @see Component#isResetDataOnRefresh()
      */
     public boolean isResetDataOnRefresh() {
@@ -1442,23 +1463,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         return skipInTabOrder;
     }
 
-    /**
-     * Time in seconds that the component will be automatically refreshed.
-     *
-     * @return  refreshTimer
-     */
-    public int getRefreshTimer() {
-        return refreshTimer;
-    }
 
-    /**
-     * Setter for refreshTimer
-     *
-     * @param refreshTimer
-     */
-    public void setRefreshTimer(int refreshTimer) {
-        this.refreshTimer = refreshTimer;
-    }
 
     /**
      * Get the dataAttributes setup for this component - to be written to the html/jQuery data

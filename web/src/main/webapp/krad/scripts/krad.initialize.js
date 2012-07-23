@@ -63,9 +63,13 @@ jQuery(document).ready(function () {
         }
     });
 
-    runHiddenScripts("");
-    jQuery("#" + kradVariables.APP_ID).show();
+    // stop previous loading message
     createLoading(false);
+
+    runHiddenScripts("");
+
+    // show the page
+    jQuery("#" + kradVariables.APP_ID).show();
 
     // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
     jQuery(window).unload(function () {

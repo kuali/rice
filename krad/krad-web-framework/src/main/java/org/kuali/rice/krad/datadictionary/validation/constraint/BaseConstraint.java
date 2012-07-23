@@ -177,31 +177,34 @@ public class BaseConstraint implements Constraint {
      * @param constraintStateOverrides
      */
     public void setConstraintStateOverrides(List<? extends BaseConstraint> constraintStateOverrides) {
-        for(BaseConstraint bc: constraintStateOverrides){
-            if(!bc.getClass().equals(this.getClass())){
-                List<Class<?>> superClasses = new ArrayList<Class<?>>();
-                Class<?> o = bc.getClass();
-                while (o != null && !o.equals(BaseConstraint.class)) {
-                  superClasses.add(o);
-                  o = o.getSuperclass();
-                }
-                
-                List<Class<?>> thisSuperClasses = new ArrayList<Class<?>>();
-                o = this.getClass();
-                while (o != null && !o.equals(BaseConstraint.class)) {
-                  thisSuperClasses.add(o);
-                  o = o.getSuperclass();
-                }
-                superClasses.retainAll(thisSuperClasses);
+        if(constraintStateOverrides != null){
+            for (BaseConstraint bc : constraintStateOverrides) {
+                if (!bc.getClass().equals(this.getClass())) {
+                    List<Class<?>> superClasses = new ArrayList<Class<?>>();
+                    Class<?> o = bc.getClass();
+                    while (o != null && !o.equals(BaseConstraint.class)) {
+                        superClasses.add(o);
+                        o = o.getSuperclass();
+                    }
 
-                if(superClasses.isEmpty()){
-                    throw new RuntimeException("Constraint State Override is not a correct type, type should be " +
-                            this.getClass().toString() + " (or child/parent of that constraint type)");
+                    List<Class<?>> thisSuperClasses = new ArrayList<Class<?>>();
+                    o = this.getClass();
+                    while (o != null && !o.equals(BaseConstraint.class)) {
+                        thisSuperClasses.add(o);
+                        o = o.getSuperclass();
+                    }
+                    superClasses.retainAll(thisSuperClasses);
+
+                    if (superClasses.isEmpty()) {
+                        throw new RuntimeException("Constraint State Override is not a correct type, type should be " +
+                                this.getClass().toString() + " (or child/parent of that constraint type)");
+                    }
                 }
-            }
-            if(bc.getStates().isEmpty()){
-                throw new RuntimeException("Constraint State Overrides MUST declare the states they apply to.  No states"
-                        + "were declared.");
+                if (bc.getStates().isEmpty()) {
+                    throw new RuntimeException(
+                            "Constraint State Overrides MUST declare the states they apply to.  No states"
+                                    + "were declared.");
+                }
             }
         }
         this.constraintStateOverrides = constraintStateOverrides;

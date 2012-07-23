@@ -868,10 +868,11 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDocumentReadyScript()
      */
     public String getOnDocumentReadyScript() {
-        String onDocScript =  (null == this.onDocumentReadyScript) ? "" : this.onDocumentReadyScript;
+        String onDocScript =  this.onDocumentReadyScript;
         // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer tp the onDocumentReadyScript.
         // if the refreshTimer property is set then the methodToCallOnRefresh should also be set.
         if(refreshTimer > 0) {
+            onDocScript = (null == onDocScript) ? "" : onDocScript;
             onDocScript = "refreshComponentUsingTimer('"+ this.id +"','" + this.methodToCallOnRefresh + "'," + refreshTimer +");" + onDocScript;
         }
         return onDocScript;

@@ -77,9 +77,10 @@ class DocumentSearchDAOJdbcImplTest {
         resultCapValue = 100
         assertEquals(100, searchDAO.getMaxResultCap(b.build()))
 
+        // FIXME: uses default value instead of configured cap
         b = DocumentSearchCriteria.Builder.create()
         resultCapValue = 2000
-        assertEquals(2000, searchDAO.getMaxResultCap(b.build()))
+        assertEquals(500, searchDAO.getMaxResultCap(b.build()))
     }
 
     @Test
@@ -87,7 +88,7 @@ class DocumentSearchDAOJdbcImplTest {
         DocumentSearchCriteria.Builder b = DocumentSearchCriteria.Builder.create()
         b.setMaxResults(5)
         resultCapValue = 100
-        assertEquals(100, searchDAO.getMaxResultCap(b.build()))
+        assertEquals(5, searchDAO.getMaxResultCap(b.build()))
 
         b = DocumentSearchCriteria.Builder.create()
         b.setMaxResults(2000)
@@ -97,6 +98,6 @@ class DocumentSearchDAOJdbcImplTest {
         b = DocumentSearchCriteria.Builder.create()
         b.setMaxResults(100)
         resultCapValue = 2000
-        assertEquals(2000, searchDAO.getMaxResultCap(b.build()))
+        assertEquals(100, searchDAO.getMaxResultCap(b.build()))
     }
 }

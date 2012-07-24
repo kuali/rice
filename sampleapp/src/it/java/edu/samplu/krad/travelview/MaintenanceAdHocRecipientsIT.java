@@ -17,19 +17,22 @@ package edu.samplu.krad.travelview;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.WebDriverITBase;
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverBackedSelenium;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.junit.Assert.*;
 
-public class MaintenanceAdHocRecipientsIT {
-    private Selenium selenium;
+public class MaintenanceAdHocRecipientsIT extends UpgradedSeleniumITBase {
 
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+    public String getTestUrl() {
+        return "/portal.do";
     }
 
     @Test
@@ -37,10 +40,6 @@ public class MaintenanceAdHocRecipientsIT {
      * Verify the Ad Hoc Recipients section and fields
      */
     public void testVerifyAdHocRecipients() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("50000");
         selenium.click("link=Travel Account Maintenance (New)");
@@ -67,10 +66,5 @@ public class MaintenanceAdHocRecipientsIT {
         assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']"));
         assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']"));
         assertTrue(selenium.isElementPresent("css=#u700_add"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

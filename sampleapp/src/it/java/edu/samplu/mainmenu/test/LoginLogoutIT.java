@@ -15,44 +15,25 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests that user 'quickstart' can log in and log out
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LoginLogoutIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class LoginLogoutIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
     
     @Test
     public void testBlah() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        selenium.type("name=__login_user", "quickstart");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=Main Menu");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='imageField' and @value='Logout']");
-    }
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }
 

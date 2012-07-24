@@ -18,25 +18,18 @@ package edu.samplu.mainmenu.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests creating and cancelling new and edit Routing Rule Delegation maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesDelegationIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -44,11 +37,6 @@ public class WorkFlowRouteRulesDelegationIT {
      * tests that a new Routing Rule Delegation maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Routing Rules Delegation");
         selenium.waitForPageToLoad("30000");
@@ -78,11 +66,6 @@ public class WorkFlowRouteRulesDelegationIT {
      * tests that a Routing Rule Delegation maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditRouteRulesDelegation() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Routing Rules Delegation");
         selenium.waitForPageToLoad("30000");
@@ -103,10 +86,6 @@ public class WorkFlowRouteRulesDelegationIT {
     
     @Test
     public void testCreateNewRRDTravelRequestDestRouting() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=Routing Rules Delegation");
         selenium.waitForPageToLoad("30000");
         selenium.selectFrame("iframeportlet");
@@ -128,12 +107,5 @@ public class WorkFlowRouteRulesDelegationIT {
         selenium.selectWindow("null");
         selenium.click("xpath=(//input[@name='imageField'])[2]");
         selenium.waitForPageToLoad("30000");
-        
-              
-    }
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

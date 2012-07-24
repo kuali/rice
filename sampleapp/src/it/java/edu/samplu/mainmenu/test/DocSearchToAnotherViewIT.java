@@ -1,10 +1,7 @@
 package edu.samplu.mainmenu.test;
 
-import com.thoughtworks.selenium.*;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-import java.util.regex.Pattern;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -13,14 +10,11 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocSearchToAnotherViewIT {
-    private Selenium selenium;
-
-    @Before
-	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));//"http://dev1.rice.kuali.org/");
-		selenium.start();
-	}
+public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
+    }
 
 	@Test
     /**
@@ -28,11 +22,6 @@ public class DocSearchToAnotherViewIT {
      * and therefore interfere with JS functionality like validation
      */
 	public void testDocSearchToAnotherView() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        selenium.waitForPageToLoad("30000");
-		selenium.type("name=__login_user", "admin");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("30000");
 		selenium.click("css=img[alt=\"doc search\"]");
 		selenium.waitForPageToLoad("30000");
 		selenium.selectFrame("iframeportlet");
@@ -53,10 +42,5 @@ public class DocSearchToAnotherViewIT {
 		selenium.type("id=185", "sample explanation");
 		selenium.click("id=143");
 		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		selenium.stop();
 	}
 }

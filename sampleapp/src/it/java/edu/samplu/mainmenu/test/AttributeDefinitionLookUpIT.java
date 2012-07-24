@@ -16,12 +16,8 @@
 
 package edu.samplu.mainmenu.test;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
 
 
 /**
@@ -29,21 +25,14 @@ import com.thoughtworks.selenium.Selenium;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeDefinitionLookUpIT {
-
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class AttributeDefinitionLookUpIT extends UpgradedSeleniumITBase{
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
     
     @Test
     public void testAttributeDefinitionLookUp() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=Attribute Definition Lookup");
         selenium.waitForPageToLoad("30000");
         selenium.selectFrame("iframeportlet");
@@ -56,10 +45,4 @@ public class AttributeDefinitionLookUpIT {
         selenium.waitForPageToLoad("30000");
         
     }
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-
 }

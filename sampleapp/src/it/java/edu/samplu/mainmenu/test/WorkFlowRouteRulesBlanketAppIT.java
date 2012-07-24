@@ -18,38 +18,23 @@ package edu.samplu.mainmenu.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
 
 /**
  * tests that user 'admin', on blanket approving a new Routing Rule maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesBlanketAppIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
     public void testUntitled() throws Exception {
-        String remotePublicUrl = System.getProperty("remote.public.url");
-        // remove the trailing slash to allow for correction concatenation in locating the lookup buttons below
-        if (StringUtils.endsWith(remotePublicUrl, "/")) {
-            remotePublicUrl = StringUtils.removeEnd(remotePublicUrl, "/");
-        }
-        selenium.open(remotePublicUrl);
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
+        String remotePublicUrl = getBaseUrlString();
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Routing Rules");
@@ -108,10 +93,5 @@ public class WorkFlowRouteRulesBlanketAppIT {
             assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
             assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

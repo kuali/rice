@@ -15,34 +15,23 @@
  */
 package edu.samplu.mainmenu.test;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 import org.junit.Assert;
-
-import com.thoughtworks.selenium.*;
 
 /**
  * tests whether the "Create New Agenda" is working ok 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateNewAgendaIT {
-
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class CreateNewAgendaIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
     public void testCreateNewAgenda() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=Create New Agenda");
         selenium.waitForPageToLoad("30000");
         selenium.selectFrame("iframeportlet");
@@ -133,10 +122,5 @@ public class CreateNewAgendaIT {
         selenium.selectWindow("null");
         selenium.click("xpath=(//input[@name='imageField'])[2]");
         selenium.waitForPageToLoad("30000");
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

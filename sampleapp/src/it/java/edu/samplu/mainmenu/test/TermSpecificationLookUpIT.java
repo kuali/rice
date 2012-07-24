@@ -15,16 +15,10 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests that user 'admin' can display the Term Specification lookup screen, search,
@@ -33,22 +27,14 @@ import com.thoughtworks.selenium.Selenium;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermSpecificationLookUpIT {
-
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class TermSpecificationLookUpIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
     
     @Test
     public void testTermSpecificationLookUp() throws Exception {
-               
-        selenium.open(System.getProperty("remote.public.url"));
-		selenium.type("name=__login_user", "admin");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("30000");
 		selenium.click("link=Term Specification Lookup");
 		selenium.waitForPageToLoad("30000");
 		selenium.selectFrame("iframeportlet");
@@ -59,12 +45,5 @@ public class TermSpecificationLookUpIT {
 		assertTrue(selenium.isTextPresent("cancel"));
 		selenium.click("link=cancel");
 		selenium.waitForPageToLoad("30000");
-        
     }
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-
 }

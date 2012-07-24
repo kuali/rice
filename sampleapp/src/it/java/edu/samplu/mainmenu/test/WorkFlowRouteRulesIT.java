@@ -18,25 +18,18 @@ package edu.samplu.mainmenu.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests creating and cancelling new and edit Routing Rule maintenance screens 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -44,11 +37,6 @@ public class WorkFlowRouteRulesIT {
      * tests that a new Routing Rule maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Routing Rules");
         selenium.waitForPageToLoad("30000");
@@ -70,11 +58,6 @@ public class WorkFlowRouteRulesIT {
      * tests that a Routing Rule maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditRouteRules() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Routing Rules");
         selenium.waitForPageToLoad("30000");
@@ -90,10 +73,5 @@ public class WorkFlowRouteRulesIT {
         selenium.click("methodToCall.processAnswer.button0");
         selenium.waitForPageToLoad("30000");
               
-    }
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

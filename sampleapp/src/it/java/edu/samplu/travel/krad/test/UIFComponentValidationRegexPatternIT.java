@@ -15,10 +15,7 @@
  */
 package edu.samplu.travel.krad.test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,13 +26,10 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UIFComponentValidationRegexPatternIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class UIFComponentValidationRegexPatternIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -48,10 +42,6 @@ public class UIFComponentValidationRegexPatternIT {
          *  
          */
         
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
         selenium.waitForPageToLoad("50000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=KRAD");
@@ -838,11 +828,6 @@ public class UIFComponentValidationRegexPatternIT {
         assertTrue(! selenium.isTextPresent("only 1 alpha character followed by a period and then followed by 1 number (a.8, b.0, etc)"));
     }
 
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-    
     public void clearText(String field) throws Exception {
         selenium.focus(field);
         selenium.type(field, "");  

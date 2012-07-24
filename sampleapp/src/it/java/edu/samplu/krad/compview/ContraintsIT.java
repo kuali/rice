@@ -16,31 +16,18 @@
 
 package edu.samplu.krad.compview;
 
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class ContraintsIT {
-    private Selenium selenium;
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class ContraintsIT extends UpgradedSeleniumITBase {
 
-    @Before
-    public void setUp() throws Exception {
-        WebDriver driver = new FirefoxDriver();
-        selenium = new WebDriverBackedSelenium(driver,
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3");
-
-        // Login
-        selenium.open(
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3");
-        Assert.assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+    @Override
+    public String getTestUrl() {
+        return "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3";
     }
 
     @Test
@@ -329,10 +316,5 @@ public class ContraintsIT {
         selenium.type("name=field33", "");
         selenium.fireEvent("name=field33", "blur");
         Assert.assertTrue(selenium.getAttribute("name=field33@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

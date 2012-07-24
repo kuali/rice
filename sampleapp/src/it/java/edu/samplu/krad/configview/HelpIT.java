@@ -45,7 +45,7 @@ public class HelpIT extends UpgradedSeleniumITBase {
 
     @Override
     public String getTestUrl() {
-        return "kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start";
+        return "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start";
     }
 
     /**

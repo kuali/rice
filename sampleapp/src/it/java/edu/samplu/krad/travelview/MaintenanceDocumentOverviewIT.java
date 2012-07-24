@@ -20,6 +20,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class MaintenanceDocumentOverviewIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {

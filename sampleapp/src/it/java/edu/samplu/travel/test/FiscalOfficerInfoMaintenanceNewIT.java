@@ -17,6 +17,7 @@ package edu.samplu.travel.test;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,21 +29,14 @@ import static org.junit.Assert.assertEquals;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FiscalOfficerInfoMaintenanceNewIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception { 
-        //---- 3rd parameter(*firefox) can also be replaced by *chrome , *googlechrome.
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
-    
+
     @Test
     public void testUntitled() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");     
-        selenium.waitForPageToLoad("50000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("50000");
         selenium.click("//a[@title='FiscalOfficerInfo Maintenance (New)']");
@@ -115,10 +109,5 @@ public class FiscalOfficerInfoMaintenanceNewIT {
         System.out.println("---------------------- :: Test complete :: ----------------------");
         //-----Step 3 verified that doc is final -------//      
      
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

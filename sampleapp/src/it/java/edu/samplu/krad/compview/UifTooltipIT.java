@@ -16,14 +16,9 @@
 
 package edu.samplu.krad.compview;
 
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  * Selenium test that tests that tooltips are rendered on mouse over and focus events
@@ -31,24 +26,15 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifTooltipIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        WebDriver driver = new FirefoxDriver();
-        String baseUrl = "http://localhost:8080/";
-        selenium = new WebDriverBackedSelenium(driver, baseUrl);
+public class UifTooltipIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        // open Other Examples page in kitchen sink view
+        return "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page10";
     }
 
     @Test
     public void testTooltip() throws Exception {
-        // open Other Examples page in kitchen sink view
-        selenium.open(
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page10");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
         // check if tooltip opens on focus
         selenium.fireEvent("name=field1", "focus");
         Assert.assertTrue(selenium.isVisible(
@@ -72,10 +58,4 @@ public class UifTooltipIT {
         Assert.assertFalse(selenium.isVisible(
                 "//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
     }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-
 }

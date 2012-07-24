@@ -17,6 +17,7 @@ package edu.samplu.travel.krad.test;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.junit.After;
@@ -37,15 +38,13 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifDataAttributesIT {
-    private Selenium selenium;
-    private  Log log = LogFactory.getLog(getClass());
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class UifDataAttributesIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
+
+    private  Log log = LogFactory.getLog(getClass());
 
     /**
      * verify that a tag has simple data attributes
@@ -221,10 +220,5 @@ public class UifDataAttributesIT {
             //test that all complex and simple attributes set via the list are in a script
             verifyAllAttributesInScript(tagId, "");
         }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

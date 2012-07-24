@@ -17,6 +17,7 @@ package edu.samplu.travel.krad.test;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,13 +30,10 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WatermarkValidationIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));//was http://localhost:8080/
-        selenium.start();
+public class WatermarkValidationIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -44,10 +42,10 @@ public class WatermarkValidationIT {
      * the scripts will be working ok
      */
     public void testWatermarking() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-		selenium.type("name=__login_user", "quickstart");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("100000");
+//        selenium.open(System.getProperty("remote.public.url"));
+//		selenium.type("name=__login_user", "quickstart");
+//		selenium.click("css=input[type=\"submit\"]");
+//		selenium.waitForPageToLoad("100000");
 		selenium.click("link=KRAD");
 		selenium.waitForPageToLoad("50000");
 		selenium.click("link=Uif Components (Kitchen Sink)");
@@ -64,11 +62,6 @@ public class WatermarkValidationIT {
 		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
     }
 
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-    
     public void clearText(String field) throws Exception {
         selenium.focus(field);
         selenium.type(field, "");  

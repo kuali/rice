@@ -23,6 +23,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import static junit.framework.Assert.fail;
+
 /**
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,8 +44,10 @@ public abstract class UpgradedSeleniumITBase {
 
     @Before
     public void setUp() throws Exception {
-        String baseUrl = getBaseUrlString();
         driver = new FirefoxDriver();
+        if (!getTestUrl().startsWith("/")) {
+            fail("getTestUrl does not start with /"); // TODO add it?
+        }
         selenium = new WebDriverBackedSelenium(driver, getBaseUrlString() + getTestUrl());
 
         // Login

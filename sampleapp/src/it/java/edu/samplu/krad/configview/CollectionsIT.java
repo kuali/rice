@@ -29,7 +29,7 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
 
     @Override
     public String getTestUrl() {
-        return "kr-krad/uicomponents?viewId=ConfigurationTestView-Collections&methodToCall=start";
+        return "/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections&methodToCall=start";
     }
 
     /**

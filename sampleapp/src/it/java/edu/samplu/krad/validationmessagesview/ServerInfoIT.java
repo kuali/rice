@@ -20,6 +20,9 @@ import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
 import org.junit.Test;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class ServerInfoIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {

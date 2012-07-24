@@ -16,15 +16,10 @@
 
 package edu.samplu.travel.krad.test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import org.junit.After;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.view.View;
 
 import static junit.framework.Assert.*;
 
@@ -33,17 +28,15 @@ import static junit.framework.Assert.*;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigurationTestViewIT {
-    private DefaultSelenium selenium;
+public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
+    }
     /** bean id prefix in used in view */
     private String idPrefix = "ConfigurationTestView-ProgressiveRender-";
     /** bean id suffix for add line controls */
     String addLineIdSuffix = "InputField_add_control";
-    @Before
-	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-		selenium.start();
-	}
 
 	@Test
     /**
@@ -82,10 +75,6 @@ public class ConfigurationTestViewIT {
      * open the configuration test view page
      */
     private void openConfigurationTestView() {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("30000");
         selenium.isElementPresent("link=Configuration Test View");
@@ -188,10 +177,4 @@ public class ConfigurationTestViewIT {
         //confirm that line has been added (by checking for the new delete button)
         assertEquals("line was not added", rowCount + 1, (selenium.getCssCount(cssCountRows)).intValue());
     }
-
-
-    @After
-	public void tearDown() throws Exception {
-		selenium.stop();
-	}
 }

@@ -16,31 +16,17 @@
 
 package edu.samplu.krad.compview;
 
-import com.thoughtworks.selenium.Selenium;
-import com.thoughtworks.selenium.SeleneseTestCase;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import java.util.regex.Pattern;
 
-public class ValidCharsConstraintIT{
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        WebDriver driver = new FirefoxDriver();
-        selenium = new WebDriverBackedSelenium(driver,
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4");
-
-        // Login
-        selenium.open("http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4");
-        Assert.assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class ValidCharsConstraintIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4";
     }
 
 	@Test
@@ -229,10 +215,5 @@ public class ValidCharsConstraintIT{
 		selenium.type("name=field56", "2020-06-02 03:30:30.22");
 		selenium.fireEvent("name=field56", "blur");
 		Assert.assertTrue(selenium.getAttribute("name=field56@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		selenium.stop();
 	}
 }

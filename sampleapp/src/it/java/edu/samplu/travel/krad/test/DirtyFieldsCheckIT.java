@@ -16,11 +16,8 @@
 
 package edu.samplu.travel.krad.test;
 
-import com.thoughtworks.selenium.*;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-import java.util.regex.Pattern;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
@@ -29,21 +26,14 @@ import static junit.framework.Assert.fail;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DirtyFieldsCheckIT {
-    private DefaultSelenium selenium;
-
-    @Before
-	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-		selenium.start();
-	}
+public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
+    }
 
 	@Test
 	public void testDirtyFieldsCheck() throws Exception {
-		selenium.open("/kr-dev/portal.do");
-		selenium.type("name=__login_user", "admin");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("30000");
 		selenium.click("link=KRAD");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=Uif Components (Kitchen Sink)");
@@ -96,10 +86,5 @@ public class DirtyFieldsCheckIT {
         // 'Progressive Disclosure' navigation link
 		selenium.click("id=u976");
 		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		selenium.stop();
 	}
 }

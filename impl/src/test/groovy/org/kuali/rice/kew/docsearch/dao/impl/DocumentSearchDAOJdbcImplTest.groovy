@@ -61,30 +61,37 @@ class DocumentSearchDAOJdbcImplTest {
     }
 
     @Test
-    void testMaxResultSetCapCriteria() {
+    void testMaxResultSetCapCriteriaUsedIfNoSystemLimitConfigured() {
         DocumentSearchCriteria.Builder b = DocumentSearchCriteria.Builder.create()
         b.setMaxResults(5)
         assertEquals(5, searchDAO.getMaxResultCap(b.build()))
 
+        // no system limit is configured - so hardcoded default limit is used
+        // this value is under the limit
         b = DocumentSearchCriteria.Builder.create()
-        b.setMaxResults(2000)
-        assertEquals(2000, searchDAO.getMaxResultCap(b.build()))
+        b.setMaxResults(KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP - 1)
+        assertEquals(KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP - 1, searchDAO.getMaxResultCap(b.build()))
+
+        // this value is above the default system limit, so it is capped
+        b = DocumentSearchCriteria.Builder.create()
+        b.setMaxResults(KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP + 1)
+        assertEquals(KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP, searchDAO.getMaxResultCap(b.build()))
     }
 
     @Test
-    void testMaxResultSetCapParameterOnly() {
+    void testMaxResultSetCapSystemLimitAlwaysUsedIfNoCriteriaLimitSpecified() {
         DocumentSearchCriteria.Builder b = DocumentSearchCriteria.Builder.create()
         resultCapValue = 100
         assertEquals(100, searchDAO.getMaxResultCap(b.build()))
 
-        // FIXME: uses default value instead of configured cap
+        // custom result cap has been configured - so the default hardcoded cap should *not* be used
         b = DocumentSearchCriteria.Builder.create()
         resultCapValue = 2000
-        assertEquals(500, searchDAO.getMaxResultCap(b.build()))
+        assertEquals(2000, searchDAO.getMaxResultCap(b.build()))
     }
 
     @Test
-    void testMaxResultSetCapParameter() {
+    void testMaxResultSetCapCriteriaTakesPrecedenceIfBelowSystemCap() {
         DocumentSearchCriteria.Builder b = DocumentSearchCriteria.Builder.create()
         b.setMaxResults(5)
         resultCapValue = 100
@@ -93,6 +100,7 @@ class DocumentSearchDAOJdbcImplTest {
         b = DocumentSearchCriteria.Builder.create()
         b.setMaxResults(2000)
         resultCapValue = 200
+        // capped to system limit
         assertEquals(200, searchDAO.getMaxResultCap(b.build()))
 
         b = DocumentSearchCriteria.Builder.create()

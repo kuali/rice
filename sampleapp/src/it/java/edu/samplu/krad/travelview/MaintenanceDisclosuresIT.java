@@ -34,10 +34,6 @@ public class MaintenanceDisclosuresIT extends UpgradedSeleniumITBase{
      * Verify disclosures are present and functional
      */
     public void testVerifyDisclosures() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("50000");
         selenium.click("link=Travel Account Maintenance (New)");

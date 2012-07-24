@@ -15,21 +15,16 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MaintenanceAddDeleteFiscalOfficerIT {
-    private Selenium selenium;
+public class MaintenanceAddDeleteFiscalOfficerIT extends UpgradedSeleniumITBase {
 
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -37,10 +32,6 @@ public class MaintenanceAddDeleteFiscalOfficerIT {
      * Verify a fiscal officer line can be added and deleted
      */
     public void testVerifyAddDeleteFiscalOfficer() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("50000");
         selenium.click("link=Travel Account Maintenance (New)");
@@ -77,10 +68,5 @@ public class MaintenanceAddDeleteFiscalOfficerIT {
 
             Thread.sleep(1000);
         }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

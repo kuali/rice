@@ -16,14 +16,8 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import com.thoughtworks.selenium.Selenium;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class ServerErrorsIT extends UpgradedSeleniumITBase {

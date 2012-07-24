@@ -29,6 +29,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  */
 
 public abstract class UpgradedSeleniumITBase {
+    public final static String PORTAL = "/portal.do";
     protected Selenium selenium;
     protected WebDriver driver;
 

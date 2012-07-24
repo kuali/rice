@@ -15,21 +15,15 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class MaintenanceButtonsIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+public class MaintenanceButtonsIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -37,10 +31,6 @@ public class MaintenanceButtonsIT {
      * Verify Submit, Save, Close and Cancel buttons are available
      */
     public void testVerifyButtons() throws Exception {
-        selenium.open("/kr-dev/portal.do");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("css=input[type=\"submit\"]");
-        selenium.waitForPageToLoad("30000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("50000");
         selenium.click("link=Travel Account Maintenance (New)");
@@ -50,10 +40,5 @@ public class MaintenanceButtonsIT {
         assertTrue(selenium.isElementPresent("css=#u1147"));
         assertTrue(selenium.isElementPresent("css=#u1154"));
         assertTrue(selenium.isElementPresent("css=#u1155"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

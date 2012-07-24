@@ -16,49 +16,14 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class ClientErrorsIT {
-    private Selenium selenium;
-
-    public static String getBaseUrlString() {
-        String baseUrl = System.getProperty("remote.public.url");
-        if (baseUrl == null) {
-            baseUrl = "http://localhost:8080";
-        } else if (baseUrl.endsWith("/")) {
-            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-        } else if (!baseUrl.startsWith("http")) {
-            baseUrl = "http://" + baseUrl;
-        }
-        return baseUrl;
-    }
-
-    public static void login(Selenium selenium) {
-        Assert.assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
-    }
-
-
-    @Before
-    public void setUp() throws Exception {
-        String baseUrl = getBaseUrlString();
-        WebDriver driver = new FirefoxDriver();
-        selenium = new WebDriverBackedSelenium(driver,
-                baseUrl + "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
-
-        // Login
-        selenium.open(
-                baseUrl + "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start");
-        login(selenium);
+public class ClientErrorsIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start";
     }
 
     @Test
@@ -233,10 +198,5 @@ public class ClientErrorsIT {
 
         Assert.assertFalse(selenium.isElementPresent("name=field115 value=1@aria-invalid"));
         Assert.assertFalse(selenium.isElementPresent("//input[@name='field115']/../../../img[@alt='Error']"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

@@ -15,6 +15,7 @@
  */
 package edu.samplu.krad.configview;
 
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -36,25 +37,15 @@ import static org.junit.Assert.*;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HelpIT {
-    private Selenium selenium;
+public class HelpIT extends UpgradedSeleniumITBase {
 
     // Delay in milliseconds used to allow the help window reload the new help page.
     // waitForPopUp will not work since the window already exists.
     private long HELP_WINDOW_LOAD_DELAY = 3000;
 
-    @Before
-    public void setUp() throws Exception {
-        System.setProperty("remote.public.url", "http://localhost:8080/kr-dev/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start");
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
-
-        // Login
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+    @Override
+    public String getTestUrl() {
+        return "kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start";
     }
 
     /**
@@ -233,10 +224,4 @@ public class HelpIT {
         selenium.mouseOut("id=missing-tooltip-help_label");
         assertFalse(selenium.isElementPresent("css=.jquerybubblepopup"));
     }
-
-   @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-
 }

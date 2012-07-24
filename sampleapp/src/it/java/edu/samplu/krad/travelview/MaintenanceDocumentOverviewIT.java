@@ -15,21 +15,15 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class MaintenanceDocumentOverviewIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+public class MaintenanceDocumentOverviewIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -50,10 +44,5 @@ public class MaintenanceDocumentOverviewIT {
         assertTrue(selenium.isElementPresent("//input[@name='document.documentHeader.documentDescription']"));
         assertTrue(selenium.isElementPresent("//input[@name='document.documentHeader.organizationDocumentNumber']"));
         assertTrue(selenium.isElementPresent("//textarea[@name='document.documentHeader.explanation']"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

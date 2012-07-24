@@ -15,21 +15,15 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MaintenanceConstraintTextIT {
-    private Selenium selenium;
-
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
-        selenium.start();
+public class MaintenanceConstraintTextIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -49,10 +43,5 @@ public class MaintenanceConstraintTextIT {
         assertEquals("Must be 10 digits", selenium.getText("css=#u853_constraint_span"));
         assertEquals("Must be 10 digits", selenium.getText("css=#u1067_add_constraint_span"));
         assertEquals("* indicates required field", selenium.getText("css=#u1138_span"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

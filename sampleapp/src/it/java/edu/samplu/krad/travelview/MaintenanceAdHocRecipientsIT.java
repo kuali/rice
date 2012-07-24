@@ -15,24 +15,15 @@
  */
 package edu.samplu.krad.travelview;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
 import edu.samplu.common.UpgradedSeleniumITBase;
-import edu.samplu.common.WebDriverITBase;
-import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.junit.Assert.*;
 
 public class MaintenanceAdHocRecipientsIT extends UpgradedSeleniumITBase {
 
     public String getTestUrl() {
-        return "/portal.do";
+        return PORTAL;
     }
 
     @Test

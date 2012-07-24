@@ -16,35 +16,20 @@
 
 package edu.samplu.krad.configview;
 
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  * Selenium test that tests collections
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CollectionsIT {
-    private Selenium selenium;
+public class CollectionsIT extends UpgradedSeleniumITBase {
 
-    @Before
-    public void setUp() throws Exception {
-        WebDriver driver = new FirefoxDriver();
-        String baseUrl = "http://localhost:8080/";
-        selenium = new WebDriverBackedSelenium(driver, baseUrl);
-
-        // open Collections test view
-        selenium.open(
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections&methodToCall=start");
-        selenium.type("name=__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+    @Override
+    public String getTestUrl() {
+        return "kr-krad/uicomponents?viewId=ConfigurationTestView-Collections&methodToCall=start";
     }
 
     /**
@@ -59,10 +44,4 @@ public class CollectionsIT {
         // check if actions column is 3rd in a sub collection
         Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
     }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
-    }
-
 }

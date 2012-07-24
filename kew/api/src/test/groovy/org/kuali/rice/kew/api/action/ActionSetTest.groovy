@@ -94,7 +94,7 @@ class ActionSetTest {
         JAXBContext jc = JAXBContext.newInstance(ActionSet.class)
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         ActionSet actionSet = (ActionSet) unmarshaller.unmarshal(new StringReader(EXPECTED_XML))
-        Assert.assertEquals(1, actionSet.actionSetList.size)
+        Assert.assertEquals(1, actionSet.actionSetList.size())
         Assert.assertEquals(ACTION, actionSet.actionSetList.get(0))
         Assert.assertTrue(actionSet.hasAction(ACTION))
     }

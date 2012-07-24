@@ -15,10 +15,8 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertTrue;
-
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.Test;
+import com.thoughtworks.selenium.SeleneseTestBase;
+import edu.samplu.common.MainMenuLookupITBase;
 
 /**
  * tests that user 'admin' can display the Context lookup screen, search,
@@ -27,26 +25,13 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContextLookUpIT extends UpgradedSeleniumITBase {
-
+public class ContextLookUpIT extends MainMenuLookupITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    public String getLookupLinkLocator() {
+        return "link=Context Lookup";
     }
-    
-    @Test
-    public void testContextLookUp() throws Exception {
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=Context Lookup");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("//button");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=edit");
-		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.isTextPresent("cancel"));
-		selenium.click("link=cancel");
-		selenium.waitForPageToLoad("30000");
-        
+    @Override
+    public void lookupAssertions() {
+        SeleneseTestBase.assertTrue(selenium.isTextPresent("Notes and Attachments"));
     }
 }

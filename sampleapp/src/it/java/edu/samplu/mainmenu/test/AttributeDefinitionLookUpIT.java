@@ -36,13 +36,32 @@ public class AttributeDefinitionLookUpIT extends UpgradedSeleniumITBase{
         selenium.click("link=Attribute Definition Lookup");
         selenium.waitForPageToLoad("30000");
         selenium.selectFrame("iframeportlet");
-        selenium.click("id=u80");
+        selenium.click("css=button:contains(earch)");
+        Thread.sleep(3000);
         selenium.waitForPageToLoad("30000");
-        selenium.click("id=u86");
+        selenium.isTextPresent("Actions"); // there are no actions, but the header is the only unique text from searching
+        selenium.click("link=1000");
         selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("xpath=(//input[@name='imageField'])[2]");
-        selenium.waitForPageToLoad("30000");
-        
+
+        selenium.isTextPresent("Attribute Inquiry");
+        selenium.isTextPresent("KRMS Attributes");
+        selenium.isTextPresent("Attribute Label");
+        selenium.isTextPresent("1000");
+        selenium.isTextPresent("peopleFlowId");
+        selenium.isTextPresent("KR-RULE");
+        selenium.isTextPresent("PeopleFlow");
+//        selenium.selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
+//        selenium.click("css=button:contains(Close)"); // looks lower case, but is upper
+//        Thread.sleep(500);
+//        selenium.click("css=button:contains(cancel)");
+
+// AttributeDefinition's don't have actions (yet)
+//        selenium.click("id=u80");
+//        selenium.waitForPageToLoad("30000");
+//        selenium.click("id=u86");
+//        selenium.waitForPageToLoad("30000");
+//        selenium.selectWindow("null");
+//        selenium.click("xpath=(//input[@name='imageField'])[2]");
+//        selenium.waitForPageToLoad("30000");
     }
 }

@@ -15,10 +15,9 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertTrue;
+import edu.samplu.common.MainMenuLookupITBase;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.Test;
+import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 
 /**
  * tests that user 'admin' can display the Term lookup screen, search,
@@ -27,23 +26,13 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpIT extends UpgradedSeleniumITBase {
+public class TermLookUpIT extends MainMenuLookupITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    public String getLookupLinkLocator() {
+		return "link=Term Lookup";
     }
-    
-    @Test
-    public void testTermLookUp() throws Exception {
-		selenium.click("link=Term Lookup");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("//button");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=edit");
-		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.isTextPresent("cancel"));
-		selenium.click("link=cancel");
-		selenium.waitForPageToLoad("30000");
+    @Override
+    public void lookupAssertions() {
+        assertTrue(selenium.isTextPresent("Term Parameters"));
     }
 }

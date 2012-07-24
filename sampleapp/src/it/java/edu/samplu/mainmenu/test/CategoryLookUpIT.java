@@ -35,12 +35,17 @@ public class CategoryLookUpIT extends UpgradedSeleniumITBase{
         selenium.click("link=Category Lookup");
         selenium.waitForPageToLoad("30000");
         selenium.selectFrame("iframeportlet");
-        selenium.click("id=u80");
+        selenium.click("css=button:contains(earch)");
+        Thread.sleep(3000);
         selenium.waitForPageToLoad("30000");
-        selenium.click("id=u86");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("xpath=(//input[@name='imageField'])[2]");
-        selenium.waitForPageToLoad("30000");
+        selenium.isTextPresent("Actions"); // there are no actions, but the header is the only unique text from searching
+// Category's don't have actions (yet)
+//        selenium.click("id=u80");
+//        selenium.waitForPageToLoad("30000");
+//        selenium.click("id=u86");
+//        selenium.waitForPageToLoad("30000");
+//        selenium.selectWindow("null");
+//        selenium.click("xpath=(//input[@name='imageField'])[2]");
+//        selenium.waitForPageToLoad("30000");
     }
 }

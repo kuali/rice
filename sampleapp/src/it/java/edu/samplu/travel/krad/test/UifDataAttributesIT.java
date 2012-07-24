@@ -130,11 +130,6 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
      */
     @Test
     public void testDataAttributesPresentInControls () {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("50000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.open(
                 "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");

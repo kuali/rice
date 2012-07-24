@@ -15,11 +15,8 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertTrue;
-
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.Test;
-
+import com.thoughtworks.selenium.SeleneseTestBase;
+import edu.samplu.common.MainMenuLookupITBase;
 
 /**
  * tests that user 'admin' can display the Agenda lookup screen, search,
@@ -28,24 +25,13 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AgendaLookUpIT extends UpgradedSeleniumITBase {
+public class AgendaLookUpIT extends MainMenuLookupITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    public String getLookupLinkLocator() {
+        return "link=Agenda Lookup";
     }
-
-    @Test
-    public void testAgendaLookUp() throws Exception {
-		selenium.click("link=Agenda Lookup");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("//button");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=copy");
-		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.isTextPresent("cancel"));
-		selenium.click("link=cancel");
-		selenium.waitForPageToLoad("30000");
-        
+    @Override
+    public void lookupAssertions() {
+        SeleneseTestBase.assertTrue(selenium.isTextPresent("Rules"));
     }
 }

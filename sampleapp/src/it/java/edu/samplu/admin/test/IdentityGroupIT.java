@@ -14,28 +14,22 @@
  * limitations under the License.
  */
 package edu.samplu.admin.test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests creating and cancelling new and edit Group maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityGroupIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class IdentityGroupIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
@@ -43,11 +37,6 @@ public class IdentityGroupIT {
      * tests that a new Group maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Administration");
         selenium.waitForPageToLoad("30000");
@@ -72,11 +61,6 @@ public class IdentityGroupIT {
      * tests that a Group maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditGroup() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Administration");
         selenium.waitForPageToLoad("30000");
@@ -94,11 +78,5 @@ public class IdentityGroupIT {
         selenium.waitForPageToLoad("30000");
         selenium.click("methodToCall.processAnswer.button0");
         selenium.waitForPageToLoad("30000");
-    }
-    
-    
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

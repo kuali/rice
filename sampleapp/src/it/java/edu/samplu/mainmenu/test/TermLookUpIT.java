@@ -35,10 +35,6 @@ public class TermLookUpIT extends UpgradedSeleniumITBase {
     
     @Test
     public void testTermLookUp() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-		selenium.type("name=__login_user", "admin");
-		selenium.click("css=input[type=\"submit\"]");
-		selenium.waitForPageToLoad("30000");
 		selenium.click("link=Term Lookup");
 		selenium.waitForPageToLoad("30000");
 		selenium.selectFrame("iframeportlet");

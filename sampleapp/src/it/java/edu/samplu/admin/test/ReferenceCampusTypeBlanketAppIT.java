@@ -18,34 +18,22 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-
 
 /**
  * tests that user 'admin', on blanket approving a new Campus Type maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeBlanketAppIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class ReferenceCampusTypeBlanketAppIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
     public void testCampusType() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Administration");
         selenium.waitForPageToLoad("30000");
@@ -79,10 +67,5 @@ public class ReferenceCampusTypeBlanketAppIT {
             assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
             assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

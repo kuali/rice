@@ -18,6 +18,7 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -32,26 +33,15 @@ import com.thoughtworks.selenium.Selenium;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowDocTypeBlanketAppIT {
-    private Selenium selenium;
-    @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
-        selenium.start();
+public class WorkFlowDocTypeBlanketAppIT extends UpgradedSeleniumITBase {
+    @Override
+    public String getTestUrl() {
+        return PORTAL;
     }
 
     @Test
     public void testDocType() throws Exception {
-        String remotePublicUrl = System.getProperty("remote.public.url");
-        // remove the trailing slash to allow for correction concatenation in locating the lookup buttons below
-        if (StringUtils.endsWith(remotePublicUrl, "/")) {
-            remotePublicUrl = StringUtils.removeEnd(remotePublicUrl, "/");
-        }
-        selenium.open(remotePublicUrl);
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+        String remotePublicUrl = getBaseUrlString();
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Administration");
         selenium.waitForPageToLoad("30000");
@@ -95,10 +85,5 @@ public class WorkFlowDocTypeBlanketAppIT {
             assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
             assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        selenium.stop();
     }
 }

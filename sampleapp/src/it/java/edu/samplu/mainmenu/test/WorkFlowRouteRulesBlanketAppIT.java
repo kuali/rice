@@ -35,7 +35,6 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
     @Test
     public void testUntitled() throws Exception {
         String remotePublicUrl = getBaseUrlString();
-        selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Routing Rules");
         selenium.waitForPageToLoad("30000");

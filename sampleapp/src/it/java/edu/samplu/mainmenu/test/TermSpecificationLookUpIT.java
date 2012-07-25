@@ -30,6 +30,7 @@ public class TermSpecificationLookUpIT extends MainMenuLookupITBase {
     public String getLookupLinkLocator() {
         return "link=Term Specification Lookup";
     }
+    
     @Override
     public void lookupAssertions() {
         SeleneseTestBase.assertTrue(selenium.isTextPresent("Context"));

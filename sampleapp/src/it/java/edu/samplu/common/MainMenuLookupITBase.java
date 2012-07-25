@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
  * @deprecated use WebDriverITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public abstract class MainMenuLookupITBase extends UpgradedSeleniumITBase {
     /**
      * Override to return main menu click selector (e.g. "link=Agenda lookup")

@@ -81,8 +81,8 @@ public abstract class UpgradedSeleniumITBase {
     @After
     public void tearDown() throws Exception {
         if (System.getProperty("remote.driver.dontTearDown") == null ||
-                !"f".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase()) ||
-                !"n".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase())) {
+                "f".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase()) ||
+                "n".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase())) {
             selenium.stop();
             driver.quit(); // TODO not tested with chrome, the service stop might need this check too
         }

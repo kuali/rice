@@ -46,7 +46,7 @@ public class IdentityResponsibilityBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility");
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=Kuali Systems");
+        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KUALI - Kuali Systems");
         selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility1");
         selenium.type("//input[@id='document.newMaintainableObject.documentTypeName']", "Test");
         selenium.type("//input[@id='document.newMaintainableObject.routeNodeName']", "Test");

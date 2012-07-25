@@ -29,7 +29,6 @@ import static junit.framework.Assert.fail;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public abstract class UpgradedSeleniumITBase {
     public final static String PORTAL = "/portal.do";
     protected Selenium selenium;

@@ -18,9 +18,6 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +29,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class PrerequisiteConstraint extends BaseConstraint {
-	@XmlElement
     protected String propertyName;
 
 	public String getPropertyName() {

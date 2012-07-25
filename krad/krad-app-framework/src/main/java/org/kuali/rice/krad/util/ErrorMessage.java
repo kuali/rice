@@ -31,8 +31,10 @@ public class ErrorMessage implements Serializable {
 
     private String errorKey;
     private String[] messageParameters;
+
     private String messagePrefixKey;
     private String[] messagePrefixParameters;
+
     private String messageSuffixKey;
     private String[] messageSuffixParameters;
 

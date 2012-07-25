@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
  * This abstract class extends from ValidCharactersConstraint. Its subclasses contain a regex that
  * is built out with flags that can be turned off and on. All ValidCharactersPatternConstraints
  * allow a certain set of characters to be repeated multiple times
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ValidCharactersPatternConstraint extends ValidCharactersConstraint {

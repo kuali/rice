@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 /**
  * Pattern for matching any character in the given list (String)
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
     protected String validChars;

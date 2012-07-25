@@ -20,7 +20,6 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternConstraint {

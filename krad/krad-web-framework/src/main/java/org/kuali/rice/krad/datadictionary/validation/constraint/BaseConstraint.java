@@ -16,13 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-
 
 /**
  * A class that implements the required accessor for label keys. This provides a convenient base class
@@ -35,11 +29,8 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class BaseConstraint implements Constraint {
-    @XmlElement
-    protected String labelKey; 
-    @XmlElement
+    protected String labelKey;
     protected Boolean applyClientSide;
     
     protected List<String> validationMessageParams;

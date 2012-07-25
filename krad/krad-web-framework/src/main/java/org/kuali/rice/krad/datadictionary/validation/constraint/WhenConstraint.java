@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +34,6 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class WhenConstraint implements Constraint {
 	protected List<Object> values;
 	protected String valuePath;

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 /**
@@ -32,16 +29,13 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class CaseConstraint extends BaseConstraint {
-	@XmlElement
-    protected List<WhenConstraint> whenConstraint;
-	@XmlElement
+
 	protected String propertyName;
-	@XmlElement
 	protected String operator;
-	@XmlElement
 	protected boolean caseSensitive;
+
+    protected List<WhenConstraint> whenConstraint;
 
     /**
      * get the {@code WhenConstraint}'s defined by this case constraint

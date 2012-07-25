@@ -20,6 +20,8 @@ import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * Pattern for matching any printable character
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UTF8AnyCharacterPatternConstraint extends ValidCharactersPatternConstraint {
     protected boolean allowWhitespace = false;

@@ -18,9 +18,6 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 /**
@@ -46,16 +43,11 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class MustOccurConstraint extends BaseConstraint {
 	
-    @XmlElement
     private List<PrerequisiteConstraint> prerequisiteConstraints;
-	@XmlElement
     private List<MustOccurConstraint> mustOccurConstraints;
-	@XmlElement
 	private Integer min;
-	@XmlElement
 	private Integer max;
 
 	public List<PrerequisiteConstraint> getPrerequisiteConstraints() {

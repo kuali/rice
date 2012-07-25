@@ -17,39 +17,22 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.core.api.uif.DataType;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-
 /**
  * A simple constraint stores 'basic' constraints for a field.  This constraint is meant to be used as a
  * constraint for WhenConstraints in CaseConstraint, and is also used internally in InputField.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class SimpleConstraint extends BaseConstraint implements ExistenceConstraint, RangeConstraint, LengthConstraint{
     
-	@XmlElement
-	private Boolean required;
-	
-	@XmlElement
+	private Boolean required = Boolean.FALSE;
 	private Integer maxLength;
-	
-	@XmlElement
 	private Integer minLength;
-	
-	@XmlElement
 	protected String exclusiveMin;
-	
-	@XmlElement
 	protected String inclusiveMax;
 	
 	//Don't know if we will support min/max occurs at this time
-	@XmlElement
 	private Integer minOccurs;
-	
-	@XmlElement
 	private Integer maxOccurs;
 
     private DataType dataType;

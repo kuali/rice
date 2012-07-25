@@ -28,9 +28,8 @@ import java.util.ArrayList;
  * @since 1.1
  */
 public class CommonLookupParam  implements Serializable {
-
-
 	private static final long serialVersionUID = 1L;
+
     private String key;
     private CommonLookup childLookup;    
     private WriteAccess writeAccess; 

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 /**
@@ -26,15 +23,10 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class LookupConstraintParamMapping {
-	@XmlElement
     protected String fieldPath;
-	@XmlElement
 	protected String paramKey;
-	@XmlElement
 	protected List<String> defaultValueList;
-	@XmlElement
 	protected String defaultValueString;
 
 	public String getFieldPath() {

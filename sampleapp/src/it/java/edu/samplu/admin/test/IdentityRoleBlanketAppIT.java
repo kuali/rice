@@ -50,7 +50,7 @@ public class IdentityRoleBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role");
-        selenium.select("//select[@id='document.roleNamespace']", "label=Kuali Systems");
+        selenium.select("//select[@id='document.roleNamespace']", IdentityResponsibilityBlanketAppIT.LABEL_KUALI_KUALI_SYSTEMS);
         selenium.waitForPageToLoad("30000");
         selenium.type("//input[@id='document.roleName']", "Validation Test Role4");
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");

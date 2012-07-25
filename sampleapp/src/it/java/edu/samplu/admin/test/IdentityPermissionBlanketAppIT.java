@@ -48,7 +48,7 @@ public class IdentityPermissionBlanketAppIT extends UpgradedSeleniumITBase{
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Permission");
         selenium.type("//input[@id='document.newMaintainableObject.templateId']", "10012");
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=Kuali Systems");
+        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", IdentityResponsibilityBlanketAppIT.LABEL_KUALI_KUALI_SYSTEMS);
         selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Permission1");
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");

@@ -144,9 +144,11 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
             int criteriaLimit = criteria.getMaxResults().intValue();
             if (criteriaLimit > systemLimit) {
                 LOG.warn("Result set cap of " + criteriaLimit + " is greater than system value of " + systemLimit);
-            } else if (criteriaLimit <= 0) {
-                LOG.warn("Criteria results limit was less than or equal to zero.  Please use a positive integer.");
             } else {
+                if (criteriaLimit < 0) {
+                    LOG.warn("Criteria results limit was less than zero.");
+                    criteriaLimit = 0;
+                }
                 maxResults = criteriaLimit;
             }
         }

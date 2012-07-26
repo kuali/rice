@@ -420,6 +420,16 @@
       <routingVersion>2</routingVersion>
     </documentType>
     <documentType>
+      <name>CountyMaintenanceDocument</name>
+      <parent>RiceDocument</parent>
+      <label>CountyMaintenanceDocument</label>
+      <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <helpDefinitionURL>default.htm?turl=WordDocuments%2Fcounty.htm</helpDefinitionURL>
+      <active>true</active>
+      <routingVersion>2</routingVersion>
+    </documentType>
+    <documentType>
       <name>CampusTypeMaintenanceDocument</name>
       <parent>RiceDocument</parent>
       <label>CampusTypeMaintenanceDocument</label>

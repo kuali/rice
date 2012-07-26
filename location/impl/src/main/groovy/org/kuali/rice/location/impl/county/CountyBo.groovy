@@ -30,6 +30,7 @@ import org.kuali.rice.location.api.county.County
 import org.kuali.rice.location.framework.county.CountyEbo
 import org.kuali.rice.location.impl.country.CountryBo
 import org.kuali.rice.location.impl.state.StateBo
+import javax.persistence.JoinColumns
 
 @IdClass(CountyId.class)
 @Entity
@@ -60,7 +61,7 @@ class CountyBo extends PersistableBusinessObjectBase implements CountyEbo {
     def CountryBo country;
 
     @ManyToOne(targetEntity = StateBo.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "STATE_CD", insertable = false, updatable = false)
+    @JoinColumns(value = [ @JoinColumn(name = "STATE_CD", insertable = false, updatable = false), @JoinColumn(name = "POSTAL_CNTRY_CD", insertable = false, updatable = false) ])
     def StateBo state;
 
     /**

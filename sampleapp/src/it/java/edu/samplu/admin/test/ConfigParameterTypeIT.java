@@ -15,67 +15,16 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.Test;
+import edu.samplu.common.AdminMenuITBase;
 
 /**
  * tests new and edit Parameter Type maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterTypeIT extends UpgradedSeleniumITBase {
+public class ConfigParameterTypeIT extends AdminMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
-    }
-
-    @Test
-    /**
-     * tests that a new Parameter Type maintenance document can be cancelled
-     */
-    public void testCreateNew() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Parameter Type");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");        
-        selenium.selectFrame("relative=up");        
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
-    }
-
-    @Test
-    /**
-     * tests that a Parameter Type maintenance document is created for an edit operation originating from a lookup screen
-     */
-    public void testEditParameterType() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Parameter Type");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+    public String getLinkLocator() {
+        return "link=Parameter Type";
     }
 }

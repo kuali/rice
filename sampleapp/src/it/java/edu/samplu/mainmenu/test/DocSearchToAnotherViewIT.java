@@ -27,7 +27,7 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
 		selenium.selectFrame("iframeportlet");
 		selenium.click("css=td.infoline > input[name=\"methodToCall.search\"]");
 		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("relative=up");
+//		selenium.selectFrame("relative=up");
 		selenium.click("link=Main Menu");
 		selenium.waitForPageToLoad("30000");
         selenium.setSpeed("2000");

@@ -43,7 +43,7 @@ public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");
         selenium.click("//img[@alt='create new']");        
-        selenium.selectFrame("relative=up");        
+//        selenium.selectFrame("relative=up");
         selenium.waitForPageToLoad("30000");
         selenium.click("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         selenium.waitForPageToLoad("30000");

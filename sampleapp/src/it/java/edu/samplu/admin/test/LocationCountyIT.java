@@ -15,43 +15,16 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.Test;
+import edu.samplu.common.AdminMenuITBase;
 
 /**
  * tests creating and cancelling the new County maintenance screen
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountyIT extends UpgradedSeleniumITBase {
+public class LocationCountyIT extends AdminMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
-    }
-
-    @Test
-    /**
-     * tests that a new County maintenance document can be cancelled
-     */
-    public void testCreateNew() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=County");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");        
-        selenium.selectFrame("relative=up");        
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+    public String getLinkLocator() {
+        return "link=County";
     }
 }

@@ -41,7 +41,7 @@ public class DeleteSubCollectionLineIT extends UpgradedSeleniumITBase{
         selenium.waitForPageToLoad("30000");
         selenium.click("link=Uif Components (Kitchen Sink)");
         selenium.waitForPageToLoad("30000");
-        selenium.selectFrame("iframeportlet");
+//        selenium.selectFrame("iframeportlet");
         // click on collections page link
         selenium.click("id=u961");
         // Thread.sleep(30000);

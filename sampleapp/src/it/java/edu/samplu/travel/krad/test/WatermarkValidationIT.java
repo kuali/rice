@@ -50,7 +50,7 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
 		selenium.waitForPageToLoad("50000");
 		selenium.click("link=Uif Components (Kitchen Sink)");
 		selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+//        selenium.selectFrame("iframeportlet");
         selenium.focus("id=u73_control");
 		selenium.type("id=u73_control", "something");
         selenium.focus("id=u103_control");

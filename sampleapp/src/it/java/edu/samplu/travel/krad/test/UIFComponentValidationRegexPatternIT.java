@@ -49,7 +49,7 @@ public class UIFComponentValidationRegexPatternIT extends UpgradedSeleniumITBase
         selenium.click("link=Uif Components (Kitchen Sink)");
         selenium.waitForPageToLoad("50000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
+//        selenium.selectFrame("iframeportlet");
         selenium.click("link=Validation - Regex");
         //selenium.waitForPageToLoad("30000");
         Thread.sleep(5000);

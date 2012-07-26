@@ -38,7 +38,7 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=Uif Components (Kitchen Sink)");
 		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
+//		selenium.selectFrame("iframeportlet");
         Thread.sleep(3000);
 		selenium.focus("id=u73_control");
 		selenium.type("id=u73_control", "test 1");

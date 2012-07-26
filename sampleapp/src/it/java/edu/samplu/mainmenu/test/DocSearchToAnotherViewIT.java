@@ -27,20 +27,21 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
 		selenium.selectFrame("iframeportlet");
 		selenium.click("css=td.infoline > input[name=\"methodToCall.search\"]");
 		selenium.waitForPageToLoad("30000");
-//		selenium.selectFrame("relative=up");
+		selenium.selectFrame("relative=top");
 		selenium.click("link=Main Menu");
 		selenium.waitForPageToLoad("30000");
         selenium.setSpeed("2000");
 		selenium.click("link=People Flow");
 		selenium.waitForPageToLoad("30000");
 		selenium.selectFrame("iframeportlet");
-		selenium.click("id=19");
+		selenium.click("link=Create New");
 		selenium.waitForPageToLoad("30000");
-        selenium.focus("id=160");
-		selenium.type("id=160", "sample description");
-        selenium.focus("id=185");
-		selenium.type("id=185", "sample explanation");
-		selenium.click("id=143");
-		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
+        selenium.focus("name=document.documentHeader.documentDescription");
+		selenium.type("name=document.documentHeader.documentDescription", "sample description");
+        selenium.focus("name=document.documentHeader.explanation");
+		selenium.type("name=document.documentHeader.explanation", "sample explanation");
+        selenium.focus("link=Cancel");
+		selenium.click("link=Cancel");
+        assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
 	}
 }

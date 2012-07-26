@@ -43,7 +43,7 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");
         selenium.click("//img[@alt='create new']");        
-        selenium.selectFrame("relative=up");        
+//        selenium.selectFrame("relative=up");
         selenium.waitForPageToLoad("30000");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.click("methodToCall.cancel");

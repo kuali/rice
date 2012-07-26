@@ -27,7 +27,7 @@ import edu.samplu.common.MainMenuLookupITBase;
  */
 public class AgendaLookUpIT extends MainMenuLookupITBase {
     @Override
-    public String getLookupLinkLocator() {
+    public String getLinkLocator() {
         return "link=Agenda Lookup";
     }
     @Override

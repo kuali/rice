@@ -18,33 +18,35 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.MenuITBase;
 import org.junit.Test;
 
 /**
  * tests that a blanket approval by user admin of a Namespace maintenance document results in a document in state FINAL
  * 
+ * To Keep the BlanketAppIT tests separate MenuItBase is extended rather than AdminMenuITBase this only requires the implementation of the getMenuLinkLocator() and getCreateNewLinkLocator so there should probably be another abstract class....
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigNameSpaceBlanketAppIT extends UpgradedSeleniumITBase {
+public class ConfigNameSpaceBlanketAppIT extends MenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getCreateNewLinkLocator() {
+        return "//img[@alt='create new']";
+    }
+
+    @Override
+    protected String getMenuLinkLocator() {
+        return "link=Administration";
+    }
+
+    @Override
+    public String getLinkLocator() {
+        return "link=Namespace";
     }
 
     @Test
     public void testNameSpace() throws Exception {
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Namespace");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
+        gotoCreateNew();
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace");
@@ -55,7 +57,7 @@ public class ConfigNameSpaceBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
         selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
+        selenium.click("//img[@alt='doc search']"); // if document already exists, the test fails here
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");

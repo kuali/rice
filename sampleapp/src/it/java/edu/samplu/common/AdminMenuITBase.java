@@ -17,7 +17,6 @@ package edu.samplu.common;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -25,16 +24,15 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class AdminMenuITBase extends UpgradedSeleniumITBase {
-    /**
-     * Override to return main menu click selector (e.g. "link=Agenda lookup")
-     * @return selenium locator to click on
-     */
-    public abstract String getLinkLocator();
+public abstract class AdminMenuITBase extends MenuITBase {
+    @Override
+    protected String getCreateNewLinkLocator() {
+        return "//img[@alt='create new']";
+    }
 
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getMenuLinkLocator() {
+        return "link=Administration";
     }
 
     @Test
@@ -42,17 +40,7 @@ public abstract class AdminMenuITBase extends UpgradedSeleniumITBase {
      * tests that a getLinkLocator maintenance document can be cancelled
      */
     public void testCreateNewCancel() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click(getLinkLocator());
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        //        selenium.selectFrame("relative=up");
-        selenium.waitForPageToLoad("30000");
+        gotoCreateNew();
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.click("methodToCall.cancel");
         selenium.waitForPageToLoad("30000");
@@ -65,14 +53,7 @@ public abstract class AdminMenuITBase extends UpgradedSeleniumITBase {
      * tests that a getLinkLocator maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditCancel() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click(getLinkLocator());
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=edit");
@@ -83,5 +64,4 @@ public abstract class AdminMenuITBase extends UpgradedSeleniumITBase {
         selenium.click("methodToCall.processAnswer.button0");
         selenium.waitForPageToLoad("30000");
     }
-
 }

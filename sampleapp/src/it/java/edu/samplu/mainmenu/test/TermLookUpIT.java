@@ -28,7 +28,7 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
  */
 public class TermLookUpIT extends MainMenuLookupITBase {
     @Override
-    public String getLookupLinkLocator() {
+    public String getLinkLocator() {
 		return "link=Term Lookup";
     }
     @Override

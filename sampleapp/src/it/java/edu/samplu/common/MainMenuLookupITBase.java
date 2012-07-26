@@ -23,26 +23,25 @@ import static org.junit.Assert.assertTrue;
  * @deprecated use WebDriverITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class MainMenuLookupITBase extends UpgradedSeleniumITBase {
-    /**
-     * Override to return main menu click selector (e.g. "link=Agenda lookup")
-     * @return selenium locator to click on
-     */
-    public abstract String getLookupLinkLocator();
+public abstract class MainMenuLookupITBase extends MenuITBase {
+    @Override
+    protected String getCreateNewLinkLocator() {
+        return "link=Create New";
+    }
+
+    @Override
+    protected String getMenuLinkLocator() {
+        return "link=Main Menu";
+    }
 
     /**
      * Override to execute assertions once a looked-up item's edit action is clicked.
      */
     public abstract void lookupAssertions();
 
-    @Override
-    public String getTestUrl() {
-        return PORTAL;
-    }
-
     @Test
     public void testLookUp() throws Exception {
-        selenium.click(getLookupLinkLocator());
+        selenium.click(getLinkLocator());
         selenium.waitForPageToLoad("30000");
         selenium.selectFrame("iframeportlet");
         selenium.click("css=button:contains(earch)");

@@ -27,7 +27,7 @@ import edu.samplu.common.MainMenuLookupITBase;
  */
 public class TermSpecificationLookUpIT extends MainMenuLookupITBase {
     @Override
-    public String getLookupLinkLocator() {
+    public String getLinkLocator() {
         return "link=Term Specification Lookup";
     }
     

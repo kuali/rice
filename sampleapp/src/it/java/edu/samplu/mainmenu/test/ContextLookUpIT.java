@@ -27,7 +27,7 @@ import edu.samplu.common.MainMenuLookupITBase;
  */
 public class ContextLookUpIT extends MainMenuLookupITBase {
     @Override
-    public String getLookupLinkLocator() {
+    public String getLinkLocator() {
         return "link=Context Lookup";
     }
     @Override

@@ -25,17 +25,16 @@ import org.kuali.rice.core.api.search.SearchExpressionUtils;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteriaContract;
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.lang.reflect.InvocationTargetException;
@@ -132,6 +131,16 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
                 }
             }
         }
+
+        String applicationDocumentStatusesValue = fieldValues.get(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS);
+        if (StringUtils.isNotBlank(applicationDocumentStatusesValue)) {
+            String[] applicationDocumentStatuses = applicationDocumentStatusesValue.split(",");
+            for (String applicationDocumentStatus : applicationDocumentStatuses) {
+                criteria.getApplicationDocumentStatuses().add(applicationDocumentStatus);
+            }
+        }
+        // blank the deprecated field out, it's not needed.
+        criteria.setApplicationDocumentStatus(null);
 
         return criteria.build();
     }

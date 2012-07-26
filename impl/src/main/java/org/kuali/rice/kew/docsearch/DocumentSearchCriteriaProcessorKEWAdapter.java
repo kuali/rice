@@ -196,7 +196,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                         if (APPLICATION_DOCUMENT_STATUS.equals(field.getPropertyName())) {
                             // If Application Document Status policy is in effect for this document type,
                             // add search attributes for document status, and transition dates.
-                            // Note: document status field is a drop down if valid statuses are defined, a text input field otherwise.
+                            // Note: document status field is a multiselect if valid statuses are defined, a text input field otherwise.
                             applyApplicationDocumentStatusCustomizations(field, documentType);
                             break;
                         } else if (ROUTE_NODE_NAME.equals(field.getPropertyName())) {
@@ -272,14 +272,22 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             // String fieldKey DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS
             field.setFieldType(Field.TEXT);
         } else {
-            // dropdown
+            // multiselect
             // String fieldKey DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS + "_VALUES"
-            field.setFieldType(Field.DROPDOWN);
+            field.setFieldType(Field.MULTISELECT);
             List<KeyValue> validValues = new ArrayList<KeyValue>();
             for (ApplicationDocumentStatus status: validStatuses) {
                 validValues.add(new ConcreteKeyValue(status.getStatusName(), status.getStatusName()));
             }
             field.setFieldValidValues(validValues);
+
+            // size the multiselect as appropriate
+            if (validValues.size() > 5) {
+                field.setSize(5);
+            } else {
+                field.setSize(validValues.size());
+            }
+
             //dropDown.setOptionsCollectionProperty("validApplicationStatuses");
             //dropDown.setCollectionKeyProperty("statusName");
             //dropDown.setCollectionLabelProperty("statusName");

@@ -167,6 +167,10 @@ public class UifComponentsTestForm extends UifFormBase {
     private String field132;
     private String field133;
 
+    private String richMessageField = "[color=green][b]Message[/b][/color]";
+    private String richMessageField2 = "Form Message with input specified by id-[id=Demo-SampleMessageInput3] and inlineComponent index number-[0]";
+    private String testValueField = "Sample Data";
+
     private String testPersonId;
     private Person testPerson;
 
@@ -2215,5 +2219,29 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setList3generated(List<UITestObject> list3generated) {
         this.list3generated = list3generated;
+    }
+
+    public String getRichMessageField() {
+        return richMessageField;
+    }
+
+    public void setRichMessageField(String richMessageField) {
+        this.richMessageField = richMessageField;
+    }
+
+    public String getTestValueField() {
+        return testValueField;
+    }
+
+    public void setTestValueField(String testValueField) {
+        this.testValueField = testValueField;
+    }
+
+    public String getRichMessageField2() {
+        return richMessageField2;
+    }
+
+    public void setRichMessageField2(String richMessageField2) {
+        this.richMessageField2 = richMessageField2;
     }
 }

@@ -35,6 +35,7 @@
     <li><portal:portalLink displayTitle="true" title="State-based Validation (Server test)" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-StateBasedValidation-Server&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="State-based Validation (Client test)" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-StateBasedValidation-Client&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="State-based Validation (Client customized test)" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-StateBasedValidation-ClientCustom&methodToCall=start" /></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=RichMessagesView&methodToCall=start"/>Rich Messages</a></li>
   </ul>
    <br/>
 

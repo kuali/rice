@@ -16,35 +16,85 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.MessageStructureUtils;
+import org.kuali.rice.krad.uif.view.View;
+
+import java.util.List;
 
 /**
  * Encapsulates a text message to be displayed
- * 
+ *
  * <p>
  * The <code>Message</code> is used to display static text in the user
  * interface
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Message extends ContentElementBase {
-	private static final long serialVersionUID = 4090058533452450395L;
+    private static final long serialVersionUID = 4090058533452450395L;
 
-	private String messageText;
+    private String messageText;
+    private String messageKey;
+    private List<String> messageParams;
+    private List<Component> inlineComponents;
+    private List<Component> messageComponentStructure;
+    private boolean generateSpan;
 
-	public Message() {
-		super();
-	}
+    public Message() {
+        super();
+        generateSpan = true;
+    }
 
-	/**
-	 * Override to render only if the message text has been given or there is a conditional expression on the
+    /**
+     * Message perfom apply model parses message text for rich text functionality if the messageText contains
+     * [ or ] special characters
+     *
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        //if messageText contains the special characters [] then parse and fill in the messageComponentStructure
+        //but if messageComponentStructure has already been set it overrides messageText by default
+        if (messageText != null && messageText.contains("[") && messageText.contains("]") &&
+                (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
+            messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
+                    this.getInlineComponents(), view);
+            if (messageComponentStructure != null) {
+                for (Component component : messageComponentStructure) {
+                    view.getViewHelperService().performComponentInitialization(view, model, component);
+                }
+            }
+        }
+
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+        if (messageComponentStructure != null) {
+            for (Component component : messageComponentStructure) {
+                components.add(component);
+            }
+        }
+        return components;
+    }
+
+    /**
+     * Override to render only if the message text has been given or there is a conditional expression on the
      * message text
-	 *
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#isRender()
-	 */
-	@Override
-	public boolean isRender() {
-		boolean render = super.isRender();
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#isRender()
+     */
+    @Override
+    public boolean isRender() {
+        boolean render = super.isRender();
 
         if (render) {
             render = getPropertyExpressions().containsKey("messageText") || (StringUtils.isNotBlank(messageText)
@@ -52,24 +102,104 @@ public class Message extends ContentElementBase {
         }
 
         return render;
-	}
+    }
 
-	/**
-	 * Text that makes up the message that will be displayed
-	 * 
-	 * @return String message text
-	 */
-	public String getMessageText() {
-		return this.messageText;
-	}
+    /**
+     * Text that makes up the message that will be displayed.
+     *
+     * <p>If special characters [] are detected the message inserts special content at that location.
+     * The types of features supported are (note that &lt;&gt; are not part of the content below,
+     * they specify placeholders):
+     * <ul>
+     * <li>[id=&lt;component id&gt;] - insert component with id specified at that location in the message</li>
+     * <li>[n] - insert component at index n from the inlineComponent list</li>
+     * <li>[&lt;html tag&gt;][/&lt;html tag&gt;] - insert html content directly into the message content at that
+     * location,
+     * without the need to escape the &lt;&gt; characters in xml</li>
+     * <li>[color=&lt;html color code/name&gt;][/color] - wrap content in color tags to make text that color
+     * in the message</li>
+     * <li>[css=&lt;css classes&gt;][/css] - apply css classes specified to the wrapped content - same as wrapping
+     * the content in span with class property set</li>
+     * </ul>
+     * If the [] characters are needed in message text, they need to be declared with an escape character: \\[ \\]
+     * </p>
+     *
+     * @return String message text
+     */
+    public String getMessageText() {
+        return this.messageText;
+    }
 
-	/**
-	 * Setter for the message text
-	 * 
-	 * @param messageText
-	 */
-	public void setMessageText(String messageText) {
-		this.messageText = messageText;
-	}
+    /**
+     * Setter for the message text
+     *
+     * @param messageText
+     */
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
 
+    /**
+     * If true, generate the span around this message (default).  When false, skip span generation for this
+     * message - this has the additional effect the css classes/style classes will be lost for this message.
+     *
+     * @return true if generating a wrapping span, false otherwise
+     */
+    public boolean isGenerateSpan() {
+        return generateSpan;
+    }
+
+    /**
+     * Sets the generate span flag
+     *
+     * @param generateSpan
+     */
+    public void setGenerateSpan(boolean generateSpan) {
+        this.generateSpan = generateSpan;
+    }
+
+    /**
+     * The message component structure is a list of components which represent the components that make up a message
+     * when using rich message functionality.
+     *
+     * <p>The structure represents the parsed messageText when not set. Normally this structure is setup by the Message
+     * class and <b>SHOULD NOT BE SET</b> in xml, unless full control over the structure is needed.  </p>
+     *
+     * @return list of components which represent the message structure
+     */
+    public List<Component> getMessageComponentStructure() {
+        return messageComponentStructure;
+    }
+
+    /**
+     * Set the message component structure.  Normally this <b>SHOULD NOT BE SET</b> by the xml configuration.
+     *
+     * @param messageComponentStructure list of components which represent the message structure
+     */
+    public void setMessageComponentStructure(List<Component> messageComponentStructure) {
+        this.messageComponentStructure = messageComponentStructure;
+    }
+
+    /**
+     * The inlineComponents are a list of components in order by index.
+     *
+     * <p>inlineComponents is only used when the message is using rich message functionality.  A message
+     * with [0] will reference component at index 0 of this list and insert it at that place in the message,
+     * and likewise [1] will reference item 1, etc.  If the index referenced is out of bounds (or list doesnt exist),
+     * an error will be thrown during message parse.</p>
+     *
+     * @return the inlineComponents to be filled in at indexes referenced by [n] in the message
+     */
+    public List<Component> getInlineComponents() {
+        return inlineComponents;
+    }
+
+    /**
+     * Set the inlineComponents to be filled in at indexes referenced by [n] in the message
+     *
+     * @param inlineComponents the inlineComponents to be filled in at indexes referenced by [n] in the message
+     */
+    public void setInlineComponents(List<Component> inlineComponents) {
+        this.inlineComponents = inlineComponents;
+    }
 }

@@ -143,6 +143,24 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+        // Done in apply model so we have the message text for additional rich message processing in Message
+        // Sets message
+        if (StringUtils.isNotBlank(instructionalText) && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+            instructionalMessage.setMessageText(instructionalText);
+        }
+
+        // Sets constraints
+        if (StringUtils.isNotBlank(constraintText) && StringUtils.isBlank(constraintMessage.getMessageText())) {
+            constraintMessage.setMessageText(constraintText);
+        }
+    }
+
+    /**
      * The following actions are performed:
      *
      * <ul>
@@ -214,16 +232,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // if read only or the control is null no input can be given so no need to setup validation
         if (isReadOnly() || getControl() == null) {
             return;
-        }
-
-        // Sets message
-        if (StringUtils.isNotBlank(instructionalText)) {
-            instructionalMessage.setMessageText(instructionalText);
-        }
-
-        // Sets constraints
-        if (StringUtils.isNotBlank(constraintText)) {
-            constraintMessage.setMessageText(constraintText);
         }
 
         // adjust paths on PrerequisiteConstraint property names
@@ -469,6 +477,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
+        components.add(instructionalMessage);
+        components.add(constraintMessage);
         components.add(control);
         components.add(validationMessages);
         components.add(quickfinder);

@@ -86,6 +86,10 @@ input[type="radio"], input[type="checkbox"] {
     margin: .3em .3em .3em 0;
 }
 
+.uif-message input[type="radio"], .uif-message input[type="checkbox"] {
+    margin: 0;
+}
+
 input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
     background: #ECFCE8;
     outline: none;
@@ -563,6 +567,15 @@ table.dataTable tr.uif-collectionDeleteHighlight td.sorting_1 {
 }
 
 /** Miscellaneous styles **********************************************************************************/
+
+/** inline block cross browser support **/
+.inlineBlock{
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+    *display: inline;
+}
 
 /** for required message below expand collapse button content */
 .uif-requiredInstructionsMessage{

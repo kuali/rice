@@ -88,6 +88,7 @@
     <property name="templateName" value="uif_richTable"/>
     <property name="templateOptions">
       <map>
+        <entry key="bAutoWidth" value="false"/>
         <entry key="sDom" value="fTrtip"/>
         <entry key="bRetrieve" value="true"/>
         <entry key="sPaginationType" value="full_numbers"/>

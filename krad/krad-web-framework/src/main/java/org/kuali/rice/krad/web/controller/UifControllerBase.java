@@ -855,8 +855,9 @@ public abstract class UifControllerBase {
 
         if(urlParameters != null){
             // On post redirects we need to make sure we are sending the history forward:
-            urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
-
+            if(form.getFormHistory() != null)  {
+                urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
+            }
             // If this is an Light Box call only return the redirectURL view with the URL
             // set this is to avoid automatic redirect when using light boxes
             if (urlParameters.get(UifParameters.LIGHTBOX_CALL) != null && urlParameters.get(UifParameters.LIGHTBOX_CALL)

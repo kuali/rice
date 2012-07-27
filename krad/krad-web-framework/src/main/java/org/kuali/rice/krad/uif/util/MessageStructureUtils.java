@@ -56,21 +56,29 @@ public class MessageStructureUtils {
     public static List<Component> parseMessage(String messageId, String messageText, List<Component> componentList,
             View view) {
 
-        messageText = messageText.replace("\\[", "$<$");
-        messageText = messageText.replace("\\]", "$>$");
+        messageText = messageText.replace("\\[", "&#91;");
+        messageText = messageText.replace("\\]", "&#93;");
         messageText = messageText.replace("]", "$@$]");
         String[] messagePieces = messageText.split("[\\[|\\]]");
 
         List<Component> messageComponentStructure = new ArrayList<Component>();
 
+        //current message object to concatenate to after it is generated to prevent whitespace issues and
+        //creation of multiple unneeded objects
+        Message currentMessageComponent = null;
+
         for (String s : messagePieces) {
-            s = s.replace("$<$", "[");
-            s = s.replace("$>$", "]");
 
             if (s.endsWith("$@$")) {
                 s = StringUtils.removeEnd(s, "$@$");
 
                 if (s.startsWith("id=")) {
+                    //if there is a currentMessageComponent add it to the structure and reset it to null
+                    //because component content is now interrupting the string content
+                    if (currentMessageComponent != null) {
+                        messageComponentStructure.add(currentMessageComponent);
+                        currentMessageComponent = null;
+                    }
                     //match component by id from the view
                     s = StringUtils.remove(s, "'");
                     s = StringUtils.remove(s, "\"");
@@ -81,7 +89,13 @@ public class MessageStructureUtils {
                         component.addStyleClass("inlineBlock");
                         messageComponentStructure.add(component);
                     }
-                } else if (s.matches("^[0-9]*$")) {
+                } else if (s.matches("^[0-9]+$")) {
+                    //if there is a currentMessageComponent add it to the structure and reset it to null
+                    //because component content is now interrupting the string content
+                    if (currentMessageComponent != null) {
+                        messageComponentStructure.add(currentMessageComponent);
+                        currentMessageComponent = null;
+                    }
                     //match component by index from the componentList passed in
                     int cIndex = Integer.parseInt(s);
                     if (componentList != null && cIndex < componentList.size() && !componentList.isEmpty()) {
@@ -106,12 +120,8 @@ public class MessageStructureUtils {
                     } else {
                         s = "</span>";
                     }
+                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
 
-                    Message message = ComponentFactory.getMessage();
-                    view.assignComponentIds(message);
-                    message.setMessageText(s);
-                    message.setGenerateSpan(false);
-                    messageComponentStructure.add(message);
                 } else if (s.startsWith("css=") || s.startsWith("/css")) {
                     if (!s.startsWith("/")) {
                         s = StringUtils.remove(s, "'");
@@ -120,35 +130,52 @@ public class MessageStructureUtils {
                     } else {
                         s = "</span>";
                     }
+                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
 
-                    Message message = ComponentFactory.getMessage();
-                    view.assignComponentIds(message);
-                    message.setMessageText(s);
-                    message.setGenerateSpan(false);
-                    messageComponentStructure.add(message);
                 } else if (s.equals("")) {
                     //do nothing    
                 } else {
                     //raw html
                     s = "<" + s + ">";
-                    Message message = ComponentFactory.getMessage();
-                    view.assignComponentIds(message);
-                    message.setMessageText(s);
-                    message.setGenerateSpan(false);
-                    messageComponentStructure.add(message);
+                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
+
                 }
             } else {
                 //raw html
                 addBlanks(s);
-                Message message = ComponentFactory.getMessage();
-                view.assignComponentIds(message);
-                message.setMessageText(s);
-                message.setGenerateSpan(false);
-                messageComponentStructure.add(message);
+                currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
+
             }
         }
 
+        if (currentMessageComponent != null) {
+            messageComponentStructure.add(currentMessageComponent);
+            currentMessageComponent = null;
+        }
+
         return messageComponentStructure;
+    }
+
+    /**
+     * Concatenates string content onto the message passed in and passes it back.  If the message is null, creates
+     * a new message object with the string content and passes that back.
+     *
+     * @param currentMessageComponent Message object
+     * @param s string content to be concatenated
+     * @param view the current view
+     * @return resulting concatenated Message
+     */
+    private static Message concatenateStringMessageContent(Message currentMessageComponent, String s, View view){
+        if (currentMessageComponent == null) {
+            currentMessageComponent = ComponentFactory.getMessage();
+            view.assignComponentIds(currentMessageComponent);
+            currentMessageComponent.setMessageText(s);
+            currentMessageComponent.setGenerateSpan(false);
+        } else {
+            currentMessageComponent.setMessageText(currentMessageComponent.getMessageText() + s);
+        }
+
+        return currentMessageComponent;
     }
 
     /**

@@ -105,6 +105,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void performApplyModel(View view, Object model, Component parent) {
 		super.performApplyModel(view, model, parent);
 
+		// setup summary message field if necessary
+		if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+			instructionalMessage.setMessageText(instructionalText);
+		}
+
 		if (layoutManager != null) {
 			layoutManager.performApplyModel(view, model, this);
 		}
@@ -129,11 +134,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         if(header != null){
             header.addDataAttribute("headerFor", this.getId());
         }
-
-		// setup summary message field if necessary
-		if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
-			instructionalMessage.setMessageText(instructionalText);
-		}
 
 		if (layoutManager != null) {
 			layoutManager.performFinalize(view, model, this);

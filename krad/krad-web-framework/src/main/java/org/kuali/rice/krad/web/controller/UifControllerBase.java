@@ -851,6 +851,8 @@ public abstract class UifControllerBase {
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
         // indicate a redirect is occuring to prevent view processing down the line
         form.setRequestRedirect(true);
+
+        //set the ajaxReturnType on the form this will override the return type requested by the client
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.REDIRECT.getKey());
 
         if(urlParameters != null){

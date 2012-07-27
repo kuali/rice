@@ -67,6 +67,8 @@ public class Action extends ContentElementBase {
     private String loadingMessageText;
     private String updatingMessageText;
 
+    private boolean displayResponseInLightBox;
+
     private Map<String, String> actionParameters;
 
     public Action() {
@@ -149,7 +151,7 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Builds the data attributes that will be the will be read client side to determine how to
+     * Builds the data attributes that will be read client side to determine how to
      * handle the action and the additional data that should be submitted with the action
      *
      * <p>
@@ -170,6 +172,7 @@ public class Action extends ContentElementBase {
         addDataAttributeIfNonEmpty("loadingMessageText", this.loadingMessageText);
         addDataAttributeIfNonEmpty("updatingMessageText", this.updatingMessageText);
         addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
+        addDataAttribute("displayresponseinlightbox", Boolean.toString(this.displayResponseInLightBox));
 
         // all action parameters should be submitted with action
         Map<String, String> submitData = new HashMap<String, String>();
@@ -727,5 +730,23 @@ public class Action extends ContentElementBase {
      */
     public void setErrorCallback(String errorCallback) {
         this.errorCallback = errorCallback;
+    }
+
+    /**
+     * If the response needs to be displayed in a lightbox
+     *
+     * @return boolean
+     */
+    public boolean isDisplayResponseInLightBox() {
+            return displayResponseInLightBox;
+        }
+
+    /**
+     * Setter for displayResponseInLightBox
+     *
+     * @param displayResponseInLightBox
+     */
+    public void setDisplayResponseInLightBox(boolean displayResponseInLightBox) {
+        this.displayResponseInLightBox = displayResponseInLightBox;
     }
 }

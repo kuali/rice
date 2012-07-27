@@ -15,6 +15,7 @@
  */
 package edu.sampleu.demo.kitchensink;
 
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -290,4 +291,34 @@ public class DialogTestViewUifController extends UifControllerBase {
         // reload page1
         return getUIFModelAndView(form, "DialogView-Page1");
     }
+    /**
+         * Test method for a controller that displays the response in a ightbox.
+         *
+         * @param form - test form
+         * @param result - Spring form binding result
+         * @param request - http request
+         * @param response - http response
+         * @return
+         * @throws Exception
+         */
+        @RequestMapping(params = "methodToCall=" + "doResponseInLightBox")
+        public ModelAndView doResponseInLightBox(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
+                HttpServletRequest request, HttpServletResponse response) throws Exception {
+            String dialog1 = "myRegularGroup";
+            if (!hasDialogBeenAnswered(dialog1, form)){
+                // redirect back to client to display lightbox
+                return showDialog(dialog1, form, request, response);
+            }
+            // Get value from chosen radio button
+            boolean choice = getBooleanDialogResponse(dialog1, form, request, response);
+            StringBuilder sb = new StringBuilder("You selected ");
+            sb.append((choice)?"Yes":"No");
+            form.setField1(sb.toString());
+
+            // clear dialog history so they can press the button again
+            form.getDialogManager().removeDialog(dialog1);
+            // reload page1
+            return getUIFModelAndView(form, "DialogView-Page1");
+        }
+
 }

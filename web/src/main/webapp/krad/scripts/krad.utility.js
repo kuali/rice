@@ -460,7 +460,7 @@ function checkDirty(event) {
  */
 function returnBoolean(var1) {
     var x = var1;
-    alert('Value:' + x);
+    alert('PreSubmit Call:' + x);
     return x;
 }
 /**

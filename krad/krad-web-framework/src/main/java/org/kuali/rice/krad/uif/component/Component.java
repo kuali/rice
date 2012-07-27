@@ -900,6 +900,31 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames);
 
     /**
+     *  Returns a list of componentIds which will be also be refreshed when this component is refreshed
+     *  <p>
+     *  This will be a comma separated list of componentIds that need to be refreshed when a refresh
+     *  condition has been set on this component.
+     *  </p>
+     * @return List<String>
+     */
+    public List<String> getAdditionalComponentsToRefresh();
+
+    /**
+     * Setter for alsoRefreshComponents
+     *
+     * @param additionalComponentsToRefresh
+     */
+    public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh);
+
+    /**
+     * Returns a string for representing the list of additional components to be refreshed as
+     * a JavaScript value
+     *
+     * @return String representation of the list of componentIds for the components that need to be refreshed
+     */
+    public String getAdditionalComponentsToRefreshJs();
+
+    /**
      * Indicates the component can be refreshed by an action
      *
      * <p>
@@ -937,6 +962,20 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @param resetDataOnRefresh
      */
     void setResetDataOnRefresh(boolean resetDataOnRefresh);
+
+    /**
+     *  Time in seconds after which the component is automatically refreshed
+     *
+     * @return  time in seconds
+     */
+    int getRefreshTimer();
+
+    /**
+     *  Setter for refreshTimer
+     *
+     * @param refreshTimer
+     */
+    void setRefreshTimer(int refreshTimer);
 
     /**
      * Add a data attribute to the dataAttributes map
@@ -989,19 +1028,5 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @return jQuery data script for adding all data attributes
      */
     String getAllDataAttributesJs();
-
-    /**
-     *  Time in seconds after which the component is automatically refreshed
-     *
-     * @return  time in seconds
-     */
-    int getRefreshTimer();
-
-    /**
-     *  Setter for refreshTimer
-     *
-     * @param refreshTimer
-     */
-    void setRefreshTimer(int refreshTimer);
 
 }

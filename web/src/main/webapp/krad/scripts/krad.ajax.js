@@ -20,10 +20,8 @@
  *
  * @param component - the component on which the action has been invoked
  */
-
 function actionInvokeHandler(component) {
-
-    // Read the data attributes. All simple data attributes are lower-cased.
+    // read the data attributes. All simple data attributes are lower-cased.
     var ajaxSubmit = jQuery(component).data("ajaxsubmit");
     var submitData = jQuery(component).data("submitData");
     var successCallback = jQuery(component).data("successcallback");
@@ -31,14 +29,20 @@ function actionInvokeHandler(component) {
     var errorCallback = jQuery(component).data("errorcallback");
     var preSubmitCall = jQuery(component).data("presubmitcall");
     var validate = jQuery(component).data("validate");
+    var displayResponseInLightBox = jQuery(component).data("displayresponseinlightbox");
+    var returnType = null;
 
+    //set the returnType if displayResponseInLightBox is true
+    if (displayResponseInLightBox) {
+        returnType = "display-response-in-lightbox";
+    }
     // methodToCall comes as a part of submitData
     var methodToCall = submitData['methodToCall'];
 
     //if the form is submitted via ajax
     if (ajaxSubmit) {
         ajaxSubmitFormFullOpts(methodToCall, successCallback, submitData, elementToBlock, errorCallback, validate,
-                    preSubmitCall, null);
+                    preSubmitCall, returnType);
     } else {
         submitFormFullOpts(methodToCall, submitData, validate, preSubmitCall);
     }
@@ -54,7 +58,6 @@ function actionInvokeHandler(component) {
  * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
  *                            type but the server can change it. Defaults to update-page
  */
-
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false,
             preSubmitCall, returnType);
@@ -71,7 +74,6 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
  * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
  *                            type but the server can change it. Defaults to update-page
  */
-
 function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, true,
             preSubmitCall, returnType);
@@ -103,7 +105,6 @@ function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData
  * @param returnType - this is used to indicate to the server a requested return type. The client requests a return
  *                     type but the server can change it. Defaults to update-page
  */
-
 function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate,
                                 preSubmitCall, returnType) {
     var data = {};
@@ -252,7 +253,6 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
  * @param additionalData   - any additional data that needs to be sent to the server
  * @param preSubmitCall    - hook to execute a call before submit which if returns true the processing moves forward else return
  */
-
 function submitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts , validate false
     submitFormFullOpts(methodToCall, additionalData, false, preSubmitCall);
@@ -265,11 +265,11 @@ function submitForm(methodToCall, additionalData, preSubmitCall) {
  * @param additionalData   - any additional data that needs to be sent to the server
  * @param preSubmitCall    - hook to execute a call before submit which if returns true the processing moves forward else return
  */
-
 function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts with null callback, validate true
     submitFormFullOpts(methodToCall, additionalData, true, preSubmitCall);
 }
+
 /**
  * Does a non ajax submit. If validate is set to true then it validates the form before proceeding.
  * If the preSubmitCall is provided then if it evaluates to true, it proceeds else the function returns.
@@ -282,7 +282,6 @@ function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
  * form, if the check is performed and dirty fields exist, the submit will not occur
  * @param preSubmitCall
  */
-
 function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall) {
 
     // invoke validateForm if validate flag is true, if returns false do not continue
@@ -362,7 +361,6 @@ function invokeAjaxReturnHandler(content) {
  *
  * @param content   - content returned from response
  */
-
 function updatePageCallback(content) {
     var page = jQuery("[data-handler='update-component']", content);
     page.hide();
@@ -386,7 +384,6 @@ function updatePageCallback(content) {
  * @param content   - content returned from response
  * @param dataAttr  -  any additional data attributes that the server needs to send
  */
-
 function updatePageHandler(content, dataAttr) {
     var page = jQuery("#page_update", content);
     page.hide();
@@ -412,7 +409,6 @@ function updatePageHandler(content, dataAttr) {
  * @param content   - content returned from response
  * @param dataAttr  -  any additional data attributes that the server needs to send
  */
-
 function updateComponentHandler(content, dataAttr) {
     var id = dataAttr.updatecomponentid;
     var elementToBlock = jQuery("#" + id);
@@ -476,7 +472,6 @@ function updateComponentHandler(content, dataAttr) {
  * @param content  - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
  */
-
 function updateViewHandler(content, dataAttr){
     jQuery('#' + kradVariables.APP_ID).replaceWith(content);
     runHiddenScriptsAgain();
@@ -488,11 +483,23 @@ function updateViewHandler(content, dataAttr){
  * @param content  - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
  */
-
 function redirectHandler(content, dataAttr) {
 
 // get contents between div and do window.location = parsed href
    window.location.href = jQuery(content).text();
+}
+
+/**
+ * Displays the response in a lightbox
+ * <p>
+ *     Calls the showLightboxContent method
+ * </p>
+ *
+ * @param content  - server response
+ * @param dataAttr -  any additional data attributes that the server needs to send
+ */
+function displayResponseInLightBoxHandler(content, dataAttr){
+     showLightboxContent(content);
 }
 
 /**
@@ -504,7 +511,6 @@ function redirectHandler(content, dataAttr) {
  * @param navigateToPageId -
  *          the id for the page that the link should navigate to
  */
-
 function handleActionLink(component, methodToCall, navigateToPageId) {
     var submitData = {};
     submitData = jQuery(component).data('submitData');
@@ -525,19 +531,18 @@ function handleActionLink(component, methodToCall, navigateToPageId) {
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  * @param addCallbackFunc - additional callback function to be executed (optional)
  */
-
 function retrieveComponent(id, methodToCall, addCallbackFunc) {
     var elementToBlock = jQuery("#" + id);
 
     // if a call is made from refreshComponentUsingTimer() and the component does not exist on the page or is hidden
     // then get the handle of the refreshTimer and clear the timer. Also remove it from the refreshTimerComponentMap
-    if(elementToBlock === undefined ||elementToBlock.filter(':visible').length === 0){
+    if(elementToBlock === undefined || elementToBlock.filter(':visible').length === 0){
         var refreshHandle = refreshTimerComponentMap[id];
-        if(refreshHandle !== null){
+        if(!(refreshHandle === undefined)){
             clearInterval(refreshHandle);
             delete refreshTimerComponentMap[id];
+            return;
         }
-        return;
     }
 
     var updateRefreshableComponentCallback = function (htmlContent) {
@@ -631,7 +636,6 @@ function retrieveComponent(id, methodToCall, addCallbackFunc) {
  * @param showInactive - boolean indicating whether inactive records should be displayed (true) or
  * not displayed (false)
  */
-
 function toggleInactiveRecordDisplay(component, collectionGroupId, showInactive) {
     var elementToBlock = jQuery("#" + collectionGroupId);
     var updateCollectionCallback = function (htmlContent) {
@@ -728,7 +732,6 @@ function addLineToCollection(component, collectionGroupId, collectionBaseId) {
  * @param collectionGroupId - the collection group id
  * @param collectionName - the property name of the collection used to get the fields
  */
-
 function validateAndPerformCollectionAction(component, collectionGroupId, collectionName) {
     if (collectionName) {
 
@@ -771,7 +774,6 @@ function validateAndPerformCollectionAction(component, collectionGroupId, collec
  * @param refreshId - id for the component that should be refreshed when change occurs
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
-
 function setupOnChangeRefresh(controlName, refreshId, methodToCall) {
     setupRefreshCheck(controlName, refreshId, function () {
         return true;
@@ -906,7 +908,7 @@ function refreshComponentUsingTimer(componentId,methodToCall,timeInterval){
 }
 
 /**
- * Makes an get request to the server so that the form with the specified formKey will
+ * Makes a get request to the server so that the form with the specified formKey will
  * be cleared server side
  */
 function clearServerSideForm(formKey) {

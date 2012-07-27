@@ -80,8 +80,8 @@ jQuery(document).ready(function () {
     initFieldHandlers();
 
     // initialize the handlers for the ajax calls
-    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component":updateComponentHandler,
-        "update-view":updateViewHandler, "redirect":redirectHandler};
+    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler,
+        "update-view": updateViewHandler, "redirect": redirectHandler, "display-response-in-lightbox":displayResponseInLightBoxHandler};
 });
 
 /**

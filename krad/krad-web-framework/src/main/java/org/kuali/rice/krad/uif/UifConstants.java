@@ -76,7 +76,8 @@ public class UifConstants {
      * Enum of return types. Used to return the type of response being sent by the server to the client.
      */
     public enum AjaxReturnTypes {
-         UPADATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"), SHOWINCIDENT("update-view"), UPDATECOLLECTION("update-collection");
+        UPADATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"),
+        SHOWINCIDENT("update-view"), UPDATECOLLECTION("update-collection"),DISPLAYRESPONSEINLIGHTBOX("display-response-in-lightbox");
 
          private String key;
 

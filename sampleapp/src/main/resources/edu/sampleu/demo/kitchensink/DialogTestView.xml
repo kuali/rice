@@ -130,6 +130,9 @@
               p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="doExtendedDialog" p:actionLabel="Extended Dialog"
               p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="doResponseInLightBox" p:actionLabel="Displays Response in LightBox"
+                      p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP" p:displayResponseInLightBox="true"/>
+
       </list>
     </property>
   </bean>

@@ -171,19 +171,17 @@
       <list>
         <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField" p:actionScript="alert('You clicked the link');" />
 
-               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call true"  p:methodToCall="start" p:preSubmitCall="returnBoolean(true)" p:successCallback="successCallbackF">
-
-               </bean>
+               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call true"  p:methodToCall="start" p:preSubmitCall="returnBoolean(true)" />
 
                <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call false"  p:methodToCall="start" p:preSubmitCall="returnBoolean(false)"/>
 
                <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField ajaxSubmit call false"  p:methodToCall="start" p:ajaxSubmit="false" p:preSubmitCall="returnBoolean(true)"/>
 
-               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField sucessCallBack"  p:methodToCall="start" p:ajaxSubmit="true" p:successCallback="successCallbackF"/>
+               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField sucessCallBack"  p:methodToCall="start" p:successCallback="successCallbackF"/>
 
-                <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField validate"  p:methodToCall="start" p:ajaxSubmit="true" p:successCallback="successCallbackF" p:performClientSideValidation = "true"/>
+               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField validate"  p:methodToCall="start" p:performClientSideValidation = "true"/>
 
-              <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField errorCallBack"  p:methodToCall="errorCheck" p:ajaxSubmit="true" p:errorCallback="function(htmlContent) {alert('Error Call back eg');}"/>
+              <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField errorCallBack"  p:methodToCall="errorCheck" p:errorCallback="successCallbackF"/>
 
               <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField ajax redirect"  p:methodToCall="redirectCheck" p:ajaxSubmit="true"  />
 

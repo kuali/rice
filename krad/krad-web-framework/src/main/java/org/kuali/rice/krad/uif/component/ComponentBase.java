@@ -70,6 +70,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private List<String> conditionalRefreshControlNames;
 
     private List<String> refreshWhenChangedPropertyNames;
+    private List<String> additionalComponentsToRefresh;
+    private String additionalComponentsToRefreshJs;
     private boolean refreshedByAction;
 
     private int refreshTimer;
@@ -159,6 +161,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
 
         refreshWhenChangedPropertyNames = new ArrayList<String>();
+        additionalComponentsToRefresh = new ArrayList<String>();
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
         cssClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
@@ -869,7 +872,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public String getOnDocumentReadyScript() {
         String onDocScript =  this.onDocumentReadyScript;
-        // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer tp the onDocumentReadyScript.
+        // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer to the onDocumentReadyScript.
         // if the refreshTimer property is set then the methodToCallOnRefresh should also be set.
         if(refreshTimer > 0) {
             onDocScript = (null == onDocScript) ? "" : onDocScript;
@@ -1368,6 +1371,18 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
         this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames;
     }
+    /**
+     * @see Component#getAdditionalComponentsToRefresh()
+     */
+    public List<String> getAdditionalComponentsToRefresh() {
+        return additionalComponentsToRefresh;
+    }
+    /**
+     * @see Component#setAdditionalComponentsToRefresh(java.util.List<java.lang.String>)
+     */
+    public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh) {
+        this.additionalComponentsToRefresh = additionalComponentsToRefresh;
+    }
 
     /**
      * @see Component#isRefreshedByAction()
@@ -1385,10 +1400,12 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * Time in seconds that the component will be automatically refreshed
+     *
      * <p>
      *     This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
      *     When using this property methodToCallOnRefresh and id should also be specified
      * </p>
+     *
      * @return  refreshTimer
      */
     public int getRefreshTimer() {
@@ -1569,6 +1586,16 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             }
             return js;
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefreshJs
+     */
+    public String getAdditionalComponentsToRefreshJs(){
+        if(!(this.getAdditionalComponentsToRefresh().isEmpty())) {
+           additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(this.getAdditionalComponentsToRefresh());
+        }
+        return additionalComponentsToRefreshJs;
     }
 
 }

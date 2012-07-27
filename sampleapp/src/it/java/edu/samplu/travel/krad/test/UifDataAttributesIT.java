@@ -138,6 +138,7 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
         // custom suffix to mark  test bean ids
         String testIdSuffix = "_attrs";
         // input fields, whose controls are implemented as spring form tags, will have both simple and complex attributes set via a script
+        // KULRICE-7752 : UifDataAttributesIT testDataAttributesPresentInControls textInputField_attrs_control: complex data attributes script not found
         String[] inputControls = {"textInputField", "textAreaInputField", "dropDown", "datePicker", "fileUpload", "userControl",
                 "spinnerControl", "hiddenControl", "checkBox"};//, "radioButton",
         for (int i=0; i<inputControls.length; i++) {

@@ -49,6 +49,7 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         selenium.click("methodToCall.cancel");
         selenium.waitForPageToLoad("30000");
         selenium.setSpeed("3000");
+        // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
         selenium.click("methodToCall.processAnswer.button0");
         selenium.waitForPageToLoad("30000");
     }

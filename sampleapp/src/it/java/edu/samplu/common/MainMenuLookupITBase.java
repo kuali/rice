@@ -44,8 +44,8 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         selenium.click(getLinkLocator());
         selenium.waitForPageToLoad("30000");
         selenium.selectFrame("iframeportlet");
-        selenium.click("css=button:contains(earch)");
-        Thread.sleep(3000);
+        selenium.click("//button[contains(.,'earch')]");
+        Thread.sleep(3000); // this would probably better as a selenium.waitForCondition
         selenium.waitForPageToLoad("30000");
         selenium.click("link=edit");
         selenium.waitForPageToLoad("30000");

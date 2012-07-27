@@ -41,9 +41,10 @@ public class MaintenanceQuickfinderIconsIT extends UpgradedSeleniumITBase{
         selenium.waitForPageToLoad("100000");
         selenium.selectFrame("iframeportlet");
         assertTrue(selenium.isTextPresent("Document Overview"));
-        assertTrue(selenium.isElementPresent("css=#u849"));
-        assertTrue(selenium.isElementPresent("css=#u866"));
-        assertTrue(selenium.isElementPresent("css=#u934"));
-        assertTrue(selenium.isElementPresent("css=#u1114_add"));
+        assertTrue(selenium.isElementPresent("id=quickfinder1"));
+        assertTrue(selenium.isElementPresent("id=quickfinder2"));
+        assertTrue(selenium.isElementPresent("id=quickfinder3"));
+        assertTrue(selenium.isElementPresent("id=quickfinder4_add"));
+        // it would be better to test that the image isn't 404
     }
 }

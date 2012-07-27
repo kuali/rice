@@ -67,10 +67,12 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     public static void login(Selenium selenium) {
-        Assert.assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("30000");
+        if (System.getProperty("remote.autologin") == null) {
+            Assert.assertEquals("Login", selenium.getTitle());
+            selenium.type("__login_user", "admin");
+            selenium.click("//input[@value='Login']");
+            selenium.waitForPageToLoad("30000");
+        }
     }
 
     /**

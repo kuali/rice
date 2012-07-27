@@ -31,7 +31,7 @@ public class MaintenanceButtonsIT extends UpgradedSeleniumITBase {
 
     @Test
     /**
-     * Verify Submit, Save, Close and Cancel buttons are available
+     * Verify Submit, Save, Blanket approve, Close and Cancel buttons are available
      */
     public void testVerifyButtons() throws Exception {
         selenium.click("link=KRAD");
@@ -39,9 +39,10 @@ public class MaintenanceButtonsIT extends UpgradedSeleniumITBase {
         selenium.click("link=Travel Account Maintenance (New)");
         selenium.waitForPageToLoad("100000");
         selenium.selectFrame("iframeportlet");
-        assertTrue(selenium.isElementPresent("css=#u1146"));
-        assertTrue(selenium.isElementPresent("css=#u1147"));
-        assertTrue(selenium.isElementPresent("css=#u1154"));
-        assertTrue(selenium.isElementPresent("css=#u1155"));
+        assertTrue(selenium.isElementPresent("//button[contains(.,'ubmit')]"));
+        assertTrue(selenium.isElementPresent("//button[contains(.,'ave')]"));
+        assertTrue(selenium.isElementPresent("//button[contains(.,'lanket approve')]"));
+        assertTrue(selenium.isElementPresent("//button[contains(.,'lose')]"));
+        assertTrue(selenium.isElementPresent("//a[contains(.,'ancel')]"));
     }
 }

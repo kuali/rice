@@ -38,7 +38,7 @@ public class MaintenanceSubsidizedPercentWatermarkIT extends UpgradedSeleniumITB
         selenium.waitForPageToLoad("50000");
         selenium.click("link=Travel Account Maintenance (New)");
         selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+//        selenium.selectFrame("iframeportlet");
         assertTrue(selenium.isElementPresent("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @placeholder='##.##   ']"));
     }
 }

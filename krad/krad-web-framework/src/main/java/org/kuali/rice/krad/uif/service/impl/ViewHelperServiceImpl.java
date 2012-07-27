@@ -402,8 +402,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             performComponentInitialization(view, model, nestedComponent);
         }
 
-        // initialize nested components in property replacements
+        // populate replacer expressions and initialize nested components in property replacements
         for (PropertyReplacer replacer : component.getPropertyReplacers()) {
+            ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, false);
             for (Component replacerComponent : replacer.getNestedComponents()) {
                 performComponentInitialization(view, model, replacerComponent);
             }

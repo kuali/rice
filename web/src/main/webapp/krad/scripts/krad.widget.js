@@ -131,27 +131,20 @@ function createLightBoxLink(controlId, options) {
         var showHistory = false;
 
         // Check if this is called within a light box
-        if (!jq("#fancybox-frame", parent.document).length) {
-
-            // If this is not the top frame, then create the lightbox
-            // on the top frame to put overlay over whole window
-            if (top == self) {
-                jq("#" + controlId).fancybox(options);
-            } else {
-                jq("#" + controlId).click(function (e) {
-                    e.preventDefault();
-                    options['href'] = jq("#" + controlId).attr('href');
-                    top.$.fancybox(options);
-                });
-            }
+        if (!jQuery("#fancybox-frame", parent.document).length) {
+            jQuery("#" + controlId).click(function (e) {
+                e.preventDefault();
+                options['href'] = jQuery("#" + controlId).attr('href');
+                getContext().fancybox(options);
+            });
         } else {
-            jq("#" + controlId).attr('target', '_self');
+            jQuery("#" + controlId).attr('target', '_self');
             showHistory = true;
         }
 
         // Set the dialogMode = true param
-        if (jq("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
-            jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true'
+        if (jQuery("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
+            jQuery("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true'
                     + '&showHome=false' + '&showHistory=' + showHistory
                     + '&history=' + jq('#formHistory\\.historyParameterString').val());
         }
@@ -174,12 +167,12 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
     jq(function () {
 
         // Check if this is not called within a lightbox
-        if (!jq("#fancybox-frame", parent.document).length) {
-            jq("#" + controlId).click(function (e) {
+        if (!jQuery("#fancybox-frame", parent.document).length) {
+            jQuery("#" + controlId).click(function (e) {
 
                 // Prevent the default submit
                 e.preventDefault();
-                jq("[name='jumpToId']").val(controlId);
+                jQuery("[name='jumpToId']").val(controlId);
 
                 // Add the lightBoxCall parameter so that the controller can avoid the redirect
                 actionParameterMapString['actionParameters[dialogMode]'] = 'true';
@@ -202,7 +195,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                 }
 
                 // Do the Ajax submit on the kualiForm form
-                jq("#kualiForm").ajaxSubmit({
+                jQuery("#kualiForm").ajaxSubmit({
 
                             success: function(data) {
 
@@ -210,18 +203,14 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                                 options['href'] = data;
 
                                 // Open the light box
-                                if (top == self) {
-                                    jq.fancybox(options);
-                                } else {
-                                    parent.$.fancybox(options);
-                                }
+                                getContext().fancybox(options);
                             }
                         });
             });
         } else {
 
             // Add the action parameters hidden to form and allow the submit action
-            jq("#" + controlId).click(function (e) {
+            jQuery("#" + controlId).click(function (e) {
                 actionParameterMapString['actionParameters[dialogMode]'] = 'true';
                 actionParameterMapString['actionParameters[returnTarget]'] = '_self';
                 actionParameterMapString['actionParameters[showHistory]'] = 'true';
@@ -240,10 +229,10 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-    if (parent.jq == null) {
-        returnField = parent.$('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
+    if (usePortalForContext()) {
+        returnField = getContext.find('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
     }else{
-        returnField = parent.jq('[name="' + escapeName(fieldName) + '"]');
+        returnField = getContext.find('[name="' + escapeName(fieldName) + '"]');
     }
     returnField.val(value);
     returnField.focus();
@@ -258,10 +247,14 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    if (parent.jq == null) {
-        jq('#kualiForm').attr('target',parent.$('#iframeportlet').attr('name'));
+    if (usePortalForContext()) {
+        jQuery('#kualiForm').attr('target',getContext().find('#iframeportlet').attr('name'));
     }else{
-        jq('#kualiForm').attr('target','_parent');
+        if (parent.jq != null) {
+            jQuery('#kualiForm').attr('target',parent.jQuery('#iframeportlet').attr('name'));
+        }else{
+            jQuery('#kualiForm').attr('target','_parent');
+        }
     }
 }
 
@@ -282,36 +275,27 @@ function setMultiValueReturnTarget() {
  */
 function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 
-    parameterPairs = paramMap.split(",");
-    queryString = "&showHome=false";
+    var parameterPairs = paramMap.split(",");
+    var queryString = "&showHome=false";
 
     for (i in parameterPairs) {
         parameters = parameterPairs[i].split(":");
 
-        if (jq('[name="' + escapeName(parameters[0]) + '"]').val() == "") {
+        if (jQuery('[name="' + escapeName(parameters[0]) + '"]').val() == "") {
             alert("Please enter a value in the appropriate field.");
             return false;
         } else {
-            queryString = queryString + "&" + parameters[1] + "=" + jq('[name="' + escapeName(parameters[0]) + '"]').val();
+            queryString = queryString + "&" + parameters[1] + "=" + jQuery('[name="' + escapeName(parameters[0]) + '"]').val();
         }
     }
 
     if (showLightBox) {
 
-        if (!jq("#fancybox-frame", parent.document).length) {
-
-            // If this is not the top frame, then create the lightbox
-            // on the top frame to put overlay over whole window
+        if (getContext().find('.fancybox-inner').length) {
             queryString = queryString + "&showHistory=false&dialogMode=true";
-            if (top == self) {
-                lightBoxOptions['href'] = url + queryString;
-                jq.fancybox(lightBoxOptions);
-            } else {
-                lightBoxOptions['href'] = url + queryString;
-                top.$.fancybox(lightBoxOptions);
-            }
+            lightBoxOptions['href'] = url + queryString;
+            getContext().fancybox(lightBoxOptions);
         } else {
-
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&showHistory=true&dialogMode=true";
             window.open(url + queryString, "_self");
@@ -326,10 +310,11 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
  * Closes the lightbox window
 */
 function closeLightbox() {
-    if (top.jq == null) {
-        top.$.fancybox.close();
-    }else {
-        top.jq.fancybox.close();
+    if (usePortalForContext()) {
+        getContext().fancybox.close();
+    }
+    else {
+        parent.jQuery.fancybox.close();
     }
 }
 

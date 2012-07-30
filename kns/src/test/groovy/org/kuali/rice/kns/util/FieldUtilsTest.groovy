@@ -38,6 +38,25 @@ import org.kuali.rice.krad.bo.BusinessObject
  * Tests FieldUtils
  */
 class FieldUtilsTest {
+    @Test
+    void testGenerateCollectionSubTabName() {
+        def f = FieldUtils.constructContainerField("collection[1]", "Test Collection", [
+            new Field(fieldLabel: "Field One", propertyName: "field1", propertyValue: "value one"),
+            new Field(fieldLabel: "Field Two", propertyName: "field2", propertyValue: "value two"),
+            new Field(fieldLabel: "Field Three", propertyName: "field3", propertyValue: "value three"),
+            new Field(fieldLabel: "Multi-value Field", propertyName: "multiValueField", propertyValues: [ "value1", "value2", "value3" ])
+        ], 50)
+        f.setContainerElementName("containerName1-Element")
+        f.setContainerName("containerName1")
+        f.setContainerDisplayFields( [
+            new Field(fieldLabel: "Contained Field One", propertyName: "containedField1", propertyValue: "contained value one"),
+            new Field(fieldLabel: "Contained Field Two", propertyName: "containedField2", propertyValue: "contained value two"),
+            new Field(fieldLabel: "Contained Field Three", propertyName: "containedField3", propertyValue: "contained value three"),
+            new Field(fieldLabel: "Contained Multi-value Field", propertyName: "multiValueField", propertyValues: [ "value1", "value2", "value3" ])
+        ])
+        // multivalued field values not considered for purposes of collection sub tab name generation
+        assertEquals("containerName-Elementcontained value onecontained value twocontained value three", FieldUtils.generateCollectionSubTabName(f))
+    }
 
     /**
      * Performs an as-of-yet very superficial check of remotableattributefield conversion

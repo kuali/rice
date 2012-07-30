@@ -40,6 +40,14 @@ import java.util.Map;
  * This class common properites for all action forms.
  */
 public class KualiForm extends PojoFormBase {
+    /**
+     * Tab state UI literals
+     */
+    public static enum TabState {
+        OPEN,
+        CLOSE
+    }
+
     private static final long serialVersionUID = 1L;
 
     private static final String literalPrefixAndDelimiter =

@@ -59,11 +59,16 @@ import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
+import org.kuali.rice.kns.web.struts.form.InquiryForm;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.struts.form.pojo.PojoFormBase;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -362,6 +367,26 @@ public class WebUtils {
 	public static void incrementTabIndex(KualiForm form, String tabKey) {
 		form.incrementTabIndex();
 	}
+
+    /**
+     * Attempts to reopen sub tabs which would have been closed for inactive records
+     *
+     * @param sections the list of Sections whose rows and fields to set the open tab state on
+     * @param tabStates the map of tabKey->tabState.  This map will be modified to set entries to "OPEN"
+     * @param collectionName the name of the collection reopening
+     */
+    public static void reopenInactiveRecords(List<Section> sections, Map<String, String> tabStates, String collectionName) {
+        for (Section section : sections) {
+            for (Row row: section.getRows()) {
+                for (Field field : row.getFields()) {
+                    if (field.getFieldType().equals(Field.CONTAINER) && field.getContainerName().startsWith(collectionName)) {
+                        final String tabKey = WebUtils.generateTabKey(FieldUtils.generateCollectionSubTabName(field));
+                        tabStates.put(tabKey, KualiForm.TabState.OPEN.name());
+                    }
+                }
+            }
+        }
+    }
 
 	/**
 	 * Generates a String from the title that can be used as a Map key.

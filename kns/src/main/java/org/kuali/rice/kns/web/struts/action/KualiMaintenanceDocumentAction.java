@@ -45,9 +45,13 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.kns.web.struts.form.InquiryForm;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.DocumentAttachment;
 import org.kuali.rice.krad.bo.MultiDocumentAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachment;
@@ -1079,10 +1083,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		oldMaintainable.setShowInactiveRecords(collectionName, showInactive);
 		newMaintainable.setShowInactiveRecords(collectionName, showInactive);
 
+        // toggling the display to be visible again, re-open any previously closed inactive records
+        if (showInactive) {
+            WebUtils.reopenInactiveRecords(maintenanceForm.getSections(), maintenanceForm.getTabStates(), collectionName);
+        }
+
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
-
-
 
 	/**
 	 * This method clears the value of the primary key fields on a Business Object.

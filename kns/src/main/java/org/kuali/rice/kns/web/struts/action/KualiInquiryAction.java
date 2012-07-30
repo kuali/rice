@@ -26,6 +26,7 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.InquiryForm;
 import org.kuali.rice.kns.web.ui.Field;
@@ -283,53 +284,15 @@ public class KualiInquiryAction extends KualiAction {
         //////////////////////////////
         
         populateSections(mapping, request, inquiryForm, bo);
-        
+
+        // toggling the display to be visible again, re-open any previously closed inactive records
         if (showInactive) {
-        	reopenInactiveRecords(inquiryForm, collectionName);
+        	WebUtils.reopenInactiveRecords(inquiryForm.getSections(), inquiryForm.getTabStates(), collectionName);
         }
         
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
-    /**
-     * Attempts to reopen sub tabs which would have been closed for inactive records
-     * 
-     * @param inquiryForm the form to reopen records on
-     * @param collectionName the name of the collection reopening
-     */
-    protected void reopenInactiveRecords(InquiryForm inquiryForm, String collectionName) {
-    	for (Object sectionAsObject : inquiryForm.getSections()) {
-    		final Section section = (Section)sectionAsObject;
-    		for (Row row: section.getRows()) {
-    			for (Field field : row.getFields()) {
-    				if (field.getFieldType().equals(Field.CONTAINER) && field.getContainerName().startsWith(collectionName)) {
-    					final String tabKey = WebUtils.generateTabKey(generateCollectionSubTabName(field));
-    					inquiryForm.getTabStates().put(tabKey, "OPEN");
-    				}
-    			}
-    		}
-    	}
-    }
-    
-    /**
-     * Finds a container field's sub tab name
-     * 
-     * @param field the collection sub tab name to  
-     * @return the sub tab name
-     */
-    protected String generateCollectionSubTabName(Field field) {
-    	final String containerName = field.getContainerElementName();
-    	final String cleanedContainerName = 
-    		(containerName == null) ?
-    				"" :
-    				containerName.replaceAll("\\d+", "");
-    	StringBuilder subTabName = new StringBuilder(cleanedContainerName);
-    	for (Field containerField : field.getContainerDisplayFields()) {
-    		subTabName.append(containerField.getPropertyValue());
-    	}
-    	return subTabName.toString();
-    }
-    
+
     @Override
     public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         InquiryForm inquiryForm = (InquiryForm) form;

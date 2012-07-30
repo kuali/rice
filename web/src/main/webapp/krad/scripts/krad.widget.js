@@ -290,8 +290,8 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
     }
 
     if (showLightBox) {
-
-        if (getContext().find('.fancybox-inner').length) {
+        // Check if this is called within a light box
+        if (!getContext().find('.fancybox-inner').length) {
             queryString = queryString + "&showHistory=false&dialogMode=true";
             lightBoxOptions['href'] = url + queryString;
             getContext().fancybox(lightBoxOptions);

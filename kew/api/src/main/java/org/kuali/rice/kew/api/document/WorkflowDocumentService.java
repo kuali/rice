@@ -153,12 +153,30 @@ public interface WorkflowDocumentService {
      *
      * @throws RiceIllegalArgumentException if {@code documentId} is null
      */
-    @WebMethod(operationName = "getActionRequests")
+    @WebMethod(operationName = "getActionsTaken")
     @XmlElementWrapper(name = "actionsTaken", required = true)
     @XmlElement(name = "actionTaken", required = false)
     @WebResult(name = "actionsTaken")
 	List<ActionTaken> getActionsTaken(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
+
+    /**
+     * @deprecated mistaken operation name...use getActionsTaken instead
+     *
+     * @param documentId the unique id of a document
+     *
+     * @return the list of past ActionTakens for a given documentId
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getActionRequests")
+    @XmlElementWrapper(name = "actionsTaken", required = true)
+    @XmlElement(name = "actionTaken", required = false)
+    @WebResult(name = "actionsTaken")
+    @Deprecated
+    List<ActionTaken> _getActionsTaken(@WebParam(name = "documentId") String documentId)
+            throws RiceIllegalArgumentException;
+
 
     /**
     * Gets a list of all {@link ActionTaken} of a {@link Document} with the given documentId

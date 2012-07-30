@@ -96,7 +96,9 @@ public interface DocumentSearchCriteriaContract {
      * Returns the application document status criteria to search against when executing the document search.
      *
      * @return the application document status criteria
+     * @deprecated please use {@link #getApplicationDocumentStatuses()} instead
      */
+    @Deprecated
     String getApplicationDocumentStatus();
 
     /**
@@ -338,4 +340,12 @@ public interface DocumentSearchCriteriaContract {
      * @return whether or not the search was run in advanced mode
      */
     String getIsAdvancedSearch();
+
+    /**
+     * Return the list of application document statuses to match when executing the document search.
+     *
+     * @since 2.1.2
+     * @return the list of application document statuses to match
+     */
+    List<String> getApplicationDocumentStatuses();
 }

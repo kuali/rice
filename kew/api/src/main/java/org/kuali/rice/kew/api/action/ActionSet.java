@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.actionlist.DisplayParameters;
@@ -45,7 +46,7 @@ import org.w3c.dom.Element;
     ActionSet.Elements.ACTION_SET_LIST,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ActionSet implements Serializable, ActionSetContract {
+public final class ActionSet extends AbstractDataTransferObject implements ActionSetContract {
 
 	private static final long serialVersionUID = 7857749268529671300L;
 	

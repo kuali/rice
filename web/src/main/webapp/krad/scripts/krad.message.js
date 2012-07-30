@@ -57,45 +57,16 @@ function createLoading(showLoading) {
     var unblockUIOnLoading = jQuery("input[name='unblockUIOnLoading']").val();
 
     if (unblockUIOnLoading == null || unblockUIOnLoading.toUpperCase() == "false".toUpperCase()) {
-        if (top == self) {
-            //no portal
-            if (showLoading) {
-                if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
-                    jQuery.blockUI({message: savingMessage});
-                }
-                else {
-                    jQuery.blockUI({message: loadingMessage});
-                }
+        if (showLoading) {
+            if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
+                getContext().blockUI({message: savingMessage});
             }
             else {
-                jQuery.unblockUI();
-            }
-        }
-        else if (top.jQuery == null) {
-            if (showLoading) {
-                if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
-                    top.jQuery.blockUI({message: savingMessage});
-                }
-                else {
-                    top.jQuery.blockUI({message: loadingMessage});
-                }
-            }
-            else {
-                top.jQuery.unblockUI();
+                getContext().blockUI({message: loadingMessage});
             }
         }
         else {
-            if (showLoading) {
-                if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
-                    top.jQuery.blockUI({message: savingMessage});
-                }
-                else {
-                    top.jQuery.blockUI({message: loadingMessage});
-                }
-            }
-            else {
-                top.jQuery.unblockUI();
-            }
+            getContext().unblockUI();
         }
     }
 }

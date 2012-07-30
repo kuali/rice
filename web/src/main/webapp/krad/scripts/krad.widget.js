@@ -127,45 +127,23 @@ function createLightBoxLink(linkId, options, addAppParms) {
     jQuery(function () {
         var renderedInLightBox = jQuery('#renderedInLightBox').val() == 'true';
 
-        // first time content is brought up in lightbox we don't want to show history
-        var showHistory = renderedInLightBox;
-
         // Check if this is called within a light box
-        if (!renderedInLightBox) {
-            // If this is not the top frame, then create the lightbox
-            // on the top frame to put overlay over whole window
-            if (top == self) {
-                jQuery("#" + linkId).fancybox(options);
-            } else {
-                jQuery("#" + linkId).click(function (e) {
-                    e.preventDefault();
-
-                    options['href'] = jQuery("#" + linkId).attr('href');
-                    top.jQuery.fancybox(options);
-                });
-            }
+        if (!jQuery("#fancybox-frame", parent.document).length) {
+            jQuery("#" + controlId).click(function (e) {
+                e.preventDefault();
+                options['href'] = jQuery("#" + controlId).attr('href');
+                getContext().fancybox(options);
+            });
         } else {
-            jQuery("#" + linkId).attr('target', '_self');
-
-            // for going to a new view in a lightbox we want to show history
+            jQuery("#" + controlId).attr('target', '_self');
             showHistory = true;
         }
 
-        if (addAppParms) {
-            // Set the renderedInLightBox = true param
-            if (jQuery("#" + linkId).attr('href').indexOf('&renderedInLightBox=true') == -1) {
-                var href = jQuery("#" + linkId).attr('href');
-                var anchor = "";
-
-                if (jQuery("#" + linkId).attr('href').indexOf('#') != -1) {
-                    href = jQuery("#" + linkId).attr('href').substring(0, jQuery("#" + linkId).attr('href').indexOf('#'));
-                    anchor = jQuery("#" + linkId).attr('href').substring(jQuery("#" + linkId).attr('href').indexOf('#'));
-                }
-
-                jQuery("#" + linkId).attr('href', href + '&renderedInLightBox=true'
-                        + '&showHome=false' + '&showHistory=' + showHistory
-                        + '&history=' + jQuery('#historyParameterString').val() + anchor);
-            }
+        // Set the dialogMode = true param
+        if (jQuery("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
+            jQuery("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true'
+                    + '&showHome=false' + '&showHistory=' + showHistory
+                    + '&history=' + jq('#formHistory\\.historyParameterString').val());
         }
     });
 }
@@ -191,8 +169,9 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
         // get data that should be submitted when the action is selected
         var data = {};
 
-        var submitData = jQuery("#" + componentId).data("submitData");
-        jQuery.extend(data, submitData);
+        // Check if this is not called within a lightbox
+        if (!jQuery("#fancybox-frame", parent.document).length) {
+            jQuery("#" + controlId).click(function (e) {
 
         // Check if this is not called within a lightbox
         var renderedInLightBox = jQuery('#renderedInLightBox').val() == 'true';
@@ -200,6 +179,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
             jQuery("#" + componentId).click(function (e) {
                 // Prevent the default submit
                 e.preventDefault();
+                jQuery("[name='jumpToId']").val(controlId);
 
                 data['jumpToId'] = componentId;
                 data['actionParameters[renderedInLightBox]'] = 'true';
@@ -225,25 +205,17 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
 
                 // Do the Ajax submit on the kualiForm form
                 jQuery("#kualiForm").ajaxSubmit({
-                    data:data,
-                    success:function (data) {
-                        // Perform cleanup when lightbox is closed
-                        // TODO: this stomps on the post form (clear out) so need to another
-                        // way to clear forms when the lightbox performs a post back
-                        // options['beforeClose'] = cleanupClosedLightboxForms;
 
                         // Add the returned URL to the FancyBox href setting
                         options['href'] = data.replace(/&amp;/g, '&');
 
-                        // Open the light box
-                        if (top == self) {
-                            jQuery.fancybox(options);
-                        } else {
-                            // for portal usage
-                            parent.jQuery.fancybox(options);
-                        }
-                    }
-                });
+                                // Add the returned URL to the FancyBox href setting
+                                options['href'] = data;
+
+                                // Open the light box
+                                getContext().fancybox(options);
+                            }
+                        });
             });
         } else {
             // add parameters for lightbox and do standard submit
@@ -251,12 +223,15 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                 // Prevent the default submit
                 e.preventDefault();
 
-                data['actionParameters[renderedInLightBox]'] = 'true';
-                data['actionParameters[returnTarget]'] = '_self';
-                data['actionParameters[showHistory]'] = 'true';
-                data['actionParameters[showHome]'] = 'false';
-
-                submitForm(data['methodToCall'], data, null);
+            // Add the action parameters hidden to form and allow the submit action
+            jQuery("#" + controlId).click(function (e) {
+                actionParameterMapString['actionParameters[dialogMode]'] = 'true';
+                actionParameterMapString['actionParameters[returnTarget]'] = '_self';
+                actionParameterMapString['actionParameters[showHistory]'] = 'true';
+                actionParameterMapString['actionParameters[showHome]'] = 'false';
+                for (var key in actionParameterMapString) {
+                    writeHiddenToForm(key, actionParameterMapString[key]);
+                }
             });
         }
     });
@@ -267,11 +242,10 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-
-    if (top != self) {
-        returnField = parent.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
-    } else {
-        returnField = parent.jQuery('[name="' + escapeName(fieldName) + '"]');
+    if (usePortalForContext()) {
+        returnField = getContext.find('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
+    }else{
+        returnField = getContext.find('[name="' + escapeName(fieldName) + '"]');
     }
 
     returnField.val(value);
@@ -287,10 +261,14 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    if (top != self) {
-        jQuery('#kualiForm').attr('target', parent.jQuery('#iframeportlet').attr('name'));
-    } else {
-        jQuery('#kualiForm').attr('target', '_parent');
+    if (usePortalForContext()) {
+        jQuery('#kualiForm').attr('target',getContext().find('#iframeportlet').attr('name'));
+    }else{
+        if (parent.jq != null) {
+            jQuery('#kualiForm').attr('target',parent.jQuery('#iframeportlet').attr('name'));
+        }else{
+            jQuery('#kualiForm').attr('target','_parent');
+        }
     }
 }
 
@@ -313,6 +291,9 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
     var parameterPairs = paramMap.split(",");
     var queryString = "&showHome=false";
 
+    var parameterPairs = paramMap.split(",");
+    var queryString = "&showHome=false";
+
     for (i in parameterPairs) {
         var parameters = parameterPairs[i].split(":");
 
@@ -320,8 +301,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
             alert("Please enter a value in the appropriate field.");
             return false;
         } else {
-            queryString = queryString + "&" + parameters[1] + "="
-                    + jQuery('[name="' + escapeName(parameters[0]) + '"]').val();
+            queryString = queryString + "&" + parameters[1] + "=" + jQuery('[name="' + escapeName(parameters[0]) + '"]').val();
         }
     }
 
@@ -329,19 +309,10 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
         // Check if this is called within a light box
         if (!jQuery(".fancybox-iframe", parent.document).length) {
 
-            // Perform cleanup when lightbox is closed
-            lightBoxOptions['beforeClose'] = cleanupClosedLightboxForms;
-
-            // If this is not the top frame, then create the lightbox
-            // on the top frame to put overlay over whole window
-            queryString = queryString + "&showHistory=false&renderedInLightBox=true";
-            if (top == self) {
-                lightBoxOptions['href'] = url + queryString;
-                jQuery.fancybox(lightBoxOptions);
-            } else {
-                lightBoxOptions['href'] = url + queryString;
-                top.jQuery.fancybox(lightBoxOptions);
-            }
+        if (getContext().find('.fancybox-inner').length) {
+            queryString = queryString + "&showHistory=false&dialogMode=true";
+            lightBoxOptions['href'] = url + queryString;
+            getContext().fancybox(lightBoxOptions);
         } else {
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&showHistory=true&renderedInLightBox=true";
@@ -357,19 +328,11 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
  * Closes the lightbox window
  */
 function closeLightbox() {
-    top.jQuery.fancybox.close();
-}
-
-/**
- * Cleanup form data from server when lightbox window is closed
- */
-function cleanupClosedLightboxForms() {
-    if (jQuery('#formKey').length) {
-        // get the formKey of the lightbox (fancybox)
-        var context = getContext();
-        var formKey = context('iframe.fancybox-iframe').contents().find('input#formKey').val();
-
-        clearServerSideForm(formKey);
+    if (usePortalForContext()) {
+        getContext().fancybox.close();
+    }
+    else {
+        parent.jQuery.fancybox.close();
     }
 }
 

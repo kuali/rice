@@ -26,6 +26,7 @@ import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
+import org.springframework.util.CollectionUtils;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -39,7 +40,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +84,7 @@ import java.util.Map;
     DocumentSearchCriteria.Elements.MAX_RESULTS,
     DocumentSearchCriteria.Elements.IS_ADVANCED_SEARCH,
     DocumentSearchCriteria.Elements.SEARCH_OPTIONS,
+    DocumentSearchCriteria.Elements.APPLICATION_DOCUMENT_STATUSES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentSearchCriteria extends AbstractDataTransferObject implements DocumentSearchCriteriaContract {
@@ -137,7 +138,6 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
     @XmlElementWrapper(name = Elements.ADDITIONAL_DOCUMENT_TYPE_NAMES, required = false)
     @XmlElement(name = Elements.ADDITIONAL_DOCUMENT_TYPE_NAME, required = false)
     private final List<String> additionalDocumentTypeNames;
-
 
     @XmlElement(name = Elements.DATE_CREATED_FROM, required = false)
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
@@ -199,6 +199,13 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
     @XmlJavaTypeAdapter(MultiValuedStringMapAdapter.class)
     private final Map<String, List<String>> searchOptions;
 
+    /**
+     * @since 2.1.2
+     */
+    @XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS, required = false)
+    @XmlElementWrapper(name = Elements.APPLICATION_DOCUMENT_STATUSES, required = false)
+    private final List<String> applicationDocumentStatuses;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -238,6 +245,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.startAtIndex = null;
         this.maxResults = null;
         this.isAdvancedSearch = null;
+        this.applicationDocumentStatuses = null;
     }
 
     private DocumentSearchCriteria(Builder builder) {
@@ -273,6 +281,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.startAtIndex = builder.getStartAtIndex();
         this.maxResults = builder.getMaxResults();
         this.isAdvancedSearch = builder.getIsAdvancedSearch();
+        this.applicationDocumentStatuses = builder.getApplicationDocumentStatuses();
     }
 
     @Override
@@ -300,6 +309,11 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         return this.applicationDocumentId;
     }
 
+    /**
+     * @deprecated use {@link #getApplicationDocumentStatuses()} instead
+     * @return
+     */
+    @Deprecated
     @Override
     public String getApplicationDocumentStatus() {
         return this.applicationDocumentStatus;
@@ -431,6 +445,14 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
     }
 
     /**
+     * @since 2.1.2
+     */
+    @Override
+    public List<String> getApplicationDocumentStatuses() {
+        return applicationDocumentStatuses;
+    }
+
+    /**
      * A builder which can be used to construct {@link DocumentSearchCriteria} instances.  Enforces the constraints of
      * the {@link DocumentSearchCriteriaContract}.
      */
@@ -467,6 +489,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         private Integer startAtIndex;
         private Integer maxResults;
         private String isAdvancedSearch;
+        private List<String> applicationDocumentStatuses;
 
         private Builder() {
             setDocumentStatuses(new ArrayList<DocumentStatus>());
@@ -474,6 +497,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             setAdditionalDocumentTypeNames(new ArrayList<String>());
             setDocumentAttributeValues(new HashMap<String, List<String>>());
             setSearchOptions(new HashMap<String, List<String>>());
+            setApplicationDocumentStatuses(new ArrayList<String>());
         }
 
         /**
@@ -508,7 +532,6 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             }
             builder.setTitle(contract.getTitle());
             builder.setApplicationDocumentId(contract.getApplicationDocumentId());
-            builder.setApplicationDocumentStatus(contract.getApplicationDocumentStatus());
             builder.setInitiatorPrincipalName(contract.getInitiatorPrincipalName());
             builder.setViewerPrincipalName(contract.getViewerPrincipalName());
             builder.setGroupViewerId(contract.getGroupViewerId());
@@ -540,6 +563,12 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             builder.setStartAtIndex(contract.getStartAtIndex());
             builder.setMaxResults(contract.getMaxResults());
             builder.setIsAdvancedSearch(contract.getIsAdvancedSearch());
+
+            // Set applicationDocumentStatuses (plural!)
+            builder.setApplicationDocumentStatuses(contract.getApplicationDocumentStatuses());
+            // Set applicationDocumentStatus (singular!)
+            builder.setApplicationDocumentStatus(contract.getApplicationDocumentStatus());
+
             return builder;
         }
 
@@ -576,6 +605,10 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             return this.applicationDocumentId;
         }
 
+        /**
+         * @deprecated use {@link #getApplicationDocumentStatuses()} instead
+         */
+        @Deprecated
         @Override
         public String getApplicationDocumentStatus() {
             return this.applicationDocumentStatus;
@@ -706,6 +739,10 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             return this.isAdvancedSearch;
         }
 
+        public List<String> getApplicationDocumentStatuses() {
+            return applicationDocumentStatuses;
+        }
+
         public void setDocumentId(String documentId) {
             this.documentId = documentId;
         }
@@ -726,6 +763,10 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             this.applicationDocumentId = applicationDocumentId;
         }
 
+        /**
+         * @deprecated use {@link #setApplicationDocumentStatuses(java.util.List)} instead
+         */
+        @Deprecated
         public void setApplicationDocumentStatus(String applicationDocumentStatus) {
             this.applicationDocumentStatus = applicationDocumentStatus;
         }
@@ -848,6 +889,13 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         }
 
         /**
+         * @since 2.1.2
+         */
+        public void setApplicationDocumentStatuses(List<String> applicationDocumentStatuses) {
+            this.applicationDocumentStatuses = applicationDocumentStatuses;
+        }
+
+        /**
          * Resets DateTimes to local TimeZone (preserving absolute time)
          *
          * @see <a href="http://jira.codehaus.org/browse/JACKSON-279">Modify Joda DateTime</a>
@@ -913,6 +961,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         final static String MAX_RESULTS = "maxResults";
         final static String IS_ADVANCED_SEARCH = "isAdvancedSearch";
         final static String SEARCH_OPTIONS = "searchOptions";
+        final static String APPLICATION_DOCUMENT_STATUSES = "applicationDocumentStatuses";
     }
 
 }

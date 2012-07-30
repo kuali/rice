@@ -173,6 +173,17 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
         validateDocumentSearchCriteria(docSearchGenerator, criteriaBuilder);
         DocumentSearchCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
+
+        // copy over applicationDocumentStatuses if they came back empty -- version compatibility hack!
+        // we could have called into an older client that didn't have the field and it got wiped, but we
+        // still want doc search to work as advertised.
+        if (!CollectionUtils.isEmpty(criteria.getApplicationDocumentStatuses())
+                && CollectionUtils.isEmpty(builtCriteria.getApplicationDocumentStatuses())) {
+            DocumentSearchCriteria.Builder patchedCriteria = DocumentSearchCriteria.Builder.create(builtCriteria);
+            patchedCriteria.setApplicationDocumentStatuses(criteriaBuilder.getApplicationDocumentStatuses());
+            builtCriteria = patchedCriteria.build();
+        }
+
         builtCriteria = applyCriteriaDefaults(builtCriteria);
         boolean criteriaModified = !criteria.equals(builtCriteria);
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);

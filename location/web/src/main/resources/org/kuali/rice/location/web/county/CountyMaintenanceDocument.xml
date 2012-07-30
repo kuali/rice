@@ -31,6 +31,7 @@
     <property name="defaultExistenceChecks">
       <list>
         <bean parent="ReferenceDefinition" p:attributeName="country" p:attributeToHighlightOnFail="countryCode"/>
+        <bean parent="ReferenceDefinition" p:attributeName="state" p:attributeToHighlightOnFail="stateCode"/>
       </list>
     </property>    
     <property name="lockingKeys">
@@ -43,7 +44,7 @@
 
     <property name="documentTypeName" value="CountyMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    
+
     <property name="workflowProperties">
       <ref bean="CountyMaintenanceDocument-workflowProperties"/>
     </property>
@@ -63,7 +64,7 @@
         <bean parent="MaintainableFieldDefinition" p:name="code" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="stateCode" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="name" p:required="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="active"/>
+        <bean parent="MaintainableFieldDefinition" p:name="active" p:defaultValue="true"/>
       </list>
     </property>
   </bean>

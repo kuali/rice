@@ -125,22 +125,31 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
      * @return the maximum number of results that should be returned from a document search
      */
     protected int getMaxResultCap(DocumentSearchCriteria criteria) {
-        int maxResults = KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP;
-        if (criteria.getMaxResults() != null) {
-            maxResults = criteria.getMaxResults().intValue();
-        }
+        int systemLimit = KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP;
         String resultCapValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KewApiConstants.DOC_SEARCH_RESULT_CAP);
         if (StringUtils.isNotBlank(resultCapValue)) {
             try {
-                Integer maxResultCap = Integer.parseInt(resultCapValue);
-                if (maxResults > maxResultCap) {
-                    LOG.warn("Result set cap of " + maxResults + " is greater than parameter " + KewApiConstants.DOC_SEARCH_RESULT_CAP + " value of " + maxResultCap);
-                    maxResults = maxResultCap;
-                } else if (maxResultCap <= 0) {
+                int configuredLimit = Integer.parseInt(resultCapValue);
+                if (configuredLimit <= 0) {
                     LOG.warn(KewApiConstants.DOC_SEARCH_RESULT_CAP + " was less than or equal to zero.  Please use a positive integer.");
+                } else {
+                    systemLimit = configuredLimit;
                 }
             } catch (NumberFormatException e) {
-                LOG.warn(KewApiConstants.DOC_SEARCH_RESULT_CAP + " is not a valid number.  Value was " + resultCapValue);
+                LOG.warn(KewApiConstants.DOC_SEARCH_RESULT_CAP + " is not a valid number.  Value was " + resultCapValue + ".  Using default: " + KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP);
+            }
+        }
+        int maxResults = systemLimit;
+        if (criteria.getMaxResults() != null) {
+            int criteriaLimit = criteria.getMaxResults().intValue();
+            if (criteriaLimit > systemLimit) {
+                LOG.warn("Result set cap of " + criteriaLimit + " is greater than system value of " + systemLimit);
+            } else {
+                if (criteriaLimit < 0) {
+                    LOG.warn("Criteria results limit was less than zero.");
+                    criteriaLimit = 0;
+                }
+                maxResults = criteriaLimit;
             }
         }
         return maxResults;

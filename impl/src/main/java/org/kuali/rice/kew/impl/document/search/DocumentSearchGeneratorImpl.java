@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.impl.document.search;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -24,7 +23,6 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.Criteria;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
@@ -50,7 +48,6 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.ResultSet;
@@ -58,7 +55,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -378,6 +374,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         perfLog.log("Time to execute doc search search attribute queries.", true);
     }
 
+    @SuppressWarnings("deprecation")
     public String generateSearchSql(DocumentSearchCriteria criteria, List<RemotableAttributeField> searchFields) {
 
         String docTypeTableAlias   = "DOC1";
@@ -456,7 +453,18 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
         // App Doc Status Value and Transition clauses
         String statusTransitionWhereClause = getStatusTransitionDateSql(criteria.getDateApplicationDocumentStatusChangedFrom(), criteria.getDateApplicationDocumentStatusChangedTo(), getGeneratedPredicatePrefix(whereSQL.length()));
-        whereSQL.append(getAppDocStatusSql(criteria.getApplicationDocumentStatus(), getGeneratedPredicatePrefix(whereSQL.length()), statusTransitionWhereClause.length() ));
+
+        List<String> applicationDocumentStatuses = criteria.getApplicationDocumentStatuses();
+        // deal with legacy usage of applicationDocumentStatus (which is deprecated)
+        if (!StringUtils.isBlank(criteria.getApplicationDocumentStatus())) {
+            if (!criteria.getApplicationDocumentStatuses().contains(criteria.getApplicationDocumentStatus())) {
+                applicationDocumentStatuses = new ArrayList<String>(criteria.getApplicationDocumentStatuses());
+                applicationDocumentStatuses.add(criteria.getApplicationDocumentStatus());
+            }
+        }
+
+        whereSQL.append(getAppDocStatusesSql(applicationDocumentStatuses, getGeneratedPredicatePrefix(
+                whereSQL.length()), statusTransitionWhereClause.length()));
         if (statusTransitionWhereClause.length() > 0){
         	whereSQL.append(statusTransitionWhereClause);
             whereSQL.append(getGeneratedPredicatePrefix(whereSQL.length())).append(" DOC_HDR.DOC_HDR_ID = STAT_TRAN.DOC_HDR_ID ");
@@ -798,19 +806,43 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
     /**
      * This method generates the where clause fragment related to Application Document Status.
-     * If the Status value only is defined, search for the appDocStatus value in the route header.
+     * If the Status values only are defined, search for the appDocStatus value in the route header.
      * If either the transition from/to dates are defined, search agains the status transition history.
      */
-    public String getAppDocStatusSql(String appDocStatus, String whereClausePredicatePrefix, int statusTransitionWhereClauseLength) {
-        if (StringUtils.isBlank(appDocStatus)) {
+    public String getAppDocStatusesSql(List<String> appDocStatuses, String whereClausePredicatePrefix, int statusTransitionWhereClauseLength) {
+        if (CollectionUtils.isEmpty(appDocStatuses)) {
             return "";
         } else {
-        	if (statusTransitionWhereClauseLength > 0){
-        		return whereClausePredicatePrefix + " STAT_TRAN.APP_DOC_STAT_TO = '" + getDbPlatform().escapeString(appDocStatus.trim()) + "'";
-        	}else{
-        		return whereClausePredicatePrefix + " DOC_HDR.APP_DOC_STAT = '" + getDbPlatform().escapeString(appDocStatus.trim()) + "'";
-        	}
+            String inList = buildAppDocStatusInList(appDocStatuses);
+
+            if (statusTransitionWhereClauseLength > 0){
+                return whereClausePredicatePrefix + " STAT_TRAN.APP_DOC_STAT_TO" + inList;
+            } else {
+                return whereClausePredicatePrefix + " DOC_HDR.APP_DOC_STAT" + inList;
+            }
         }
+    }
+
+    private String buildAppDocStatusInList(List<String> appDocStatuses) {
+        StringBuilder sql = new StringBuilder(" IN (");
+
+        boolean first = true;
+        for (String appDocStatus : appDocStatuses) {
+            // commas before each element except the first one
+            if (first) {
+                first = false;
+            } else {
+                sql.append(",");
+            }
+
+            sql.append("'");
+            sql.append(getDbPlatform().escapeString(appDocStatus.trim()));
+            sql.append("'");
+        }
+
+        sql.append(")");
+
+        return sql.toString();
     }
 
     public String getGeneratedPredicatePrefix(int whereClauseSize) {

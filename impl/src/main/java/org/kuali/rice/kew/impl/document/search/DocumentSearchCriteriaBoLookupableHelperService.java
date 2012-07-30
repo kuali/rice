@@ -220,6 +220,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             cleanedUpFieldValues.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE,
                     StringUtils.join(parameters.get(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE), ","));
         }
+        if (ArrayUtils.isNotEmpty(parameters.get(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS))) {
+            cleanedUpFieldValues.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS,
+                    StringUtils.join(parameters.get(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS), ","));
+        }
         Map<String, String> documentAttributeFieldValues = new HashMap<String, String>();
         for (String parameterName : parameters.keySet()) {
             if (parameterName.contains(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {

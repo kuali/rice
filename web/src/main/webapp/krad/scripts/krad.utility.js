@@ -66,16 +66,39 @@ function publishHeight() {
  * @returns the jQuery context that can be used to perform actions that must be global to the entire page
  * ie, showing lightBoxes and growls etc
  */
-function getContext() {
-    var context;
-    if (top == self) {
-        context = jQuery;
+function getContext(){
+    if (usePortalForContext()) {
+        return top.jQuery;
     }
     else {
-        context = parent.jQuery;
+        return jq;
+    }
+}
+
+/**
+ * Check if portal should be used for context
+ *
+ * <p>
+ * To avoid cross server script errors the local context is used in case the portal window is on a different host.
+ * </p>
+ *
+ * @return true if portal is used for context, false otherwise
+ */
+function usePortalForContext() {
+    var usePortal = false;
+
+    // for iframe use the outer window's context unless the outer window is hosted on a different domain.
+    try {
+        // For security reasons the browsers will not allow cross server scripts and
+        // throw an exception instead.
+        // Note that bad browsers (e.g. google chrome) will not catch the exception
+        usePortal = (top != self) && (top.location.host == location.host);
+    }
+    catch (e) {
+        usePortal = false;
     }
 
-    return context;
+    return usePortal;
 }
 
 /**
@@ -542,50 +565,50 @@ function focusOnElementById(focusId) {
 }
 
 //Jump(scroll) to an element by name
-function jumpToElementByName(name) {
-    var theElement = jQuery("[name='" + escapeName(name) + "']");
-    if (theElement.length != 0) {
-        if (top == self || jQuery(".fancybox-iframe", parent.document).length) {
-            jQuery.scrollTo(theElement, 0);
-        }
-        else {
+function jumpToElementByName(name){
+	var theElement =  jq("[name='" + escapeName(name) + "']");
+	if(theElement.length != 0){
+		if(!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length){
+			jQuery.scrollTo(theElement, 0);
+		}
+		else{
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
-        }
-    }
+			top.jQuery.scrollTo(theElement, 0, {offset: {top:headerOffset}});
+		}
+	}
 }
 
 //Jump(scroll) to an element by Id
-function jumpToElementById(id) {
-    var theElement = jQuery("#" + id);
-    if (theElement.length != 0) {
-        if (top == self || jQuery(".fancybox-iframe", parent.document).length) {
+function jumpToElementById(id){
+	var theElement =  jq("#" + id);
+	if(theElement.length != 0){
+		if(!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length){
             jQuery.scrollTo(theElement, 0);
-        }
-        else {
+		}
+		else{
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
-        }
-    }
+			top.jQuery.scrollTo(theElement, 0, {offset: {top:headerOffset}});
+		}
+	}
 }
 
 //Jump(scroll) to the top of the current screen
-function jumpToTop() {
-    if (top == self || jQuery(".fancybox-iframe", parent.document).length) {
+function jumpToTop(){
+    if(!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length){
         jQuery.scrollTo(jQuery("html"), 0);
     }
-    else {
-        top.jQuery.scrollTo(top.jQuery("html"), 0);
+    else{
+		top.jQuery.scrollTo(top.jQuery("html"), 0);
     }
 }
 
 //Jump(scroll) to the bottom of the current screen
-function jumpToBottom() {
-    if (top == self || jQuery(".fancybox-iframe", parent.document).length) {
+function jumpToBottom(){
+    if(!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length){
         jQuery.scrollTo("max", 0);
     }
-    else {
-        top.jQuery.scrollTo("max", 0);
+    else{
+		top.jQuery.scrollTo("max", 0);
     }
 }
 

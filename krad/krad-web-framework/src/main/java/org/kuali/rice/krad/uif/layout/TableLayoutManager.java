@@ -482,7 +482,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         headerLabel.setColSpan(field.getColSpan());
 
         if ((field.getRequired() != null) && field.getRequired().booleanValue()) {
-            headerLabel.getRequiredMessage().setRender(true);
+            headerLabel.getRequiredMessage().setRender(!field.isReadOnly());
         } else {
             headerLabel.getRequiredMessage().setRender(false);
         }

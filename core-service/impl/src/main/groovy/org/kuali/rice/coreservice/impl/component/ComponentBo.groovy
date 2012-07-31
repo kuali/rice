@@ -40,6 +40,8 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 
     private static final long serialVersionUID = 1L;
 
+    private static transient NamespaceService namespaceService
+
 	@Id
 	@Column(name="NMSPC_CD")
 	String namespaceCode;
@@ -95,12 +97,12 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 		bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId
 
-        bo.namespace = NamespaceBo.from(getNamespaceService().getNamespace(bo.namespaceCode))
+        bo.namespace = NamespaceBo.from(namespaceService.getNamespace(bo.namespaceCode))
         return bo;
     }
 
-    protected static NamespaceService getNamespaceService() {
-        return CoreServiceApiServiceLocator.getNamespaceService();
+    public static void setNamespaceService(NamespaceService namespaceService) {
+        this.namespaceService = namespaceService
     }
 }
 

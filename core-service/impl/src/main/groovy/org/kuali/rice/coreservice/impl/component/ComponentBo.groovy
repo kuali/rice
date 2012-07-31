@@ -30,6 +30,8 @@ import org.kuali.rice.coreservice.api.component.Component
 import org.kuali.rice.coreservice.framework.component.ComponentEbo
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.coreservice.api.namespace.NamespaceService
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator
 
 @IdClass(ComponentId.class)
 @Entity
@@ -93,7 +95,12 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 		bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId
 
+        bo.namespace = NamespaceBo.from(getNamespaceService().getNamespace(bo.namespaceCode))
         return bo;
+    }
+
+    protected static NamespaceService getNamespaceService() {
+        return CoreServiceApiServiceLocator.getNamespaceService();
     }
 }
 

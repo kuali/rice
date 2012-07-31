@@ -138,7 +138,9 @@ public class FieldBridge {
 					&& StringUtils.isBlank(field.getAlternateDisplayPropertyName())) {
 				Class<? extends KeyValuesFinder> keyValuesFinderName = ClassLoaderUtils.getClass(fieldControl.getValuesFinderClass(), KeyValuesFinder.class);
                 KeyValuesFinder finder = keyValuesFinderName.newInstance();
-
+                if(formatter != null){
+                    prop = ObjectUtils.getFormattedPropertyValue(bo,propertyName,formatter);
+                }
                 propValue = lookupFinderValue(fieldControl, prop, finder);
             } else {
 				propValue = ObjectUtils.getFormattedPropertyValue(bo, field.getPropertyName(), formatter);

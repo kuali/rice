@@ -46,6 +46,18 @@ import java.util.Properties;
 
 // FIXME: this class must be put in an API module somehow
 public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ServletContextAware {
+    /**
+     * Config key under which the list of registered ModuleConfigurers is stored
+     */
+    private static final String MODULE_CONFIGURERS_CONFIG_KEY = "ModuleConfigurers";
+
+    /**
+     * @return list of registered ModuleConfigurers
+     */
+    public static Collection<ModuleConfigurer> getCurrentContextConfigurers() {
+        return (Collection<ModuleConfigurer>) ConfigContext.getCurrentContextConfig().getObject(MODULE_CONFIGURERS_CONFIG_KEY);
+    }
+
     protected final Logger LOG = Logger.getLogger(getClass());
 
     private List<RunMode> validRunModes = new ArrayList<RunMode>();
@@ -273,13 +285,13 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	 */
 	private void registerConfigurerWithConfig() {
 		@SuppressWarnings("unchecked")
-		Collection<ModuleConfigurer> configurers = (Collection<ModuleConfigurer>) ConfigContext.getCurrentContextConfig().getObject("ModuleConfigurers");
+		Collection<ModuleConfigurer> configurers = (Collection<ModuleConfigurer>) ConfigContext.getCurrentContextConfig().getObject(MODULE_CONFIGURERS_CONFIG_KEY);
 		if (configurers == null) {
 			configurers = new ArrayList<ModuleConfigurer>();
 		}
 		configurers.add(this);
 		
-		ConfigContext.getCurrentContextConfig().putObject("ModuleConfigurers", configurers);
+		ConfigContext.getCurrentContextConfig().putObject(MODULE_CONFIGURERS_CONFIG_KEY, configurers);
 	}
 	
 	@Override

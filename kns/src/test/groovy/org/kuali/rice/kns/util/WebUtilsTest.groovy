@@ -22,11 +22,54 @@ import org.kuali.rice.kns.web.ui.Row
 import org.kuali.rice.kns.web.ui.Field
 
 import static org.junit.Assert.assertEquals
+import org.apache.struts.action.ActionForm
+import org.apache.struts.config.ControllerConfig
+import org.junit.Before
+import org.kuali.rice.core.framework.config.property.SimpleConfig
+import org.kuali.rice.core.api.CoreConstants
+import org.kuali.rice.core.api.config.property.ConfigContext
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
+import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader
+import javax.xml.namespace.QName
+import org.kuali.rice.krad.util.KRADConstants
+import org.kuali.rice.coreservice.framework.parameter.ParameterService
+import org.kuali.rice.kim.api.identity.PersonService
+import org.kuali.rice.kim.impl.identity.TestPerson
+import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm
 
 /**
  * Unit tests WebUtils
  */
 class WebUtilsTest {
+    def strutsControllerConfig = { "250M" } as ControllerConfig;
+    String maxUploadSize;
+    String maxAttachmentSize;
+
+    @Before
+    void setupFakeEnv() {
+        maxUploadSize = maxAttachmentSize = null
+
+        def config = new SimpleConfig()
+        config.putProperty(CoreConstants.Config.APPLICATION_ID, "APPID")
+        ConfigContext.init(config)
+
+        GlobalResourceLoader.stop()
+
+        GlobalResourceLoader.addResourceLoader(new BaseResourceLoader(new QName("Foo", "Bar")) {
+            def getService(QName name) {
+                [ parameterService:
+                        [ getParameterValueAsString: { ns, cmp, param ->
+                            [ (KRADConstants.MAX_UPLOAD_SIZE_PARM_NM): maxUploadSize,
+                                    (KRADConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM): maxAttachmentSize ][param]
+                        } ] as ParameterService,
+                        // KualiMaintenanceForm -> Note -> AdHocRoutePerson -> PersonService getPersonImplementationClass lookup :(
+                        // stub impl class
+                        personService: { TestPerson.class } as PersonService
+                ][name.getLocalPart()]
+            }
+        })
+    }
+
     protected Field generateContainerField(String name, String label, String containerName) {
         def f = FieldUtils.constructContainerField(name, label, [
                 new Field(fieldLabel: "Field One", propertyName: "field1", propertyValue: "value one"),
@@ -82,5 +125,24 @@ class WebUtilsTest {
         tabstates = ["field_Deux_Dos_elementcontainedvalueonecontainedvaluetwocontainedvaluethree": "CLOSE"]
         WebUtils.reopenInactiveRecords(sections, tabstates, "field_Deux_Dos_2")
         assertEquals(["field_Deux_Dos_elementcontainedvalueonecontainedvaluetwocontainedvaluethree": "OPEN"], tabstates)
+    }
+
+    @Test
+    void testGetMaxUploadSize() {
+        // actionform doesn't have this info
+        assertEquals(0, WebUtils.getMaxUploadSize(new ActionForm() {}))
+
+        // when no parameters are defined whatsoever, uses PojoFormBase hardcoded default
+        assertEquals(250 * 1024 * 1024, WebUtils.getMaxUploadSize(new KualiMaintenanceForm()))
+
+        // only global default is set
+        maxUploadSize = "300M"
+        assertEquals(300 * 1024 * 1024, WebUtils.getMaxUploadSize(new KualiMaintenanceForm()))
+
+        // if the max attachment size param is set, then the sizes list is not empty
+        // and therefore global default is not used
+        maxAttachmentSize = "200M"
+        assertEquals(200 * 1024 * 1024, WebUtils.getMaxUploadSize(new KualiMaintenanceForm()))
+
     }
 }

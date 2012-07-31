@@ -17,6 +17,7 @@ package org.kuali.rice.kns.web.struts.form.pojo;
 
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.struts.config.impl.ModuleConfigImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.krad.bo.DocumentAttachment;
@@ -46,7 +47,7 @@ public class PojoPluginTest {
     public void testGetChildCollectionThrowsNestedNullException() throws Exception {
 
         // We need to initialize PropertyUtils to use our plugins
-        new PojoPlugin().init(null, null);
+        new PojoPlugin().init(null, new ModuleConfigImpl());
 
         TestCollectionHolderHolder tchh = new TestCollectionHolderHolder();
         tchh.setTch(new TestCollectionHolder());
@@ -73,7 +74,7 @@ public class PojoPluginTest {
     public void testNestedNullIsWriteable() throws Exception {
 
         // We need to initialize PropertyUtils to use our plugins
-        new PojoPlugin().init(null, null);
+        new PojoPlugin().init(null, new ModuleConfigImpl());
 
         TestCollectionHolderHolder tchh = new TestCollectionHolderHolder();
         assertTrue(PropertyUtils.isWriteable(tchh, "tch2.collection"));

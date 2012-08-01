@@ -65,7 +65,7 @@ public class Action extends ContentElementBase {
     private String errorCallback;
 
     private String loadingMessageText;
-    private String updatingMessageText;
+    private boolean disableBlocking;
 
     private boolean displayResponseInLightBox;
 
@@ -77,7 +77,6 @@ public class Action extends ContentElementBase {
         actionImagePlacement = UifConstants.Position.LEFT.name();
 
         ajaxSubmit = true;
-        disabled = false;
 
         successCallback = "";
         errorCallback = "";
@@ -169,8 +168,8 @@ public class Action extends ContentElementBase {
         addDataAttributeIfNonEmpty("successcallback", this.successCallback);
         addDataAttributeIfNonEmpty("errorcallback", this.errorCallback);
         addDataAttributeIfNonEmpty("presubmitcall", this.preSubmitCall);
-        addDataAttributeIfNonEmpty("loadingMessageText", this.loadingMessageText);
-        addDataAttributeIfNonEmpty("updatingMessageText", this.updatingMessageText);
+        addDataAttributeIfNonEmpty("loadingmessage", this.loadingMessageText);
+        addDataAttributeIfNonEmpty("disableblocking", Boolean.toString(this.disableBlocking));
         addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
         addDataAttribute("displayresponseinlightbox", Boolean.toString(this.displayResponseInLightBox));
 
@@ -660,7 +659,7 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * get loading message used by action's blockUI
+     * Gets the loading message used by action's blockUI
      *
      * @returns String if String is not null, used in place of loading message
      */
@@ -678,21 +677,31 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * get updating message used by action's blockUI
+     * Indicates whether blocking for the action should be disabled
      *
-     * @returns String if String is not null, used in place of updating message
+     * <p>
+     * By default when an action is invoked part of the page or the entire window is blocked until
+     * the action completes. If this property is set to true the blocking will not be displayed.
+     * </p>
+     *
+     * <p>
+     * Currently if an action returns a file download, this property should be set to true. If not, the blocking
+     * will never get unblocked (because the page does not get notification a file was downloaded)
+     * </p>
+     *
+     * @return boolean true if blocking should be disabled, false if not
      */
-    public String getUpdatingMessageText() {
-        return updatingMessageText;
+    public boolean isDisableBlocking() {
+        return disableBlocking;
     }
 
     /**
-     * When this property is set, it is used in place of the updating message text used by the blockUI
+     * Setter for disabling blocking when the action is invoked
      *
-     * @param updatingMessageText
+     * @param disableBlocking
      */
-    public void setUpdatingMessageText(String updatingMessageText) {
-        this.updatingMessageText = updatingMessageText;
+    public void setDisableBlocking(boolean disableBlocking) {
+        this.disableBlocking = disableBlocking;
     }
 
     /**

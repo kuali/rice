@@ -183,6 +183,7 @@
         <value>uif-action</value>
       </list>
     </property>
+    <property name="loadingMessageText" value="Loading..."/>
   </bean>
 
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>

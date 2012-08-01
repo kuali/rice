@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Used for rendering a lightbox in the UI to display action links in dialog
@@ -37,24 +40,27 @@ public class LightBox extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getTemplateOptionsJSString()
+     * Override to add property values to the template options
+     *
+     * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
      */
     @Override
-    public String getTemplateOptionsJSString() {
-        if (getTemplateOptions() == null) {
-            setTemplateOptions(new HashMap<String, String>());
+    public Map<String, String> getTemplateOptions() {
+        Map<String, String> templateOptions = super.getTemplateOptions();
+
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
         }
 
-        // Add the width and height properties to the ComponentOptions
-        // before the JS String gets generated.
-        if (width != null) {
-            getTemplateOptions().put("width", width);
-        }
-        if (height != null) {
-            getTemplateOptions().put("height", height);
+        if (StringUtils.isNotBlank(width) && !templateOptions.containsKey("width")) {
+            templateOptions.put("width", width);
         }
 
-        return super.getTemplateOptionsJSString();
+        if (StringUtils.isNotBlank(height) && !templateOptions.containsKey("height")) {
+            templateOptions.put("height", height);
+        }
+
+        return templateOptions;
     }
 
     /**

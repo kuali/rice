@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * BlockUI element is used within the view element for managing element/page blocking attributes
  *
@@ -26,9 +31,53 @@ package org.kuali.rice.krad.uif.widget;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BlockUI extends WidgetBase {
+    
+    private String blockingImageSource;
 
     public BlockUI() {
         super();
     }
 
+    /**
+     * Override to add property values to the template options
+     *
+     * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
+     */
+    @Override
+    public Map<String, String> getTemplateOptions() {
+        Map<String, String> templateOptions = super.getTemplateOptions();
+
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
+        }
+
+        if (StringUtils.isNotBlank(blockingImageSource) && !templateOptions.containsKey("blockingImage")) {
+            templateOptions.put("blockingImage", blockingImageSource);
+        }
+
+        return templateOptions;
+    }
+
+    /**
+     * Path to an image that will be rendered in the blocking overlay
+     * 
+     * <p>
+     * If specified, the image will be picked up and rendered before the blocking message in 
+     * the overlay. If not given just the message will be displayed
+     * </p>
+     * 
+     * @return String url to the blocking image
+     */
+    public String getBlockingImageSource() {
+        return blockingImageSource;
+    }
+
+    /**
+     * Setter for the url (source) of the blocking image to use (if any)
+     * 
+     * @param blockingImageSource
+     */
+    public void setBlockingImageSource(String blockingImageSource) {
+        this.blockingImageSource = blockingImageSource;
+    }
 }

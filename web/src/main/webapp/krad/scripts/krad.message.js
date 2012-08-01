@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Show growl with message, title and theme passed in
  *
@@ -41,33 +42,95 @@ function setGrowlDefaults(options) {
 }
 
 /**
- * Uses jQuery plug-in to show a loading notification for a page request. See
- * <link>http://plugins.jquery.com/project/showLoading</link> for documentation
- * on options.
+ * Invoked to initialize defaults for refresh or navigation blocking
  *
- * @param showLoading -
- *          boolean that indicates whether the loading indicator should be shown
- *          (true) or hidden (false)
+ * @param options - default options for the block ui plugin
+ * @param blockingType - type of blocking the options should apply to
  */
-function createLoading(showLoading) {
-    var loadingMessage =  '<h1><img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loading.gif" alt="working..." />Loading...</h1>';
-    var savingMessage = '<h1><img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loading.gif" alt="working..." />Saving...</h1>';
+function setBlockUIDefaults(options, blockingType) {
+    var opts = {};
 
-    var methodToCall = jQuery("input[name='methodToCall']").val();
-    var unblockUIOnLoading = jQuery("input[name='unblockUIOnLoading']").val();
+    if (!options || !blockingType) {
+        return;
+    }
 
-    if (unblockUIOnLoading == null || unblockUIOnLoading.toUpperCase() == "false".toUpperCase()) {
-        if (showLoading) {
-            if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
-                getContext().blockUI({message: savingMessage});
-            }
-            else {
-                getContext().blockUI({message: loadingMessage});
-            }
+    if (blockingType == "navigation") {
+        opts.navigationOptions = options;
+    } else if (blockingType == "refresh") {
+        opts.refreshOptions = options;
+    }
+
+    var context = getContext();
+    context.blockUI.defaults = context.extend(context.blockUI.defaults, opts);
+}
+
+/**
+ * Uses jQuery blockUI plug-in to show a loading notification
+ *
+ * <p>
+ * The loading functionality is used to block an area of the screen and to display a message while
+ * a request is being processed. If elementToBlock is given (known as a refresh block), the blocking will occur
+ * only on the area covered by that element. Else the entire window will be blocked (known as navigation blocking).
+ * </p>
+ *
+ * <p>
+ * Depending on whether the blocking is for a refresh or navigation, separate blockUI defaults will be used. These
+ * defaults are initialized through the View object or script
+ * </p>
+ *
+ * @param loadingMessage - (optional) message to display while blocking, defaults to 'Loading...'
+ * @param elementToBlock - (optional) jQuery object representing an element that should be blocked, defaults to
+ * entire window if not given
+ * @param replaceElement - (optional) boolean that indicates to replace the element contents with the loading
+ * notification instead of an overlay, defaults to false
+ * @param options - (optional) adding plug-in options for blockUI
+ */
+function showLoading(loadingMessage, elementToBlock, replaceElement, options) {
+    var context = getContext();
+
+    if (elementToBlock && elementToBlock.length) {
+        var blockingOptions = context.blockUI.defaults.refreshOptions || {};
+    }
+    else {
+        var blockingOptions = context.blockUI.defaults.navigationOptions || {};
+    }
+
+    if (!loadingMessage) {
+        loadingMessage = "Loading...";
+    }
+
+    var loadingContent = '<img src="' + blockingOptions.blockingImage + '" alt="'
+            + loadingMessage + '" /> ' + loadingMessage;
+
+    if (elementToBlock && elementToBlock.length) {
+        if (replaceElement) {
+            elementToBlock.html(loadingContent);
         }
         else {
-            getContext().unblockUI();
+            blockingOptions = jQuery.extend(blockingOptions, {message:loadingContent});
+            elementToBlock.block(blockingOptions);
         }
+    }
+    else {
+        loadingContent = '<h1>' + loadingContent + '</h1>';
+        blockingOptions = jQuery.extend(blockingOptions, {message:loadingContent});
+        context.blockUI(blockingOptions);
+    }
+}
+
+/**
+ * Invoked to remove a loading/blocking indicator
+ *
+ * @param elementToBlock - (optional) the element the blocking is on, if not given it is assumed the entire
+ * window is being blocked
+ */
+function hideLoading(elementToBlock) {
+    if (nonEmpty(elementToBlock)) {
+        elementToBlock.unblock();
+    }
+    else {
+        var context = getContext();
+        context.unblockUI();
     }
 }
 

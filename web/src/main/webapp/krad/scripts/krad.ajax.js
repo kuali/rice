@@ -15,8 +15,8 @@
  */
 
 /**
- * Submits the form via ajax or does a normal form submit depending on whether the form was submitted via ajax or not.
- * By default ajaxsubmit is true
+ * Submits the form via ajax or does a normal form submit depending on whether the form was submitted via ajax or not,
+ * by default ajaxsubmit is true
  *
  * @param component - the component on which the action has been invoked
  */
@@ -30,33 +30,37 @@ function actionInvokeHandler(component) {
     var preSubmitCall = jQuery(component).data("presubmitcall");
     var validate = jQuery(component).data("validate");
     var displayResponseInLightBox = jQuery(component).data("displayresponseinlightbox");
+    var loadingMessage = jQuery(component).data("loadingmessage");
+    var disableBlocking = jQuery(component).data("disableblocking");
     var returnType = null;
 
     //set the returnType if displayResponseInLightBox is true
     if (displayResponseInLightBox) {
         returnType = "display-response-in-lightbox";
     }
+
     // methodToCall comes as a part of submitData
     var methodToCall = submitData['methodToCall'];
 
     //if the form is submitted via ajax
     if (ajaxSubmit) {
         ajaxSubmitFormFullOpts(methodToCall, successCallback, submitData, elementToBlock, errorCallback, validate,
-                    preSubmitCall, returnType);
+                preSubmitCall, returnType, loadingMessage, disableBlocking);
     } else {
-        submitFormFullOpts(methodToCall, submitData, validate, preSubmitCall);
+        submitFormFullOpts(methodToCall, submitData, validate, preSubmitCall, loadingMessage, disableBlocking);
     }
 }
 /**
  * Invokes ajaxSubmitFormFullOpts with null callbacks besides successCallback and validate set to false
  *
- * @param methodToCall      - the controller method to be called
- * @param successCallback   - hook for any calls to be made on success
- * @param additionalData    - any additional data that needs to be passed to the server
- * @param elementToBlock    - element to be blocked while loading
- * @param preSubmitCall     -  hook to execute a call before submit which if returns true the processing moves forward else return
- * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
- *                            type but the server can change it. Defaults to update-page
+ * @param methodToCall - the controller method to be called
+ * @param successCallback - hook for any calls to be made on success
+ * @param additionalData - any additional data that needs to be passed to the server
+ * @param elementToBlock - element to be blocked while loading
+ * @param preSubmitCall -  hook to execute a call before submit which if returns true the processing moves
+ * forward else return
+ * @param returnType - this is used to indicate to the server a requested return type. The client requests
+ * a return type but the server can change it. Defaults to update-page
  */
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, false,
@@ -66,15 +70,17 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 /**
  * Invokes ajaxSubmitFormFullOpts with null callbacks besides successCallback and validate set to true
  *
- * @param methodToCall      - the controller method to be called
- * @param successCallback   - hook for any calls to be made on success
- * @param additionalData    - any additional data that needs to be passed to the server
- * @param elementToBlock    - element to be blocked while loading
- * @param preSubmitCall     -  hook to execute a call before submit which if returns true the processing moves forward else return
- * @param returnType        - this is used to indicate to the server a requested return type. The client requests a return
- *                            type but the server can change it. Defaults to update-page
+ * @param methodToCall - the controller method to be called
+ * @param successCallback - hook for any calls to be made on success
+ * @param additionalData - any additional data that needs to be passed to the server
+ * @param elementToBlock - element to be blocked while loading
+ * @param preSubmitCall -  hook to execute a call before submit which if returns true the processing moves
+ * forward else return
+ * @param returnType - this is used to indicate to the server a requested return type. The client
+ * requests a return type but the server can change it. Defaults to update-page
  */
-function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall, returnType) {
+function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, preSubmitCall,
+                                   returnType) {
     ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, null, true,
             preSubmitCall, returnType);
 }
@@ -104,9 +110,11 @@ function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData
  * form, if the check is performed and dirty fields exist, the submit will not occur
  * @param returnType - this is used to indicate to the server a requested return type. The client requests a return
  *                     type but the server can change it. Defaults to update-page
+ * @param loadingMessage - (optional) message that will be displayed on the blocking indicator
+ * @param disableBlocking - (optional) boolean that indicates whether blocking should be disabled, defaults to false
  */
-function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback, validate,
-                                preSubmitCall, returnType) {
+function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, elementToBlock, errorCallback,
+                                validate, preSubmitCall, returnType, loadingMessage, disableBlocking) {
     var data = {};
 
     // invoke validateForm if validate flag is true, if returns false do not continue
@@ -174,7 +182,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
             invokeAjaxReturnHandler(tempDiv);
 
             if (!hasError) {
-                if(successCallback != null)  {
+                if (successCallback != null) {
                     if (typeof successCallback == "string") {
                         eval(successCallback + "(tempDiv)");
                     } else {
@@ -201,41 +209,38 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
         }
     };
 
-    if (elementToBlock != null && elementToBlock.length) {
-        var elementBlockingOptions = {
-            beforeSend:function () {
-                if (elementToBlock.hasClass("unrendered")) {
-                    elementToBlock.append('<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Loading...');
-                    elementToBlock.show();
-                }
-                else {
-                    elementToBlock.block({
-                        message:'<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Updating...',
-                        fadeIn:400,
-                        fadeOut:800
-                    });
-                }
-            },
-            complete:function () {
-                // note that if you want to unblock simultaneous with showing the new retrieval
-                // you must do so in the successCallback
-                elementToBlock.unblock();
-
-            },
-            error:function () {
-                if (elementToBlock.hasClass("unrendered")) {
-                    elementToBlock.hide();
-                }
-                else {
-                    elementToBlock.unblock();
-                }
+    // loading blockOptions currently used for text only
+    var elementBlockingOptions = {
+        beforeSend:function () {
+            if (nonEmpty(elementToBlock) && elementToBlock.is(":hidden")) {
+                var replaceElement = true;
+                elementToBlock.show();
             }
-        };
 
-        jQuery.extend(submitOptions, elementBlockingOptions);
-    }
+            if (!disableBlocking) {
+                showLoading(loadingMessage, elementToBlock, replaceElement);
+            }
+        },
+        complete:function () {
+            // note that if you want to unblock simultaneous with showing the new retrieval
+            // you must do so in the successCallback
+            if (!disableBlocking) {
+                hideLoading(elementToBlock);
+            }
+        },
+        error:function () {
+            if (nonEmpty(elementToBlock) && elementToBlock.hasClass("uif-placeholder")) {
+                elementToBlock.hide();
+            }
+            else if (!disableBlocking) {
+                hideLoading(elementToBlock);
+            }
+        }
+    };
 
-    //for lightbox copy data back into form
+    jQuery.extend(submitOptions, elementBlockingOptions);
+
+    // for lightbox copy data back into form
     if (componentId !== undefined) {
         var component = jQuery('#' + componentId).clone(true, true);
 
@@ -249,9 +254,10 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
 /**
  * Calls the submitFormFullOpts with validate set to false
  *
- * @param methodToCall     - controller method to call
- * @param additionalData   - any additional data that needs to be sent to the server
- * @param preSubmitCall    - hook to execute a call before submit which if returns true the processing moves forward else return
+ * @param methodToCall - controller method to call
+ * @param additionalData - any additional data that needs to be sent to the server
+ * @param preSubmitCall - hook to execute a call before submit which if returns true the processing moves
+ * forward else return
  */
 function submitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts , validate false
@@ -261,9 +267,10 @@ function submitForm(methodToCall, additionalData, preSubmitCall) {
 /**
  * Calls the submitFormFullOpts with validate set to true
  *
- * @param methodToCall     - controller method to call
- * @param additionalData   - any additional data that needs to be sent to the server
- * @param preSubmitCall    - hook to execute a call before submit which if returns true the processing moves forward else return
+ * @param methodToCall - controller method to call
+ * @param additionalData - any additional data that needs to be sent to the server
+ * @param preSubmitCall - hook to execute a call before submit which if returns true the processing moves
+ * forward else return
  */
 function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
     // invoke submitFormFullOpts with null callback, validate true
@@ -281,9 +288,10 @@ function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
  * @param performDirtyCheck - indicates whether the dirty fields check should be performed before submitting the
  * form, if the check is performed and dirty fields exist, the submit will not occur
  * @param preSubmitCall
+ * @param loadingMessage - message that will be displayed on the blocking indicator
+ * @param disableBlocking - (optional) boolean that indicates whether blocking should be disabled, defaults to false
  */
-function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall) {
-
+function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall, loadingMessage, disableBlocking) {
     // invoke validateForm if validate flag is true, if returns false do not continue
     if (validate && !validateForm()) {
         return;
@@ -302,6 +310,11 @@ function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCal
     // if additional data write out as hiddens
     for (key in additionalData) {
         writeHiddenToForm(key, additionalData[key]);
+    }
+
+    // start the loading indicator (will be removed on page load)
+    if (!disableBlocking) {
+        showLoading(loadingMessage);
     }
 
     // submit
@@ -340,10 +353,13 @@ function validateAndSubmitUsingFormMethodToCall() {
 function invokeAjaxReturnHandler(content) {
     jQuery(content).children().each(function () {
         var div = jQuery(this);
+
         // Get the handler sent by the server
         var handler = div.data("handler");
+
         // find the handler function with the handler as the key
         var handlerFunc = ajaxReturnHandlers[handler];
+
         //invoke the handler function
         if (handlerFunc) {
             handlerFunc(div, div.data());
@@ -359,7 +375,7 @@ function invokeAjaxReturnHandler(content) {
  * scripts. While processing, the page contents are hidden
  * </p>
  *
- * @param content   - content returned from response
+ * @param content - content returned from response
  */
 function updatePageCallback(content) {
     var page = jQuery("[data-handler='update-component']", content);
@@ -381,8 +397,8 @@ function updatePageCallback(content) {
  * Finds the page content in the returned content and updates the page, then processes breadcrumbs and hidden
  * scripts. While processing, the page contents are hidden
  *
- * @param content   - content returned from response
- * @param dataAttr  -  any additional data attributes that the server needs to send
+ * @param content - content returned from response
+ * @param dataAttr -  any additional data attributes that the server needs to send
  */
 function updatePageHandler(content, dataAttr) {
     var page = jQuery("#page_update", content);
@@ -401,13 +417,17 @@ function updatePageHandler(content, dataAttr) {
 }
 
 /**
+ * Handles the content for a component (partial page) update
+ *
+ * <p>
  * Retrieves the component with the matching id from the server and replaces a matching
  * _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label
  * and a displayWith marker span has a matching id, that span will be replaced with the label content
  * and removed from the component.  This allows for label and component content separation on fields
+ * </p>
  *
- * @param content   - content returned from response
- * @param dataAttr  -  any additional data attributes that the server needs to send
+ * @param content - content returned from response
+ * @param dataAttr -  any additional data attributes that the server needs to send
  */
 function updateComponentHandler(content, dataAttr) {
     var id = dataAttr.updatecomponentid;
@@ -417,62 +437,62 @@ function updateComponentHandler(content, dataAttr) {
 
     var displayWithId = id;
 
-        // special label handling, if any
-        var theLabel = jQuery("#" + displayWithId + "_label_span", component);
-        if (jQuery(".displayWith-" + displayWithId).length && theLabel.length) {
-            theLabel.addClass("displayWith-" + displayWithId);
-            jQuery("span.displayWith-" + displayWithId).replaceWith(theLabel);
-            component.remove("#" + displayWithId + "_label_span");
+    // special label handling, if any
+    var theLabel = jQuery("#" + displayWithId + "_label_span", component);
+    if (jQuery(".displayWith-" + displayWithId).length && theLabel.length) {
+        theLabel.addClass("displayWith-" + displayWithId);
+        jQuery("span.displayWith-" + displayWithId).replaceWith(theLabel);
+        component.remove("#" + displayWithId + "_label_span");
+    }
+
+    elementToBlock.unblock({onUnblock:function () {
+        var origColor = jQuery(component).find("#" + id).css("background-color");
+        jQuery(component).find("#" + id).css("background-color", "");
+        jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+
+        // remove old stuff
+        if (jQuery("#" + id + "_errors").length) {
+            jQuery("#" + id + "_errors").remove();
         }
 
-        elementToBlock.unblock({onUnblock: function() {
-            var origColor = jQuery(component).find("#" + id).css("background-color");
-            jQuery(component).find("#" + id).css("background-color", "");
-            jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+        jQuery("input[data-for='" + id + "']").each(function () {
+            jQuery(this).remove();
+        });
 
-                // remove old stuff
-                if(jQuery("#" + id + "_errors").length){
-                    jQuery("#" + id + "_errors").remove();
-                }
-
-                jQuery("input[data-for='"+ id +"']").each(function () {
-                    jQuery(this).remove();
-                });
-
-            // replace component
-            if (jQuery("#" + id).length) {
-                jQuery("#" + id).replaceWith(component.html());
-            }
-
-            if (jQuery("#" + id).parent().is("td")) {
-                jQuery("#" + id).parent().show();
-            }
-
-            //runs scripts on the span or div with id
-            runHiddenScripts(id);
-
-            if (origColor == "") {
-                origColor = "transparent";
-            }
-
-            jQuery("#" + id).animate({backgroundColor: origColor}, 5000);
-		}
-		});
-
-        var displayWithLabel = jQuery(".displayWith-" + displayWithId);
-        displayWithLabel.show();
-        if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
-            displayWithLabel.parent().show();
+        // replace component
+        if (jQuery("#" + id).length) {
+            jQuery("#" + id).replaceWith(component.html());
         }
+
+        if (jQuery("#" + id).parent().is("td")) {
+            jQuery("#" + id).parent().show();
+        }
+
+        //runs scripts on the span or div with id
+        runHiddenScripts(id);
+
+        if (origColor == "") {
+            origColor = "transparent";
+        }
+
+        jQuery("#" + id).animate({backgroundColor:origColor}, 5000);
+    }
+    });
+
+    var displayWithLabel = jQuery(".displayWith-" + displayWithId);
+    displayWithLabel.show();
+    if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
+        displayWithLabel.parent().show();
+    }
 }
 
 /**
  *  Replaces the view with the given content and run the hidden scripts.
  *
- * @param content  - server response
+ * @param content - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
  */
-function updateViewHandler(content, dataAttr){
+function updateViewHandler(content, dataAttr) {
     jQuery('#' + kradVariables.APP_ID).replaceWith(content);
     runHiddenScriptsAgain();
 }
@@ -480,26 +500,26 @@ function updateViewHandler(content, dataAttr){
 /**
  * Redirect to the url sent as a response when an ajax redirect is requested.
  *
- * @param content  - server response
+ * @param content - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
  */
 function redirectHandler(content, dataAttr) {
-
-// get contents between div and do window.location = parsed href
-   window.location.href = jQuery(content).text();
+    // get contents between div and do window.location = parsed href
+    window.location.href = jQuery(content).text();
 }
 
 /**
  * Displays the response in a lightbox
+ *
  * <p>
- *     Calls the showLightboxContent method
+ * Calls the showLightboxContent method
  * </p>
  *
- * @param content  - server response
+ * @param content - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
  */
-function displayResponseInLightBoxHandler(content, dataAttr){
-     showLightboxContent(content);
+function displayResponseInLightBoxHandler(content, dataAttr) {
+    showLightboxContent(content);
 }
 
 /**
@@ -536,9 +556,9 @@ function retrieveComponent(id, methodToCall, addCallbackFunc) {
 
     // if a call is made from refreshComponentUsingTimer() and the component does not exist on the page or is hidden
     // then get the handle of the refreshTimer and clear the timer. Also remove it from the refreshTimerComponentMap
-    if(elementToBlock === undefined || elementToBlock.filter(':visible').length === 0){
+    if (elementToBlock === undefined || elementToBlock.filter(':visible').length === 0) {
         var refreshHandle = refreshTimerComponentMap[id];
-        if(!(refreshHandle === undefined)){
+        if (!(refreshHandle === undefined)) {
             clearInterval(refreshHandle);
             delete refreshTimerComponentMap[id];
             return;
@@ -832,9 +852,11 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
                         refreshDisclosure.css("background-color", "");
                         refreshDisclosure.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
                         refreshDisclosure.show();
+
                         if (refreshDisclosure.parent().is("td")) {
                             refreshDisclosure.parent().show();
                         }
+
                         if (origColor == "") {
                             origColor = "transparent";
                         }
@@ -842,18 +864,20 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 
                         //re-enable validation on now shown inputs
                         hiddenInputValidationToggle(disclosureId);
+
                         var displayWithLabel = jQuery(".displayWith-" + displayWithId);
                         displayWithLabel.show();
                         if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
                             displayWithLabel.parent().show();
                         }
-
                     }
                 }
                 else {
                     refreshDisclosure.hide();
+
                     // ignore validation on hidden inputs
                     hiddenInputValidationToggle(disclosureId);
+
                     var displayWithLabel = jQuery(".displayWith-" + displayWithId);
                     displayWithLabel.hide();
                     if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
@@ -891,20 +915,24 @@ function hiddenInputValidationToggle(id) {
 /**
  * Refreshes a component by calling retrieveComponent() at the given time interval
  *
- * @param componentId   - id of the component to be refreshed
- * @param methodToCall  - controller method to call on refresh
- * @param timeInterval  -  interval in seconds at which the component should be refreshed
+ * @param componentId - id of the component to be refreshed
+ * @param methodToCall - controller method to call on refresh
+ * @param timeInterval -  interval in seconds at which the component should be refreshed
  */
-function refreshComponentUsingTimer(componentId,methodToCall,timeInterval){
-    var refreshTimer = refreshTimerComponentMap[componentId] ;
+function refreshComponentUsingTimer(componentId, methodToCall, timeInterval) {
+    var refreshTimer = refreshTimerComponentMap[componentId];
+
     // if a timer already exists for the component then clear it and remove it from the map
     // this is done so that the time interval between executions remains the same.
-    if(refreshTimer != null) {
+    if (refreshTimer != null) {
         clearInterval(refreshTimer);
         delete refreshTimerComponentMap[componentId];
     }
+
     //set a new timer on the component
-    refreshTimerComponentMap[componentId] = setInterval(function(){retrieveComponent(componentId,methodToCall);}, timeInterval * 1000);
+    refreshTimerComponentMap[componentId] = setInterval(function () {
+        retrieveComponent(componentId, methodToCall);
+    }, timeInterval * 1000);
 }
 
 /**

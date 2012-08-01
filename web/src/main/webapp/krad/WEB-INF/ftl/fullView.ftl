@@ -39,7 +39,7 @@
         <@krad.backdoor/>
 
         <@krad.form render=view.renderForm postUrl="${view.formPostUrl!KualiForm.formPostUrl}"
-        onSubmitScript="${view.onSubmitScript}">
+        onSubmitScript="${view.onSubmitScript!}">
 
             <#if view.renderForm>
                 <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
@@ -61,7 +61,7 @@
         <@krad.script value="${KualiForm.lightboxScript!}"/>
 
         <#-- set focus and perform jump to -->
-        <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, '${KualiForm.focusId!}',
+        <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
                                       '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
 
     </div>

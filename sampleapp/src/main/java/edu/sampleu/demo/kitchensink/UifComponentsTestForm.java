@@ -17,6 +17,8 @@ package edu.sampleu.demo.kitchensink;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.kim.api.identity.Person;
@@ -2243,5 +2245,10 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setRichMessageField2(String richMessageField2) {
         this.richMessageField2 = richMessageField2;
+    }
+
+    public String getCurrentTimestamp() {
+        DateTimeService dateTimeService = CoreApiServiceLocator.getDateTimeService();
+        return dateTimeService.getCurrentTimestamp().toString();
     }
 }

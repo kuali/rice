@@ -191,14 +191,16 @@
               </list>
           </property>
         </bean>
-        <bean id="UifCompView-MessageFields" p:id="timer1" parent="Uif-VerticalBoxSection" p:refreshTimer="30" p:methodToCallOnRefresh="refreshProgGroup">
-            <property name="headerText" value="Refresh based on timer"/>
-            <property name="items">
-              <list>
-                <bean parent="Uif-Message" p:messageText="This message refreshes every 30 seconds."/>
-              </list>
-            </property>
-          </bean>
+
+        <bean parent="Uif-VerticalBoxSection" p:id="timer1" p:refreshTimer="10"
+              p:methodToCallOnRefresh="refreshProgGroup">
+          <property name="headerText" value="Refresh based on timer"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-Message" p:messageText="This message refreshes every 10 seconds: @{currentTimestamp}"/>
+            </list>
+          </property>
+        </bean>
 
 			</list>
 		</property>

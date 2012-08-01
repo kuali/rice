@@ -22,7 +22,8 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   
   <bean id="Uif-SaveAction" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save"
-        p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
+        p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
+        p:loadingMessageText="Saving..."/>
   
   <bean id="Uif-CloseAction" parent="Uif-SecondaryActionButton" p:methodToCall="close"
         p:actionLabel="Close" p:performDirtyValidation="true"/>
@@ -31,6 +32,6 @@
         p:actionLabel="Cancel" p:performDirtyValidation="true"/>
 
   <bean id="Uif-CheckFormAction" parent="Uif-SecondaryActionButton" p:methodToCall="checkForm"
-          p:actionLabel="Check Form"/>
+          p:actionLabel="Check Form" p:loadingMessageText="Checking Form..."/>
   
 </beans>

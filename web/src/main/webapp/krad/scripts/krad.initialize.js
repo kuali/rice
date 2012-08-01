@@ -17,7 +17,7 @@
 // global vars
 var jq = jQuery.noConflict();
 
-//clear out blockUI css, using css class overrides
+// clear out blockUI css, using css class overrides
 jQuery.blockUI.defaults.css = {};
 jQuery.blockUI.defaults.overlayCSS = {};
 
@@ -51,30 +51,23 @@ jQuery(document).ready(function () {
 
     // common ajax setup
     jQuery.ajaxSetup({
-        beforeSend:function () {
-            createLoading(true);
-        },
-        complete:function () {
-            createLoading(false);
-        },
         error:function (jqXHR, textStatus, errorThrown) {
-            createLoading(false);
             showGrowl('Status: ' + textStatus + '<br/>' + errorThrown, 'Server Response Error', 'errorGrowl');
         }
     });
 
     // stop previous loading message
-    createLoading(false);
+    hideLoading();
+
+    // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
+    jQuery(window).unload(function () {
+        hideLoading();
+    });
 
     runHiddenScripts("");
 
     // show the page
     jQuery("#" + kradVariables.APP_ID).show();
-
-    // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
-    jQuery(window).unload(function () {
-        createLoading(false);
-    });
 
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();

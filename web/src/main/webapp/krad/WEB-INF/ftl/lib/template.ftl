@@ -21,13 +21,13 @@
         <#return>
     </#if>
 
-<#-- check to see if the component should render, if this has progressiveDisclosure and not getting disclosed via ajax
-still render, but render in a hidden container -->
+    <#-- check to see if the component should render, if this has progressiveDisclosure and not getting disclosed via ajax
+         still render, but render in a hidden container -->
     <#if component.render || (component.progressiveRender?has_content && !component.progressiveRenderViaAJAX
     && !component.progressiveRenderAndRefresh)>
 
         <#if component.selfRendered>
-        ${component.renderedHtmlOutput}
+            ${component.renderedHtmlOutput}
         <#else>
             <#include "${component.template}" parse=true/>
 
@@ -46,10 +46,10 @@ still render, but render in a hidden container -->
             <@macroInvoke />
         </#if>
 
-    <#-- write data attributes -->
+        <#-- write data attributes -->
         <@krad.script component=component role="dataScript" value="${component.complexDataAttributesJs}"/>
 
-    <#-- generate event code for component -->
+        <#-- generate event code for component -->
         <@krad.eventScript component=component/>
     </#if>
 
@@ -57,14 +57,14 @@ still render, but render in a hidden container -->
         <#return>
     </#if>
 
-<#-- setup progressive render -->
+    <#-- setup progressive render -->
     <#if component.progressiveRender?has_content>
-    <#-- for progressive rendering requiring an ajax call, put in place holder div -->
+        <#-- for progressive rendering requiring an ajax call, put in place holder div -->
         <#if !component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)>
-        <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
+            <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
         </#if>
 
-    <#-- setup progressive handlers for each control which may satisfy a disclosure condition -->
+        <#-- setup progressive handlers for each control which may satisfy a disclosure condition -->
         <#list component.progressiveDisclosureControlNames as cName>
             <@krad.script value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
                   setupProgressiveCheck('${cName?js_string}', '${component.id}', '${component.baseId}', condition,
@@ -73,12 +73,12 @@ still render, but render in a hidden container -->
         <@script value="hiddenInputValidationToggle('${component.id}');"/>
     </#if>
 
-<#-- ajax dialog setup -->
+    <#-- ajax dialog setup -->
     <#if component.progressiveRenderViaAJAX && !(component.progressiveRender!?length > 0)>
-    <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
+        <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
     </#if>
 
-<#-- conditional Refresh setup -->
+    <#-- conditional Refresh setup -->
     <#if component.conditionalRefresh?has_content>
         <#list component.conditionalRefreshControlNames as cName>
             <@krad.script value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
@@ -87,13 +87,13 @@ still render, but render in a hidden container -->
         </#list>
     </#if>
 
-<#-- refresh when changed setup -->
+    <#-- refresh when changed setup -->
     <#list component.refreshWhenChangedPropertyNames as cName>
         <@krad.script value="setupOnChangeRefresh('${cName?js_string}', '${component.id}',
         '${component.methodToCallOnRefresh!}');"/>
     </#list>
 
-<#-- generate tooltip for component -->
+    <#-- generate tooltip for component -->
     <@krad.tooltip component=component/>
 
 </#macro>

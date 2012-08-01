@@ -43,6 +43,9 @@ public class UifConstants {
     public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
     public static final String REQUEST_FORM = "requestForm";
 
+    public static final String BLOCKUI_NAVOPTS = "navigation";
+    public static final String BLOCKUI_REFRESHOPTS = "refresh";
+
     public static enum Position {
         BOTTOM, LEFT, RIGHT, TOP
     }
@@ -77,13 +80,14 @@ public class UifConstants {
      */
     public enum AjaxReturnTypes {
         UPADATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"),
-        SHOWINCIDENT("update-view"), UPDATECOLLECTION("update-collection"),DISPLAYRESPONSEINLIGHTBOX("display-response-in-lightbox");
+        SHOWINCIDENT("update-view"), UPDATECOLLECTION("update-collection"),
+        DISPLAYRESPONSEINLIGHTBOX("display-response-in-lightbox");
 
-         private String key;
+        private String key;
 
-         AjaxReturnTypes(String key) {
-             this.key = key;
-         }
+        AjaxReturnTypes(String key) {
+            this.key = key;
+        }
 
         public String getKey() {
             return key;
@@ -193,7 +197,7 @@ public class UifConstants {
         public static final String PERCENT = "kuali_percent";
         public static final String CURRENCY = "kuali_currency";
         public static final String TIMESTAMP = "kuali_timestamp";
-         public static final String FALSE = "false";
+        public static final String FALSE = "false";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
     }

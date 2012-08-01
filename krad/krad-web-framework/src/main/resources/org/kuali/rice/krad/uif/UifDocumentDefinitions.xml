@@ -111,7 +111,7 @@
         <bean parent="Uif-InputField" p:propertyName="notePostedTimestamp" p:readOnly="true"/>
         <bean parent="Uif-InputField" p:propertyName="authorUniversal.principalName" p:readOnly="true"/>
         <bean parent="Uif-InputField" p:propertyName="noteTopicText" p:render="@{#DocumentEntry.displayTopicFieldInNotes}"/>
-        <bean parent="Uif-InputField" p:propertyName="noteText"/>
+        <bean parent="Uif-InputField" p:propertyName="noteText" p:required="true"/>
         <bean parent="Uif-VerticalFieldGroup" p:label="Attached File" p:render="@{#DocumentEntry.allowsNoteAttachments}">
           <property name="items">
             <list>
@@ -133,7 +133,14 @@
                   <list>
                     <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadAttachment"
                           p:actionLabel="download attachment" p:title="download attachment"
-                          p:onClickScript="writeHiddenToForm(&quot;skipViewInit&quot;, &quot;true&quot;);writeHiddenToForm(&quot;renderFullView&quot;, &quot;false&quot;);writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/>
+                          p:disableBlocking="true"
+                          p:onClickScript="writeHiddenToForm(&quot;skipViewInit&quot;, &quot;true&quot;);">
+                            <property name="actionParameters">
+                              <map>
+                                <entry key="selectedLineIndex" value="@{#index}"/>
+                              </map>
+                            </property>
+                     </bean>       
 
                     <bean parent="Uif-Message" p:messageText="@{#line.attachment?.attachmentFileName}"/>
                     <bean parent="Uif-Message"

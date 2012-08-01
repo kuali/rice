@@ -230,6 +230,19 @@
     <property name="position" value="top-right"/>
   </bean>
 
+  <!-- BlockUI default settings -->
+  <bean id="Uif-BlockUI" parent="Uif-BlockUI-parentBean" />
+  <bean id="Uif-BlockUI-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.BlockUI" scope="prototype"
+        parent="Uif-WidgetBase">
+    <property name="templateOptions">
+      <map>
+        <entry key="fadeIn" value="400"/>
+        <entry key="fadeOut" value="800"/>
+      </map>
+    </property>
+  </bean>
+
+  <!-- Tree Default settings -->
   <bean id="Uif-Tree" parent="Uif-Tree-parentBean"/>
   <bean id="Uif-Tree-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tree" scope="prototype"
         parent="Uif-WidgetBase">

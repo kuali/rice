@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
+import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.BreadCrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -76,6 +77,8 @@ import java.util.Set;
 public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(View.class);
+
     private String namespaceCode;
     private String viewName;
     private ViewTheme theme;
@@ -99,6 +102,9 @@ public class View extends ContainerBase {
     // Growls support
     private Growls growls;
     private boolean growlMessagingEnabled;
+
+    private BlockUI refreshBlockUI;
+    private BlockUI navigationBlockUI;
 
     private String entryPageId;
 
@@ -245,25 +251,43 @@ public class View extends ContainerBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        String prefixScript = "";
-        if (this.getOnDocumentReadyScript() != null) {
-            prefixScript = this.getPreLoadScript();
+        String preLoadScript = "";
+        if (this.getPreLoadScript() != null) {
+            preLoadScript = this.getPreLoadScript();
         }
 
-        String growlScript = "";
+        // Retrieve Growl and BlockUI settings
         Growls gw = view.getGrowls();
         if (!gw.getTemplateOptions().isEmpty()) {
-            growlScript = "setGrowlDefaults(" + gw.getTemplateOptionsJSString() + ");";
+            preLoadScript += "setGrowlDefaults(" + gw.getTemplateOptionsJSString() + ");";
         }
 
-        this.setPreLoadScript(prefixScript + growlScript);
+        BlockUI navBlockUI = view.getNavigationBlockUI();
+        if (!navBlockUI.getTemplateOptions().isEmpty()) {
+            preLoadScript += "setBlockUIDefaults("
+                    + navBlockUI.getTemplateOptionsJSString()
+                    + ", '"
+                    + UifConstants.BLOCKUI_NAVOPTS
+                    + "');";
+        }
 
-        prefixScript = "";
+        BlockUI refBlockUI = view.getRefreshBlockUI();
+        if (!refBlockUI.getTemplateOptions().isEmpty()) {
+            preLoadScript += "setBlockUIDefaults("
+                    + refBlockUI.getTemplateOptionsJSString()
+                    + ", '"
+                    + UifConstants.BLOCKUI_REFRESHOPTS
+                    + "');";
+        }
+
+        this.setPreLoadScript(preLoadScript);
+
+        String onReadyScript = "";
         if (this.getOnDocumentReadyScript() != null) {
-            prefixScript = this.getOnDocumentReadyScript();
+            onReadyScript = this.getOnDocumentReadyScript();
         }
 
-        this.setOnDocumentReadyScript(prefixScript + "jQuery.extend(jQuery.validator.messages, " +
+        this.setOnDocumentReadyScript(onReadyScript + "jQuery.extend(jQuery.validator.messages, " +
                 ClientValidationUtils.generateValidatorMessagesOption() + ");");
     }
 
@@ -316,6 +340,8 @@ public class View extends ContainerBase {
         components.add(growls);
         components.addAll(dialogs);
         components.add(viewMenuLink);
+        components.add(navigationBlockUI);
+        components.add(refreshBlockUI);
 
         // Note super items should be added after navigation and other view components so
         // conflicting ids between nav and page do not occur on page navigation via ajax
@@ -1260,6 +1286,43 @@ public class View extends ContainerBase {
      */
     public void setGrowls(Growls growls) {
         this.growls = growls;
+    }
+
+    /**
+     *  Set the refresh BlockUI used with single element blocking
+     *  (such as ajax based element loading/updates)
+     *
+     * @param refreshBlockUI
+     */
+    public void setRefreshBlockUI(BlockUI refreshBlockUI) {
+        this.refreshBlockUI = refreshBlockUI;
+    }
+
+    /**
+     *
+     * @return BlockUI returns the refresh block object
+     */
+    public BlockUI getRefreshBlockUI() {
+        return refreshBlockUI;
+    }
+
+
+    /**
+     *  Set the navigation BlockUI used with single page blocking
+     *  (such as full page loading/saving)
+     *
+     * @param navigationBlockUI
+     */
+    public void setNavigationBlockUI(BlockUI navigationBlockUI) {
+        this.navigationBlockUI = navigationBlockUI;
+    }
+
+    /**
+     *
+     * @return BlockUI returns the navigation block object
+     */
+    public BlockUI getNavigationBlockUI() {
+        return navigationBlockUI;
     }
 
     /**

@@ -74,8 +74,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="export" p:actionLabel="export"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}"
-              p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);"/>
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}" p:disableBlocking="true"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToPrevious" p:actionLabel="Cancel"
               p:render="@{#form.renderedInLightBox and formHistory != null and !formHistory?.historyEntries?.empty}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToHub" p:actionLabel="Home"

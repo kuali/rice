@@ -503,12 +503,13 @@ function getAttributeId(elementId) {
  * of focus
  *
  * @param setFocus - boolean that indicates whether focus should be set, if false just the jump will be performed
+ * @param autoFocus - boolean that indicates where focus to top should happen if focus to not set
  * @param autoJump - boolean that indicates where jump to top should happen if jump to not set
  * @param focusId - id of the dom element to focus on
  * @param jumpToId - id of the dom element to jump to
  * @param jumpToName - name of the dom element to jump to
  */
-function performFocusAndJumpTo(setFocus, autoJump, focusId, jumpToId, jumpToName) {
+function performFocusAndJumpTo(setFocus, autoFocus, autoJump, focusId, jumpToId, jumpToName) {
     if (setFocus) {
         performFocus(focusId);
     }
@@ -539,12 +540,17 @@ function performJumpTo(jumpToId, jumpToName) {
     }
 }
 
-//performs a focus on an the element with the id preset
-function performFocus(focusId) {
+/**
+ * Performs a focus on an the element with the id preset
+ *
+ * @param focusId - id of the dom element to focus on
+ * @param autoFocus - boolean that indicates where focus to top should happen if focus to not set
+ */
+function performFocus(focusId, autoFocus) {
     if (focusId) {
         jQuery("#" + focusId).focus();
     }
-    else {
+    else if (autoFocus) {
         jQuery("[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
     }
 }
@@ -1116,3 +1122,14 @@ function lightboxButtonScript() {
 function voidAction() {
 
 }
+
+/**
+ * Tests whether a jQuery object is not empty by doing a null/undefined check and a length check
+ *
+ * @param jqObject - object to test
+ */
+function nonEmpty(jqObject) {
+  return jqObject && jqObject.length;
+}
+
+

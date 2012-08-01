@@ -425,7 +425,7 @@ table.uif-tableCollectionLayout thead th.sorting_desc label{
 }
 
 .uif-placeholder {
-    display: none !important;
+    display: none;
     margin: 0px !important;
     padding: 0px !important;
 }

@@ -69,6 +69,7 @@
   </bean>
 
   <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <property name="preferFileSystemAccess" value="false" />
     <property name="templateLoaderPath" value="/"/>
     <property name="freemarkerSettings">
       <props>

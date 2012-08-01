@@ -125,7 +125,7 @@ function setupTextPopout(id, label, summary, constraint, imageUrl) {
  */
 function createLightBoxLink(linkId, options, addAppParms) {
     jQuery(function () {
-        var renderedInLightBox = jQuery('#renderedInLightBox').val() == 'true';
+        var renderedInLightBox = isCalledWithinLightbox();
 
         // first time content is brought up in lightbox we don't want to show history
         var showHistory = renderedInLightBox;
@@ -191,7 +191,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
         jQuery.extend(data, submitData);
 
         // Check if this is not called within a lightbox
-        var renderedInLightBox = jQuery('#renderedInLightBox').val() == 'true';
+        var renderedInLightBox = isCalledWithinLightbox();
         if (!renderedInLightBox) {
             jQuery("#" + componentId).click(function (e) {
                 // Prevent the default submit
@@ -253,15 +253,36 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
     });
 }
 
+/**
+ * Check if the code is inside a lightbox
+ *
+ * @return true if called within a lightbox, false otherwise
+ */
+function isCalledWithinLightbox() {
+    try {
+        // For security reasons the browsers will not allow cross server scripts and
+        // throw an exception instead.
+        // Note that bad browsers (e.g. google chrome) will not catch the exception
+        if (jQuery("#fancybox-frame", parent.document).length) {
+            return true;
+        }
+    }
+    catch (e) {
+        // ignoring error
+    }
+
+    return false;
+}
+
 /*
  * Function that returns lookup results by script
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
     if (usePortalForContext()) {
-        returnField = getContext.find('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
+        returnField = top.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
     }else{
-        returnField = getContext.find('[name="' + escapeName(fieldName) + '"]');
+        returnField = jq('[name="' + escapeName(fieldName) + '"]');
     }
 
     returnField.val(value);

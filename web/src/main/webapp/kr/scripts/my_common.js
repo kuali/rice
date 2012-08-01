@@ -15,9 +15,17 @@
  */
 function setIframeAnchor(iframeName) {
   var iframeWin = window.frames[iframeName];
-  if (iframeWin && iframeWin.location.href.indexOf("#") > -1) {
-    iframeWin.location.replace(iframeWin.location);
-  }  
+  try {
+    // For security reasons the browsers will not allow cross server scripts and
+    // throw an exception instead.
+    // Note that bad browsers (e.g. google chrome) will not catch the exception
+    if (iframeWin && iframeWin.location.href.indexOf("#") > -1) {
+      iframeWin.location.replace(iframeWin.location);
+    }
+  }
+  catch (e) {
+      // ignoring error
+  }
 }
 
 function jumpToAnchorName(anchor){

@@ -131,7 +131,7 @@ function createLightBoxLink(controlId, options) {
         var showHistory = false;
 
         // Check if this is called within a light box
-        if (!jQuery("#fancybox-frame", parent.document).length) {
+        if (!isCalledWithinLightbox()) {
             jQuery("#" + controlId).click(function (e) {
                 e.preventDefault();
                 options['href'] = jQuery("#" + controlId).attr('href');
@@ -167,7 +167,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
     jq(function () {
 
         // Check if this is not called within a lightbox
-        if (!jQuery("#fancybox-frame", parent.document).length) {
+        if (!isCalledWithinLightbox()) {
             jQuery("#" + controlId).click(function (e) {
 
                 // Prevent the default submit
@@ -224,15 +224,36 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
     });
 }
 
+/**
+ * Check if the code is inside a lightbox
+ *
+ * @return true if called within a lightbox, false otherwise
+ */
+function isCalledWithinLightbox() {
+    try {
+        // For security reasons the browsers will not allow cross server scripts and
+        // throw an exception instead.
+        // Note that bad browsers (e.g. google chrome) will not catch the exception
+        if (jQuery("#fancybox-frame", parent.document).length) {
+            return true;
+        }
+    }
+    catch (e) {
+        // ignoring error
+    }
+
+    return false;
+}
+
 /*
  * Function that returns lookup results by script
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
     if (usePortalForContext()) {
-        returnField = getContext.find('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
+        returnField = top.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
     }else{
-        returnField = getContext.find('[name="' + escapeName(fieldName) + '"]');
+        returnField = jq('[name="' + escapeName(fieldName) + '"]');
     }
     returnField.val(value);
     returnField.focus();

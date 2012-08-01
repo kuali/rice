@@ -502,15 +502,12 @@
     </property>
     <property name="addLineActions">
       <list>
-        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add"
-              p:actionEvent="addLine"/>
+        <bean parent="Uif-AddLineAction"/>
       </list>
     </property>
     <property name="lineActions">
       <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
-              p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
-              p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"/>
+        <bean parent="Uif-DeleteLineAction"/>
       </list>
     </property>
     <property name="validatedLineActions">

@@ -34,6 +34,10 @@ function escapeName(name) {
     return name;
 }
 
+/**
+ * Can be used when the view is within a iframe to publish its height to the surrounding window (for
+ * resizing the iframe if necessary)
+ */
 function publishHeight() {
     var parentUrl = "";
     if (navigator.cookieEnabled) {

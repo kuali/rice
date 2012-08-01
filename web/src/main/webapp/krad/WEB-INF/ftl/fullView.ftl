@@ -20,19 +20,9 @@
 
 <@krad.html view=view>
 
-    <#if !KualiForm.renderedInLightBox>
-        <@krad.script value="
-                 jQuery(function(){
-                   publishHeight();
-                   window.onresize = publishHeight;
-                   window.setInterval(publishHeight, 249);
-                 });
-             "/>
-    </#if>
-
     <@krad.script value="${KualiForm.growlScript!}"/>
 
-<div id="Uif-Application" style="display:none;" class="uif-application">
+    <div id="Uif-Application" style="display:none;" class="uif-application">
 
     <!-- APPLICATION HEADER -->
     <@krad.template component=view.applicationHeader/>
@@ -42,16 +32,16 @@
     onSubmitScript="${view.onSubmitScript}">
 
         <#if view.renderForm>
-        <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
+            <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
             <@spring.formHiddenInput id="viewId" path="KualiForm.viewId"/>
 
-        <#-- all forms will be stored in session, this is the conversation key -->
+            <#-- all forms will be stored in session, this is the conversation key -->
             <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
 
-        <#-- Based on its value, form elements will be checked for dirtyness -->
+            <#-- Based on its value, form elements will be checked for dirtyness -->
             <@spring.formHiddenInput id="validateDirty" path="KualiForm.validateDirty"/>
 
-        <#-- Indicator which is set to true when content is being rendered inside a lightbox -->
+            <#-- Indicator which is set to true when content is being rendered inside a lightbox -->
             <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
         </#if>
 
@@ -60,13 +50,13 @@
 
     <@krad.script value="${KualiForm.lightboxScript!}"/>
 
-<#-- set focus and perform jump to -->
+    <#-- set focus and perform jump to -->
     <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, '${KualiForm.focusId!}',
                                   '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
 
-</div>
+    </div>
 
-<!-- APPLICATION FOOTER -->
+    <!-- APPLICATION FOOTER -->
     <@krad.template component=view.applicationFooter/>
 
 </@krad.html>

@@ -23,9 +23,12 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
 /**
  * Common class for attribute definitions in the DataDictionary, which contains
  * information relating to the display, validation, and general maintenance of a
- * specific attribute of an entry. An attribute can be a simple or complex attribute.
+ * specific attribute of an entry. An attribute can be a simple or complex attribute
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBase implements ExistenceConstrainable, SimpleConstrainable {
+public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBase implements ExistenceConstrainable,
+        SimpleConstrainable {
 
     protected String name;
 

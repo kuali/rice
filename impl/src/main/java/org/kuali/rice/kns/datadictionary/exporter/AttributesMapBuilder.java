@@ -78,7 +78,11 @@ public class AttributesMapBuilder {
             attributeMap.set("exclusiveMax", exclusiveMax/*.toString()*/);
         }
 
-        attributeMap.set("required", attribute.isRequired().toString());
+        if (attribute.isRequired() != null) {
+            attributeMap.set("required", attribute.isRequired().toString());
+        } else {
+            attributeMap.set("required", "false");
+        }
         if (attribute.getSummary() != null) {
             attributeMap.set("summary", attribute.getSummary());
         }

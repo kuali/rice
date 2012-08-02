@@ -315,6 +315,15 @@ public class CollectionGroupBuilder implements Serializable {
                         }
                     }
                 }
+
+                // Add script to recalculate totals
+                // TODO : only add to total column fields, and add the add line
+                for (Field f : lineFields) {
+                    if (f instanceof InputField && f.isRender()) {
+                        ((ControlBase)((InputField) f).getControl()).setOnChangeScript(
+                                "refreshDatatableCellRedraw(this);");
+                    }
+                }
             }
 
             ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE,

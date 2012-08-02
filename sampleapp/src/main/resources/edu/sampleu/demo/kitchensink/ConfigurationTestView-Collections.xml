@@ -128,6 +128,12 @@
     <property name="propertyName" value="list1" />
     <property name="layoutManager.generateAutoSequence" value="true" />
     <property name="layoutManager.richTable.render" value="true" />
+    <property name="layoutManager.totalColumns">
+    <list>
+      <value>2</value>
+      <value>4</value>
+    </list>
+  </property>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
@@ -165,7 +171,7 @@
 
   <!--ADD BLANK LINE : TABLE LAYOUT-->
 
-  <bean id="Collections-AddBlankLine-TableTop" parent="Collections-Base-TableLayout"	p:layoutManager.numberOfColumns="4">
+  <bean id="Collections-AddBlankLine-TableTop" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout With Add Blank line TOP (default)" />
     <property name="renderAddBlankLineButton" value="true" />
   </bean>
@@ -196,6 +202,7 @@
   <bean id="Collections-AddViaLightbox-TableTop" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout Add Via Lightbox TOP" />
     <property name="addViaLightBox" value="true" />
+    <property name="layoutManager.separateAddLine" value="true" />
   </bean>
 
   <bean id="Collections-AddViaLightbox-TableBottom" parent="Collections-AddViaLightbox-TableTop">

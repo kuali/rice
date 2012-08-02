@@ -184,6 +184,7 @@ public class UifConstants {
         public static final String SORT_TYPE = "sType";
         public static final String TABLE_SORT = "bSort";
         public static final String SAJAX_SOURCE = "sAjaxSource";
+        public static final String FOOTER_CALLBACK = "fnFooterCallback";
     }
 
     public static class TableToolsValues {

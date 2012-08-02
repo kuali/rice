@@ -5444,6 +5444,13 @@
 				_fnReDraw( oSettings );
 			}
 		};
+
+
+        this.fnGetSettings = function( )
+        {
+            var oSettings = _fnSettingsFromNode( this[DataTable.ext.iApiIndex] );
+            return oSettings;
+        };
 		
 		
 		/**
@@ -5991,8 +5998,13 @@
 			_fnSortAttachListener( _fnSettingsFromNode( this[DataTable.ext.iApiIndex] ), nNode, iColumn,
 			 	fnCallback );
 		};
-		
-		
+
+
+        /*
+         * Kuali Customization
+         *
+         * This function was changed to be handle updating cells with objects
+         */
 		/**
 		 * Update a table cell or row - this method will accept either a single value to
 		 * update the cell with, an array of values with one element for each column or
@@ -6033,7 +6045,12 @@
 				}
 				oSettings.__fnUpdateDeep = undefined;
 			}
-			else if ( oSettings.__fnUpdateDeep === undefined && mData !== null && typeof mData === 'object' )
+            /*
+             * Kuali Customization
+             *
+             * Add 'iColumn == null' check
+             */
+			else if ( oSettings.__fnUpdateDeep === undefined && mData !== null && typeof mData === 'object' && iColumn == null)
 			{
 				/* Object update - update the whole row - assume the developer gets the object right */
 				oSettings.aoData[iRow]._aData = $.extend( true, {}, mData );
@@ -6050,7 +6067,7 @@
 				/* Individual cell update */
 				_fnSetCellData( oSettings, iRow, iColumn, mData );
 				sDisplay = _fnGetCellData( oSettings, iRow, iColumn, 'display' );
-				
+
 				var oCol = oSettings.aoColumns[iColumn];
 				if ( oCol.fnRender !== null )
 				{
@@ -6064,7 +6081,13 @@
 				if ( oSettings.aoData[iRow].nTr !== null )
 				{
 					/* Do the actual HTML update */
-					_fnGetTdNodes( oSettings, iRow )[iColumn].innerHTML = sDisplay;
+                    /*
+                     * Kuali Customization
+                     *
+                     * Use append to allow for objects
+                     */
+//					_fnGetTdNodes( oSettings, iRow )[iColumn].innerHTML = sDisplay;
+                    jQuery(_fnGetTdNodes( oSettings, iRow )[iColumn]).append(sDisplay);
 				}
 			}
 			

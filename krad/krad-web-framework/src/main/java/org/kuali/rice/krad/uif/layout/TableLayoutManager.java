@@ -38,7 +38,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -90,6 +92,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private Group rowDetailsGroup;
     private String rowDetailsLinkName = "Details";
     private boolean rowDetailsUseImage;
+    
+    private List<String> totalColumns;
+    private Map<String, String> totalValueMapping;
 
     public TableLayoutManager() {
         useShortLabels = false;
@@ -100,6 +105,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         headerLabels = new ArrayList<Label>();
         dataFields = new ArrayList<Component>();
+        totalColumns = new ArrayList<String>();
+        totalValueMapping = new HashMap<String, String>();
     }
 
     /**
@@ -1071,5 +1078,49 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             theItems.addAll(collectionGroup.getItems());
             collectionGroup.setItems(theItems);
         }
+    }
+
+    /**
+     * A list of all the columns to be totalled
+     *
+     * <p>
+     * The list must contain valid column indexes. The indexes takes all displayed columns into account.
+     * </p>
+     *
+     * @return List<String> the total columns list
+     */
+    public List<String> getTotalColumns() {
+        return totalColumns;
+    }
+
+    /**
+     * Setter for the column indexes that must be totalled
+     *
+     * @param totalColumns
+     */
+    public void setTotalColumns(List<String> totalColumns) {
+        this.totalColumns = totalColumns;
+    }
+
+    /**
+     * Mapping between total columns and fields that must display the total value
+     *
+     * <p>
+     * The mapped field will be updated with the total value in addition to the totals being displayed in the table.
+     * </p>
+     *
+     * @return total mapping
+     */
+    public Map<String, String> getTotalValueMapping() {
+        return totalValueMapping;
+    }
+
+    /**
+     * Setter for the total to field mapping
+     *
+     * @param totalValueMapping
+     */
+    public void setTotalValueMapping(Map<String, String> totalValueMapping) {
+        this.totalValueMapping = totalValueMapping;
     }
 }

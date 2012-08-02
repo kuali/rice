@@ -34,10 +34,13 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -108,6 +111,7 @@ public class RichTable extends WidgetBase {
 
             if ((component instanceof CollectionGroup)) {
                 buildTableOptions((CollectionGroup) component);
+                setTotalOptions((CollectionGroup) component);
             }
 
             if (isDisableTableSort()) {
@@ -116,6 +120,31 @@ public class RichTable extends WidgetBase {
 
             if (StringUtils.isNotBlank(ajaxSource)) {
                 getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
+            }
+        }
+    }
+
+    /**
+     * Builds the footer callback template option for column totals
+     *
+     * @param collectionGroup - the collection group
+     */
+    private void setTotalOptions(CollectionGroup collectionGroup) {
+        LayoutManager layoutManager = collectionGroup.getLayoutManager();
+
+        if (layoutManager instanceof TableLayoutManager) {
+
+            List<String> totalColumns  = ((TableLayoutManager)layoutManager).getTotalColumns();
+
+            if (totalColumns.size() > 0) {
+                String array = "[";
+                for (String i : totalColumns) {
+                    array = array + i + ",";
+                }
+                array = StringUtils.removeEnd(array, ",");
+                array = array + "]";
+                getTemplateOptions().put(UifConstants.TableToolsKeys.FOOTER_CALLBACK,
+                    "function (nRow, aaData, iStart, iEnd, aiDisplay) {initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, " + array + " )}");
             }
         }
     }

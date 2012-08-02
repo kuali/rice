@@ -104,6 +104,8 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
+    
+    private List<String> totalColumns;
 
     public CollectionGroup() {
         renderAddLine = true;

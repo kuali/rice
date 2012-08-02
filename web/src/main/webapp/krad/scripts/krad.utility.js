@@ -1116,6 +1116,87 @@ function lightboxButtonScript() {
 }
 
 /**
+ *
+ * @param nRow "TR" element for the footer
+ * @param aaData Full table data (as derived from the original HTML)
+ * @param iStart Index for the current display starting point in the display array
+ * @param iEnd Index for the current display ending point in the display array
+ * @param aiDisplay Index array to translate the visual position to the full data array
+ * @param columns to total
+ */
+function initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, columns ) {
+    var onePage = iStart == 0 && iEnd == (aaData.length -1);
+    var hasAddRow = jQuery(nRow).closest('table').find('tr.uif-collectionAddItem').length > 0;
+    if (hasAddRow) {
+        iEnd = iEnd + 1;
+        iStart = iStart + 1;
+    }
+
+    // Total each column in the columns list
+    for (var c = 0; c < columns.length ; c++) {
+
+        var total = 0;
+        // Calculate the total for all rows, even outside this page
+        for (var i = 0; i < aaData.length ; i++) {
+            total += parseFloat(coerceTableCellValue(aaData[i][columns[c]]));
+        }
+
+        if (!onePage) {
+
+            var pageTotal = 0;
+            // calculate totals for this page
+            for (var i = iStart; i < iEnd; i++) {
+                pageTotal += parseFloat(coerceTableCellValue(aaData[aiDisplay[i]][columns[c]]));
+            }
+        }
+
+        // modify the footer row
+        var nCells = nRow.getElementsByTagName('th');
+
+        if (onePage) {
+            nCells[columns[c]].innerHTML = 'Total : ' + total;
+        }else{
+            nCells[columns[c]].innerHTML = 'Page : ' + pageTotal +
+                    '<br/>Total : ' + total;
+        }
+    }
+}
+
+/**
+ * Update the cell value on the Datatables data and redraw
+ *
+ * @param field - the table cell
+ */
+function refreshDatatableCellRedraw(field) {
+    // Is blur necesary?
+    jQuery(field).blur();
+    var cell = jQuery(field).closest('td');
+    var div = jQuery(field).closest('div').get(0);
+    var table = jQuery(field).closest('table');
+    var dataTable = jQuery(table).dataTable();
+    var pos = dataTable.fnGetPosition(cell.get(0));
+    // Have to update cell otherwise datatables does not read it
+    dataTable.fnUpdate(div, pos[0], pos[1]);
+    dataTable.fnDraw(true);
+}
+
+/**
+ * Get the value from a table cell
+ *
+ * @param td
+ */
+function coerceTableCellValue(td) {
+    //TODO : if not editable!! can not use input, also use coerceValue()
+    var inputField = jQuery(td).find(':input');
+    var int =  inputField.val();
+    if (!isNaN(parseFloat(int)) && isFinite(int)) {
+        return int;
+    }else{
+        return 0;
+    }
+}
+
+/**
  * Just a dummy function that can be set as the action script for an Action component to prevent it
  * from doing anything
  */

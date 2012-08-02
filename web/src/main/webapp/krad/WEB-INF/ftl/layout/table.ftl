@@ -54,6 +54,16 @@
                     renderAlternatingHeaderColumns=false
                     rowCssClasses=manager.rowCssClasses/>
             </tbody>
+
+             <#if manager.totalColumns?? && (manager.totalColumns?size gt 0)>
+                <tfoot>
+                    <tr>
+                        <#list 1..manager.numberOfColumns as x>
+                            <th rowspan="1" colspan="1"></th>
+                        </#list>
+                    </tr>
+                </tfoot>
+             </#if>
         </table>
 
         <#-- invoke table tools widget -->

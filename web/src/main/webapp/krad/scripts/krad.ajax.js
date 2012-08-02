@@ -321,17 +321,29 @@ function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCal
     jQuery('#kualiForm').submit();
 }
 
+/**
+ * Runs client side validation on the entire form and returns the result (an alert is also given
+ * if errors are encountered)
+ */
 function validateForm() {
-    jQuery.watermark.hideAll();
-
     var validForm = true;
 
-    if (validateClient) {
-        messageSummariesShown = true;
-        pauseTooltipDisplay = true;
-        validForm = jQuery("#kualiForm").valid();
-        pauseTooltipDisplay = false;
+    jQuery.watermark.hideAll();
+    pauseTooltipDisplay = true;
+
+    if(validateClient){
+        validForm = jq("#kualiForm").valid();
     }
+
+	if(!validForm){
+        validForm = false;
+
+		jumpToTop();
+        showLightboxContent("The form contains errors.  Please correct these errors and try again.");
+	}
+
+    jq.watermark.showAll();
+    pauseTooltipDisplay = false;
 
     return validForm;
 }

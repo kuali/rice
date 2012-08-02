@@ -985,6 +985,8 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         closeEffect:'fade',
         openSpeed:200,
         closeSpeed:200,
+        minHeight: 10,
+        minWidth: 10,
         helpers:{overlay:{css:{cursor:'arrow'}, closeClick:false}}
     };
 

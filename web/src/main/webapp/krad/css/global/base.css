@@ -577,6 +577,11 @@ table.dataTable tr.uif-collectionDeleteHighlight td.sorting_1 {
     *display: inline;
 }
 
+/** inline block cross browser support **/
+a.inlineBlock, span.inlineBlock{
+    vertical-align: baseline;
+}
+
 /** for required message below expand collapse button content */
 .uif-requiredInstructionsMessage{
     float: none;

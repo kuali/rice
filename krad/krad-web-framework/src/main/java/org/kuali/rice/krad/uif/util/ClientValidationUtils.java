@@ -113,6 +113,7 @@ public class ClientValidationUtils {
             message = configService.getPropertyValueAsString(labelKey);
             if (params != null && !params.isEmpty() && StringUtils.isNotEmpty(message)) {
                 message = MessageFormat.format(message, params.toArray());
+                message = MessageStructureUtils.translateStringMessage(message);
             }
         }
         if (StringUtils.isEmpty(message)) {
@@ -145,8 +146,8 @@ public class ClientValidationUtils {
             String message = configService.getPropertyValueAsString(
                     UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + key);
             if (StringUtils.isNotEmpty(message)) {
+                message = MessageStructureUtils.translateStringMessage(message);
                 keyValuePairs = keyValuePairs + "\n" + key + ": '" + message + "',";
-
             }
 
         }
@@ -574,6 +575,7 @@ public class ClientValidationUtils {
         if (StringUtils.isEmpty(constraint.getLabelKey())) {
             message = configService.getPropertyValueAsString(
                     UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "prerequisite");
+            message = MessageStructureUtils.translateStringMessage(message);
         } else {
             message = generateMessageFromLabelKey(constraint.getValidationMessageParams(), constraint.getLabelKey());
         }
@@ -633,6 +635,7 @@ public class ClientValidationUtils {
         if (StringUtils.isEmpty(constraint.getLabelKey())) {
             message = configService.getPropertyValueAsString(
                     UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "postrequisite");
+            message = MessageStructureUtils.translateStringMessage(message);
         } else {
             message = generateMessageFromLabelKey(constraint.getValidationMessageParams(), constraint.getLabelKey());
         }

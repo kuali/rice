@@ -97,8 +97,9 @@ function initFieldHandlers() {
     jQuery(document).on("mouseenter",
             "[data-role='InputField'] input,"
                     + "[data-role='InputField'] fieldset, "
-                    + "[data-role='InputField'] fieldset input, "
-                    + "[data-role='InputField'] fieldset label, "
+                    + "[data-role='InputField'] fieldset > span > input:radio,"
+                    + "[data-role='InputField'] fieldset > span > input:checkbox,"
+                    + "[data-role='InputField'] fieldset > span > label, "
                     + "[data-role='InputField'] select, "
                     + "[data-role='InputField'] textarea",
             function (event) {
@@ -111,7 +112,7 @@ function initFieldHandlers() {
                     var focus = jQuery(tooltipElement).is(":focus");
                     if (elementInfo.type == "fieldset") {
                         //for checkbox/radio fieldsets we put the tooltip on the label of the first input
-                        tooltipElement = jQuery(element).filter("label:first");
+                        tooltipElement = jQuery(element).filter(".uif-tooltip");
                         //if the fieldset or one of the inputs have focus then the fieldset is considered focused
                         focus = jQuery(element).filter("fieldset").is(":focus")
                                 || jQuery(element).filter("input").is(":focus");
@@ -124,14 +125,36 @@ function initFieldHandlers() {
                         if (elementInfo.themeMargins) {
                             validationTooltipOptions.themeMargins = elementInfo.themeMargins;
                         }
-                        var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-                        validationTooltipOptions.themeName = data.tooltipTheme;
-                        validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
-                        //set the margin to offset it from the left appropriately
-                        validationTooltipOptions.divStyle = {margin:getTooltipMargin(tooltipElement)};
-                        jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
-                        jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
-                        jQuery(tooltipElement).ShowBubblePopup();
+
+                        //special case check for input within a fieldset, hide other tooltips to avoid overlap
+                        if(jQuery(tooltipElement).is("select, input:text, textarea, input:file, input:password")
+                                && jQuery(tooltipElement).parents("fieldset[data-type='CheckboxSet'], "
+                                + "fieldset[data-type='RadioSet']").length){
+                            hideBubblePopups();
+                        }
+                        var show = true;
+
+                        //special case check for if any internal inputs of a fieldset: if they are showing tooltips
+                        //do not show this fieldset's tooltip to avoid overlap
+                        if(elementInfo.type == "fieldset"){
+                            jQuery("select, input:text, textarea, input:file, input:password", "#" + fieldId).each(function(){
+                                if(jQuery(this).IsBubblePopupOpen()){
+                                    show = false;
+                                }
+                            });
+                        }
+
+                        if(show){
+                            console.log("showing " + fieldId + " tooltipid " + jQuery(tooltipElement).GetBubblePopupID());
+                            var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+                            validationTooltipOptions.themeName = data.tooltipTheme;
+                            validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
+                            //set the margin to offset it from the left appropriately
+                            validationTooltipOptions.divStyle = {margin:getTooltipMargin(tooltipElement)};
+                            jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
+                            jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
+                            jQuery(tooltipElement).ShowBubblePopup();
+                        }
                     }
                 }
             });
@@ -139,8 +162,9 @@ function initFieldHandlers() {
     jQuery(document).on("mouseleave",
             "[data-role='InputField'] input,"
                     + "[data-role='InputField'] fieldset, "
-                    + "[data-role='InputField'] fieldset input, "
-                    + "[data-role='InputField'] fieldset label, "
+                    + "[data-role='InputField'] fieldset > span > input:radio,"
+                    + "[data-role='InputField'] fieldset > span > input:checkbox,"
+                    + "[data-role='InputField'] fieldset > span > label, "
                     + "[data-role='InputField'] select, "
                     + "[data-role='InputField'] textarea",
             function (event) {
@@ -247,8 +271,8 @@ function initFieldHandlers() {
     jQuery(document).on("click",
             "[data-role='InputField'] input:checkbox, "
                     + "[data-role='InputField'] input:radio,"
-                    + "fieldset[data-type='CheckboxSet'] label,"
-                    + "fieldset[data-type='RadioSet'] label",
+                    + "fieldset[data-type='CheckboxSet'] span > label,"
+                    + "fieldset[data-type='RadioSet'] span > label",
             function () {
                 var event = jQuery.Event("handleFieldsetMessages");
                 event.element = this;
@@ -344,16 +368,16 @@ function initBubblePopups() {
     //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
     //will cause a severe loss of functionality and buggy behavior
     //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
-    jQuery("input, select, textarea, "
-            + " label, .uif-tooltip").CreateBubblePopup(
+    jQuery("input, select, textarea,"
+            + ".uif-tooltip").CreateBubblePopup(
             {   manageMouseEvents:false,
                 themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
             });
 }
 
 function hideBubblePopups() {
-    jQuery("input, select, textarea, "
-            + " label, .uif-tooltip").HideAllBubblePopups();
+    jQuery("input, select, textarea,"
+            + ".uif-tooltip").HideAllBubblePopups();
 }
 
 /**

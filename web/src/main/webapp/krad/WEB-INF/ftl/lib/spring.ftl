@@ -280,12 +280,13 @@
  *    or CSS styles or size
 -->
 <#macro formRadioButtons id path options separator attributes="">
-    <@bind path/>
+    <span class="uif-tooltip" style="width:100%;height:0px;"></span>
     <#list options as option>
+    <@bind path/>
     <#local id="${id}_${option_index}">
     <span>
     <input type="radio" id="${id}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${id}">${option.value?html}</label>
+    <label for="${id}" onclick="jQuery('#${id}').attr('checked','checked'); return false;"><@krad.template component=option.message/></label>
     </span>
     ${separator}
     </#list>
@@ -305,13 +306,14 @@
  *    or CSS styles or size
 -->
 <#macro formCheckboxes id path options separator attributes="">
-    <@bind path/>
+    <span class="uif-tooltip" style="width:100%;height:0px;"></span>
     <#list options as option>
+    <@bind path/>
     <#local id="${id}_${option_index}">
     <#local isSelected = contains(status.actualValue?default([""]), option.key)>
     <span>
     <input type="checkbox" id="${id}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${id}">${option.value?html}</label>
+    <label onclick="handleCheckboxLabelClick('${id}',event); return false;" for="${id}"><@krad.template component=option.message/></label>
     </span>
     ${separator}
     </#list>

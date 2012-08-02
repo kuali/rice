@@ -23,20 +23,22 @@ function hideMessageTooltip(fieldId) {
     var element = elementInfo.element;
     if (elementInfo.type == "fieldset") {
         //for checkbox/radio fieldsets we put the tooltip on the label of the first input
-        element = jQuery(element).filter("label:first");
+        element = jQuery(element).filter(".uif-tooltip");
     }
     var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
     if (data && data.showTimer) {
         clearTimeout(data.showTimer);
     }
     var tooltipId = jQuery(element).GetBubblePopupID();
-    if (tooltipId) {
+    if(tooltipId && !jQuery("#" + tooltipId).is(":hover")){
         //this causes the tooltip to be IMMEDIATELY hidden, rather than wait for animation
         jQuery("#" + tooltipId).css("opacity", 0);
         jQuery("#" + tooltipId).hide();
+        jQuery(element).HideBubblePopup();
     }
-    jQuery(element).HideBubblePopup();
-
+    else{
+        jQuery(element).HideBubblePopup();
+    }
 }
 
 /**
@@ -63,7 +65,8 @@ function getHoverElement(fieldId) {
     else if (hasFieldset && jQuery("#" + fieldId).find("fieldset > span > input").length) {
         //radio and checkbox fieldset case
         //get the fieldset, the inputs its associated with, and the associated labels as hover elements
-        elementInfo.element = jQuery("#" + fieldId).find("fieldset, fieldset input, fieldset label");
+        elementInfo.element = jQuery("#" + fieldId).find("fieldset, fieldset > span > input:radio,"
+                + "fieldset > span > input:checkbox, fieldset > span > label, .uif-tooltip");
         elementInfo.type = "fieldset";
         elementInfo.themeMargins = {
             total:'13px',
@@ -95,7 +98,7 @@ function mouseLeaveHideMessageTooltip(id, currentElement, elements, type, force)
         hide = force || jQuery(currentElement).is("fieldset");
         focus = elements.filter("fieldset").is(":focus")
                 || elements.filter("input").is(":focus");
-        tooltipElement = elements.filter("label:first");
+        tooltipElement = elements.filter(".uif-tooltip");
     }
 
     //hide only if hide flag is true, the field is not focused, and the tooltip is open
@@ -128,8 +131,9 @@ function getTooltipMargin(tooltipElement) {
 function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement, type) {
     if (event.relatedTarget &&
             jQuery(event.relatedTarget).length &&
-            jQuery(event.relatedTarget).attr("class") != null &&
-            jQuery(event.relatedTarget).attr("class").indexOf("jquerybubblepopup") >= 0) {
+            ((jQuery(event.relatedTarget).attr("class") != null &&
+            jQuery(event.relatedTarget).attr("class").indexOf("jquerybubblepopup") >= 0)
+            || jQuery(event.relatedTarget).parents('.jquerybubblepopup-innerHtml').length)) {
         //this bind is only every invoked once, then unbound - return false to stop hide
         jQuery(event.relatedTarget).one("mouseleave", function (event) {
             mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement, type);
@@ -162,7 +166,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
         var elementInfo = getHoverElement(fieldId);
         var tooltipElement = jQuery(elementInfo.element);
         if (elementInfo.type == "fieldset") {
-            tooltipElement = tooltipElement.filter("label:first");
+            tooltipElement = tooltipElement.filter(".uif-tooltip");
         }
 
         var options = {
@@ -203,8 +207,20 @@ function showMessageTooltip(fieldId, showAndClose, change) {
 
             if(show){
                 if (!tooltipElement.IsBubblePopupOpen()) {
-                    //timer to get around bizarre interactions with the iframe resize logic
-                    data.showTimer = setTimeout(function () {
+                    if(showAndClose){
+                        //close other bubble popups so we dont get too many during fast tabbing
+                        hideBubblePopups();
+                    }
+                    tooltipElement.SetBubblePopupOptions(options, true);
+                    tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
+                    tooltipElement.ShowBubblePopup();
+                    var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
+                    jQuery("#" + tooltipId).css("opacity", 1);
+                }
+                else if (tooltipElement.IsBubblePopupOpen()) {
+
+                    if (change) {
+                        //if the messages shown were changed, reshow to get around placement issues
                         if(showAndClose){
                             //close other bubble popups so we dont get too many during fast tabbing
                             hideBubblePopups();
@@ -214,30 +230,10 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                         tooltipElement.ShowBubblePopup();
                         var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
                         jQuery("#" + tooltipId).css("opacity", 1);
-                    }, 250);
-                }
-                else if (tooltipElement.IsBubblePopupOpen()) {
-
-                    if (change) {
-                        //if the messages shown were changed, reshow to get around placement issues
-
-                        //timer to get around bizarre interactions with the iframe resize logic
-                        data.showTimer = setTimeout(function () {
-                            if(showAndClose){
-                                //close other bubble popups so we dont get too many during fast tabbing
-                                hideBubblePopups();
-                            }
-                            tooltipElement.SetBubblePopupOptions(options, true);
-                            tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
-                            tooltipElement.ShowBubblePopup();
-                            var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
-                            jQuery("#" + tooltipId).css("opacity", 1);
-                        }, 250);
                     }
                 }
 
                 if (showAndClose) {
-
                     //setup a timer to close the tooltip automatically
                     data.tooltipTimer = setTimeout("hideMessageTooltip('" + fieldId + "')", 3000);
                     jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES, data);
@@ -834,10 +830,12 @@ function generateListItems(messageArray, itemClass, startIndex, focusable, image
     if (messageArray && messageArray.length) {
         for (var i = startIndex; i < messageArray.length; i++) {
             if (focusable) {
-                elements = elements + "<li tabindex='0' class='" + itemClass + "'>" + image + " " + messageArray[i] + "</li>";
+                elements = elements + "<li tabindex='0' class='" + itemClass + "'>" + image + " "
+                        + convertToHtml(messageArray[i]) + "</li>";
             }
             else {
-                elements = elements + "<li class='" + itemClass + "'>" + image + " " + messageArray[i] + "</li>";
+                elements = elements + "<li class='" + itemClass + "'>" + image + " "
+                        + convertToHtml(messageArray[i]) + "</li>";
             }
         }
     }
@@ -1142,7 +1140,7 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
             }
 
             link = jQuery("<li data-messageItemFor='" + fieldId + "'><a href='#'>"
-                    + name + linkText + collapsedElements + "</a> </li>");
+                    + name + convertToHtml(linkText, true) + collapsedElements + "</a> </li>");
 
             if(messageData.fieldModified){
                 jQuery(link).find("a").prepend("<span class='modified'>(Modified) </span>");

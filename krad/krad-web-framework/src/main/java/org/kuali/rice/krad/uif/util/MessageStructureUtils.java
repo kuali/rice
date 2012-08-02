@@ -29,6 +29,28 @@ import java.util.List;
 public class MessageStructureUtils {
 
     /**
+     * Translate a message with special hooks described in MessageStructureUtils.parseMessage.  However, tags which
+     * reference components will not be allowed/translated - only tags which can translate to string content will
+     * be included for this translation.
+     *
+     * @see MessageStructureUtils#parseMessage
+     * @param messageText messageText with only String translateable tags included (no id or component index tags)
+     * @return html translation of rich messageText passed in
+     */
+    public static String translateStringMessage(String messageText){
+        if(!StringUtils.isEmpty(messageText)){
+            List<Component> components = MessageStructureUtils.parseMessage(null, messageText, null, null, false);
+            if(!components.isEmpty()){
+                Component message = components.get(0);
+                if(message instanceof Message){
+                    messageText = ((Message) message).getMessageText();
+                }
+            }
+        }
+        return messageText;
+    } 
+    
+    /**
      * Parses the message text passed in and returns the resulting rich message component structure.
      *
      * <p>If special characters [] are detected the message is split at that location.  The types of features supported
@@ -54,7 +76,7 @@ public class MessageStructureUtils {
      * @return list of components representing the parsed message structure
      */
     public static List<Component> parseMessage(String messageId, String messageText, List<Component> componentList,
-            View view) {
+            View view, boolean parseComponents) {
 
         messageText = messageText.replace("\\[", "&#91;");
         messageText = messageText.replace("\\]", "&#93;");
@@ -72,7 +94,7 @@ public class MessageStructureUtils {
             if (s.endsWith("$@$")) {
                 s = StringUtils.removeEnd(s, "$@$");
 
-                if (s.startsWith("id=")) {
+                if (s.startsWith("id=") && parseComponents) {
                     //if there is a currentMessageComponent add it to the structure and reset it to null
                     //because component content is now interrupting the string content
                     if (currentMessageComponent != null) {
@@ -89,7 +111,7 @@ public class MessageStructureUtils {
                         component.addStyleClass("inlineBlock");
                         messageComponentStructure.add(component);
                     }
-                } else if (s.matches("^[0-9]+$")) {
+                } else if (s.matches("^[0-9]+$") && parseComponents) {
                     //if there is a currentMessageComponent add it to the structure and reset it to null
                     //because component content is now interrupting the string content
                     if (currentMessageComponent != null) {
@@ -132,6 +154,66 @@ public class MessageStructureUtils {
                     }
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
 
+                } else if (s.startsWith("link=") || s.startsWith("/link")) {
+                    if (!s.startsWith("/")) {
+                        //clean up href
+                        s = StringUtils.removeStart(s, "link=");
+                        s = StringUtils.removeStart(s, "'");
+                        s = StringUtils.removeEnd(s, "'");
+                        s = StringUtils.removeStart(s, "\"");
+                        s = StringUtils.removeEnd(s, "\"");
+
+                        s = "<a href='" + s + "' target='_blank'>";
+                    } else {
+                        s = "</a>";
+                    }
+                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
+                } else if (s.startsWith("action=") || s.equals("/action")) {
+                    if (!s.startsWith("/")) {
+                        s = StringUtils.removeStart(s, "action=");
+                        String[] splitData = s.split("data=");
+
+                        String[] params = splitData[0].trim().split("([,]+(?=([^']*'[^']*')*[^']*$))");
+                        String methodToCall = ((params.length >= 1) ? params[0] : "");
+                        String validate = ((params.length >= 2) ? params[1] : "true");
+                        String ajaxSubmit = ((params.length >= 3) ? params[2] : "true");
+                        String successCallback = ((params.length >= 4) ? params[3] : "null");
+
+                        String submitData = "null";
+                        if (splitData.length > 1) {
+                            submitData = splitData[1].trim();
+                        }
+
+                        methodToCall = StringUtils.remove(methodToCall, "'");
+                        methodToCall = StringUtils.remove(methodToCall, "\"");
+                        if (ajaxSubmit.equals("true")) {
+                            s = "<a onclick=\"ajaxSubmitFormFullOpts("
+                                    + "'"
+                                    + methodToCall
+                                    + "',"
+                                    + successCallback
+                                    + ","
+                                    + submitData
+                                    + ","
+                                    + "null, null,"
+                                    + validate
+                                    + ","
+                                    + "null, null); return false;\">";
+                        } else {
+                            s = "<a href=\" javascript:void(null)\" "
+                                    + "onclick=\"submitFormFullOpts('"
+                                    + methodToCall
+                                    + "',"
+                                    + submitData
+                                    + ","
+                                    + validate
+                                    + ", null); return false;\">";
+                        }
+                    } else {
+                        s = "</a>";
+                    }
+                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
+
                 } else if (s.equals("")) {
                     //do nothing    
                 } else {
@@ -165,10 +247,12 @@ public class MessageStructureUtils {
      * @param view the current view
      * @return resulting concatenated Message
      */
-    private static Message concatenateStringMessageContent(Message currentMessageComponent, String s, View view){
+    private static Message concatenateStringMessageContent(Message currentMessageComponent, String s, View view) {
         if (currentMessageComponent == null) {
             currentMessageComponent = ComponentFactory.getMessage();
-            view.assignComponentIds(currentMessageComponent);
+            if(view != null){
+                view.assignComponentIds(currentMessageComponent);
+            }
             currentMessageComponent.setMessageText(s);
             currentMessageComponent.setGenerateSpan(false);
         } else {

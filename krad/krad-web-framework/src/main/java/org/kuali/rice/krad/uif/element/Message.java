@@ -36,8 +36,6 @@ public class Message extends ContentElementBase {
     private static final long serialVersionUID = 4090058533452450395L;
 
     private String messageText;
-    private String messageKey;
-    private List<String> messageParams;
     private List<Component> inlineComponents;
     private List<Component> messageComponentStructure;
     private boolean generateSpan;
@@ -62,7 +60,7 @@ public class Message extends ContentElementBase {
         if (messageText != null && messageText.contains("[") && messageText.contains("]") &&
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
-                    this.getInlineComponents(), view);
+                    this.getInlineComponents(), view, true);
             if (messageComponentStructure != null) {
                 for (Component component : messageComponentStructure) {
                     view.getViewHelperService().performComponentInitialization(view, model, component);
@@ -70,6 +68,16 @@ public class Message extends ContentElementBase {
             }
         }
 
+    }
+
+    /**
+     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+        //Message needs to be aware of its own parent because it now contains content that can have validation
+        this.addDataAttribute("parent", parent.getId());
     }
 
     /**

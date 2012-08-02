@@ -20,15 +20,21 @@
  -->
 
 <#macro uif_message element>
-    <#--if there is messageComponentStructure specified use that because this is a rich message-->
+<#--if there is messageComponentStructure specified use that because this is a rich message-->
     <#if element.messageComponentStructure?has_content>
-        <@krad.div component=element>
+        <#if element.generateSpan>
+            <@krad.div component=element>
+                <#list element.messageComponentStructure as messageElement>
+                    <@krad.template component=messageElement/>
+                </#list>
+            </@krad.div>
+        <#else>
             <#list element.messageComponentStructure as messageElement>
                 <@krad.template component=messageElement/>
             </#list>
-        </@krad.div>
+        </#if>
     <#else>
-        <#--generate wrapping span if true-->
+    <#--generate wrapping span if true-->
         <#if element.generateSpan>
             <@krad.span component=element>${element.messageText!}</@krad.span>
         <#else>

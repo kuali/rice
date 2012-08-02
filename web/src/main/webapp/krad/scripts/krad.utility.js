@@ -18,6 +18,34 @@ var bodyHeight;
 var profilingOn = false;
 
 /**
+ * Handle checkbox label clicks to get around issue with rich message content.
+ *
+ * <p>When the label text itself is clicked, the checkbox should toggle.  When the field associated with
+ * the checkbox is clicked, the checkbox should be checked regardless of state.
+ * Clicking links or buttons in rich content should do nothing to the state.</p>
+ *
+ * @param checkboxId id of the checkbox to check/uncheck
+ * @param event event with the associated clicked target
+ */
+function handleCheckboxLabelClick(checkboxId, event){
+    var checkbox = jQuery("#" + checkboxId);
+    if(jQuery(event.target).is("input, select, textarea, option")){
+        checkbox.attr("checked","checked");
+    }
+    else if(jQuery(event.target).is("a, button")){
+        //do nothing
+    }
+    else{
+        if(checkbox.is(":checked")){
+            checkbox.removeAttr("checked");
+        }
+        else{
+            checkbox.attr("checked","checked");
+        }
+    }
+}
+
+/**
  * Takes a name that may have characters incompatible with jQuery selection and escapes them so they can
  * be used in selectors.  This method MUST be called when selecting on a name that can be ANY name on the page
  * to avoid issues with collections(mainly)
@@ -33,6 +61,21 @@ function escapeName(name) {
     name = name.replace(/\[/g, "\\[");
     name = name.replace(/\]/g, "\\]");
     return name;
+}
+
+/**
+ * Convert the text passed in from escapedHtml to html text.  Remove all anchor tags if flag is set to true.
+ *
+ * @param text the text with gt; and lt; and other escaped symbols that need to be translated
+ * @param removeAnchors if true, do not include the anchor tags in the converted text
+ * (but, still include their textual content)
+ */
+function convertToHtml(text, removeAnchors) {
+    if(removeAnchors){
+        text = text.replace(/&lt;a.+?&gt;/gi,"");
+        text = text.replace(/&lt;\/a&gt;/gi,"");
+    }
+    return jQuery("<span />", { html: text }).text();
 }
 
 /**

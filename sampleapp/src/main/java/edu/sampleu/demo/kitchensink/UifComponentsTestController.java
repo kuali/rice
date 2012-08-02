@@ -185,7 +185,12 @@ public class UifComponentsTestController extends UifControllerBase {
         else if(form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageUnmatched")){
             GlobalVariables.getMessageMap().putError("badKey", "unmatchedTest");
         }
-        
+
+        if(form.getPostedView().getId().equals("RichMessagesView")){
+            GlobalVariables.getMessageMap().putError("Demo-BasicMessagesSection", "richValidationMessageTest");
+            GlobalVariables.getMessageMap().putError("field5", "richValidationMessageTest2");
+        }
+
         Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
         for(String key: propertyEditors.keySet()){
             GlobalVariables.getMessageMap().putError(key, "error1Test");

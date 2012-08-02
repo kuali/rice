@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -108,9 +109,16 @@ public class ValidationMessages extends ContentElementBase {
             parentContainerId = ((Component) parentContainer).getId();
         }
 
+        //special message component case
+        if(parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer).isGenerateSpan()){
+            parentContainerId = ((Component) parentContainer).getId();
+        }
+
         //Add identifying data attributes
         this.addDataAttribute("messagesFor", parent.getId());
-        parent.addDataAttribute("parent", parentContainerId);
+        if(parent.getDataAttributes().get("parent") == null){
+            parent.addDataAttribute("parent", parentContainerId);
+        }
 
         //Handle the special FieldGroup case - adds the FieldGroup itself to ids handled by this group (this must
         //be a group if its parent is FieldGroup)
@@ -172,7 +180,7 @@ public class ValidationMessages extends ContentElementBase {
 
                 for (ErrorMessage e : errorList) {
                     String message = KRADUtils.getMessage(configService, e, true);
-
+                    message = MessageStructureUtils.translateStringMessage(message);
                     result.add(message);
                 }
             }

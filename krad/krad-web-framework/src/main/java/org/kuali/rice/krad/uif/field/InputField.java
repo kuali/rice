@@ -158,26 +158,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         if (StringUtils.isNotBlank(constraintText) && StringUtils.isBlank(constraintMessage.getMessageText())) {
             constraintMessage.setMessageText(constraintText);
         }
-    }
-
-    /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>Set the ids for the various attribute components</li>
-     * <li>Sets up the client side validation for constraints on this field. In
-     * addition, it sets up the messages applied to this field</li>
-     * </ul>
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
-     */
-    @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
-
-        setupIds();
-        this.addDataAttribute("role", "InputField");
 
         // invoke options finder if options not configured on the control
         List<KeyValue> fieldOptions = new ArrayList<KeyValue>();
@@ -228,6 +208,26 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
                 }
             }
         }
+    }
+
+    /**
+     * The following actions are performed:
+     *
+     * <ul>
+     * <li>Set the ids for the various attribute components</li>
+     * <li>Sets up the client side validation for constraints on this field. In
+     * addition, it sets up the messages applied to this field</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        setupIds();
+        this.addDataAttribute("role", "InputField");
 
         // if read only or the control is null no input can be given so no need to setup validation
         if (isReadOnly() || getControl() == null) {

@@ -28,8 +28,10 @@
         <bean parent="Uif-Page">
           <property name="items">
             <list>
-              <ref bean="BasicMessagesSection"/>
-              <ref bean="AdvancedMessagesSection"/>
+              <ref bean="Demo-BasicMessagesSection"/>
+              <ref bean="Demo-AdvancedMessagesSection"/>
+              <ref bean="Demo-RadioCheckboxMessageSection"/>
+              <ref bean="Demo-RichMessageLinks"/>
             </list>
           </property>
         </bean>
@@ -47,7 +49,7 @@
     </property>
   </bean>
 
-  <bean id="BasicMessagesSection" p:headerText="Basic Functionality" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-BasicMessagesSection" p:headerText="Basic Functionality" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-Message">
@@ -72,7 +74,7 @@
     </property>
   </bean>
 
-  <bean id="AdvancedMessagesSection" p:headerText="Advanced Functionality" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-AdvancedMessagesSection" p:headerText="Advanced Functionality" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-Message">
@@ -145,13 +147,90 @@
           <property name="inlineComponents">
             <list>
               <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
-                                p:altText="Image"/>
+                    p:altText="Image"/>
             </list>
           </property>
         </bean>
         <bean parent="Uif-Message">
           <property name="messageText"
                     value="Testing rich message special character(\[\]) escape [color=green]\[[b]content[/b]\][/green]"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-RadioCheckboxMessageSection" p:headerText="Radio and Checkbox groups rich messages"
+        p:instructionalText="Testing [css='fl-text-underline']checkbox and radio groups[/css] below"
+        parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field24" p:label="Favorite Color" p:width="auto">
+          <property name="control">
+            <bean parent="Uif-VerticalRadioControl">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyLabelPair" p:key="1" p:value="[color=blue]Blue[/color]"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="2" p:value="[color=red]Red[/color]"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="3" p:value="[color=gold]Yellow[/color]"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Other: [id=Demo-SampleMessageInput4]"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field115" p:label="You heard about us from?"
+              p:width="auto">
+          <property name="control">
+            <bean parent="Uif-VerticalCheckboxesControl">
+              <property name="inlineValueLabelComponents">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="field19"/>
+                  <bean parent="Uif-InputField" p:propertyName="field20"/>
+                </list>
+              </property>
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyLabelPair" p:key="1" p:value="A website: [0]"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="2" p:value="A magazine: [1]"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Other: [id=Demo-SampleMessageInput2]"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-RichMessageLinks" p:headerText="Link Declarations"
+        p:instructionalText="Testing [css='fl-text-underline'][/css] below"
+        parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Testing link tag [link='http://www.kuali.org']Link[/link]"/>
+        </bean>
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Testing methodToCall action [action=addErrors]addErrors[/action]"/>
+        </bean>
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Testing methodToCall action (no client validation check)
+                    [action=addErrors,false]addErrors[/action]"/>
+        </bean>
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Testing passing data [action=addErrors,false data={extraInfo: 'You passed data'}]addErrors[/action]"/>
+        </bean>
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Testing non-ajax submit [action=addErrors,false,false]addErrors[/action]"/>
+        </bean>
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Testing custom success callback [action=addErrors,false,true,function(){alert('Successful Callback')}]addErrors[/action]"/>
         </bean>
       </list>
     </property>
@@ -179,6 +258,10 @@
     </property>
   </bean>
 
-  <bean id="Demo-RichMessagesImage" parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
-                                  p:altText="Image"/>
+  <bean id="Demo-SampleMessageInput4" parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field22">
+  </bean>
+
+  <bean id="Demo-RichMessagesImage" parent="Uif-Image"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+        p:altText="Image"/>
 </beans>

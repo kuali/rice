@@ -20,16 +20,6 @@
 
 <@krad.html view=view>
 
-    <#if !KualiForm.renderedInLightBox>
-        <@krad.script value="
-                 jQuery(function(){
-                   publishHeight();
-                   window.onresize = publishHeight;
-                   window.setInterval(publishHeight, 249);
-                 });
-             "/>
-    </#if>
-
     <@krad.script value="${KualiForm.growlScript!}"/>
 
     <div id="Uif-Application" style="display:none;" class="uif-application">

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 var bodyHeight;
 var profilingOn = false;
 
@@ -34,6 +35,10 @@ function escapeName(name) {
     return name;
 }
 
+/**
+ * Can be used when the view is within a iframe to publish its height to the surrounding window (for
+ * resizing the iframe if necessary)
+ */
 function publishHeight() {
     var parentUrl = "";
     if (navigator.cookieEnabled) {
@@ -364,6 +369,16 @@ function writeHiddenToForm(propertyName, propertyValue) {
     } else {
         jQuery("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo(jQuery("#formComplete"));
     }
+}
+
+/**
+ * In some cases when an action is invoked, data that should be passed with
+ * the request is written to the form as hiddens using the #writeHiddenToForm method. If
+ * there are errors in the script that prevent the action from completing, this method can
+ * be called to clear the hiddens
+ */
+function clearHiddens() {
+    jQuery("#formComplete").html("");
 }
 
 /**
@@ -1199,6 +1214,31 @@ function coerceTableCellValue(td) {
 }
 
 /**
+ * Makes a get request to the server so that the form with the specified formKey will
+ * be cleared server side
+ */
+function clearServerSideForm(formKey) {
+    var queryData = {};
+
+    queryData.methodToCall = 'clearForm';
+    queryData.skipViewInit = 'true';
+    queryData.formKey = formKey;
+
+    var postUrl = getConfigParam("kradUrl") + "/listener";
+
+    jQuery.ajax({
+        url:postUrl,
+        dataType:"json",
+        data:queryData,
+        async:false,
+        beforeSend:null,
+        complete:null,
+        error:null,
+        success:null
+    });
+}
+
+/**
  * Just a dummy function that can be set as the action script for an Action component to prevent it
  * from doing anything
  */
@@ -1214,5 +1254,3 @@ function voidAction() {
 function nonEmpty(jqObject) {
   return jqObject && jqObject.length;
 }
-
-

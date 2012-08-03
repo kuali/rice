@@ -651,7 +651,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             //  Add the close script if lookup is in a light box
             if (!returnTarget.equals("_self")) {
-
                 // Add the return script if the returnByScript flag is set
                 if (lookupView.isReturnByScript()) {
                     Properties props = getReturnUrlParameters(lookupView, lookupForm, dataObject);
@@ -669,7 +668,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 } else {
                     // Close the light box if return target is not _self or _parent
                     returnLinkField.getLink().setOnClickScript(
-                            "e.preventDefault();closeLightbox();createLoading(true);window.open(jQuery(this).attr('href'), jQuery(this).attr('target'));");
+                            "e.preventDefault();closeLightbox();showLoading();" +
+                            "window.open(jQuery(this).attr('href'), jQuery(this).attr('target'));");
                 }
             }
         } else {

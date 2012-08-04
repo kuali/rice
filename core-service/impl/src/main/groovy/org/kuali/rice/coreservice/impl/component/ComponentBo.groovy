@@ -30,6 +30,8 @@ import org.kuali.rice.coreservice.api.component.Component
 import org.kuali.rice.coreservice.framework.component.ComponentEbo
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.coreservice.api.namespace.NamespaceService
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator
 
 @IdClass(ComponentId.class)
 @Entity
@@ -37,6 +39,8 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 public class ComponentBo extends PersistableBusinessObjectBase implements ComponentEbo {
 
     private static final long serialVersionUID = 1L;
+
+    private static transient NamespaceService namespaceService
 
 	@Id
 	@Column(name="NMSPC_CD")
@@ -93,7 +97,12 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 		bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId
 
+        bo.namespace = NamespaceBo.from(namespaceService.getNamespace(bo.namespaceCode))
         return bo;
+    }
+
+    public static void setNamespaceService(NamespaceService namespaceService) {
+        this.namespaceService = namespaceService
     }
 }
 

@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.config.ControllerConfig;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
@@ -57,6 +58,11 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     private static final Logger LOG = Logger.getLogger(PojoFormBase.class);
     
     private static final String PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID = "editablePropertiesGuid";
+
+    /**
+     * Used only in the case that no other parameters have been defined for the max file upload size.
+     */
+    private static final String DEFAULT_MAX_FILE_UPLOAD_SIZE = "250M";
 
 	// removed member variables: cachedActionErrors, coder, errorInfo, fieldOrder, formConfig, HEADING_KEY, IGNORED_KEYS,
 	//     invalidValueKeys, logger, messageResourceKey, messageResources, padNonRequiredFields, valueBinder
@@ -458,8 +464,12 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	    customInitMaxUploadSizes();
     	    // if it's still empty, add the default
     	    if ( maxUploadFileSizes.isEmpty() ) {
-    	        addMaxUploadSize(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                        KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.MAX_UPLOAD_SIZE_PARM_NM));
+                String systemDefault = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.MAX_UPLOAD_SIZE_PARM_NM);
+                if (StringUtils.isBlank(systemDefault)) {
+                    LOG.error("System parameter " + KRADConstants.KNS_NAMESPACE + ":" + KRADConstants.DetailTypes.ALL_DETAIL_TYPE + ":" + KRADConstants.MAX_UPLOAD_SIZE_PARM_NM + " not defined, using hardcoded default max file upload size");
+                    systemDefault = DEFAULT_MAX_FILE_UPLOAD_SIZE;
+                }
+                addMaxUploadSize(systemDefault);
     	    }
     	}	
     }

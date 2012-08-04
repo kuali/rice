@@ -109,5 +109,11 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time-jsptags</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

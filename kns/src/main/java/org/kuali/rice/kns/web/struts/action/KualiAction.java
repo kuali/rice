@@ -194,13 +194,13 @@ public abstract class KualiAction extends DispatchAction {
         KualiForm kualiForm = (KualiForm) form;
         String tabToToggle = getTabToToggle(request);
         if (StringUtils.isNotBlank(tabToToggle)) {
-            if (kualiForm.getTabState(tabToToggle).equals("OPEN")) {
+            if (kualiForm.getTabState(tabToToggle).equals(KualiForm.TabState.OPEN.name())) {
             	kualiForm.getTabStates().remove(tabToToggle);
-            	kualiForm.getTabStates().put(tabToToggle, "CLOSE");
+            	kualiForm.getTabStates().put(tabToToggle, KualiForm.TabState.CLOSE.name());
             }
             else {
             	kualiForm.getTabStates().remove(tabToToggle);
-            	kualiForm.getTabStates().put(tabToToggle, "OPEN");
+            	kualiForm.getTabStates().put(tabToToggle, KualiForm.TabState.OPEN.name());
             }
         }
 

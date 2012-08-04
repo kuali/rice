@@ -172,5 +172,8 @@
       </list>
     </property>
   </bean>
-  
+
+  <bean id="componentBo" class="org.kuali.rice.coreservice.impl.component.ComponentBo">
+    <property name="namespaceService" ref="namespaceService" />
+  </bean>
 </beans>

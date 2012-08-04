@@ -26,6 +26,7 @@ import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.struts.action.ActionServlet;
 import org.apache.struts.action.PlugIn;
 import org.apache.struts.config.ModuleConfig;
+import org.kuali.rice.kns.web.struts.config.KualiControllerConfig;
 
 import javax.servlet.ServletException;
 import java.util.logging.Logger;
@@ -57,6 +58,9 @@ public class PojoPlugin implements PlugIn {
 
     public void init(ActionServlet servlet, ModuleConfig config) throws ServletException {
         initBeanUtils();
+        // override the Struts ControllerConfig with our own wrapper that knows how to
+        // dynamically find max file upload size according to Rice run-time settings
+        config.setControllerConfig(new KualiControllerConfig(config.getControllerConfig()));
     }
 
     public void destroy() {

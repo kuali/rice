@@ -49,8 +49,8 @@
             <html:textarea property="superUserAnnotation" rows="5" cols="100" styleId="superUserAnnotation" />
         </div>
         <div>
-            <html-el:image property="methodToCall.takeSuperUserActions" src="../kew/images/buttonsmall_takeselected.gif" style="border-style:none;" align="absmiddle" />
-            <html-el:image property="methodToCall.superUserDisapprove" src="../kew/images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />
+            <html-el:image property="methodToCall.takeSuperUserActions" src="${ConfigProperties.kew.url}/images/buttonsmall_takeselected.gif" style="border-style:none;" align="absmiddle" />
+            <html-el:image property="methodToCall.superUserDisapprove" src="${ConfigProperties.kew.url}/images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />
         </div>
 	</div>
 </kul:tab>

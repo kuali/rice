@@ -20,6 +20,8 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -54,6 +56,9 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.RouteToCompletionUtil;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Contains all of the business rules that are common to all documents
  *
@@ -69,6 +74,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static ConfigurationService kualiConfigurationService;
     private static GroupService groupService;
     private static PermissionService permissionService;
+    private static DocumentTypeService documentTypeService;
     private static DataDictionaryService dataDictionaryService;
 
     // just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
@@ -403,7 +409,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     public boolean processAddAdHocRouteWorkgroup(Document document, AdHocRouteWorkgroup adHocRouteWorkgroup) {
         boolean isValid = true;
 
-        isValid &= isAddHocRouteWorkgroupValid(adHocRouteWorkgroup);
+        isValid &= isAddHocRouteWorkgroupValid(document, adHocRouteWorkgroup);
 
         isValid &= processCustomAddAdHocRouteWorkgroupBusinessRules(document, adHocRouteWorkgroup);
         return isValid;
@@ -415,7 +421,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      * @param workgroup
      * @return boolean True if valid, false otherwise.
      */
-    public boolean isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup workgroup) {
+    public boolean isAddHocRouteWorkgroupValid(Document document, AdHocRouteWorkgroup workgroup) {
         MessageMap errorMap = GlobalVariables.getMessageMap();
 
         // new recipients are not embedded in the error path; existing lines should be
@@ -432,6 +438,24 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
                 if (group == null || !group.isActive()) {
                     GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
                             RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+	            } else {
+                    if (getPermissionService().isPermissionDefinedByTemplate(group.getNamespaceCode(),
+                            KewApiConstants.AD_HOC_REVIEW_PERMISSION, new HashMap<String, String>())) {
+                        List<String> principalIds = getGroupService().getMemberPrincipalIds(group.getId());
+                        // if any member of the group is not allowed to receive the request, then the group may not receive it
+                        for (String principalId : principalIds) {
+                            if (!getPermissionService().isAuthorizedByTemplate(principalId,
+                                    KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION,
+                                    new HashMap<String, String>(), new HashMap<String, String>())) {
+                                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                                        RiceKeyConstants.ERROR_UNAUTHORIZED_ADHOC_WORKGROUP_ID);
+                                break;
+                            }
+                        }
+                    } else {
+                        GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                                RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+                    }
                 }
             } catch (Exception e) {
                 LOG.error("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup)", e);

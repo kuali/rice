@@ -1880,6 +1880,25 @@ public final class FieldUtils {
         return Formatter.getFormatter(dataType.getType());
     }
 
+    /**
+     * Finds a container field's sub tab name
+     *
+     * @param field the field for which to derive the collection sub tab name
+     * @return the sub tab name
+     */
+    public static String generateCollectionSubTabName(Field field) {
+        final String containerName = field.getContainerElementName();
+        final String cleanedContainerName =
+                (containerName == null) ?
+                        "" :
+                        containerName.replaceAll("\\d+", "");
+        StringBuilder subTabName = new StringBuilder(cleanedContainerName);
+        for (Field containerField : field.getContainerDisplayFields()) {
+            subTabName.append(containerField.getPropertyValue());
+        }
+        return subTabName.toString();
+    }
+
     private static Map<String, String> toMap(String s) {
         if (StringUtils.isBlank(s)) {
             return Collections.emptyMap();

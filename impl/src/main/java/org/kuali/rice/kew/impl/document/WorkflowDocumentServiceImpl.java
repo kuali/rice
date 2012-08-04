@@ -277,6 +277,11 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
     @Override
+    public List<ActionTaken> _getActionsTaken(String documentId) {
+        return getActionsTaken(documentId);
+    }
+
+    @Override
     public List<ActionTaken> getAllActionsTaken(String documentId){
         if(StringUtils.isEmpty(documentId)){
             throw new RiceIllegalArgumentException("documentId is null or empty.");

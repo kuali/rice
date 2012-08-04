@@ -119,7 +119,7 @@ function getContext(){
         return top.jQuery;
     }
     else {
-        return jq;
+        return jQuery.noConflict();
     }
 }
 
@@ -1248,9 +1248,9 @@ function refreshDatatableCellRedraw(field) {
 function coerceTableCellValue(td) {
     //TODO : if not editable!! can not use input, also use coerceValue()
     var inputField = jQuery(td).find(':input');
-    var int =  inputField.val();
-    if (!isNaN(parseFloat(int)) && isFinite(int)) {
-        return int;
+    var inputFieldValue =  inputField.val();
+    if (!isNaN(parseFloat(inputFieldValue)) && isFinite(inputFieldValue)) {
+        return inputFieldValue;
     }else{
         return 0;
     }

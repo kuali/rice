@@ -68,7 +68,7 @@ public class IdentityResponsibilityBlanketAppIT extends UpgradedSeleniumITBase {
         assertTrue(selenium.isElementPresent(docId));
         // KULRICE-7748 : IdentityResponsibilityBlanketAppIT fails expected:<[ENROUTE]> but was:<[FINAL]>
         if(selenium.isElementPresent(docId)){            
-            assertEquals("ENROUTE", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+            assertEquals("KULRICE-7748 : IdentityResponsibilityBlanketAppIT fails expected:<[ENROUTE]> but was:<[FINAL]>", "ENROUTE", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }else{
             assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));
             assertEquals("ENROUTE", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));

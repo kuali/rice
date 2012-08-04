@@ -46,7 +46,7 @@ public class IdentityPersonBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
-        selenium.type("//input[@id='document.principalName']", "Principal");
+        selenium.type("//input[@id='document.principalName']", "principal");
         selenium.select("newAffln.affiliationTypeCode", "label=Affiliate");
         selenium.select("newAffln.campusCode", "label=BX - BLGTN OFF CAMPUS");
         selenium.select("newAffln.campusCode", "label=BL - BLOOMINGTON");

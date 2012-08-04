@@ -20,6 +20,7 @@ import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -32,7 +33,7 @@ import static org.junit.Assert.fail;
 public class ParentLineIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return "/kr-krad/uicomponents?methodToCall=start&readOnlyFields=field91&viewId=UifCompView_KNS#UifCompView-Page7";
     }
 
     @Test
@@ -40,22 +41,16 @@ public class ParentLineIT extends UpgradedSeleniumITBase {
      * tests that the size of a sub collection is correctly displayed using the parentLine el variable
      */
     public void testSubCollectionSize() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=Uif Components (Kitchen Sink)");
-        selenium.waitForPageToLoad("30000");
-//        selenium.selectFrame("iframeportlet");
-        // click on collections page link
-        selenium.click("id=u961");
-        // Thread.sleep(30000);
-        // wait for collections page to load by checking the presence of a sub collection line item
+//        // click on collections page link
+        selenium.click("link=Collections");
+//        // wait for collections page to load by checking the presence of a sub collection line item
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u1089_line0_line0_control")) break; } catch (Exception e) {}
+            try { if (selenium.isElementPresent("link=SubCollection - (3 lines)")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
         // verify that sub collection sizes are displayed as expected
-        assertEquals("SubCollection - (3 lines)", selenium.getText("id=u1030_line0"));
-        assertEquals("SubCollection - (2 lines)", selenium.getText("id=u1030_line1"));
+        assertEquals("SubCollection - (3 lines)", selenium.getText("link=SubCollection - (3 lines)"));
+        assertEquals("SubCollection - (2 lines)", selenium.getText("link=SubCollection - (2 lines)"));
     }
 }

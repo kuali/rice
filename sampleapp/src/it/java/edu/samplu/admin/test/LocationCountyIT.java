@@ -27,4 +27,11 @@ public class LocationCountyIT extends AdminMenuITBase {
     public String getLinkLocator() {
         return "link=County";
     }
+
+    /**
+     * Noop, there are no results from search for County
+     * @throws Exception
+     */
+    @Override
+    public void testEditCancel() throws Exception {}
 }

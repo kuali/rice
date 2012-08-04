@@ -36,7 +36,6 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
     protected String shortLabel;
     protected String displayLabelAttribute;
 
-    protected String messageKey;
     protected String constraintText;
     protected String summary;
     protected String description;
@@ -48,13 +47,20 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         simpleConstraint = new SimpleConstraint();
     }
 
+    /**
+     * Name of the attribute
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
-    /*
-      * name = name of attribute
-      */
+    /**
+     * Name of the attribute
+     *
+     * @param name
+     */
     public void setName(String name) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("invalid (blank) name");
@@ -62,6 +68,13 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         this.name = name;
     }
 
+    /**
+     * The label element is the field or collection name that will be shown on
+     * inquiry and maintenance screens. This will be overridden by presence of
+     * displayLabelAttribute element.
+     *
+     * @return the label
+     */
     public String getLabel() {
         return label;
     }
@@ -128,6 +141,12 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         this.constraintText = constraintText;
     }
 
+    /**
+     * The summary element is used to provide a short description of the
+     * attribute or collection. This is designed to be used for help purposes.
+     *
+     * @return the summary
+     */
     public String getSummary() {
         return summary;
     }
@@ -140,6 +159,12 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         this.summary = summary;
     }
 
+    /**
+     * The description element is used to provide a long description of the
+     * attribute or collection. This is designed to be used for help purposes.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }

@@ -642,4 +642,22 @@ public final class KRADConstants {
         public static final String TITLE_RETURN_URL_PREPENDTEXT_PROPERTY = "title.return.url.value.prependtext";
         public static final String TITLE_ACTION_URL_PREPENDTEXT_PROPERTY = "title.action.url.value.prependtext";
     }
+
+    public static final class MessageParsing {
+        public static final String LEFT_TOKEN = "[";
+        public static final String RIGHT_TOKEN = "]";
+        public static final String RIGHT_TOKEN_PREFIX = "$@$";
+        public static final String RIGHT_TOKEN_PLACEHOLDER = RIGHT_TOKEN_PREFIX + RIGHT_TOKEN;
+        public static final String LEFT_BRACKET = "&#91;";
+        public static final String RIGHT_BRACKET = "&#93;";
+        public static final String INLINE_COMP_CLASS = "inlineBlock";
+        public static final String COMPONENT_BY_ID = "id";
+        public static final String COLOR = "color";
+        public static final String CSS_CLASSES = "css";
+        public static final String ACTION_LINK = "action";
+        public static final String ACTION_DATA = "data";
+        public static final String LINK = "link";
+        public static final String[] UNALLOWED_HTML = {"script", "link", "iframe",
+                "html", "head", "body", "object", "form", "frame", "frameset", "!DOCTYPE"};
+    }
 }

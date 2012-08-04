@@ -280,6 +280,7 @@
  *    or CSS styles or size
 -->
 <#macro formRadioButtons id path options separator attributes="">
+    <#-- Start Kuali enhancements and changes -->
     <span class="uif-tooltip" style="width:100%;height:0px;"></span>
     <#list options as option>
     <@bind path/>
@@ -290,6 +291,7 @@
     </span>
     ${separator}
     </#list>
+    <#-- End Kuali enhancements and changes -->
 </#macro>
 
 <#--
@@ -306,6 +308,7 @@
  *    or CSS styles or size
 -->
 <#macro formCheckboxes id path options separator attributes="">
+    <#-- Start Kuali enhancements and changes -->
     <span class="uif-tooltip" style="width:100%;height:0px;"></span>
     <#list options as option>
     <@bind path/>
@@ -318,6 +321,7 @@
     ${separator}
     </#list>
     <input type="hidden" name="_${status.expression}" value="on"/>
+    <#-- End Kuali enhancements and changes -->
 </#macro>
 
 <#--

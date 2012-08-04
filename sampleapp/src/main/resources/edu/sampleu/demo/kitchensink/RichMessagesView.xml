@@ -155,6 +155,12 @@
           <property name="messageText"
                     value="Testing rich message special character(\[\]) escape [color=green]\[[b]content[/b]\][/green]"/>
         </bean>
+
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Testing component by id setting propertyName to field12, required to false, label to 'Label Text'
+                    [id='Demo-SampleMessageInput3' propertyName=field12 required=false label='Label Text']"/>
+        </bean>
       </list>
     </property>
   </bean>

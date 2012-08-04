@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.List;
 
@@ -57,7 +58,8 @@ public class Message extends ContentElementBase {
 
         //if messageText contains the special characters [] then parse and fill in the messageComponentStructure
         //but if messageComponentStructure has already been set it overrides messageText by default
-        if (messageText != null && messageText.contains("[") && messageText.contains("]") &&
+        if (messageText != null && messageText.contains(KRADConstants.MessageParsing.LEFT_TOKEN) &&
+                messageText.contains(KRADConstants.MessageParsing.RIGHT_TOKEN) &&
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
                     this.getInlineComponents(), view, true);
@@ -86,11 +88,13 @@ public class Message extends ContentElementBase {
     @Override
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
+
         if (messageComponentStructure != null) {
             for (Component component : messageComponentStructure) {
                 components.add(component);
             }
         }
+
         return components;
     }
 
@@ -180,7 +184,8 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * Set the message component structure.  Normally this <b>SHOULD NOT BE SET</b> by the xml configuration.
+     * Set the message component structure.  This will override/ignore messageText when set. Normally
+     * this <b>SHOULD NOT BE SET</b> by the xml configuration.
      *
      * @param messageComponentStructure list of components which represent the message structure
      */

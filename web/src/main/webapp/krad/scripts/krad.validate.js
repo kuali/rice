@@ -470,6 +470,12 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
     }
 }
 
+/**
+ * Write the messages out for the group that are present its data
+ *
+ * @param id id of the group
+ * @param data validationData for the group
+ */
 function writeMessagesForGroup(id, data){
     var parent = jQuery("#" + id).data("parent");
 
@@ -585,20 +591,42 @@ function writeMessagesForGroup(id, data){
     }
 }
 
+/**
+ * Write messages out for the page if any exist
+ */
 function writeMessagesForPage(){
     var page = jQuery("[data-type='Page']");
     var pageId = page.attr("id");
     var data = page.data(kradVariables.VALIDATION_MESSAGES);
+
+    var messageMap = data.messageMap;
+    if (!messageMap) {
+        messageMap = {};
+        data.messageMap = messageMap;
+    }
+
     writeMessagesForGroup(pageId, data);
     writeMessagesForChildGroups(pageId);
     jQuery(".uif-errorMessageItem > div").show();
 }
 
+/**
+ * Write messages out for each of the child groups of the parent with parentId
+ *
+ * @param parentId - id of parent
+ */
 function writeMessagesForChildGroups(parentId){
     jQuery("[data-parent='"+ parentId +"']").each(function(){
         var currentGroup = jQuery(this);
         var id = currentGroup.attr("id");
         var data = currentGroup.data(kradVariables.VALIDATION_MESSAGES);
+
+        var messageMap = data.messageMap;
+        if (!messageMap) {
+            messageMap = {};
+            data.messageMap = messageMap;
+        }
+
         if(!(currentGroup.is("[data-role='InputField']"))){
             writeMessagesForGroup(id, data);
             writeMessagesForChildGroups(id);

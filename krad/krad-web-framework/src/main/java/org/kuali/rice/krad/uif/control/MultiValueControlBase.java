@@ -139,7 +139,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
     /**
      * Gets the richOptions which contain Message objects with the translated rich message structures, which then can
-     * be used by templates to output the appropriate content
+     * be used by templates to output the appropriate content.
      *
      * @return richOptions which include a message object with the translated value content
      */
@@ -148,7 +148,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
-     * Sets the richOptions.
+     * Sets the richOptions.  This will always override/ignore options if set.
      *
      * <p><b>Messages MUST be defined</b> when using this setter, do not use this setter for most cases
      * as setting options through setOptions, with a richMessage value, is appropriate in MOST cases.  This

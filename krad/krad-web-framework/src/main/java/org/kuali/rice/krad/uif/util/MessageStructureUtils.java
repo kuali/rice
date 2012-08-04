@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,23 +36,23 @@ public class MessageStructureUtils {
      * reference components will not be allowed/translated - only tags which can translate to string content will
      * be included for this translation.
      *
-     * @see MessageStructureUtils#parseMessage
      * @param messageText messageText with only String translateable tags included (no id or component index tags)
      * @return html translation of rich messageText passed in
+     * @see MessageStructureUtils#parseMessage
      */
-    public static String translateStringMessage(String messageText){
-        if(!StringUtils.isEmpty(messageText)){
+    public static String translateStringMessage(String messageText) {
+        if (!StringUtils.isEmpty(messageText)) {
             List<Component> components = MessageStructureUtils.parseMessage(null, messageText, null, null, false);
-            if(!components.isEmpty()){
+            if (!components.isEmpty()) {
                 Component message = components.get(0);
-                if(message instanceof Message){
+                if (message instanceof Message) {
                     messageText = ((Message) message).getMessageText();
                 }
             }
         }
         return messageText;
-    } 
-    
+    }
+
     /**
      * Parses the message text passed in and returns the resulting rich message component structure.
      *
@@ -77,11 +80,14 @@ public class MessageStructureUtils {
      */
     public static List<Component> parseMessage(String messageId, String messageText, List<Component> componentList,
             View view, boolean parseComponents) {
-
-        messageText = messageText.replace("\\[", "&#91;");
-        messageText = messageText.replace("\\]", "&#93;");
-        messageText = messageText.replace("]", "$@$]");
-        String[] messagePieces = messageText.split("[\\[|\\]]");
+        messageText = messageText.replace("\\" + KRADConstants.MessageParsing.LEFT_TOKEN,
+                KRADConstants.MessageParsing.LEFT_BRACKET);
+        messageText = messageText.replace("\\" + KRADConstants.MessageParsing.RIGHT_TOKEN,
+                KRADConstants.MessageParsing.RIGHT_BRACKET);
+        messageText = messageText.replace(KRADConstants.MessageParsing.RIGHT_TOKEN,
+                KRADConstants.MessageParsing.RIGHT_TOKEN_PLACEHOLDER);
+        String[] messagePieces = messageText.split("[\\" + KRADConstants.MessageParsing.LEFT_TOKEN +
+                "|\\" + KRADConstants.MessageParsing.RIGHT_TOKEN + "]");
 
         List<Component> messageComponentStructure = new ArrayList<Component>();
 
@@ -91,35 +97,51 @@ public class MessageStructureUtils {
 
         for (String s : messagePieces) {
 
-            if (s.endsWith("$@$")) {
-                s = StringUtils.removeEnd(s, "$@$");
+            if (s.endsWith(KRADConstants.MessageParsing.RIGHT_TOKEN_PREFIX)) {
+                s = StringUtils.removeEnd(s, KRADConstants.MessageParsing.RIGHT_TOKEN_PREFIX);
 
-                if (s.startsWith("id=") && parseComponents) {
+                if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.COMPONENT_BY_ID + "=")
+                        && parseComponents) {
+                    //splits around spaces not included in single quotes
+                    String[] parts = s.trim().trim().split("([ ]+(?=([^']*'[^']*')*[^']*$))");
+                    s = parts[0];
+
                     //if there is a currentMessageComponent add it to the structure and reset it to null
                     //because component content is now interrupting the string content
                     if (currentMessageComponent != null) {
                         messageComponentStructure.add(currentMessageComponent);
                         currentMessageComponent = null;
                     }
+
                     //match component by id from the view
                     s = StringUtils.remove(s, "'");
                     s = StringUtils.remove(s, "\"");
-                    Component component = ComponentFactory.getNewComponentInstance(StringUtils.removeStart(s, "id="));
+                    Component component = ComponentFactory.getNewComponentInstance(StringUtils.removeStart(s,
+                            KRADConstants.MessageParsing.COMPONENT_BY_ID + "="));
 
                     if (component != null) {
                         view.assignComponentIds(component);
-                        component.addStyleClass("inlineBlock");
+                        component.addStyleClass(KRADConstants.MessageParsing.INLINE_COMP_CLASS);
+                        if (parts.length > 1) {
+                            component = processAdditionalProperties(component, parts);
+                        }
                         messageComponentStructure.add(component);
                     }
                 } else if (s.matches("^[0-9]+$") && parseComponents) {
+                    //splits around spaces not included in single quotes
+                    String[] parts = s.trim().trim().split("([ ]+(?=([^']*'[^']*')*[^']*$))");
+                    s = parts[0];
+
                     //if there is a currentMessageComponent add it to the structure and reset it to null
                     //because component content is now interrupting the string content
                     if (currentMessageComponent != null) {
                         messageComponentStructure.add(currentMessageComponent);
                         currentMessageComponent = null;
                     }
+
                     //match component by index from the componentList passed in
                     int cIndex = Integer.parseInt(s);
+
                     if (componentList != null && cIndex < componentList.size() && !componentList.isEmpty()) {
                         Component component = componentList.get(cIndex);
 
@@ -127,37 +149,51 @@ public class MessageStructureUtils {
                             if (component.getId() == null) {
                                 view.assignComponentIds(component);
                             }
-                            component.addStyleClass("inlineBlock");
+
+                            if (parts.length > 1) {
+                                component = processAdditionalProperties(component, parts);
+                            }
+
+                            component.addStyleClass(KRADConstants.MessageParsing.INLINE_COMP_CLASS);
                             messageComponentStructure.add(component);
                         }
                     } else {
                         throw new RuntimeException("Component with index " + cIndex +
                                 " does not exist in inlineComponents of the message component with id " + messageId);
                     }
-                } else if (s.startsWith("color=") || s.startsWith("/color")) {
-                    if (!s.startsWith("/")) {
+
+                } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.COLOR + "=") || StringUtils
+                        .startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.COLOR)) {
+                    if (!StringUtils.startsWithIgnoreCase(s, "/")) {
                         s = StringUtils.remove(s, "'");
                         s = StringUtils.remove(s, "\"");
-                        s = "<span style='color: " + StringUtils.removeStart(s, "color=") + ";'>";
+                        s = "<span style='color: " + StringUtils.removeStart(s,
+                                KRADConstants.MessageParsing.COLOR + "=") + ";'>";
                     } else {
                         s = "</span>";
                     }
+
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
 
-                } else if (s.startsWith("css=") || s.startsWith("/css")) {
-                    if (!s.startsWith("/")) {
+                } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.CSS_CLASSES + "=")
+                        || StringUtils.startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.CSS_CLASSES)) {
+                    if (!StringUtils.startsWithIgnoreCase(s, "/")) {
                         s = StringUtils.remove(s, "'");
                         s = StringUtils.remove(s, "\"");
-                        s = "<span class='" + StringUtils.removeStart(s, "css=") + "'>";
+                        s = "<span class='"
+                                + StringUtils.removeStart(s, KRADConstants.MessageParsing.CSS_CLASSES + "=")
+                                + "'>";
                     } else {
                         s = "</span>";
                     }
+
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
 
-                } else if (s.startsWith("link=") || s.startsWith("/link")) {
-                    if (!s.startsWith("/")) {
+                } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.LINK + "=") || StringUtils
+                        .startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.LINK)) {
+                    if (!StringUtils.startsWithIgnoreCase(s, "/")) {
                         //clean up href
-                        s = StringUtils.removeStart(s, "link=");
+                        s = StringUtils.removeStart(s, KRADConstants.MessageParsing.LINK + "=");
                         s = StringUtils.removeStart(s, "'");
                         s = StringUtils.removeEnd(s, "'");
                         s = StringUtils.removeStart(s, "\"");
@@ -167,11 +203,14 @@ public class MessageStructureUtils {
                     } else {
                         s = "</a>";
                     }
+
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-                } else if (s.startsWith("action=") || s.equals("/action")) {
-                    if (!s.startsWith("/")) {
-                        s = StringUtils.removeStart(s, "action=");
-                        String[] splitData = s.split("data=");
+
+                } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.ACTION_LINK + "=")
+                        || StringUtils.startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.ACTION_LINK)) {
+                    if (!StringUtils.startsWithIgnoreCase(s, "/")) {
+                        s = StringUtils.removeStart(s, KRADConstants.MessageParsing.ACTION_LINK + "=");
+                        String[] splitData = s.split(KRADConstants.MessageParsing.ACTION_DATA + "=");
 
                         String[] params = splitData[0].trim().split("([,]+(?=([^']*'[^']*')*[^']*$))");
                         String methodToCall = ((params.length >= 1) ? params[0] : "");
@@ -218,12 +257,19 @@ public class MessageStructureUtils {
                     //do nothing    
                 } else {
                     //raw html
+                    s = s.trim();
+                    if (StringUtils.startsWithAny(s, KRADConstants.MessageParsing.UNALLOWED_HTML) || StringUtils
+                            .endsWithAny(s, KRADConstants.MessageParsing.UNALLOWED_HTML)) {
+                        throw new RuntimeException("The following html is not allowed in Messages: " + Arrays.toString(
+                                KRADConstants.MessageParsing.UNALLOWED_HTML));
+                    }
                     s = "<" + s + ">";
+
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
 
                 }
             } else {
-                //raw html
+                //raw string
                 addBlanks(s);
                 currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
 
@@ -250,7 +296,7 @@ public class MessageStructureUtils {
     private static Message concatenateStringMessageContent(Message currentMessageComponent, String s, View view) {
         if (currentMessageComponent == null) {
             currentMessageComponent = ComponentFactory.getMessage();
-            if(view != null){
+            if (view != null) {
                 view.assignComponentIds(currentMessageComponent);
             }
             currentMessageComponent.setMessageText(s);
@@ -262,6 +308,26 @@ public class MessageStructureUtils {
         return currentMessageComponent;
     }
 
+    private static Component processAdditionalProperties(Component component, String[] tagParts) {
+        String componentString = tagParts[0];
+        tagParts = (String[]) ArrayUtils.remove(tagParts, 0);
+        for (String part : tagParts) {
+            String[] propertyValue = part.split("=");
+
+            if (propertyValue.length == 2) {
+                String path = propertyValue[0];
+                String value = propertyValue[1].trim();
+                value = StringUtils.removeStart(value, "'");
+                value = StringUtils.removeEnd(value, "'");
+                ObjectPropertyUtils.setPropertyValue(component, path, value);
+            } else {
+                throw new RuntimeException(
+                        "Invalid Message structure for component defined as " + componentString + " around " + part);
+            }
+        }
+        return component;
+    }
+
     /**
      * Inserts &amp;nbsp; into the string passed in, if spaces exist at the beginning and/or end,
      * so spacing is not lost in html translation.
@@ -270,9 +336,10 @@ public class MessageStructureUtils {
      * @return String with  &amp;nbsp; inserted, if applicable
      */
     public static String addBlanks(String s) {
-        if (s.startsWith(" ")) {
+        if (StringUtils.startsWithIgnoreCase(s, " ")) {
             s = "&nbsp;" + StringUtils.removeStart(s, " ");
         }
+
         if (s.endsWith(" ")) {
             s = StringUtils.removeEnd(s, " ") + "&nbsp;";
         }

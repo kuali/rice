@@ -78,6 +78,7 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifActionDefinitions.xml");
 		//dd.addConfigFileLocation("classpath:org/kuali/rice/krad/bo/datadictionary");
         dd.addConfigFileLocation("file:" + getUserDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");

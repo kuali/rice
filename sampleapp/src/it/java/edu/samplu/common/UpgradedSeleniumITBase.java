@@ -47,33 +47,13 @@ public abstract class UpgradedSeleniumITBase {
         if (!getTestUrl().startsWith("/")) {
             fail("getTestUrl does not start with /"); // TODO add it?
         }
-        selenium = new WebDriverBackedSelenium(driver, getBaseUrlString() + getTestUrl());
+        selenium = new WebDriverBackedSelenium(driver, ITUtil.getBaseUrlString() + getTestUrl());
 
         // Login
-        selenium.open(getBaseUrlString() + getTestUrl());
-        login(selenium);
+        selenium.open(ITUtil.getBaseUrlString() + getTestUrl());
+        ITUtil.login(selenium);
     }
 
-    public static String getBaseUrlString() {
-        String baseUrl = System.getProperty("remote.public.url");
-        if (baseUrl == null) {
-            baseUrl = "http://localhost:8080";
-        } else if (baseUrl.endsWith("/")) {
-            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-        } else if (!baseUrl.startsWith("http")) {
-            baseUrl = "http://" + baseUrl;
-        }
-        return baseUrl;
-    }
-
-    public static void login(Selenium selenium) {
-        if (System.getProperty("remote.autologin") == null) {
-            Assert.assertEquals("Login", selenium.getTitle());
-            selenium.type("__login_user", "admin");
-            selenium.click("//input[@value='Login']");
-            selenium.waitForPageToLoad("30000");
-        }
-    }
 
     /**
      * Useful to set -Dremote.driver.dontTearDown=f  -Dremote.driver.dontTearDown=n to not shutdown the browser when
@@ -82,11 +62,13 @@ public abstract class UpgradedSeleniumITBase {
      */
     @After
     public void tearDown() throws Exception {
-        if (System.getProperty("remote.driver.dontTearDown") == null ||
-                "f".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase()) ||
-                "n".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase())) {
+        if (ITUtil.dontTearDownPropertyNotSet()) {
             selenium.stop();
             driver.quit(); // TODO not tested with chrome, the service stop might need this check too
         }
+    }
+    
+    protected String getBaseUrlString() {
+        return ITUtil.getBaseUrlString();
     }
 }

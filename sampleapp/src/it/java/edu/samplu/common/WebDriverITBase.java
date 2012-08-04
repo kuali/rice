@@ -81,7 +81,7 @@ public abstract class WebDriverITBase {
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         // Login
-        driver.get(getBaseUrlString() + getTestUrl());
+        driver.get(ITUtil.getBaseUrlString() + getTestUrl());
         driver.findElement(By.name("__login_user")).clear();
         driver.findElement(By.name("__login_user")).sendKeys("admin");
         driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
@@ -94,9 +94,7 @@ public abstract class WebDriverITBase {
      */
     @After
     public void tearDown() throws Exception {
-        if (System.getProperty("remote.driver.dontTearDown") == null ||
-                !"f".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase()) ||
-                !"n".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase())) {
+        if (ITUtil.dontTearDownPropertyNotSet()) {
             driver.quit(); // TODO not tested with chrome, the service stop might need this check too
         }
     }
@@ -163,18 +161,6 @@ public abstract class WebDriverITBase {
         driver.switchTo().window(windowName).findElements(By.tagName("head"));
         assertEquals(url, driver.getCurrentUrl());
         driver.switchTo().window(parentWindowHandle);
-    }
-
-    public static String getBaseUrlString() {
-        String baseUrl = System.getProperty("remote.public.url");
-        if (baseUrl == null) {
-            baseUrl = "http://localhost:8080";
-        } else if (baseUrl.endsWith("/")) {
-            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-        } else if (!baseUrl.startsWith("http")) {
-            baseUrl = "http://" + baseUrl;
-        }
-        return baseUrl;
     }
 
     public WebDriver getWebDriver() {

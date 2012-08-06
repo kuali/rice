@@ -18,6 +18,7 @@ package edu.samplu.mainmenu.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.thoughtworks.selenium.SeleniumException;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
@@ -50,7 +51,11 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         selenium.setSpeed("3000");
         // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
-        selenium.click("methodToCall.processAnswer.button0");
+        try {
+            selenium.click("methodToCall.processAnswer.button0");            
+        } catch (SeleniumException se) {
+            assertTrue("KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.", false);
+        }
         selenium.waitForPageToLoad("30000");
     }
 

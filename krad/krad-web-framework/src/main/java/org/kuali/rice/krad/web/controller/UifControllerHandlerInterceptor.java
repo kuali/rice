@@ -94,7 +94,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
 
-        if (uifForm == null) {
+        if ((uifForm == null) || (uifForm.getView() == null && uifForm.getPostedView() == null)) {
             return;
         }
 

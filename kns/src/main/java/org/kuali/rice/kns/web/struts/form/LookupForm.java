@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.kns.lookup.LookupUtils;
@@ -25,7 +25,6 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -35,6 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * This class is the action form for all lookups.
@@ -73,6 +73,7 @@ public class LookupForm extends KualiForm {
     private boolean ddExtraButton = false;
 	private boolean headerBarEnabled = true;
 	private boolean disableSearchButtons = false;
+    private String isAdvancedSearch;
     
     /**
      * @see KualiForm#addRequiredNonEditableProperties()
@@ -183,8 +184,11 @@ public class LookupForm extends KualiForm {
                 throw new RuntimeException("Lookup impl not found for lookup impl name " + getLookupableImplServiceName());
             }
 
-			// set parameters on lookupable
-            localLookupable.setParameters(requestParameters);
+			// set parameters on lookupable, add Advanced Search parameter
+            Map<String, String[]> parameters = new TreeMap<String, String[]>();
+            parameters.putAll(requestParameters);
+            parameters.put(KRADConstants.ADVANCED_SEARCH_FIELD, new String[]{isAdvancedSearch});
+            localLookupable.setParameters(parameters);
             requestParameters = null;
             
             if (getParameter(request, KRADConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME) != null) {
@@ -723,6 +727,14 @@ public class LookupForm extends KualiForm {
 		this.disableSearchButtons = disableSearchButtons;
 	}
 	
+    public String getIsAdvancedSearch() {
+        return this.isAdvancedSearch;
+    }
+
+    public void setIsAdvancedSearch(String advancedSearch) {
+        this.isAdvancedSearch = advancedSearch;
+    }
+
 	/**
 	 * Determines whether the search/clear buttons should be rendering based on the form property
 	 * and what is configured in the data dictionary for the lookup

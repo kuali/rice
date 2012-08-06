@@ -150,7 +150,11 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
             } else if (inputControls[i].equalsIgnoreCase("dropDown")) {
                 tag = "select";
             }
-            verifyStaticDataAttributes(tag, inputControls[i] + testIdSuffix + UifConstants.IdSuffixes.CONTROL);
+            try {
+                verifyStaticDataAttributes(tag, inputControls[i] + testIdSuffix + UifConstants.IdSuffixes.CONTROL);
+            } catch (AssertionError ae) {
+                assertTrue("KULRICE-7752 : UifDataAttributesIT testDataAttributesPresentInControls textInputField_attrs_control: complex data attributes script not found", false);
+            }
         }
         // these controls allow for simple attributes on the tag and complex attributes via js
         Map<String, String[]> otherControlsMap = new HashMap<String, String[]>();

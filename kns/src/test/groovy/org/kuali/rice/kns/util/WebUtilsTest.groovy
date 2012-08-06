@@ -36,6 +36,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService
 import org.kuali.rice.kim.api.identity.PersonService
 import org.kuali.rice.kim.impl.identity.TestPerson
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm
+import org.kuali.rice.kew.api.KewApiConstants
 
 /**
  * Unit tests WebUtils
@@ -144,5 +145,26 @@ class WebUtilsTest {
         maxAttachmentSize = "200M"
         assertEquals(200 * 1024 * 1024, WebUtils.getMaxUploadSize(new KualiMaintenanceForm()))
 
+    }
+
+    @Test
+    void testHandleNullValues() {
+        def sections = [ new Section([ new Row([
+            null, // null field
+            new Field(fieldDataType:  null, containerName:  "containerName"), // null type
+            new Field(), // null containerName
+            generateContainerField("containerField", "containerField", "containerField") // legit
+        ])]) ]
+
+        assertEquals("containerName", sections[0].rows[0].fields[1].containerName)
+        assertEquals(null, sections[0].rows[0].fields[1].fieldDataType)
+
+        assertEquals(null, sections[0].rows[0].fields[2].containerName)
+        assertEquals("string", sections[0].rows[0].fields[2].fieldDataType)
+
+        def tabstates = [:]
+
+        WebUtils.reopenInactiveRecords(sections, tabstates, "containerField")
+        assertEquals([containerFieldelementcontainedvalueonecontainedvaluetwocontainedvaluethree:"OPEN"], tabstates)
     }
 }

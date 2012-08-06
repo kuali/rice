@@ -379,9 +379,11 @@ public class WebUtils {
         for (Section section : sections) {
             for (Row row: section.getRows()) {
                 for (Field field : row.getFields()) {
-                    if (field.getFieldType().equals(Field.CONTAINER) && field.getContainerName().startsWith(collectionName)) {
-                        final String tabKey = WebUtils.generateTabKey(FieldUtils.generateCollectionSubTabName(field));
-                        tabStates.put(tabKey, KualiForm.TabState.OPEN.name());
+                    if (field != null) {
+                        if (Field.CONTAINER.equals(field.getFieldType()) && StringUtils.startsWith(field.getContainerName(), collectionName)) {
+                            final String tabKey = WebUtils.generateTabKey(FieldUtils.generateCollectionSubTabName(field));
+                            tabStates.put(tabKey, KualiForm.TabState.OPEN.name());
+                        }
                     }
                 }
             }

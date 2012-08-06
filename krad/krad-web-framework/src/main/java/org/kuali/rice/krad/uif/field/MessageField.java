@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
+
+import java.util.List;
 
 /**
  * Field wrapper for a Message
@@ -34,6 +37,18 @@ public class MessageField extends FieldBase {
 
     public MessageField() {
         super();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+
+        components.add(message);
+
+        return components;
     }
 
     /**

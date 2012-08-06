@@ -184,6 +184,23 @@
     </property>
   </bean>
 
+  <bean id="Uif-StackedCollectionLayout-List" parent="Uif-StackedCollectionLayout-WithBoxItems">
+    <property name="template" value="/krad/WEB-INF/ftl/layout/stackedList.ftl"/>
+    <property name="templateName" value="uif_stackedList"/>
+    <property name="lineGroupPrototype">
+      <bean parent="Uif-VerticalBoxSection">
+        <property name="header">
+          <bean parent="Uif-HeaderFour"/>
+        </property>
+        <property name="disclosure.renderImage" value="false"/>
+        <property name="disclosure.defaultOpen" value="true"/>
+      </bean>
+    </property>
+    <property name="subCollectionFieldGroupPrototype">
+      <bean parent="Uif-VerticalFieldGroup" p:fieldLabel.render="false"/>
+    </property>
+  </bean>
+
   <!-- Stacked collection item prototypes -->
 
   <bean id="Uif-CollectionGridItem" parent="Uif-CollectionGridItem-parentBean"/>

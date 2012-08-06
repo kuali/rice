@@ -736,7 +736,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     @Override
     public void performClear(LookupForm lookupForm) {
-        DocumentSearchCriteria criteria = loadCriteria(lookupForm.getFields());
+        //KULRICE-7709 Convert dateCreated value to range before loadCriteria
+        Map<String, String> formFields = LookupUtils.preProcessRangeFields(lookupForm.getFields());
+        DocumentSearchCriteria criteria = loadCriteria(formFields);
         super.performClear(lookupForm);
         repopulateSearchTypeFlags();
         DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());

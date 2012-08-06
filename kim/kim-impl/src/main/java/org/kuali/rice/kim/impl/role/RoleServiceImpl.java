@@ -1630,11 +1630,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         //check delegateMember not empty
         incomingParamCheck(delegateMember, "delegateMember");
 
-        //check key is null
-        if(delegateMember.getDelegationMemberId()!=null )   {
-            throw new RiceIllegalStateException("the delegate member already exists: " + delegateMember.getDelegationMemberId());
-        }
-
         //check delegate exists
         String delegationId =  delegateMember.getDelegationId();
         incomingParamCheck(delegationId,"delegationId");

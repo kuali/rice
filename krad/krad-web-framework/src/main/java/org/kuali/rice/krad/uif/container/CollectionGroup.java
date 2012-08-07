@@ -211,25 +211,13 @@ public class CollectionGroup extends Group implements DataBinding {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
 
+        for (CollectionGroup collectionGroup : getSubCollections()) {
+            collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
+        }
+
         // add collection entry to abstract classes
         if (!view.getObjectPathToConcreteClassMapping().containsKey(collectionPath)) {
             view.getObjectPathToConcreteClassMapping().put(collectionPath, getCollectionObjectClass());
-        }
-
-        // initialize container items and sub-collections (since they are not in
-        // child list)
-        for (Component item : getItems()) {
-            view.getViewHelperService().performComponentInitialization(view, model, item);
-        }
-
-        // initialize addLineFields
-        for (Component item : addLineItems) {
-            view.getViewHelperService().performComponentInitialization(view, model, item);
-        }
-
-        for (CollectionGroup collectionGroup : getSubCollections()) {
-            collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
-            view.getViewHelperService().performComponentInitialization(view, model, collectionGroup);
         }
 
         if (renderAddBlankLineButton && (addBlankLineAction != null)) {

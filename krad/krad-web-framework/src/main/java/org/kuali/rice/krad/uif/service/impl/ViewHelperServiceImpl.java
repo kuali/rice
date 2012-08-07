@@ -368,6 +368,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // invoke component to initialize itself after properties have been set
         component.performInitialization(view, model);
 
+        // move expressions on property replacers and component modifiers
+        for (PropertyReplacer replacer : component.getPropertyReplacers()) {
+            ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, false);
+        }
+
+        for (ComponentModifier modifier : component.getComponentModifiers()) {
+            ExpressionUtils.populatePropertyExpressionsFromGraph(modifier, false);
+        }
+
         // for attribute fields, set defaults from dictionary entry
         if (component instanceof DataField) {
             initializeDataFieldFromDataDictionary(view, (DataField) component);
@@ -402,12 +411,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             performComponentInitialization(view, model, nestedComponent);
         }
 
-        // populate replacer expressions and initialize nested components in property replacements
-        for (PropertyReplacer replacer : component.getPropertyReplacers()) {
-            ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, false);
-            for (Component replacerComponent : replacer.getNestedComponents()) {
-                performComponentInitialization(view, model, replacerComponent);
-            }
+        // initialize component prototypes
+        for (Component nestedComponent : component.getComponentPrototypes()) {
+            performComponentInitialization(view, model, nestedComponent);
         }
     }
 
@@ -679,6 +685,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // set context on component for evaluating expressions
         component.pushAllToContext(getCommonContext(view, component));
+
+        for (PropertyReplacer replacer : component.getPropertyReplacers()) {
+            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, replacer, model,
+                    component.getContext());
+        }
+
+        for (ComponentModifier modifier : component.getComponentModifiers()) {
+            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, modifier, model,
+                    component.getContext());
+        }
 
         getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, component, model,
                 component.getContext());

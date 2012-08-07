@@ -113,9 +113,6 @@ public class LookupView extends FormView {
 
         super.performInitialization(view, model);
 
-        view.getViewHelperService().performComponentInitialization(view, model, getResultsActionsFieldGroup());
-        view.getViewHelperService().performComponentInitialization(view, model, getResultsReturnField());
-
         // if this is a multi-value lookup, don't show return column
         if (multipleValuesSelect) {
             hideReturnLinks = true;

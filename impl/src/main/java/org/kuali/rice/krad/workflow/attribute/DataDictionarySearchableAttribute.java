@@ -232,12 +232,21 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
         }
 
+        retrieveValidationErrorsFromGlobalVariables(validationErrors);
+
+        return validationErrors;
+    }
+
+    /**
+     * Retrieves validation errors from GlobalVariables MessageMap and appends to the given list of RemotableAttributeError
+     * @param validationErrors list to append validation errors
+     */
+    protected void retrieveValidationErrorsFromGlobalVariables(List<RemotableAttributeError> validationErrors) {
         // can we use KualiConfigurationService?  It seemed to be used elsewhere...
         ConfigurationService configurationService = KRADServiceLocator.getKualiConfigurationService();
 
         if(GlobalVariables.getMessageMap().hasErrors()){
-        	validationErrors = new ArrayList<RemotableAttributeError>();
-        	MessageMap deepCopy = (MessageMap)ObjectUtils.deepCopy(GlobalVariables.getMessageMap());
+            MessageMap deepCopy = (MessageMap)ObjectUtils.deepCopy(GlobalVariables.getMessageMap());
             for (String errorKey : deepCopy.getErrorMessages().keySet()) {
                 List<ErrorMessage> errorMessages = deepCopy.getErrorMessages().get(errorKey);
                 if (CollectionUtils.isNotEmpty(errorMessages)) {
@@ -251,11 +260,9 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
                     validationErrors.add(remotableAttributeError);
                 }
             }
-        	// we should now strip the error messages from the map because they have moved to validationErrors
-        	GlobalVariables.getMessageMap().clearErrorMessages();
+            // we should now strip the error messages from the map because they have moved to validationErrors
+            GlobalVariables.getMessageMap().clearErrorMessages();
         }
-
-        return validationErrors;
     }
 
     protected List<Row> createFieldRowsForWorkflowAttributes(WorkflowAttributes attrs) {

@@ -95,9 +95,6 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     }
 
     public void save(String principalId, String optionId, String optionValue) {
-        //KULRICE-7796 Don't save where val is greater than field length
-        if(optionValue.length() <= 2000)
-        {
             UserOptions option = findByOptionId(optionId, principalId);
             if (option == null) {
                 option = new UserOptions();
@@ -106,7 +103,6 @@ public class UserOptionsServiceImpl implements UserOptionsService {
             option.setOptionId(optionId);
             option.setOptionVal(optionValue);
             getUserOptionsDAO().save(option);
-        }
     }
 
     public UserOptionsDAO getUserOptionsDAO() {

@@ -253,28 +253,10 @@ webXml << newWebXmlText
 pom = new File(PROJECT_PATH + '/pom.xml')
 pom << pomtext()
 
-// copy tomcat 6 launcher file to project and rename
-
-//ant.copy(file:RICE_DIR + "/config/templates/createproject.tomcat.launcher.template.xml",
-//		tofile:PROJECT_PATH + "${PROJECT_NAME}-RiceJTASpringBeans.xml")
-
-/*
-if(SAMPLEAPP){
-def	launcher = new File(PROJECT_PATH + '/Tomcat 6[sampleapp].launch')
-}else if (STANDALONE) {
-def	launcher = new File(PROJECT_PATH + '/Tomcat 6[standalone].launch')
-} else {
-def	launcher = new File(PROJECT_PATH + '/Tomcat 6.launch')
-}
-
-launcher << launchtext()
-*/
-
 // create the Launch script
 
-// TODO this doesn't seem to exist right now...
-//launch = new File(PROJECT_PATH + '/Launch Web App.launch')
-//launch << launchtext()
+launch = new File(PROJECT_PATH + '/Launch Web App.launch')
+launch << launchtext()
 
 // create the configuration file in the user's home directory
 
@@ -321,34 +303,6 @@ index << indextext
 // ingest.delete()
 // ingest = new File(PROJECT_PATH + "/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml")
 // ingest << ingesttext
-
-if (maven) {
-	// execute the maven command to build eclipse classpath
-	println ("\nExecuting Maven...\n")
-	if (maven("eclipse:eclipse", new File(PROJECT_PATH)) != 0) {
-		println "\nFailed to execute Maven!  See console output above for details."
-		System.exit(1)
-	}
-
-	println("\nAdjusting Classpath Entries...")
-	def facetXml = new File(PROJECT_PATH + '/.classpath')
-	def facets = new XmlParser().parse(facetXml)
-
-	facets.classpathentry.each {
-		// con here is part of the classpath entry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER found in the .classpath file
-		// at this time, it uniquely ids the classpath entry for the jre
-		if (it.'@kind' == 'con') {
-			def tempNode = it
-			facets.remove(it)
-			println('\nMoving ' + it.'@path' + 'to the top of the classpath...')
-			facets.children().add(0, tempNode)
-		}
-	}
-	println("\nBacking up the .classpath file... \n")
-	new File(PROJECT_PATH, '/.classpath.bkp').delete()
-	facetXml.renameTo(new File(PROJECT_PATH, '/.classpath.bkp'))
-	new XmlNodePrinter(new PrintWriter(new FileWriter(PROJECT_PATH + '/.classpath'))).print(facets)
-}
 
 new File(PROJECT_PATH + '/instructions.txt') << instructionstext()
 
@@ -432,8 +386,7 @@ def pomtext() {
 }
 
 def launchtext() {
-	// TODO this doesn't seem to exist
-	//return templateReplace(new File(RICE_DIR + '/config/templates/createproject.tomcat.launcher.template.xml'))
+	return templateReplace(new File(RICE_DIR + '/config/templates/createproject.launch.template.xml'))
 }
 
 def userhomeconfigtext() {
@@ -461,10 +414,11 @@ def instructionstext() {
 	Instructions to complete Rice Template Install
 ==================================================================
 
- 1. Client Installation Guide : http://site.kuali.org/rice/2.0.0/reference/html/IG.html#client_application
- 2. Building the Rice Database : http://site.kuali.org/rice/2.0.0/reference/html/IG.html#d7148e746
+ 1. Client Installation Guide : http://site.kuali.org/rice/${riceVersion}/reference/html/IG.html#client_application
+ 2. Building the Rice Database : http://site.kuali.org/rice/${riceVersion}/reference/html/IG.html#d7148e746
 
-
+    These instructions can also be found in the instructions.txt
+    file in your generated project.
 ==================================================================
 """ 
 }

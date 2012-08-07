@@ -15,6 +15,8 @@
  */
 package edu.samplu.mainmenu.test;
 
+import java.util.Calendar;
+
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 import org.junit.Assert;
@@ -36,91 +38,26 @@ public class CreateNewAgendaIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         selenium.selectFrame("iframeportlet");
         selenium.select("name=document.newMaintainableObject.dataObject.namespace", "label=Kuali Rules Test");
-        selenium.type("name=document.newMaintainableObject.dataObject.agenda.name", "Agenda Name 1");
-        selenium.click("id=u244");
-        Thread.sleep(2000);
-        selenium.selectFrame("relative=up");
-        for (int second = 0;; second++) {
-            if (second >= 60)
-                Assert.fail("timeout");
-            try {
-                if (selenium.isElementPresent("id=fancybox-frame"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        selenium.selectFrame("fancybox-frame");
-        for (int second = 0;; second++) {
-            if (second >= 60)
-                Assert.fail("timeout");
-            try {
-                if (selenium.isElementPresent("id=u80"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        selenium.click("id=u80");
+        String agendaName = "Agenda Date :"+ Calendar.getInstance().getTime().toString();
+        selenium.type("name=document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
+        selenium.type("name=document.newMaintainableObject.dataObject.contextName", "Context1");
+        selenium.fireEvent("name=document.newMaintainableObject.dataObject.contextName", "blur");
+        selenium.fireEvent("name=document.newMaintainableObject.dataObject.contextName", "focus");
+        Thread.sleep(3000);
+        selenium.select("name=document.newMaintainableObject.dataObject.agenda.typeId", "label=Campus Agenda");
         selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        Thread.sleep(2000);
-        selenium.waitForPopUp("iframeportlet", "30000");
-        for (int second = 0;; second++) {
-            if (second >= 60)
-                Assert.fail("timeout");
-            try {
-                if (selenium.isElementPresent("id=u260_attribute"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        selenium.select("id=u260_attribute", "label=Campus Agenda");
-        Thread.sleep(2000);
-        selenium.click("id=u588");
-        selenium.selectFrame("relative=up");
-        for (int second = 0;; second++) {
-            if (second >= 60)
-                Assert.fail("timeout");
-            try {
-                if (selenium.isElementPresent("id=fancybox-frame"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        selenium.selectFrame("id=fancybox-frame");
-        for (int second = 0;; second++) {
-            if (second >= 60)
-                Assert.fail("timeout");
-            try {
-                if (selenium.isElementPresent("id=u80"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        selenium.click("id=u80");
+        Thread.sleep(3000);
+        selenium.type("name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
+        selenium.click("//div[2]/button");
         selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        Thread.sleep(2000);
-        selenium.waitForPopUp("iframeportlet", "30000");
-        for (int second = 0;; second++) {
-            if (second >= 60)
-                Assert.fail("timeout");
-            try {
-                if (selenium.isElementPresent("id=u135"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        selenium.click("id=u135");
-        selenium.click("id=u156");
+        //selenium.selectFrame("relative=up");
+        //selenium.click("css=div.jGrowl-close");
+        //selenium.selectFrame("iframeportlet");
+        selenium.click("//div[2]/button[3]");
         selenium.waitForPageToLoad("30000");
         selenium.selectWindow("null");
         selenium.click("xpath=(//input[@name='imageField'])[2]");
         selenium.waitForPageToLoad("30000");
+        
     }
 }

@@ -348,4 +348,12 @@ public interface DocumentSearchCriteriaContract {
      * @return the list of application document statuses to match
      */
     List<String> getApplicationDocumentStatuses();
+
+    /**
+     * Returns the principalId of the user performing the search
+     *
+     * @since 2.1.2
+     * @return
+     */
+    String getDocSearchUserId();
 }

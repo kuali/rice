@@ -704,14 +704,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : allRoleIds) {
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
             if (roleTypeService != null) {
-                try {
-                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                        copyRoleIds.remove(roleId);
-                        rms.addAll(getStoredRoleMembersForRoleIds(Collections.singletonList(roleId), null, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
-                    }
-                } catch (Exception e) {
-                    LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
+                List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                    copyRoleIds.remove(roleId);
+                    rms.addAll(getStoredRoleMembersForRoleIds(Collections.singletonList(roleId), null, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
                 }
             }
         }
@@ -1025,10 +1021,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             for (String roleId : allRoleIds) {
                 RoleTypeService roleTypeService = getRoleTypeService(roleId);
                 if (roleTypeService != null) {
-                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                        copyRoleIds.remove(roleId);
-                        rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(roleId), principalId, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                    try {
+                        List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+                        if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                            copyRoleIds.remove(roleId);
+                            rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(roleId), principalId, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                        }
+                    } catch (Exception e) {
+                        LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
                     }
                 }
             }

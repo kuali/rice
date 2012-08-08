@@ -726,11 +726,27 @@ public class LookupForm extends KualiForm {
 	public void setDisableSearchButtons(boolean disableSearchButtons) {
 		this.disableSearchButtons = disableSearchButtons;
 	}
-	
+
+    /**
+     * Retrieves the String value for the isAdvancedSearch property.
+     *
+     * <p>
+     * The isAdvancedSearch property is also used as a http request parameter. The property name must
+     * match <code>KRADConstants.ADVANCED_SEARCH_FIELD</code> for the button setup and javascript toggling of the value
+     * to work.
+     * </p>
+     *
+     * @return String "YES" if advanced search set, "NO" or null for basic search.
+     */
     public String getIsAdvancedSearch() {
         return this.isAdvancedSearch;
     }
 
+    /**
+     * Sets the isAdvancedSearch String value.
+     *
+     * @param advancedSearch - "YES" for advanced search, "NO" for basic search
+     */
     public void setIsAdvancedSearch(String advancedSearch) {
         this.isAdvancedSearch = advancedSearch;
     }

@@ -108,7 +108,7 @@ public class MessageStructureUtils {
 
                     //if there is a currentMessageComponent add it to the structure and reset it to null
                     //because component content is now interrupting the string content
-                    if (currentMessageComponent != null) {
+                    if (currentMessageComponent != null && StringUtils.isNotEmpty(currentMessageComponent.getMessageText())) {
                         messageComponentStructure.add(currentMessageComponent);
                         currentMessageComponent = null;
                     }
@@ -127,14 +127,14 @@ public class MessageStructureUtils {
                         }
                         messageComponentStructure.add(component);
                     }
-                } else if (s.matches("^[0-9]+$") && parseComponents) {
+                } else if (s.matches("^[0-9]+( .+=.+)*$") && parseComponents) {
                     //splits around spaces not included in single quotes
                     String[] parts = s.trim().trim().split("([ ]+(?=([^']*'[^']*')*[^']*$))");
                     s = parts[0];
 
                     //if there is a currentMessageComponent add it to the structure and reset it to null
                     //because component content is now interrupting the string content
-                    if (currentMessageComponent != null) {
+                    if (currentMessageComponent != null && StringUtils.isNotEmpty(currentMessageComponent.getMessageText())) {
                         messageComponentStructure.add(currentMessageComponent);
                         currentMessageComponent = null;
                     }
@@ -226,7 +226,7 @@ public class MessageStructureUtils {
                         methodToCall = StringUtils.remove(methodToCall, "'");
                         methodToCall = StringUtils.remove(methodToCall, "\"");
                         if (ajaxSubmit.equals("true")) {
-                            s = "<a onclick=\"ajaxSubmitFormFullOpts("
+                            s = "<a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts("
                                     + "'"
                                     + methodToCall
                                     + "',"
@@ -234,19 +234,19 @@ public class MessageStructureUtils {
                                     + ","
                                     + submitData
                                     + ","
-                                    + "null, null,"
+                                    + "null,null,"
                                     + validate
                                     + ","
-                                    + "null, null); return false;\">";
+                                    + "null,null); return false;\">";
                         } else {
-                            s = "<a href=\" javascript:void(null)\" "
+                            s = "<a href=\"javascript:void(null)\" "
                                     + "onclick=\"submitFormFullOpts('"
                                     + methodToCall
                                     + "',"
                                     + submitData
                                     + ","
                                     + validate
-                                    + ", null); return false;\">";
+                                    + ",null); return false;\">";
                         }
                     } else {
                         s = "</a>";
@@ -276,7 +276,7 @@ public class MessageStructureUtils {
             }
         }
 
-        if (currentMessageComponent != null) {
+        if (currentMessageComponent != null && StringUtils.isNotEmpty(currentMessageComponent.getMessageText())) {
             messageComponentStructure.add(currentMessageComponent);
             currentMessageComponent = null;
         }

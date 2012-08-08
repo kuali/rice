@@ -161,6 +161,11 @@
                     value="Testing component by id setting propertyName to field12, required to false, label to 'Label Text'
                     [id='Demo-SampleMessageInput3' propertyName=field12 required=false label='Label Text']"/>
         </bean>
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Testing component with progressive render condition
+                    [id='Demo-SampleMessageInput3' propertyName=field13 refreshWhenChangedPropertyNames=field24]"/>
+        </bean>
       </list>
     </property>
   </bean>

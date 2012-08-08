@@ -16,6 +16,7 @@
 
 package edu.samplu.travel.krad.test;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
@@ -47,19 +48,19 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 		// 'Other Fields' navigation link
 //        assertCancelConfirmation(); // failing in selenium, but present when testing manually
 
-        waitForElement("name=field100");
+        ITUtil.waitForElement(selenium, "name=field100");
         focusAndType("name=field100", "here");
         focusAndType("name=field103", "there");
 		// 'Validation' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
 
-        waitForElement("name=field106");
+        ITUtil.waitForElement(selenium, "name=field106");
         focusAndType("name=field106", "this");
         focusAndType("name=uppercase", "that");
         assertEquals("THAT", selenium.getValue("name=uppercase"));
 		// 'Validation - Regex' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
-        waitForElement("name=field101");
+        ITUtil.waitForElement(selenium, "name=field101");
         assertEquals("val", selenium.getValue("name=field101")); // form is preset to val
         focusAndType("name=field101", "1");
         selenium.focus("name=field104");
@@ -78,13 +79,5 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
     private void focusAndType(String fieldLocator, String typeText) {
         selenium.focus(fieldLocator);
         selenium.type(fieldLocator, typeText);
-    }
-
-    private void waitForElement(String elementLocator) throws InterruptedException {
-        for (int second = 0;; second++) {
-            if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
     }
 }

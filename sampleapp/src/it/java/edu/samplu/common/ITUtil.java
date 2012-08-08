@@ -1,7 +1,8 @@
 package edu.samplu.common;
 
 import com.thoughtworks.selenium.Selenium;
-import junit.framework.Assert;
+
+import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 
 /**
  * Common selenium test methods that should be reused rather than recreated for each test.
@@ -33,7 +34,9 @@ public class ITUtil {
      */
     public static void login(Selenium selenium) {
         if (System.getProperty("remote.autologin") == null) {
-            Assert.assertEquals("Login", selenium.getTitle());
+            if (!"Login".equals(selenium.getTitle())) {
+                fail("Title is not Login as expected, but " + selenium.getTitle());
+            }
             selenium.type("__login_user", "admin");
             selenium.click("//input[@value='Login']");
             selenium.waitForPageToLoad("30000");
@@ -51,4 +54,17 @@ public class ITUtil {
                 "f".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase()) ||
                 "n".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase());
     }
-}
+
+    /**
+     * Wait 60 seconds for the elementLocator to be present or fail
+     * @param selenium
+     * @param elementLocator
+     * @throws InterruptedException
+     */
+    public static void waitForElement(Selenium selenium, String elementLocator) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= 60) fail("timeout");
+            try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+    }}

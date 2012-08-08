@@ -17,9 +17,9 @@ package edu.samplu.mainmenu.test;
 
 import java.util.Calendar;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-import org.junit.Assert;
 
 /**
  * tests whether the "Create New Agenda" is working ok 
@@ -43,10 +43,9 @@ public class CreateNewAgendaIT extends UpgradedSeleniumITBase {
         selenium.type("name=document.newMaintainableObject.dataObject.contextName", "Context1");
         selenium.fireEvent("name=document.newMaintainableObject.dataObject.contextName", "blur");
         selenium.fireEvent("name=document.newMaintainableObject.dataObject.contextName", "focus");
-        Thread.sleep(3000);
+        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.agenda.typeId");
         selenium.select("name=document.newMaintainableObject.dataObject.agenda.typeId", "label=Campus Agenda");
-        selenium.waitForPageToLoad("30000");
-        Thread.sleep(3000);
+        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         selenium.type("name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
         selenium.click("//div[2]/button");
         selenium.waitForPageToLoad("30000");
@@ -57,7 +56,5 @@ public class CreateNewAgendaIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         selenium.selectWindow("null");
         selenium.click("xpath=(//input[@name='imageField'])[2]");
-        selenium.waitForPageToLoad("30000");
-        
     }
 }

@@ -61,8 +61,10 @@ public class Message extends ContentElementBase {
         if (messageText != null && messageText.contains(KRADConstants.MessageParsing.LEFT_TOKEN) &&
                 messageText.contains(KRADConstants.MessageParsing.RIGHT_TOKEN) &&
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
+
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
                     this.getInlineComponents(), view, true);
+
             if (messageComponentStructure != null) {
                 for (Component component : messageComponentStructure) {
                     view.getViewHelperService().performComponentInitialization(view, model, component);

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
@@ -25,7 +26,6 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -33,7 +33,6 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.springframework.util.AutoPopulatingList;
 
 import java.beans.PropertyEditor;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -104,19 +103,22 @@ public class ValidationMessages extends ContentElementBase {
 
         String parentContainerId = "";
         Object parentContainer = parent.getContext().get("parent");
+
         if (parentContainer != null && (parentContainer instanceof Container
                 || parentContainer instanceof FieldGroup)) {
             parentContainerId = ((Component) parentContainer).getId();
         }
 
         //special message component case
-        if(parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer).isGenerateSpan()){
+        if (parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer)
+                .isGenerateSpan()) {
             parentContainerId = ((Component) parentContainer).getId();
         }
 
         //Add identifying data attributes
         this.addDataAttribute("messagesFor", parent.getId());
-        if(parent.getDataAttributes().get("parent") == null){
+
+        if (parent.getDataAttributes().get("parent") == null) {
             parent.addDataAttribute("parent", parentContainerId);
         }
 

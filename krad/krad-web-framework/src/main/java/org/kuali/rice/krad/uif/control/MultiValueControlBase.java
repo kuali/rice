@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
@@ -43,7 +42,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     public MultiValueControlBase() {
         super();
     }
-    
+
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
@@ -52,9 +51,10 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
 
-        if(options != null && richOptions == null){
+        if (options != null && richOptions == null) {
             richOptions = new ArrayList<KeyMessage>();
-            for(KeyValue option: options){
+
+            for (KeyValue option : options) {
                 Message message = ComponentFactory.getMessage();
                 view.assignComponentIds(message);
                 message.setMessageText(option.getValue());
@@ -73,14 +73,16 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
+
         //Messages included in options which have have rich message content need to be aware of their parent for
         //validation purposes
-        if(!richOptions.isEmpty()){
-            for(KeyMessage richOption: richOptions){
+        if (!richOptions.isEmpty()) {
+            for (KeyMessage richOption : richOptions) {
                 List<Component> components = richOption.getMessage().getMessageComponentStructure();
-                if(components != null && !components.isEmpty()){
-                    for(Component c: components){
-                        if(c instanceof Container || c instanceof InputField){
+
+                if (components != null && !components.isEmpty()) {
+                    for (Component c : components) {
+                        if (c instanceof Container || c instanceof InputField) {
                             c.addDataAttribute("parent", parent.getId());
                         }
                     }
@@ -95,8 +97,9 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     @Override
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
+
         if (richOptions != null) {
-            for(KeyMessage richOption: richOptions){
+            for (KeyMessage richOption : richOptions) {
                 components.add(richOption.getMessage());
             }
         }

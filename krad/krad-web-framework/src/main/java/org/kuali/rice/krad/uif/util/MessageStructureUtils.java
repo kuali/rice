@@ -43,13 +43,16 @@ public class MessageStructureUtils {
     public static String translateStringMessage(String messageText) {
         if (!StringUtils.isEmpty(messageText)) {
             List<Component> components = MessageStructureUtils.parseMessage(null, messageText, null, null, false);
+
             if (!components.isEmpty()) {
                 Component message = components.get(0);
+
                 if (message instanceof Message) {
                     messageText = ((Message) message).getMessageText();
                 }
             }
         }
+
         return messageText;
     }
 
@@ -96,7 +99,6 @@ public class MessageStructureUtils {
         Message currentMessageComponent = null;
 
         for (String s : messagePieces) {
-
             if (s.endsWith(KRADConstants.MessageParsing.RIGHT_TOKEN_PREFIX)) {
                 s = StringUtils.removeEnd(s, KRADConstants.MessageParsing.RIGHT_TOKEN_PREFIX);
 
@@ -122,6 +124,7 @@ public class MessageStructureUtils {
                     if (component != null) {
                         view.assignComponentIds(component);
                         component.addStyleClass(KRADConstants.MessageParsing.INLINE_COMP_CLASS);
+
                         if (parts.length > 1) {
                             component = processAdditionalProperties(component, parts);
                         }
@@ -161,7 +164,6 @@ public class MessageStructureUtils {
                         throw new RuntimeException("Component with index " + cIndex +
                                 " does not exist in inlineComponents of the message component with id " + messageId);
                     }
-
                 } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.COLOR + "=") || StringUtils
                         .startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.COLOR)) {
                     if (!StringUtils.startsWithIgnoreCase(s, "/")) {
@@ -174,7 +176,6 @@ public class MessageStructureUtils {
                     }
 
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-
                 } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.CSS_CLASSES + "=")
                         || StringUtils.startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.CSS_CLASSES)) {
                     if (!StringUtils.startsWithIgnoreCase(s, "/")) {
@@ -188,7 +189,6 @@ public class MessageStructureUtils {
                     }
 
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-
                 } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.LINK + "=") || StringUtils
                         .startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.LINK)) {
                     if (!StringUtils.startsWithIgnoreCase(s, "/")) {
@@ -205,7 +205,6 @@ public class MessageStructureUtils {
                     }
 
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-
                 } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.ACTION_LINK + "=")
                         || StringUtils.startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.ACTION_LINK)) {
                     if (!StringUtils.startsWithIgnoreCase(s, "/")) {
@@ -219,12 +218,14 @@ public class MessageStructureUtils {
                         String successCallback = ((params.length >= 4) ? params[3] : "null");
 
                         String submitData = "null";
+
                         if (splitData.length > 1) {
                             submitData = splitData[1].trim();
                         }
 
                         methodToCall = StringUtils.remove(methodToCall, "'");
                         methodToCall = StringUtils.remove(methodToCall, "\"");
+
                         if (ajaxSubmit.equals("true")) {
                             s = "<a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts("
                                     + "'"
@@ -251,28 +252,28 @@ public class MessageStructureUtils {
                     } else {
                         s = "</a>";
                     }
-                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
 
+                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
                 } else if (s.equals("")) {
                     //do nothing    
                 } else {
                     //raw html
                     s = s.trim();
+
                     if (StringUtils.startsWithAny(s, KRADConstants.MessageParsing.UNALLOWED_HTML) || StringUtils
                             .endsWithAny(s, KRADConstants.MessageParsing.UNALLOWED_HTML)) {
                         throw new RuntimeException("The following html is not allowed in Messages: " + Arrays.toString(
                                 KRADConstants.MessageParsing.UNALLOWED_HTML));
                     }
+
                     s = "<" + s + ">";
 
                     currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-
                 }
             } else {
                 //raw string
                 addBlanks(s);
                 currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-
             }
         }
 
@@ -296,9 +297,11 @@ public class MessageStructureUtils {
     private static Message concatenateStringMessageContent(Message currentMessageComponent, String s, View view) {
         if (currentMessageComponent == null) {
             currentMessageComponent = ComponentFactory.getMessage();
+
             if (view != null) {
                 view.assignComponentIds(currentMessageComponent);
             }
+
             currentMessageComponent.setMessageText(s);
             currentMessageComponent.setGenerateSpan(false);
         } else {
@@ -308,9 +311,20 @@ public class MessageStructureUtils {
         return currentMessageComponent;
     }
 
+    /**
+     * Process the additional properties beyond index 0 of the tag (that was split into parts).
+     *
+     * <p>This will evaluate and set each of properties on the component passed in.  This only allows
+     * setting of properties that can easily be converted to/from/are String type by Spring.</p>
+     *
+     * @param component component to have its properties set
+     * @param tagParts the tag split into parts, index 0 is ignored
+     * @return component with its properties set found in the tag's parts
+     */
     private static Component processAdditionalProperties(Component component, String[] tagParts) {
         String componentString = tagParts[0];
         tagParts = (String[]) ArrayUtils.remove(tagParts, 0);
+
         for (String part : tagParts) {
             String[] propertyValue = part.split("=");
 
@@ -325,6 +339,7 @@ public class MessageStructureUtils {
                         "Invalid Message structure for component defined as " + componentString + " around " + part);
             }
         }
+
         return component;
     }
 

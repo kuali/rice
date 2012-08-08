@@ -56,8 +56,8 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 
         ITUtil.waitForElement(selenium, "name=field106");
         focusAndType("name=field106", "this");
-        focusAndType("name=uppercase", "that");
-        assertEquals("THAT", selenium.getValue("name=uppercase"));
+        focusAndType("name=field112", "that");
+        assertEquals("THAT", selenium.getValue("name=field112"));
 		// 'Validation - Regex' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
         ITUtil.waitForElement(selenium, "name=field101");
@@ -68,6 +68,8 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 		selenium.type("name=field104", "2");
         // 'Progressive Disclosure' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
+        fail("selenium.chooseCancelOnNextConfirmation(); is not finding the Dialog see https://jira.kuali.org/browse/KULRICE-7850 "
+                + "selenium.chooseCancelOnNextConfirmation() isn't finding dialog");
 	}
 
     private void assertCancelConfirmation() {

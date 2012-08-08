@@ -1,6 +1,7 @@
 package edu.samplu.common;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Assert;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 
@@ -67,4 +68,40 @@ public class ITUtil {
             try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-    }}
+    }
+
+    /**
+     * Fails if a Incident Report is detected, extracting and reporting the View Id, Document Id, and StackTrace
+     * @param selenium
+     * @param linkLocator used only in the faillure message
+     */
+    public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
+        String contents = selenium.getHtmlSource();
+        if (contents.contains("Incident Report")) {
+            String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
+            String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
+            docId = docId.substring(0, docId.indexOf("</span>"));
+            docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
+
+            String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
+            viewId = viewId.substring(0, viewId.indexOf("</span>"));
+            viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
+
+            String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
+            stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
+            stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
+
+            //            System.out.println(docId);
+            //            System.out.println(viewId);
+            //            System.out.println(stackTrace);
+            Assert.fail("Incident report navigating to "
+                    + linkLocator
+                    + " : View Id: "
+                    + viewId.trim()
+                    + " Doc Id: "
+                    + docId.trim()
+                    + "\nStackTrace: "
+                    + stackTrace.trim());
+        }
+    }
+}

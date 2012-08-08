@@ -25,6 +25,10 @@ import static org.junit.Assert.assertTrue;
  */
 
 public abstract class AdminMenuITBase extends MenuITBase {
+
+    public static final String LABEL_KUALI_KUALI_SYSTEMS = "label=KUALI - Kuali Systems";
+    public static final String LABEL_KUALI_DEFAULT = "label=KUALI : Default";
+
     @Override
     protected String getCreateNewLinkLocator() {
         return "//img[@alt='create new']";
@@ -41,10 +45,8 @@ public abstract class AdminMenuITBase extends MenuITBase {
      */
     public void testCreateNewCancel() throws Exception {
         gotoCreateNew();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
+        ITUtil.waitAndClick(selenium, "methodToCall.cancel");
+        ITUtil.waitAndClick(selenium, "methodToCall.processAnswer.button0");
         selenium.waitForPageToLoad("30000");
     }
 
@@ -54,14 +56,10 @@ public abstract class AdminMenuITBase extends MenuITBase {
      */
     public void testEditCancel() throws Exception {
         gotoMenuLinkLocator();
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
+        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
+        ITUtil.waitAndClick(selenium, "link=edit");
+        ITUtil.waitAndClick(selenium, "methodToCall.cancel");
+        ITUtil.waitAndClick(selenium, "methodToCall.processAnswer.button0");
         selenium.waitForPageToLoad("30000");
     }
 }

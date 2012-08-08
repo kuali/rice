@@ -18,7 +18,8 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
 import org.junit.Test;
 
 /**
@@ -26,34 +27,25 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPermissionBlanketAppIT extends UpgradedSeleniumITBase{
+public class IdentityPermissionBlanketAppIT extends AdminMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Permission";
     }
 
     @Test
     public void testPermission() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Permission");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
+        gotoCreateNew();
         // selenium.setSpeed("2000");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Permission");
-        selenium.type("//input[@id='document.newMaintainableObject.templateId']", "10012");
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", IdentityResponsibilityBlanketAppIT.LABEL_KUALI_KUALI_SYSTEMS);
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Permission1");
+        selenium.type("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission");
+        selenium.type("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
+        selenium.select("//select[@name='document.newMaintainableObject.namespaceCode']", IdentityResponsibilityBlanketAppIT.LABEL_KUALI_KUALI_SYSTEMS);
+        selenium.select("//select[@name='document.newMaintainableObject.templateId']", IdentityResponsibilityBlanketAppIT.LABEL_KUALI_DEFAULT);
+        selenium.type("//input[@name='document.newMaintainableObject.name']","Validation Test Responsibility " + ITUtil.DTS);
         selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
+        ITUtil.waitAndClick(selenium, "//img[@alt='doc search']");
+//        selenium.selectWindow("null");
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");

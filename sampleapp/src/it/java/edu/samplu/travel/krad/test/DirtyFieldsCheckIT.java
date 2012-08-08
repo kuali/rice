@@ -17,7 +17,7 @@
 package edu.samplu.travel.krad.test;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -28,18 +28,15 @@ import static junit.framework.Assert.fail;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
+public class DirtyFieldsCheckIT extends KradMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Uif Components (Kitchen Sink)";
     }
 
-	@Test
+    @Test
 	public void testDirtyFieldsCheck() throws Exception {
-		selenium.click("link=KRAD");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=Uif Components (Kitchen Sink)");
-		selenium.waitForPageToLoad("50000");		
+		selenium.waitForPageToLoad("50000");
 //		selenium.selectFrame("iframeportlet");
         Thread.sleep(5000);
         selenium.selectWindow("title=Kuali :: Uif Components");		

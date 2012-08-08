@@ -3,6 +3,8 @@ package edu.samplu.common;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
 
+import java.util.Calendar;
+
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 
 /**
@@ -11,6 +13,9 @@ import static com.thoughtworks.selenium.SeleneseTestBase.fail;
  */
 
 public class ITUtil {
+
+    public static String DTS = Calendar.getInstance().getTime().getTime() + "";
+    public static String WAIT_TO_END_TEST = "5000";
 
     /**
      * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.
@@ -57,14 +62,48 @@ public class ITUtil {
     }
 
     /**
+     * Wait 60 seconds for the elementLocator to be present or fail.  Click if present
+     * @param selenium
+     * @param elementLocator
+     * @throws InterruptedException
+     */
+    public static void waitAndClick(Selenium selenium, String elementLocator) throws InterruptedException {
+        waitAndClick(selenium, elementLocator, 60);
+    }
+
+    /**
+     * Wait the given seconds for the elementLocator to be present or fail
+     * @param selenium
+     * @param elementLocator
+     * @param seconds
+     * @throws InterruptedException
+     */
+    public static void waitAndClick(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
+        waitForElement(selenium, elementLocator, 60);
+        selenium.click(elementLocator);
+    }
+
+
+    /**
      * Wait 60 seconds for the elementLocator to be present or fail
      * @param selenium
      * @param elementLocator
      * @throws InterruptedException
      */
     public static void waitForElement(Selenium selenium, String elementLocator) throws InterruptedException {
+        waitForElement(selenium, elementLocator, 60);
+    }
+
+    /**
+     * Wait the given seconds for the elementLocator to be present or fail
+     * @param selenium
+     * @param elementLocator
+     * @param seconds
+     * @throws InterruptedException
+     */
+    public static void waitForElement(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
         for (int second = 0;; second++) {
-            if (second >= 60) fail("timeout");
+            if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator);
             try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
@@ -77,7 +116,7 @@ public class ITUtil {
      */
     public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
         String contents = selenium.getHtmlSource();
-        if (contents.contains("Incident Report")) {
+        if (contents.contains("Incident Report") && !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
             String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
             docId = docId.substring(0, docId.indexOf("</span>"));

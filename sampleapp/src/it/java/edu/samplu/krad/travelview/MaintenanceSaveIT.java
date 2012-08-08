@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,10 +23,10 @@ import static org.junit.Assert.*;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceSaveIT extends UpgradedSeleniumITBase{
+public class MaintenanceSaveIT extends KradMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -34,11 +34,7 @@ public class MaintenanceSaveIT extends UpgradedSeleniumITBase{
      * Verify Save
      */
     public void testVerifySave() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
         selenium.type("id=u116_control", "Test Document");
         selenium.click("id=u802_control");
         selenium.type("id=u802_control", "1234567890");

@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -23,10 +23,10 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceLookupAddMultipleLinesIT extends UpgradedSeleniumITBase {
+public class MaintenanceLookupAddMultipleLinesIT extends KradMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -34,11 +34,7 @@ public class MaintenanceLookupAddMultipleLinesIT extends UpgradedSeleniumITBase 
      * Verify Lookup/Add Multiple Lines link appears
      */
     public void testVerifyLookupAddMultipleLines() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
         assertTrue(selenium.isElementPresent("//a[contains(text(),'Lookup/Add Multiple Lines')]"));
     }
 }

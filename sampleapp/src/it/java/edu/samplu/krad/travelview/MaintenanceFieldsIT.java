@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -23,10 +23,10 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceFieldsIT extends UpgradedSeleniumITBase {
+public class MaintenanceFieldsIT extends KradMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -34,11 +34,7 @@ public class MaintenanceFieldsIT extends UpgradedSeleniumITBase {
      * Verify text fields are present and match expected length and max length
      */
     public void testVerifyFields() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
         assertTrue(selenium.isElementPresent("//input[@name='document.newMaintainableObject.dataObject.number' and @type='text' and @size=10 and @maxlength=10]"));
         assertTrue(selenium.isElementPresent("//input[@name='document.newMaintainableObject.dataObject.extension.accountTypeCode' and @type='text' and @size=2 and @maxlength=3]"));
         assertTrue(selenium.isElementPresent("//input[@name='document.newMaintainableObject.dataObject.subAccount' and @type='text' and @size=10 and @maxlength=10]"));
@@ -47,4 +43,5 @@ public class MaintenanceFieldsIT extends UpgradedSeleniumITBase {
         assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number\" and @type='text' and @size=10 and @maxlength=10]"));
         assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId\" and @type='text' and @size=5 and @maxlength=10]"));
     }
+
 }

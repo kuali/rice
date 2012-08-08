@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,11 +23,11 @@ import static org.junit.Assert.*;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteNoteIT extends UpgradedSeleniumITBase {
+public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
 
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -35,11 +35,7 @@ public class MaintenanceAddDeleteNoteIT extends UpgradedSeleniumITBase {
      * Verify we can add and delete a note
      */
     public void testVerifyAddDeleteNote() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
         selenium.click("css=#u168_col");
 
         for (int second = 0;; second++) {

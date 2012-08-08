@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,10 +23,15 @@ import static org.junit.Assert.*;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceDisclosuresIT extends UpgradedSeleniumITBase{
+public class MaintenanceDisclosuresIT extends KradMenuITBase{
     @Override
     public String getTestUrl() {
         return PORTAL;
+    }
+
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -34,12 +39,8 @@ public class MaintenanceDisclosuresIT extends UpgradedSeleniumITBase{
      * Verify disclosures are present and functional
      */
     public void testVerifyDisclosures() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-
+        gotoMenuLinkLocator();
+        assertTrue(selenium.isElementPresent("//span[contains(.,'Document Overview')]"));
         assertTrue(selenium.isElementPresent("//span[contains(.,'Document Overview')]"));
         assertTrue(selenium.isElementPresent("//span[contains(.,'Account Information')]"));
         assertTrue(selenium.isElementPresent("//span[contains(.,'Fiscal Officer Accounts')]"));

@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,10 +23,11 @@ import static org.junit.Assert.*;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAdHocRecipientsIT extends UpgradedSeleniumITBase {
+public class MaintenanceAdHocRecipientsIT extends KradMenuITBase {
 
-    public String getTestUrl() {
-        return PORTAL;
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -34,12 +35,7 @@ public class MaintenanceAdHocRecipientsIT extends UpgradedSeleniumITBase {
      * Verify the Ad Hoc Recipients section and fields
      */
     public void testVerifyAdHocRecipients() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
-
+        gotoMenuLinkLocator();
         selenium.click("css=a > span:contains(Fiscal Officer Accounts)");
 //        selenium.click("css=#u416_toggle > span.uif-headerText-span");  // id is generated and has changed
 //        for (int second = 0;; second++) {

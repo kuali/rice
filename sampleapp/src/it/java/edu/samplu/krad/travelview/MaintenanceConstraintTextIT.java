@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,21 +23,18 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceConstraintTextIT extends UpgradedSeleniumITBase {
-    @Override
-    public String getTestUrl() {
-        return PORTAL;
-    }
+public class MaintenanceConstraintTextIT extends KradMenuITBase {
 
+    @Override
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
+    }
     @Test
     /**
      * Verify constraint text matches specific values
      */
     public void testVerifyConstraintText() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
+        gotoMenuLinkLocator();
         assertEquals("Must be 10 digits", selenium.getText("css=#u802_constraint_span"));
         assertEquals("Must be 10 digits", selenium.getText("css=#u853_constraint_span"));
         assertEquals("Must be 10 digits", selenium.getText("css=#u1067_add_constraint_span"));

@@ -1,6 +1,7 @@
 package edu.samplu.common;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @deprecated Use WebDriverITBase for new tests.
@@ -43,6 +44,29 @@ public abstract class MenuITBase extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");
+        // TODO extract and generalize of reuse
+        String contents = selenium.getHtmlSource();
+        if (contents.contains("Incident Report")) {
+            String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
+            String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
+            docId = docId.substring(0, docId.indexOf("</span>"));
+            docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
+
+            String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
+            viewId = viewId.substring(0, viewId.indexOf("</span>"));
+            viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
+
+            String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
+            stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
+            stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
+
+//            System.out.println(docId);
+//            System.out.println(viewId);
+//            System.out.println(stackTrace);
+            fail(viewId.trim()  + " " + docId.trim() + " " + " " + stackTrace.trim());
+        }
+//        assertFalse(selenium.isElementPresent("//button[contains(.,'eport')]\""));
+//        assertFalse(selenium.isElementPresent("//span[contains(.,'Incident')]\""));
     }
 
     /**

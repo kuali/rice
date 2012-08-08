@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,11 +23,11 @@ import static org.junit.Assert.*;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteFiscalOfficerIT extends UpgradedSeleniumITBase {
+public class MaintenanceAddDeleteFiscalOfficerIT extends KradMenuITBase {
 
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -35,11 +35,7 @@ public class MaintenanceAddDeleteFiscalOfficerIT extends UpgradedSeleniumITBase 
      * Verify a fiscal officer line can be added and deleted
      */
     public void testVerifyAddDeleteFiscalOfficer() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
         selenium.type("id=u1067_add_control", "1234567890");
         selenium.type("id=u1101_add_control", "2");
         selenium.click("id=u1066_add");

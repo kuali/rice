@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -23,11 +23,10 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceQuickfinderIconsIT extends UpgradedSeleniumITBase{
-
+public class MaintenanceQuickfinderIconsIT extends KradMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     /**
@@ -35,11 +34,7 @@ public class MaintenanceQuickfinderIconsIT extends UpgradedSeleniumITBase{
      */
     @Test
     public void testVerifyQuickfinderIcons() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
         assertTrue(selenium.isTextPresent("Document Overview"));
         assertTrue(selenium.isElementPresent("id=quickfinder1"));
         assertTrue(selenium.isElementPresent("id=quickfinder2"));

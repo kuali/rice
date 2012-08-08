@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,10 +23,10 @@ import static org.junit.Assert.*;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceRouteLogIT extends UpgradedSeleniumITBase {
+public class MaintenanceRouteLogIT extends KradMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Travel Account Maintenance (New)";
     }
 
     @Test
@@ -34,11 +34,7 @@ public class MaintenanceRouteLogIT extends UpgradedSeleniumITBase {
      * Verify the Route Log section exists and contains an IFrame
      */
     public void testVerifyRouteLog() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (New)");
-        selenium.waitForPageToLoad("100000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator();
         selenium.click("css=#u755_toggle > span.uif-headerText-span");
 
         for (int second = 0;; second++) {

@@ -19,6 +19,7 @@ package edu.samplu.travel.krad.test;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 /**
@@ -41,52 +42,49 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 //		selenium.selectFrame("iframeportlet");
         Thread.sleep(5000);
         selenium.selectWindow("title=Kuali :: Uif Components");		
-		selenium.focus("id=u50_control");
-		selenium.type("id=u50_control", "test 1");
-		selenium.focus("id=u101_control");
-		selenium.type("id=u101_control", "test 2");
+        focusAndType("name=field1", "test 1");
+        focusAndType("name=field102", "test 2");
 		// 'Other Fields' navigation link
-		//selenium.chooseCancelOnNextConfirmation();
-		//selenium.click("id=u30");		
-        //assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-        //Thread.sleep(3000);
-        for (int second = 0;; second++) {
-            if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u65_control")) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        selenium.focus("id=u65_control");
-		selenium.type("id=u65_control", "here");
-        selenium.focus("id=u116_control");
-		selenium.type("id=u116_control", "there");
+//        assertCancelConfirmation(); // failing in selenium, but present when testing manually
+
+        waitForElement("name=field100");
+        focusAndType("name=field100", "here");
+        focusAndType("name=field103", "there");
 		// 'Validation' navigation link
-		//	selenium.click("id=u30");
-		//  assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-        //  Thread.sleep(3000);
-        for (int second = 0;; second++) {
-            if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u167_control")) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        selenium.focus("id=u167_control");
-		selenium.type("id=u167_control", "this");
-        selenium.focus("id=u227_control");
-		selenium.type("id=u227_control", "that");
+//      assertCancelConfirmation(); // failing in selenium, but present when testing manually
+
+        waitForElement("name=field106");
+        focusAndType("name=field106", "this");
+        focusAndType("name=uppercase", "that");
+        assertEquals("THAT", selenium.getValue("name=uppercase"));
 		// 'Validation - Regex' navigation link
-		//selenium.click("id=u29");
-        //assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-        //Thread.sleep(3000);
+//      assertCancelConfirmation(); // failing in selenium, but present when testing manually
+        waitForElement("name=field101");
+        assertEquals("val", selenium.getValue("name=field101")); // form is preset to val
+        focusAndType("name=field101", "1");
+        selenium.focus("name=field104");
+        assertEquals("1", selenium.getValue("name=field101"));
+		selenium.type("name=field104", "2");
+        // 'Progressive Disclosure' navigation link
+//      assertCancelConfirmation(); // failing in selenium, but present when testing manually
+	}
+
+    private void assertCancelConfirmation() {
+        selenium.chooseCancelOnNextConfirmation();
+        selenium.click("link=Cancel");
+        assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
+    }
+
+    private void focusAndType(String fieldLocator, String typeText) {
+        selenium.focus(fieldLocator);
+        selenium.type(fieldLocator, typeText);
+    }
+
+    private void waitForElement(String elementLocator) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u80_control")) break; } catch (Exception e) {}
+            try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        selenium.focus("id=u80_control");
-		selenium.type("id=u80_control", "1");
-        selenium.focus("id=u131_control");
-		selenium.type("id=u131_control", "2");
-        // 'Progressive Disclosure' navigation link
-		selenium.click("id=u30");
-		//assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-	}
+    }
 }

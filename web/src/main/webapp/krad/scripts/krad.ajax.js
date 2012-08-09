@@ -732,23 +732,38 @@ function performCollectionAction(component, collectionGroupId) {
     }
 }
 
+/**
+ * Validates the controls present in this collection's addLine
+ *
+ * @param collectionGroupId
+ */
+function validateAddLine(collectionGroupId){
+    var collectionGroup = jQuery("#" + collectionGroupId);
+    var addControls = collectionGroup.data("addcontrols");
+    jQuery.watermark.hideAll();
+
+    var valid = true;
+
+    jQuery(addControls, collectionGroup).each(function () {
+        jQuery(this).removeClass("ignoreValid");
+        haltValidationMessaging = true;
+        jQuery(this).valid();
+        haltValidationMessaging = false;
+        if (jQuery(this).hasClass("error")) {
+            valid = false;
+        }
+        jQuery(this).addClass("ignoreValid");
+    });
+
+    jQuery.watermark.showAll();
+    return valid;
+}
+
 //called when a line is added to a collection
 function addLineToCollection(component, collectionGroupId, collectionBaseId) {
     if (collectionBaseId) {
-        var addFields = jQuery("." + collectionBaseId + "-addField:visible");
-        jQuery.watermark.hideAll();
 
-        var valid = true;
-        addFields.each(function () {
-            jQuery(this).removeClass("ignoreValid");
-            jQuery(this).valid();
-            if (jQuery(this).hasClass("error")) {
-                valid = false;
-            }
-            jQuery(this).addClass("ignoreValid");
-        });
-
-        jQuery.watermark.showAll();
+        var valid = validateAddLine(collectionGroupId);
 
         if (valid) {
             performCollectionAction(component, collectionGroupId);

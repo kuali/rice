@@ -27,18 +27,19 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -131,12 +132,15 @@ public class CollectionGroupBuilder implements Serializable {
 
                     // Default line actions - no client side validation
                     String actionScript = "performCollectionAction(this, '" + collectionGroup.getId() + "');";
-                    List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view,
-                            model, collectionGroup, currentLine, index, actionScript);
+                    List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
+                            collectionGroup, currentLine, index, actionScript);
 
                     // Line actions with client side validation
-                    String actionScriptValidatedLine = "validateAndPerformCollectionAction(this, '" + collectionGroup.getId() + "', '"
-                            + collectionGroup.getPropertyName() + "');";
+                    String actionScriptValidatedLine = "validateAndPerformCollectionAction(this, '"
+                            + collectionGroup.getId()
+                            + "', '"
+                            + collectionGroup.getPropertyName()
+                            + "');";
                     List<Action> validatedLineActions = initializeLineActions(collectionGroup.getValidatedLineActions(),
                             view, model, collectionGroup, currentLine, index, actionScriptValidatedLine);
 
@@ -263,6 +267,7 @@ public class CollectionGroupBuilder implements Serializable {
 
         // copy fields for line and adjust binding to match collection line path
         lineFields = (List<Field>) ComponentUtils.copyFieldList(lineFields, bindingPath, lineSuffix);
+        //TODO collection path fix for details
 
         boolean readOnlyLine = collectionGroup.isReadOnly();
 
@@ -271,17 +276,6 @@ public class CollectionGroupBuilder implements Serializable {
 
         // add special css styles to identify the add line client side
         if (lineIndex == -1) {
-            for (Field f : lineFields) {
-                if (f instanceof InputField) {
-                    // sets up - skipping these fields in add area during standard form validation calls
-                    // custom addLineToCollection js call will validate these fields manually on an add
-                    Control control = ((InputField) f).getControl();
-                    if (control != null) {
-                        control.addStyleClass(collectionGroup.getBaseId() + "-addField");
-                        control.addStyleClass("ignoreValid");
-                    }
-                }
-            }
 
             // set focus on after the add line submit to first field of add line
             for (Action action : actions) {
@@ -306,11 +300,11 @@ public class CollectionGroupBuilder implements Serializable {
                         currentLine);
 
                 // Add script to fields to activate save button on any change
-                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) &&
-                        collectionGroup.isRenderSaveLineActions()) {
+                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) && collectionGroup
+                        .isRenderSaveLineActions()) {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {
-                            ((ControlBase)((InputField) f).getControl()).setOnChangeScript(
+                            ((ControlBase) ((InputField) f).getControl()).setOnChangeScript(
                                     "collectionLineChanged(this, 'uif-newCollectionItem');");
                         }
                     }
@@ -320,7 +314,7 @@ public class CollectionGroupBuilder implements Serializable {
                 // TODO : only add to total column fields, and add the add line
                 for (Field f : lineFields) {
                     if (f instanceof InputField && f.isRender()) {
-                        ((ControlBase)((InputField) f).getControl()).setOnChangeScript(
+                        ((ControlBase) ((InputField) f).getControl()).setOnChangeScript(
                                 "refreshDatatableCellRedraw(this);");
                     }
                 }
@@ -385,6 +379,34 @@ public class CollectionGroupBuilder implements Serializable {
         // invoke layout manager to build the complete line
         layoutManager.buildLine(view, model, collectionGroup, lineFields, subCollectionFields, bindingPath, actions,
                 lineSuffix, currentLine, lineIndex);
+
+        //add additional information to the group and fields to allow for correct add control selection
+        String selector = "";
+        if (lineIndex == -1) {
+            List<String> addIds = new ArrayList<String>();
+            for (Field f : lineFields) {
+                if (f instanceof InputField) {
+                    // sets up - skipping these fields in add area during standard form validation calls
+                    // custom addLineToCollection js call will validate these fields manually on an add
+                    Control control = ((InputField) f).getControl();
+                    if (control != null) {
+                        control.addStyleClass("ignoreValid");
+                        selector = selector + ",#" + f.getId() + UifConstants.IdSuffixes.CONTROL;
+                    }
+                } else if (f instanceof FieldGroup) {
+                    List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(((FieldGroup) f).getGroup(),
+                            InputField.class);
+                    for (InputField nestedField : fields) {
+                        Control control = nestedField.getControl();
+                        if (control != null) {
+                            control.addStyleClass("ignoreValid");
+                            selector = selector + ",#" + nestedField.getId() + UifConstants.IdSuffixes.CONTROL;
+                        }
+                    }
+                }
+            }
+            collectionGroup.addDataAttribute("addControls", selector.replaceFirst(",", ""));
+        }
     }
 
     /**
@@ -726,7 +748,7 @@ public class CollectionGroupBuilder implements Serializable {
                 actionScript = "if (" + actionScript + ") {closeLightbox();}";
             }
             action.setActionScript(actionScript + ";");
-            
+
         }
 
         // get add line for context

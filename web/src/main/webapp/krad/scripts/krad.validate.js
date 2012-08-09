@@ -599,10 +599,12 @@ function writeMessagesForPage(){
     var pageId = page.attr("id");
     var data = page.data(kradVariables.VALIDATION_MESSAGES);
 
-    var messageMap = data.messageMap;
-    if (!messageMap) {
-        messageMap = {};
-        data.messageMap = messageMap;
+    if(data){
+        var messageMap = data.messageMap;
+        if (!messageMap) {
+            messageMap = {};
+            data.messageMap = messageMap;
+        }
     }
 
     writeMessagesForGroup(pageId, data);
@@ -621,10 +623,12 @@ function writeMessagesForChildGroups(parentId){
         var id = currentGroup.attr("id");
         var data = currentGroup.data(kradVariables.VALIDATION_MESSAGES);
 
-        var messageMap = data.messageMap;
-        if (!messageMap) {
-            messageMap = {};
-            data.messageMap = messageMap;
+        if(data){
+            var messageMap = data.messageMap;
+            if (!messageMap) {
+                messageMap = {};
+                data.messageMap = messageMap;
+            }
         }
 
         if(!(currentGroup.is("[data-role='InputField']"))){

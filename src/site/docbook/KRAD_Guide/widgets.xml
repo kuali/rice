@@ -482,8 +482,8 @@
             <para>The lightbox widget is used to render content in a modal window. This widget is
                 used in KRAD to open the inquiry and lookup views in the modal lightbox without
                 navigating away from the current view. The jQuery Fancybox plugin is used in KRAD.
-                See <link xlink:href="http://fancybox.net/api"
-                >http://fancybox.net/api</link>.</para>
+                See <link xlink:href="http://fancyapps.com/fancybox/#docs"
+                >http://fancyapps.com/fancybox/#docs</link>.</para>
             <section>
                 <title>Properties</title>
                 <para>

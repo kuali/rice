@@ -73,8 +73,8 @@ jQuery(document).ready(function () {
     initFieldHandlers();
 
     // initialize the handlers for the ajax calls
-    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler,
-        "update-view": updateViewHandler, "redirect": redirectHandler, "display-response-in-lightbox":displayResponseInLightBoxHandler};
+    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component":updateComponentHandler,
+        "update-view":updateViewHandler, "redirect":redirectHandler, "display-response-in-lightbox":displayResponseInLightBoxHandler};
 });
 
 /**
@@ -127,24 +127,24 @@ function initFieldHandlers() {
                         }
 
                         //special case check for input within a fieldset, hide other tooltips to avoid overlap
-                        if(jQuery(tooltipElement).is("select, input:text, textarea, input:file, input:password")
+                        if (jQuery(tooltipElement).is("select, input:text, textarea, input:file, input:password")
                                 && jQuery(tooltipElement).parents("fieldset[data-type='CheckboxSet'], "
-                                + "fieldset[data-type='RadioSet']").length){
+                                + "fieldset[data-type='RadioSet']").length) {
                             hideBubblePopups();
                         }
                         var show = true;
 
                         //special case check for if any internal inputs of a fieldset: if they are showing tooltips
                         //do not show this fieldset's tooltip to avoid overlap
-                        if(elementInfo.type == "fieldset"){
-                            jQuery("select, input:text, textarea, input:file, input:password", "#" + fieldId).each(function(){
-                                if(jQuery(this).IsBubblePopupOpen()){
+                        if (elementInfo.type == "fieldset") {
+                            jQuery("select, input:text, textarea, input:file, input:password", "#" + fieldId).each(function () {
+                                if (jQuery(this).IsBubblePopupOpen()) {
                                     show = false;
                                 }
                             });
                         }
 
-                        if(show){
+                        if (show) {
                             console.log("showing " + fieldId + " tooltipid " + jQuery(tooltipElement).GetBubblePopupID());
                             var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
                             validationTooltipOptions.themeName = data.tooltipTheme;
@@ -375,9 +375,15 @@ function initBubblePopups() {
             });
 }
 
-function hideBubblePopups() {
-    jQuery("input, select, textarea,"
-            + ".uif-tooltip").HideAllBubblePopups();
+function hideBubblePopups(element) {
+    if (element != undefined && element.length) {
+        jQuery(element).find("input, select, textarea,"
+                        + ".uif-tooltip").HideAllBubblePopups()
+    }
+    else {
+        jQuery("input, select, textarea,"
+                + ".uif-tooltip").HideAllBubblePopups();
+    }
 }
 
 /**

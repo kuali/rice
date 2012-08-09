@@ -395,6 +395,7 @@ function updatePageCallback(content) {
 
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
     var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " > #" + kradVariables.PAGE_CONTENT_HEADER_CLASS;
+    hideBubblePopups(pageInLayout);
     jQuery(pageInLayout).empty().append(page.find(">*"));
 
     setPageBreadcrumb();
@@ -418,7 +419,9 @@ function updatePageHandler(content, dataAttr) {
 
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
     var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " > #" + kradVariables.PAGE_CONTENT_HEADER_CLASS;
+    hideBubblePopups(pageInLayout);
     jQuery(pageInLayout).empty().append(page.find(">*"));
+
     //process breadcrumbs
     setPageBreadcrumb();
 
@@ -444,6 +447,8 @@ function updatePageHandler(content, dataAttr) {
 function updateComponentHandler(content, dataAttr) {
     var id = dataAttr.updatecomponentid;
     var elementToBlock = jQuery("#" + id);
+
+    hideBubblePopups(elementToBlock);
 
     var component = jQuery("#" + id + "_update", content);
 

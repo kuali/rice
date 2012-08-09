@@ -81,6 +81,7 @@ public class ITUtil {
     public static void waitAndClick(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
         waitForElement(selenium, elementLocator, 60);
         selenium.click(elementLocator);
+        Thread.sleep(1000);
     }
 
 

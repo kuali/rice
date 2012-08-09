@@ -176,7 +176,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             // TODO: can we translate Collections? (possibly combining output with delimiter
             if ((fieldValue != null) && (TypeUtils.isSimpleType(fieldValue.getClass()))) {
                 for (KeyValue keyValue : fieldOptions) {
-                    if (StringUtils.equals((String) fieldValue, keyValue.getKey())) {
+                    if (StringUtils.equals(fieldValue.toString(), keyValue.getKey())) {
                         setAlternateDisplayValue(keyValue.getValue());
                         break;
                     }

@@ -369,7 +369,7 @@ function initBubblePopups() {
     //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
     //will cause a severe loss of functionality and buggy behavior
     //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
-    jQuery("input, select, textarea,"
+    jQuery("input:not([type='image']), input[data-role='help'], select, textarea, "
             + ".uif-tooltip").CreateBubblePopup(
             {   manageMouseEvents:false,
                 themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
@@ -378,11 +378,11 @@ function initBubblePopups() {
 
 function hideBubblePopups(element) {
     if (element != undefined && element.length) {
-        jQuery(element).find("input, select, textarea,"
-                        + ".uif-tooltip").HideAllBubblePopups()
+        jQuery(element).find("input:not([type='image']), input[data-role='help'], select, textarea, "
+                + ".uif-tooltip").HideAllBubblePopups()
     }
     else {
-        jQuery("input, select, textarea,"
+        jQuery("input:not([type='image']), input[data-role='help'], select, textarea,"
                 + ".uif-tooltip").HideAllBubblePopups();
     }
 }

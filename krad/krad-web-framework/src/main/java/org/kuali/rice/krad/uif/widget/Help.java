@@ -70,7 +70,11 @@ public class Help extends WidgetBase {
                 helpAction = ComponentFactory.getHelpAction();
 
                 view.assignComponentIds(helpAction);
+                helpAction.addDataAttribute("role", "help");
             }
+        }
+        else{
+            helpAction.addDataAttribute("role", "help");
         }
     }
 

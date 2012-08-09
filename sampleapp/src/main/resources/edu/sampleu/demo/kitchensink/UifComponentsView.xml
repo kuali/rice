@@ -431,7 +431,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field111" p:label="Field Label"
+        <bean parent="Uif-InputField" p:propertyName="field111" p:label="Field Label" p:maxLength="14000"
               p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
               p:instructionalText="No watermark, textExpand option, rows=&quot;10&quot;, cols=&quot;50&quot;">
           <property name="control">

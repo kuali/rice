@@ -90,13 +90,6 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         super.performInitialization(view, model, container);
 
         stackedGroups = new ArrayList<Group>();
-
-        if (addLineGroup != null) {
-            view.getViewHelperService().performComponentInitialization(view, model, addLineGroup);
-        }
-        view.getViewHelperService().performComponentInitialization(view, model, lineGroupPrototype);
-        view.getViewHelperService().performComponentInitialization(view, model, subCollectionFieldGroupPrototype);
-        view.getViewHelperService().performComponentInitialization(view, model, selectFieldPrototype);
     }
 
     /**

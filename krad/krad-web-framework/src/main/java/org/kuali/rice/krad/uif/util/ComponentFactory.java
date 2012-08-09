@@ -200,6 +200,7 @@ public class ComponentFactory {
             ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
 
             // add to cache
+            // TODO: is this copy needed here? A copy is done when a request is made
             cache.put(beanId, ComponentUtils.copy(component));
         }
 

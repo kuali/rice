@@ -131,12 +131,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             sequenceFieldPrototype = ComponentFactory.getMessageField();
             view.assignComponentIds(getSequenceFieldPrototype());
         }
-
-        view.getViewHelperService().performComponentInitialization(view, model, getHeaderLabelPrototype());
-        view.getViewHelperService().performComponentInitialization(view, model, getSequenceFieldPrototype());
-        view.getViewHelperService().performComponentInitialization(view, model, getActionFieldPrototype());
-        view.getViewHelperService().performComponentInitialization(view, model, getSubCollectionFieldGroupPrototype());
-        view.getViewHelperService().performComponentInitialization(view, model, getSelectFieldPrototype());
     }
 
     /**

@@ -78,39 +78,6 @@ public class TreeGroup extends Group implements DataBinding{
         }
 
         // TODO: set object path for prototypes equal to the tree group object path?
-
-        initializeNodePrototypeComponents(view, model);
-    }
-
-    protected void initializeNodePrototypeComponents(View view, Object model) {
-        view.getViewHelperService().performComponentInitialization(view, model,
-                defaultNodePrototype.getLabelPrototype());
-        view.getViewHelperService().performComponentInitialization(view, model,
-                defaultNodePrototype.getDataGroupPrototype());
-
-        if (nodePrototypeMap != null) {
-            for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodePrototypeMap.entrySet()) {
-                NodePrototype prototype = prototypeEntry.getValue();
-                if (prototype != null) {
-
-                    if (prototype.getLabelPrototype() != null) {
-                        view.getViewHelperService().performComponentInitialization(view, model,
-                                prototype.getLabelPrototype());
-                    } else {
-                        throw new IllegalStateException("encountered null NodePrototype.labelPrototype");
-                    }
-
-                    if (prototype.getDataGroupPrototype() != null) {
-                        view.getViewHelperService().performComponentInitialization(view, model,
-                                prototype.getDataGroupPrototype());
-                    } else {
-                        throw new IllegalStateException("encountered null NodePrototype.dataGroupPrototype");
-                    }
-                } else {
-                    throw new IllegalStateException("encountered null NodePrototype");
-                }
-            }
-        }
     }
 
     @Override

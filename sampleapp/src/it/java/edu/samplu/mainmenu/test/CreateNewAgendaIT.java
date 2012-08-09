@@ -18,7 +18,7 @@ package edu.samplu.mainmenu.test;
 import java.util.Calendar;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.MainMenuLookupITBase;
 import org.junit.Test;
 
 /**
@@ -26,17 +26,15 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateNewAgendaIT extends UpgradedSeleniumITBase {
+public class CreateNewAgendaIT extends MainMenuLookupITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Create New Agenda";
     }
 
     @Test
     public void testCreateNewAgenda() throws Exception {
-        selenium.click("link=Create New Agenda");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectFrame("iframeportlet");
+        gotoMenuLinkLocator(); // NOT gotoCreateNew because this create new is on the Main Menu screen
         selenium.select("name=document.newMaintainableObject.dataObject.namespace", "label=Kuali Rules Test");
         String agendaName = "Agenda Date :"+ Calendar.getInstance().getTime().toString();
         selenium.type("name=document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
@@ -56,5 +54,15 @@ public class CreateNewAgendaIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         selenium.selectWindow("null");
         selenium.click("xpath=(//input[@name='imageField'])[2]");
+    }
+
+    @Test
+    public void testLookUp() throws Exception {
+        // noop this link create new is off the main menu
+    }
+
+    @Override
+    public void lookupAssertions() {
+        //none yet
     }
 }

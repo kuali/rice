@@ -202,6 +202,8 @@ public class View extends ContainerBase {
         // populate items on page for single paged view
         if (singlePageView) {
             if (page != null) {
+                view.assignComponentIds(page);
+
                 page.setItems(new ArrayList<Group>(items));
 
                 // reset the items list to include the one page
@@ -356,18 +358,6 @@ public class View extends ContainerBase {
                 }
             }
         }
-
-        return components;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        components.add(page);
 
         return components;
     }

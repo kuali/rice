@@ -64,6 +64,8 @@ public class PropertyReplacer extends ConfigurableBase implements Serializable {
     private static final long serialVersionUID = -8405429643299461398L;
 
     private String propertyName;
+
+    @KeepExpression
     private String condition;
     private Object replacement;
 
@@ -84,6 +86,7 @@ public class PropertyReplacer extends ConfigurableBase implements Serializable {
      */
     public List<Component> getNestedComponents() {
         ArrayList<Component> nestedComponents = new ArrayList<Component>();
+
         if (replacement instanceof Component) {
             nestedComponents.add(((Component) replacement));
         } else if (replacement instanceof List) {

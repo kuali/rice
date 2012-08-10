@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.4.5</version>
+    <version>1.4.6</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -50,9 +50,6 @@
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
     <kuali.release.goals>deploy</kuali.release.goals>
     <kuali.release.arguments>-DskipTests</kuali.release.arguments>
-
-    <!-- Take this out once the Rice artifactIds all match the real SVN path -->
-    <extractor.validatescm.skip>true</extractor.validatescm.skip>
 
     <appserver.port>8080</appserver.port>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
@@ -205,6 +202,13 @@
         <bin.phase>none</bin.phase>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <kuali.gpg.phase>none</kuali.gpg.phase>
+      </properties>
+    </profile>
+    <!-- Profile for quickly creating basic Maven site -->
+    <profile>
+      <id>validatescm</id>
+      <properties>
+        <enforcer.phase>none</enforcer.phase>
       </properties>
     </profile>
     <!-- Profile for quickly creating basic Maven site -->

@@ -20,7 +20,9 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,6 +35,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Represents a user note in the system.
@@ -364,6 +367,21 @@ public class Note extends PersistableBusinessObjectBase {
         this.adHocRouteRecipient = adHocRouteRecipient;
     }
 
+    /**
+     * @return the attachmentLink
+     */
+    public String getAttachmentLink() {
+        //getAttachment() is always return null.
+        if(KRADServiceLocator.getAttachmentService().getAttachmentByNoteId(this.getNoteIdentifier()) == null){
+            return "";
+        }else{
+            Properties params = new Properties();
+            params.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOWNLOAD_BO_ATTACHMENT_METHOD);
+            params.put(KRADConstants.DOC_FORM_KEY, "88888888");
+            params.put(KRADConstants.NOTE_IDENTIFIER, this.getNoteIdentifier().toString());
+            return UrlFactory.parameterizeUrl(KRADConstants.INQUIRY_ACTION, params);
+        }
+    }
 }
 
 

@@ -364,9 +364,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         String docTypeName = criteria.getDocumentTypeName();
 
         // update the parameters to include whether or not this is an advanced search
-        if(this.getParameters().containsKey(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD)) {
+        if(this.getParameters().containsKey(KRADConstants.ADVANCED_SEARCH_FIELD)) {
             Map<String, String[]> parameters = this.getParameters();
-            String[] params = (String[])parameters.get(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD);
+            String[] params = (String[])parameters.get(KRADConstants.ADVANCED_SEARCH_FIELD);
             if (ArrayUtils.isNotEmpty(params)) {
                 params[0] = criteria.getIsAdvancedSearch();
                 this.setParameters(parameters);
@@ -569,7 +569,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      * Returns true if the current search being executed is an "advanced" search.
      */
     protected boolean isAdvancedSearch() {
-        return isFlagSet(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD);
+        return isFlagSet(KRADConstants.ADVANCED_SEARCH_FIELD);
     }
 
     /**
@@ -736,7 +736,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     @Override
     public void performClear(LookupForm lookupForm) {
-        DocumentSearchCriteria criteria = loadCriteria(lookupForm.getFields());
+        //KULRICE-7709 Convert dateCreated value to range before loadCriteria
+        Map<String, String> formFields = LookupUtils.preProcessRangeFields(lookupForm.getFields());
+        DocumentSearchCriteria criteria = loadCriteria(formFields);
         super.performClear(lookupForm);
         repopulateSearchTypeFlags();
         DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
@@ -754,7 +756,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         boolean superUserSearch = isSuperUserSearch();
         int fieldsRepopulated = 0;
         Map<String, String[]> values = new HashMap<String, String[]>();
-        values.put(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD, new String[] { advancedSearch ? "YES" : "NO" });
+        values.put(KRADConstants.ADVANCED_SEARCH_FIELD, new String[] { advancedSearch ? "YES" : "NO" });
         values.put(DocumentSearchCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD, new String[] { superUserSearch ? "YES" : "NO" });
         getFormFields().setFieldValues(values);
     }

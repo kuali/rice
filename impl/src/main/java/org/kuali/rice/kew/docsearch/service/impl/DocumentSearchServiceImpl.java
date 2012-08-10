@@ -189,7 +189,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
         DocumentSearchResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
-            DocumentSearchResultValues resultValues = getDocumentSearchCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
+             // Pass in the principalId as part of searchCriteria to result customizers
+            //TODO: The right way  to do this should have been to update the API for document customizer
+
+            DocumentSearchCriteria.Builder docSearchUserIdCriteriaBuilder = DocumentSearchCriteria.Builder.create(builtCriteria);
+            docSearchUserIdCriteriaBuilder.setDocSearchUserId(principalId);
+            DocumentSearchCriteria docSearchUserIdCriteria = docSearchUserIdCriteriaBuilder.build();
+
+            DocumentSearchResultValues resultValues = getDocumentSearchCustomizationMediator().customizeResults(documentType, docSearchUserIdCriteria, searchResults.build());
             if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
                 Map<String, DocumentSearchResultValue> resultValueMap = new HashMap<String, DocumentSearchResultValue>();
                 for (DocumentSearchResultValue resultValue : resultValues.getResultValues()) {

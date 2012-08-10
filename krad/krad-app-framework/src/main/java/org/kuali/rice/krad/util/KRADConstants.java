@@ -238,6 +238,7 @@ public final class KRADConstants {
     public static final String DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION = "DocSaveBeforeClose";
     public static final String EXTRA_BUTTON_SOURCE = "extraButtonSource";
     public static final String EXTRA_BUTTON_PARAMS = "extraButtonParams";
+    public static final String ADVANCED_SEARCH_FIELD = "isAdvancedSearch";
     public static final String NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME = "newAdHocRoutePerson";
     public static final String NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME = "newAdHocRouteWorkgroup";
     public static final String EXISTING_AD_HOC_ROUTE_PERSON_PROPERTY_NAME = "adHocRoutePerson";

@@ -95,14 +95,18 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     }
 
     public void save(String principalId, String optionId, String optionValue) {
-        UserOptions option = findByOptionId(optionId, principalId);
-        if (option == null) {
-            option = new UserOptions();
-            option.setWorkflowId(principalId);
+        //KULRICE-7796 Don't save where val is greater than field length
+        if(optionValue.length() <= 2000)
+        {
+            UserOptions option = findByOptionId(optionId, principalId);
+            if (option == null) {
+                option = new UserOptions();
+                option.setWorkflowId(principalId);
+            }
+            option.setOptionId(optionId);
+            option.setOptionVal(optionValue);
+            getUserOptionsDAO().save(option);
         }
-        option.setOptionId(optionId);
-        option.setOptionVal(optionValue);
-        getUserOptionsDAO().save(option);
     }
 
     public UserOptionsDAO getUserOptionsDAO() {

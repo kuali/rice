@@ -121,22 +121,22 @@ class DocumentSearchCriteriaTest {
 
     protected static DocumentSearchCriteria.Builder createBare(String saveName = null) {
         def builder = DocumentSearchCriteria.Builder.create()
-        builder.applicationDocumentId = RandomStringUtils.randomAlphanumeric(20)
-        builder.applicationDocumentStatus = RandomStringUtils.randomAlphanumeric(10)
-        builder.approverPrincipalName = RandomStringUtils.randomAlphanumeric(20)
+        builder.applicationDocumentId = RandomStringUtils.randomAlphanumeric(5)
+        builder.applicationDocumentStatus = RandomStringUtils.randomAlphanumeric(5)
+        builder.approverPrincipalName = RandomStringUtils.randomAlphanumeric(5)
 
-        builder.documentId = RandomStringUtils.randomAlphanumeric(10)
-        builder.documentTypeName = RandomStringUtils.randomAlphanumeric(10)
+        builder.documentId = RandomStringUtils.randomAlphanumeric(5)
+        builder.documentTypeName = RandomStringUtils.randomAlphanumeric(5)
         builder.documentStatusCategories = Arrays.asList([ DocumentStatusCategory.PENDING, DocumentStatusCategory.SUCCESSFUL ] as DocumentStatusCategory[])
         builder.documentStatuses = Arrays.asList([ DocumentStatus.ENROUTE, DocumentStatus.INITIATED, DocumentStatus.SAVED ] as DocumentStatus[])
-        builder.initiatorPrincipalName = RandomStringUtils.randomAlphanumeric(20)
-        builder.maxResults = 1000
-        builder.routeNodeName = RandomStringUtils.randomAlphanumeric(10)
+        builder.initiatorPrincipalName = RandomStringUtils.randomAlphanumeric(10)
+        builder.maxResults = 500
+        builder.routeNodeName = RandomStringUtils.randomAlphanumeric(5)
         builder.saveName = saveName
         builder.startAtIndex = 1
-        builder.title = RandomStringUtils.randomAlphanumeric(20)
-        builder.groupViewerId = RandomStringUtils.randomAlphanumeric(10)
-        builder.viewerPrincipalName = RandomStringUtils.randomAlphanumeric(20)
+        builder.title = RandomStringUtils.randomAlphanumeric(10)
+        builder.groupViewerId = RandomStringUtils.randomAlphanumeric(5)
+        builder.viewerPrincipalName = RandomStringUtils.randomAlphanumeric(10)
         builder.routeNodeLookupLogic = RouteNodeLookupLogic.EXACTLY
         return builder
     }
@@ -144,12 +144,12 @@ class DocumentSearchCriteriaTest {
     protected static void addDocAttribs(DocumentSearchCriteria.Builder builder) {
         // TODO: FIXME: MultiValuedStringMapAdapter unmarshal not implemented
         Map<String, List<String>> attrs = new HashMap<String, List<String>>()
-        for (i in 1..10) {
-            def list = new ArrayList(10)
-            for (j in 1..10) {
-                list.add(RandomStringUtils.randomAlphanumeric(10))
+        for (i in 1..5) {
+            def list = new ArrayList(5)
+            for (j in 1..5) {
+                list.add(RandomStringUtils.randomAlphanumeric(5))
             }
-            attrs.put(RandomStringUtils.randomAlphanumeric(10), list)
+            attrs.put(RandomStringUtils.randomAlphanumeric(5), list)
         }
         builder.documentAttributeValues = attrs
     }

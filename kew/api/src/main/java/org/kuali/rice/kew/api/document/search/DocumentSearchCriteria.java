@@ -85,6 +85,7 @@ import java.util.Map;
     DocumentSearchCriteria.Elements.IS_ADVANCED_SEARCH,
     DocumentSearchCriteria.Elements.SEARCH_OPTIONS,
     DocumentSearchCriteria.Elements.APPLICATION_DOCUMENT_STATUSES,
+    DocumentSearchCriteria.Elements.DOC_SEARCH_USER_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentSearchCriteria extends AbstractDataTransferObject implements DocumentSearchCriteriaContract {
@@ -206,6 +207,9 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
     @XmlElementWrapper(name = Elements.APPLICATION_DOCUMENT_STATUSES, required = false)
     private final List<String> applicationDocumentStatuses;
 
+    @XmlElement(name = Elements.DOC_SEARCH_USER_ID, required = false)
+    private final String docSearchUserId;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -245,6 +249,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.startAtIndex = null;
         this.maxResults = null;
         this.isAdvancedSearch = null;
+        this.docSearchUserId = null;
         this.applicationDocumentStatuses = null;
     }
 
@@ -281,6 +286,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.startAtIndex = builder.getStartAtIndex();
         this.maxResults = builder.getMaxResults();
         this.isAdvancedSearch = builder.getIsAdvancedSearch();
+        this.docSearchUserId = builder.getDocSearchUserId();
         this.applicationDocumentStatuses = builder.getApplicationDocumentStatuses();
     }
 
@@ -452,6 +458,10 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         return applicationDocumentStatuses;
     }
 
+    @Override
+    public String getDocSearchUserId(){
+        return docSearchUserId;
+    }
     /**
      * A builder which can be used to construct {@link DocumentSearchCriteria} instances.  Enforces the constraints of
      * the {@link DocumentSearchCriteriaContract}.
@@ -489,6 +499,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         private Integer startAtIndex;
         private Integer maxResults;
         private String isAdvancedSearch;
+        private String docSearchUserId;
         private List<String> applicationDocumentStatuses;
 
         private Builder() {
@@ -568,6 +579,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             builder.setApplicationDocumentStatuses(contract.getApplicationDocumentStatuses());
             // Set applicationDocumentStatus (singular!)
             builder.setApplicationDocumentStatus(contract.getApplicationDocumentStatus());
+            builder.setDocSearchUserId(contract.getDocSearchUserId());
 
             return builder;
         }
@@ -743,6 +755,10 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             return applicationDocumentStatuses;
         }
 
+        public String getDocSearchUserId(){
+          return docSearchUserId;
+        }
+
         public void setDocumentId(String documentId) {
             this.documentId = documentId;
         }
@@ -895,6 +911,9 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             this.applicationDocumentStatuses = applicationDocumentStatuses;
         }
 
+        public void setDocSearchUserId(String docSearchUserId){
+            this.docSearchUserId = docSearchUserId;
+        }
         /**
          * Resets DateTimes to local TimeZone (preserving absolute time)
          *
@@ -962,6 +981,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         final static String IS_ADVANCED_SEARCH = "isAdvancedSearch";
         final static String SEARCH_OPTIONS = "searchOptions";
         final static String APPLICATION_DOCUMENT_STATUSES = "applicationDocumentStatuses";
+        final static String DOC_SEARCH_USER_ID = "docSearchUserId";
     }
 
 }

@@ -63,10 +63,6 @@ import java.util.List;
  */
 public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearchCriteriaProcessor {
     /**
-     * Name if the hidden input field containing basic/detailed search toggle state
-     */
-    public static final String ADVANCED_SEARCH_FIELD = "isAdvancedSearch";
-    /**
      * Name if the hidden input field containing non-superuser/superuser search toggle state
      */
     public static final String SUPERUSER_SEARCH_FIELD = "superUserSearch";
@@ -90,6 +86,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             "documentTypeName",
             "initiatorPrincipalName",
             "documentId",
+            APPLICATION_DOCUMENT_STATUS,
             "groupViewerId",
             "dateCreated",
             DOCUMENT_ATTRIBUTE_FIELD_MARKER,
@@ -309,7 +306,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
         hiddenRow.setHidden(true);
 
         Field detailedField = new Field();
-        detailedField.setPropertyName(ADVANCED_SEARCH_FIELD);
+        detailedField.setPropertyName(KRADConstants.ADVANCED_SEARCH_FIELD);
         detailedField.setPropertyValue(advancedSearch ? "YES" : "NO");
         detailedField.setFieldType(Field.HIDDEN);
 

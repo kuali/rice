@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kim.document.rule;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -42,6 +44,7 @@ import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,19 +149,19 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
             }
         }
         if(!principalIds.isEmpty())       {
+            // retrieve valid principals/principal-ids from identity service
             List<Principal> validPrincipals = getIdentityService().getPrincipals(principalIds);
-            for(GroupDocumentMember groupMember: groupMembers) {
-                boolean validPrincipalId = false;
-                for(Principal validPrincipal: validPrincipals) {
-                    if(groupMember.getMemberId().equals(validPrincipal.getPrincipalId()))     {
-                        validPrincipalId = true;
-                    }
-                }
-                if(!validPrincipalId) {
-                    GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
-                            new String[] {groupMember.getMemberId()});
-                    valid = false;
-                }
+            List<String> validPrincipalIds = new ArrayList<String>();
+            for (Principal principal : validPrincipals) {
+                validPrincipalIds.add(principal.getPrincipalId());
+            }
+            // check that there are no invalid principals in the principal list, return false
+            List<String> invalidPrincipalIds = new ArrayList<String>(CollectionUtils.subtract(principalIds, validPrincipalIds));
+            // if list is not empty add error messages and return false
+            if(CollectionUtils.isNotEmpty(invalidPrincipalIds)) {
+                GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+                        invalidPrincipalIds.toArray(new String[invalidPrincipalIds.size()]));
+                valid = false;
             }
         }
         return valid;

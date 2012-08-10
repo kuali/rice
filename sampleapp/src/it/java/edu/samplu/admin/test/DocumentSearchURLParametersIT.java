@@ -176,7 +176,7 @@ public class DocumentSearchURLParametersIT {
     @Test
     public void testAdvancedSearchMode() {
         performLogin();
-        driver.get(getDocSearchURL((DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD + "=YES")));
+        driver.get(getDocSearchURL((KRADConstants.ADVANCED_SEARCH_FIELD + "=YES")));
         WebElement toggle = findModeToggleButton();
         assertSearchDetailMode(toggle, true);
         toggle.click();

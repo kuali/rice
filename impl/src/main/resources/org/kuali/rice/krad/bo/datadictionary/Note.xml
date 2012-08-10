@@ -30,6 +30,7 @@
         <ref bean="Note-noteTypeCode"/>
         <ref bean="Note-remoteObjectIdentifier"/>
         <ref bean="Note-attachment"/>
+        <ref bean="Note-attachmentLink"/>
         <ref bean="Note-versionNumber"/>
         <ref bean="Note-authorUniversal.principalName"/>
       </list>
@@ -192,6 +193,18 @@
     <property name="name" value="attachment"/>
     <property name="label" value="Attachment"/>
     <property name="description" value="The pathname of a related file to attach to the Note. Use the &quot;Browse...&quot; button to open the file dialog, select the file and automatically fill in the pathname."/>
+  </bean>
+
+  <bean id="Note-attachmentLink" parent="Note-attachmentLink-parentBean"/>
+
+  <bean id="Note-attachmentLink-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="attachmentLink"/>
+    <property name="label" value="Attached File"/>
+    <property name="maxLength" value="1000"/>
+    <property name="required" value="false"/>
+    <property name="control">
+      <bean parent="LinkControlDefinition" p:styleClass="globalLinks" p:target="_blank" p:hrefText="Download Attachment"/>
+    </property>
   </bean>
 
   <bean id="Note-versionNumber" parent="Note-versionNumber-parentBean"/>

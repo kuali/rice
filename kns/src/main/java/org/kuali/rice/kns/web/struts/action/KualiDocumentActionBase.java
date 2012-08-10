@@ -2089,8 +2089,8 @@ public class KualiDocumentActionBase extends KualiAction {
                 messageString = "general.routing.superuser.actionRequestApproved";
             }
             GlobalVariables.getMessageMap().putInfo("document", messageString, documentForm.getDocId(), actionRequestId);
-            documentForm.setSuperUserAnnotation("");
     	}
+        documentForm.setSuperUserAnnotation("");
     	return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     

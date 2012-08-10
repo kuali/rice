@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -170,7 +169,8 @@ public class UifComponentsTestForm extends UifFormBase {
     private String field133;
 
     private String richMessageField = "[color=green][b]Message[/b][/color]";
-    private String richMessageField2 = "Form Message with input specified by id-[id=Demo-SampleMessageInput3] and inlineComponent index number-[0]";
+    private String richMessageField2 =
+            "Form Message with input specified by id-[id=Demo-SampleMessageInput3] and inlineComponent index number-[0]";
     private String testValueField = "Sample Data";
 
     private String testPersonId;
@@ -251,20 +251,29 @@ public class UifComponentsTestForm extends UifFormBase {
         list4.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
         list4.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
 
+        //triple nesting
         list5.add(new UITestObject("a", "a", "a", "a"));
         list5.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
         list5.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
         list5.add(new UITestObject("b", "b", "b", "b"));
         list5.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
+        list5.get(1).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(1).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
         list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
+        list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
 
-        for (int i=0; i<50; i++) {
-            list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(1),
-                    RandomStringUtils.randomAlphanumeric(1),
-                    RandomStringUtils.randomAlphanumeric(1),
-                    RandomStringUtils.randomAlphanumeric(1)));
+        for (int i = 0; i < 50; i++) {
+            list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(1), RandomStringUtils.randomAlphanumeric(1),
+                    RandomStringUtils.randomAlphanumeric(1), RandomStringUtils.randomAlphanumeric(1)));
         }
-        
+
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
             item1.addChild(new Node<String, String>("SubItem A", "SubItem A"));
@@ -292,35 +301,44 @@ public class UifComponentsTestForm extends UifFormBase {
 
             tree1.setRootElement(root);
         }
-        
-        { // scope for name hiding purposes
-            Node<UITestObject, String> item1 = new Node<UITestObject, String>(new UITestObject("1-A", "1-B", "1-C", "1-D"), "Item 1");
-            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SA-A", "1SA-B", "1SA-C", "1SA-D"), "SubItem A"));
-            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SB-A", "1SB-B", "1SB-C", "1SB-D"), "SubItem B"));
 
-            Node<UITestObject, String> item2 = new Node<UITestObject, String>(new UITestObject("2-A", "2-B", "2-C", "2-D"), "Item 2");
-            item2.addChild(new Node<UITestObject, String>(new UITestObject("SA-a", "SA-b", "SA-c", "SA-d"), "SubItem A"));
-            Node<UITestObject, String> sub2B = new Node<UITestObject, String>(new UITestObject("SB-a", "SB-b", "SB-c", "SB-d"), "SubItem B");
+        { // scope for name hiding purposes
+            Node<UITestObject, String> item1 = new Node<UITestObject, String>(new UITestObject("1-A", "1-B", "1-C",
+                    "1-D"), "Item 1");
+            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SA-A", "1SA-B", "1SA-C", "1SA-D"),
+                    "SubItem A"));
+            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SB-A", "1SB-B", "1SB-C", "1SB-D"),
+                    "SubItem B"));
+
+            Node<UITestObject, String> item2 = new Node<UITestObject, String>(new UITestObject("2-A", "2-B", "2-C",
+                    "2-D"), "Item 2");
+            item2.addChild(new Node<UITestObject, String>(new UITestObject("SA-a", "SA-b", "SA-c", "SA-d"),
+                    "SubItem A"));
+            Node<UITestObject, String> sub2B = new Node<UITestObject, String>(new UITestObject("SB-a", "SB-b", "SB-c",
+                    "SB-d"), "SubItem B");
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("AA", "BB", "CC", "DD"), "Item B-1"));
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("Aa", "Bb", "Cc", "Dd"), "Item B-2"));
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("aA", "bB", "cC", "dD"), "Item B-3"));
             item2.addChild(sub2B);
-            item2.addChild(new Node<UITestObject, String>(new UITestObject("SC-a", "SC-b", "SC-c", "SC-d"), "SubItem C"));
+            item2.addChild(new Node<UITestObject, String>(new UITestObject("SC-a", "SC-b", "SC-c", "SC-d"),
+                    "SubItem C"));
 
-            Node<UITestObject, String> item3 = new Node<UITestObject, String>(new UITestObject("3-A", "3-B", "3-C", "3-D"), "Item 3");
+            Node<UITestObject, String> item3 = new Node<UITestObject, String>(new UITestObject("3-A", "3-B", "3-C",
+                    "3-D"), "Item 3");
             item3.addChild(new Node<UITestObject, String>(new UITestObject("A", "B", "C", "D"), "SubItem A"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("1", "2", "3", "4"), "SubItem B"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("w", "x", "y", "z"), "SubItem C"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("!", "@", "#", "$"), "SubItem D"));
 
-            Node<UITestObject, String> root = new Node<UITestObject, String>(new UITestObject("foo", "bar", "baz", "roo"), "Root");
+            Node<UITestObject, String> root = new Node<UITestObject, String>(new UITestObject("foo", "bar", "baz",
+                    "roo"), "Root");
             root.addChild(item1);
             root.addChild(item2);
             root.addChild(item3);
 
             tree2.setRootElement(root);
         }
-        
+
         remoteFieldValuesMap = new HashMap<String, Object>();
         remoteFieldValuesMap.put("remoteField1", "Apple");
         remoteFieldValuesMap.put("remoteField2", "Banana");

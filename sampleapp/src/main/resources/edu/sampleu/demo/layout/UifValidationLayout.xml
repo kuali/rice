@@ -218,6 +218,11 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field1" p:label="Field 1">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="externalHelpUrl" value="http://www.kuali.org"/>
+            </bean>
+          </property>
           <property name="control">
             <bean parent="Uif-TextAreaControl"/>
           </property>

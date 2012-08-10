@@ -23,6 +23,10 @@
 
         <@krad.fieldLbl field=field>
 
+            <#if field.renderFieldset>
+                <fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
+                    <legend style="display: none">${field.label!}</legend>
+            </#if>
             <#-- render field value (if read-only) or control (if edit) -->
             <#if readOnly>
 
@@ -73,6 +77,13 @@
                 <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
             </#if>
 
+            <#-- render field help -->
+            <@krad.template component=field.help/>
+
+            <#if field.renderFieldset>
+                </fieldset>
+            </#if>
+
         </@krad.fieldLbl>
 
     <!-- placeholder for dynamic field markers -->
@@ -95,9 +106,6 @@
                  ${spring.status.value?default("")}
             </span>
         </#list>
-
-        <#-- render field help -->
-        <@krad.template component=field.help/>
 
         <#-- render field suggest if field is editable -->
         <#if !readOnly>

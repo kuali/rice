@@ -96,7 +96,7 @@ function initFieldHandlers() {
     };
 
     jQuery(document).on("mouseenter",
-            "[data-role='InputField'] input,"
+            "[data-role='InputField'] input:not([type='image']),"
                     + "[data-role='InputField'] fieldset, "
                     + "[data-role='InputField'] fieldset > span > input:radio,"
                     + "[data-role='InputField'] fieldset > span > input:checkbox,"

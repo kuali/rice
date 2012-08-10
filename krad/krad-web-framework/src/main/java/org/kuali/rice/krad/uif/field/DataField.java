@@ -655,7 +655,6 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * Return the field label for the help title
      *
      * @return field label
-     *
      * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
      */
     @Override
@@ -872,5 +871,16 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
                 || getComponentSecurity().isViewInLineAuthz()
                 || ((getComponentSecurity().getAttributeSecurity() != null) && getComponentSecurity()
                 .getAttributeSecurity().isHide())) && isHidden());
+    }
+
+    public boolean isRenderFieldset() {
+        return (!this.isReadOnly()
+                && inquiry != null
+                && inquiry.isRender()
+                && inquiry.getInquiryLink() != null
+                && inquiry.getInquiryLink().isRender()) || (help != null
+                && help.isRender()
+                && help.getHelpAction() != null
+                && help.getHelpAction().isRender());
     }
 }

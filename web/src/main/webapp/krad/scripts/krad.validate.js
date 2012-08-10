@@ -47,10 +47,11 @@ function hideMessageTooltip(fieldId) {
  * @param fieldId the id of the field
  */
 function getHoverElement(fieldId) {
-    var hasFieldset = jQuery("#" + fieldId).find("fieldset").length;
+    var fieldset = jQuery("#" + fieldId).find("fieldset");
+    var hasFieldset = fieldset.length;
     var elementInfo = {};
 
-    if (!hasFieldset) {
+    if (!hasFieldset || (hasFieldset && fieldset.data("type") == "InputSet")) {
         //regular case
         elementInfo.element = jQuery("#" + fieldId).find("input:text, input:password, input:file, input:checkbox, "
                 + "select, textarea");

@@ -1045,4 +1045,13 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     public DataType getDataType() {
         return this.simpleConstraint.getDataType();
     }
+
+    @Override
+    public boolean isRenderFieldset() {
+        return super.isRenderFieldset() || (this.isInputAllowed()
+                && quickfinder != null
+                && quickfinder.isRender()
+                && quickfinder.getQuickfinderAction() != null
+                && quickfinder.getQuickfinderAction().isRender());
+    }
 }

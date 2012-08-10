@@ -61,11 +61,11 @@ class RoleServiceImplTest {
         Calendar calendarFrom = Calendar.getInstance();
 
         //Doing setup in a static context since bring up and down a server is an expensive operation
-        RoleBo someRole = new RoleBo(active: true, id: "1", namespaceCode: "PUNK",
+        RoleBoLite someRole = new RoleBoLite(active: true, id: "1", namespaceCode: "PUNK",
                 name: "somerole", description: "this is some role", kimTypeId: "1")
-        RoleBo otherRole = new RoleBo(active: true, id: "2", namespaceCode: "ROCK",
+        RoleBoLite otherRole = new RoleBoLite(active: true, id: "2", namespaceCode: "ROCK",
                 name: "otherrole", description: "this is some other role", kimTypeId: "2")
-        RoleBo  thirdRole = new RoleBo(active: true, id: "114", namespaceCode: "SOMETHING",
+        RoleBoLite  thirdRole = new RoleBoLite(active: true, id: "114", namespaceCode: "SOMETHING",
                 name: "HMMM", description: "this is some weird role", kimTypeId: "1")
         for (bo in [someRole, otherRole, thirdRole]) {
             sampleRoles.put(bo.id, bo)
@@ -122,7 +122,7 @@ class RoleServiceImplTest {
         injectBusinessObjectServiceIntoRoleService()
         for (String id : sampleRoles.keySet()) {
             Role role = roleService.getRole(id)
-            Assert.assertEquals(RoleBo.to(sampleRoles.get(id)), role)
+            Assert.assertEquals(RoleBoLite.to(sampleRoles.get(id)), role)
         }
         businessObjectServiceMockFor.verify(bos)
     }
@@ -146,9 +146,9 @@ class RoleServiceImplTest {
         injectBusinessObjectServiceIntoRoleService()
 
         for (String name : sampleRolesByName.keySet()) {
-            RoleBo tempGroup = sampleRolesByName.get(name)
+            RoleBoLite tempGroup = sampleRolesByName.get(name)
             Role role = roleService.getRoleByNamespaceCodeAndName(tempGroup.namespaceCode, tempGroup.name)
-            Assert.assertEquals(RoleBo.to(sampleRolesByName.get(name)), role)
+            Assert.assertEquals(RoleBoLite.to(sampleRolesByName.get(name)), role)
         }
         businessObjectServiceMockFor.verify(bos)
     }
@@ -174,8 +174,8 @@ class RoleServiceImplTest {
         injectCriteriaLookupServiceIntoRoleService()
 
         List<Role> expectedRoles = new ArrayList<Role>()
-        for (RoleBo roleBo : sampleRoles.values()) {
-            expectedRoles.add(RoleBo.to(roleBo))
+        for (RoleBoLite roleBo : sampleRoles.values()) {
+            expectedRoles.add(RoleBoLite.to(roleBo))
         }
 
         QueryByCriteria.Builder query = QueryByCriteria.Builder.create()

@@ -28,9 +28,9 @@
   <bean id="Uif-BaseTheme-parentBean" abstract="true" parent="Uif-ViewTheme">
     <property name="cssFiles">
       <list>
-        <!--<value>krad/css/krad_2.2.0.min.css</value>-->
+        <value>krad/css/krad_2.2.0.min.css</value>
         <!-- For Debugging, uncomment out the values below (and comment out the minimized css above) -->
-        <value>krad/css/global/fss-reset.css</value>
+        <!--<value>krad/css/global/fss-reset.css</value>
         <value>krad/css/global/fss-layout.css</value>
         <value>krad/css/global/fss-text.css</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.css</value>
@@ -43,14 +43,14 @@
         <value>krad/plugins/rice/spinner/smartspinner.css</value>
         <value>krad/plugins/tooltip/jquery.tools.tooltip.css</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
-        <value>krad/css/global/base.css</value>
+        <value>krad/css/global/base.css</value>-->
       </list>
     </property>
     <property name="scriptFiles">
       <list>
-        <!--<value>krad/scripts/krad_2.2.0.js</value>-->
-         <!--For Debugging, uncomment out the values below (and comment out the minimized js above) -->
-        <value>krad/plugins/jquery/jquery-1.7.2.js</value>
+        <value>krad/scripts/krad_2.2.0.min.js</value>
+        <!-- For Debugging, uncomment out the values below (and comment out the minimized js above) -->
+        <!--<value>krad/plugins/jquery/jquery-1.7.2.js</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.js</value>
         <value>krad/plugins/cookie/jquery.cookie.js</value>
         <value>krad/plugins/postmsg/jquery.ba-postmessage.js</value>
@@ -84,7 +84,7 @@
         <value>krad/scripts/krad.initialize.js</value>
         <value>krad/scripts/krad.ajax.js</value>
         <value>krad/scripts/krad.utility.js</value>
-        <value>krad/scripts/krad.validate.js</value>
+        <value>krad/scripts/krad.validate.js</value>-->
       </list>
     </property>
   </bean>

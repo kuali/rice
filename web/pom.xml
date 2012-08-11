@@ -134,14 +134,22 @@
             <configuration>
               <webappSourceDir>${basedir}/src/main/webapp</webappSourceDir>
               <cssSourceDir>krad</cssSourceDir>
-              <cssSourceIncludes>
-                <cssSourceInclude>css/**/*.css</cssSourceInclude>
-                <cssSourceInclude>plugins/**/*.css</cssSourceInclude>
-              </cssSourceIncludes>
-              <cssSourceExcludes>
-                <cssSourceExclude>css/ks/*.css</cssSourceExclude>
-                <cssSourceExclude>css/kns/*.css</cssSourceExclude>
-              </cssSourceExcludes>
+              <cssSourceFiles>
+                <cssSourceFile>css/global/fss-reset.css</cssSourceFile>
+                <cssSourceFile>css/global/fss-text.css</cssSourceFile>
+                <cssSourceFile>plugins/jqueryUI/jquery-ui-1.8.19.css</cssSourceFile>
+                <cssSourceFile>plugins/jgrowl/jquery.jgrowl.css</cssSourceFile>
+                <cssSourceFile>plugins/rice/datatables/jquery.dataTables.css</cssSourceFile>
+                <cssSourceFile>plugins/rice/datatables/TableTools.css</cssSourceFile>
+                <cssSourceFile>plugins/fancybox/jquery.fancybox.css</cssSourceFile>
+                <cssSourceFile>plugins/rice/textpopout/popoutTextarea.css</cssSourceFile>
+                <cssSourceFile>plugins/rice/menu/tabs.css</cssSourceFile>
+                <cssSourceFile>plugins/rice/spinner/smartspinner.css</cssSourceFile>
+                <cssSourceFile>plugins/tooltip/jquery.tools.tooltip.css</cssSourceFile>
+                <cssSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.css</cssSourceFile>
+                <cssSourceFile>css/global/base.css</cssSourceFile>
+                <cssSourceFile>css/global/fss-layout.css</cssSourceFile>
+              </cssSourceFiles>
               <jsSourceDir>krad</jsSourceDir>
               <jsSourceFiles>
                 <jsSourceFile>plugins/jquery/jquery-1.7.2.js</jsSourceFile>
@@ -153,7 +161,6 @@
                 <jsSourceFile>plugins/watermark/jquery.watermark.js</jsSourceFile>
                 <jsSourceFile>plugins/validate/jquery.validate.js</jsSourceFile>
                 <jsSourceFile>plugins/tooltip/jquery.tools.min.js</jsSourceFile>
-                <jsSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/spinner/smartspinner.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/menu/krad.navigationMenu.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/textpopout/krad.textareaPopout.js</jsSourceFile>
@@ -168,7 +175,6 @@
                 <jsSourceFile>plugins/jqform/jquery.form.js</jsSourceFile>
                 <jsSourceFile>plugins/fancybox/jquery.fancybox.pack.js</jsSourceFile>
                 <jsSourceFile>plugins/easydrag/jquery.easydrag.js</jsSourceFile>
-                <jsSourceFile>plugins/easing/jquery.easing-1.3.pack.js</jsSourceFile>
                 <jsSourceFile>plugins/json/jquery.json-2.2.js</jsSourceFile>
                 <jsSourceFile>plugins/infusion/infusion-1.4.js</jsSourceFile>
                 <jsSourceFile>plugins/infusion/infusion.reorderer.js</jsSourceFile>
@@ -179,6 +185,8 @@
                 <jsSourceFile>scripts/krad.ajax.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.utility.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.validate.js</jsSourceFile>
+                <jsSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</jsSourceFile>
+                <jsSourceFile>plugins/easing/jquery.easing-1.3.pack.js</jsSourceFile>
               </jsSourceFiles>
               <cssTargetDir>krad/css</cssTargetDir>
               <cssFinalFile>krad_2.2.0.css</cssFinalFile>

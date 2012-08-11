@@ -157,7 +157,7 @@
         p:propertyName="startTime" p:label="Start Time"  p:refreshWhenChangedPropertyNames="#lp.allDay"
         p:resetDataOnRefresh="true" p:required="@{#lp.allDay eq false}" >
     <property name="control">
-      <bean parent="Uif-TextControl" p:size="4" p:watermarkText="hh:mm" p:disabled="@{!#lp.allDay}"/>
+      <bean parent="Uif-TextControl" p:size="4" p:watermarkText="hh:mm" p:disabled="@{#lp.allDay}"/>
     </property>
     <property name="validCharactersConstraint">
       <bean parent="TimePatternConstraint" />
@@ -168,7 +168,7 @@
         p:propertyName="startTimeAmPm" p:refreshWhenChangedPropertyNames="#lp.allDay" p:required="@{#lp.allDay eq false}">
 
     <property name="control">
-      <bean parent="Uif-DropdownControl" p:disabled="@{!#lp.allDay}">
+      <bean parent="Uif-DropdownControl" p:disabled="@{#lp.allDay}">
         <property name="options">
           <list>
             <bean parent="Uif-KeyLabelPair" p:key="AM" p:value="AM"/>

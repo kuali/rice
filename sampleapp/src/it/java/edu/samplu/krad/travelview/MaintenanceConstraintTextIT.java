@@ -35,9 +35,9 @@ public class MaintenanceConstraintTextIT extends KradMenuITBase {
      */
     public void testVerifyConstraintText() throws Exception {
         gotoMenuLinkLocator();
-        assertEquals("Must be 10 digits", selenium.getText("css=#u802_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u853_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u1067_add_constraint_span"));
-        assertEquals("* indicates required field", selenium.getText("css=#u1138_span"));
+        assertEquals("Must be 10 digits", selenium.getText("css=#u542_constraint_span"));
+        assertEquals("Must be 10 digits", selenium.getText("css=#quickfinder2_constraint_span"));
+        assertEquals("Must be 10 digits", selenium.getText("css=#u716_add_constraint_span"));
+        assertEquals("* indicates required field", selenium.getText("css=#u100008_span"));
     }
 }

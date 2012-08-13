@@ -79,18 +79,32 @@ public final class ActionSet extends AbstractDataTransferObject implements Actio
 	public boolean hasAction(String actionCode) {
 		return actionSetList != null && actionSetList.contains(actionCode);
 	}
-	
-	@Override
-	public boolean addAction(String actionCode) {
+
+    /**
+     * 
+     * @deprecated  As of release 2.1.2 addAction should be performed using { @link ActionSet.Builder#addAction }
+     * 
+     * @param actionCode
+     * @return
+     */
+    @Override
+	@Deprecated public boolean addAction(String actionCode) {
 		if (!actionSetList.contains(actionCode)) {
 			actionSetList.add(actionCode);
 			return true;
 		}
 		return false;
 	}
-	
-	@Override
-	public boolean removeAction(String actionCode) {
+
+    /**
+     *
+     * @deprecated  As of release 2.1.2 removeAction should be performed using { @link ActionSet.Builder#removeAction }
+     *
+     * @param actionCode
+     * @return
+     */
+    @Override
+    @Deprecated public boolean removeAction(String actionCode) {
 		return actionSetList.remove(actionCode);
 	}
 	
@@ -130,43 +144,85 @@ public final class ActionSet extends AbstractDataTransferObject implements Actio
         return hasAction(KewApiConstants.ACTION_TAKEN_ROUTED_CD);
     }
 
+    /**
+     *
+     * @deprecated  As of release 2.1.2 addApprove should be performed using { @link ActionSet.Builder#addApprove }
+     *
+     * @return
+     */
 	@Override
-	public boolean addApprove() {
+    @Deprecated public boolean addApprove() {
 		return addAction(KewApiConstants.ACTION_TAKEN_APPROVED_CD);
 	}
-	
+
+    /**
+     *
+     * @deprecated  As of release 2.1.2 addComplete should be performed using { @link ActionSet.Builder#addComplete }
+     *
+     * @return
+     */
 	@Override
-	public boolean addComplete() {
+    @Deprecated public boolean addComplete() {
 		return addAction(KewApiConstants.ACTION_TAKEN_COMPLETED_CD);
 	}
-	
+
+    /**
+     *
+     * @deprecated  As of release 2.1.2 addAcknowledge should be performed using { @link ActionSet.Builder#addAcknowledge }
+     *
+     * @return
+     */
 	@Override
-	public boolean addAcknowledge() {
+    @Deprecated public boolean addAcknowledge() {
 		return addAction(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD);
 	}
-	
+
+    /**
+     *
+     * @deprecated  As of release 2.1.2 addFyi should be performed using { @link ActionSet.Builder#addFyi }
+     *
+     * @return
+     */
 	@Override
-	public boolean addFyi() {
+    @Deprecated public boolean addFyi() {
 		return addAction(KewApiConstants.ACTION_TAKEN_FYI_CD);
 	}
-	
+
+    /**
+     *
+     * @deprecated  As of release 2.1.2 addDisapprove should be performed using { @link ActionSet.Builder#addDisapprove }
+     *
+     * @return
+     */
 	@Override
-	public boolean addDisapprove() {
+    @Deprecated public boolean addDisapprove() {
 		return addAction(KewApiConstants.ACTION_TAKEN_DENIED_CD);
 	}
-	
+
+    /**
+     *
+     * @deprecated  As of release 2.1.2 addCancel should be performed using { @link ActionSet.Builder#addCancel }
+     *
+     * @return
+     */
 	@Override
-	public boolean addCancel() {
+    @Deprecated public boolean addCancel() {
 		return addAction(KewApiConstants.ACTION_TAKEN_CANCELED_CD);
 	}
 
+    /**
+     *
+     * @deprecated  As of release 2.1.2 addRouted should be performed using { @link ActionSet.Builder#addRouted }
+     *
+     * @return
+     */
 	@Override
-    public boolean addRouted() {
+    @Deprecated public boolean addRouted() {
         return addAction(KewApiConstants.ACTION_TAKEN_ROUTED_CD);
     }
     
 	/**
-     * A builder which can be used to construct {@link DisplayParameters} instances.  Enforces the constraints of the {@link DocumentContentContract}.
+     * A builder which can be used to construct {@link ActionSet} instances.  Enforces the constraints of the {@link ActionSetContract}.
      */
 	public final static class Builder implements Serializable, ModelBuilder, ActionSetContract {
 	    

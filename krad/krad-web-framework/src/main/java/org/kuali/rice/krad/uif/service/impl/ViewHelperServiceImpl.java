@@ -370,11 +370,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // move expressions on property replacers and component modifiers
         for (PropertyReplacer replacer : component.getPropertyReplacers()) {
-            ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, false);
+            ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, true);
         }
 
         for (ComponentModifier modifier : component.getComponentModifiers()) {
-            ExpressionUtils.populatePropertyExpressionsFromGraph(modifier, false);
+            ExpressionUtils.populatePropertyExpressionsFromGraph(modifier, true);
         }
 
         // for attribute fields, set defaults from dictionary entry

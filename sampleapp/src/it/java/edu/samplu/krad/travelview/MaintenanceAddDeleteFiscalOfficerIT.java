@@ -15,6 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
@@ -36,36 +37,23 @@ public class MaintenanceAddDeleteFiscalOfficerIT extends KradMenuITBase {
      */
     public void testVerifyAddDeleteFiscalOfficer() throws Exception {
         gotoMenuLinkLocator();
-        selenium.type("id=u1067_add_control", "1234567890");
-        selenium.type("id=u1101_add_control", "2");
-        selenium.click("id=u1066_add");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isElementPresent("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
+        focusAndType("name=newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number", "1234567890");
+        focusAndType("name=newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
+        
+        selenium.click("//button[@data-loadingmessage='Adding Line...']");
+        
+        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
+       
         assertEquals("1234567890", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
         assertEquals("2", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId"));
-        selenium.click("css=#u1065_line0");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (!selenium.isElementPresent("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
+       
+        selenium.click("//button[@data-loadingmessage='Deleting Line...']");
+        
+        ITUtil.waitForElement(selenium,  "name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");       
+    }
+    
+    private void focusAndType(String fieldLocator, String typeText) {
+        selenium.focus(fieldLocator);
+        selenium.type(fieldLocator, typeText);
     }
 }

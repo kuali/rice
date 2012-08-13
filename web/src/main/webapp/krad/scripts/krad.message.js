@@ -192,7 +192,7 @@ function createWatermark(id, watermark) {
  * @param content
  * @returns {Boolean} true if there was an incident, false otherwise
  */
-function  handleIncidentReport(content) {
+function handleIncidentReport(content) {
     var viewId = jQuery("#viewId", content);
     if (viewId.length && viewId.val() === kradVariables.INCIDENT_REPORT_VIEW_CLASS) {
         return true;
@@ -200,4 +200,18 @@ function  handleIncidentReport(content) {
     else {
         return false;
     }
+}
+
+/**
+ * Called when client side validation is performed (for an action) and are errors
+ * are present to display a notification to the user
+ *
+ * @param message - (optional) message for notification, default to generic message if not given
+ */
+function showClientSideErrorNotification(message) {
+    if (!message) {
+        message = "The form contains errors. Please correct these errors and try again.";
+    }
+
+    showLightboxContent(message);
 }

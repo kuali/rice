@@ -54,6 +54,7 @@ KradVariables.prototype = {
      HAS_WARNING_CLASS : "uif-hasWarning",
      HEADER_TEXT_CLASS : "uif-headerText",
      IMAGE_LOCATION : "kradImageLocation",
+     PORTAL_IFRAME_ID : "iframeportlet",
      INCIDENT_REPORT_VIEW_CLASS : "Uif-IncidentReportView",
      INFO_HIGHLIGHT_SECTION_CLASS : "uif-infoHighlight-section",
      INFO_MESSAGE_ITEM_CLASS : "uif-infoMessageItem-field",

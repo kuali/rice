@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * tests various utility functions in krad.utility.js. Test names need a 'test' suffix to be detected
  *

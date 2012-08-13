@@ -15,28 +15,30 @@
  */
 
 /**
- * Submits the form via ajax or does a normal form submit depending on whether the form was submitted via ajax or not,
- * by default ajaxsubmit is true
+ * Submits the form via ajax or does a normal form submit depending on whether the form
+ * was submitted via ajax or not, by default ajaxsubmit is true
  *
  * @param component - the component on which the action has been invoked
  */
 function actionInvokeHandler(component) {
+    var jqComp = jQuery(component);
+
     // read the data attributes. All simple data attributes are lower-cased.
-    var ajaxSubmit = jQuery(component).data("ajaxsubmit");
-    var submitData = jQuery(component).data("submitData");
-    var successCallback = jQuery(component).data("successcallback");
-    var elementToBlock = jQuery(component).data("elementtoblock");
-    var errorCallback = jQuery(component).data("errorcallback");
-    var preSubmitCall = jQuery(component).data("presubmitcall");
-    var validate = jQuery(component).data("validate");
-    var displayResponseInLightBox = jQuery(component).data("displayresponseinlightbox");
-    var loadingMessage = jQuery(component).data("loadingmessage");
-    var disableBlocking = jQuery(component).data("disableblocking");
+    var ajaxSubmit = jqComp.data("ajaxsubmit");
+    var submitData = jqComp.data("submitData");
+    var successCallback = jqComp.data("successcallback");
+    var elementToBlock = jqComp.data("elementtoblock");
+    var errorCallback = jqComp.data("errorcallback");
+    var preSubmitCall = jqComp.data("presubmitcall");
+    var validate = jqComp.data("validate");
+    var displayResponseInLightBox = jqComp.data("displayresponseinlightbox");
+    var loadingMessage = jqComp.data("loadingmessage");
+    var disableBlocking = jqComp.data("disableblocking");
     var returnType = null;
 
     //set the returnType if displayResponseInLightBox is true
     if (displayResponseInLightBox) {
-        returnType = "display-response-in-lightbox";
+        returnType = "display-lightbox";
     }
 
     // methodToCall comes as a part of submitData
@@ -91,14 +93,8 @@ function validateAndAjaxSubmitForm(methodToCall, successCallback, additionalData
  *
  * <p>
  * If a form has the properties enctype or encoding set to multipart/form-data, an iframe is created
- * to hold the response
- * If the returned response contains scripts that are meant to be run on page load,
+ * to hold the response. If the returned response contains scripts that are meant to be run on page load,
  * they will be executed within the iframe since the jquery ready event is triggered
- * </p>
- *
- * <p>
- * For the above reason, the renderFullView below is set to false so that the script content between
- * <head></head> is left out
  * </p>
  *
  * @param methodToCall - the controller method to be called
@@ -119,12 +115,17 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
 
     // invoke validateForm if validate flag is true, if returns false do not continue
     if (validate && !validateForm()) {
+        clearHiddens();
+
         return;
     }
 
     // invoke the preSubmitCall script. If it  evaluates to false return
+    // TODO: would be nice if our presubmit call allowed additional submit data to be added
     if (preSubmitCall) {
         if (!eval(preSubmitCall)) {
+            clearHiddens();
+
             return;
         }
     }
@@ -140,10 +141,6 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
     } else {
         data.ajaxReturnType = "update-page";
     }
-
-    // Since we are explicitly setting renderFullView to false, we need to remove any input renderFullViewParam
-    jQuery("input[name='renderFullView']").remove();
-    data.renderFullView = false;
 
     // Since this method will only be called for an ajax submit set the ajaxRequest to true
     data.ajaxRequest = true;
@@ -178,7 +175,7 @@ function ajaxSubmitFormFullOpts(methodToCall, successCallback, additionalData, e
 
             var hasError = handleIncidentReport(response);
 
-            //invoke the invokeAjaxReturnHandler to determine which data handler to use
+            // invoke the invokeAjaxReturnHandler to determine which data handler to use
             invokeAjaxReturnHandler(tempDiv);
 
             if (!hasError) {
@@ -294,12 +291,16 @@ function validateAndSubmitForm(methodToCall, additionalData, preSubmitCall) {
 function submitFormFullOpts(methodToCall, additionalData, validate, preSubmitCall, loadingMessage, disableBlocking) {
     // invoke validateForm if validate flag is true, if returns false do not continue
     if (validate && !validateForm()) {
+        clearHiddens();
+
         return;
     }
 
     // if presubmit call given, invoke. If returns false don't continue
     if (preSubmitCall != null && preSubmitCall !== "") {
         if (!eval(preSubmitCall)) {
+            clearHiddens();
+
             return;
         }
     }
@@ -339,21 +340,13 @@ function validateForm() {
         validForm = false;
 
 		jumpToTop();
-        showLightboxContent("The form contains errors.  Please correct these errors and try again.");
+        showClientSideErrorNotification();
 	}
 
     jq.watermark.showAll();
     pauseTooltipDisplay = false;
 
     return validForm;
-}
-
-/**
- * Validate form.  When no validation errors exists the form is submitted with the methodToCall of the form.
- * The page is then replaced with the result of the ajax call.
- */
-function validateAndSubmitUsingFormMethodToCall() {
-    validateAndSubmit(null, updatePageCallback);
 }
 
 /**
@@ -395,7 +388,6 @@ function updatePageCallback(content) {
 
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
     var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " > #" + kradVariables.PAGE_CONTENT_HEADER_CLASS;
-    hideBubblePopups(pageInLayout);
     jQuery(pageInLayout).empty().append(page.find(">*"));
 
     setPageBreadcrumb();
@@ -488,6 +480,11 @@ function updateComponentHandler(content, dataAttr) {
         //runs scripts on the span or div with id
         runHiddenScripts(id);
 
+        // lightbox specific processing
+        if (jQuery('#renderedInLightBox').val() == 'true') {
+            jQuery("#" + id).css('display', 'none');
+        }
+
         if (origColor == "") {
             origColor = "transparent";
         }
@@ -504,7 +501,7 @@ function updateComponentHandler(content, dataAttr) {
 }
 
 /**
- *  Replaces the view with the given content and run the hidden scripts.
+ * Replaces the view with the given content and run the hidden scripts.
  *
  * @param content - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
@@ -535,25 +532,8 @@ function redirectHandler(content, dataAttr) {
  * @param content - server response
  * @param dataAttr -  any additional data attributes that the server needs to send
  */
-function displayResponseInLightBoxHandler(content, dataAttr) {
+function displayLightBoxHandler(content, dataAttr) {
     showLightboxContent(content);
-}
-
-/**
- * Handles a link that should post the form. Should be called from the methods
- * onClick event
- *
- * @param methodToCall -
- *          the value that should be set for the methodToCall parameter
- * @param navigateToPageId -
- *          the id for the page that the link should navigate to
- */
-function handleActionLink(component, methodToCall, navigateToPageId) {
-    var submitData = {};
-    submitData = jQuery(component).data('submitData');
-    submitData['navigateToPageId'] = navigateToPageId;
-
-    ajaxSubmitForm(methodToCall, updatePageCallback, submitData, null, null, null);
 }
 
 /**
@@ -566,9 +546,9 @@ function handleActionLink(component, methodToCall, navigateToPageId) {
  *
  * @param id - id for the component to retrieve
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
- * @param addCallbackFunc - additional callback function to be executed (optional)
+ * @param successCallback - additional callback function to be executed after the component is retrieved (optional)
  */
-function retrieveComponent(id, methodToCall, addCallbackFunc) {
+function retrieveComponent(id, methodToCall, successCallback) {
     var elementToBlock = jQuery("#" + id);
 
     // if a call is made from refreshComponentUsingTimer() and the component does not exist on the page or is hidden
@@ -582,85 +562,11 @@ function retrieveComponent(id, methodToCall, addCallbackFunc) {
         }
     }
 
-    var updateRefreshableComponentCallback = function (htmlContent) {
-        var component = jQuery("#" + id + "_update", htmlContent);
-
-        var displayWithId = id;
-
-        // special label handling, if any
-        var theLabel = jQuery("#" + displayWithId + "_label_span", component);
-        if (jQuery(".displayWith-" + displayWithId).length && theLabel.length) {
-            theLabel.addClass("displayWith-" + displayWithId);
-            jQuery("span.displayWith-" + displayWithId).replaceWith(theLabel);
-            component.remove("#" + displayWithId + "_label_span");
-        }
-
-        // lightbox specific processing
-        if (jQuery('#renderedInLightBox').val() == 'true') {
-            component.find('.uif-dialogButtons').button();
-        }
-
-        elementToBlock.unblock({onUnblock:function () {
-            var origColor = jQuery(component).find("#" + id).css("background-color");
-            jQuery(component).find("#" + id).css("background-color", "");
-            jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
-
-            // remove old stuff
-            if (jQuery("#" + id + "_errors").length) {
-                jQuery("#" + id + "_errors").remove();
-            }
-
-            jQuery("input[data-for='" + id + "']").each(function () {
-                jQuery(this).remove();
-            });
-
-            // replace component
-            if (jQuery("#" + id).length) {
-                jQuery("#" + id).replaceWith(component.html());
-            }
-
-            if (jQuery("#" + id).parent().is("td")) {
-                jQuery("#" + id).parent().show();
-            }
-
-            //runs scripts on the span or div with id
-            runHiddenScripts(id);
-
-            // lightbox specific processing
-            if (jQuery('#renderedInLightBox').val() == 'true') {
-                jQuery("#" + id).css('display', 'none');
-            }
-
-            if (origColor == "") {
-                origColor = "transparent";
-            }
-
-            jQuery("#" + id).animate({backgroundColor:origColor}, 5000);
-
-            // execute additional callback function if specified
-            if (addCallbackFunc) {
-                addCallbackFunc();
-            }
-        }
-        });
-
-        var displayWithLabel = jQuery(".displayWith-" + displayWithId);
-        displayWithLabel.show();
-        if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
-            displayWithLabel.parent().show();
-        }
-
-    };
-
     if (!methodToCall) {
         methodToCall = "refresh";
     }
 
-    // Since we are always setting skipViewInit to true, remove any existing input skipViewInit param
-    jQuery("input[name='skipViewInit']").remove();
-
-    ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
-            {updateComponentId:id, skipViewInit:"true"}, elementToBlock, null, "update-component");
+    ajaxSubmitForm(methodToCall, successCallback,{updateComponentId:id}, elementToBlock, null, "update-component");
 }
 
 /**
@@ -688,13 +594,10 @@ function toggleInactiveRecordDisplay(component, collectionGroupId, showInactive)
         });
     };
 
-    // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
-    jQuery("input[name='skipViewInit']").remove();
-
     var submitData = {};
+
     submitData = jQuery(component).data('submitData');
     submitData['updateComponentId'] = collectionGroupId;
-    submitData['skipViewInit'] = "true";
     submitData['showInactiveRecords'] = showInactive;
 
     ajaxSubmitForm("toggleInactiveRecordDisplay", updateCollectionCallback,
@@ -719,13 +622,10 @@ function performCollectionAction(component, collectionGroupId) {
         };
 
         var methodToCall = jQuery("input[name='methodToCall']").val();
-        // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
-        jQuery("input[name='skipViewInit']").remove();
 
         var submitData = {};
         submitData = jQuery(component).data('submitData');
         submitData['updateComponentId'] = collectionGroupId;
-        submitData['skipViewInit'] = "true";
 
         ajaxSubmitForm(methodToCall, updateCollectionCallback, submitData,
                 elementToBlock, null, "update-component");
@@ -767,11 +667,13 @@ function addLineToCollection(component, collectionGroupId, collectionBaseId) {
 
         if (valid) {
             performCollectionAction(component, collectionGroupId);
+
             return true;
         }
         else {
-            jQuery("#formComplete").html("");
-            alert("This addition contains errors.  Please correct these errors and try again.");
+            clearHiddens();
+            showClientSideErrorNotification();
+
             return false;
         }
     }
@@ -810,8 +712,8 @@ function validateAndPerformCollectionAction(component, collectionGroupId, collec
             performCollectionAction(component, collectionGroupId);
         }
         else {
-            jQuery("#formComplete").html("");
-            alert("This line contains errors.  Please correct these errors and try again.");
+            clearHiddens();
+            showClientSideErrorNotification("This line contains errors. Please correct these errors and try again.");
         }
     }
 }
@@ -967,27 +869,3 @@ function refreshComponentUsingTimer(componentId, methodToCall, timeInterval) {
     }, timeInterval * 1000);
 }
 
-/**
- * Makes a get request to the server so that the form with the specified formKey will
- * be cleared server side
- */
-function clearServerSideForm(formKey) {
-    var queryData = {};
-
-    queryData.methodToCall = 'clearForm';
-    queryData.skipViewInit = 'true';
-    queryData.formKey = formKey;
-
-    var postUrl = getConfigParam("kradUrl") + "/listener";
-
-    jQuery.ajax({
-        url:postUrl,
-        dataType:"json",
-        data:queryData,
-        async:false,
-        beforeSend:null,
-        complete:null,
-        error:null,
-        success:null
-    });
-}

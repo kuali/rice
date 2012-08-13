@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -129,14 +130,10 @@ public class Action extends ContentElementBase {
 
         // build final onclick script
         String onClickScript = this.getOnClickScript();
-        if (onClickScript == null) {
-            onClickScript = "";
-        }
-
         if (StringUtils.isNotBlank(actionScript)) {
-            onClickScript += actionScript;
+            onClickScript = ScriptUtils.appendScript(onClickScript, actionScript);
         } else {
-            onClickScript += "actionInvokeHandler(this);";
+            onClickScript = ScriptUtils.appendScript(onClickScript, "actionInvokeHandler(this);");
         }
 
         // add dirty check if it is enabled for the view and the action requires it

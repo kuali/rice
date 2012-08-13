@@ -425,9 +425,6 @@ public abstract class UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
 
-        // only refreshing page
-        form.setRenderFullView(false);
-
         return getUIFModelAndView(form, pageId);
     }
 
@@ -850,7 +847,7 @@ public abstract class UifControllerBase {
      */
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
         // indicate a redirect is occuring to prevent view processing down the line
-        form.setRequestRedirect(true);
+        form.setRequestRedirected(true);
 
         //set the ajaxReturnType on the form this will override the return type requested by the client
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.REDIRECT.getKey());

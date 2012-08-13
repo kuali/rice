@@ -134,10 +134,10 @@
                     <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadAttachment"
                           p:actionLabel="download attachment" p:title="download attachment"
                           p:disableBlocking="true"
-                          p:onClickScript="writeHiddenToForm(&quot;skipViewInit&quot;, &quot;true&quot;);">
+                          p:onClickScript="writeHiddenToForm(&quot;ajaxReturnType&quot;, &quot;update-none&quot;);">
                             <property name="actionParameters">
                               <map>
-                                <entry key="selectedLineIndex" value="@{#index}"/>
+                                  <entry key="selectedLineIndex" value="@{#index}"/>
                               </map>
                             </property>
                      </bean>       

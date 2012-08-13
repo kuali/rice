@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.web.bind;
+package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,7 +24,6 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -123,11 +122,8 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         history.setCurrent(entry);
         incidentReportForm.setFormHistory(history);
 
-        // Set render full view to force full render
-        incidentReportForm.setRenderFullView(true);
-
         // Set the ajax return type
-        incidentReportForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.SHOWINCIDENT.getKey());
+        incidentReportForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATEVIEW.getKey());
 
         ModelAndView modelAndView = UifControllerHelper.getUIFModelAndView(incidentReportForm, "");
         try {

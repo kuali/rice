@@ -130,8 +130,6 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putInfo("gField2", "serverTestInfo");
             GlobalVariables.getMessageMap().putInfo("gField3", "serverTestInfo");
         }
-        // only refreshing page
-        form.setRenderFullView(false);
 
         return getUIFModelAndView(form, pageId);
     }

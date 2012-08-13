@@ -279,10 +279,15 @@ function isCalledWithinLightbox() {
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-    if (usePortalForContext()) {
-        returnField = top.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
-    }else{
-        returnField = jq('[name="' + escapeName(fieldName) + '"]');
+    if (usePortalForContext() && isPortalContainer(top)) {
+        returnField = top.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('[name="' +
+                escapeName(fieldName) + '"]');
+    } else {
+        returnField = getContext()('[name="' + escapeName(fieldName) + '"]');
+    }
+
+    if (!returnField.length) {
+        return;
     }
 
     returnField.val(value);
@@ -298,15 +303,18 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    if (usePortalForContext()) {
-        jQuery('#kualiForm').attr('target',getContext().find('#iframeportlet').attr('name'));
-    }else{
-        if (parent.jq != null) {
-            jQuery('#kualiForm').attr('target',parent.jQuery('#iframeportlet').attr('name'));
-        }else{
-            jQuery('#kualiForm').attr('target','_parent');
-        }
+    var returnWindowName;
+    if (usePortalForContext() && isPortalContainer(top)) {
+        returnWindowName = top.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).attr('name');
     }
+    else if (parent != null) {
+        returnWindowName = parent.name;
+    }
+    else {
+        returnWindowName = '_parent';
+    }
+
+    jQuery('#' + kradVariables.KUALI_FORM).attr('target', returnWindowName);
 }
 
 /**
@@ -676,8 +684,9 @@ function createTabs(id, options) {
 function createSuggest(controlId, options, queryFieldId, queryParameters) {
     options.source = function (request, response) {
         var queryData = {};
+
         queryData.methodToCall = 'performFieldSuggest';
-        queryData.skipViewInit = 'true';
+        queryData.ajaxReturnType = 'update-none';
         queryData.formKey = jQuery("input#formKey").val();
         queryData.queryTerm = request.term;
         queryData.queryFieldId = queryFieldId;
@@ -950,7 +959,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
     var queryData = {};
 
     queryData.methodToCall = 'performFieldQuery';
-    queryData.skipViewInit = 'true';
+    queryData.ajaxReturnType = 'update-none';
     queryData.formKey = jQuery("input#formKey").val();
     queryData.queryFieldId = queryFieldId;
 

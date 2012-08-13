@@ -40,11 +40,10 @@
                 <#include "redirect.ftl"  parse=true/>
             </div>
 
-        <#elseif KualiForm.ajaxReturnType == "display-response-in-lightbox">
-            <div data-handler="display-response-in-lightbox">
+        <#elseif KualiForm.ajaxReturnType == "display-lightbox">
+            <div data-handler="display-lightbox">
                 <#include "updateComponent.ftl"  parse=true/>
             </div>
-
         </#if>
     <#else>
         <#include "fullView.ftl" parse=true/>

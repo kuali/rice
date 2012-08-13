@@ -89,19 +89,19 @@ public class UifControllerHelper {
         UifFormBase form = (UifFormBase) model;
 
         // handle view building if not a redirect
-        if (!form.isRequestRedirect()) {
+        if (!form.isRequestRedirected()) {
             // prepare view instance
             prepareViewForRendering(request, form);
 
-            // for component refresh need to export the component as a model
-            if (!form.isRenderFullView()) {
-                Component component = null;
-                if (StringUtils.isBlank(form.getUpdateComponentId())) {
-                    // refresh component is page
-                    component = form.getView().getCurrentPage();
-                } else {
-                    component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
-                }
+            // for component and page refresh need to export the component as a model
+            Component component = null;
+            if (form.isUpdateComponentRequest()) {
+                component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
+            } else if (form.isUpdatePageRequest()) {
+                component = form.getView().getCurrentPage();
+            }
+
+            if (component != null) {
                 modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
             }
         }
@@ -162,7 +162,7 @@ public class UifControllerHelper {
      */
     public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
-        if (!form.isRenderFullView() && StringUtils.isNotBlank(form.getUpdateComponentId())) {
+        if (form.isUpdateComponentRequest()) {
             String refreshComponentId = form.getUpdateComponentId();
 
             // get a new instance of the component

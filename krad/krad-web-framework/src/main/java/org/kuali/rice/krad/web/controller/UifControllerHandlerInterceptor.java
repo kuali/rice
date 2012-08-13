@@ -102,19 +102,12 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         boolean persistFormToSession = uifForm.getView() != null ? uifForm.getView().isPersistFormToSession() :
                 uifForm.getPostedView().isPersistFormToSession();
 
-        if (persistFormToSession) {
-            // Remove the session transient variables from the request form before adding it to the list of
-            // Uif session forms
-            uifFormManager.purgeForm(uifForm);
-            uifFormManager.addSessionForm(uifForm);
-        }
-
         // cleaning of view structure
-        if (uifForm.isRequestRedirect()) {
+        if (uifForm.isRequestRedirected() || uifForm.isUpdateNoneRequest()) {
             // view wasn't rendered, just set to null and leave previous posted view
             uifForm.setView(null);
-        } else if (uifForm.isSkipViewInit()) {
-            // partial refresh or query
+        } else if (uifForm.isUpdateViewRequest()) {
+            // partial refresh on posted view
             View postedView = uifForm.getPostedView();
             if (postedView != null) {
                 postedView.getViewHelperService().cleanViewAfterRender(postedView);
@@ -128,6 +121,13 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
 
             uifForm.setPostedView(view);
             uifForm.setView(null);
+        }
+
+        // remove the session transient variables from the request form before adding it to the list of
+        // Uif session forms
+        if (persistFormToSession) {
+            uifFormManager.purgeForm(uifForm);
+            uifFormManager.addSessionForm(uifForm);
         }
     }
 

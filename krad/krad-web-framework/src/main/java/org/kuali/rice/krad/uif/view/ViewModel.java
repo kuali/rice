@@ -43,7 +43,6 @@ public interface ViewModel extends Serializable {
      */
     public void postBind(HttpServletRequest request);
 
-
     /**
      * Unique Id for the <code>View</code> instance. This is specified for a
      * view in its definition by setting the 'id' property.
@@ -329,9 +328,20 @@ public interface ViewModel extends Serializable {
     public void setState(String state);
 
     /**
-     * Gets the ajaxRequest. Indicates if the request is coming through an ajax call.
+     * Indicates whether the request was made by an ajax call
      *
-     * @return
+     * <p>
+     * Depending on whether the request was made via ajax (versus standard browser submit) the response
+     * will be handled different. For example with an ajax request we can send back partial page updates, which
+     * cannot be done with standard submits
+     * </p>
+     *
+     * <p>
+     * If this indicator is true, {@link #getAjaxReturnType()} will be used to determine how to handling
+     * the ajax return
+     * </p>
+     *
+     * @return boolean true if the request was an ajax call, false if not
      */
     public boolean isAjaxRequest();
 
@@ -343,17 +353,51 @@ public interface ViewModel extends Serializable {
     public void setAjaxRequest(boolean ajaxRequest);
 
     /**
-     * Gets the return type for the ajax call. Used to determine the handler for the request
+     * Gets the return type for the ajax call
      *
-     * @return
+     * <p>
+     * The ajax return type indicates how the response content will be handled in the client. Typical
+     * examples include updating a component, the page, or doing a redirect.
+     * </p>
+     *
+     * @return String return type
+     * @see org.kuali.rice.krad.uif.UifConstants.AjaxReturnTypes
      */
-     public String getAjaxReturnType();
+    public String getAjaxReturnType();
 
     /**
-     * Set the ajaxReturnType
+     * Indicates whether the request is to update a component (only applicable for ajax requests)
+     *
+     * @return boolean true if the request is for update component, false if not
+     */
+    public boolean isUpdateComponentRequest();
+
+    /**
+     * Indicates whether the request is to update a page (only applicable for ajax requests)
+     *
+     * @return boolean true if the request is for update page, false if not
+     */
+    public boolean isUpdatePageRequest();
+
+    /**
+     * Indicates whether the request is for a non-update of the view (only applicable for ajax requests)
+     *
+     * <p>
+     * Examples of requests that do not update the view are ajax queries or requests that download a file
+     * </p>
+     *
+     * @return boolean true if the request is for non-update, false if not
+     */
+    public boolean isUpdateNoneRequest();
+
+    public boolean isBuildViewRequest();
+
+    public boolean isUpdateViewRequest();
+
+    /**
+     * Setter for the type of ajax return
      *
      * @param ajaxReturnType
      */
     public void setAjaxReturnType(String ajaxReturnType);
-
 }

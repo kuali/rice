@@ -28,7 +28,6 @@ import java.io.StringWriter;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IncidentReportForm extends UifFormBase {
-
     private static final long serialVersionUID = -6677581167041430694L;
 
     protected String errorMessage = "The system has encountered an error and is unable to complete your request at this time. Please provide more information regarding this error by completing this Incident Report.";
@@ -49,7 +48,7 @@ public class IncidentReportForm extends UifFormBase {
 
     public IncidentReportForm() {
         super();
-        this.setRenderFullView(true);
+
         setViewTypeName(ViewType.INCIDENT);
     }
 

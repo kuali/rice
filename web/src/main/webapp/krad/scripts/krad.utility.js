@@ -150,6 +150,15 @@ function usePortalForContext() {
 }
 
 /**
+ * Indicates whether the given window is the portal container
+ *
+ * @param window - window to test
+ */
+function isPortalContainer(window) {
+   return window.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length;
+}
+
+/**
  * Sets a configuration parameter that will be accessible with script
  *
  * <p>
@@ -1264,7 +1273,7 @@ function clearServerSideForm(formKey) {
     var queryData = {};
 
     queryData.methodToCall = 'clearForm';
-    queryData.skipViewInit = 'true';
+    queryData.ajaxReturnType = 'update-none';
     queryData.formKey = formKey;
 
     var postUrl = getConfigParam("kradUrl") + "/listener";

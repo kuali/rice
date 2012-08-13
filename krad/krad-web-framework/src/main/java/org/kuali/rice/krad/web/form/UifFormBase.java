@@ -92,7 +92,8 @@ public class UifFormBase implements ViewModel {
     protected Map<String, Object> clientStateForSyncing;
     @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
-    private List<Object> addedCollectionItems;
+
+    protected List<Object> addedCollectionItems;
 
     protected MultipartFile attachmentFile;
 
@@ -112,24 +113,18 @@ public class UifFormBase implements ViewModel {
     protected String dialogExplanation;
     @SessionTransient
     protected String dialogResponse;
-    private DialogManager dialogManager;
+    protected DialogManager dialogManager;
 
     @SessionTransient
-    protected boolean skipViewInit;
-    @SessionTransient
-    protected boolean requestRedirect;
+    protected boolean requestRedirected;
     @SessionTransient
     protected String updateComponentId;
-    @SessionTransient
-    protected boolean renderFullView;
 
     public UifFormBase() {
         formKey = generateFormKey();
-        renderFullView = true;
         defaultsApplied = false;
         renderedInLightBox = false;
-        skipViewInit = false;
-        requestRedirect = false;
+        requestRedirected = false;
 
         readOnlyFieldsList = new ArrayList<String>();
         viewRequestParameters = new HashMap<String, String>();
@@ -179,11 +174,6 @@ public class UifFormBase implements ViewModel {
         if (request.getParameter(UifParameters.READ_ONLY_FIELDS) != null) {
             String readOnlyFields = request.getParameter(UifParameters.READ_ONLY_FIELDS);
             setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
-        }
-
-        // reset skip view init parameter if not passed
-        if (!request.getParameterMap().containsKey(UifParameters.SKIP_VIEW_INIT)) {
-            skipViewInit = false;
         }
     }
 
@@ -476,39 +466,21 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Indicates whether a new view is being initialized or the call is refresh (or query) call
-     *
-     * @return boolean true if view initialization was skipped, false if new view is being created
-     */
-    public boolean isSkipViewInit() {
-        return skipViewInit;
-    }
-
-    /**
-     * Setter for the skip view initialization flag
-     *
-     * @param skipViewInit
-     */
-    public void setSkipViewInit(boolean skipViewInit) {
-        this.skipViewInit = skipViewInit;
-    }
-
-    /**
      * Indicates whether a redirect has been requested for the view
      *
      * @return boolean true if redirect was requested, false if not
      */
-    public boolean isRequestRedirect() {
-        return requestRedirect;
+    public boolean isRequestRedirected() {
+        return requestRedirected;
     }
 
     /**
      * Setter for the request redirect indicator
      *
-     * @param requestRedirect
+     * @param requestRedirected
      */
-    public void setRequestRedirect(boolean requestRedirect) {
-        this.requestRedirect = requestRedirect;
+    public void setRequestRedirected(boolean requestRedirected) {
+        this.requestRedirected = requestRedirected;
     }
 
     /**
@@ -545,25 +517,6 @@ public class UifFormBase implements ViewModel {
      */
     public void setUpdateComponentId(String updateComponentId) {
         this.updateComponentId = updateComponentId;
-    }
-
-    /**
-     * Indicates if the full view is to be rendered or if its just a component that
-     * needs to be refreshed
-     *
-     * @return the renderFullView
-     */
-    public boolean isRenderFullView() {
-        return this.renderFullView;
-    }
-
-    /**
-     * Setter for renderFullView
-     *
-     * @param renderFullView
-     */
-    public void setRenderFullView(boolean renderFullView) {
-        this.renderFullView = renderFullView;
     }
 
     /**
@@ -780,8 +733,54 @@ public class UifFormBase implements ViewModel {
         return ajaxReturnType;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateComponentRequest()
+     */
+    @Override
+    public boolean isUpdateComponentRequest() {
+        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey());
+    }
 
-     /**
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdatePageRequest()
+     */
+    @Override
+    public boolean isUpdatePageRequest() {
+        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATEPAGE.getKey());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateNoneRequest()
+     */
+    @Override
+    public boolean isUpdateNoneRequest() {
+        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATENONE.getKey());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isBuildViewRequest()
+     */
+    @Override
+    public boolean isBuildViewRequest() {
+        return !isAjaxRequest() || (StringUtils.isNotBlank(getAjaxReturnType()) && (getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATEVIEW.getKey()) || isUpdatePageRequest()));
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateViewRequest()
+     */
+    @Override
+    public boolean isUpdateViewRequest() {
+        return isAjaxRequest() &&
+                StringUtils.isNotBlank(getAjaxReturnType()) &&
+                (isUpdateComponentRequest() || getAjaxReturnType().equals(
+                        UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey()));
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxReturnType(java.lang.String)
      */
     @Override

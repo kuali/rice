@@ -46,13 +46,11 @@ public class UifParameters {
     public static final String REDIRECTED_INQUIRY = "redirectedInquiry";
     public static final String REDIRECTED_LOOKUP = "redirectedLookup";
 	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
-	public static final String RENDER_FULL_VIEW = "renderFullView";
 	public static final String RETURN_LOCATION = "returnLocation";
 	public static final String RETURN_FORM_KEY = "returnFormKey";
     public static final String REQUESTED_COMPONENT_ID = "reqComponentId";
     public static final String REQUEST = "request";
     public static final String SHOW_INACTIVE_RECORDS = "showInactiveRecords";
-    public static final String SKIP_VIEW_INIT = "skipViewInit";
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
     public static final String SELECTED_LINE_VALUES = "selectedLineValues";

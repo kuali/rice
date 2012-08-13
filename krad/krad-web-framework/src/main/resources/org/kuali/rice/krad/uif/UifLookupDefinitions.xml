@@ -216,8 +216,9 @@
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage"
               p:actionLabel="deselect all from this page"
               p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton"
-              p:actionScript="setMultiValueReturnTarget();jQuery('#kualiForm').submit();closeLightbox();"
+        <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false"
+              p:preSubmitCall="setMultiValueReturnTarget"
+              p:successCallback="closeLightbox()" p:errorCallback="closeLightbox()"
               p:methodToCall="returnSelected" p:actionLabel="return selected"/>
       </list>
     </property>

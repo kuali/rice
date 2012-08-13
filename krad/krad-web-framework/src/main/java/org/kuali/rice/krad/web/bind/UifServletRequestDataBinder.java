@@ -96,33 +96,43 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     }
 
     /**
-     * Performs data binding from servlet request parameters to the form and then calls
-     * <code>postBind(request)</code>.
+     * Performs data binding from servlet request parameters to the form, initializes view object, then calls
+     * {@link org.kuali.rice.krad.web.form.UifFormBase#postBind(javax.servlet.http.HttpServletRequest)}
      *
-     * @param request
+     * <p>
+     * The view is initialized by first looking for the {@code viewId} parameter in the request. If found, the view is
+     * retrieved based on this id. If the id is not present, then an attempt is made to find a view by type. In order
+     * to retrieve a view based on type, the view request parameter {@code viewTypeName} must be present. If all else
+     * fails and the viewId is populated on the form (could be populated from a previous request), this is used to
+     * retrieve the view.
+     * </p>
+     *
+     * <p>
+     * Note the view is not initialized for Ajax requests that perform partial page updates or no
+     * updates at all
+     * </p>
+     *
+     * @param request - HTTP Servlet Request instance
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void bind(ServletRequest request) {
         super.bind(request);
 
         UifFormBase form = (UifFormBase) this.getTarget();
 
-       // check for request param that indicates to skip view initialize
-        Boolean skipViewInitialization = KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT);
-        if ((skipViewInitialization == null) || !skipViewInitialization.booleanValue()) {
-            // initialize new view for request
+        // if doing a partial page update or ajax request with no updating, do not initialize view
+        if (!form.isUpdateComponentRequest() && !form.isUpdateNoneRequest()) {
             View view = null;
 
+            // attempt to retrieve a view by unique identifier first
             String viewId = request.getParameter(UifParameters.VIEW_ID);
             if (viewId != null) {
                 view = getViewService().getViewById(viewId);
             } else {
                 // attempt to get view instance by type parameters
-                ViewType viewType = null;
-
                 String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
-                viewType = StringUtils.isBlank(viewTypeName) ? form.getViewTypeName() : ViewType.valueOf(viewTypeName);
+                ViewType viewType = StringUtils.isBlank(viewTypeName) ? form.getViewTypeName() : ViewType.valueOf(
+                        viewTypeName);
 
                 if (viewType != null) {
                     Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(
@@ -165,10 +175,6 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         return KRADServiceLocatorWeb.getViewService();
     }
 
-
-
-
-
- }
+}
 
 

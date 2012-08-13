@@ -89,8 +89,9 @@ public class ScriptUtils {
             boolean quoteValue = true;
 
             Class<?> valueClass = value.getClass();
-            if (TypeUtils.isBooleanClass(valueClass) || TypeUtils.isDecimalClass(valueClass) || TypeUtils
-                    .isIntegralClass(valueClass)) {
+            if (TypeUtils.isBooleanClass(valueClass) ||
+                    TypeUtils.isDecimalClass(valueClass) ||
+                    TypeUtils.isIntegralClass(valueClass)) {
                 quoteValue = false;
             }
 
@@ -118,12 +119,14 @@ public class ScriptUtils {
      */
     public static String convertToJsValue(String value) {
         boolean isNumber = false;
+
         // save input value to preserve any whitespace formatting
         String originalValue = value;
+
         // remove whitespace for correct string matching
         value = StringUtils.strip(value);
-        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.substring(0, 1)) || value
-                .substring(0, 1).equals("-"))) {
+        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.substring(0, 1)) || value.substring(0, 1)
+                .equals("-"))) {
             try {
                 Double.parseDouble(value);
                 isNumber = true;
@@ -175,11 +178,13 @@ public class ScriptUtils {
      */
     public static String convertStringListToJsArray(List<String> list) {
         String array = "[";
+
         for (String s : list) {
             array = array + "'" + s + "',";
         }
         array = StringUtils.removeEnd(array, ",");
         array = array + "]";
+
         return array;
     }
 
@@ -195,7 +200,7 @@ public class ScriptUtils {
     public static String escapeHtml(String string) {
         if (string == null) {
             return null;
-        }  else {
+        } else {
             return StringEscapeUtils.escapeHtml(string).replace("'", "&apos;");
         }
     }
@@ -207,16 +212,37 @@ public class ScriptUtils {
      * @return - the array, with the strings escaped
      */
     public static List<String> escapeHtml(List<String> strings) {
-       if (strings == null) {
-           return null;
-       } else if (strings.isEmpty()) {
-           return strings;
-       } else {
-           List<String> result = new ArrayList<String>(strings.size());
-           for (String string: strings) {
-               result.add(escapeHtml(string));
-           }
-           return result;
-       }
+        if (strings == null) {
+            return null;
+        } else if (strings.isEmpty()) {
+            return strings;
+        } else {
+            List<String> result = new ArrayList<String>(strings.size());
+            for (String string : strings) {
+                result.add(escapeHtml(string));
+            }
+            return result;
+        }
+    }
+
+    /**
+     * Will append the second script parameter to the first if the first is not empty, also checks to see if the
+     * first script needs an end semi-colon added
+     *
+     * @param script - script that will be added to (null is allowed and converted to empty string)
+     * @param appendScript - script to append
+     * @return String result of appending the two script parameters
+     */
+    public static String appendScript(String script, String appendScript) {
+        String appendedScript = script;
+        if (appendedScript == null) {
+            appendedScript = "";
+        } else if (StringUtils.isNotBlank(appendedScript) && !appendedScript.trim().endsWith(";")) {
+            appendedScript += "; ";
+        }
+
+        appendedScript += appendScript;
+
+        return appendedScript;
     }
 }

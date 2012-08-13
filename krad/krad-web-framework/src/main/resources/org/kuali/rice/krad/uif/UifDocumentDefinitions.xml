@@ -128,7 +128,7 @@
           <property name="propertyReplacers">
             <list>
               <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items"
-                    p:condition="!#isAddLine and #line.attachment != null and #line.attachment.complete">
+                    p:condition="@{!#isAddLine and #line.attachment != null and #line.attachment.complete}">
                 <property name="replacement">
                   <list>
                     <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadAttachment"
@@ -150,7 +150,7 @@
                 </property>
               </bean>
               <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items"
-                    p:condition="!#isAddLine and (#line.attachment == null or !#line.attachment.complete)">
+                    p:condition="@{!#isAddLine and (#line.attachment == null or !#line.attachment.complete)}">
                 <property name="replacement">
                   <list>
                     <bean parent="Uif-SpaceField"/>

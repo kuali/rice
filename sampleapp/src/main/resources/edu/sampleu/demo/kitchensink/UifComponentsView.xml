@@ -129,6 +129,7 @@
               <ref bean="collection3"/>
               <ref bean="collection4"/>
               <ref bean="collection5"/>
+              <ref bean="UifCompView-CollectionList"/>
             </list>
           </property>
           <property name="header">

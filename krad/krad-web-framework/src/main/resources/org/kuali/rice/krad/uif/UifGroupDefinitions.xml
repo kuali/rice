@@ -857,8 +857,7 @@
 
   <bean id="Uif-ListCollectionGroup" parent="Uif-ListCollectionGroup-parentBean"/>
   <bean id="Uif-ListCollectionGroup-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.container.CollectionGroup"
-        parent="Uif-GroupBase">
+        class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Uif-GroupBase">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionGroup</value>
@@ -872,21 +871,7 @@
     <property name="renderLineActions" value="false"/>
     <property name="includeLineSelectionField" value="false"/>
     <property name="layoutManager">
-      <bean parent="Uif-StackedCollectionLayout-WithGridItems">
-        <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stackedList.jsp"/>
-        <property name="lineGroupPrototype">
-          <bean parent="Uif-VerticalBoxSection">
-            <property name="header">
-              <bean parent="Uif-HeaderFour"/>
-            </property>
-            <property name="disclosure.renderImage" value="false"/>
-            <property name="disclosure.defaultOpen" value="true"/>
-          </bean>
-        </property>
-        <property name="subCollectionFieldGroupPrototype">
-          <bean parent="Uif-VerticalFieldGroup" p:fieldLabel.render="false"/>
-        </property>
-      </bean>
+      <bean parent="Uif-StackedCollectionLayout-List"/>
     </property>
   </bean>
 

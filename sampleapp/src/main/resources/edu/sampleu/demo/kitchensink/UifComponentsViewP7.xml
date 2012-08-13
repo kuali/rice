@@ -411,5 +411,19 @@
      </property>
    </bean>
 
+  <bean id="UifCompView-CollectionList" parent="Uif-ListCollectionSection">
+    <property name="headerText"
+      value="Collection Group rendered as a List" />
+    <property name="instructionalText"
+      value="Each line of the collection is a list, with each field of the line a list item." />
+    <property name="collectionObjectClass"
+      value="edu.sampleu.demo.kitchensink.UITestObject" />
+    <property name="propertyName" value="list2" />
+    <property name="items">
+      <list>
+        <bean parent="Uif-MessageField" p:messageText="Field 1 is @{#line.field1}, Field 2 is @{#line.field2}"/>
+      </list>
+    </property>
+  </bean>
 
 </beans>

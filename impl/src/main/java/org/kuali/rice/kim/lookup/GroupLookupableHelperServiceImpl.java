@@ -458,7 +458,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
 						String attrDefnId = d.getId();
 						typeField.setFieldLabel(definition.getLabel());
-						typeField.setPropertyName("attributes[" + definition.getName()+"]");
+						typeField.setPropertyName("attributes(" + definition.getName()+")");
 						typeField.setPropertyValue(fieldValues.get(typeField.getPropertyName()));
 						if (definition.getControl().isSelect()) {
                             typeField.setFieldValidValues(definition.getOptionsFinder().getKeyValues());

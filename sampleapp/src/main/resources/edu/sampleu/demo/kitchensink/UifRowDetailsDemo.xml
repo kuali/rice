@@ -33,6 +33,8 @@
             <list>
               <ref bean="Demo-RowDetails-Section1"/>
               <ref bean="Demo-RowDetails-Section2"/>
+              <ref bean="Demo-RowDetails-Section3"/>
+              <ref bean="Demo-RowDetails-Section4"/>
             </list>
           </property>
         </bean>
@@ -139,5 +141,138 @@
     </property>
   </bean>
 
+  <bean id="Demo-RowDetails-Section3" parent="Uif-TableCollectionSection">
+    <property name="headerText"
+              value="TableCollection inside the details itself"/>
+    <property name="instructionalText"
+              value="Details group contains a collection"/>
+    <property name="collectionObjectClass"
+              value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="propertyName" value="list4"/>
+    <property name="readOnly" value="true"/>
+    <property name="layoutManager.renderSequenceField" value="false"/>
+    <property name="layoutManager.rowDetailsUseImage" value="true"/>
+    <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+    <property name="layoutManager.richTable.templateOptions">
+      <map merge="true">
+        <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+      </map>
+    </property>
+    <property name="layoutManager.rowDetailsGroup">
+      <bean parent="Uif-VerticalBoxGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                  p:required="true"/>
+            <bean parent="Details-subCollection1" p:propertyName="subList"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+              p:required="true"/>
+      </list>
+    </property>
+  </bean>
 
+
+  <bean id="Details-subCollection1" parent="Uif-TableSubCollection-WithinSection"
+        p:layoutManager.numberOfColumns="4">
+    <property name="headerText" value="SubCollection"/>
+    <property name="collectionObjectClass"
+              value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.richTable.render" value="false"/>
+    <property name="readOnly" value="true"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
+              p:required="true">
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
+              p:required="true"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-RowDetails-Section4" parent="Uif-TableCollectionSection">
+    <property name="headerText"
+              value="Stacked Collection with its own tables inside details"/>
+    <property name="instructionalText"
+              value="Details group contains a collection"/>
+    <property name="collectionObjectClass"
+              value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="propertyName" value="list5"/>
+    <property name="readOnly" value="true"/>
+    <property name="layoutManager.renderSequenceField" value="false"/>
+    <property name="layoutManager.rowDetailsUseImage" value="true"/>
+    <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+    <property name="layoutManager.richTable.templateOptions">
+      <map merge="true">
+        <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+      </map>
+    </property>
+    <property name="layoutManager.rowDetailsGroup">
+      <bean parent="Uif-VerticalBoxGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                  p:required="true"/>
+            <bean parent="Details-subCollection2" p:propertyName="subList"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+              p:required="true"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Details-subCollection2" parent="Uif-StackedSubCollection-WithinSection">
+    <property name="headerText" value="SubCollection"/>
+    <property name="collectionObjectClass"
+              value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="readOnly" value="true"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
+              p:required="true">
+        </bean>
+      </list>
+    </property>
+    <property name="subCollections">
+      <list>
+        <bean parent="Demo-StandardLayout-CollectionSection2-SubCollection">
+          <property name="layoutManager.richTable.render" value="false"/>
+          <property name="disclosure.render" value="false"/>
+          <property name="propertyName" value="subList"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1"
+                    p:required="true"/>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2"
+                    p:required="true"/>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3"
+                    p:required="true"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

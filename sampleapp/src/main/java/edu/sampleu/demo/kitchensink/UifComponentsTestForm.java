@@ -254,20 +254,19 @@ public class UifComponentsTestForm extends UifFormBase {
         //triple nesting
         list5.add(new UITestObject("a", "a", "a", "a"));
         list5.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
-        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
-        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
-        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("a3", "3", "3", "3"));
+        list5.get(0).getSubList().get(0).getSubList().add(new UITestObject("a3", "3", "3", "3"));
         list5.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
-        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
-        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
-        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
+        list5.get(0).getSubList().get(1).getSubList().add(new UITestObject("b3", "3", "3", "3"));
         list5.add(new UITestObject("b", "b", "b", "b"));
         list5.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
-        list5.get(1).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
-        list5.get(1).getSubList().get(0).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(1).getSubList().get(0).getSubList().add(new UITestObject("a23", "3", "3", "3"));
+        list5.get(1).getSubList().get(0).getSubList().add(new UITestObject("a23", "3", "3", "3"));
         list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
-        list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
-        list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("3", "3", "3", "3"));
+        list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
+        list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
 
         for (int i = 0; i < 50; i++) {
             list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(1), RandomStringUtils.randomAlphanumeric(1),

@@ -267,7 +267,14 @@ public class CollectionGroupBuilder implements Serializable {
 
         // copy fields for line and adjust binding to match collection line path
         lineFields = (List<Field>) ComponentUtils.copyFieldList(lineFields, bindingPath, lineSuffix);
-        //TODO collection path fix for details
+
+        //If the fields contain any collections themselves (details case) adjust their binding path
+        for(Field f: lineFields){
+            List<CollectionGroup> components = ComponentUtils.getComponentsOfTypeDeep(f, CollectionGroup.class);
+            for(CollectionGroup cg: components){
+                ComponentUtils.prefixBindingPath(cg,bindingPath);
+            }
+        }
 
         boolean readOnlyLine = collectionGroup.isReadOnly();
 

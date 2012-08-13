@@ -2,6 +2,8 @@ package edu.samplu.mainmenu.test;
 
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
+
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -36,12 +38,16 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
 		selenium.selectFrame("iframeportlet");
 		selenium.click("link=Create New");
 		selenium.waitForPageToLoad("30000");
-        selenium.focus("name=document.documentHeader.documentDescription");
-		selenium.type("name=document.documentHeader.documentDescription", "sample description");
-        selenium.focus("name=document.documentHeader.explanation");
-		selenium.type("name=document.documentHeader.explanation", "sample explanation");
+		focusAndType("name=document.documentHeader.documentDescription", "sample description");
+		focusAndType("name=document.documentHeader.explanation", "sample explanation");		
         selenium.focus("link=Cancel");
 		selenium.click("link=Cancel");
-        assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
+        //assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$")); //Removed Confirmation Panel From the page itself
 	}
+	   
+
+    private void focusAndType(String fieldLocator, String typeText) {
+        selenium.focus(fieldLocator);
+        selenium.type(fieldLocator, typeText);
+    }
 }

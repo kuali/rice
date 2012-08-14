@@ -94,7 +94,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	}
 
 	protected String getDelegationId(){
-		return getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_DLGN_ID_S).toString();
+		return getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_DLGN_ID_S, this.getClass()).toString();
 	}
 	
 	protected RoleDocumentDelegation getSecondaryDelegation(){

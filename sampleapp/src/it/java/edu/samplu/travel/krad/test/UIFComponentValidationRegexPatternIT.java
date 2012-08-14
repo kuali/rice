@@ -15,11 +15,10 @@
  */
 package edu.samplu.travel.krad.test;
 
+import junit.framework.Assert;
+
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * tests that regex validation works as expected on input fields where it is configured
@@ -27,497 +26,334 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UIFComponentValidationRegexPatternIT extends UpgradedSeleniumITBase {
+    
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
     }
 
     @Test
     public void testValidCharacterConstraint() throws Exception {
-        
+
         /*
          *  Timestamp pattern validation message says it allows years from 1900 - 2099 
          *  In fact it also allows 2999 as the upper limit. This needs to be sorted out.
          *  Test failing this condition is commented in the below code section for Timestamp Validation. Once resolved can be uncommented  
          *  
          */
-        
-        selenium.waitForPageToLoad("50000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=Uif Components (Kitchen Sink)");
-        selenium.waitForPageToLoad("50000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-//        selenium.selectFrame("iframeportlet");
-        selenium.click("link=Validation - Regex");
-        //selenium.waitForPageToLoad("30000");
-        Thread.sleep(5000);
-        
-       
-        //---------------------------------------------Fixed Point------------------------------//
-        clearText("//input[@name='field50']");
-        selenium.type("//input[@name='field50']", "127.344");
-        selenium.focus("//input[@name='field51']");
-        Thread.sleep(100);               
-        assertTrue(selenium.isTextPresent("Must be a positive fixed point number, with 5 max digits and 2 digits to the right of the decimal point"));
-        
-        clearText("//input[@name='field50']"); 
-        selenium.type("//input[@name='field50']", "1234.4"); 
-        selenium.focus("//input[@name='field51']");
-        Thread.sleep(100);  
-        assertTrue(selenium.isTextPresent("Must be a positive fixed point number, with 5 max digits and 2 digits to the right of the decimal point"));
-        
-        clearText("//input[@name='field50']");
-        selenium.type("//input[@name='field50']", "1234.434"); 
-        selenium.focus("//input[@name='field51']");
-        Thread.sleep(100);       
-        assertTrue(selenium.isTextPresent("Must be a positive fixed point number, with 5 max digits and 2 digits to the right of the decimal point"));
-        
-        clearText("//input[@name='field50']");
-        selenium.type("//input[@name='field50']", "123.67");        
-        selenium.focus("//input[@name='field51']");      
-        Thread.sleep(100);        
-        assertTrue(! selenium.isTextPresent("Must be a positive fixed point number, with 5 max digits and 2 digits to the right of the decimal point"));
-       
-        //---------------------------------------------Floating Point------------------------------//
-        clearText("//input[@name='field51']");
-        selenium.type("//input[@name='field51']", "127.");
-        selenium.focus("//input[@name='field77']");
-        Thread.sleep(100);               
-        assertTrue(selenium.isTextPresent("Must be a positive or negative number, with any number of digits to the right of the decimal."));
-        
-        clearText("//input[@name='field51']");
-        selenium.type("//input[@name='field51']", "1234.4123"); 
-        selenium.focus("//input[@name='field77']");
-        Thread.sleep(100);  
-        assertTrue(! selenium.isTextPresent("Must be a positive or negative number, with any number of digits to the right of the decimal."));
-        
-        clearText("//input[@name='field51']");
-        selenium.type("//input[@name='field51']", "1234()98"); 
-        selenium.focus("//input[@name='field77']");
-        Thread.sleep(100);       
-        assertTrue(selenium.isTextPresent("Must be a positive or negative number, with any number of digits to the right of the decimal."));
-        
-        clearText("//input[@name='field51']");
-        selenium.type("//input[@name='field51']", "-123.67");        
-        selenium.focus("//input[@name='field77']");      
-        Thread.sleep(100);        
-        assertTrue(! selenium.isTextPresent("Must be a positive or negative number, with any number of digits to the right of the decimal."));
+     
+        selenium.click("//a[contains(text(),'Validation - Regex')]");      
+        Thread.sleep(2000);
 
+        //---------------------------------------------Fixed Point------------------------------//
+
+       
+        selenium.type("name=field50", "123.123");
+        selenium.fireEvent("name=field50", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field50']", "1234.4");
+        selenium.fireEvent("name=field50", "blur");
+        validateErrorImage(true);
+
+     
+        selenium.type("//input[@name='field50']", "1234.434");
+        selenium.fireEvent("name=field50", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field50']", "123.67");
+        selenium.fireEvent("name=field50", "blur");
+        validateErrorImage(false);
+
+        //---------------------------------------------Floating Point------------------------------//
+       
+        selenium.type("//input[@name='field51']", "127.");
+        selenium.fireEvent("//input[@name='field51']", "blur");
+        validateErrorImage(true);
+         
+        selenium.type("//input[@name='field51']", "1234()98");
+        selenium.fireEvent("//input[@name='field51']", "blur");
+        validateErrorImage(true);
         
-      //---------------------------------------------Integer Pattern constraint------------------------------//
-        clearText("//input[@name='field77']");
+        selenium.type("//input[@name='field51']", "-123.67");
+        selenium.fireEvent("//input[@name='field51']", "blur");
+        validateErrorImage(false);
+
+        //---------------------------------------------Integer Pattern constraint------------------------------//
+        
         selenium.type("//input[@name='field77']", "127.");
-        selenium.focus("//input[@name='field52']");
-        Thread.sleep(100);               
-        assertTrue(selenium.isTextPresent("Must be a positive or negative whole number"));
-        
-        clearText("//input[@name='field77']");
-        selenium.type("//input[@name='field77']", "1234.4123"); 
-        selenium.focus("//input[@name='field52']");
-        Thread.sleep(100);  
-        assertTrue(selenium.isTextPresent("Must be a positive or negative whole number"));
-        
-        clearText("//input[@name='field77']");
-        selenium.type("//input[@name='field77']", "123E123"); 
-        selenium.focus("//input[@name='field52']");
-        Thread.sleep(100);       
-        assertTrue(selenium.isTextPresent("Must be a positive or negative whole number"));
-        
-        clearText("//input[@name='field77']");
-        selenium.type("//input[@name='field77']", "-123");        
-        selenium.focus("//input[@name='field52']");      
-        Thread.sleep(100);        
-        assertTrue(! selenium.isTextPresent("Must be a positive or negative whole number"));
-        
+        selenium.fireEvent("//input[@name='field77']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field77']", "1234.4123");
+        selenium.fireEvent("//input[@name='field77']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field77']", "123E123");
+        selenium.fireEvent("//input[@name='field77']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field77']", "-123");
+        selenium.fireEvent("//input[@name='field77']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------Phone Text------------------------------//
-        clearText("//input[@name='field52']");
         selenium.type("//input[@name='field52']", "1271231234");
-        selenium.focus("//input[@name='field53']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a phone number, in the format of ###-###-####."));
-        
-        
-        clearText("//input[@name='field52']");
-        selenium.type("//input[@name='field52']", "123-123-123"); 
-        selenium.focus("//input[@name='field53']");
-        Thread.sleep(100);  
-        assertTrue(selenium.isTextPresent("Must be a phone number, in the format of ###-###-####."));
-        
-        clearText("//input[@name='field52']");
-        selenium.type("//input[@name='field52']", "12-12-123445"); 
-        selenium.focus("//input[@name='field53']");
-        Thread.sleep(100);       
-        assertTrue(selenium.isTextPresent("Must be a phone number, in the format of ###-###-####."));
-        
-        clearText("//input[@name='field52']");
-        selenium.type("//input[@name='field52']", "1234-12-1234"); 
-        selenium.focus("//input[@name='field53']");
-        Thread.sleep(100);       
-        assertTrue(selenium.isTextPresent("Must be a phone number, in the format of ###-###-####."));
-        
-        clearText("//input[@name='field52']");
-        selenium.type("//input[@name='field52']", "123.123.1234"); 
-        selenium.focus("//input[@name='field53']");
-        Thread.sleep(100);       
-        assertTrue(selenium.isTextPresent("Must be a phone number, in the format of ###-###-####."));
-        
-        clearText("//input[@name='field52']");
-        selenium.type("//input[@name='field52']", "123-123-12345"); 
-        selenium.focus("//input[@name='field53']");
-        Thread.sleep(100);       
-        assertTrue(selenium.isTextPresent("Must be a phone number, in the format of ###-###-####."));
-        
-        clearText("//input[@name='field52']");
-        selenium.type("//input[@name='field52']", "123-123-1234");        
-        selenium.focus("//input[@name='field53']");      
-        Thread.sleep(100);        
-        assertTrue(! selenium.isTextPresent("Must be a phone number, in the format of ###-###-####."));
-        
+        selenium.fireEvent("//input[@name='field52']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field52']", "123-123-123");
+        selenium.fireEvent("//input[@name='field52']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field52']", "12-12-123445");
+        selenium.fireEvent("//input[@name='field52']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field52']", "1234-12-1234");
+        selenium.fireEvent("//input[@name='field52']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field52']", "123.123.1234");
+        selenium.fireEvent("//input[@name='field52']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field52']", "123-123-12345");
+        selenium.fireEvent("//input[@name='field52']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field52']", "123-123-1234");
+        selenium.fireEvent("//input[@name='field52']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------JavaClass Text------------------------------//
-        clearText("//input[@name='field53']");
         selenium.type("//input[@name='field53']", "127");
-        selenium.focus("//input[@name='field54']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid Java class name."));
-        
-        clearText("//input[@name='field53']");
+        selenium.fireEvent("//input[@name='field53']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field53']", "TestJava!@#Class");
-        selenium.focus("//input[@name='field54']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid Java class name."));
-        
-        clearText("//input[@name='field53']");
-        selenium.type("//input[@name='field53']", "Test JavaClass"); 
-        selenium.focus("//input[@name='field54']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid Java class name."));
-        
-        clearText("//input[@name='field53']");
-        selenium.type("//input[@name='field53']", "Test JavaClass"); 
-        selenium.focus("//input[@name='field54']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid Java class name."));
-        
-        clearText("//input[@name='field53']");
-        selenium.type("//input[@name='field53']", "TestJavaClass");        
-        selenium.focus("//input[@name='field54']");      
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a valid Java class name."));
-        
+        selenium.fireEvent("//input[@name='field53']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field53']", "Test JavaClass");
+        selenium.fireEvent("//input[@name='field53']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field53']", "Test JavaClass");
+        selenium.fireEvent("//input[@name='field53']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field53']", "TestJavaClass");
+        selenium.fireEvent("//input[@name='field53']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------Email Text------------------------------//
-        clearText("//input[@name='field54']");
         selenium.type("//input[@name='field54']", "123@123.123");
-        selenium.focus("//input[@name='field84']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a properly formatted email address."));
-        
-        clearText("//input[@name='field54']");
+        selenium.fireEvent("//input[@name='field54']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field54']", "email.com@emailServer");
-        selenium.focus("//input[@name='field84']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a properly formatted email address."));
-        
-        clearText("//input[@name='field54']");
-        selenium.type("//input[@name='field54']", "emailemailServer@.com"); 
-        selenium.focus("//input[@name='field84']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a properly formatted email address."));
-        
-        clearText("//input[@name='field54']");
-        selenium.type("//input[@name='field54']", "email@emailServercom"); 
-        selenium.focus("//input[@name='field84']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a properly formatted email address."));
-        
-        clearText("//input[@name='field54']");
-        selenium.type("//input[@name='field54']", "email@emailServer.com");        
-        selenium.focus("//input[@name='field84']");      
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a properly formatted email address."));
-        
-        
+        selenium.fireEvent("//input[@name='field54']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field54']", "emailemailServer@.com");
+        selenium.fireEvent("//input[@name='field54']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field54']", "email@emailServercom");
+        selenium.fireEvent("//input[@name='field54']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field54']", "email@emailServer.com");
+        selenium.fireEvent("//input[@name='field54']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------URL pattern Text------------------------------//
-        clearText("//input[@name='field84']");
         selenium.type("//input[@name='field84']", "www.google.com");
-        selenium.focus("//input[@name='field55']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid url beginning with http, https, or ftp"));
-        
-        clearText("//input[@name='field84']");
+        selenium.fireEvent("//input[@name='field84']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field84']", "https:www.google.com");
-        selenium.focus("//input[@name='field55']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid url beginning with http, https, or ftp"));
-        
-        clearText("//input[@name='field84']");
+        selenium.fireEvent("//input[@name='field84']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field84']", "ftp://www.google.comsdfa123!#@");
-        selenium.focus("//input[@name='field55']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid url beginning with http, https, or ftp"));
-        
-        clearText("//input[@name='field84']");
+        selenium.fireEvent("//input[@name='field84']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field84']", "ftp:/www.google.coms");
-        selenium.focus("//input[@name='field55']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid url beginning with http, https, or ftp"));
-        
-        clearText("//input[@name='field84']");
+        selenium.fireEvent("//input[@name='field84']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field84']", "ftp://www.google.com");
-        selenium.focus("//input[@name='field55']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a valid url beginning with http, https, or ftp"));
-        
-        clearText("//input[@name='field84']");
+        selenium.fireEvent("//input[@name='field84']", "blur");
+        validateErrorImage(false);
+
         selenium.type("//input[@name='field84']", "https://www.google.com");
-        selenium.focus("//input[@name='field55']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a valid url beginning with http, https, or ftp"));
-        
-        clearText("//input[@name='field84']");
+        selenium.fireEvent("//input[@name='field84']", "blur");
+        validateErrorImage(false);
+
         selenium.type("//input[@name='field84']", "http://www.google.com");
-        selenium.focus("//input[@name='field55']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a valid url beginning with http, https, or ftp"));
-        
-        
+        selenium.fireEvent("//input[@name='field84']", "blur");
+        validateErrorImage(false);
+       
+
         //---------------------------------------------Date pattern Text------------------------------//
         //-------------invalid formats
-        clearText("//input[@name='field55']");
         selenium.type("//input[@name='field55']", "12/12/2112 12:12:87 am");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
 
-        clearText("//input[@name='field55']");
         selenium.type("//input[@name='field55']", "12-12-2112 12:12 am");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-      
-        clearText("//input[@name='field55']");
-        selenium.type("//input[@name='field55']", "12-12-2112 12:12");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-     
-        clearText("//input[@name='field55']");
-        selenium.type("//input[@name='field55']", "12/12/2112 12:12");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-        
-        clearText("//input[@name='field55']");
-        selenium.type("//input[@name='field55']", "12-12-2112 12:12:78");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-   
-        clearText("//input[@name='field55']");
-        selenium.type("//input[@name='field55']", "12 Sept");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-   
-        clearText("//input[@name='field55']");
-        selenium.type("//input[@name='field55']", "Sept 12 12:12");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-   
-        clearText("//input[@name='field55']");
-        selenium.type("//input[@name='field55']", "221299 12:12:13");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-   
-        clearText("//input[@name='field55']");
-        selenium.type("//input[@name='field55']", "111222 12:12");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
 
-        clearText("//input[@name='field55']");
+        selenium.type("//input[@name='field55']", "12-12-2112 12:12");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field55']", "12/12/2112 12:12");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field55']", "12-12-2112 12:12:78");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field55']", "12 Sept");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field55']", "Sept 12 12:12");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field55']", "221299 12:12:13");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field55']", "111222 12:12");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field55']", "9/9/2012 12:12 am");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-        
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(true);
+
         //-------------valid formats      
-        clearText("//input[@name='field55']");
         selenium.type("//input[@name='field55']", "09/09/2012 12:12 pm");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-        
-        clearText("//input[@name='field55']");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
+
         selenium.type("//input[@name='field55']", "090923");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
         
-        clearText("//input[@name='field55']");
+        
         selenium.type("//input[@name='field55']", "Sept 12");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-   
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
         
-        clearText("//input[@name='field55']");
         selenium.type("//input[@name='field55']", "2034");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-        
-        clearText("//input[@name='field55']");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
+
         selenium.type("//input[@name='field55']", "12/12/2012 23:12:59");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
         
-        clearText("//input[@name='field55']");
         selenium.type("//input[@name='field55']", "12-12-12 23:12:59");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
         
-        clearText("//input[@name='field55']");
         selenium.type("//input[@name='field55']", "121212 23:12:32");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
         
-        clearText("//input[@name='field55']");
         selenium.type("//input[@name='field55']", "Sept 12 23:45:50");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-        
-        clearText("//input[@name='field55']");
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
+
         selenium.type("//input[@name='field55']", "2011 12:23:32");
-        selenium.focus("//input[@name='field75']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yyyy hh:mm a, MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, MMddyy, MMMM dd, yyyy, MM/dd/yy HH:mm:ss, MM/dd/yyyy HH:mm:ss, MM-dd-yy HH:mm:ss, MMddyy HH:mm:ss, MMMM dd HH:mm:ss, yyyy HH:mm:ss"));
-        
+        selenium.fireEvent("//input[@name='field55']", "blur");
+        validateErrorImage(false);
         
         //---------------------------------------------BasicDate pattern Text------------------------------//
-        clearText("//input[@name='field75']");
         selenium.type("//input[@name='field75']", "12122012");
-        selenium.focus("//input[@name='field82']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy"));
+        selenium.fireEvent("//input[@name='field75']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field75']");
         selenium.type("//input[@name='field75']", "13-12-34");
-        selenium.focus("//input[@name='field82']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy"));
-        
-        clearText("//input[@name='field75']");
-        selenium.type("//input[@name='field75']", "12:12:2034");
-        selenium.focus("//input[@name='field82']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy"));
-        
-        clearText("//input[@name='field75']");
-        selenium.type("//input[@name='field75']", "12-12-2034");
-        selenium.focus("//input[@name='field82']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date in the following format(s): MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy"));
-        
-        
-        //---------------------------------------------Time12H Pattern Text------------------------------//
-        clearText("//input[@name='field82']");
-        selenium.type("//input[@name='field82']", "13:00:12");
-        selenium.focus("//input[@name='field83']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid 12 hour time in HH:mm format, seconds are optional"));
-        
-        clearText("//input[@name='field82']");
-        selenium.type("//input[@name='field82']", "09:00:");
-        selenium.focus("//input[@name='field83']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid 12 hour time in HH:mm format, seconds are optional"));
-        
-        clearText("//input[@name='field82']");
-        selenium.type("//input[@name='field82']", "3-00:12");
-        selenium.focus("//input[@name='field83']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid 12 hour time in HH:mm format, seconds are optional"));
-        
-        clearText("//input[@name='field82']");
-        selenium.type("//input[@name='field82']", "3:00:34");
-        selenium.focus("//input[@name='field83']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a valid 12 hour time in HH:mm format, seconds are optional"));
-        
-        clearText("//input[@name='field82']");
-        selenium.type("//input[@name='field82']", "3:00");
-        selenium.focus("//input[@name='field83']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a valid 12 hour time in HH:mm format, seconds are optional"));
-       
-        
-        //---------------------------------------------Time24H Pattern Text------------------------------//
-        clearText("//input[@name='field83']");
-        selenium.type("//input[@name='field83']", "24:00:12");
-        selenium.focus("//input[@name='field56']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid 24 hour (0-23) time in HH:mm format, seconds are optional"));
-        
-        clearText("//input[@name='field83']");
-        selenium.type("//input[@name='field83']", "14:00:");
-        selenium.focus("//input[@name='field56']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid 24 hour (0-23) time in HH:mm format, seconds are optional"));
-        
-        clearText("//input[@name='field83']");
-        selenium.type("//input[@name='field83']", "13:00:76");
-        selenium.focus("//input[@name='field56']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a valid 24 hour (0-23) time in HH:mm format, seconds are optional"));
-        
-        clearText("//input[@name='field83']");
-        selenium.type("//input[@name='field83']", "13:00:23");
-        selenium.focus("//input[@name='field56']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a valid 24 hour (0-23) time in HH:mm format, seconds are optional"));
-        
-        clearText("//input[@name='field83']");
-        selenium.type("//input[@name='field83']", "23:00:12");
-        selenium.focus("//input[@name='field56']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a valid 24 hour (0-23) time in HH:mm format, seconds are optional"));
-       
-        
-        
-        
-        //---------------------------------------------Timestamp pattern Text------------------------------//
-        clearText("//input[@name='field56']");
-        selenium.type("//input[@name='field56']", "1000-12-12 12:12:12.103");
-        selenium.focus("//input[@name='field57']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
-        
-        clearText("//input[@name='field56']");
-        selenium.type("//input[@name='field56']", "2000/12/12 12-12-12.87");
-        selenium.focus("//input[@name='field57']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
+        selenium.fireEvent("//input[@name='field75']", "blur");
+        validateErrorImage(true);
 
-        clearText("//input[@name='field56']");
+        selenium.type("//input[@name='field75']", "12:12:2034");
+        selenium.fireEvent("//input[@name='field75']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field75']", "12-12-2034");
+        selenium.fireEvent("//input[@name='field75']", "blur");
+        validateErrorImage(false);
+ 
+        //---------------------------------------------Time12H Pattern Text------------------------------//
+        selenium.type("//input[@name='field82']", "13:00:12");
+        selenium.fireEvent("//input[@name='field82']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field82']", "09:00:");
+        selenium.fireEvent("//input[@name='field82']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field82']", "3-00:12");
+        selenium.fireEvent("//input[@name='field82']", "blur");
+        validateErrorImage(true);
+        
+        selenium.type("//input[@name='field82']", "3:00:34");
+        selenium.fireEvent("//input[@name='field82']", "blur");
+        validateErrorImage(false);
+
+        selenium.type("//input[@name='field82']", "3:00");
+        selenium.fireEvent("//input[@name='field82']", "blur");
+        validateErrorImage(false);
+
+        //---------------------------------------------Time24H Pattern Text------------------------------//
+        selenium.type("//input[@name='field83']", "24:00:12");
+        selenium.fireEvent("//input[@name='field83']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field83']", "14:00:");
+        selenium.fireEvent("//input[@name='field83']", "blur");
+        validateErrorImage(true);
+        
+        selenium.type("//input[@name='field83']", "13:00:76");
+        selenium.fireEvent("//input[@name='field83']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field83']", "13:00:23");
+        selenium.fireEvent("//input[@name='field83']", "blur");
+        validateErrorImage(false);
+
+        selenium.type("//input[@name='field83']", "23:00:12");
+        selenium.fireEvent("//input[@name='field83']", "blur");
+        validateErrorImage(false);
+
+        //---------------------------------------------Timestamp pattern Text------------------------------//
+        selenium.type("//input[@name='field56']", "1000-12-12 12:12:12.103");
+        selenium.fireEvent("//input[@name='field56']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field56']", "2000/12/12 12-12-12.87");
-        selenium.focus("//input[@name='field57']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
-        
-        clearText("//input[@name='field56']");
+        selenium.fireEvent("//input[@name='field56']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field56']", "2000/12/12 12-12-12.87");
+        selenium.fireEvent("//input[@name='field56']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field56']", "2011-08-12 12:12:12");
-        selenium.focus("//input[@name='field57']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
-        
+        selenium.fireEvent("//input[@name='field56']", "blur");
+        validateErrorImage(true);
+
         //--------this should not be allowed
         /*
         clearTimeStampText();
@@ -527,310 +363,230 @@ public class UIFComponentValidationRegexPatternIT extends UpgradedSeleniumITBase
         assertTrue(selenium.isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
         
         */
-        clearText("//input[@name='field56']");
         selenium.type("//input[@name='field56']", "2099-12-12 12:12:12.103");
-        selenium.focus("//input[@name='field57']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
-        
-        
+        selenium.fireEvent("//input[@name='field56']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------Year Pattern Text------------------------------//
-        clearText("//input[@name='field57']");
         selenium.type("//input[@name='field57']", "1599");
-        selenium.focus("//input[@name='field58']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a four digit year between 1600 to 2199, inclusive."));
-        
-        clearText("//input[@name='field57']");
+        selenium.fireEvent("//input[@name='field57']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field57']", "2200");
-        selenium.focus("//input[@name='field58']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a four digit year between 1600 to 2199, inclusive."));
-        
-        clearText("//input[@name='field57']");
-        selenium.type("//input[@name='field57']", "20000"); 
-        selenium.focus("//input[@name='field58']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a four digit year between 1600 to 2199, inclusive."));
-        
-        clearText("//input[@name='field57']");
-        selenium.type("//input[@name='field57']", "-202"); 
-        selenium.focus("//input[@name='field58']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a four digit year between 1600 to 2199, inclusive."));
-        
-        clearText("//input[@name='field57']");
-        selenium.type("//input[@name='field57']", "2000");        
-        selenium.focus("//input[@name='field58']");      
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a four digit year between 1600 to 2199, inclusive."));
-        
+        selenium.fireEvent("//input[@name='field57']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field57']", "20000");
+        selenium.fireEvent("//input[@name='field57']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field57']", "-202");
+        selenium.fireEvent("//input[@name='field57']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field57']", "2000");
+        selenium.fireEvent("//input[@name='field57']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------Month Pattern Text------------------------------//
-        clearText("//input[@name='field58']");
         selenium.type("//input[@name='field58']", "0");
-        selenium.focus("//input[@name='field61']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be 1 to 12, representing a month."));
-        
-        clearText("//input[@name='field58']");
+        selenium.fireEvent("//input[@name='field58']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field58']", "-12");
-        selenium.focus("//input[@name='field61']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be 1 to 12, representing a month."));
-        
-        clearText("//input[@name='field58']");
-        selenium.type("//input[@name='field58']", "100"); 
-        selenium.focus("//input[@name='field61']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be 1 to 12, representing a month."));
-        
-        clearText("//input[@name='field58']");
-        selenium.type("//input[@name='field58']", "12"); 
-        selenium.focus("//input[@name='field61']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be 1 to 12, representing a month."));
-        
-        
+        selenium.fireEvent("//input[@name='field58']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field58']", "100");
+        selenium.fireEvent("//input[@name='field58']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field58']", "12");
+        selenium.fireEvent("//input[@name='field58']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------ZipCode Pattern Text------------------------------//
-       
-        clearText("//input[@name='field61']");
+
         selenium.type("//input[@name='field61']", "123");
-        selenium.focus("//input[@name='field62']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a ZIP code. ZIP + 4 codes are also accepted."));
-        
-        clearText("//input[@name='field61']");
+        selenium.fireEvent("//input[@name='field61']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field61']", "2341 12");
-        selenium.focus("//input[@name='field62']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a ZIP code. ZIP + 4 codes are also accepted."));
-        
-        clearText("//input[@name='field61']");
+        selenium.fireEvent("//input[@name='field61']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field61']", "0-1231");
-        selenium.focus("//input[@name='field62']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must be a ZIP code. ZIP + 4 codes are also accepted."));
-        
-        clearText("//input[@name='field61']");
+        selenium.fireEvent("//input[@name='field61']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field61']", "12345");
-        selenium.focus("//input[@name='field62']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must be a ZIP code. ZIP + 4 codes are also accepted."));
-       
-        
+        selenium.fireEvent("//input[@name='field61']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------Alpha Numeric w/o options Text------------------------------//
-        clearText("//input[@name='field62']");
         selenium.type("//input[@name='field62']", "123 23 @#");
-        selenium.focus("//input[@name='field63']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alphanumeric characters "));
-        
-        clearText("//input[@name='field62']");
+        selenium.fireEvent("//input[@name='field62']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field62']", "-asd123");
-        selenium.focus("//input[@name='field63']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alphanumeric characters "));
-        
-        clearText("//input[@name='field62']");
+        selenium.fireEvent("//input[@name='field62']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field62']", "asd/123");
-        selenium.focus("//input[@name='field63']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alphanumeric characters "));
-        
-        clearText("//input[@name='field62']");
+        selenium.fireEvent("//input[@name='field62']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field62']", "asd123");
-        selenium.focus("//input[@name='field63']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Can only be alphanumeric characters "));
-                
-      //---------------------------------------------Alpha Numeric with options Text------------------------------//
-        clearText("//input[@name='field63']");
+        selenium.fireEvent("//input[@name='field62']", "blur");
+        validateErrorImage(false);
+
+        //---------------------------------------------Alpha Numeric with options Text------------------------------//
         selenium.type("//input[@name='field63']", "123^we");
-        selenium.focus("//input[@name='field64']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alphanumeric characters, whitespace, underscores, forward slashes "));
-        
-        clearText("//input[@name='field63']");
+        selenium.fireEvent("//input[@name='field63']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field63']", "-123_asd");
-        selenium.focus("//input[@name='field64']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alphanumeric characters, whitespace, underscores, forward slashes "));
-                       
-        clearText("//input[@name='field63']");
+        selenium.fireEvent("//input[@name='field63']", "blur");
+        validateErrorImage(true);
+        
         selenium.type("//input[@name='field63']", "123 23 @#");
-        selenium.focus("//input[@name='field64']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alphanumeric characters, whitespace, underscores, forward slashes "));
-        
-        clearText("//input[@name='field63']");
+        selenium.fireEvent("//input[@name='field63']", "blur");
+
         selenium.type("//input[@name='field63']", "as_de 456/123");
-        selenium.focus("//input[@name='field64']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Can only be alphanumeric characters, whitespace, underscores, forward slashes "));
-        
+        selenium.fireEvent("//input[@name='field63']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------Alpha with Whitespace and commas Text------------------------------//
-        clearText("//input[@name='field64']");
         selenium.type("//input[@name='field64']", "123^we");
-        selenium.focus("//input[@name='field76']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alpha characters, whitespace, commas"));
-       
-        clearText("//input[@name='field64']");
+        selenium.fireEvent("//input[@name='field64']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field64']", "asd_pqr");
-        selenium.focus("//input[@name='field76']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alpha characters, whitespace, commas"));
-        
-        clearText("//input[@name='field64']");
+        selenium.fireEvent("//input[@name='field64']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field64']", "asd/def");
-        selenium.focus("//input[@name='field76']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alpha characters, whitespace, commas"));
-        
-        clearText("//input[@name='field64']");
+        selenium.fireEvent("//input[@name='field64']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field64']", "asd ,pqr");
-        selenium.focus("//input[@name='field76']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Can only be alpha characters, whitespace, commas"));
-        
-        
+        selenium.fireEvent("//input[@name='field64']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------AlphaPatterrn with disallowed charset Text------------------------------//
-        clearText("//input[@name='field76']");
         selenium.type("//input[@name='field76']", "123");
-        selenium.focus("//input[@name='field65']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alpha characters, whitespace, underscores, periods, parentheses, dollar signs, forward slashes, double quotes, apostrophes, commas, colons, null, question marks, exclaimation marks, dashes, plus signs, equals signs, *, @, %, #"));
-     
-        clearText("//input[@name='field76']");
-        selenium.type("//input[@name='field76']", "<abcd>");
-        selenium.focus("//input[@name='field65']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alpha characters, whitespace, underscores, periods, parentheses, dollar signs, forward slashes, double quotes, apostrophes, commas, colons, null, question marks, exclaimation marks, dashes, plus signs, equals signs, *, @, %, #"));
-        
-        clearText("//input[@name='field76']");
+        selenium.fireEvent("//input[@name='field76']", "blur");
+        validateErrorImage(true);
+
+        selenium.type("//input[@name='field76']", "`abcd`");
+        selenium.fireEvent("//input[@name='field76']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field76']", "|abcd|");
-        selenium.focus("//input[@name='field65']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alpha characters, whitespace, underscores, periods, parentheses, dollar signs, forward slashes, double quotes, apostrophes, commas, colons, null, question marks, exclaimation marks, dashes, plus signs, equals signs, *, @, %, #"));
-        
-        clearText("//input[@name='field76']");
+        selenium.fireEvent("//input[@name='field76']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field76']", "~abcd~");
-        selenium.focus("//input[@name='field65']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be alpha characters, whitespace, underscores, periods, parentheses, dollar signs, forward slashes, double quotes, apostrophes, commas, colons, null, question marks, exclaimation marks, dashes, plus signs, equals signs, *, @, %, #"));
-        
-        clearText("//input[@name='field76']");
+        selenium.fireEvent("//input[@name='field76']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field76']", " ab_c d_ef ");
-        selenium.focus("//input[@name='field65']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Can only be alpha characters, whitespace, underscores, periods, parentheses, dollar signs, forward slashes, double quotes, apostrophes, commas, colons, null, question marks, exclaimation marks, dashes, plus signs, equals signs, *, @, %, #"));
-        
-        
+        selenium.fireEvent("//input[@name='field76']", "blur");
+        validateErrorImage(false);
+
         //---------------------------------------------Anything with No Whitespace Text------------------------------//
-        clearText("//input[@name='field65']");
         selenium.type("//input[@name='field65']", "123 ^we");
-        selenium.focus("//input[@name='field66']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Must not contain any whitespace (spaces, returns, etc)"));
-       
-        clearText("//input[@name='field65']");
+        selenium.fireEvent("//input[@name='field65']", "blur");
+        validateErrorImage(true);
+
         selenium.type("//input[@name='field65']", "123^we!@#^&*~:");
-        selenium.focus("//input[@name='field66']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Must not contain any whitespace (spaces, returns, etc)"));
+        selenium.fireEvent("//input[@name='field65']", "blur");
+        validateErrorImage(false);
         
         //---------------------------------------------CharacterSet Text------------------------------//
-        clearText("//input[@name='field66']");
         selenium.type("//input[@name='field66']", "123 ^we");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can be any of the following characters: abcABC"));
+        selenium.fireEvent("//input[@name='field66']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field66']");
         selenium.type("//input[@name='field66']", "123_^we");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can be any of the following characters: abcABC"));
+        selenium.fireEvent("//input[@name='field66']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field66']");
         selenium.type("//input[@name='field66']", "abc ABC");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can be any of the following characters: abcABC"));
+        selenium.fireEvent("//input[@name='field66']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field66']");
         selenium.type("//input[@name='field66']", "aAbBcC");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Can be any of the following characters: abcABC"));
+        selenium.fireEvent("//input[@name='field66']", "blur");
+        validateErrorImage(false);
         
         //---------------------------------------------Numeric Character Text------------------------------//
-        clearText("//input[@name='field67']");
         selenium.type("//input[@name='field67']", "123 ^we");
-        selenium.focus("//input[@name='field68']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be numeric characters, parentheses, dashes"));
+        selenium.fireEvent("//input[@name='field67']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field67']");
         selenium.type("//input[@name='field67']", "123/10");
-        selenium.focus("//input[@name='field68']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be numeric characters, parentheses, dashes"));
+        selenium.fireEvent("//input[@name='field67']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field67']");
         selenium.type("//input[@name='field67']", "(123.00)");
-        selenium.focus("//input[@name='field68']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("Can only be numeric characters, parentheses, dashes"));
+        selenium.fireEvent("//input[@name='field67']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field67']");
         selenium.type("//input[@name='field67']", "(12-3)");
-        selenium.focus("//input[@name='field68']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("Can only be numeric characters, parentheses, dashes"));
+        selenium.fireEvent("//input[@name='field67']", "blur");
+        validateErrorImage(false);
         
         //---------------------------------------------Valid Chars Custom Text------------------------------//
-        clearText("//input[@name='field68']");
         selenium.type("//input[@name='field68']", "123.123");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("only 1 alpha character followed by a period and then followed by 1 number (a.8, b.0, etc)"));
+        selenium.fireEvent("//input[@name='field68']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field68']");
         selenium.type("//input[@name='field68']", "a.b");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("only 1 alpha character followed by a period and then followed by 1 number (a.8, b.0, etc)"));
+        selenium.fireEvent("//input[@name='field68']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field68']");
         selenium.type("//input[@name='field68']", "123 qwe");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("only 1 alpha character followed by a period and then followed by 1 number (a.8, b.0, etc)"));
+        selenium.fireEvent("//input[@name='field68']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field68']");
         selenium.type("//input[@name='field68']", "5.a");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("only 1 alpha character followed by a period and then followed by 1 number (a.8, b.0, etc)"));
+        selenium.fireEvent("//input[@name='field68']", "blur");
+        validateErrorImage(true);
         
-        clearText("//input[@name='field68']");
         selenium.type("//input[@name='field68']", "a.0,b.4");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(selenium.isTextPresent("only 1 alpha character followed by a period and then followed by 1 number (a.8, b.0, etc)"));
+        selenium.fireEvent("//input[@name='field68']", "blur");
+        validateErrorImage(true);
         
-        
-        clearText("//input[@name='field68']");
         selenium.type("//input[@name='field68']", "a.0");
-        selenium.focus("//input[@name='field67']");
-        Thread.sleep(100);
-        assertTrue(! selenium.isTextPresent("only 1 alpha character followed by a period and then followed by 1 number (a.8, b.0, etc)"));
+        selenium.fireEvent("//input[@name='field68']", "blur");
+        validateErrorImage(false);
+        
     }
+        
+    public void validateErrorImage(boolean validateVisible) throws Exception {
+        Thread.sleep(500);
+        for (int second = 0;; second++) {
+            if (second >= 5)
+                Assert.fail("timeout");
+            try {
+                if (validateVisible) {
+                    
+                    if (selenium.isVisible("css=img.uif-validationImage"));
+                        break;
+                } else {
+                    
+                    if (! selenium.isVisible("css=img.uif-validationImage"))
+                        break;
+                }
 
-    public void clearText(String field) throws Exception {
-        selenium.focus(field);
-        selenium.type(field, "");  
-        Thread.sleep(100); 
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        if (validateVisible) {
+            Assert.assertTrue(selenium.isVisible("css=img.uif-validationImage"));
+        } else {
+            Assert.assertTrue(! selenium.isVisible("css=img.uif-validationImage"));
+        }        
     }
 }

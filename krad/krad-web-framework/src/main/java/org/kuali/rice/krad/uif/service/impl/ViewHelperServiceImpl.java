@@ -1549,7 +1549,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // Skip nullable non-null non-empty objects when setting default
             Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
             Class currentClazz = ObjectPropertyUtils.getPropertyType(object, bindingPath);
-            if(currentValue == null || !StringUtils.isBlank(currentValue.toString()) || ClassUtils.isPrimitiveOrWrapper(currentClazz)) {
+            if(currentValue == null || StringUtils.isBlank(currentValue.toString()) || ClassUtils.isPrimitiveOrWrapper(currentClazz)) {
                 ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
             }
         }

@@ -68,6 +68,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.MethodInvoker;
 
 import java.io.Serializable;
@@ -1545,7 +1546,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
 
             // TODO: this should go through our formatters
-            ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+            // Skip nullable non-null non-empty objects when setting default
+            Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
+            Class currentClazz = ObjectPropertyUtils.getPropertyType(object, bindingPath);
+            if(currentValue == null || !StringUtils.isBlank(currentValue.toString()) || ClassUtils.isPrimitiveOrWrapper(currentClazz)) {
+                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+            }
         }
     }
 

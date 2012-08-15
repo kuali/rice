@@ -92,7 +92,8 @@ function initFieldHandlers() {
         manageMouseEvents:false,
         themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
         alwaysVisible:false,
-        tail:{align:"left"}
+        tail:{align:"left"},
+        themeMargins: {total: "13px",difference: "2px"}
     };
 
     jQuery(document).on("mouseenter",

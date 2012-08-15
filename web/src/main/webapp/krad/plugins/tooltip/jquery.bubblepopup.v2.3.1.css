@@ -20,9 +20,10 @@
 	.jquerybubblepopup table{width:auto;height:auto;margin:0px;padding:0px;display:table;border-collapse:collapse;border-spacing:0px;border:0px;empty-cells:show;background-color:transparent;}
 	.jquerybubblepopup tbody{display:table-row-group;vertical-align:middle;border:0px;background-color:transparent;}
 	.jquerybubblepopup td{margin:0px;padding:0px;background-color:transparent;}
-	.jquerybubblepopup-top-left,    .jquerybubblepopup-top-right,
-	.jquerybubblepopup-bottom-left, .jquerybubblepopup-bottom-right{width:21px;height:21px;overflow:hidden;background-repeat:no-repeat;}
-	.jquerybubblepopup-top-middle,  .jquerybubblepopup-bottom-middle{overflow:hidden;background-repeat:repeat-x;}
+	.jquerybubblepopup-top-left,    .jquerybubblepopup-top-right{width:21px;height:21px;overflow:hidden;background-repeat:no-repeat;}
+	.jquerybubblepopup-bottom-left, .jquerybubblepopup-bottom-right{width:21px;height:16px;overflow:hidden;background-repeat:no-repeat;}
+	.jquerybubblepopup-top-middle{overflow:hidden;background-repeat:repeat-x;}
+    .jquerybubblepopup-bottom-middle{height:16px;overflow:hidden;background-repeat:repeat-x;}
 	.jquerybubblepopup-middle-left, .jquerybubblepopup-middle-right{overflow:hidden;background-repeat:repeat-y;}
 	.jquerybubblepopup-tail{border:0px;margin:0px;padding:0px;display:inline;}
 

@@ -1036,7 +1036,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             this.getRowDetailsGroup().setHidden(true);
             FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
             TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
-            dataAttributes.put("detailsFieldGroup", "detailsFieldGroup");
+            dataAttributes.put("role", "detailsFieldGroup");
             detailsFieldGroup.setDataAttributes(dataAttributes);
             Action rowDetailsAction = ComponentFactory.getActionLink();
             rowDetailsAction.addStyleClass("uif-detailsAction");
@@ -1061,7 +1061,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             detailsItems.add(rowDetailsAction);
             dataAttributes = new TreeMap<String, String>();
-            dataAttributes.put("dataRoleAttribute", "details");
+            dataAttributes.put("role", "details");
             this.getRowDetailsGroup().setDataAttributes(dataAttributes);
             detailsItems.add(getRowDetailsGroup());
             detailsFieldGroup.setItems(detailsItems);

@@ -59,7 +59,7 @@ function getHoverElement(fieldId) {
         if (elementInfo.element.is("input:checkbox")) {
             elementInfo.themeMargins = {
                 total:'13px',
-                difference:'0px'
+                difference:'2px'
             };
         }
     }
@@ -178,7 +178,8 @@ function showMessageTooltip(fieldId, showAndClose, change) {
             manageMouseEvents:false,
             themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
             alwaysVisible:false,
-            tail:{align:"left"}
+            tail:{align:"left"},
+            themeMargins: {total: "13px",difference: "2px"}
         };
 
         if (elementInfo.themeMargins) {

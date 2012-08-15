@@ -862,7 +862,7 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     padding: 1px;
 }
 
-.uif-clientMessageItems ul {
+.uif-groupValidationMessages  .uif-clientMessageItems ul {
     margin-left: 1em;
 }
 
@@ -870,7 +870,7 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     max-width: 250px;
 }
 
-.uif-serverMessageItems ul {
+.uif-groupValidationMessages .uif-serverMessageItems ul {
     margin-left: 1em;
 }
 

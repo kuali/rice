@@ -273,8 +273,10 @@ public class CollectionGroupBuilder implements Serializable {
             List<CollectionGroup> components = ComponentUtils.getComponentsOfTypeDeep(f, CollectionGroup.class);
             for(CollectionGroup cg: components){
                 ComponentUtils.prefixBindingPath(cg,bindingPath);
+                cg.setSubCollectionSuffix(lineSuffix);
             }
         }
+
 
         boolean readOnlyLine = collectionGroup.isReadOnly();
 

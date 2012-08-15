@@ -27,20 +27,20 @@ var profilingOn = false;
  * @param checkboxId id of the checkbox to check/uncheck
  * @param event event with the associated clicked target
  */
-function handleCheckboxLabelClick(checkboxId, event){
+function handleCheckboxLabelClick(checkboxId, event) {
     var checkbox = jQuery("#" + checkboxId);
-    if(jQuery(event.target).is("input, select, textarea, option")){
-        checkbox.attr("checked","checked");
+    if (jQuery(event.target).is("input, select, textarea, option")) {
+        checkbox.attr("checked", "checked");
     }
-    else if(jQuery(event.target).is("a, button")){
+    else if (jQuery(event.target).is("a, button")) {
         //do nothing
     }
-    else{
-        if(checkbox.is(":checked")){
+    else {
+        if (checkbox.is(":checked")) {
             checkbox.removeAttr("checked");
         }
-        else{
-            checkbox.attr("checked","checked");
+        else {
+            checkbox.attr("checked", "checked");
         }
     }
 }
@@ -71,11 +71,11 @@ function escapeName(name) {
  * (but, still include their textual content)
  */
 function convertToHtml(text, removeAnchors) {
-    if(removeAnchors){
-        text = text.replace(/&lt;a.+?&gt;/gi,"");
-        text = text.replace(/&lt;\/a&gt;/gi,"");
+    if (removeAnchors) {
+        text = text.replace(/&lt;a.+?&gt;/gi, "");
+        text = text.replace(/&lt;\/a&gt;/gi, "");
     }
-    return jQuery("<span />", { html: text }).text();
+    return jQuery("<span />", { html:text }).text();
 }
 
 /**
@@ -114,7 +114,7 @@ function publishHeight() {
  * @returns the jQuery context that can be used to perform actions that must be global to the entire page
  * ie, showing lightBoxes and growls etc
  */
-function getContext(){
+function getContext() {
     if (usePortalForContext()) {
         return top.jQuery;
     }
@@ -155,7 +155,7 @@ function usePortalForContext() {
  * @param window - window to test
  */
 function isPortalContainer(window) {
-   return window.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length;
+    return window.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length;
 }
 
 /**
@@ -288,20 +288,13 @@ function getLabel(id) {
  */
 function runHiddenScripts(id, isSelector, skipValidationBubbling) {
     if (id) {
-        //run dataScript first always
-        jQuery("#" + id).find("input[data-role='dataScript']").each(function () {
-            evalHiddenScript(jQuery(this));
-        });
 
         var selector = "#" + id;
-        if (isSelector && isSelector == true) {
+        if (isSelector) {
             selector = id;
         }
 
-        jQuery(selector).find("input[name='script']").each(function () {
-            evalHiddenScript(jQuery(this));
-        });
-
+        evaluateScripts(selector);
         runScriptsForId(id);
 
         //reinit dirty fields
@@ -319,6 +312,32 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         }
     }
     else {
+        evaluateScripts();
+
+        //reinitialize BubblePopup
+        initBubblePopups();
+    }
+}
+
+/**
+ * Evaluate scripts for the selection, if defined.  If no selector is defined, evaluate hidden scripts
+ * for the entire document
+ *
+ * @param selector optional jQuery selector string to select the object to run scripts for
+ */
+function evaluateScripts(selector) {
+    if (selector) {
+        //run dataScript first always
+        jQuery(selector).find("input[data-role='dataScript']").each(function () {
+            evalHiddenScript(jQuery(this));
+        });
+
+        jQuery(selector).find("input[name='script']").each(function () {
+            evalHiddenScript(jQuery(this));
+        });
+    }
+    else {
+        //run scripts for entire document if no selector defined
         //run dataScript first always
         jQuery("input[data-role='dataScript']").each(function () {
             evalHiddenScript(jQuery(this));
@@ -327,14 +346,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         jQuery("input[name='script']").each(function () {
             evalHiddenScript(jQuery(this));
         });
-
-        //reinitialize BubblePopup
-        initBubblePopups();
     }
-}
-
-function runHiddenScriptsTemp(id, isSelector) {
-    runHiddenScripts(id, isSelector);
 }
 
 /**
@@ -347,16 +359,12 @@ function runHiddenScriptsTemp(id, isSelector) {
  */
 function runScriptsForId(id) {
     if (id) {
-        jQuery("input[data-role='dataScript']").each(function () {
-            if (jQuery(this).data("for") === id) {
-                evalHiddenScript(jQuery(this));
-            }
+        jQuery("input[for='" + id + "']").filter("[data-role='dataScript']").each(function () {
+            evalHiddenScript(jQuery(this));
         });
 
-        jQuery("input[name='script']").each(function () {
-            if (jQuery(this).data("for") === id) {
-                evalHiddenScript(jQuery(this));
-            }
+        jQuery("input[for='" + id + "']").filter("[data-role='script']").each(function () {
+            evalHiddenScript(jQuery(this));
         });
     }
 }
@@ -638,50 +646,50 @@ function focusOnElementById(focusId) {
 }
 
 //Jump(scroll) to an element by name
-function jumpToElementByName(name){
-	var theElement =  jq("[name='" + escapeName(name) + "']");
-	if(theElement.length != 0){
-		if(!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length){
-			jQuery.scrollTo(theElement, 0);
-		}
-		else{
+function jumpToElementByName(name) {
+    var theElement = jq("[name='" + escapeName(name) + "']");
+    if (theElement.length != 0) {
+        if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
+            jQuery.scrollTo(theElement, 0);
+        }
+        else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-			top.jQuery.scrollTo(theElement, 0, {offset: {top:headerOffset}});
-		}
-	}
+            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
+        }
+    }
 }
 
 //Jump(scroll) to an element by Id
-function jumpToElementById(id){
-	var theElement =  jq("#" + id);
-	if(theElement.length != 0){
-		if(!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length){
+function jumpToElementById(id) {
+    var theElement = jq("#" + id);
+    if (theElement.length != 0) {
+        if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
             jQuery.scrollTo(theElement, 0);
-		}
-		else{
+        }
+        else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-			top.jQuery.scrollTo(theElement, 0, {offset: {top:headerOffset}});
-		}
-	}
+            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
+        }
+    }
 }
 
 //Jump(scroll) to the top of the current screen
-function jumpToTop(){
-    if(!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length){
+function jumpToTop() {
+    if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
         jQuery.scrollTo(jQuery("html"), 0);
     }
-    else{
-		top.jQuery.scrollTo(top.jQuery("html"), 0);
+    else {
+        top.jQuery.scrollTo(top.jQuery("html"), 0);
     }
 }
 
 //Jump(scroll) to the bottom of the current screen
-function jumpToBottom(){
-    if(!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length){
+function jumpToBottom() {
+    if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
         jQuery.scrollTo("max", 0);
     }
-    else{
-		top.jQuery.scrollTo("max", 0);
+    else {
+        top.jQuery.scrollTo("max", 0);
     }
 }
 
@@ -946,13 +954,15 @@ function showLightboxComponent(componentId, overrideOptions) {
     // set renderedInLightBox indicator and remove it when lightbox is closed
     if (jQuery('#renderedInLightBox').val() != true) {
         jQuery('#renderedInLightBox').val(true);
-        _appendCallbackFunctions(overrideOptions, {afterClose: function () {
+        _appendCallbackFunctions(overrideOptions, {afterClose:function () {
             jQuery('#renderedInLightBox').val(false);
         }});
     }
 
     if (jQuery('#' + componentId).hasClass('uif-placeholder')) {
-        retrieveComponent(componentId, undefined, function(){_showLightboxComponentHelper(componentId, overrideOptions)});
+        retrieveComponent(componentId, undefined, function () {
+            _showLightboxComponentHelper(componentId, overrideOptions)
+        });
     } else {
         _showLightboxComponentHelper(componentId, overrideOptions)
     }
@@ -1052,8 +1062,8 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         closeEffect:'fade',
         openSpeed:200,
         closeSpeed:200,
-        minHeight: 10,
-        minWidth: 10,
+        minHeight:10,
+        minWidth:10,
         helpers:{overlay:{css:{cursor:'arrow'}, closeClick:false}}
     };
 
@@ -1193,8 +1203,8 @@ function lightboxButtonScript() {
  * @param aiDisplay Index array to translate the visual position to the full data array
  * @param columns to total
  */
-function initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, columns ) {
-    var onePage = iStart == 0 && iEnd == (aaData.length -1);
+function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) {
+    var onePage = iStart == 0 && iEnd == (aaData.length - 1);
     var hasAddRow = jQuery(nRow).closest('table').find('tr.uif-collectionAddItem').length > 0;
     if (hasAddRow) {
         iEnd = iEnd + 1;
@@ -1202,11 +1212,11 @@ function initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, columns 
     }
 
     // Total each column in the columns list
-    for (var c = 0; c < columns.length ; c++) {
+    for (var c = 0; c < columns.length; c++) {
 
         var total = 0;
         // Calculate the total for all rows, even outside this page
-        for (var i = 0; i < aaData.length ; i++) {
+        for (var i = 0; i < aaData.length; i++) {
             total += parseFloat(coerceTableCellValue(aaData[i][columns[c]]));
         }
 
@@ -1224,7 +1234,7 @@ function initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, columns 
 
         if (onePage) {
             nCells[columns[c]].innerHTML = 'Total : ' + total;
-        }else{
+        } else {
             nCells[columns[c]].innerHTML = 'Page : ' + pageTotal +
                     '<br/>Total : ' + total;
         }
@@ -1276,7 +1286,7 @@ function coerceTableCellValue(td) {
 
     if (!isNaN(parseFloat(inputFieldValue)) && isFinite(inputFieldValue)) {
         return inputFieldValue;
-    }else{
+    } else {
         return 0;
     }
 }
@@ -1320,5 +1330,5 @@ function voidAction() {
  * @param jqObject - object to test
  */
 function nonEmpty(jqObject) {
-  return jqObject && jqObject.length;
+    return jqObject && jqObject.length;
 }

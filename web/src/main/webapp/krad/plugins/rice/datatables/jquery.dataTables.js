@@ -5786,7 +5786,53 @@
 			
 			return nNewRow;
 		};
-		
+
+        /* Kuali customization begin */
+        /**
+         * Kuali custom method, same as fnOpen except takes in a jqObject instead of html to detach
+         * and attach to the row instead
+         * @param nTr
+         * @param jqObject
+         * @param sClass
+         */
+        this.fnOpenCustom = function( nTr, jqObject, sClass )
+        {
+            /* Find settings from table node */
+            var oSettings = _fnSettingsFromNode( this[DataTable.ext.iApiIndex] );
+
+            /* Check that the row given is in the table */
+            var nTableRows = _fnGetTrNodes( oSettings );
+            if ( $.inArray(nTr, nTableRows) === -1 )
+            {
+                return;
+            }
+
+            /* the old open one if there is one */
+            this.fnClose( nTr );
+
+            var nNewRow = document.createElement("tr");
+            var nNewCell = document.createElement("td");
+            nNewRow.appendChild( nNewCell );
+            nNewCell.className = sClass;
+            nNewCell.colSpan = _fnVisbleColumns( oSettings );
+
+            jQuery(nNewCell).append(jqObject.detach());
+
+            /* If the nTr isn't on the page at the moment - then we don't insert at the moment */
+            var nTrs = $('tr', oSettings.nTBody);
+            if ( $.inArray(nTr, nTrs) != -1  )
+            {
+                $(nNewRow).insertAfter(nTr);
+            }
+
+            oSettings.aoOpenRows.push( {
+                "nTr": nNewRow,
+                "nParent": nTr
+            } );
+
+            return nNewRow;
+        };
+		/* Kuali customization end */
 		
 		/**
 		 * Change the pagination - provides the internal logic for pagination in a simple API 

@@ -316,7 +316,7 @@
     <#local isSelected = contains(status.actualValue?default([""]), option.key)>
     <span>
     <input type="checkbox" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label onclick="handleCheckboxLabelClick('${id}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
+    <label onclick="handleCheckboxLabelClick('${controlId}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
     </span>
     ${separator}
     </#list>

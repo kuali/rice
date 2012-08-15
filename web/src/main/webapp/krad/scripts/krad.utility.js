@@ -1255,9 +1255,25 @@ function refreshDatatableCellRedraw(field) {
  * @param td
  */
 function coerceTableCellValue(td) {
-    //TODO : if not editable!! can not use input, also use coerceValue()
+
     var inputField = jQuery(td).find(':input');
-    var inputFieldValue =  inputField.val();
+    var inputFieldValue;
+
+    if (inputField.length > 0) {
+        //TODO : use coerceValue()? would we do totals on other types of input
+        inputFieldValue =  inputField.val();
+    }else{
+        // This might be after sorting or just read only
+        inputField = jQuery(td).find('span');
+        if (inputField.length > 0) {
+            // readonly fields
+            inputFieldValue =  inputField.text().replace(/\s+/g, "");
+        } else{
+            // after sorting
+            inputFieldValue =  td;
+        }
+    }
+
     if (!isNaN(parseFloat(inputFieldValue)) && isFinite(inputFieldValue)) {
         return inputFieldValue;
     }else{

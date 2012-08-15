@@ -307,11 +307,12 @@ public class CollectionGroupBuilder implements Serializable {
                         currentLine);
 
                 // Add script to fields to activate save button on any change
-                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) && collectionGroup
-                        .isRenderSaveLineActions()) {
+                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) &&
+                        collectionGroup.isRenderSaveLineActions()) {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {
-                            ((ControlBase) ((InputField) f).getControl()).setOnChangeScript(
+                            ControlBase control = (ControlBase)((InputField) f).getControl();
+                            control.setOnChangeScript(control.getOnChangeScript()==null?"":control.getOnChangeScript() +
                                     "collectionLineChanged(this, 'uif-newCollectionItem');");
                         }
                     }
@@ -321,7 +322,8 @@ public class CollectionGroupBuilder implements Serializable {
                 // TODO : only add to total column fields, and add the add line
                 for (Field f : lineFields) {
                     if (f instanceof InputField && f.isRender()) {
-                        ((ControlBase) ((InputField) f).getControl()).setOnChangeScript(
+                        ControlBase control = (ControlBase)((InputField) f).getControl();
+                        control.setOnChangeScript(control.getOnChangeScript()==null?"":control.getOnChangeScript() +
                                 "refreshDatatableCellRedraw(this);");
                     }
                 }

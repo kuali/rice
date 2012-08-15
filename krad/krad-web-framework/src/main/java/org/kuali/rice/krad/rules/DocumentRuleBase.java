@@ -449,8 +449,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
                             wds.getDocument(document.getDocumentNumber()).getDocumentTypeName());
                     Map<String, String> permissionDetails = buildDocumentTypeActionRequestPermissionDetails(
                             documentType, workgroup.getActionRequested());
-                    if (getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION,
-                            permissionDetails) ){
+                    if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails) ){
                         List<String> principalIds = getGroupService().getMemberPrincipalIds(group.getId());
                         // if any member of the group is not allowed to receive the request, then the group may not receive it
                         for (String principalId : principalIds) {
@@ -558,6 +557,14 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         return true;
     }
 
+    protected boolean useKimPermission(String namespace, String permissionTemplateName, Map<String, String> permissionDetails) {
+		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		if (b == null || b) {
+			return getPermissionService().isPermissionDefinedByTemplate(namespace, permissionTemplateName,
+                    permissionDetails);
+		}
+		return false;
+	}
     protected Map<String, String> buildDocumentTypeActionRequestPermissionDetails(DocumentType documentType, String actionRequestCode) {
 		Map<String, String> details = buildDocumentTypePermissionDetails(documentType);
 		if (!StringUtils.isBlank(actionRequestCode)) {

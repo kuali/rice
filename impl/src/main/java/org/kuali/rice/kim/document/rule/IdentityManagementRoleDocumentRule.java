@@ -345,7 +345,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			if(!roleMember.isRole()){
 				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
 				validationErrors.addAll(attributeValidationHelper.convertErrorsForMappedFields(
-                        "document.members[" + memberCounter + "]", errorsTemp));
+                        "members[" + memberCounter + "]", errorsTemp));
 		        memberCounter++;
 			}
 			if (uniqueAttributeNames.size() > 0) {

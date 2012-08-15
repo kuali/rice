@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.4.7</version>
+    <version>1.5.0</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -204,9 +204,9 @@
         <kuali.gpg.phase>none</kuali.gpg.phase>
       </properties>
     </profile>
-    <!-- Profile for quickly creating basic Maven site -->
+    <!-- Don't need to run the enforcer to validate scm information -->
     <profile>
-      <id>validatescm</id>
+      <id>scm</id>
       <properties>
         <enforcer.phase>none</enforcer.phase>
       </properties>

@@ -113,6 +113,15 @@
           </property>
         </bean>
 
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field100" p:label="Label With [color=green]Color[/color]">
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field101" p:label="Label With [i][b]Html[/b][/i]">
+                </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field102" p:label="Label With [id=Demo-RichMessagesImage]Image">
+                        </bean>
+
         <bean parent="Uif-Message">
           <property name="messageText"
                     value="Getting message content from a value on the form (springEL): @{#dp.richMessageField}"/>
@@ -193,7 +202,7 @@
               p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl">
-              <property name="inlineValueLabelComponents">
+              <property name="inlineComponents">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field19"/>
                   <bean parent="Uif-InputField" p:propertyName="field20"/>

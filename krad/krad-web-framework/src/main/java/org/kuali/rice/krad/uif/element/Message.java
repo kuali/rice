@@ -37,12 +37,14 @@ public class Message extends ContentElementBase {
     private static final long serialVersionUID = 4090058533452450395L;
 
     private String messageText;
+    private boolean generateSpan;
+
     private List<Component> inlineComponents;
     private List<Component> messageComponentStructure;
-    private boolean generateSpan;
 
     public Message() {
         super();
+
         generateSpan = true;
     }
 

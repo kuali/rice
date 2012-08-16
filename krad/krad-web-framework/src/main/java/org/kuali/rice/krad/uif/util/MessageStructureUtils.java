@@ -71,6 +71,23 @@ public class MessageStructureUtils {
      * in the message</li>
      * <li>[css=&lt;css classes&gt;][/css] - apply css classes specified to the wrapped content - same as wrapping
      * the content in span with class property set</li>
+     * <li>[link=&lt;href src&gt;][/link] - an easier way to create an anchor that will open in a new page to the
+     * href specified after =</li>
+     * <li>[action=&lt;href src&gt;][/action] - create an action link inline without having to specify a component by
+     * id or index.  The options for this are as follows and MUST be in a comma seperated list in the order specified
+     * (specify 1-4 always in this order):
+     * <ul>
+     * <li>methodToCall(String)</li>
+     * <li>validateClientSide(boolean) - true if not set</li>
+     * <li>ajaxSubmit(boolean) - true if not set</li>
+     * <li>successCallback(js function or function declaration) - this only works when ajaxSubmit is true</li>
+     * </ul>
+     * The tag would look something like this [action=methodToCall]Action[/action] in most common cases.  And in more
+     * complex cases [action=methodToCall,true,true,functionName]Action[/action].  <p>In addition to these settings,
+     * you can also specify data to send to the server in this fashion (space is required between settings and data):
+     * </p>
+     * [action=&lt;action settings&gt; data={key1: 'value 1', key2: value2}]
+     * </li>
      * </ul>
      * If the [] characters are needed in message text, they need to be declared with an escape character: \\[ \\]
      * </p>
@@ -98,182 +115,47 @@ public class MessageStructureUtils {
         //creation of multiple unneeded objects
         Message currentMessageComponent = null;
 
-        for (String s : messagePieces) {
-            if (s.endsWith(KRADConstants.MessageParsing.RIGHT_TOKEN_PREFIX)) {
-                s = StringUtils.removeEnd(s, KRADConstants.MessageParsing.RIGHT_TOKEN_PREFIX);
+        for (String messagePiece : messagePieces) {
+            if (messagePiece.endsWith(KRADConstants.MessageParsing.RIGHT_TOKEN_MARKER)) {
+                messagePiece = StringUtils.removeEnd(messagePiece, KRADConstants.MessageParsing.RIGHT_TOKEN_MARKER);
 
-                if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.COMPONENT_BY_ID + "=")
+                if (StringUtils.startsWithIgnoreCase(messagePiece, KRADConstants.MessageParsing.COMPONENT_BY_ID + "=")
                         && parseComponents) {
-                    //splits around spaces not included in single quotes
-                    String[] parts = s.trim().trim().split("([ ]+(?=([^']*'[^']*')*[^']*$))");
-                    s = parts[0];
-
-                    //if there is a currentMessageComponent add it to the structure and reset it to null
-                    //because component content is now interrupting the string content
-                    if (currentMessageComponent != null && StringUtils.isNotEmpty(currentMessageComponent.getMessageText())) {
-                        messageComponentStructure.add(currentMessageComponent);
-                        currentMessageComponent = null;
-                    }
-
-                    //match component by id from the view
-                    s = StringUtils.remove(s, "'");
-                    s = StringUtils.remove(s, "\"");
-                    Component component = ComponentFactory.getNewComponentInstance(StringUtils.removeStart(s,
-                            KRADConstants.MessageParsing.COMPONENT_BY_ID + "="));
-
-                    if (component != null) {
-                        view.assignComponentIds(component);
-                        component.addStyleClass(KRADConstants.MessageParsing.INLINE_COMP_CLASS);
-
-                        if (parts.length > 1) {
-                            component = processAdditionalProperties(component, parts);
-                        }
-                        messageComponentStructure.add(component);
-                    }
-                } else if (s.matches("^[0-9]+( .+=.+)*$") && parseComponents) {
-                    //splits around spaces not included in single quotes
-                    String[] parts = s.trim().trim().split("([ ]+(?=([^']*'[^']*')*[^']*$))");
-                    s = parts[0];
-
-                    //if there is a currentMessageComponent add it to the structure and reset it to null
-                    //because component content is now interrupting the string content
-                    if (currentMessageComponent != null && StringUtils.isNotEmpty(currentMessageComponent.getMessageText())) {
-                        messageComponentStructure.add(currentMessageComponent);
-                        currentMessageComponent = null;
-                    }
-
-                    //match component by index from the componentList passed in
-                    int cIndex = Integer.parseInt(s);
-
-                    if (componentList != null && cIndex < componentList.size() && !componentList.isEmpty()) {
-                        Component component = componentList.get(cIndex);
-
-                        if (component != null) {
-                            if (component.getId() == null) {
-                                view.assignComponentIds(component);
-                            }
-
-                            if (parts.length > 1) {
-                                component = processAdditionalProperties(component, parts);
-                            }
-
-                            component.addStyleClass(KRADConstants.MessageParsing.INLINE_COMP_CLASS);
-                            messageComponentStructure.add(component);
-                        }
-                    } else {
-                        throw new RuntimeException("Component with index " + cIndex +
-                                " does not exist in inlineComponents of the message component with id " + messageId);
-                    }
-                } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.COLOR + "=") || StringUtils
-                        .startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.COLOR)) {
-                    if (!StringUtils.startsWithIgnoreCase(s, "/")) {
-                        s = StringUtils.remove(s, "'");
-                        s = StringUtils.remove(s, "\"");
-                        s = "<span style='color: " + StringUtils.removeStart(s,
-                                KRADConstants.MessageParsing.COLOR + "=") + ";'>";
-                    } else {
-                        s = "</span>";
-                    }
-
-                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-                } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.CSS_CLASSES + "=")
-                        || StringUtils.startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.CSS_CLASSES)) {
-                    if (!StringUtils.startsWithIgnoreCase(s, "/")) {
-                        s = StringUtils.remove(s, "'");
-                        s = StringUtils.remove(s, "\"");
-                        s = "<span class='"
-                                + StringUtils.removeStart(s, KRADConstants.MessageParsing.CSS_CLASSES + "=")
-                                + "'>";
-                    } else {
-                        s = "</span>";
-                    }
-
-                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-                } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.LINK + "=") || StringUtils
-                        .startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.LINK)) {
-                    if (!StringUtils.startsWithIgnoreCase(s, "/")) {
-                        //clean up href
-                        s = StringUtils.removeStart(s, KRADConstants.MessageParsing.LINK + "=");
-                        s = StringUtils.removeStart(s, "'");
-                        s = StringUtils.removeEnd(s, "'");
-                        s = StringUtils.removeStart(s, "\"");
-                        s = StringUtils.removeEnd(s, "\"");
-
-                        s = "<a href='" + s + "' target='_blank'>";
-                    } else {
-                        s = "</a>";
-                    }
-
-                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-                } else if (StringUtils.startsWithIgnoreCase(s, KRADConstants.MessageParsing.ACTION_LINK + "=")
-                        || StringUtils.startsWithIgnoreCase(s, "/" + KRADConstants.MessageParsing.ACTION_LINK)) {
-                    if (!StringUtils.startsWithIgnoreCase(s, "/")) {
-                        s = StringUtils.removeStart(s, KRADConstants.MessageParsing.ACTION_LINK + "=");
-                        String[] splitData = s.split(KRADConstants.MessageParsing.ACTION_DATA + "=");
-
-                        String[] params = splitData[0].trim().split("([,]+(?=([^']*'[^']*')*[^']*$))");
-                        String methodToCall = ((params.length >= 1) ? params[0] : "");
-                        String validate = ((params.length >= 2) ? params[1] : "true");
-                        String ajaxSubmit = ((params.length >= 3) ? params[2] : "true");
-                        String successCallback = ((params.length >= 4) ? params[3] : "null");
-
-                        String submitData = "null";
-
-                        if (splitData.length > 1) {
-                            submitData = splitData[1].trim();
-                        }
-
-                        methodToCall = StringUtils.remove(methodToCall, "'");
-                        methodToCall = StringUtils.remove(methodToCall, "\"");
-
-                        if (ajaxSubmit.equals("true")) {
-                            s = "<a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts("
-                                    + "'"
-                                    + methodToCall
-                                    + "',"
-                                    + successCallback
-                                    + ","
-                                    + submitData
-                                    + ","
-                                    + "null,null,"
-                                    + validate
-                                    + ","
-                                    + "null,null); return false;\">";
-                        } else {
-                            s = "<a href=\"javascript:void(null)\" "
-                                    + "onclick=\"submitFormFullOpts('"
-                                    + methodToCall
-                                    + "',"
-                                    + submitData
-                                    + ","
-                                    + validate
-                                    + ",null); return false;\">";
-                        }
-                    } else {
-                        s = "</a>";
-                    }
-
-                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
-                } else if (s.equals("")) {
+                    //Component by Id
+                    currentMessageComponent = processIdComponentContent(messagePiece, messageComponentStructure,
+                            currentMessageComponent, view);
+                } else if (messagePiece.matches("^[0-9]+( .+=.+)*$") && parseComponents) {
+                    //Component by index of inlineComponents
+                    currentMessageComponent = processIndexComponentContent(messagePiece, componentList,
+                            messageComponentStructure, currentMessageComponent, view, messageId);
+                } else if (StringUtils.startsWithIgnoreCase(messagePiece, KRADConstants.MessageParsing.COLOR + "=")
+                        || StringUtils.startsWithIgnoreCase(messagePiece, "/" + KRADConstants.MessageParsing.COLOR)) {
+                    //Color span
+                    currentMessageComponent = processColorContent(messagePiece, currentMessageComponent, view);
+                } else if (StringUtils.startsWithIgnoreCase(messagePiece,
+                        KRADConstants.MessageParsing.CSS_CLASSES + "=") || StringUtils.startsWithIgnoreCase(
+                        messagePiece, "/" + KRADConstants.MessageParsing.CSS_CLASSES)) {
+                    //css class span
+                    currentMessageComponent = processCssClassContent(messagePiece, currentMessageComponent, view);
+                } else if (StringUtils.startsWithIgnoreCase(messagePiece, KRADConstants.MessageParsing.LINK + "=")
+                        || StringUtils.startsWithIgnoreCase(messagePiece, "/" + KRADConstants.MessageParsing.LINK)) {
+                    //link (a tag)
+                    currentMessageComponent = processLinkContent(messagePiece, currentMessageComponent, view);
+                } else if (StringUtils.startsWithIgnoreCase(messagePiece,
+                        KRADConstants.MessageParsing.ACTION_LINK + "=") || StringUtils.startsWithIgnoreCase(
+                        messagePiece, "/" + KRADConstants.MessageParsing.ACTION_LINK)) {
+                    //action link (a tag)
+                    currentMessageComponent = processActionLinkContent(messagePiece, currentMessageComponent, view);
+                } else if (messagePiece.equals("")) {
                     //do nothing    
                 } else {
-                    //raw html
-                    s = s.trim();
-
-                    if (StringUtils.startsWithAny(s, KRADConstants.MessageParsing.UNALLOWED_HTML) || StringUtils
-                            .endsWithAny(s, KRADConstants.MessageParsing.UNALLOWED_HTML)) {
-                        throw new RuntimeException("The following html is not allowed in Messages: " + Arrays.toString(
-                                KRADConstants.MessageParsing.UNALLOWED_HTML));
-                    }
-
-                    s = "<" + s + ">";
-
-                    currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
+                    //raw html content
+                    currentMessageComponent = processHtmlContent(messagePiece, currentMessageComponent, view);
                 }
             } else {
                 //raw string
-                addBlanks(s);
-                currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, s, view);
+                addBlanks(messagePiece);
+                currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, messagePiece, view);
             }
         }
 
@@ -290,11 +172,12 @@ public class MessageStructureUtils {
      * a new message object with the string content and passes that back.
      *
      * @param currentMessageComponent Message object
-     * @param s string content to be concatenated
+     * @param messagePiece string content to be concatenated
      * @param view the current view
      * @return resulting concatenated Message
      */
-    private static Message concatenateStringMessageContent(Message currentMessageComponent, String s, View view) {
+    private static Message concatenateStringMessageContent(Message currentMessageComponent, String messagePiece,
+            View view) {
         if (currentMessageComponent == null) {
             currentMessageComponent = ComponentFactory.getMessage();
 
@@ -302,10 +185,10 @@ public class MessageStructureUtils {
                 view.assignComponentIds(currentMessageComponent);
             }
 
-            currentMessageComponent.setMessageText(s);
+            currentMessageComponent.setMessageText(messagePiece);
             currentMessageComponent.setGenerateSpan(false);
         } else {
-            currentMessageComponent.setMessageText(currentMessageComponent.getMessageText() + s);
+            currentMessageComponent.setMessageText(currentMessageComponent.getMessageText() + messagePiece);
         }
 
         return currentMessageComponent;
@@ -347,18 +230,264 @@ public class MessageStructureUtils {
      * Inserts &amp;nbsp; into the string passed in, if spaces exist at the beginning and/or end,
      * so spacing is not lost in html translation.
      *
-     * @param s string to insert  &amp;nbsp;
+     * @param text string to insert  &amp;nbsp;
      * @return String with  &amp;nbsp; inserted, if applicable
      */
-    public static String addBlanks(String s) {
-        if (StringUtils.startsWithIgnoreCase(s, " ")) {
-            s = "&nbsp;" + StringUtils.removeStart(s, " ");
+    public static String addBlanks(String text) {
+        if (StringUtils.startsWithIgnoreCase(text, " ")) {
+            text = "&nbsp;" + StringUtils.removeStart(text, " ");
         }
 
-        if (s.endsWith(" ")) {
-            s = StringUtils.removeEnd(s, " ") + "&nbsp;";
+        if (text.endsWith(" ")) {
+            text = StringUtils.removeEnd(text, " ") + "&nbsp;";
         }
 
-        return s;
+        return text;
+    }
+
+    /**
+     * Process a piece of the message that has id content to get a component by id and insert it in the structure
+     *
+     * @param messagePiece String piece with component by id content
+     * @param messageComponentStructure the structure of the message being built
+     * @param currentMessageComponent the state of the current text based message being built
+     * @param view current View
+     * @return null if currentMessageComponent had a value (it is now added to the messageComponentStructure passed in)
+     */
+    private static Message processIdComponentContent(String messagePiece, List<Component> messageComponentStructure,
+            Message currentMessageComponent, View view) {
+        //splits around spaces not included in single quotes
+        String[] parts = messagePiece.trim().trim().split("([ ]+(?=([^']*'[^']*')*[^']*$))");
+        messagePiece = parts[0];
+
+        //if there is a currentMessageComponent add it to the structure and reset it to null
+        //because component content is now interrupting the string content
+        if (currentMessageComponent != null && StringUtils.isNotEmpty(currentMessageComponent.getMessageText())) {
+            messageComponentStructure.add(currentMessageComponent);
+            currentMessageComponent = null;
+        }
+
+        //match component by id from the view
+        messagePiece = StringUtils.remove(messagePiece, "'");
+        messagePiece = StringUtils.remove(messagePiece, "\"");
+        Component component = ComponentFactory.getNewComponentInstance(StringUtils.removeStart(messagePiece,
+                KRADConstants.MessageParsing.COMPONENT_BY_ID + "="));
+
+        if (component != null) {
+            view.assignComponentIds(component);
+            component.addStyleClass(KRADConstants.MessageParsing.INLINE_COMP_CLASS);
+
+            if (parts.length > 1) {
+                component = processAdditionalProperties(component, parts);
+            }
+            messageComponentStructure.add(component);
+        }
+
+        return currentMessageComponent;
+    }
+
+    /**
+     * Process a piece of the message that has index content to get a component by index in the componentList passed in
+     * and insert it in the structure
+     *
+     * @param messagePiece String piece with component by index content
+     * @param componentList list that contains the component referenced by index
+     * @param messageComponentStructure the structure of the message being built
+     * @param currentMessageComponent the state of the current text based message being built
+     * @param view current View
+     * @param messageId id of the message being parsed (for exception notification)
+     * @return null if currentMessageComponent had a value (it is now added to the messageComponentStructure passed in)
+     */
+    private static Message processIndexComponentContent(String messagePiece, List<Component> componentList,
+            List<Component> messageComponentStructure, Message currentMessageComponent, View view, String messageId) {
+        //splits around spaces not included in single quotes
+        String[] parts = messagePiece.trim().trim().split("([ ]+(?=([^']*'[^']*')*[^']*$))");
+        messagePiece = parts[0];
+
+        //if there is a currentMessageComponent add it to the structure and reset it to null
+        //because component content is now interrupting the string content
+        if (currentMessageComponent != null && StringUtils.isNotEmpty(currentMessageComponent.getMessageText())) {
+            messageComponentStructure.add(currentMessageComponent);
+            currentMessageComponent = null;
+        }
+
+        //match component by index from the componentList passed in
+        int cIndex = Integer.parseInt(messagePiece);
+
+        if (componentList != null && cIndex < componentList.size() && !componentList.isEmpty()) {
+            Component component = componentList.get(cIndex);
+
+            if (component != null) {
+                if (component.getId() == null) {
+                    view.assignComponentIds(component);
+                }
+
+                if (parts.length > 1) {
+                    component = processAdditionalProperties(component, parts);
+                }
+
+                component.addStyleClass(KRADConstants.MessageParsing.INLINE_COMP_CLASS);
+                messageComponentStructure.add(component);
+            }
+        } else {
+            throw new RuntimeException("Component with index " + cIndex +
+                    " does not exist in inlineComponents of the message component with id " + messageId);
+        }
+
+        return currentMessageComponent;
+    }
+
+    /**
+     * Process a piece of the message that has color content by creating a span with that color style set
+     *
+     * @param messagePiece String piece with color content
+     * @param currentMessageComponent the state of the current text based message being built
+     * @param view current View
+     * @return currentMessageComponent with the new textual content generated by this method appended to its
+     *         messageText
+     */
+    private static Message processColorContent(String messagePiece, Message currentMessageComponent, View view) {
+        if (!StringUtils.startsWithIgnoreCase(messagePiece, "/")) {
+            messagePiece = StringUtils.remove(messagePiece, "'");
+            messagePiece = StringUtils.remove(messagePiece, "\"");
+            messagePiece = "<span style='color: " + StringUtils.removeStart(messagePiece,
+                    KRADConstants.MessageParsing.COLOR + "=") + ";'>";
+        } else {
+            messagePiece = "</span>";
+        }
+
+        return concatenateStringMessageContent(currentMessageComponent, messagePiece, view);
+    }
+
+    /**
+     * Process a piece of the message that has css content by creating a span with those css classes set
+     *
+     * @param messagePiece String piece with css class content
+     * @param currentMessageComponent the state of the current text based message being built
+     * @param view current View
+     * @return currentMessageComponent with the new textual content generated by this method appended to its
+     *         messageText
+     */
+    private static Message processCssClassContent(String messagePiece, Message currentMessageComponent, View view) {
+        if (!StringUtils.startsWithIgnoreCase(messagePiece, "/")) {
+            messagePiece = StringUtils.remove(messagePiece, "'");
+            messagePiece = StringUtils.remove(messagePiece, "\"");
+            messagePiece = "<span class='" + StringUtils.removeStart(messagePiece,
+                    KRADConstants.MessageParsing.CSS_CLASSES + "=") + "'>";
+        } else {
+            messagePiece = "</span>";
+        }
+
+        return concatenateStringMessageContent(currentMessageComponent, messagePiece, view);
+    }
+
+    /**
+     * Process a piece of the message that has link content by creating an anchor (a tag) with the href set
+     *
+     * @param messagePiece String piece with link content
+     * @param currentMessageComponent the state of the current text based message being built
+     * @param view current View
+     * @return currentMessageComponent with the new textual content generated by this method appended to its
+     *         messageText
+     */
+    private static Message processLinkContent(String messagePiece, Message currentMessageComponent, View view) {
+        if (!StringUtils.startsWithIgnoreCase(messagePiece, "/")) {
+            //clean up href
+            messagePiece = StringUtils.removeStart(messagePiece, KRADConstants.MessageParsing.LINK + "=");
+            messagePiece = StringUtils.removeStart(messagePiece, "'");
+            messagePiece = StringUtils.removeEnd(messagePiece, "'");
+            messagePiece = StringUtils.removeStart(messagePiece, "\"");
+            messagePiece = StringUtils.removeEnd(messagePiece, "\"");
+
+            messagePiece = "<a href='" + messagePiece + "' target='_blank'>";
+        } else {
+            messagePiece = "</a>";
+        }
+
+        return concatenateStringMessageContent(currentMessageComponent, messagePiece, view);
+    }
+
+    /**
+     * Process a piece of the message that has action link content by creating an anchor (a tag) with the onClick set
+     * to perform either ajaxSubmit or submit to the controller with a methodToCall
+     *
+     * @param messagePiece String piece with action link content
+     * @param currentMessageComponent the state of the current text based message being built
+     * @param view current View
+     * @return currentMessageComponent with the new textual content generated by this method appended to its
+     *         messageText
+     */
+    private static Message processActionLinkContent(String messagePiece, Message currentMessageComponent, View view) {
+        if (!StringUtils.startsWithIgnoreCase(messagePiece, "/")) {
+            messagePiece = StringUtils.removeStart(messagePiece, KRADConstants.MessageParsing.ACTION_LINK + "=");
+            String[] splitData = messagePiece.split(KRADConstants.MessageParsing.ACTION_DATA + "=");
+
+            String[] params = splitData[0].trim().split("([,]+(?=([^']*'[^']*')*[^']*$))");
+            String methodToCall = ((params.length >= 1) ? params[0] : "");
+            String validate = ((params.length >= 2) ? params[1] : "true");
+            String ajaxSubmit = ((params.length >= 3) ? params[2] : "true");
+            String successCallback = ((params.length >= 4) ? params[3] : "null");
+
+            String submitData = "null";
+
+            if (splitData.length > 1) {
+                submitData = splitData[1].trim();
+            }
+
+            methodToCall = StringUtils.remove(methodToCall, "'");
+            methodToCall = StringUtils.remove(methodToCall, "\"");
+
+            if (ajaxSubmit.equals("true")) {
+                messagePiece = "<a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts("
+                        + "'"
+                        + methodToCall
+                        + "',"
+                        + successCallback
+                        + ","
+                        + submitData
+                        + ","
+                        + "null,null,"
+                        + validate
+                        + ","
+                        + "null,null); return false;\">";
+            } else {
+                messagePiece = "<a href=\"javascript:void(null)\" "
+                        + "onclick=\"submitFormFullOpts('"
+                        + methodToCall
+                        + "',"
+                        + submitData
+                        + ","
+                        + validate
+                        + ",null); return false;\">";
+            }
+        } else {
+            messagePiece = "</a>";
+        }
+
+        return concatenateStringMessageContent(currentMessageComponent, messagePiece, view);
+    }
+
+    /**
+     * Process a piece of the message that is assumed to have a valid html tag
+     *
+     * @param messagePiece String piece with html tag content
+     * @param currentMessageComponent the state of the current text based message being built
+     * @param view current View
+     * @return currentMessageComponent with the new textual content generated by this method appended to its
+     *         messageText
+     */
+    private static Message processHtmlContent(String messagePiece, Message currentMessageComponent, View view) {
+        //raw html
+        messagePiece = messagePiece.trim();
+
+        if (StringUtils.startsWithAny(messagePiece, KRADConstants.MessageParsing.UNALLOWED_HTML) || StringUtils
+                .endsWithAny(messagePiece, KRADConstants.MessageParsing.UNALLOWED_HTML)) {
+            throw new RuntimeException("The following html is not allowed in Messages: " + Arrays.toString(
+                    KRADConstants.MessageParsing.UNALLOWED_HTML));
+        }
+
+        messagePiece = "<" + messagePiece + ">";
+
+        return concatenateStringMessageContent(currentMessageComponent, messagePiece, view);
     }
 }

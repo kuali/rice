@@ -37,13 +37,15 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
     private List<KeyValue> options;
     private List<KeyMessage> richOptions;
-    private List<Component> inlineValueLabelComponents;
+    private List<Component> inlineComponents;
 
     public MultiValueControlBase() {
         super();
     }
 
     /**
+     * Process rich message content that may be in the options, by creating and initializing the richOptions
+     *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
@@ -58,7 +60,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
                 Message message = ComponentFactory.getMessage();
                 view.assignComponentIds(message);
                 message.setMessageText(option.getValue());
-                message.setInlineComponents(inlineValueLabelComponents);
+                message.setInlineComponents(inlineComponents);
                 message.setGenerateSpan(false);
 
                 view.getViewHelperService().performComponentInitialization(view, model, message);
@@ -68,27 +70,32 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
+     * Adds appropriate parent data to inputs internal to the controls that may be in rich content of options
+     *
      * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
+        if (richOptions.isEmpty()) {
+            return;
+        }
+
         //Messages included in options which have have rich message content need to be aware of their parent for
         //validation purposes
-        if (!richOptions.isEmpty()) {
-            for (KeyMessage richOption : richOptions) {
-                List<Component> components = richOption.getMessage().getMessageComponentStructure();
+        for (KeyMessage richOption : richOptions) {
+            List<Component> components = richOption.getMessage().getMessageComponentStructure();
 
-                if (components != null && !components.isEmpty()) {
-                    for (Component c : components) {
-                        if (c instanceof Container || c instanceof InputField) {
-                            c.addDataAttribute("parent", parent.getId());
-                        }
+            if (components != null && !components.isEmpty()) {
+                for (Component c : components) {
+                    if (c instanceof Container || c instanceof InputField) {
+                        c.addDataAttribute("parent", parent.getId());
                     }
                 }
             }
         }
+
     }
 
     /**
@@ -121,23 +128,23 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
-     * Gets the inlineValueLabelComponents which represent components that can be referenced in an option's value
+     * Gets the inlineComponents which represent components that can be referenced in an option's value
      * by index
      *
      * @return the components that can be used in rich values of options
      */
-    public List<Component> getInlineValueLabelComponents() {
-        return inlineValueLabelComponents;
+    public List<Component> getInlineComponents() {
+        return inlineComponents;
     }
 
     /**
-     * Sets the inlineValueLabelComponents which represent components that can be referenced in an option's value
+     * Sets the inlineComponents which represent components that can be referenced in an option's value
      * by index
      *
-     * @param inlineValueLabelComponents
+     * @param inlineComponents
      */
-    public void setInlineValueLabelComponents(List<Component> inlineValueLabelComponents) {
-        this.inlineValueLabelComponents = inlineValueLabelComponents;
+    public void setInlineComponents(List<Component> inlineComponents) {
+        this.inlineComponents = inlineComponents;
     }
 
     /**

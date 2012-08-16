@@ -148,6 +148,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
+
         // Done in apply model so we have the message text for additional rich message processing in Message
         // Sets message
         if (StringUtils.isNotBlank(instructionalText) && StringUtils.isBlank(instructionalMessage.getMessageText())) {

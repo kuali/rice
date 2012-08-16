@@ -334,6 +334,13 @@
     <property name="headerText" value="Field Label Options"/>
     <property name="items">
       <list>
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="LEFT"
+                      p:instructionalText="Label left" p:constraintText="Constraint Text">
+                  <property name="control">
+                    <bean parent="Uif-TextControl"/>
+                  </property>
+                </bean>
+
         <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="RIGHT"
               p:instructionalText="Label right">
           <property name="control">

@@ -647,8 +647,8 @@ public final class KRADConstants {
     public static final class MessageParsing {
         public static final String LEFT_TOKEN = "[";
         public static final String RIGHT_TOKEN = "]";
-        public static final String RIGHT_TOKEN_PREFIX = "$@$";
-        public static final String RIGHT_TOKEN_PLACEHOLDER = RIGHT_TOKEN_PREFIX + RIGHT_TOKEN;
+        public static final String RIGHT_TOKEN_MARKER = "$@$";
+        public static final String RIGHT_TOKEN_PLACEHOLDER = RIGHT_TOKEN_MARKER + RIGHT_TOKEN;
         public static final String LEFT_BRACKET = "&#91;";
         public static final String RIGHT_BRACKET = "&#93;";
         public static final String INLINE_COMP_CLASS = "inlineBlock";

@@ -18,9 +18,10 @@
 <#macro uif_label element>
 
     <#local label="${element.labelText}"/>
+    <#local colon=""/>
 
     <#if element.renderColon>
-        <#local label="${label}:"/>
+        <#local colon=":"/>
     </#if>
 
     <#if element.title?has_content>
@@ -29,16 +30,20 @@
 
     <@krad.span component=element>
 
-        <#-- required message left -->
+    <#-- required message left -->
         <#if element.requiredMessagePlacement == 'LEFT'>
             <@krad.template component=element.requiredMessage/>
         </#if>
 
-        <label id="${element.id}" for="${element.labelForComponentId!}" ${title!} ${element.simpleDataAttributes!}>
-            ${label}
-        </label>
+    <label id="${element.id}" for="${element.labelForComponentId!}" ${title!} ${element.simpleDataAttributes!}>
+        <#if element.richLabelMessage?has_content>
+            <@krad.template component=element.richLabelMessage/>${colon}
+        <#else>
+            ${label}${colon}
+        </#if>
+    </label>
 
-        <#-- required message right -->
+    <#-- required message right -->
         <#if element.requiredMessagePlacement == 'RIGHT'>
             <@krad.template component=element.requiredMessage/>
         </#if>

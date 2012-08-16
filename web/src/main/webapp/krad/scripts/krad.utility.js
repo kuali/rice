@@ -60,6 +60,7 @@ function escapeName(name) {
     name = name.replace(/\./g, "\\.");
     name = name.replace(/\[/g, "\\[");
     name = name.replace(/\]/g, "\\]");
+
     return name;
 }
 
@@ -75,6 +76,7 @@ function convertToHtml(text, removeAnchors) {
         text = text.replace(/&lt;a.+?&gt;/gi, "");
         text = text.replace(/&lt;\/a&gt;/gi, "");
     }
+
     return jQuery("<span />", { html:text }).text();
 }
 

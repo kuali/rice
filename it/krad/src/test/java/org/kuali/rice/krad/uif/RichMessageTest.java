@@ -474,7 +474,7 @@ public class RichMessageTest extends KRADTestCase {
         InputField field2 = ComponentFactory.getInputField();
         field2.setPropertyName("field2");
         inline.add(field2);
-        radioGroupControl.setInlineValueLabelComponents(inline);
+        radioGroupControl.setInlineComponents(inline);
 
         radioGroupControl.setOptions(options);
         performSimulatedLifecycle(radioGroupControl);

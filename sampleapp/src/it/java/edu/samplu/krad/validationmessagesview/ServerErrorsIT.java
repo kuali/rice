@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.validationmessagesview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -32,9 +33,10 @@ public class ServerErrorsIT extends UpgradedSeleniumITBase {
 
     @Test
     public void testServerErrorsIT() throws Exception {
-        selenium.click("//button[contains(.,'Get Error Messages')]");
+        selenium.click("//button[contains(.,'Get Error Messages')]");        
         selenium.waitForPageToLoad("30000");
 //        Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]")); // bugged isVisible? you can see it on the screen...
+        Thread.sleep(1000);
         Assert.assertTrue(selenium.isElementPresent(
                 "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem"));
         Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));

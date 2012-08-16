@@ -315,7 +315,7 @@ public class CollectionGroupBuilder implements Serializable {
                         if (f instanceof InputField && f.isRender()) {
                             ControlBase control = (ControlBase)((InputField) f).getControl();
                             control.setOnChangeScript(control.getOnChangeScript()==null?"":control.getOnChangeScript() +
-                                    "collectionLineChanged(this, 'uif-newCollectionItem');");
+                                    ";collectionLineChanged(this, 'uif-newCollectionItem');");
                         }
                     }
                 }
@@ -326,7 +326,7 @@ public class CollectionGroupBuilder implements Serializable {
                     if (f instanceof InputField && f.isRender()) {
                         ControlBase control = (ControlBase)((InputField) f).getControl();
                         control.setOnChangeScript(control.getOnChangeScript()==null?"":control.getOnChangeScript() +
-                                "refreshDatatableCellRedraw(this);");
+                                ";refreshDatatableCellRedraw(this);");
                     }
                 }
             }

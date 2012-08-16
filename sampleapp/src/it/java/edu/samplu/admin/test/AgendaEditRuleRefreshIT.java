@@ -42,21 +42,21 @@ public class AgendaEditRuleRefreshIT extends UpgradedSeleniumITBase {
 		selenium.click("css=button:contains(earch)"); //  selenium.click("id=32");
         Thread.sleep(3000);
 		selenium.waitForPageToLoad("30000");
-        selenium.click("css=a[title='edit Agenda Definition withAgenda Id=T1000 ']"); // selenium.click("id=194_line0");
+		selenium.click("css=a[title='edit Agenda Definition withAgenda Id=AGENDA301 ']");  // selenium.click("id=194_line0");
 		selenium.waitForPageToLoad("30000");
-		selenium.click("css=span:contains(Rule1: stub rule lorem ipsum [KrmsActionResolverType: testAction])"); // selenium.click("//li[@id='473_node_0_parent_root']/a");
-        selenium.click("id=472_node_0_parent_node_0_parent_node_0_parent_root_span");
-		selenium.click("id=361");
+		selenium.click("css=div.uif-message:contains(Rule1: stub rule lorem ipsum)"); // selenium.click("//li[@id='473_node_0_parent_root']/a");
+        selenium.click("css=//li/a/span.uif-message:contains('When TRUE')");
+		selenium.click("link=[-] collapse all");
 
         // click refresh  several times
         for (int i=0; i<6; i++) {
             for (int second = 0;; second++) {
                 if (second >= 60) fail("timeout");
-                try { if (selenium.isElementPresent("id=440")) break; } catch (Exception e) {}
+                try { if (selenium.isElementPresent("css=button.kr-refresh-button")) break; } catch (Exception e) {}
                 Thread.sleep(1000);
             }
 
-            selenium.click("id=440");
+            selenium.click("css=button.kr-refresh-button");
         }
 	}
 }

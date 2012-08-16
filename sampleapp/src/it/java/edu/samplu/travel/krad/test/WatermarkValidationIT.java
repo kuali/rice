@@ -22,6 +22,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -36,31 +38,37 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
         return PORTAL;
     }
 
-    @Test
-    /**
-     * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
-     * the scripts will be working ok
-     */
-    public void testWatermarking() throws Exception {
-//        selenium.open(System.getProperty("remote.public.url"));
-//		selenium.type("name=__login_user", "quickstart");
-//		selenium.click("css=input[type=\"submit\"]");
-//		selenium.waitForPageToLoad("100000");
-		selenium.click("link=KRAD");
-		selenium.waitForPageToLoad("50000");
-		selenium.click("link=Uif Components (Kitchen Sink)");
-		selenium.waitForPageToLoad("100000");
-//        selenium.selectFrame("iframeportlet");
-        selenium.focus("id=u73_control");
-		selenium.type("id=u73_control", "something");
-        selenium.focus("id=u103_control");
-        selenium.type("id=u103_control", "something else");
-        assertEquals("something", selenium.getValue("xpath=//*[@id=\"u73_control\"]"));
-		selenium.chooseCancelOnNextConfirmation();
-        // 'cancel' link
-		selenium.click("id=u29");
-		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-    }
+         @Test
+        /**
+         * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
+         * the scripts will be working ok
+         */
+        public void testWatermarking() throws Exception {
+    //        selenium.open(System.getProperty("remote.public.url"));
+    //		selenium.type("name=__login_user", "quickstart");
+    //		selenium.click("css=input[type=\"submit\"]");
+    //		selenium.waitForPageToLoad("100000");
+    		selenium.click("link=KRAD");
+    		selenium.waitForPageToLoad("50000");
+    		selenium.click("link=Uif Components (Kitchen Sink)");
+    		selenium.waitForPageToLoad("100000");
+    		Thread.sleep(2000);
+            selenium.selectWindow("title=Kuali :: Uif Components");     
+            selenium.focus("name=field106");
+            selenium.type("name=field106", "something");
+            selenium.focus("name=field110");
+            selenium.type("name=field110", "something else");
+            assertEquals("something", selenium.getValue("name=field106"));
+            selenium.chooseCancelOnNextConfirmation();
+            // 'cancel' link
+            selenium.click("link=Cancel");
+            // Manually tested. Selenium fails to detect confirmation window. Uncomment once its fixed.
+            // assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
+            fail("selenium.chooseCancelOnNextConfirmation(); is not finding the Dialog see https://jira.kuali.org/browse/KULRICE-7850 "
+                    + "selenium.chooseCancelOnNextConfirmation() isn't finding dialog");
+                        
+           
+        }
 
     public void clearText(String field) throws Exception {
         selenium.focus(field);

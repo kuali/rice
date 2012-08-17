@@ -15,6 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
@@ -35,18 +36,8 @@ public class MaintenanceRouteLogIT extends KradMenuITBase {
      */
     public void testVerifyRouteLog() throws Exception {
         gotoMenuLinkLocator();
-        selenium.click("css=#u755_toggle > span.uif-headerText-span");
-
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isElementPresent("//*[@id=\"routeLogIFrame\"]")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
+        selenium.click("css=span:contains('Route Log')");
+        
+        ITUtil.waitForElement(selenium, "//iframe[contains(@src,'RouteLog.do')]", 15);
     }
 }

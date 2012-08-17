@@ -483,7 +483,9 @@ function updateComponentHandler(content, dataAttr) {
             jQuery("#" + id).css('display', 'none');
         }
 
-        jQuery("#" + id).animate({backgroundColor:"transparent"}, 7000);
+        var newComponent = jQuery("#" + id);
+        newComponent.animate({backgroundColor:"transparent"}, 6000);
+        jQuery(component).find("#" + id).animate({backgroundColor:"transparent"}, 6000);
     }
     });
 
@@ -783,7 +785,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
                             refreshDisclosure.parent().show();
                         }
 
-                        refreshDisclosure.animate({backgroundColor:"transparent"}, 7000);
+                        refreshDisclosure.animate({backgroundColor:"transparent"}, 6000);
 
                         //re-enable validation on now shown inputs
                         hiddenInputValidationToggle(disclosureId);

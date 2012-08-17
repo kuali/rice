@@ -147,7 +147,6 @@ function initFieldHandlers() {
                         }
 
                         if (show) {
-                            console.log("showing " + fieldId + " tooltipid " + jQuery(tooltipElement).GetBubblePopupID());
                             var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
                             validationTooltipOptions.themeName = data.tooltipTheme;
                             validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();

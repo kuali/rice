@@ -59,10 +59,14 @@ public class HelpIT extends UpgradedSeleniumITBase {
 
         // test external help
         selenium.click("css=input[title=\"Help for Configuration Test View - Help\"]");
-        selenium.waitForPopUp("HelpWindow", "30000");
-        selenium.selectPopUp("HelpWindow");
+        //selenium.waitForPopUp("Open Source Software | www.kuali.org", "30000");
+        //selenium.selectPopUp("HelpWindow");
+        Thread.sleep(5000);
+        selenium.selectWindow("Open Source Software | www.kuali.org");
+        Thread.sleep(5000);
         assertEquals("http://www.kuali.org/?view", selenium.getLocation());
-        selenium.deselectPopUp();
+        //selenium.deselectPopUp();
+        selenium.selectWindow("Kuali :: Configuration Test View - Help");
     }
 
     /**
@@ -76,10 +80,14 @@ public class HelpIT extends UpgradedSeleniumITBase {
 
         // test external help
         selenium.click("css=input[title=\"Help for Help Page\"]");
-        selenium.waitForPopUp("HelpWindow", "30000");
-        selenium.selectPopUp("HelpWindow");
+        //selenium.waitForPopUp("HelpWindow", "30000");
+        //selenium.selectPopUp("HelpWindow");
+        Thread.sleep(5000);
+        selenium.selectWindow("Open Source Software | www.kuali.org");
+        Thread.sleep(5000);      
         assertEquals("http://www.kuali.org/?page", selenium.getLocation());
-        selenium.deselectPopUp();
+        //selenium.deselectPopUp();
+        selenium.selectWindow("Kuali :: Configuration Test View - Help");
     }
 
     /**

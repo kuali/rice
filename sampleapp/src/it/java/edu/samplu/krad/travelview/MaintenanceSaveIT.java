@@ -29,21 +29,21 @@ public class MaintenanceSaveIT extends KradMenuITBase {
         return "link=Travel Account Maintenance (New)";
     }
 
-    @Test
+     @Test
     /**
      * Verify Save
      */
     public void testVerifySave() throws Exception {
         gotoMenuLinkLocator();
-        selenium.type("id=u116_control", "Test Document");
-        selenium.click("id=u802_control");
-        selenium.type("id=u802_control", "1234567890");
-        selenium.type("id=u836_control", "EAT");
-        selenium.type("id=u853_control", "a1");
-        selenium.click("id=u1147");
+        selenium.type("name=document.documentHeader.documentDescription", "Test Document");
+        selenium.click("name=document.newMaintainableObject.dataObject.number");
+        selenium.type("name=document.newMaintainableObject.dataObject.number", "1234567890");
+        selenium.type("name=document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
+        selenium.type("name=document.newMaintainableObject.dataObject.subAccount", "a1");
+        selenium.click("css=button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
 
         for (int second = 0;; second++) {
-            if (second >= 15) {
+            if (second >= 5) {
                 break;
             }
 

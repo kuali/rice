@@ -27,7 +27,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Rich message structure utilities for parsing message content and converting it to components/content.
+ * Rich message structure utilities for parsing message content and converting it to components/content
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageStructureUtils {
 

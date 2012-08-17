@@ -455,8 +455,6 @@ function updateComponentHandler(content, dataAttr) {
     }
 
     elementToBlock.unblock({onUnblock:function () {
-        var origColor = jQuery(component).find("#" + id).css("background-color");
-        jQuery(component).find("#" + id).css("background-color", "");
         jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
 
         // remove old stuff
@@ -485,11 +483,7 @@ function updateComponentHandler(content, dataAttr) {
             jQuery("#" + id).css('display', 'none');
         }
 
-        if (origColor == "") {
-            origColor = "transparent";
-        }
-
-        jQuery("#" + id).animate({backgroundColor:origColor}, 5000);
+        jQuery("#" + id).animate({backgroundColor:"transparent"}, 7000);
     }
     });
 
@@ -782,8 +776,6 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
                         retrieveComponent(disclosureId, methodToCall);
                     }
                     else {
-                        var origColor = refreshDisclosure.css("background-color");
-                        refreshDisclosure.css("background-color", "");
                         refreshDisclosure.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
                         refreshDisclosure.show();
 
@@ -791,10 +783,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
                             refreshDisclosure.parent().show();
                         }
 
-                        if (origColor == "") {
-                            origColor = "transparent";
-                        }
-                        refreshDisclosure.animate({backgroundColor:origColor}, 5000);
+                        refreshDisclosure.animate({backgroundColor:"transparent"}, 7000);
 
                         //re-enable validation on now shown inputs
                         hiddenInputValidationToggle(disclosureId);

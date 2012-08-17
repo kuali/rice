@@ -53,6 +53,11 @@ public class Label extends ContentElementBase {
         requiredMessagePlacement = Position.LEFT;
     }
 
+    /**
+     * Sets up rich message content for the label, if any exists
+     *
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);

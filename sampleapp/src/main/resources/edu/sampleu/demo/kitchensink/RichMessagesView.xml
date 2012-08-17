@@ -218,6 +218,15 @@
             </bean>
           </property>
         </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="bField1" p:label="CheckboxControl">
+                  <property name="control">
+                    <bean parent="Uif-CheckboxControl" p:checkboxLabel="I,
+                    [id=Demo-SampleMessageInput4 propertyName=field103], agree to the terms
+                    and conditions of this form">
+                    </bean>
+                  </property>
+        </bean>
       </list>
     </property>
   </bean>

@@ -38,6 +38,6 @@
     </#if>
 
     <@spring.formCheckbox id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}"
-             label="${control.checkboxLabel!}" attributes="${attributes}"/>
+             label=control.richLabelMessage attributes="${attributes}"/>
 
 </#macro>

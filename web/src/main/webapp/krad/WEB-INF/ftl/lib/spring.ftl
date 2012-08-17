@@ -333,14 +333,16 @@
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
-<#macro formCheckbox path id="" label="" attributes="">
+<#macro formCheckbox path label id="" attributes="">
 	<@bind path />
     <#local name="${status.expression}">
     <#local isSelected = status.value?? && status.value?string=="true">
 	<input type="hidden" name="_${name}" value="on"/>
 	<input type="checkbox" id="${id!}" name="${name}"<#if isSelected> checked="checked"</#if> ${attributes}/>
     <#if label?has_content>
-        <label for="${id}">${label}</label>
+        <label onclick="handleCheckboxLabelClick('${id}',event); return false;" for="${id}">
+            <@krad.template component=label/>
+        </label>
     </#if>
 </#macro>
 

@@ -15,10 +15,18 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.List;
+
 /**
  * Represents a HTML Checkbox control. Typically used for boolean attributes (where the
  * value is either on/off, true/false)
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CheckboxControl extends ControlBase implements ValueConfiguredControl {
@@ -27,9 +35,44 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     private String value;
     private String checkboxLabel;
 
+    private Message richLabelMessage;
+    private List<Component> inlineComponents;
+
     public CheckboxControl() {
-       super();
-	}
+        super();
+    }
+
+    /**
+     * Sets up rich message content for the label, if any exists
+     *
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        if (richLabelMessage == null) {
+            Message message = ComponentFactory.getMessage();
+            view.assignComponentIds(message);
+            message.setMessageText(checkboxLabel);
+            message.setInlineComponents(inlineComponents);
+            message.setGenerateSpan(false);
+            view.getViewHelperService().performComponentInitialization(view, model, message);
+            this.setRichLabelMessage(message);
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+
+        components.add(richLabelMessage);
+
+        return components;
+    }
 
     /**
      * The value that will be submitted when the checkbox control is checked
@@ -71,5 +114,45 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      */
     public void setCheckboxLabel(String checkboxLabel) {
         this.checkboxLabel = checkboxLabel;
+    }
+
+    /**
+     * Gets the Message that represents the rich message content of the label if labelText is using rich message tags.
+     * <b>DO NOT set this
+     * property directly unless you need full control over the message structure.</b>
+     *
+     * @return Message with rich message structure, null if no rich message structure
+     */
+    public Message getRichLabelMessage() {
+        return richLabelMessage;
+    }
+
+    /**
+     * Sets the Message that represents the rich message content of the label if it is using rich message tags.  <b>DO
+     * NOT set this
+     * property directly unless you need full control over the message structure.</b>
+     *
+     * @param richLabelMessage
+     */
+    public void setRichLabelMessage(Message richLabelMessage) {
+        this.richLabelMessage = richLabelMessage;
+    }
+
+    /**
+     * Gets the inlineComponents used by index in the checkboxLabel that has rich message component index tags
+     *
+     * @return the Label's inlineComponents
+     */
+    public List<Component> getInlineComponents() {
+        return inlineComponents;
+    }
+
+    /**
+     * Sets the inlineComponents used by index in the checkboxLabel that has rich message component index tags
+     *
+     * @param inlineComponents
+     */
+    public void setInlineComponents(List<Component> inlineComponents) {
+        this.inlineComponents = inlineComponents;
     }
 }

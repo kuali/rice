@@ -15,6 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
@@ -35,21 +36,11 @@ public class MaintenanceNotesAndAttachmentsIT  extends KradMenuITBase {
      */
     public void testVerifyNotesAndAttachments() throws Exception {
         gotoMenuLinkLocator();
-        selenium.click("css=#u168_col");
+        selenium.click("css=span:contains('Notes and Attachments')");
 
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isElementPresent("css=#u221_add")) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-
-        assertTrue(selenium.isElementPresent("css=#u168_toggle > span.uif-headerText-span"));
+        ITUtil.waitForElement(selenium, "//button[@title='Add a Note']", 15);
+        
+        assertTrue(selenium.isElementPresent("css=span:contains('Notes and Attachments')"));
         assertTrue(selenium.isElementPresent("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]"));
         assertTrue(selenium.isElementPresent("//input[@name='attachmentFile']"));
         assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]"));

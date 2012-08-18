@@ -135,7 +135,7 @@
               <webappSourceDir>${basedir}/src/main/webapp</webappSourceDir>
               <cssSourceDir>krad</cssSourceDir>
               <cssSourceFiles>
-                <cssSourceFile>css/global/fss-reset.css</cssSourceFile>
+                <cssSourceFile>css/global/fss-reset-global.css</cssSourceFile>
                 <cssSourceFile>css/global/fss-text.css</cssSourceFile>
                 <cssSourceFile>plugins/jqueryUI/jquery-ui-1.8.19.css</cssSourceFile>
                 <cssSourceFile>plugins/jgrowl/jquery.jgrowl.css</cssSourceFile>

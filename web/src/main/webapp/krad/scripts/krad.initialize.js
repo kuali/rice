@@ -26,6 +26,7 @@ var pageValidatorReady = false;
 var validateClient = true;
 var messageSummariesShown = false;
 var pauseTooltipDisplay = false;
+var haltValidationMessaging = false;
 
 var errorImage;
 var errorGreyImage;

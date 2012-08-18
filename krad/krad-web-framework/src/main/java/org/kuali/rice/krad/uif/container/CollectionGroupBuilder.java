@@ -131,12 +131,15 @@ public class CollectionGroupBuilder implements Serializable {
 
                     // Default line actions - no client side validation
                     String actionScript = "performCollectionAction(this, '" + collectionGroup.getId() + "');";
-                    List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view,
-                            model, collectionGroup, currentLine, index, actionScript);
+                   List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
+                            collectionGroup, currentLine, index, actionScript);
 
                     // Line actions with client side validation
-                    String actionScriptValidatedLine = "validateAndPerformCollectionAction(this, '" + collectionGroup.getId() + "', '"
-                            + collectionGroup.getPropertyName() + "');";
+                    String actionScriptValidatedLine = "validateAndPerformCollectionAction(this, '"
+                            + collectionGroup.getId()
+                            + "', '"
+                            + collectionGroup.getPropertyName()
+                            + "');";
                     List<Action> validatedLineActions = initializeLineActions(collectionGroup.getValidatedLineActions(),
                             view, model, collectionGroup, currentLine, index, actionScriptValidatedLine);
 
@@ -271,18 +274,6 @@ public class CollectionGroupBuilder implements Serializable {
 
         // add special css styles to identify the add line client side
         if (lineIndex == -1) {
-            for (Field f : lineFields) {
-                if (f instanceof InputField) {
-                    // sets up - skipping these fields in add area during standard form validation calls
-                    // custom addLineToCollection js call will validate these fields manually on an add
-                    Control control = ((InputField) f).getControl();
-                    if (control != null) {
-                        control.addStyleClass(collectionGroup.getBaseId() + "-addField");
-                        control.addStyleClass("ignoreValid");
-                    }
-                }
-            }
-
             // set focus on after the add line submit to first field of add line
             for (Action action : actions) {
                 if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE) && (lineFields
@@ -306,8 +297,8 @@ public class CollectionGroupBuilder implements Serializable {
                         currentLine);
 
                 // Add script to fields to activate save button on any change
-                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) &&
-                        collectionGroup.isRenderSaveLineActions()) {
+                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) && collectionGroup
+                        .isRenderSaveLineActions()) {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {
                             ((ControlBase)((InputField) f).getControl()).setOnChangeScript(
@@ -376,6 +367,34 @@ public class CollectionGroupBuilder implements Serializable {
         // invoke layout manager to build the complete line
         layoutManager.buildLine(view, model, collectionGroup, lineFields, subCollectionFields, bindingPath, actions,
                 lineSuffix, currentLine, lineIndex);
+                
+        //add additional information to the group and fields to allow for correct add control selection
+        String selector = "";
+        if (lineIndex == -1) {
+            List<String> addIds = new ArrayList<String>();
+            for (Field f : lineFields) {
+                if (f instanceof InputField) {
+                    // sets up - skipping these fields in add area during standard form validation calls
+                    // custom addLineToCollection js call will validate these fields manually on an add
+                    Control control = ((InputField) f).getControl();
+                    if (control != null) {
+                        control.addStyleClass("ignoreValid");
+                        selector = selector + ",#" + f.getId() + UifConstants.IdSuffixes.CONTROL;
+                    }
+                } else if (f instanceof FieldGroup) {
+                    List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(((FieldGroup) f).getGroup(),
+                            InputField.class);
+                    for (InputField nestedField : fields) {
+                        Control control = nestedField.getControl();
+                        if (control != null) {
+                            control.addStyleClass("ignoreValid");
+                            selector = selector + ",#" + nestedField.getId() + UifConstants.IdSuffixes.CONTROL;
+                        }
+                    }
+                }
+            }
+            collectionGroup.addDataAttribute("addControls", selector.replaceFirst(",", ""));
+        }
     }
 
     /**

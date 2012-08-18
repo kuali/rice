@@ -104,10 +104,10 @@ public class UifControllerHelper {
             if (component != null) {
                 modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
             }
-        }
 
-        // update history for view
-        prepareHistory(request, form);
+            // update history for view
+            prepareHistory(request, form);
+        }
 
         // expose additional objects to the templates
         modelAndView.addObject(UifParameters.REQUEST, request);

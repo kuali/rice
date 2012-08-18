@@ -35,7 +35,7 @@ function hideMessageTooltip(fieldId) {
 
     //browser specific hover check, note content in tooltip when input is also focused will not
     //be selectable in ie <= 8 (this is a hack to allow users to click links in tooltips in supported browsers)
-    var isHovered = false;
+    var isHovered = true;
     if(!jQuery.browser.msie || (jQuery.browser.msie && parseInt(jQuery.browser.version, 10) > 8)){
         isHovered = jQuery("#" + tooltipId).is(":hover");
     }

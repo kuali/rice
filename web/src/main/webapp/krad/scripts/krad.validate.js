@@ -25,12 +25,22 @@ function hideMessageTooltip(fieldId) {
         //for checkbox/radio fieldsets we put the tooltip on the label of the first input
         element = jQuery(element).filter(".uif-tooltip");
     }
+
     var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
     if (data && data.showTimer) {
         clearTimeout(data.showTimer);
     }
+
     var tooltipId = jQuery(element).GetBubblePopupID();
-    if(tooltipId){
+
+    //browser specific hover check, note content in tooltip when input is also focused will not
+    //be selectable in ie <= 8 (this is a hack to allow users to click links in tooltips in supported browsers)
+    var isHovered = false;
+    if(!jQuery.browser.msie || (jQuery.browser.msie && parseInt(jQuery.browser.version, 10) > 8)){
+        isHovered = jQuery("#" + tooltipId).is(":hover");
+    }
+
+    if(tooltipId && !isHovered){
         //this causes the tooltip to be IMMEDIATELY hidden, rather than wait for animation
         jQuery("#" + tooltipId).css("opacity", 0);
         jQuery("#" + tooltipId).hide();

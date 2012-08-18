@@ -162,7 +162,7 @@
         </bean>
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="Testing rich message special character(\[\]) escape [color=green]\[[b]content[/b]\][/green]"/>
+                    value="Testing rich message special character(\[\]) escape [color=green]\[[b]content[/b]\][/color]"/>
         </bean>
 
         <bean parent="Uif-Message">

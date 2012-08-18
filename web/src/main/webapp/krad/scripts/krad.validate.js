@@ -30,7 +30,7 @@ function hideMessageTooltip(fieldId) {
         clearTimeout(data.showTimer);
     }
     var tooltipId = jQuery(element).GetBubblePopupID();
-    if(tooltipId && !jQuery("#" + tooltipId).is(":hover")){
+    if(tooltipId){
         //this causes the tooltip to be IMMEDIATELY hidden, rather than wait for animation
         jQuery("#" + tooltipId).css("opacity", 0);
         jQuery("#" + tooltipId).hide();

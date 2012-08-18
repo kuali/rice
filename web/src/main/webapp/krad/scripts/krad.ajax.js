@@ -333,6 +333,8 @@ function validateForm() {
     pauseTooltipDisplay = true;
 
     if(validateClient){
+        //turn on this flag to enable the page level summaries to now be shown for errors
+        messageSummariesShown = true;
         validForm = jq("#kualiForm").valid();
     }
 

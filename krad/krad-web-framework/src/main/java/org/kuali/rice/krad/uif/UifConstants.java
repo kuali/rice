@@ -108,7 +108,6 @@ public class UifConstants {
         public static final String DELETE_LINE = "deleteLine";
         public static final String REFRESH = "refresh";
         public static final String CANCEL = "cancel";
-        public static final String TOGGLE_INACTIVE = "toggleInactiveRecordDisplay";
     }
 
     public static class ActionEvents {

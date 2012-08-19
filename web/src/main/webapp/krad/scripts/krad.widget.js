@@ -247,7 +247,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                 data['actionParameters[showHistory]'] = 'true';
                 data['actionParameters[showHome]'] = 'false';
 
-                submitForm(data['methodToCall'], data, null);
+                nonAjaxSubmitForm(data['methodToCall'], data);
             });
         }
     });
@@ -573,7 +573,8 @@ function createTable(tableId, options) {
 /**
  * Expands a data table row by finding the row that matches the actionComponent passed in, in the
  * dataTable which matches tableId.  If useImages is true, images will be swapped out when the
- * action is clicked.
+ * action is clicked
+ *
  * @param actionComponent the actionComponent clicked
  * @param tableId the dataTable to expand the clicked row in
  * @param useImages if true, swap open/close images on click

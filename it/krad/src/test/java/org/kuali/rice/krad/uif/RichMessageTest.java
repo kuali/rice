@@ -170,7 +170,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         String messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts('methodToCall',null,null,null,null,true,null,null); return false;\">action</a> text",
+                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,true,true,null); return false;\">action</a> text",
                 messageText);
 
         //Other options
@@ -181,7 +181,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts('methodToCall',null,null,null,null,false,null,null); return false;\">action</a> text",
+                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,null); return false;\">action</a> text",
                 messageText);
 
         generateAndSetMessage("Action here [action=methodToCall,false,true]action[/action] text");
@@ -191,7 +191,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts('methodToCall',null,null,null,null,false,null,null); return false;\">action</a> text",
+                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,null); return false;\">action</a> text",
                 messageText);
 
         //ajax submit off
@@ -202,7 +202,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitFormFullOpts('methodToCall',null,true,null); return false;\">action</a> text",
+                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,true,false,null); return false;\">action</a> text",
                 messageText);
 
         //ajax callback defined
@@ -214,7 +214,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts('methodToCall',function(){console.log('success');},null,null,null,false,null,null); return false;\">action</a> text",
+                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,function(){console.log('success');}); return false;\">action</a> text",
                 messageText);
 
         //data ajax
@@ -226,7 +226,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts('methodToCall',null,{something: 'value', something2: 'value2'},null,null,true,null,null); return false;\">action</a> text",
+                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',{something: 'value', something2: 'value2'},true,true,null); return false;\">action</a> text",
                 messageText);
 
         //data non-ajax
@@ -238,7 +238,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitFormFullOpts('methodToCall',{something: 'value', something2: 'value2'},true,null); return false;\">action</a> text",
+                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',{something: 'value', something2: 'value2'},true,false,null); return false;\">action</a> text",
                 messageText);
     }
 
@@ -443,7 +443,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertEquals("field1", ((InputField) components.get(1)).getPropertyName());
         Assert.assertTrue(components.get(2) instanceof Message);
         Assert.assertEquals(" <a href=\"javascript:void(null)\" "
-                + "onclick=\"ajaxSubmitFormFullOpts('methodToCall',null,{key: 'value'},null,null,false,null,null); return false;\">"
+                + "onclick=\"submitForm('methodToCall',{key: 'value'},false,true,null); return false;\">"
                 + "action text</a> <span style='color: green;'>text ", ((Message) components.get(2)).getMessageText());
         Assert.assertTrue(components.get(3) instanceof Link);
         Assert.assertEquals("http://www.google.com", ((Link) components.get(3)).getHref());

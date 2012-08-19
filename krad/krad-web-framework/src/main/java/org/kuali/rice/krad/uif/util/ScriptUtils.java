@@ -111,6 +111,30 @@ public class ScriptUtils {
     }
 
     /**
+     * Builds a JSON string form the given map
+     *
+     * @param map - map to translate
+     * @return String in JSON format
+     */
+    public static String toJSON(Map<String, String> map) {
+        StringBuffer sb = new StringBuffer("{");
+
+        for (String key : map.keySet()) {
+            Object optionValue = map.get(key);
+            if (sb.length() > 1) {
+                sb.append(",");
+            }
+            sb.append("\"" + key + "\"");
+
+            sb.append(":");
+            sb.append("\"" + optionValue + "\"");
+        }
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    /**
      * Convert a string to a javascript value - especially for use for options used to initialize widgets such as the
      * tree and rich table
      *

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Common constants and variables for KRAD
  */
-        
 function KradVariables () {
 }
 
@@ -69,6 +69,8 @@ KradVariables.prototype = {
      PAGE_VALIDATION_MESSAGE_INFO_CLASS : "uif-pageValidationMessages-info",
      PAGE_VALIDATION_MESSAGE_WARNING_CLASS : "uif-pageValidationMessages-warning",
      PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS : "uif-progressiveDisclosure-highlight",
+     REFRESH_METHOD_TO_CALL : "refresh",
+     RETURN_TYPE_UPDATE_COMPONENT : "update-component",
      REQUIRED_MESSAGE_CLASS : "uif-requiredMessage",
      SAVE_LINE_ACTION_CLASS : "uif-saveLineAction",
      SERVER_MESSAGE_ITEMS_CLASS : "uif-serverMessageItems",

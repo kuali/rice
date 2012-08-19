@@ -508,41 +508,33 @@
     <property name="lineActions">
       <list>
         <bean parent="Uif-DeleteLineAction"/>
-      </list>
-    </property>
-    <property name="validatedLineActions">
-      <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
-              p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}">
-          <property name="cssClasses">
-            <list merge="true">
-              <value>uif-saveLineAction</value>
-            </list>
-          </property>
-        </bean>
+        <bean parent="Uif-SaveLineAction"/>
       </list>
     </property>
     <property name="addBlankLineAction">
-      <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine" p:actionLabel="Add Line"
-            p:actionEvent="addBlankLine"/>
+      <bean parent="Uif-AddBlankLineAction"/>
     </property>
     <property name="addViaLightBoxAction">
-      <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"/>
+      <bean parent="Uif-AddViaLightBoxAction"/>
     </property>
     <property name="collectionLookup">
-      <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true">
-        <property name="lightBoxLookup">
-          <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
-        </property>
-        <property name="quickfinderAction">
-          <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Lookup/Add Multiple Lines"
-                p:actionImagePlacement="RIGHT">
-            <property name="actionImage">
-              <bean parent="Uif-QuickLookupImage"/>
-            </property>
-          </bean>
-        </property>
-      </bean>
+      <bean parent="Uif-CollectionQuickFinder"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CollectionQuickFinder" parent="Uif-QuickFinder" p:multipleValuesSelect="true">
+    <property name="lightBoxLookup">
+      <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
+    </property>
+    <property name="quickfinderAction">
+      <bean parent="Uif-CollectionQuickFinderAction"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CollectionQuickFinderAction" parent="Uif-ActionLink" p:methodToCall="performLookup"
+        p:actionLabel="Lookup/Add Multiple Lines" p:actionImagePlacement="RIGHT">
+    <property name="actionImage">
+      <bean parent="Uif-QuickLookupImage"/>
     </property>
   </bean>
 

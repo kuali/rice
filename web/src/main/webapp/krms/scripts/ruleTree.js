@@ -27,31 +27,11 @@ function getPropositionIdFromParentLi(parentLiNode) {
 
 
 function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
-
-    var collectionGroupDivLocator = '#' + collectionGroupId;
-
-    var elementToBlock = jq(collectionGroupDivLocator);
     var selectedItemInput = getSelectedPropositionInput();
     var selectedItemId = selectedItemInput.val();
     var selectedItemInputName = selectedItemInput.attr('name');
 
-    var updateCollectionCallback = function(htmlContent){
-        var component = jq(collectionGroupDivLocator, htmlContent);
-
-        elementToBlock.unblock({onUnblock: function(){
-            //replace component
-            if(jq(collectionGroupDivLocator).length){
-                jq(collectionGroupDivLocator).replaceWith(component);
-            }
-            runHiddenScripts(collectionGroupId);
-        }
-        });
-
-    };
-
-    ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-            {updateComponentId: collectionGroupId, ajaxReturnType: 'update-none', selectedItemInputName: selectedItemId},
-            elementToBlock, null,"update-component");
+    retrieveComponent(collectionGroupId, controllerMethod, null, {selectedItemInputName: selectedItemId});
 }
 
 function ajaxCutPropositionTree(controllerMethod, collectionGroupId) {

@@ -430,8 +430,8 @@
           </property>
         </bean>
         <!-- refresh is always allowed, but enabledCheck will disable others if they are not -->
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="refresh" p:actionScript="var enabled = enabledCheck('refresh');
-            submitForm();
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="refresh" p:preSubmitCall="var enabled = enabledCheck('refresh');
+            return true;
             "
           >
           <property name="cssClasses">

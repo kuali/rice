@@ -87,8 +87,14 @@ public class CollectionGroupBuilder implements Serializable {
      */
     public void build(View view, Object model, CollectionGroup collectionGroup) {
         // create add line
-        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
+        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly() &&
+                !collectionGroup.isRenderAddBlankLineButton()) {
             buildAddLine(view, model, collectionGroup);
+        }
+
+        // if add line button enabled setup to refresh the collection group
+        if (collectionGroup.isRenderAddBlankLineButton() && (collectionGroup.getAddBlankLineAction() != null)) {
+            collectionGroup.getAddBlankLineAction().setRefreshId(collectionGroup.getId());
         }
 
         // get the collection for this group from the model
@@ -130,21 +136,8 @@ public class CollectionGroupBuilder implements Serializable {
 
                     Object currentLine = modelCollection.get(index);
 
-                    // Default line actions - no client side validation
-                    String actionScript = "performCollectionAction(this, '" + collectionGroup.getId() + "');";
                     List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
-                            collectionGroup, currentLine, index, actionScript);
-
-                    // Line actions with client side validation
-                    String actionScriptValidatedLine = "validateAndPerformCollectionAction(this, '"
-                            + collectionGroup.getId()
-                            + "', '"
-                            + collectionGroup.getPropertyName()
-                            + "');";
-                    List<Action> validatedLineActions = initializeLineActions(collectionGroup.getValidatedLineActions(),
-                            view, model, collectionGroup, currentLine, index, actionScriptValidatedLine);
-
-                    lineActions.addAll(validatedLineActions);
+                            collectionGroup, currentLine, index);
 
                     buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine, index);
                 }
@@ -241,10 +234,6 @@ public class CollectionGroupBuilder implements Serializable {
     @SuppressWarnings("unchecked")
     protected void buildLine(View view, Object model, CollectionGroup collectionGroup, String bindingPath,
             List<Action> actions, boolean bindToForm, Object currentLine, int lineIndex) {
-        if (lineIndex == -1 && collectionGroup.isRenderAddBlankLineButton()) {
-            return;
-        }
-
         CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
         // copy group items for new line
@@ -700,7 +689,7 @@ public class CollectionGroupBuilder implements Serializable {
      * @param lineIndex - index of the line the actions should apply to
      */
     protected List<Action> initializeLineActions(List<Action> lineActions, View view, Object model,
-            CollectionGroup collectionGroup, Object collectionLine, int lineIndex, String actionScript) {
+            CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
@@ -712,11 +701,26 @@ public class CollectionGroupBuilder implements Serializable {
                     collectionGroup.getBindingInfo().getBindingPath());
             action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
+            action.setRefreshId(collectionGroup.getId());
+            
+            // if marked for validation, add call to validate the line and set validation flag to false
+            // so the entire form will not be validated
+            if (action.isPerformClientSideValidation()) {
+                String preSubmitScript = "valid=valid && validateLine('" + 
+                        collectionGroup.getBindingInfo().getBindingPath() + "'," + Integer.toString(lineIndex) +
+                        ");return valid;";
 
-            if (StringUtils.isNotBlank(action.getActionScript())) {
-                actionScript = action.getActionScript() + actionScript;
+                // prepend custom presubmit script which should evaluate to a boolean
+                if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
+                    preSubmitScript = ScriptUtils.appendScript("var valid=true;valid=" + action.getPreSubmitCall(),
+                            preSubmitScript);
+                } else {
+                    preSubmitScript = "var valid=true;" + preSubmitScript;
+                }
+
+                action.setPreSubmitCall(preSubmitScript);
+                action.setPerformClientSideValidation(false);
             }
-            action.setActionScript(actionScript);
         }
 
         ComponentUtils.updateContextsForLine(actions, collectionLine, lineIndex);
@@ -754,12 +758,21 @@ public class CollectionGroupBuilder implements Serializable {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }
 
-            String actionScript = "addLineToCollection(this, '" + collectionGroup.getId() + "', '" + baseId + "')";
+            String preSubmitScript = "valid=valid && validateAddLine('" + collectionGroup.getId() + "');";
             if (collectionGroup.isAddViaLightBox()) {
-                actionScript = "if (" + actionScript + ") {closeLightbox();}";
+                preSubmitScript += "if (valid) {closeLightbox();}";
             }
-            action.setActionScript(actionScript + ";");
+            preSubmitScript += "return valid;";
 
+            // prepend custom presubmit script which should evaluate to a boolean
+            if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
+                preSubmitScript = ScriptUtils.appendScript("var valid=true;valid=" + action.getPreSubmitCall(),
+                        preSubmitScript);
+            } else {
+                preSubmitScript = "var valid=true;" + preSubmitScript;
+            }
+            
+            action.setPreSubmitCall(preSubmitScript);
         }
 
         // get add line for context

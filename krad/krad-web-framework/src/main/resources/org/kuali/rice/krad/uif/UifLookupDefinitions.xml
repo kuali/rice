@@ -187,8 +187,6 @@
   <bean id="Uif-LookupCriteriaFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <!-- TODO: put back once KULRICE-7061 is resolved -->
-        <!--bean parent="Uif-AjaxActionButton" p:methodToCall="search" p:actionLabel="Search" p:refreshId="uLookupResults"/-->
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
@@ -217,7 +215,7 @@
               p:actionLabel="deselect all from this page"
               p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false"
-              p:preSubmitCall="setMultiValueReturnTarget"
+              p:preSubmitCall="setMultiValueReturnTarget();return true;"
               p:successCallback="closeLightbox()" p:errorCallback="closeLightbox()"
               p:methodToCall="returnSelected" p:actionLabel="return selected"/>
       </list>

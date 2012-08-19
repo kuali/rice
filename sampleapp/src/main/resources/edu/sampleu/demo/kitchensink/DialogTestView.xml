@@ -253,7 +253,7 @@
         <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
         <bean parent="GenericTextField" p:label="Field2" p:propertyName="field2" />
 
-        <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Group" p:methodToCall="refresh"
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Refresh Group" p:methodToCall="refresh"
               p:refreshId="field2"/>
 
         <bean parent="Uif-VerticalBoxSection">

@@ -189,10 +189,10 @@ function createWatermark(id, watermark) {
 /**
  * If the content is an incident report view returns true, otherwise returns false
  *
- * @param content
+ * @param content - response contents
  * @returns {Boolean} true if there was an incident, false otherwise
  */
-function handleIncidentReport(content) {
+function checkForIncidentReport(content) {
     var viewId = jQuery("#viewId", content);
     if (viewId.length && viewId.val() === kradVariables.INCIDENT_REPORT_VIEW_CLASS) {
         return true;

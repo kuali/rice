@@ -88,7 +88,8 @@ ActionField,Uif-PrimaryActionButton
 ActionField_Secondary,Uif-SecondaryActionButton
 ActionField_Small,Uif-PrimaryActionButton-Small
 ActionLinkField,Uif-ActionLink
-AjaxActionField,Uif-AjaxActionButton
+AjaxActionField,Uif-PrimaryActionButton
+Uif-AjaxActionButton,Uif-PrimaryActionButton
 NavigationActionLinkField,Uif-NavigationActionLink
 NavigationActionField,Uif-NavigationActionButton
 NavigationActionField_Secondary,Uif-SecondaryNavigationActionButton

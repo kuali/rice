@@ -122,12 +122,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     @Override
     public void performInitialization(View view, Object model, Container container) {
-        if (container instanceof CollectionGroup) {
-            this.setupDetails((CollectionGroup) container, view);
+        CollectionGroup collectionGroup = (CollectionGroup) container;
 
-            if (((CollectionGroup) container).isAddViaLightBox()) {
-                setSeparateAddLine(true);
-            }
+        this.setupDetails(collectionGroup, view);
+
+        if (collectionGroup.isAddViaLightBox()) {
+            setSeparateAddLine(true);
         }
 
         super.performInitialization(view, model, container);
@@ -196,12 +196,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
             Object currentLine, int lineIndex) {
-
         boolean isAddLine = lineIndex == -1;
-
-        if (isAddLine && collectionGroup.isRenderAddBlankLineButton()) {
-            return;
-        }
 
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
         int extraColumns = 0;

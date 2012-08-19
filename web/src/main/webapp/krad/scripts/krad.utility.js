@@ -555,15 +555,6 @@ function checkDirty(event) {
 }
 
 /**
- * Test utility function. Returns a true or a false depending on the passed in parameter
- * @param var1
- */
-function returnBoolean(var1) {
-    var x = var1;
-    alert('PreSubmit Call:' + x);
-    return x;
-}
-/**
  * Gets the actual attribute id to use element manipulation related to this attribute.
  *
  * @param elementId

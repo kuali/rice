@@ -439,29 +439,18 @@ public class MessageStructureUtils {
             methodToCall = StringUtils.remove(methodToCall, "'");
             methodToCall = StringUtils.remove(methodToCall, "\"");
 
-            if (ajaxSubmit.equals("true")) {
-                messagePiece = "<a href=\"javascript:void(null)\" onclick=\"ajaxSubmitFormFullOpts("
-                        + "'"
-                        + methodToCall
-                        + "',"
-                        + successCallback
-                        + ","
-                        + submitData
-                        + ","
-                        + "null,null,"
-                        + validate
-                        + ","
-                        + "null,null); return false;\">";
-            } else {
-                messagePiece = "<a href=\"javascript:void(null)\" "
-                        + "onclick=\"submitFormFullOpts('"
-                        + methodToCall
-                        + "',"
-                        + submitData
-                        + ","
-                        + validate
-                        + ",null); return false;\">";
-            }
+            messagePiece = "<a href=\"javascript:void(null)\" onclick=\"submitForm(" +
+                    "'" +
+                    methodToCall +
+                    "'," +
+                    submitData +
+                    "," +
+                    validate +
+                    "," +
+                    ajaxSubmit +
+                    "," +
+                    successCallback +
+                    "); return false;\">";
         } else {
             messagePiece = "</a>";
         }

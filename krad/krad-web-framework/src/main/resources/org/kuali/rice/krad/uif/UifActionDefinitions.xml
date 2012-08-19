@@ -41,5 +41,20 @@
         p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
         p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"
         p:loadingMessageText="Deleting Line..."/>
-  
+
+  <bean id="Uif-SaveLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
+        p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}"
+        p:performClientSideValidation="true">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-saveLineAction</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-AddBlankLineAction" parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine"
+        p:actionLabel="Add Line" p:actionEvent="addBlankLine"/>
+
+  <bean id="Uif-AddViaLightBoxAction" parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"/>
+
 </beans>

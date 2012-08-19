@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
@@ -62,14 +63,17 @@ public class Action extends ContentElementBase {
     private String preSubmitCall;
     private boolean ajaxSubmit;
 
+    private String ajaxReturnType;
+    private String refreshId;
+    private String refreshPropertyName;
+
     private String successCallback;
     private String errorCallback;
 
     private String loadingMessageText;
     private boolean disableBlocking;
 
-    private boolean displayResponseInLightBox;
-
+    private Map<String, String> additionalSubmitData;
     private Map<String, String> actionParameters;
 
     public Action() {
@@ -83,6 +87,7 @@ public class Action extends ContentElementBase {
         errorCallback = "";
         preSubmitCall = "";
 
+        additionalSubmitData = new HashMap<String, String>();
         actionParameters = new HashMap<String, String>();
     }
 
@@ -121,10 +126,12 @@ public class Action extends ContentElementBase {
             }
         }
 
-        if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME) && StringUtils
-                .isNotBlank(methodToCall)) {
+        if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME) &&
+                StringUtils.isNotBlank(methodToCall)) {
             actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
         }
+
+        setupRefreshAction(view);
 
         buildActionData(view, model, parent);
 
@@ -144,6 +151,54 @@ public class Action extends ContentElementBase {
         }
 
         setOnClickScript("e.preventDefault();" + onClickScript);
+    }
+
+    /**
+     * When the action is updating a component sets up the refresh script for the component (found by the
+     * given refresh id or refresh property name)
+     *
+     * @param view - view instance the action belongs to
+     */
+    protected void setupRefreshAction(View view) {
+        // if refresh property or id is given, make return type update component
+        if (StringUtils.isNotBlank(refreshPropertyName) || StringUtils.isNotBlank(refreshId)) {
+            ajaxReturnType = UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey();
+        }
+
+        // if refresh property name is given, adjust the binding and then attempt to find the
+        // component in the view index
+        Component refreshComponent = null;
+        if (StringUtils.isNotBlank(refreshPropertyName)) {
+            // TODO: does this support all binding prefixes?
+            if (refreshPropertyName.startsWith(UifConstants.NO_BIND_ADJUST_PREFIX)) {
+                refreshPropertyName = StringUtils.removeStart(refreshPropertyName, UifConstants.NO_BIND_ADJUST_PREFIX);
+            } else if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
+                refreshPropertyName = view.getDefaultBindingObjectPath() + "." + refreshPropertyName;
+            }
+
+            DataField dataField = view.getViewIndex().getDataFieldByPath(refreshPropertyName);
+            if (dataField != null) {
+                refreshComponent = dataField;
+                refreshId = refreshComponent.getId();
+            }
+        } else if (StringUtils.isNotBlank(refreshId)) {
+            Component component = view.getViewIndex().getComponentById(refreshId);
+            if (component != null) {
+                refreshComponent = component;
+            }
+        }
+
+        if (refreshComponent != null) {
+            refreshComponent.setRefreshedByAction(true);
+
+            // update initial state
+            Component initialComponent = view.getViewIndex().getInitialComponentStates().get(
+                    refreshComponent.getBaseId());
+            if (initialComponent != null) {
+                initialComponent.setRefreshedByAction(true);
+                view.getViewIndex().getInitialComponentStates().put(refreshComponent.getBaseId(), initialComponent);
+            }
+        }
     }
 
     /**
@@ -167,8 +222,9 @@ public class Action extends ContentElementBase {
         addDataAttributeIfNonEmpty("presubmitcall", this.preSubmitCall);
         addDataAttributeIfNonEmpty("loadingmessage", this.loadingMessageText);
         addDataAttributeIfNonEmpty("disableblocking", Boolean.toString(this.disableBlocking));
+        addDataAttributeIfNonEmpty("ajaxreturntype", this.ajaxReturnType);
+        addDataAttributeIfNonEmpty("refreshid", this.refreshId);
         addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
-        addDataAttribute("displayresponseinlightbox", Boolean.toString(this.displayResponseInLightBox));
 
         // all action parameters should be submitted with action
         Map<String, String> submitData = new HashMap<String, String>();
@@ -178,6 +234,10 @@ public class Action extends ContentElementBase {
                 parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
             }
             submitData.put(parameterPath, actionParameters.get(key));
+        }
+
+        for (String key : additionalSubmitData.keySet()) {
+            submitData.put(key, additionalSubmitData.get(key));
         }
 
         // TODO possibly fix some other way - this is a workaround, prevents
@@ -204,7 +264,7 @@ public class Action extends ContentElementBase {
             submitData.put("jumpToName", jumpToNameAfterSubmit);
         }
 
-        addDataAttribute("submitData", mapToString(submitData));
+        addDataAttribute("submitData", ScriptUtils.toJSON(submitData));
     }
 
     /**
@@ -217,22 +277,6 @@ public class Action extends ContentElementBase {
         components.add(actionImage);
 
         return components;
-    }
-
-    private String mapToString(Map<String, String> submitData) {
-        StringBuffer sb = new StringBuffer("{");
-        for (String key : submitData.keySet()) {
-            Object optionValue = submitData.get(key);
-            if (sb.length() > 1) {
-                sb.append(",");
-            }
-            sb.append("\"" + key + "\"");
-
-            sb.append(":");
-            sb.append("\"" + optionValue + "\"");
-        }
-        sb.append("}");
-        return sb.toString();
     }
 
     /**
@@ -360,6 +404,38 @@ public class Action extends ContentElementBase {
      */
     public void setActionEvent(String actionEvent) {
         this.actionEvent = actionEvent;
+    }
+
+    /**
+     * Map of additional data that will be posted when the action is invoked
+     *
+     * <p>
+     * Each entry in this map will be sent as a request parameter when the action is chosen. Note this in
+     * addition to the form data that is sent. For example, suppose the model contained a property named
+     * number and a boolean named showActive, we can send values for this properties by adding the following
+     * entries to this map:
+     * {'number':'a13', 'showActive', 'true'}
+     * </p>
+     *
+     * <p>
+     * The additionalSubmitData map is different from the actionParameters map. All name/value pairs given as
+     * actionParameters populated the form map actionParameters. While name/value pair given in additionalSubmitData
+     * populate different form (model) properties
+     * </p>
+     *
+     * @return Map<String, String> additional key/value pairs to submit
+     */
+    public Map<String, String> getAdditionalSubmitData() {
+        return additionalSubmitData;
+    }
+
+    /**
+     * Setter for map holding additional data to post
+     *
+     * @param additionalSubmitData
+     */
+    public void setAdditionalSubmitData(Map<String, String> additionalSubmitData) {
+        this.additionalSubmitData = additionalSubmitData;
     }
 
     /**
@@ -618,8 +694,23 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Gets the script which needs to be invoked before the form is submitted. The script should return a boolean
-     * indicating if the form should be submitted or not.
+     * Gets the script which needs to be invoked before the form is submitted
+     *
+     * <p>
+     * The preSubmitCall can carry out custom logic for the action before the submit occurs. The value should
+     * be given as one or more lines of script and should return a boolean. If false is returned from the call,
+     * the submit is not carried out. Furthermore, the preSubmitCall can refer to the request object through the
+     * variable 'kradRequest' or 'this'. This gives full access over the request for doing such things as
+     * adding additional data
+     * </p>
+     *
+     * <p>
+     * Examples 'return doFunction(kradRequest);', 'var valid=true;return valid;'
+     * </p>
+     *
+     * <p>
+     * The preSubmit call will be invoked both for ajax and non-ajax submits
+     * </p>
      *
      * @return String script text that will be invoked before form submission
      */
@@ -653,6 +744,171 @@ public class Action extends ContentElementBase {
      */
     public void setAjaxSubmit(boolean ajaxSubmit) {
         this.ajaxSubmit = ajaxSubmit;
+    }
+
+    /**
+     * Gets the return type for the ajax call
+     *
+     * <p>
+     * The ajax return type indicates how the response content will be handled in the client. Typical
+     * examples include updating a component, the page, or doing a redirect.
+     * </p>
+     *
+     * @return String return type
+     * @see org.kuali.rice.krad.uif.UifConstants.AjaxReturnTypes
+     */
+    public String getAjaxReturnType() {
+        return this.ajaxReturnType;
+    }
+
+    /**
+     * Setter for the type of ajax return
+     *
+     * @param ajaxReturnType
+     */
+    public void setAjaxReturnType(String ajaxReturnType) {
+        this.ajaxReturnType = ajaxReturnType;
+    }
+
+    /**
+     * Indicates if the action response should be displayed in a lightbox
+     *
+     * @return boolean true if response should be rendered in a lightbox, false if not
+     */
+    public boolean isDisplayResponseInLightBox() {
+        return StringUtils.equals(this.ajaxReturnType, UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey());
+    }
+
+    /**
+     * Setter for indicating the response should be rendered in a lightbox
+     *
+     * @param displayResponseInLightBox
+     */
+    public void setDisplayResponseInLightBox(boolean displayResponseInLightBox) {
+        if (displayResponseInLightBox) {
+            this.ajaxReturnType = UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey();
+        }
+        // if display lightbox is false and it was previously true, set to default of update page
+        else if (StringUtils.equals(this.ajaxReturnType, UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey())) {
+            this.ajaxReturnType = UifConstants.AjaxReturnTypes.UPDATEPAGE.getKey();
+        }
+    }
+
+    /**
+     * Gets the script which will be invoked on a successful ajax call
+     *
+     * <p>
+     * The successCallback can carry out custom logic after a successful ajax submission has been made. The
+     * value can contain one or more script statements. In addition, the response contents can be accessed
+     * through the variable 'responseContents'
+     * </p>
+     *
+     * <p>
+     * Examples 'handleSuccessfulUpdate(responseContents);'
+     * </p>
+     *
+     * <p>
+     * The successCallback may only be specified when {@link #isAjaxSubmit()} is true
+     * </p>
+     *
+     * @return String containing script to be executed when the action is successful
+     */
+    public String getSuccessCallback() {
+        return successCallback;
+    }
+
+    /**
+     * Setter for successCallback
+     *
+     * @param successCallback
+     */
+    public void setSuccessCallback(String successCallback) {
+        this.successCallback = successCallback;
+    }
+
+    /**
+     * Gets the script which will be invoked when the action fails due to problems in the ajax call or
+     * the return of an incident report
+     *
+     * <p>
+     * The errorCallback can carry out custom logic after a failed ajax submission. The
+     * value can contain one or more script statements. In addition, the response contents can be accessed
+     * through the variable 'responseContents'
+     * </p>
+     *
+     * <p>
+     * Examples 'handleFailedUpdate(responseContents);'
+     * </p>
+     *
+     * <p>
+     * The errorCallback may only be specified when {@link #isAjaxSubmit()} is true
+     * </p>
+     *
+     * @return String containing script to be executed when the action is successful
+     */
+    public String getErrorCallback() {
+        return errorCallback;
+    }
+
+    /**
+     * Setter for errorCallback
+     *
+     * @param errorCallback
+     */
+    public void setErrorCallback(String errorCallback) {
+        this.errorCallback = errorCallback;
+    }
+
+    /**
+     * Id for the component that should be refreshed after the action completes
+     *
+     * <p>
+     * Either refresh id or refresh property name can be set to configure the component that should
+     * be refreshed after the action completes. If both are blank, the page will be refreshed
+     * </p>
+     *
+     * @return String valid component id
+     */
+    public String getRefreshId() {
+        return refreshId;
+    }
+
+    /**
+     * Setter for the component refresh id
+     *
+     * @param refreshId
+     */
+    public void setRefreshId(String refreshId) {
+        this.refreshId = refreshId;
+    }
+
+    /**
+     * Property name for the {@link org.kuali.rice.krad.uif.field.DataField} that should be refreshed after the action
+     * completes
+     *
+     * <p>
+     * Either refresh id or refresh property name can be set to configure the component that should
+     * be refreshed after the action completes. If both are blank, the page will be refreshed
+     * </p>
+     *
+     * <p>
+     * Property name will be adjusted to use the default binding path unless it contains the form prefix
+     * </p>
+     *
+     * @return String valid property name with an associated DataField
+     * @see org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX
+     */
+    public String getRefreshPropertyName() {
+        return refreshPropertyName;
+    }
+
+    /**
+     * Setter for the property name of the DataField that should be refreshed
+     *
+     * @param refreshPropertyName
+     */
+    public void setRefreshPropertyName(String refreshPropertyName) {
+        this.refreshPropertyName = refreshPropertyName;
     }
 
     /**
@@ -701,58 +957,4 @@ public class Action extends ContentElementBase {
         this.disableBlocking = disableBlocking;
     }
 
-    /**
-     * Getter for successCallback property. This will be invoked for successful ajax calls
-     *
-     * @return String
-     */
-
-    public String getSuccessCallback() {
-        return successCallback;
-    }
-
-    /**
-     * Setter for successCallback
-     *
-     * @param successCallback
-     */
-    public void setSuccessCallback(String successCallback) {
-        this.successCallback = successCallback;
-    }
-
-    /**
-     * Getter for errorCallback. This will be invoked for failed ajax calls
-     *
-     * @return
-     */
-    public String getErrorCallback() {
-        return errorCallback;
-    }
-
-    /**
-     * Setter for errorCallback
-     *
-     * @param errorCallback
-     */
-    public void setErrorCallback(String errorCallback) {
-        this.errorCallback = errorCallback;
-    }
-
-    /**
-     * If the response needs to be displayed in a lightbox
-     *
-     * @return boolean
-     */
-    public boolean isDisplayResponseInLightBox() {
-            return displayResponseInLightBox;
-        }
-
-    /**
-     * Setter for displayResponseInLightBox
-     *
-     * @param displayResponseInLightBox
-     */
-    public void setDisplayResponseInLightBox(boolean displayResponseInLightBox) {
-        this.displayResponseInLightBox = displayResponseInLightBox;
-    }
 }

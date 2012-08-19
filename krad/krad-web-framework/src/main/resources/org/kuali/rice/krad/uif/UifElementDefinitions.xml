@@ -243,16 +243,6 @@
     </property>
   </bean>
 
-  <bean id="Uif-AjaxActionButton" parent="Uif-AjaxActionButton-parentBean"/>
-  <bean id="Uif-AjaxActionButton-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.AjaxAction"
-        parent="Uif-PrimaryActionButton" scope="prototype">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-ajaxAction</value>
-      </list>
-    </property>
-  </bean>
-
   <!-- RECOMMENDED: Use the navigation action fields to scroll to the top of the page when a navigation completes
   rather than to the element that initiated the navigation, for general use in Navigation menus and actions which
   perform page navigation-->

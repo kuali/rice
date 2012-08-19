@@ -69,47 +69,44 @@ public class BoxLayoutManager extends LayoutManagerBase {
      * java.lang.Object,org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override
-	public void performInitialization(View view, Object model, Container container) {
-		super.performInitialization(view, model, container);
+    public void performInitialization(View view, Object model, Container container) {
+        super.performInitialization(view, model, container);
 
-		if(StringUtils.isBlank(itemStyle)){
-			itemStyle = "";
-		}
-		
-		if(StringUtils.isNotEmpty(padding)) {
-			if (orientation.equals(Orientation.VERTICAL)) {
-				// set item to block which will cause a line break and margin
-				// bottom for padding
-				itemStyle += CssConstants.getCssStyle(Padding.PADDING_BOTTOM, padding);
-			}
-			else {
-				// set margin right for padding
-				itemStyle += CssConstants.getCssStyle(Padding.PADDING_RIGHT, padding);
-			}
-		}
+        if (StringUtils.isBlank(itemStyle)) {
+            itemStyle = "";
+        }
 
-        //classes to identify this layout in jQuery and to clear the float correctly in all browsers
+        if (StringUtils.isNotEmpty(padding)) {
+            if (orientation.equals(Orientation.VERTICAL)) {
+                // set item to block which will cause a line break and margin
+                // bottom for padding
+                itemStyle += CssConstants.getCssStyle(Padding.PADDING_BOTTOM, padding);
+            } else {
+                // set margin right for padding
+                itemStyle += CssConstants.getCssStyle(Padding.PADDING_RIGHT, padding);
+            }
+        }
+
+        // classes to identify this layout in jQuery and to clear the float correctly in all browsers
         this.addStyleClass("clearfix");
-        
+
         for (Component c : container.getItems()) {
             if (c != null) {
-                
-                //Add item styles to the the item
+                // add item styles to the the item
                 List<String> styleClasses = c.getCssClasses();
-                if(orientation.equals(Orientation.HORIZONTAL)){
+                if (orientation.equals(Orientation.HORIZONTAL)) {
                     styleClasses.add("uif-boxLayoutHorizontalItem");
                     styleClasses.addAll(this.getItemStyleClasses());
-                }
-                else{
+                } else {
                     styleClasses.add("uif-boxLayoutVerticalItem");
                     styleClasses.addAll(this.getItemStyleClasses());
                     styleClasses.add("clearfix");
                 }
                 c.setCssClasses(styleClasses);
-                if(c.getStyle() != null && !c.getStyle().endsWith(";")){
+
+                if (c.getStyle() != null && !c.getStyle().endsWith(";")) {
                     c.appendToStyle(";" + this.getItemStyle());
-                }
-                else{
+                } else {
                     c.appendToStyle(this.getItemStyle());
                 }
             }

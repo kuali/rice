@@ -122,7 +122,7 @@
         <bean id="UifCompView-Page7" parent="UifCompViewPageWithFooter" p:headerText="Collections" p:instructionalText="Lists of Data Objects">
           <property name="items">
             <list>
-              <bean parent="Uif-AjaxActionButton" p:actionLabel="Cause Server Messages" p:methodToCall="genCollectionServerMessages"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Cause Server Messages" p:methodToCall="genCollectionServerMessages"/>
               <ref bean="collection1"/>
               <ref bean="collection2"/>
               <ref bean="collection6"/>
@@ -194,6 +194,11 @@
     </property>
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
+    </property>
+    <property name="additionalScriptFiles">
+      <list>
+        <value>scripts/sampleapp.js</value>
+      </list>
     </property>
     <property name="viewHelperServiceClass"
               value="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl"/>

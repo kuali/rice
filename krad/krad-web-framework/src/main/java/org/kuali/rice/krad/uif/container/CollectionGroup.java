@@ -100,8 +100,6 @@ public class CollectionGroup extends Group implements DataBinding {
     private String addLinePlacement;
 
     private boolean renderSaveLineActions;
-    private List<Action> validatedLineActions;
-
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
     
@@ -119,7 +117,6 @@ public class CollectionGroup extends Group implements DataBinding {
 
         filters = new ArrayList<CollectionFilter>();
         lineActions = new ArrayList<Action>();
-        validatedLineActions = new ArrayList<Action>();
         addLineItems = new ArrayList<Field>();
         addLineActions = new ArrayList<Action>();
         subCollections = new ArrayList<CollectionGroup>();
@@ -219,15 +216,6 @@ public class CollectionGroup extends Group implements DataBinding {
         if (!view.getObjectPathToConcreteClassMapping().containsKey(collectionPath)) {
             view.getObjectPathToConcreteClassMapping().put(collectionPath, getCollectionObjectClass());
         }
-
-        if (renderAddBlankLineButton && (addBlankLineAction != null)) {
-            String actionScript = "performCollectionAction(this, '" + getId() + "');";
-            if (StringUtils.isNotBlank(addBlankLineAction.getActionScript())) {
-                actionScript = addBlankLineAction.getActionScript() + actionScript;
-            }
-            addBlankLineAction.setActionScript(actionScript);
-            addBlankLineAction.setJumpToIdAfterSubmit(getId());
-        }
     }
 
     /**
@@ -258,7 +246,8 @@ public class CollectionGroup extends Group implements DataBinding {
      * instance, and sets name as parameter for an action fields in the group
      */
     protected void pushCollectionGroupToReference() {
-        List<Component> components = this.getComponentsForLifecycle(true);
+        List<Component> components = getComponentsForLifecycle();
+        components.addAll(getComponentPrototypes());
 
         ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
@@ -291,39 +280,21 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
-        return getComponentsForLifecycle(false);
-    }
-
-    /**
-     * Retrieve list of components that are contained within the component and should be sent through
-     * the lifecycle
-     *
-     * <p>The items need to be included when an object is being copied to all the groups nested components
-     *
-     * @param includeItems - whether the components items should be included.
-     * @see #pushCollectionGroupToReference()
-     *      The items are left out when the components are being retrieved for the <code>ViewHelperService</code></p>
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
-     */
-    public List<Component> getComponentsForLifecycle(boolean includeItems) {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(addLineLabel);
         components.add(collectionLookup);
         components.add(addBlankLineAction);
-        components.addAll(validatedLineActions);
         components.add(addViaLightBoxAction);
 
-        if (!includeItems) {
-            // remove the containers items because we don't want them as children
-            // (they will become children of the layout manager as the rows are
-            // created)
-            for (Component item : getItems()) {
-                if (components.contains(item)) {
-                    components.remove(item);
-                }
+        // remove the containers items because we don't want them as children
+        // (they will become children of the layout manager as the rows are created)
+        for (Component item : getItems()) {
+            if (components.contains(item)) {
+                components.remove(item);
             }
         }
+
         return components;
     }
 
@@ -336,7 +307,6 @@ public class CollectionGroup extends Group implements DataBinding {
 
         components.addAll(lineActions);
         components.addAll(addLineActions);
-        components.addAll(validatedLineActions);
         components.addAll(getItems());
         components.addAll(getSubCollections());
         components.addAll(addLineItems);
@@ -1016,29 +986,6 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setRenderSaveLineActions(boolean renderSaveLineActions) {
         this.renderSaveLineActions = renderSaveLineActions;
-    }
-
-    /**
-     * {@link Action} fields that should do client side validation on the line before doing post
-     *
-     * <p>
-     * These actions will get an actionScript script added that does a call to validateAndPerformCollectionAction in
-     * krad.ajax.js.
-     * </p>
-     *
-     * @return List<Action>
-     */
-    public List<Action> getValidatedLineActions() {
-        return validatedLineActions;
-    }
-
-    /**
-     * Setter for the new line {@link Action} fields
-     *
-     * @param validatedLineActions
-     */
-    public void setValidatedLineActions(List<Action> validatedLineActions) {
-        this.validatedLineActions = validatedLineActions;
     }
 
     /**

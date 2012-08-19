@@ -22,32 +22,12 @@ function getRuleIdFromParentLi(parentLiNode) {
 }
 
 function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
-
-    var collectionGroupDivLocator = '#' + collectionGroupId;
-
-    var elementToBlock = jq(collectionGroupDivLocator);
     var selectedItemInput = getSelectedItemInput();
     var selectedItemId = selectedItemInput.val();
     var selectedItemInputName = selectedItemInput.attr('name');
 
     if (!requireSelected || selectedItemId) {
-        var updateCollectionCallback = function(htmlContent){
-            var component = jq(collectionGroupDivLocator, htmlContent);
-
-            elementToBlock.unblock({onUnblock: function(){
-                //replace component
-                if(jq(collectionGroupDivLocator).length){
-                    jq(collectionGroupDivLocator).replaceWith(component);
-                }
-                runHiddenScripts(collectionGroupId);
-            }
-            });
-
-        };
-
-        ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-                {updateComponentId: collectionGroupId, ajaxReturnType: 'update-none', selectedItemInputName: selectedItemId},
-                elementToBlock, null,"update-component");
+        retrieveComponent(collectionGroupId, controllerMethod, null, {selectedItemInputName: selectedItemId});
     } else {
         // TODO: refactor to disabled buttons, or externalize
         alert('Please select an agenda item first.');

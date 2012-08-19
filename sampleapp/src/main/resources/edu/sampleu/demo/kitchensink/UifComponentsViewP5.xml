@@ -180,13 +180,13 @@
         <bean parent="GenericHorizontalFieldGroup" p:label="Refresh Buttons">
           <property name="items">
             <list>
-                <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Group" p:methodToCall="refreshProgGroup"
+                <bean parent="Uif-PrimaryActionButton" p:actionLabel="Refresh Group" p:methodToCall="refreshProgGroup"
                       p:refreshId="prog3"/>
-                <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
+                <bean parent="Uif-PrimaryActionButton" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
                       p:refreshPropertyName="field45"/>
-              <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Field but with Server Errors" p:methodToCall="refreshWithServerMessages"
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Refresh Field but with Server Errors" p:methodToCall="refreshWithServerMessages"
                     p:refreshPropertyName="field45"/>
-              <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
 
               </list>
           </property>

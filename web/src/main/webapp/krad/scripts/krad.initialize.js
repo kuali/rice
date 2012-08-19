@@ -72,10 +72,6 @@ jQuery(document).ready(function () {
 
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
-
-    // initialize the handlers for the ajax calls
-    ajaxReturnHandlers = {"update-page":updatePageHandler, "update-component": updateComponentHandler,
-        "update-view": updateViewHandler, "redirect": redirectHandler, "display-lightbox":displayLightBoxHandler};
 });
 
 /**

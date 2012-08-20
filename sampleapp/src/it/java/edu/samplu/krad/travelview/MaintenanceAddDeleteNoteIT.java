@@ -36,24 +36,23 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
      */
     public void testVerifyAddDeleteNote() throws Exception {
         gotoMenuLinkLocator();
-        selenium.click("css=#u168_col");
+        selenium.click("css=div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
+        
 
         for (int second = 0;; second++) {
             if (second >= 15) {
                 fail("timeout");
             }
-
-            if (selenium.isElementPresent("css=#u221_add")) {
+            if (selenium.isElementPresent("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton")) {
                 break;
             }
 
             Thread.sleep(1000);
         }
 
-        selenium.click("id=u334_add_control");
-        selenium.type("id=u334_add_control", "Test note");
-        selenium.click("id=u282_add");
-
+        selenium.click("name=newCollectionLines['document.notes'].noteText");
+        selenium.type("name=newCollectionLines['document.notes'].noteText", "Test note");
+        selenium.click("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         for (int second = 0;; second++) {
             if (second >= 15) {
                 fail("timeout");
@@ -67,7 +66,7 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
         }
 
         assertEquals("Test note", selenium.getText("name=document.notes[0].noteText"));
-        selenium.click("id=u280_line0");
+        selenium.click("css=button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
 
         for (int second = 0;; second++) {
             if (second >= 15) {

@@ -15,11 +15,9 @@
  */
 package edu.samplu.krad.compview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
 
-import org.jacorb.poa.util.IdUtil;
 import org.junit.Test;
 
 /**

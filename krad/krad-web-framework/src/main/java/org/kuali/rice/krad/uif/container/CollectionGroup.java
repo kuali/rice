@@ -309,7 +309,16 @@ public class CollectionGroup extends Group implements DataBinding {
         components.addAll(addLineActions);
         components.addAll(getItems());
         components.addAll(getSubCollections());
-        components.addAll(addLineItems);
+
+        // iterate through addLineItems to make sure we have not already
+        // added them as prototypes (they could have been copied from add lines)
+        if (addLineItems != null) {
+            for (Component addLineItem : addLineItems) {
+                if (!components.contains(addLineItem)) {
+                    components.add(addLineItem);
+                }
+            }
+        }
 
         return components;
     }

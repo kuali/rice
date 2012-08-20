@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.validationmessagesview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
         selenium.fireEvent("name=field1", "blur");
         Assert.assertEquals("true", selenium.getAttribute("name=field1@aria-invalid"));
         Assert.assertTrue(selenium.getAttribute("name=field1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
-        Assert.assertTrue(selenium.isElementPresent("//textarea[@name='field1']/../img[@alt='Error']"));
+        Assert.assertTrue(selenium.isElementPresent("//textarea[@name='field1']/../../img[@alt='Error']"));
         selenium.fireEvent("name=field1", "focus");
         for (int second = 0; ; second++) {
             if (second >= 60) {

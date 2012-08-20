@@ -73,7 +73,7 @@ public class IdentityRoleBlanketAppIT extends UpgradedSeleniumITBase {
         docId= "link=" + docId;
         assertTrue(selenium.isElementPresent(docId));       
         if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+            assertEquals("KULRICE-7931 : IdentityRoleBlanketAppIT.testRole fails expected:<[ENROUTE]> but was:<[FINAL]>", "FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }else{
             assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
             assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));

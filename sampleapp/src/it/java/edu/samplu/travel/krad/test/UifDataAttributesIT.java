@@ -112,7 +112,7 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
     private boolean verifyAllAttributesInScript(String tagId, String suffix) {
         tagId = tagId + suffix;
         String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ tagId +  "')]";
-        assertTrue(tagId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
+        assertTrue(tagId + ": complex data attributes script not found see KULRICE-7752", selenium.isElementPresent(complexAttributesXpath));
 
         // the message field does not support complex attributes
         String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");

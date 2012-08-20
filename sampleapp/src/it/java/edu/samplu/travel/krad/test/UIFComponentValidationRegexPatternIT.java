@@ -15,6 +15,7 @@
  */
 package edu.samplu.travel.krad.test;
 
+import edu.samplu.common.ITUtil;
 import junit.framework.Assert;
 
 import edu.samplu.common.UpgradedSeleniumITBase;
@@ -42,9 +43,9 @@ public class UIFComponentValidationRegexPatternIT extends UpgradedSeleniumITBase
          *  
          */
      
-        selenium.click("//a[contains(text(),'Validation - Regex')]");      
-        Thread.sleep(2000);
-
+        selenium.click("//a[contains(text(),'Validation - Regex')]");
+        ITUtil.waitForElement(selenium, "name=field50");
+        
         //---------------------------------------------Fixed Point------------------------------//
 
        

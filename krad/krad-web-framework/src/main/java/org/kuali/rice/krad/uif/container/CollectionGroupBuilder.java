@@ -755,6 +755,7 @@ public class CollectionGroupBuilder implements Serializable {
                     collectionGroup.getBindingInfo().getBindingPath());
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
+            action.setRefreshId(collectionGroup.getId());
 
             String baseId = collectionGroup.getBaseId();
             if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {

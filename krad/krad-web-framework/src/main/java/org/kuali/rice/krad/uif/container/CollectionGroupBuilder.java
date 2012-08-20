@@ -36,6 +36,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -303,7 +304,7 @@ public class CollectionGroupBuilder implements Serializable {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {
                             ControlBase control = (ControlBase)((InputField) f).getControl();
-                            control.setOnChangeScript(control.getOnChangeScript()==null?"":control.getOnChangeScript() +
+                            control.setOnChangeScript(control.getOnChangeScript()==null?";collectionLineChanged(this, 'uif-newCollectionItem');":control.getOnChangeScript() +
                                     ";collectionLineChanged(this, 'uif-newCollectionItem');");
                         }
                     }
@@ -311,11 +312,13 @@ public class CollectionGroupBuilder implements Serializable {
 
                 // Add script to recalculate totals
                 // TODO : only add to total column fields, and add the add line
-                for (Field f : lineFields) {
-                    if (f instanceof InputField && f.isRender()) {
-                        ControlBase control = (ControlBase)((InputField) f).getControl();
-                        control.setOnChangeScript(control.getOnChangeScript()==null?"":control.getOnChangeScript() +
-                                ";refreshDatatableCellRedraw(this);");
+                if (collectionGroup.getLayoutManager() instanceof TableLayoutManager) {
+                    for (Field f : lineFields) {
+                        if (f instanceof InputField && f.isRender()) {
+                            ControlBase control = (ControlBase)((InputField) f).getControl();
+                            control.setOnChangeScript(control.getOnChangeScript()==null?";refreshDatatableCellRedraw(this);":control.getOnChangeScript() +
+                                    ";refreshDatatableCellRedraw(this);");
+                        }
                     }
                 }
             }

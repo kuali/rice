@@ -900,7 +900,7 @@ function collectionLineChanged(inputField, highlightItemClass) {
     jQuery(inputField).triggerHandler('blur');
 
     // Get the innerlayout to see if we are dealing with table or stack group
-    var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
+    var innerLayout = jQuery(inputField).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
             + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
 
     if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {

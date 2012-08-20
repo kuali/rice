@@ -232,7 +232,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
         //reinitialize BubblePopup
-        initBubblePopups();
+        initBubblePopups(selector);
 
         //Interpret new server message state for refreshed InputFields and write them out
         if (!skipValidationBubbling) {

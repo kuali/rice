@@ -340,16 +340,37 @@ function initFieldHandlers() {
             });
 }
 
-function initBubblePopups() {
+/**
+ * Calls the create call to initialize the bubblepopup plugin to take into account any content that may have
+ * bubblepopups
+ *
+ * @param selector (optional) if specified used as the selection string to select an element to check to see if it has
+ * elements that could have tooltips, if the content does not contain these elements, does not reinitialize the create
+ * call
+ */
+function initBubblePopups(selector) {
     //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup
     //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
     //will cause a severe loss of functionality and buggy behavior
     //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
-    jQuery("input, select, textarea, "
-            + " label, .uif-tooltip").CreateBubblePopup(
-            {   manageMouseEvents:false,
-                themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
-            } );
+    var runCreate = true;
+
+    if(selector){
+        var selection = jQuery(selector);
+        if(selection.length){
+            runCreate = selection.find("input:not(input[type='image']), input[data-role='help'], select, textarea, "
+                        + ".uif-tooltip").not("input[type='hidden']").length;
+        }
+    }
+
+    if(runCreate){
+        // if the content does not contain elements that can have a tooltip, jquery object length will be 0 (false)
+        jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea, "
+                + ".uif-tooltip").not("input[type='hidden']").CreateBubblePopup(
+                {   manageMouseEvents:false,
+                    themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
+                });
+    }
 }
 
 function hideBubblePopups() {

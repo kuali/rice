@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.validationmessagesview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -33,6 +34,7 @@ public class ServerInfoIT extends UpgradedSeleniumITBase {
 	public void testServerInfoIT() throws Exception {
 		selenium.click("//button[contains(.,'Get Info Messages')]");
 		selenium.waitForPageToLoad("30000");
+        ITUtil.waitForElementVisible(selenium, "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]");
 		Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
 		Assert.assertTrue(selenium.isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
 		Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));

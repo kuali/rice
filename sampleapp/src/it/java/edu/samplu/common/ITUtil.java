@@ -111,6 +111,31 @@ public class ITUtil {
     }
 
     /**
+     * Wait the given seconds for the elementLocator to be present or fail
+     * @param selenium
+     * @param elementLocator
+     * @throws InterruptedException
+     */
+    public static void waitForElementVisible(Selenium selenium, String elementLocator) throws InterruptedException {
+        waitForElementVisible(selenium, elementLocator, 60);
+    }
+
+    /**
+     * Wait the given seconds for the elementLocator to be present or fail
+     * @param selenium
+     * @param elementLocator
+     * @param seconds
+     * @throws InterruptedException
+     */
+    public static void waitForElementVisible(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator);
+            try { if (selenium.isVisible(elementLocator)) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+    }
+
+    /**
      * Fails if a Incident Report is detected, extracting and reporting the View Id, Document Id, and StackTrace
      * @param selenium
      * @param linkLocator used only in the faillure message

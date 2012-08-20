@@ -16,7 +16,6 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
 import org.junit.Test;

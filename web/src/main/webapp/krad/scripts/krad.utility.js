@@ -77,7 +77,7 @@ function convertToHtml(text, removeAnchors) {
         text = text.replace(/&lt;\/a&gt;/gi, "");
     }
 
-    return jQuery("<span />", { html:text }).text();
+    return jQuery("<span />", { html: text }).text();
 }
 
 /**
@@ -90,7 +90,7 @@ function publishHeight() {
         parentUrl = jQuery.cookie('parentUrl');
         var passedUrl = decodeURIComponent(document.location.hash.replace(/^#/, ''));
         if (passedUrl && passedUrl.substring(0, 4) === "http") {
-            jQuery.cookie('parentUrl', passedUrl, {path:'/'});
+            jQuery.cookie('parentUrl', passedUrl, {path: '/'});
             parentUrl = passedUrl;
         }
     }
@@ -105,7 +105,7 @@ function publishHeight() {
     var height = jQuery("body").outerHeight();
     jQuery("body").attr("style", "overflow-x: auto; padding-right: 20px;");
     if (parentUrl && !isNaN(height) && height > 0) {
-        jQuery.postMessage({ if_height:height}, parentUrl, parent);
+        jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;
     }
 }
@@ -300,7 +300,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         runScriptsForId(id);
 
         //reinit dirty fields
-        jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+        jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 
         //reinitialize BubblePopup
         initBubblePopups();
@@ -540,10 +540,10 @@ function checkDirty(event) {
             if (ul.length > 0) {
                 var pageId = jQuery("[name='view.currentPageId']").val();
                 if (ul.hasClass(kradVariables.TAB_MENU_CLASS)) {
-                    jQuery("#" + ul.attr("id")).selectTab({selectPage:pageId});
+                    jQuery("#" + ul.attr("id")).selectTab({selectPage: pageId});
                 }
                 else {
-                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage:pageId});
+                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage: pageId});
                 }
             }
 
@@ -647,7 +647,7 @@ function jumpToElementByName(name) {
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
+            top.jQuery.scrollTo(theElement, 0, {offset: {top: headerOffset}});
         }
     }
 }
@@ -661,7 +661,7 @@ function jumpToElementById(id) {
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
+            top.jQuery.scrollTo(theElement, 0, {offset: {top: headerOffset}});
         }
     }
 }
@@ -947,7 +947,7 @@ function showLightboxComponent(componentId, overrideOptions) {
     // set renderedInLightBox indicator and remove it when lightbox is closed
     if (jQuery('#renderedInLightBox').val() != true) {
         jQuery('#renderedInLightBox').val(true);
-        _appendCallbackFunctions(overrideOptions, {afterClose:function () {
+        _appendCallbackFunctions(overrideOptions, {afterClose: function () {
             jQuery('#renderedInLightBox').val(false);
         }});
     }
@@ -977,7 +977,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
     if (top == self) {
         // ensure that component of KualiForm gets updated after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
+        _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -986,7 +986,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         }});
     } else {
         // reattach component to KualiForm after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
+        _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             parent.jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -1016,7 +1016,7 @@ function showLightboxContent(content, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type:'html', content:content}, overrideOptions);
+    _initAndOpenLightbox({type: 'html', content: content}, overrideOptions);
 }
 
 /**
@@ -1035,7 +1035,7 @@ function showLightboxUrl(url, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type:'iframe', href:url}, overrideOptions);
+    _initAndOpenLightbox({type: 'iframe', href: url}, overrideOptions);
 }
 
 /**
@@ -1050,14 +1050,14 @@ function showLightboxUrl(url, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function _initAndOpenLightbox(contentOptions, overrideOptions) {
-    var options = {fitToView:true,
-        openEffect:'fade',
-        closeEffect:'fade',
-        openSpeed:200,
-        closeSpeed:200,
-        minHeight:10,
-        minWidth:10,
-        helpers:{overlay:{css:{cursor:'arrow'}, closeClick:false}}
+    var options = {fitToView: true,
+        openEffect: 'fade',
+        closeEffect: 'fade',
+        openSpeed: 200,
+        closeSpeed: 200,
+        minHeight: 10,
+        minWidth: 10,
+        helpers: {overlay: {css: {cursor: 'arrow'}, closeClick: false}}
     };
 
     // override fancybox content options
@@ -1076,7 +1076,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         // Remove portal css and add lightbox css for the duration of the lightbox's life
         parent.jQuery('link[href="/kr-dev/rice-portal/css/portal.css"]').remove();
         parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/lightbox.css" rel="stylesheet" type="text/css">');
-        _appendCallbackFunctions(options, {afterClose:function () {
+        _appendCallbackFunctions(options, {afterClose: function () {
             parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/portal.css" rel="stylesheet" type="text/css">');
             parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove();
         }});
@@ -1093,7 +1093,7 @@ function setupLightboxForm() {
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);
-    kualiLightboxForm.dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+    kualiLightboxForm.dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 }
 
 /**
@@ -1264,16 +1264,16 @@ function coerceTableCellValue(td) {
 
     if (inputField.length > 0) {
         //TODO : use coerceValue()? would we do totals on other types of input
-        inputFieldValue =  inputField.val();
-    }else{
+        inputFieldValue = inputField.val();
+    } else {
         // This might be after sorting or just read only
         inputField = jQuery(td).find('span');
         if (inputField.length > 0) {
             // readonly fields
-            inputFieldValue =  inputField.text().replace(/\s+/g, "");
-        } else{
+            inputFieldValue = inputField.text().replace(/\s+/g, "");
+        } else {
             // after sorting
-            inputFieldValue =  td;
+            inputFieldValue = td;
         }
     }
 
@@ -1298,14 +1298,14 @@ function clearServerSideForm(formKey) {
     var postUrl = getConfigParam("kradUrl") + "/listener";
 
     jQuery.ajax({
-        url:postUrl,
-        dataType:"json",
-        data:queryData,
-        async:false,
-        beforeSend:null,
-        complete:null,
-        error:null,
-        success:null
+        url: postUrl,
+        dataType: "json",
+        data: queryData,
+        async: false,
+        beforeSend: null,
+        complete: null,
+        error: null,
+        success: null
     });
 }
 

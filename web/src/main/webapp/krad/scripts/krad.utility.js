@@ -303,7 +303,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 
         //reinitialize BubblePopup
-        initBubblePopups();
+        initBubblePopups(selector);
 
         //Interpret new server message state for refreshed InputFields and write them out
         if (!skipValidationBubbling) {
@@ -361,11 +361,11 @@ function evaluateScripts(selector) {
  */
 function runScriptsForId(id) {
     if (id) {
-        jQuery("input[for='" + id + "']").filter("[data-role='dataScript']").each(function () {
+        jQuery("input[data-for='" + id + "']").filter("[data-role='dataScript']").each(function () {
             evalHiddenScript(jQuery(this));
         });
 
-        jQuery("input[for='" + id + "']").filter("[data-role='script']").each(function () {
+        jQuery("input[data-for='" + id + "']").filter("[data-role='script']").each(function () {
             evalHiddenScript(jQuery(this));
         });
     }

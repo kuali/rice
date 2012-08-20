@@ -42,7 +42,7 @@ public class AgendaEditRuleRefreshIT extends UpgradedSeleniumITBase {
 		selenium.click("css=button:contains(earch)"); //  selenium.click("id=32");
         Thread.sleep(3000);
 		selenium.waitForPageToLoad("30000");
-		selenium.click("css=a[title='edit Agenda Definition withAgenda Id=AGENDA301 ']");  // selenium.click("id=194_line0");
+		selenium.click("css=a[title='edit Agenda Definition withAgenda Id=T1000 ']");  // selenium.click("id=194_line0");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("css=div.uif-message:contains(Rule1: stub rule lorem ipsum)"); // selenium.click("//li[@id='473_node_0_parent_root']/a");
         selenium.click("css=//li/a/span.uif-message:contains('When TRUE')");

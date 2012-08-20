@@ -18,6 +18,7 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
@@ -48,7 +49,7 @@ public class IdentityGroupBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group");
         selenium.select("//select[@id='document.groupNamespace']", IdentityResponsibilityBlanketAppIT.LABEL_KUALI_KUALI_SYSTEMS);
         selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.groupName']", "Validation Test Group1");
+        selenium.type("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS);
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");

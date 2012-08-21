@@ -174,6 +174,18 @@ public interface DocumentService {
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException;
 
     /**
+     * disapprove this document as super user, without saving, optionally providing an annotation which will show up in the route log for this document
+     * for this action taken
+     *
+     * @param document
+     * @param annotation
+     * @return
+     * @throws WorkflowException
+     */
+    public Document superUserDisapproveDocumentWithoutSaving(Document document, String annotation) throws WorkflowException;
+
+
+    /**
      * disapprove this document, optionally providing an annotation for the disapproval which will show up in the route log for the
      * document for this action taken
      *

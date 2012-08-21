@@ -258,6 +258,15 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
         getDocumentDao().save(document);
+        return superUserDisapproveDocumentWithoutSaving(document, annotation);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentService#superUserCancelDocument(org.kuali.rice.krad.document.Document,
+     *      java.lang.String)
+     */
+    @Override
+    public Document superUserDisapproveDocumentWithoutSaving(Document document, String annotation) throws WorkflowException {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService()
                 .superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
@@ -266,6 +275,7 @@ public class DocumentServiceImpl implements DocumentService {
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
+
 
     /**
      * @see org.kuali.rice.krad.service.DocumentService#disapproveDocument(org.kuali.rice.krad.document.Document,

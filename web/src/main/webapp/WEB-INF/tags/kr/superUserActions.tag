@@ -11,16 +11,20 @@
 	     tabErrorKey="superuser.errors"
 	     transparentBackground="${transparentBackground}">
 	<div class="tab-container" align=center id="G4">
-	    <h3>${tabTitle}</h3>
-		<table cellpadding="0" cellspacing="0" class="datatable" summary="view/add notes">
+		<c:if test="${not empty KualiForm.actionRequests}">
+	    	<h3>${tabTitle}</h3>
+	    </c:if>
+	    <table cellpadding="0" cellspacing="0" class="datatable" summary="view/add notes">
 			<tbody>
-				<tr>
-				    <th style="width: 5%; text-align: center;"><input type="checkbox" onclick="jQuery('input.superUserAction').prop('checked', jQuery(this).prop('checked'))" /></th>
-				    <th style="width: 15%;">${actionLabel}</th>
-				    <th style="width: 15%;">${requestedLabel}</th>
-				    <th style="width: 15%;">${timeLabel}</th>
-				    <th style="width: 50%;">${annotationLabel}</th>
-				</tr>
+				<c:if test="${not empty KualiForm.actionRequests}">
+					<tr>
+					    <th style="width: 5%; text-align: center;"><input type="checkbox" onclick="jQuery('input.superUserAction').prop('checked', jQuery(this).prop('checked'))" /></th>
+					    <th style="width: 15%;">${actionLabel}</th>
+					    <th style="width: 15%;">${requestedLabel}</th>
+					    <th style="width: 15%;">${timeLabel}</th>
+				    	<th style="width: 50%;">${annotationLabel}</th>
+					</tr>
+				</c:if>
 				<c:forEach var="actionRequest" items="${KualiForm.actionRequests}" varStatus="status">
 				<tr>
 				    <td class="datacell" style="text-align: center;"><html:multibox property="selectedActionRequests" value="${actionRequest.id}" styleClass="superUserAction" /></td>
@@ -44,13 +48,17 @@
 				</c:forEach>
 		    </tbody>
         </table>
-        <div style="vertical-align: top;">
-            <label for="superUserAnnotation" style="vertical-align: top;">Annotation<span style="color: red; vertical-align: top;">*</span></label>
-            <html:textarea property="superUserAnnotation" rows="5" cols="100" styleId="superUserAnnotation" />
-        </div>
+       	<div style="vertical-align: top;">
+           	<label for="superUserAnnotation" style="vertical-align: top;">Annotation<span style="color: red; vertical-align: top;">*</span></label>
+           	<html:textarea property="superUserAnnotation" rows="5" cols="100" styleId="superUserAnnotation" />
+       	</div>
         <div>
+        <c:if test="${KualiForm.superUserApproveAuthorized && not empty KualiForm.actionRequests}">
             <html-el:image property="methodToCall.takeSuperUserActions" src="${ConfigProperties.kew.url}/images/buttonsmall_takeselected.gif" style="border-style:none;" align="absmiddle" />
+        </c:if>
+        <c:if test="${KualiForm.superUserDisapproveAuthorized}">
             <html-el:image property="methodToCall.superUserDisapprove" src="${ConfigProperties.kew.url}/images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />
+        </c:if>            
         </div>
 	</div>
 </kul:tab>

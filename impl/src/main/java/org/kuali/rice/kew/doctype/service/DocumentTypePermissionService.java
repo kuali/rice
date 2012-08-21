@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.doctype.service;
 
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
@@ -48,6 +49,14 @@ public interface DocumentTypePermissionService {
 	 * DocumentType.  Having this permission gives them "super user" capabilities.
 	 */
 	boolean canAdministerRouting(String principalId, DocumentType documentType);
+
+    /**
+     * Determines if the given principal can administer routing for the given
+     * DocumentType on the Super User Action tab on the document.  Having this 
+     * permission gives them limited "super user" capabilities.
+     */
+    boolean canAdministerRoutingOnSuTab(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType, 
+            List<RouteNodeInstance> routeNodeInstances, String actionEvent);
 
 	/**
 	 * Determines if the given principal can initiate documents of the given DocumentType.

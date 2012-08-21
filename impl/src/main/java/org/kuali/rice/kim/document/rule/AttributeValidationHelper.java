@@ -89,7 +89,7 @@ public class AttributeValidationHelper {
 	public Map<String, String> getBlankValueQualifiersMap(List<KimTypeAttribute> attributes) {
 		Map<String, String> m = new HashMap<String, String>();
 		for(KimTypeAttribute attribute: attributes){
-			KimAttributeBo attrib = getAttributeDefinition(attribute.getId());
+   			KimAttributeBo attrib = getAttributeDefinition(attribute.getKimAttribute().getId());
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), "" );
 			} else {

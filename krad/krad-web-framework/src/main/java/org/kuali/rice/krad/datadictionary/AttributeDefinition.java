@@ -420,7 +420,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 		if (StringUtils.isEmpty(name)) {
 			throw new RuntimeException("blank name for bean: " + id);
 		}
-        if(this.validCharactersConstraint == null) {
+        if(this.validCharactersConstraint == null  && validationPattern != null) {
             this.validCharactersConstraint = validationPattern.asValidCharactersConstraint();
         }
 	}

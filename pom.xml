@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.5.4</version>
+    <version>1.5.6</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -2021,9 +2021,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/repos/rice/branches/rice-2.1</connection>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.1</connection>
     <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.1</developerConnection>
-    <url>https://svn.kuali.org/repos/repos/rice/branches/rice-2.1</url>
+    <url>https://svn.kuali.org/repos/rice/branches/rice-2.1</url>
   </scm>
 
 </project>

@@ -15,11 +15,11 @@
  */
 package edu.samplu.mainmenu.test;
 
-import java.util.Calendar;
-
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupITBase;
 import org.junit.Test;
+
+import java.util.Calendar;
 
 /**
  * tests whether the "Create New Agenda" is working ok 
@@ -41,7 +41,7 @@ public class CreateNewAgendaIT extends MainMenuLookupITBase {
         selenium.type("name=document.newMaintainableObject.dataObject.contextName", "Context1");
         selenium.fireEvent("name=document.newMaintainableObject.dataObject.contextName", "blur");
         selenium.fireEvent("name=document.newMaintainableObject.dataObject.contextName", "focus");
-        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.agenda.typeId");
+        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.agenda.typeId", "KULRICE-7924 : KRMS Agenda type select option not rendered w/o using Context lookup");
         selenium.select("name=document.newMaintainableObject.dataObject.agenda.typeId", "label=Campus Agenda");
         ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         selenium.type("name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");

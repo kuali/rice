@@ -96,6 +96,17 @@ public class ITUtil {
     }
 
     /**
+     * Wait 60 seconds for the elementLocator to be present or fail
+     * @param selenium
+     * @param elementLocator
+     * @param message
+     * @throws InterruptedException
+     */
+    public static void waitForElement(Selenium selenium, String elementLocator, String message) throws InterruptedException {
+        waitForElement(selenium, elementLocator, 60, message);
+    }
+
+    /**
      * Wait the given seconds for the elementLocator to be present or fail
      * @param selenium
      * @param elementLocator
@@ -103,8 +114,20 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitForElement(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
+        waitForElement(selenium, elementLocator, 60, "");
+    }
+
+    /**
+     * Wait the given seconds for the elementLocator to be present or fail
+     * @param selenium
+     * @param elementLocator
+     * @param seconds
+     * @param message
+     * @throws InterruptedException
+     */
+    public static void waitForElement(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
         for (int second = 0;; second++) {
-            if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator);
+            if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator + " " + message);
             try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }

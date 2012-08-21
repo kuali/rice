@@ -69,11 +69,27 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
      */
     @Test
     public void testActionColumnPlacement() throws Exception {
+
+        //Lack of proper locators its not possible to uniquely identify/locate this elements without use of ID's.
+        //This restricts us to use the XPath to locate elements from the dome. 
+        //This test is prone to throw error in case of any changes in the dom Html graph.
+        
+        
+        
+        selenium.click("link=Column Sequence");
+        Thread.sleep(2000);
+        selenium.click("css=div.jGrowl-close");
         // check if actions column RIGHT by default
-        Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
+        //Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
+        Assert.assertTrue(selenium.isElementPresent("//tr[2]/td[6]/div/fieldset/div/div[2]/button"));
+
         // check if actions column is LEFT
-        Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
+        //Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
+        Assert.assertTrue(selenium.isElementPresent("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"));
+        
         // check if actions column is 3rd in a sub collection
-        Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
+        //Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
+        Assert.assertTrue(selenium.isElementPresent("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
+        
     }
 }

@@ -29,7 +29,7 @@ import static org.junit.Assert.fail;
 public class DeleteSubCollectionLineIT extends UpgradedSeleniumITBase{
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return  "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
     }
 
     @Test
@@ -37,31 +37,29 @@ public class DeleteSubCollectionLineIT extends UpgradedSeleniumITBase{
      * tests that a line in a sub collection can be deleted
      */
     public void deleteSubCollectionLine() throws Exception {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=Uif Components (Kitchen Sink)");
-        selenium.waitForPageToLoad("30000");
-//        selenium.selectFrame("iframeportlet");
         // click on collections page link
-        selenium.click("id=u961");
-        // Thread.sleep(30000);
+        selenium.click("link=Collections");
+        Thread.sleep(5000);
         // wait for collections page to load by checking the presence of a sub collection line item
+	
         for (int second = 0;; second++) {
-            if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u1089_line0_line0_control")) break; } catch (Exception e) {}
+            if (second >=5) fail("timeout");
+            try { if (selenium.isElementPresent("name=list4[0].subList[0].field1")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
         // change a value in the line to be deleted
-        selenium.type("id=u1089_line0_line0_control", "selenium");
+        selenium.type("name=list4[0].subList[0].field1", "selenium");
         // click the delete button
-        selenium.click("id=u1140_line0_line0");
+        selenium.click("css=div[title='Line Summary \'A\' With Expression'].uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure tr.odd button[data-loadingmessage='Deleting Line...'].uif-action.uif-secondaryActionButton.uif-smallActionButton");
+        Thread.sleep(2000);
         // confirm that the input box containing the modified value is not present
+        
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");
-            try { if (!"selenium".equals(selenium.getValue("id=u1089_line0_line0_control"))) break; } catch (Exception e) {}
+            try { if (!"selenium".equals(selenium.getValue("name=list4[0].subList[0].field1"))) break;} catch (Exception e) {}
             Thread.sleep(1000);
         }
         // verify that the value has changed for the input box in the line that has replaced the deleted one
-        assertNotSame("selenium", selenium.getValue("id=u1089_line0_line0_control"));
+        assertNotSame("selenium", selenium.getValue("name=list4[0].subList[0].field1"));
     }
 }

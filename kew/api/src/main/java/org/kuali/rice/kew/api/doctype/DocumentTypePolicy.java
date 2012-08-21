@@ -132,6 +132,12 @@ public enum DocumentTypePolicy implements Coded {
      */
     @XmlEnumValue(Codes.RECALL_NOTIFICATION) RECALL_NOTIFICATION(Codes.RECALL_NOTIFICATION),
     /**
+     * Specifies list of prior actions taken for which a subsequent Recall action will be valid.
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-7798
+     */
+    @XmlEnumValue(Codes.RECALL_VALID_ACTIONSTAKEN) RECALL_VALID_ACTIONSTAKEN(Codes.RECALL_VALID_ACTIONSTAKEN),
+    /**
      * Specifies whether to send acknowledgements on a super user disapprove action
      * @since 2.1
      * @see https://jira.kuali.org/browse/KULRICE-7056
@@ -188,6 +194,7 @@ public enum DocumentTypePolicy implements Coded {
         private static final String NOTIFY_PENDING_ON_RETURN = "NOTIFY_PENDING_ON_RETURN";
         private static final String NOTIFY_COMPLETED_ON_RETURN = "NOTIFY_COMPLETED_ON_RETURN";
         private static final String RECALL_NOTIFICATION = "RECALL_NOTIFICATION";
+        private static final String RECALL_VALID_ACTIONSTAKEN = "RECALL_VALID_ACTIONSTAKEN";
         private static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE = "SEND_NOTIFICATION_ON_SU_DISAPPROVE";
         private static final String ALLOW_SU_FINAL_APPROVAL = "ALLOW_SU_FINAL_APPROVAL";
     }

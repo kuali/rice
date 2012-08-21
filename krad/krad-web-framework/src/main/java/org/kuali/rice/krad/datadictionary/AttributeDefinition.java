@@ -216,8 +216,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	 */
 	public void setValidationPattern(ValidationPattern validationPattern) {
 		this.validationPattern = validationPattern;
-		
-		// FIXME: JLR - need to recreate this functionality using the ValidCharsConstraint logic
 	}
 
 
@@ -413,7 +411,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method applies validCharacterConstraint if legacy validation pattern in place
 	 * 
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
@@ -422,6 +420,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 		if (StringUtils.isEmpty(name)) {
 			throw new RuntimeException("blank name for bean: " + id);
 		}
+        if(this.validCharactersConstraint == null) {
+            this.validCharactersConstraint = validationPattern.asValidCharactersConstraint();
+        }
 	}
 
 	/**

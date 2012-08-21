@@ -66,17 +66,16 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
 		}
 
 		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
-		selenium.type("name=field1", "b");
-		selenium.keyDown("name=field1", "b");
-		selenium.keyUp("name=field1", "b");
-        selenium.typeKeys("name=field1", "\b\b\b");
+		selenium.type("name=field1", "b");		 
+        selenium.fireEvent("name=field1", "blur");
+        selenium.fireEvent("name=field1", "focus");
 		for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
 			try { if (!selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
 
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+		Assert.assertTrue(!selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
 		Assert.assertFalse(selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
 		selenium.type("name=field1", "");
 		selenium.fireEvent("name=field1", "focus");

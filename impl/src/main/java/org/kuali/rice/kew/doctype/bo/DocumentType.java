@@ -991,7 +991,16 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         this.returnUrl = returnUrl;
     }
 
-    private DocumentTypePolicy getPolicyByName(String policyName, Boolean defaultValue) {
+    /**
+     * Returns the policy value of the specified policy, consulting parent document type definitions
+     * if not defined on the immediate DocumentType.  If not found, a policy with the specified default
+     * value is returned.  If policy is found on parent but boolean value is undefined, TRUE is used.
+     * @param policyName the policy name to look up
+     * @param defaultValue the default boolean value to return if policy is not found
+     * @return DocumenTypePolicy defined on immediate or parent document types, or new instance initialized with
+     *         specified default boolean value
+     */
+    public DocumentTypePolicy getPolicyByName(String policyName, Boolean defaultValue) {
 
         Iterator policyIter = getDocumentTypePolicies().iterator();
         while (policyIter.hasNext()) {
@@ -1017,7 +1026,17 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return policy;
     }
 
-    private DocumentTypePolicy getPolicyByName(String policyName, String defaultValue) {
+    /**
+     * Returns the policy value of the specified policy, consulting parent document type definitions
+     * if not defined on the immediate DocumentType.  If not found, a policy with a boolean value of True
+     * and a string value of the specified default value is returned.
+     * If policy is found on parent but boolean value is undefined, TRUE is used.
+     * @param policyName the policy name to look up
+     * @param defaultValue the default string value to return if policy is not found
+     * @return DocumenTypePolicy defined on immediate or parent document types, or new instance initialized with
+     *         specified default string value
+     */
+    public DocumentTypePolicy getPolicyByName(String policyName, String defaultValue) {
 
         Iterator policyIter = getDocumentTypePolicies().iterator();
         while (policyIter.hasNext()) {
@@ -1706,7 +1725,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
                 // NOTE: The policy value is actually a boolean field stored to a Decimal(1) column (although the db column is named PLCY_NM)
                 // I'm not sure what the string value should be but the BO is simply toString'ing the Boolean value
                 // so I am assuming here that "true"/"false" are the acceptable values
-                policies.add(new DocumentTypePolicy(entry.getKey().getCode(), "true".equals(entry.getValue())));
+                policies.add(new DocumentTypePolicy(entry.getKey().getCode(), Boolean.TRUE.toString().equals(entry.getValue())));
             }
         }
         if (CollectionUtils.isNotEmpty(dt.getDocumentTypeAttributes())) {

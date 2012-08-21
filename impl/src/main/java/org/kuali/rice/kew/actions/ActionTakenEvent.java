@@ -175,17 +175,7 @@ public abstract class ActionTakenEvent {
      * @return the policy value or deflt if missing
      */
     protected static boolean isPolicySet(DocumentType docType, DocumentTypePolicy policy, boolean deflt) {
-        String val = docType.getPolicies().get(policy);
-        if (val == null) {
-            DocumentType parent = docType.getParentDocType();
-            if (parent != null) {
-                return isPolicySet(parent, policy, deflt);
-            } else {
-                return deflt;
-            }
-        } else {
-            return Boolean.parseBoolean(val);
-        }
+        return docType.getPolicyByName(policy.name(), Boolean.valueOf(deflt)).getPolicyValue().booleanValue();
     }
 
     /**

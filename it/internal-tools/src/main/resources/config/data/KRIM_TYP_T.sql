@@ -101,6 +101,9 @@ INSERT INTO KRIM_TYP_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,SRVC_NM,VER_NBR)
 INSERT INTO KRIM_TYP_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,SRVC_NM,VER_NBR)
   VALUES ('Y','9','Document Type & Attachment Type','KR-NS','5ADF18B6D4CD7954E0404F8189D85002','documentTypeAndAttachmentTypePermissionTypeService',1)
 /
+INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
+  VALUES('100', '9d1189174c6d497e87f3529f9a4eeff8', 1, 'Document Type, Routing Node and Action Event', 'documentTypeAndNodeAndActionEventService', 'Y', 'KR-SYS')
+/
 INSERT INTO KRIM_TYP_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,SRVC_NM,VER_NBR)
   VALUES ('Y','61','Derived Role: Permission (Route Document)','KR-WKFLW','aea07da2-84bf-11e1-b5ba-0023540834a9','documentRouterRoleTypeService',1)
 /

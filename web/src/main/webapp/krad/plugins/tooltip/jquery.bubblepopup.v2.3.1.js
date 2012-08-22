@@ -1037,11 +1037,14 @@
                     }
                 });
                 a(w).bind("hidebubblepopup", function (B, x) {
+
                     var A = n(this);
                     if ((typeof x == "boolean" && x == true && (i(A) && i(A.privateVars) && a("#" + A.privateVars.id).length > 0)) || (typeof x == "undefined" && (i(A) && i(A.privateVars) && a("#" + A.privateVars.id).length > 0 && !A.privateVars.is_freezed && A.privateVars.is_open))) {
                         if (typeof x == "boolean" && x == true) {
                             a(this).trigger("unfreezebubblepopup")
                         }
+                        A.privateVars.is_open = false;
+                        A.privateVars.is_freezed = false;
                         A.privateVars.is_animating = false;
                         A.privateVars.is_animation_complete = false;
                         d(this, A);
@@ -1062,7 +1065,7 @@
                                     opacity: 0,
                                     left: (A.privateVars.is_position_changed ? "+=" : "-=") + A.distance + "px"
                                 }, A.closingSpeed, "swing", function () {
-                                    A.privateVars.is_open = false;
+
                                     A.privateVars.is_animating = false;
                                     A.privateVars.is_animation_complete = true;
                                     d(w, A);
@@ -1075,7 +1078,6 @@
                                     opacity: 0,
                                     top: (A.privateVars.is_position_changed ? "+=" : "-=") + A.distance + "px"
                                 }, A.closingSpeed, "swing", function () {
-                                    A.privateVars.is_open = false;
                                     A.privateVars.is_animating = false;
                                     A.privateVars.is_animation_complete = true;
                                     d(w, A);
@@ -1088,7 +1090,6 @@
                                     opacity: 0,
                                     left: (A.privateVars.is_position_changed ? "-=" : "+=") + A.distance + "px"
                                 }, A.closingSpeed, "swing", function () {
-                                    A.privateVars.is_open = false;
                                     A.privateVars.is_animating = false;
                                     A.privateVars.is_animation_complete = true;
                                     d(w, A);
@@ -1101,7 +1102,6 @@
                                     opacity: 0,
                                     top: (A.privateVars.is_position_changed ? "-=" : "+=") + A.distance + "px"
                                 }, A.closingSpeed, "swing", function () {
-                                    A.privateVars.is_open = false;
                                     A.privateVars.is_animating = false;
                                     A.privateVars.is_animation_complete = true;
                                     d(w, A);
@@ -1112,7 +1112,7 @@
                             }
                         }, z);
                         A.privateVars.last_display_datetime = f();
-                        A.privateVars.is_freezed = false;
+
                         d(this, A);
                         s(A)
                     }

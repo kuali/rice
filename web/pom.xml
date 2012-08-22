@@ -186,7 +186,7 @@
                 <jsSourceFile>scripts/krad.ajax.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.utility.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.validate.js</jsSourceFile>
-                <jsSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</jsSourceFile>
+                <jsSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.js</jsSourceFile>
                 <jsSourceFile>plugins/easing/jquery.easing-1.3.pack.js</jsSourceFile>
               </jsSourceFiles>
               <cssTargetDir>krad/css</cssTargetDir>

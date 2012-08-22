@@ -349,24 +349,27 @@ function initFieldHandlers() {
  * call
  */
 function initBubblePopups(selector) {
-    //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup
-    //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
-    //will cause a severe loss of functionality and buggy behavior
-    //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
     var runCreate = true;
 
     if(selector){
         var selection = jQuery(selector);
         if(selection.length){
+            //if the content does not contain elements that can have a tooltip, jquery object length will be 0 (false)
             runCreate = selection.find("input:not(input[type='image']), input[data-role='help'], select, textarea, "
                         + ".uif-tooltip").not("input[type='hidden']").length;
         }
     }
 
     if(runCreate){
-        // if the content does not contain elements that can have a tooltip, jquery object length will be 0 (false)
-        jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea, "
-                + ".uif-tooltip").not("input[type='hidden']").CreateBubblePopup(
+        var bubblePopupElements = jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea, "
+                                                + ".uif-tooltip").not("input[type='hidden']");
+        bubblePopupElements.RemoveBubblePopup();
+
+        //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup
+        //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
+        //will cause a severe loss of functionality and buggy behavior
+        //if new BubblePopups must be created due to new content on the screen this full function MUST be run again
+        bubblePopupElements.CreateBubblePopup(
                 {   manageMouseEvents:false,
                     themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
                 });

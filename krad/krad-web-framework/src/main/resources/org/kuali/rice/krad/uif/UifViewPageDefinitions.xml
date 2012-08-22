@@ -58,7 +58,7 @@
         <value>krad/plugins/watermark/jquery.watermark.js</value>
         <value>krad/plugins/validate/jquery.validate.js</value>
         <value>krad/plugins/tooltip/jquery.tools.min.js</value>
-        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</value>
+        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.js</value>
         <value>krad/plugins/rice/spinner/smartspinner.js</value>
         <value>krad/plugins/rice/menu/krad.navigationMenu.js</value>
         <value>krad/plugins/rice/textpopout/krad.textareaPopout.js</value>

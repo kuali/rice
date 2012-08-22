@@ -334,6 +334,7 @@
  *    or CSS styles or size
 -->
 <#macro formCheckbox path label id="" attributes="">
+    <#-- Start Kuali enhancements and changes -->
 	<@bind path />
     <#local name="${status.expression}">
     <#local isSelected = status.value?? && status.value?string=="true">
@@ -344,6 +345,7 @@
             <@krad.template component=label/>
         </label>
     </#if>
+    <#-- End Kuali enhancements and changes -->
 </#macro>
 
 <#--

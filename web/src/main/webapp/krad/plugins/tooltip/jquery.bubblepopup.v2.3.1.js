@@ -1036,6 +1036,7 @@
                         }, H.openingDelay)
                     }
                 });
+                /** Kuali customization begin **/
                 a(w).bind("hidebubblepopup", function (B, x) {
 
                     var A = n(this);
@@ -1117,6 +1118,7 @@
                         s(A)
                     }
                 })
+                /** Kuali customization end **/
             })
         }
         return this

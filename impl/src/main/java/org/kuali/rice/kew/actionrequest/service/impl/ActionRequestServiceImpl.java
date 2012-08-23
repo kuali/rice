@@ -1044,4 +1044,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return false;
     }
 
+    @Override
+    public ActionRequestValue getActionRequestForRole(String actionTakenId) {
+        return getActionRequestDAO().getRoleActionRequestByActionTakenId(actionTakenId);
+    }
+
 }

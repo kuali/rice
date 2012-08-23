@@ -141,21 +141,25 @@ public class ActionTakenValue implements Serializable {
     }
 
     public boolean isForDelegator() {
-        return getDelegatorPrincipalId() != null || getDelegatorGroupId() != null;
+        return getDelegatorPrincipalId() != null || getDelegatorGroupId() != null || getDelegatorRoleId() != null;
     }
 
     public String getDelegatorDisplayName() {
-        if (! isForDelegator()) {
-            return "";
-        }
         if (getDelegatorPrincipalId() != null) {
         	// TODO this stinks to have to have a dependency on UserSession here
         	return KEWServiceLocator.getIdentityHelperService().getPerson(this.getDelegatorPrincipalId()).getName();
-        } else {
+        } else if (getDelegatorGroupId() != null) {
             return getDelegatorGroup().getName();
-      }
+        } else {
+            String delegatorRoleId = getDelegatorRoleId();
+            if (delegatorRoleId != null) {
+                return KimApiServiceLocator.getRoleService().getRole(delegatorRoleId).getName();
+            } else {
+                return "";
+            }
+        }
     }
-    
+
     private Principal getPrincipalForId(String principalId) {
     	Principal principal = null;
     	
@@ -236,9 +240,20 @@ public class ActionTakenValue implements Serializable {
     public String getDelegatorGroupId() {
         return delegatorGroupId;
     }
+
     public void setDelegatorGroupId(String delegatorGroupId) {
         this.delegatorGroupId = delegatorGroupId;
     }
+
+    public String getDelegatorRoleId() {
+        ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().getActionRequestForRole(actionTakenId);
+        if (actionRequest != null) {
+            return actionRequest.getRoleName();
+        } else {
+            return null;
+        }
+    }
+
     public Integer getDocVersion() {
         return docVersion;
     }

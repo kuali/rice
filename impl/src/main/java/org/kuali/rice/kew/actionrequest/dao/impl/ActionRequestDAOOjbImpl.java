@@ -287,4 +287,14 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 
         return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
 	}
+
+    @Override
+    public ActionRequestValue getRoleActionRequestByActionTakenId(String actionTakenId) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("actionTakenId", actionTakenId);
+        crit.addEqualTo("currentIndicator", true);
+        crit.addEqualTo("recipientTypeCd", RecipientType.ROLE.getCode());
+        crit.addIsNull("parentActionRequest");
+        return (ActionRequestValue) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+    }
 }

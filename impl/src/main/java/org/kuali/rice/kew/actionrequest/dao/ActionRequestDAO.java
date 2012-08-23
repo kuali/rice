@@ -70,4 +70,6 @@ public interface ActionRequestDAO {
   
     public List<String> getRequestGroupIds(String documentId);
 
+    public ActionRequestValue getRoleActionRequestByActionTakenId(String actionTakenId);
+
 }

@@ -89,7 +89,7 @@ function initFieldHandlers() {
         themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
         alwaysVisible:false,
         tail:{align:"left"},
-        themeMargins: {total: "13px",difference: "2px"}
+        themeMargins:{total:"13px", difference:"2px"}
     };
 
     jQuery(document).on("mouseenter",
@@ -173,7 +173,7 @@ function initFieldHandlers() {
                     //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
                     //above the field - so this is necessary) - also prevents non-displayed tooltips from hiding content
                     //when entered
-                    var result = mouseInBubblePopupCheck(event, fieldId, element, this, elementInfo.type);
+                    var result = mouseOutBubblePopupCheck(event, fieldId, element, this, elementInfo.type, data);
                     if (!result) {
                         return false;
                     }
@@ -213,7 +213,7 @@ function initFieldHandlers() {
                     + "[data-role='InputField'] input:file, "
                     + "[data-role='InputField'] select, "
                     + "[data-role='InputField'] textarea",
-            function () {
+            function (event) {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
                 var hadError = false;
@@ -226,11 +226,17 @@ function initFieldHandlers() {
                     valid = validateFieldValue(this);
                 }
 
+                //mouse in tooltip check
+                var mouseInTooltip = false;
+                if (data && data.useTooltip && data.mouseInTooltip) {
+                    mouseInTooltip = data.mouseInTooltip;
+                }
+
                 if (!hadError && !valid) {
                     //never had a client error before, so pop-up and delay
                     showMessageTooltip(id, true, true);
                 }
-                else {
+                else if (!mouseInTooltip) {
                     hideMessageTooltip(id);
                 }
             });
@@ -299,6 +305,12 @@ function initFieldHandlers() {
             function () {
                 var parent = jQuery(this).parent();
                 var id = getAttributeId(jQuery(this).attr('id'));
+                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                //mouse in tooltip check
+                var mouseInTooltip = false;
+                if (data && data.useTooltip && data.mouseInTooltip) {
+                    mouseInTooltip = data.mouseInTooltip;
+                }
 
                 //radio/checkbox is in fieldset case
                 if (parent.parent().is("fieldset")) {
@@ -325,7 +337,7 @@ function initFieldHandlers() {
                                 //never had a client error before, so pop-up and delay close
                                 showMessageTooltip(id, true, true);
                             }
-                            else {
+                            else if (!mouseInTooltip){
                                 hideMessageTooltip(id);
                             }
                         }
@@ -353,7 +365,7 @@ function initFieldHandlers() {
                         //never had a client error before, so pop-up and delay
                         showMessageTooltip(id, true, true);
                     }
-                    else {
+                    else if (!mouseInTooltip){
                         hideMessageTooltip(id);
                     }
                 }
@@ -371,18 +383,18 @@ function initFieldHandlers() {
 function initBubblePopups(selector) {
     var runCreate = true;
 
-    if(selector){
+    if (selector) {
         var selection = jQuery(selector);
-        if(selection.length){
+        if (selection.length) {
             //if the content does not contain elements that can have a tooltip, jquery object length will be 0 (false)
-            runCreate = selection.find("input:not(input[type='image']), input[data-role='help'], select, textarea, "
-                        + ".uif-tooltip").not("input[type='hidden']").length;
+            runCreate = selection.find("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
+                    + "select, textarea, .uif-tooltip").length;
         }
     }
 
-    if(runCreate){
-        var bubblePopupElements = jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea, "
-                                                + ".uif-tooltip").not("input[type='hidden']");
+    if (runCreate) {
+        var bubblePopupElements = jQuery("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
+                + "select, textarea, .uif-tooltip");
         bubblePopupElements.RemoveBubblePopup();
 
         //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup

@@ -33,14 +33,7 @@ function hideMessageTooltip(fieldId) {
 
     var tooltipId = jQuery(element).GetBubblePopupID();
 
-    //browser specific hover check, note content in tooltip when input is also focused will not
-    //be selectable in ie <= 8 (this is a hack to allow users to click links in tooltips in supported browsers)
-    var isHovered = true;
-    if(!jQuery.browser.msie || (jQuery.browser.msie && parseInt(jQuery.browser.version, 10) > 8)){
-        isHovered = jQuery("#" + tooltipId).is(":hover");
-    }
-
-    if(tooltipId && !isHovered){
+    if(tooltipId){
         //this causes the tooltip to be IMMEDIATELY hidden, rather than wait for animation
         jQuery("#" + tooltipId).css("opacity", 0);
         jQuery("#" + tooltipId).hide();
@@ -138,8 +131,10 @@ function getTooltipMargin(tooltipElement) {
  * @param triggerElements - the elements that can trigger mouseover
  * @param callingElement - original element that invoked the mouseleave
  * @param type - type of the field
+ * @param data - the fields validation data - updates the mouseInTooltip property
+ * @return false if the mouse is not out of the tooltip (mouse in tooltip), true if it is in the tooltip
  */
-function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement, type) {
+function mouseOutBubblePopupCheck(event, fieldId, triggerElements, callingElement, type, data) {
     if (event.relatedTarget &&
             jQuery(event.relatedTarget).length &&
             ((jQuery(event.relatedTarget).attr("class") != null &&
@@ -147,18 +142,21 @@ function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement
             || jQuery(event.relatedTarget).parents('.jquerybubblepopup-innerHtml').length)) {
         //this bind is only every invoked once, then unbound - return false to stop hide
         jQuery(event.relatedTarget).one("mouseleave", function (event) {
-            mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement, type);
+            mouseOutBubblePopupCheck(event, fieldId, triggerElements, callingElement, type, data);
         });
+        data.mouseInTooltip = true;
         return false;
     }
     //If target moving into is not a triggerElement for this hover
     // and if the source of the event is not a trigger element
     else if (!jQuery(event.relatedTarget).is(triggerElements) && !jQuery(event.target).is(triggerElements)) {
         //hide the tooltip for the original element
+        data.mouseInTooltip = false;
         mouseLeaveHideMessageTooltip(fieldId, callingElement, triggerElements, type, true);
         return true;
     }
     else {
+        data.mouseInTooltip = false;
         return true;
     }
 }

@@ -168,13 +168,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getComponentSecurity()
-     */
-    public ActionSecurity getComponentSecurity() {
-        return action.getComponentSecurity();
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.element.Action#setComponentSecurity(org.kuali.rice.krad.uif.component.ComponentSecurity)
      */
     public void setComponentSecurity(ComponentSecurity componentSecurity) {

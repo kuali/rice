@@ -489,16 +489,6 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Action Field Security object that indicates what authorization (permissions) exist for the action
-     *
-     * @return ActionSecurity instance
-     */
-    @Override
-    public ActionSecurity getComponentSecurity() {
-        return (ActionSecurity) super.getComponentSecurity();
-    }
-
-    /**
      * Override to assert a {@link ActionSecurity} instance is set
      *
      * @param componentSecurity - instance of ActionSecurity

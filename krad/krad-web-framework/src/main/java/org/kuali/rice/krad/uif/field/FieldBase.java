@@ -306,16 +306,6 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * Field Security object that indicates what authorization (permissions) exist for the field
-     *
-     * @return FieldSecurity instance
-     */
-    @Override
-    public FieldSecurity getComponentSecurity() {
-        return (FieldSecurity) super.getComponentSecurity();
-    }
-
-    /**
      * Override to assert a {@link FieldSecurity} instance is set
      *
      * @param componentSecurity - instance of FieldSecurity

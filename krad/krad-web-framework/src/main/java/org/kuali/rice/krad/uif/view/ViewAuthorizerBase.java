@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.ActionSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldSecurity;
@@ -303,7 +304,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canPerformAction(View view, ViewModel model, Action action, String actionEvent,
             String actionId, Person user) {
         // check action authz flag is set
-        if (!action.getComponentSecurity().isPerformActionAuthz()) {
+        if (!((ActionSecurity)action.getComponentSecurity()).isPerformActionAuthz()) {
             return true;
         }
 
@@ -374,7 +375,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             String collectionPropertyName, Object line, Action action, String actionEvent, String actionId,
             Person user) {
         // check perform line action authz flag is set
-        if (!action.getComponentSecurity().isPerformLineActionAuthz()) {
+        if (!((ActionSecurity)action.getComponentSecurity()).isPerformLineActionAuthz()) {
             return true;
         }
 

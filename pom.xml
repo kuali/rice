@@ -1971,9 +1971,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/repos/rice/branches/rice-2.2-myplan</connection>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.2-myplan</connection>
     <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.2-myplan</developerConnection>
-    <url>https://svn.kuali.org/repos/repos/rice/branches/rice-2.2-myplan</url>
+    <url>https://svn.kuali.org/repos/rice/branches/rice-2.2-myplan</url>
   </scm>
 
 </project>

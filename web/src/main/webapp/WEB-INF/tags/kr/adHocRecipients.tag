@@ -163,7 +163,7 @@
                         </td>
                         <td class="datacell center"><div align=center>
                             <kul:htmlControlAttribute property="adHocRouteWorkgroup[${ctr}].recipientName" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.groupName}" readOnly="displayReadOnly" />
-                            <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:adHocRouteWorkgroup[${ctr}].recipientNamespaceCode,groupName:adHocRouteWorkgroup[${ctr}].recipientName"
+                            <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:adHocRouteWorkgroup[${ctr}].recipientNamespaceCode,name:adHocRouteWorkgroup[${ctr}].recipientName"
                                  lookupParameters="adHocRouteWorkgroup[${ctr}].recipientNamespaceCode:namespaceCode,adHocRouteWorkgroup[${ctr}].recipientName:groupName" /></div>
                        </td>
                         <td class="datacell center" ><div align=center>

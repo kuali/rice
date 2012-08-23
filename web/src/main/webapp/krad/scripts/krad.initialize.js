@@ -351,18 +351,18 @@ function initFieldHandlers() {
 function initBubblePopups(selector) {
     var runCreate = true;
 
-    if(selector){
+    if (selector) {
         var selection = jQuery(selector);
-        if(selection.length){
+        if (selection.length) {
             //if the content does not contain elements that can have a tooltip, jquery object length will be 0 (false)
-            runCreate = selection.find("input:not(input[type='image']), input[data-role='help'], select, textarea, "
-                        + ".uif-tooltip").not("input[type='hidden']").length;
+            runCreate = selection.find("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
+                    + "select, textarea, .uif-tooltip").length;
         }
     }
 
-    if(runCreate){
-        var bubblePopupElements = jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea, "
-                                                + ".uif-tooltip").not("input[type='hidden']");
+    if (runCreate) {
+        var bubblePopupElements = jQuery("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
+                + "select, textarea, .uif-tooltip");
         bubblePopupElements.RemoveBubblePopup();
 
         //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup

@@ -18,8 +18,11 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
+
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -50,8 +53,13 @@ public class LocationCountyBlanketAppIT extends UpgradedSeleniumITBase {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + remotePublicUrl
-                + "/kr/lookup.do;::::).anchor4");
+        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
+        for (int second = 0;; second++) {
+            if (second >= 60) Assert.fail("timeout");
+            try { if (selenium.isElementPresent(countryLookUp)) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        selenium.click(countryLookUp);
         selenium.waitForPageToLoad("30000");
         selenium.type("code", "US");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
@@ -59,15 +67,21 @@ public class LocationCountyBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
         selenium.type("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + remotePublicUrl
-                + "/kr/lookup.do;::::).anchor4");
+        String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        for (int second = 0;; second++) {
+            if (second >= 60) Assert.fail("timeout");
+            try { if (selenium.isElementPresent(stateLookUp)) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        selenium.click(stateLookUp);   
         selenium.waitForPageToLoad("30000");
         selenium.type("code", "IN");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test County");
+        String countyName = "Validation Test County"+Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        selenium.type("//input[@id='document.newMaintainableObject.name']", countyName);
         selenium.click("//input[@id='document.newMaintainableObject.active']");
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
@@ -85,6 +99,6 @@ public class LocationCountyBlanketAppIT extends UpgradedSeleniumITBase {
         }else{
             assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
             assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
+        }        
     }
 }

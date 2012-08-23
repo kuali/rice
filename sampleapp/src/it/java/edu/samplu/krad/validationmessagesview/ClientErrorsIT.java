@@ -54,8 +54,8 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
         Assert.assertTrue(selenium.isVisible(
                 "css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
         selenium.type("name=field1", "a");
-        selenium.keyDown("name=field1", "b");
-        selenium.keyUp("name=field1", "b");
+        selenium.fireEvent("name=field1", "blur");
+        selenium.fireEvent("name=field1", "focus");
         for (int second = 0; ; second++) {
             if (second >= 60) {
                 Assert.fail("timeout");

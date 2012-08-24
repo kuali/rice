@@ -101,7 +101,7 @@ abstract public class ValidationPattern implements Serializable {
 
     public ValidCharactersConstraint asValidCharactersConstraint() {
         ValidCharactersConstraint constraint = new ConfigurationBasedRegexPatternConstraint();
-        constraint.setValue(this.getRegexString());
+        constraint.setValue(this.getRegexPattern().pattern());
         return constraint;
     }
     /**

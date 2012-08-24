@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
@@ -31,6 +32,8 @@ import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.WorkflowRuleSearchAttribute;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -96,6 +99,30 @@ public class WorkflowRuleAttributeHandlerServiceImpl implements WorkflowRuleAttr
         return WorkflowRuleAttributeFields.create(errors, fields, ruleExtensionValuesMap);
     }
 
+    @Override
+    public WorkflowRuleAttributeFields getRoutingDataFields( Map<String, String> parameters,
+                                                    ExtensionDefinition extensionDefinition,
+                                                    boolean required)
+          throws RiceIllegalArgumentException {
+        if (parameters == null) {
+            parameters = new HashMap<String, String>();
+        }
+        WorkflowRuleAttribute attribute = loadAttribute(extensionDefinition);
+        attribute.setRequired(required);
+        List<RemotableAttributeError> allErrors = attribute.validateRoutingData(parameters);
+        List<RemotableAttributeError> ruleDataErrors = attribute.validateRuleData(parameters);
+        for (RemotableAttributeError error : ruleDataErrors) {
+            allErrors.add(error);
+        }
+        List<RemotableAttributeField> fields = FieldUtils.convertRowsToAttributeFields(attribute.getRoutingDataRows());
+        List<RuleExtensionValue> ruleExtensionValues = attribute.getRuleExtensionValues();
+        Map<String, String> ruleExtensionValuesMap = new HashMap<String, String>();
+        for (RuleExtensionValue ruleExtensionValue : ruleExtensionValues) {
+            ruleExtensionValuesMap.put(ruleExtensionValue.getKey(), ruleExtensionValue.getValue());
+        }
+        return WorkflowRuleAttributeFields.create(allErrors, fields, ruleExtensionValuesMap);
+    }
+    
     @Override
     public List<RoleName> getRoleNames(ExtensionDefinition extensionDefinition) {
         WorkflowRuleAttribute attribute = loadAttribute(extensionDefinition);

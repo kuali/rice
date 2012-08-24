@@ -59,6 +59,31 @@ public class WorkflowRuleAttributeMediatorImpl implements WorkflowRuleAttributeM
         WorkflowRuleAttributeFields fields = handler.getRuleFields(parameters, extensionDefinition, ruleTemplateAttribute.isRequired());
         return new WorkflowRuleAttributeRows(fields);
     }
+    
+    @Override
+    public WorkflowRuleAttributeRows getRoutingDataRows(Map<String, String> parameters, RuleTemplateAttributeBo ruleTemplateAttribute) {
+        required(ruleTemplateAttribute, "ruleTemplateAttribute");
+        if (parameters == null) {
+            parameters = Collections.emptyMap();
+        }
+        RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
+        ExtensionDefinition extensionDefinition = RuleAttribute.to(ruleAttribute);
+        WorkflowRuleAttributeHandlerService handler = getHandler(extensionDefinition);
+        WorkflowRuleAttributeFields fields = handler.getRoutingDataFields(parameters, extensionDefinition, ruleTemplateAttribute.isRequired());
+        return new WorkflowRuleAttributeRows(fields);
+    }
+    
+    @Override
+    public WorkflowRuleAttributeRows getRoutingDataRows(Map<String, String> parameters, RuleTemplateAttribute ruleTemplateAttribute) {
+        required(ruleTemplateAttribute, "ruleTemplateAttribute");
+        if (parameters == null) {
+            parameters = Collections.emptyMap();
+        }
+        ExtensionDefinition extensionDefinition = ruleTemplateAttribute.getRuleAttribute();
+        WorkflowRuleAttributeHandlerService handler = getHandler(extensionDefinition);
+        WorkflowRuleAttributeFields fields = handler.getRoutingDataFields(parameters, extensionDefinition, ruleTemplateAttribute.isRequired());
+        return new WorkflowRuleAttributeRows(fields);
+    }
 
     @Override
     public WorkflowRuleAttributeRows getSearchRows(Map<String, String> parameters, RuleTemplateAttribute ruleTemplateAttribute) {

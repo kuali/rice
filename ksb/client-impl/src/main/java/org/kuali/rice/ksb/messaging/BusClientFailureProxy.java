@@ -90,7 +90,7 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 							servicesTried.add(serviceConfiguration);
 						}
 						Object failoverService = null;
-						List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(serviceConfiguration.getServiceName());
+						List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(serviceConfiguration.getServiceName(), serviceConfiguration.getApplicationId());
 						for (Endpoint endpoint : endpoints) {
 							if (!servicesTried.contains(endpoint.getServiceConfiguration())) {
 								failoverService = endpoint.getService();

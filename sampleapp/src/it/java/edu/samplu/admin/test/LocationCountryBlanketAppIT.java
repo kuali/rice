@@ -16,7 +16,10 @@
 package edu.samplu.admin.test;
 
 import static org.junit.Assert.assertEquals;
+import org.apache.commons.lang.RandomStringUtils;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Calendar;
 
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
@@ -47,8 +50,11 @@ public class LocationCountryBlanketAppIT extends UpgradedSeleniumITBase {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Country");
-        selenium.type("//input[@id='document.newMaintainableObject.code']", "CT");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Country");
+        selenium.type("//input[@id='document.newMaintainableObject.code']",RandomStringUtils.randomAlphabetic(2).toUpperCase());
+       
+        String countryName = "Validation Test Country"+Calendar.getInstance().getTimeInMillis();
+        selenium.type("//input[@id='document.newMaintainableObject.name']", countryName);
+         
         selenium.type("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");

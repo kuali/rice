@@ -19,6 +19,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import edu.samplu.common.UpgradedSeleniumITBase;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -47,14 +50,24 @@ public class LocationStateBlanketAppIT extends UpgradedSeleniumITBase {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "/kr/lookup.do;::::).anchor4");
+        //selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
+        
+        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
+        for (int second = 0;; second++) {
+            if (second >= 60) Assert.fail("timeout");
+            try { if (selenium.isElementPresent(countryLookUp)) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        selenium.click(countryLookUp);        
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.newMaintainableObject.code']", "TS");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test State");
+        String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
+        selenium.type("//input[@id='document.newMaintainableObject.code']", code);
+        String state =  "Validation Test State " + code;
+        selenium.type("//input[@id='document.newMaintainableObject.name']",state);
         selenium.click("//input[@id='document.newMaintainableObject.active']");
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");

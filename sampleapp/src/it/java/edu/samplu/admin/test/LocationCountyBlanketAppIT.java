@@ -38,7 +38,6 @@ public class LocationCountyBlanketAppIT extends UpgradedSeleniumITBase {
 
     @Test
     public void testCounty() throws Exception {
-        String remotePublicUrl = getBaseUrlString();
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Administration");
         selenium.waitForPageToLoad("30000");
@@ -80,7 +79,7 @@ public class LocationCountyBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
-        String countyName = "Validation Test County"+Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        String countyName = "Validation Test County"+Calendar.getInstance().getTimeInMillis();
         selenium.type("//input[@id='document.newMaintainableObject.name']", countyName);
         selenium.click("//input[@id='document.newMaintainableObject.active']");
         selenium.click("methodToCall.blanketApprove");

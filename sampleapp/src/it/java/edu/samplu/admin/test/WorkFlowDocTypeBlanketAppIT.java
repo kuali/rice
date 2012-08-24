@@ -18,9 +18,12 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
+
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,13 +58,20 @@ public class WorkFlowDocTypeBlanketAppIT extends UpgradedSeleniumITBase {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + remotePublicUrl + "/kr/lookup.do;::::).anchor4");
+        String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        for (int second = 0;; second++) {
+            if (second >= 60) Assert.fail("timeout");
+            try { if (selenium.isElementPresent(parentDocType)) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        selenium.click(parentDocType);
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
-        selenium.click("//table[@id='row']/tbody/tr[4]/td[1]/a");
+        selenium.click("link=return value");        
         selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Doc Type");
+        String docTypeName = "Validation Test Doc Type " + Calendar.getInstance().getTimeInMillis();
+        selenium.type("//input[@id='document.newMaintainableObject.name']", docTypeName);
         selenium.type("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");
         selenium.type("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
         selenium.type("//input[@id='document.newMaintainableObject.label']", "Workflow Maintenance Document Type Document");
@@ -70,6 +80,7 @@ public class WorkFlowDocTypeBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
         selenium.selectWindow("null");
+        Thread.sleep(2000);
         selenium.click("//img[@alt='doc search']");
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());

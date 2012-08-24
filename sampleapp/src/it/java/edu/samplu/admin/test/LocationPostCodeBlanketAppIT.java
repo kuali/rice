@@ -17,11 +17,13 @@ package edu.samplu.admin.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import java.util.Calendar;
 
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +43,7 @@ public class LocationPostCodeBlanketAppIT extends UpgradedSeleniumITBase {
 
     @Test
     public void testPostalCode() throws Exception {
-        String remotePublicUrl = getBaseUrlString();
+    
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.click("link=Administration");
         selenium.waitForPageToLoad("30000");
@@ -56,21 +58,38 @@ public class LocationPostCodeBlanketAppIT extends UpgradedSeleniumITBase {
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         //selenium.setSpeed("2000");
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");        
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + remotePublicUrl + "/kr/lookup.do;::::).anchor4");
+        
+        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
+        for (int second = 0;; second++) {
+            if (second >= 60) Assert.fail("timeout");
+            try { if (selenium.isElementPresent(countryLookUp)) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        selenium.click(countryLookUp);        
         selenium.waitForPageToLoad("30000");
         selenium.type("code", "US");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomNumeric(5));
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + remotePublicUrl + "/kr/lookup.do;::::).anchor4");
+        String code = RandomStringUtils.randomNumeric(5);
+        selenium.type("//input[@id='document.newMaintainableObject.code']", code);
+        
+        String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        for (int second = 0;; second++) {
+            if (second >= 60) Assert.fail("timeout");
+            try { if (selenium.isElementPresent(stateLookUp)) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+        selenium.click(stateLookUp);         
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
         selenium.click("//table[@id='row']/tbody/tr[4]/td[1]/a");
         selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.newMaintainableObject.cityName']", "Validation Test Postal Code1");
+        String cityName = "Validation Test Postal Code "+code;
+        
+        selenium.type("//input[@id='document.newMaintainableObject.cityName']", cityName);
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
         selenium.selectWindow("null");

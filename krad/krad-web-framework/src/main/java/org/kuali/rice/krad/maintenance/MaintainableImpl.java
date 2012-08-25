@@ -20,6 +20,8 @@ import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.bo.AdHocRoutePerson;
+import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
@@ -420,8 +422,8 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         super.processAfterAddLine(view, collectionGroup, model, addLine);
         
-        // Check for maintenance documents in edit but exclude notes
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) && !(addLine instanceof Note)) {
+        // Check for maintenance documents in edit but exclude notes and ad hoc recipients
+        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) && !(addLine instanceof Note) && !(addLine instanceof AdHocRoutePerson) && !(addLine instanceof AdHocRouteWorkgroup)) {
             MaintenanceForm maintenanceForm = (MaintenanceForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
@@ -455,9 +457,11 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
         super.processAfterDeleteLine(view, collectionGroup, model, lineIndex);
         
-        // Check for maintenance documents in edit but exclude notes
+        // Check for maintenance documents in edit but exclude notes and ad hoc recipients
         if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) 
-                && !collectionGroup.getCollectionObjectClass().getName().equals(Note.class.getName())) {
+                && !collectionGroup.getCollectionObjectClass().getName().equals(Note.class.getName())
+                && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRoutePerson.class.getName())
+                && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRouteWorkgroup.class.getName())) {
             MaintenanceForm maintenanceForm = (MaintenanceForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 

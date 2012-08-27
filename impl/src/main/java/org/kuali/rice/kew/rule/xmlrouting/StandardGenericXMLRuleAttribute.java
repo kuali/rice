@@ -28,6 +28,7 @@ import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
@@ -294,12 +295,19 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 
     public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
         XPath xpath = null;
-        String xPathCacheKey = "xPath" + docContent.getRouteContext().getNodeInstance().getRouteNodeInstanceId() + "-" + docContent.getRouteContext().getNodeInstance().getName();
-        if(docContent.getRouteContext().getParameters().containsKey(xPathCacheKey)) {
+        String xPathCacheKey = null;
+        RouteNodeInstance rni = docContent.getRouteContext().getNodeInstance();
+        if (rni != null) {
+            xPathCacheKey = "xPath" + rni.getRouteNodeInstanceId() + "-" + rni.getName();
+            if(docContent.getRouteContext().getParameters().containsKey(xPathCacheKey)) {
                 xpath = (XPath)docContent.getRouteContext().getParameters().get(xPathCacheKey);
-        } else {
+            } else {
                 xpath = XPathHelper.newXPath(docContent.getDocument());
                 docContent.getRouteContext().getParameters().put(xPathCacheKey, xpath);
+            }
+        } else {
+            xpath = XPathHelper.newXPath(docContent.getDocument());
+            docContent.getRouteContext().getParameters().put(xPathCacheKey, xpath);
         }
         WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
         resolver.setRuleExtensions(ruleExtensions);

@@ -1,0 +1,16 @@
+--
+--  KULRICE-7377: KREW_RTE_NODE_T still defines DOC_TYP_ID as NUMBER(19)
+--
+
+-- drop the old one
+DROP TABLE OLD_KREW_RTE_NODE_T CASCADE CONSTRAINTS PURGE
+/
+
+
+--
+--  KULRICE-7375: Rice master data source has KREW_DOC_TYP_PROC_T.INIT_RTE_NODE_ID still defined as a NUMBER
+--
+
+-- drop the old one
+DROP TABLE OLD_KREW_DOC_TYP_PROC_T CASCADE CONSTRAINTS PURGE
+/

@@ -15,14 +15,14 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
+import edu.samplu.common.UpgradedSeleniumITBase;
 import org.apache.commons.lang.RandomStringUtils;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.util.Calendar;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * tests that user 'admin', on blanket approving a new Country maintenance document, results in a final document
@@ -58,7 +58,7 @@ public class LocationCountryBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.type("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
+//        selenium.selectWindow("null");
         selenium.click("//img[@alt='doc search']");
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());

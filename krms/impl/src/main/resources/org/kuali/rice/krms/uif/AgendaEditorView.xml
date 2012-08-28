@@ -50,7 +50,7 @@
   </bean>
 
   <bean id="Editor-MaintenanceView" parent="Uif-MaintenanceView"
-        p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js,../krms/scripts/disableButtons.js,../krms/scripts/countdownInputs.js">
+        p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js,../krms/scripts/disableButtons.js,../krms/scripts/countdownInputs.js,../krms/scripts/rulebo-maintenanceview.js">
     <property name="additionalCssFiles">
       <list>
         <value>/krms/css/agendaTree.css</value>

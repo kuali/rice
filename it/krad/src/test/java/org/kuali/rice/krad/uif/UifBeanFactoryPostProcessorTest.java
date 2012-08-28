@@ -134,23 +134,45 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
     /**
      * Tests list property types with expressions, including non-inheritance, inheritance with and without merging
      *
-     * TODO: this test is currently failing due to list handling in post processor
+     * @throws Exception
+     */
+    @Test
+    public void testListExpressions() throws Exception {
+        // test expressions with no inheritance
+        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testListExpressionMerging");
+        assertNotNull("No bean exists with id: testListExpressionMerging", testBean);
+
+        List<String> list1 = testBean.getList1();
+        assertTrue("List with expressions is not correct size", list1.size() == 6);
+        assertEquals("Second value in list is not correct", "val1", list1.get(0));
+        assertEquals("Fifth value in list is not correct", "val5", list1.get(4));
+
+        assertTrue("Expression graph for inheritance list not correct size", testBean.getExpressionGraph().size() == 4);
+        assertEquals("First expression in expression graph not correct", "@{expr2} before val", testBean.getExpressionGraph().get(
+                "list1[1]"));
+        assertEquals("Second expression in expression graph not correct", "@{expr3}", testBean.getExpressionGraph().get(
+                "list1[2]"));
+        assertEquals("Third expression in expression graph not correct", "@{expr4}", testBean.getExpressionGraph().get(
+                "list1[3]"));
+        assertEquals("Fourth expression in expression graph not correct", "@{expr6}", testBean.getExpressionGraph().get(
+                "list1[5]"));
+    }
+
+    /**
+     * TODO: this test is currently failing due to spring support of nested merging
      *
      * @throws Exception
      */
-    public void testListExpressions() throws Exception {
-        // test expressions with no inheritance
-        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testListExpressions");
-        assertNotNull("No bean exists with id: testListExpressions", testBean);
+    public void testNestedListMerging() throws Exception {
+        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testListMerging2");
+        assertNotNull("No bean exists with id: testListMerging2", testBean);
 
-        List<String> list1 = testBean.getList1();
-        assertTrue("List with expressions is not correct size", list1.size() == 1);
-        assertTrue("Expression graph for non-inheritance list not correct size",
-                testBean.getExpressionGraph().size() == 2);
-        assertEquals("First expression in expression graph not correct", "${expr2} before val",
-                testBean.getExpressionGraph().get("list1[0]"));
-        assertEquals("Second expression in expression graph not correct", "${expr3}", testBean.getExpressionGraph().get(
-                "list1[2]"));
+        List<String> list1 = testBean.getReference1().getList1();
+        assertTrue("List with expressions is not correct size", list1.size() == 4);
+        assertEquals("First value in list not correct", "val1", list1.get(0));
+        assertEquals("Second value in list not correct", "val2", list1.get(0));
+        assertEquals("Third value in list not correct", "val3", list1.get(0));
+        assertEquals("Fourth value in list not correct", "val4", list1.get(0));
     }
 
     /**

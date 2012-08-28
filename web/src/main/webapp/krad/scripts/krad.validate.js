@@ -641,7 +641,7 @@ function writeMessagesForChildGroups(parentId){
             }
         }
 
-        if(!(currentGroup.is("[data-role='InputField']"))){
+        if(!(currentGroup.is("div[data-role='InputField']"))){
             writeMessagesForGroup(id, data);
             writeMessagesForChildGroups(id);
         }

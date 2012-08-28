@@ -400,30 +400,31 @@ function cleanupClosedLightboxForms() {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createDatePicker(controlId, options) {
-    var fieldId = jQuery("#" + controlId).closest("[data-role='InputField']").attr("id");
+    var fieldId = jQuery("#" + controlId).closest("div[data-role='InputField']").attr("id");
     jQuery(function () {
-        jQuery("#" + controlId).datepicker(options);
-        jQuery("#" + controlId).datepicker('option', 'onClose',
+        var datePickerControl = jQuery("#" + controlId);
+        datePickerControl.datepicker(options);
+        datePickerControl.datepicker('option', 'onClose',
                 function () {
                     jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = true;
                     jQuery(this).trigger("focusout");
                     jQuery(this).trigger("focus");
                 });
-        jQuery("#" + controlId).datepicker('option', 'beforeShow',
+        datePickerControl.datepicker('option', 'beforeShow',
                 function () {
                     jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = false;
                 });
 
         //KULRICE-7310 can't change only month or year with picker (jquery limitation)
-        jQuery("#" + controlId).datepicker('option', 'onChangeMonthYear',
+        datePickerControl.datepicker('option', 'onChangeMonthYear',
                 function(y, m, i){
                     var d = i.selectedDay;
                     jQuery(this).datepicker('setDate', new Date(y, m - 1, d));
                 });
 
         //KULRICE-7261 fix date format passed back.  jquery expecting mm-dd-yy
-        if(options.dateFormat=="mm-dd-yy" && jQuery("#" + controlId)[0].getAttribute("value").indexOf("/") != -1  )    {
-            jQuery("#" + controlId).datepicker('setDate', new Date(jQuery("#" + controlId)[0].getAttribute("value")));
+        if(options.dateFormat=="mm-dd-yy" && datePickerControl[0].getAttribute("value").indexOf("/") != -1  )    {
+            datePickerControl.datepicker('setDate', new Date(datePickerControl[0].getAttribute("value")));
         }
     });
 

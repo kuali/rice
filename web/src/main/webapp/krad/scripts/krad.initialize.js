@@ -44,10 +44,7 @@ jQuery(document).ready(function () {
     setPageBreadcrumb();
 
     // buttons
-    jQuery("input:submit").button();
-    jQuery("input:button").button();
-    jQuery("a.button").button();
-    jQuery(".uif-dialogButtons").button();
+    jQuery("input:submit, input:button, a.button, .uif-dialogButtons").button();
     jQuery(".uif-dialogButtons").next('label').addClass('uif-primaryDialogButton');
 
     // common ajax setup
@@ -93,15 +90,15 @@ function initFieldHandlers() {
     };
 
     jQuery(document).on("mouseenter",
-            "[data-role='InputField'] input:not([type='image']),"
-                    + "[data-role='InputField'] fieldset, "
-                    + "[data-role='InputField'] fieldset > span > input:radio,"
-                    + "[data-role='InputField'] fieldset > span > input:checkbox,"
-                    + "[data-role='InputField'] fieldset > span > label, "
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea",
+            "div[data-role='InputField'] input:not([type='image']),"
+                    + "div[data-role='InputField'] fieldset, "
+                    + "div[data-role='InputField'] fieldset > span > input:radio,"
+                    + "div[data-role='InputField'] fieldset > span > input:checkbox,"
+                    + "div[data-role='InputField'] fieldset > span > label, "
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea",
             function (event) {
-                var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
+                var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
                 var data = jQuery("#" + fieldId).data("validationMessages");
                 if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
@@ -157,15 +154,15 @@ function initFieldHandlers() {
             });
 
     jQuery(document).on("mouseleave",
-            "[data-role='InputField'] input,"
-                    + "[data-role='InputField'] fieldset, "
-                    + "[data-role='InputField'] fieldset > span > input:radio,"
-                    + "[data-role='InputField'] fieldset > span > input:checkbox,"
-                    + "[data-role='InputField'] fieldset > span > label, "
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea",
+            "div[data-role='InputField'] input,"
+                    + "div[data-role='InputField'] fieldset, "
+                    + "div[data-role='InputField'] fieldset > span > input:radio,"
+                    + "div[data-role='InputField'] fieldset > span > input:checkbox,"
+                    + "div[data-role='InputField'] fieldset > span > label, "
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea",
             function (event) {
-                var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
+                var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
                 var data = jQuery("#" + fieldId).data("validationMessages");
                 if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
@@ -184,14 +181,14 @@ function initFieldHandlers() {
 
     //when these fields are focus store what the current errors are if any and show the messageTooltip
     jQuery(document).on("focus",
-            "[data-role='InputField'] input:text, "
-                    + "[data-role='InputField'] input:password, "
-                    + "[data-role='InputField'] input:file, "
-                    + "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio,"
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea, "
-                    + "[data-role='InputField'] option",
+            "div[data-role='InputField'] input:text, "
+                    + "div[data-role='InputField'] input:password, "
+                    + "div[data-role='InputField'] input:file, "
+                    + "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio,"
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea, "
+                    + "div[data-role='InputField'] option",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
 
@@ -208,11 +205,11 @@ function initFieldHandlers() {
     //when these fields are focused out validate and if this field never had an error before, show and close, otherwise
     //immediately close the tooltip
     jQuery(document).on("focusout",
-            "[data-role='InputField'] input:text, "
-                    + "[data-role='InputField'] input:password, "
-                    + "[data-role='InputField'] input:file, "
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea",
+            "div[data-role='InputField'] input:text, "
+                    + "div[data-role='InputField'] input:password, "
+                    + "div[data-role='InputField'] input:file, "
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea",
             function (event) {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
@@ -243,9 +240,9 @@ function initFieldHandlers() {
 
     //when these fields are changed validate immediately
     jQuery(document).on("change",
-            "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio, "
-                    + "[data-role='InputField'] select",
+            "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio, "
+                    + "div[data-role='InputField'] select",
             function () {
                 if (validateClient) {
                     validateFieldValue(this);
@@ -254,13 +251,13 @@ function initFieldHandlers() {
 
     //Greying out functionality
     jQuery(document).on("change",
-            "[data-role='InputField'] input:text, "
-                    + "[data-role='InputField'] input:password, "
-                    + "[data-role='InputField'] input:file, "
-                    + "[data-role='InputField'] select, "
-                    + "[data-role='InputField'] textarea, "
-                    + "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio",
+            "div[data-role='InputField'] input:text, "
+                    + "div[data-role='InputField'] input:password, "
+                    + "div[data-role='InputField'] input:file, "
+                    + "div[data-role='InputField'] select, "
+                    + "div[data-role='InputField'] textarea, "
+                    + "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
@@ -272,8 +269,8 @@ function initFieldHandlers() {
 
     //special radio and checkbox control handling for click events
     jQuery(document).on("click",
-            "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio,"
+            "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio,"
                     + "fieldset[data-type='CheckboxSet'] span > label,"
                     + "fieldset[data-type='RadioSet'] span > label",
             function () {
@@ -285,8 +282,8 @@ function initFieldHandlers() {
 
     //special radio and checkbox control handling for focus events
     jQuery(document).on("focus",
-            "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio",
+            "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio",
             function () {
                 var event = jQuery.Event("handleFieldsetMessages");
                 event.element = this;
@@ -300,8 +297,8 @@ function initFieldHandlers() {
     //in both cases, validation occurs when the field is considered to have lost focus (fieldset case - no control
     //in the fieldset has focus)
     jQuery(document).on("focusout",
-            "[data-role='InputField'] input:checkbox, "
-                    + "[data-role='InputField'] input:radio",
+            "div[data-role='InputField'] input:checkbox, "
+                    + "div[data-role='InputField'] input:radio",
             function () {
                 var parent = jQuery(this).parent();
                 var id = getAttributeId(jQuery(this).attr('id'));
@@ -380,32 +377,12 @@ function initFieldHandlers() {
  * elements that could have tooltips, if the content does not contain these elements, does not reinitialize the create
  * call
  */
-function initBubblePopups(selector) {
-    var runCreate = true;
+function initBubblePopups() {
+    //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
+    jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
+                    + "select, textarea, .uif-tooltip", {   manageMouseEvents:false,
+                                        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
 
-    if (selector) {
-        var selection = jQuery(selector);
-        if (selection.length) {
-            //if the content does not contain elements that can have a tooltip, jquery object length will be 0 (false)
-            runCreate = selection.find("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
-                    + "select, textarea, .uif-tooltip").length;
-        }
-    }
-
-    if (runCreate) {
-        var bubblePopupElements = jQuery("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
-                + "select, textarea, .uif-tooltip");
-        bubblePopupElements.RemoveBubblePopup();
-
-        //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup
-        //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
-        //will cause a severe loss of functionality and buggy behavior
-        //if new BubblePopups must be created due to new content on the screen this full function MUST be run again
-        bubblePopupElements.CreateBubblePopup(
-                {   manageMouseEvents:false,
-                    themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
-                });
-    }
 }
 
 function hideBubblePopups(element) {
@@ -443,7 +420,7 @@ function setupPage(validate) {
     var hasServerMessagesData = jQuery("[data-type='Page']").data("server-messages");
     if (hasServerMessagesData) {
         //Handle messages at field, if any
-        jQuery("[data-role='InputField']").each(function () {
+        jQuery("div[data-role='InputField']").each(function () {
             var id = jQuery(this).attr('id');
             handleMessagesAtField(id, true);
         });

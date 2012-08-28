@@ -303,11 +303,11 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 
         //reinitialize BubblePopup
-        initBubblePopups(selector);
+        initBubblePopups();
 
         //Interpret new server message state for refreshed InputFields and write them out
         if (!skipValidationBubbling) {
-            jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function () {
+            jQuery(selector).find("div[data-role='InputField']").andSelf().filter("div[data-role='InputField']").each(function () {
                 var data = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
                 handleMessagesAtField(jQuery(this).attr('id'));
             });
@@ -619,7 +619,7 @@ function performFocus(focusId, autoFocus) {
         jQuery("#" + focusId).focus();
     }
     else if (autoFocus) {
-        jQuery("[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
+        jQuery("div[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
     }
 }
 

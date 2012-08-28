@@ -1,28 +1,29 @@
 /*
-	jQuery Bubble Popup v.2.3.1
-	http://maxvergelli.wordpress.com/jquery-bubble-popup/
-	
-	Copyright (c) 2010 Max Vergelli
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-	
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-	
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
-*/
+ jQuery Bubble Popup v.2.3.1
+ http://maxvergelli.wordpress.com/jquery-bubble-popup/
+
+ Copyright (c) 2010 Max Vergelli
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ */
 (function (a) {
+    var initialized = false;
     a.fn.IsBubblePopupOpen = function () {
         var c = null;
         a(this).each(function (d, e) {
@@ -47,6 +48,7 @@
         function c(d) {
             return new Date(d * 1000)
         }
+
         return b
     };
     a.fn.GetBubblePopupLastModifiedDateTime = function () {
@@ -62,6 +64,7 @@
         function c(d) {
             return new Date(d * 1000)
         }
+
         return b
     };
     a.fn.GetBubblePopupCreationDateTime = function () {
@@ -77,6 +80,7 @@
         function c(d) {
             return new Date(d * 1000)
         }
+
         return b
     };
     a.fn.GetBubblePopupMarkup = function () {
@@ -207,99 +211,121 @@
             a(c).trigger("unfreezebubblepopup")
         })
     };
-    a.fn.CreateBubblePopup = function (e) {
+    a.fn.CreateBubblePopup = function (selector, e) {
         var r = {
-            me: this,
-            cache: [],
-            options_key: "private_jquerybubblepopup_options",
-            model_tr: ["top", "middle", "bottom"],
-            model_td: ["left", "middle", "right"],
-            model_markup: '<div class="{BASE_CLASS} {TEMPLATE_CLASS}"{DIV_STYLE} id="{DIV_ID}"> 									<table{TABLE_STYLE}> 									<tbody> 									<tr> 										<td class="{BASE_CLASS}-top-left"{TOP-LEFT_STYLE}>{TOP-LEFT}</td> 										<td class="{BASE_CLASS}-top-middle"{TOP-MIDDLE_STYLE}>{TOP-MIDDLE}</td> 										<td class="{BASE_CLASS}-top-right"{TOP-RIGHT_STYLE}>{TOP-RIGHT}</td> 									</tr> 									<tr> 										<td class="{BASE_CLASS}-middle-left"{MIDDLE-LEFT_STYLE}>{MIDDLE-LEFT}</td> 										<td class="{BASE_CLASS}-innerHtml"{INNERHTML_STYLE}>{INNERHTML}</td> 										<td class="{BASE_CLASS}-middle-right"{MIDDLE-RIGHT_STYLE}>{MIDDLE-RIGHT}</td> 									</tr> 									<tr> 										<td class="{BASE_CLASS}-bottom-left"{BOTTOM-LEFT_STYLE}>{BOTTOM-LEFT}</td> 										<td class="{BASE_CLASS}-bottom-middle"{BOTTOM-MIDDLE_STYLE}>{BOTTOM-MIDDLE}</td> 										<td class="{BASE_CLASS}-bottom-right"{BOTTOM-RIGHT_STYLE}>{BOTTOM-RIGHT}</td> 									</tr> 									</tbody> 									</table> 									</div>',
-            privateVars: {
-                id: null,
-                creation_datetime: null,
-                last_modified_datetime: null,
-                last_display_datetime: null,
-                is_open: false,
-                is_freezed: false,
-                is_animating: false,
-                is_animation_complete: false,
-                is_mouse_over: false,
-                is_position_changed: false,
-                last_options: {}
+            /*me:this,*/
+            cache:[],
+            options_key:"private_jquerybubblepopup_options",
+            model_tr:["top", "middle", "bottom"],
+            model_td:["left", "middle", "right"],
+            model_markup:'<div class="{BASE_CLASS} {TEMPLATE_CLASS}"{DIV_STYLE} id="{DIV_ID}"> 									<table{TABLE_STYLE}> 									<tbody> 									<tr> 										<td class="{BASE_CLASS}-top-left"{TOP-LEFT_STYLE}>{TOP-LEFT}</td> 										<td class="{BASE_CLASS}-top-middle"{TOP-MIDDLE_STYLE}>{TOP-MIDDLE}</td> 										<td class="{BASE_CLASS}-top-right"{TOP-RIGHT_STYLE}>{TOP-RIGHT}</td> 									</tr> 									<tr> 										<td class="{BASE_CLASS}-middle-left"{MIDDLE-LEFT_STYLE}>{MIDDLE-LEFT}</td> 										<td class="{BASE_CLASS}-innerHtml"{INNERHTML_STYLE}>{INNERHTML}</td> 										<td class="{BASE_CLASS}-middle-right"{MIDDLE-RIGHT_STYLE}>{MIDDLE-RIGHT}</td> 									</tr> 									<tr> 										<td class="{BASE_CLASS}-bottom-left"{BOTTOM-LEFT_STYLE}>{BOTTOM-LEFT}</td> 										<td class="{BASE_CLASS}-bottom-middle"{BOTTOM-MIDDLE_STYLE}>{BOTTOM-MIDDLE}</td> 										<td class="{BASE_CLASS}-bottom-right"{BOTTOM-RIGHT_STYLE}>{BOTTOM-RIGHT}</td> 									</tr> 									</tbody> 									</table> 									</div>',
+            privateVars:{
+                id:null,
+                creation_datetime:null,
+                last_modified_datetime:null,
+                last_display_datetime:null,
+                is_open:false,
+                is_freezed:false,
+                is_animating:false,
+                is_animation_complete:false,
+                is_mouse_over:false,
+                is_position_changed:false,
+                last_options:{}
             },
-            position: "top",
-            positionValues: ["left", "top", "right", "bottom"],
-            align: "center",
-            alignValues: ["left", "center", "right", "top", "middle", "bottom"],
-            alignHorizontalValues: ["left", "center", "right"],
-            alignVerticalValues: ["top", "middle", "bottom"],
-            distance: "20px",
-            width: null,
-            height: null,
-            divStyle: {},
-            tableStyle: {},
-            innerHtml: null,
-            innerHtmlStyle: {},
-            tail: {
-                align: "center",
-                hidden: false
+            position:"top",
+            positionValues:["left", "top", "right", "bottom"],
+            align:"center",
+            alignValues:["left", "center", "right", "top", "middle", "bottom"],
+            alignHorizontalValues:["left", "center", "right"],
+            alignVerticalValues:["top", "middle", "bottom"],
+            distance:"20px",
+            width:null,
+            height:null,
+            divStyle:{},
+            tableStyle:{},
+            innerHtml:null,
+            innerHtmlStyle:{},
+            tail:{
+                align:"center",
+                hidden:false
             },
-            dropShadow: true,
-            alwaysVisible: true,
-            selectable: false,
-            manageMouseEvents: true,
-            mouseMove: "show",
-            mouseOverValues: ["show", "hide"],
-            mouseOut: "hide",
-            mouseOutValues: ["show", "hide"],
-            openingSpeed: 250,
-            closingSpeed: 250,
-            openingDelay: 0,
-            closingDelay: 0,
-            baseClass: "jquerybubblepopup",
-            themeName: "azure",
-            themePath: "jquerybubblepopup-theme/",
-            themeMargins: {
-                total: "13px",
-                difference: "10px"
+            dropShadow:true,
+            alwaysVisible:true,
+            selectable:false,
+            manageMouseEvents:true,
+            mouseMove:"show",
+            mouseOverValues:["show", "hide"],
+            mouseOut:"hide",
+            mouseOutValues:["show", "hide"],
+            openingSpeed:250,
+            closingSpeed:250,
+            openingDelay:0,
+            closingDelay:0,
+            baseClass:"jquerybubblepopup",
+            themeName:"azure",
+            themePath:"jquerybubblepopup-theme/",
+            themeMargins:{
+                total:"13px",
+                difference:"10px"
             },
-            afterShown: function () {},
-            afterHidden: function () {},
-            hideElementId: []
+            afterShown:function () {
+            },
+            afterHidden:function () {
+            },
+            hideElementId:[]
         };
-        h(e);
+        if (initialized) {
+            //only update by adding hooks for the new content divs
+            a(selector).each(function (v, w) {
+                var currentData = n(w);
+                var skipInit = false;
+                if(currentData && currentData.privateVars.id){
+                    skipInit = true;
+                }
+                if(!skipInit){
+                    jQuery("body > div[data-for='" + w.id + "']").remove();
+                    var u = g(e);
+                    u.privateVars.creation_datetime = f();
+                    u.privateVars.id = u.baseClass + "-" + u.privateVars.creation_datetime + "-" + v;
+                    d(w, u);
+                }
+            });
+        }
+        else {
+            initialized = true;
+            h(e);
+        }
 
         function g(v) {
             var w = {
-                privateVars: {},
-                width: r.width,
-                height: r.height,
-                divStyle: r.divStyle,
-                tableStyle: r.tableStyle,
-                position: r.position,
-                align: r.align,
-                distance: r.distance,
-                openingSpeed: r.openingSpeed,
-                closingSpeed: r.closingSpeed,
-                openingDelay: r.openingDelay,
-                closingDelay: r.closingDelay,
-                mouseMove: r.mouseMove,
-                mouseOut: r.mouseOut,
-                tail: r.tail,
-                innerHtml: r.innerHtml,
-                innerHtmlStyle: r.innerHtmlStyle,
-                baseClass: r.baseClass,
-                themeName: r.themeName,
-                themePath: r.themePath,
-                themeMargins: r.themeMargins,
-                dropShadow: r.dropShadow,
-                manageMouseEvents: r.manageMouseEvents,
-                alwaysVisible: r.alwaysVisible,
-                selectable: r.selectable,
-                afterShown: r.afterShown,
-                afterHidden: r.afterHidden,
-                hideElementId: r.hideElementId
+                privateVars:{},
+                width:r.width,
+                height:r.height,
+                divStyle:r.divStyle,
+                tableStyle:r.tableStyle,
+                position:r.position,
+                align:r.align,
+                distance:r.distance,
+                openingSpeed:r.openingSpeed,
+                closingSpeed:r.closingSpeed,
+                openingDelay:r.openingDelay,
+                closingDelay:r.closingDelay,
+                mouseMove:r.mouseMove,
+                mouseOut:r.mouseOut,
+                tail:r.tail,
+                innerHtml:r.innerHtml,
+                innerHtmlStyle:r.innerHtmlStyle,
+                baseClass:r.baseClass,
+                themeName:r.themeName,
+                themePath:r.themePath,
+                themeMargins:r.themeMargins,
+                dropShadow:r.dropShadow,
+                manageMouseEvents:r.manageMouseEvents,
+                alwaysVisible:r.alwaysVisible,
+                selectable:r.selectable,
+                afterShown:r.afterShown,
+                afterHidden:r.afterHidden,
+                hideElementId:r.hideElementId
             };
             var t = a.extend(false, w, (typeof v == "object" && !a.isArray(v) && !a.isEmptyObject(v) && v != null ? v : {}));
             t.privateVars.id = r.privateVars.id;
@@ -349,21 +375,22 @@
             }
             for (var u in t.tail) {
                 switch (u) {
-                case "align":
-                    t.tail.align = typeof t.tail.align == "string" && o(t.tail.align.toLowerCase(), r.alignValues) ? t.tail.align.toLowerCase() : r.tail.align;
-                    if (t.position == "left" || t.position == "right") {
-                        t.tail.align = o(t.tail.align, r.alignVerticalValues) ? t.tail.align : "middle"
-                    } else {
-                        t.tail.align = o(t.tail.align, r.alignHorizontalValues) ? t.tail.align : "center"
-                    }
-                    break;
-                case "hidden":
-                    t.tail.hidden = t.tail.hidden == true ? true : false;
-                    break
+                    case "align":
+                        t.tail.align = typeof t.tail.align == "string" && o(t.tail.align.toLowerCase(), r.alignValues) ? t.tail.align.toLowerCase() : r.tail.align;
+                        if (t.position == "left" || t.position == "right") {
+                            t.tail.align = o(t.tail.align, r.alignVerticalValues) ? t.tail.align : "middle"
+                        } else {
+                            t.tail.align = o(t.tail.align, r.alignHorizontalValues) ? t.tail.align : "center"
+                        }
+                        break;
+                    case "hidden":
+                        t.tail.hidden = t.tail.hidden == true ? true : false;
+                        break
                 }
             }
             return t
         }
+
         function l(t) {
             if (t == 0) {
                 return 0
@@ -374,6 +401,7 @@
                 return Math.abs(t)
             }
         }
+
         function o(v, w) {
             var t = false;
             for (var u in w) {
@@ -384,6 +412,7 @@
             }
             return t
         }
+
         function k(t) {
             if (document.createElement) {
                 for (var v = t.length - 1; v >= 0; v--) {
@@ -395,58 +424,63 @@
                 }
             }
         }
+
         function b(t) {
             if (t.hideElementId && t.hideElementId.length > 0) {
                 for (var u = 0; u < t.hideElementId.length; u++) {
                     var v = (t.hideElementId[u].charAt(0) != "#" ? "#" + t.hideElementId[u] : t.hideElementId[u]);
                     a(v).css({
-                        visibility: "hidden"
+                        visibility:"hidden"
                     })
                 }
             }
         }
+
         function s(u) {
             if (u.hideElementId && u.hideElementId.length > 0) {
                 for (var v = 0; v < u.hideElementId.length; v++) {
                     var x = (u.hideElementId[v].charAt(0) != "#" ? "#" + u.hideElementId[v] : u.hideElementId[v]);
                     a(x).css({
-                        visibility: "visible"
+                        visibility:"visible"
                     });
                     var w = a(x).length;
                     for (var t = 0; t < w.length; t++) {
                         a(w[t]).css({
-                            visibility: "visible"
+                            visibility:"visible"
                         })
                     }
                 }
             }
         }
+
         function m(u) {
             var w = u.themePath;
             var t = u.themeName;
             var v = (w.substring(w.length - 1) == "/" || w.substring(w.length - 1) == "\\") ? w.substring(0, w.length - 1) + "/" + t + "/" : w + "/" + t + "/";
             return v + (u.dropShadow == true ? (a.browser.msie ? "ie/" : "") : "ie/")
         }
+
         function j(t) {
             var u = t.substring(0, 1) == "." ? t.substring(1, t.length) : t;
             return u
         }
+
         function q(u) {
             if (a("#" + u.privateVars.id).length > 0) {
                 var t = "bottom-middle";
                 switch (u.position) {
-                case "left":
-                    t = "middle-right";
-                    break;
-                case "top":
-                    t = "bottom-middle";
-                    break;
-                case "right":
-                    t = "middle-left";
-                    break;
-                case "bottom":
-                    t = "top-middle";
-                    break
+                    case "left":
+                        t = "middle-right";
+                        break;
+                    case "top":
+                        t = "bottom-middle";
+                        break;
+                    case "right":
+                        t = "middle-left";
+                        break;
+                    case "bottom":
+                        t = "top-middle";
+                        break
                 }
                 if (o(u.tail.align, r.alignHorizontalValues)) {
                     a("#" + u.privateVars.id).find("td." + u.baseClass + "-" + t).css("text-align", u.tail.align)
@@ -455,6 +489,7 @@
                 }
             }
         }
+
         function p(v) {
             var H = r.model_markup;
             var F = m(v);
@@ -463,22 +498,22 @@
             var u = "";
             if (!v.tail.hidden) {
                 switch (v.position) {
-                case "left":
-                    G = "right";
-                    u = "{MIDDLE-RIGHT}";
-                    break;
-                case "top":
-                    G = "bottom";
-                    u = "{BOTTOM-MIDDLE}";
-                    break;
-                case "right":
-                    G = "left";
-                    u = "{MIDDLE-LEFT}";
-                    break;
-                case "bottom":
-                    G = "top";
-                    u = "{TOP-MIDDLE}";
-                    break
+                    case "left":
+                        G = "right";
+                        u = "{MIDDLE-RIGHT}";
+                        break;
+                    case "top":
+                        G = "bottom";
+                        u = "{BOTTOM-MIDDLE}";
+                        break;
+                    case "right":
+                        G = "left";
+                        u = "{MIDDLE-LEFT}";
+                        break;
+                    case "bottom":
+                        G = "top";
+                        u = "{TOP-MIDDLE}";
+                        break
                 }
                 x = '<img src="' + F + "tail-" + G + "." + (v.dropShadow == true ? (a.browser.msie ? "gif" : "png") : "gif") + '" alt="" class="' + v.baseClass + '-tail" />'
             }
@@ -541,9 +576,11 @@
             H = J.length > 0 ? H.replace("{INNERHTML_STYLE}", ' style="' + J + '"') : H.replace("{INNERHTML_STYLE}", "");
             return H
         }
+
         function f() {
             return Math.round(new Date().getTime() / 1000)
         }
+
         function c(E, N, x) {
             var O = x.position;
             var K = x.align;
@@ -564,34 +601,34 @@
             var A = l(F.total);
             var H = m(x);
             switch (K) {
-            case "left":
-                I.top = O == "top" ? t - M - z + l(w) : t + L + z + w;
-                I.left = y + A;
-                break;
-            case "center":
-                var D = Math.abs(v - P) / 2;
-                I.top = O == "top" ? t - M - z + l(w) : t + L + z + w;
-                I.left = v >= P ? y - D : y + D;
-                break;
-            case "right":
-                var D = Math.abs(v - P);
-                I.top = O == "top" ? t - M - z + l(w) : t + L + z + w;
-                I.left = v >= P ? y - D + l(A) : y + D + l(A);
-                break;
-            case "top":
-                I.top = t + A;
-                I.left = O == "left" ? y - v - z + l(J) : y + P + z + J;
-                break;
-            case "middle":
-                var D = Math.abs(M - L) / 2;
-                I.top = M >= L ? t - D : t + D;
-                I.left = O == "left" ? y - v - z + l(J) : y + P + z + J;
-                break;
-            case "bottom":
-                var D = Math.abs(M - L);
-                I.top = M >= L ? t - D + l(A) : t + D + l(A);
-                I.left = O == "left" ? y - v - z + l(J) : y + P + z + J;
-                break
+                case "left":
+                    I.top = O == "top" ? t - M - z + l(w) : t + L + z + w;
+                    I.left = y + A;
+                    break;
+                case "center":
+                    var D = Math.abs(v - P) / 2;
+                    I.top = O == "top" ? t - M - z + l(w) : t + L + z + w;
+                    I.left = v >= P ? y - D : y + D;
+                    break;
+                case "right":
+                    var D = Math.abs(v - P);
+                    I.top = O == "top" ? t - M - z + l(w) : t + L + z + w;
+                    I.left = v >= P ? y - D + l(A) : y + D + l(A);
+                    break;
+                case "top":
+                    I.top = t + A;
+                    I.left = O == "left" ? y - v - z + l(J) : y + P + z + J;
+                    break;
+                case "middle":
+                    var D = Math.abs(M - L) / 2;
+                    I.top = M >= L ? t - D : t + D;
+                    I.left = O == "left" ? y - v - z + l(J) : y + P + z + J;
+                    break;
+                case "bottom":
+                    var D = Math.abs(M - L);
+                    I.top = M >= L ? t - D + l(A) : t + D + l(A);
+                    I.left = O == "left" ? y - v - z + l(J) : y + P + z + J;
+                    break
             }
             I.position = O;
             if (a("#" + x.privateVars.id).length > 0 && a("#" + x.privateVars.id).find("img." + x.baseClass + "-tail").length > 0) {
@@ -599,22 +636,22 @@
                 var G = "bottom";
                 var C = "bottom-middle";
                 switch (O) {
-                case "left":
-                    G = "right";
-                    C = "middle-right";
-                    break;
-                case "top":
-                    G = "bottom";
-                    C = "bottom-middle";
-                    break;
-                case "right":
-                    G = "left";
-                    C = "middle-left";
-                    break;
-                case "bottom":
-                    G = "top";
-                    C = "top-middle";
-                    break
+                    case "left":
+                        G = "right";
+                        C = "middle-right";
+                        break;
+                    case "top":
+                        G = "bottom";
+                        C = "bottom-middle";
+                        break;
+                    case "right":
+                        G = "left";
+                        C = "middle-left";
+                        break;
+                    case "bottom":
+                        G = "top";
+                        C = "top-middle";
+                        break
                 }
                 a("#" + x.privateVars.id).find("td." + x.baseClass + "-" + C).empty();
                 a("#" + x.privateVars.id).find("td." + x.baseClass + "-" + C).html('<img src="' + H + "tail-" + G + "." + (x.dropShadow == true ? (a.browser.msie ? "gif" : "png") : "gif") + '" alt="" class="' + x.baseClass + '-tail" />');
@@ -701,54 +738,81 @@
             }
             return I
         }
+
         function d(u, t) {
             a(u).data(r.options_key, t)
         }
+
         function n(t) {
             return a(t).data(r.options_key)
         }
+
         function i(t) {
             var u = t != null && typeof t == "object" && !a.isArray(t) && !a.isEmptyObject(t) ? true : false;
             return u
         }
-        function h(t) {
-/*      Kuali customization below - we handle these ourselves:
 
-            a(window).resize(function () {
-                a(r.me).each(function (u, v) {
-                    a(v).trigger("positionbubblepopup")
-                })
-            });
-            a(document).mousemove(function (u) {
-                a(r.me).each(function (v, w) {
-                    a(w).trigger("managebubblepopup", [u.pageX, u.pageY])
-                })
-            });*/
-            a(r.me).each(function (v, w) {
+        function h(t) {
+            /*      Kuali customization below - we handle these ourselves:
+
+             a(window).resize(function () {
+             a(r.me).each(function (u, v) {
+             a(v).trigger("positionbubblepopup")
+             })
+             });
+             a(document).mousemove(function (u) {
+             a(r.me).each(function (v, w) {
+             a(w).trigger("managebubblepopup", [u.pageX, u.pageY])
+             })
+             });*/
+            a(selector).each(function (v, w) {
                 var u = g(t);
                 u.privateVars.creation_datetime = f();
                 u.privateVars.id = u.baseClass + "-" + u.privateVars.creation_datetime + "-" + v;
                 d(w, u);
-                a(w).bind("managebubblepopup", function (y, C, B) {
-                    var N = n(this);
-                    if (i(N) && i(N.privateVars) && typeof C != "undefined" && typeof B != "undefined") {
-                        if (N.manageMouseEvents) {
-                            var E = a(this);
-                            var z = E.offset();
-                            var L = parseInt(z.top);
-                            var H = parseInt(z.left);
-                            var F = parseInt(E.outerWidth(false));
-                            var K = parseInt(E.outerHeight(false));
-                            var J = false;
-                            if (H <= C && C <= F + H && L <= B && B <= K + L) {
-                                J = true
+            });
+            a(document).on("managebubblepopup", selector, function (y, C, B) {
+                var N = n(this);
+                if (i(N) && i(N.privateVars) && typeof C != "undefined" && typeof B != "undefined") {
+                    if (N.manageMouseEvents) {
+                        var E = a(this);
+                        var z = E.offset();
+                        var L = parseInt(z.top);
+                        var H = parseInt(z.left);
+                        var F = parseInt(E.outerWidth(false));
+                        var K = parseInt(E.outerHeight(false));
+                        var J = false;
+                        if (H <= C && C <= F + H && L <= B && B <= K + L) {
+                            J = true
+                        } else {
+                            J = false
+                        }
+                        if (J && !N.privateVars.is_mouse_over) {
+                            N.privateVars.is_mouse_over = true;
+                            d(this, N);
+                            if (N.mouseMove == "show") {
+                                a(this).trigger("showbubblepopup")
                             } else {
-                                J = false
+                                if (N.selectable && a("#" + N.privateVars.id).length > 0) {
+                                    var x = a("#" + N.privateVars.id);
+                                    var A = x.offset();
+                                    var D = parseInt(A.top);
+                                    var I = parseInt(A.left);
+                                    var G = parseInt(x.outerWidth(false));
+                                    var M = parseInt(x.outerHeight(false));
+                                    if (I <= C && C <= G + I && D <= B && B <= M + D) {
+                                    } else {
+                                        a(this).trigger("hidebubblepopup")
+                                    }
+                                } else {
+                                    a(this).trigger("hidebubblepopup")
+                                }
                             }
-                            if (J && !N.privateVars.is_mouse_over) {
-                                N.privateVars.is_mouse_over = true;
+                        } else {
+                            if (!J && N.privateVars.is_mouse_over) {
+                                N.privateVars.is_mouse_over = false;
                                 d(this, N);
-                                if (N.mouseMove == "show") {
+                                if (N.mouseOut == "show") {
                                     a(this).trigger("showbubblepopup")
                                 } else {
                                     if (N.selectable && a("#" + N.privateVars.id).length > 0) {
@@ -758,7 +822,8 @@
                                         var I = parseInt(A.left);
                                         var G = parseInt(x.outerWidth(false));
                                         var M = parseInt(x.outerHeight(false));
-                                        if (I <= C && C <= G + I && D <= B && B <= M + D) {} else {
+                                        if (I <= C && C <= G + I && D <= B && B <= M + D) {
+                                        } else {
                                             a(this).trigger("hidebubblepopup")
                                         }
                                     } else {
@@ -766,212 +831,194 @@
                                     }
                                 }
                             } else {
-                                if (!J && N.privateVars.is_mouse_over) {
-                                    N.privateVars.is_mouse_over = false;
-                                    d(this, N);
-                                    if (N.mouseOut == "show") {
-                                        a(this).trigger("showbubblepopup")
-                                    } else {
-                                        if (N.selectable && a("#" + N.privateVars.id).length > 0) {
-                                            var x = a("#" + N.privateVars.id);
-                                            var A = x.offset();
-                                            var D = parseInt(A.top);
-                                            var I = parseInt(A.left);
-                                            var G = parseInt(x.outerWidth(false));
-                                            var M = parseInt(x.outerHeight(false));
-                                            if (I <= C && C <= G + I && D <= B && B <= M + D) {} else {
-                                                a(this).trigger("hidebubblepopup")
-                                            }
+                                if (!J && !N.privateVars.is_mouse_over) {
+                                    if (N.selectable && a("#" + N.privateVars.id).length > 0 && !N.privateVars.is_animating) {
+                                        var x = a("#" + N.privateVars.id);
+                                        var A = x.offset();
+                                        var D = parseInt(A.top);
+                                        var I = parseInt(A.left);
+                                        var G = parseInt(x.outerWidth(false));
+                                        var M = parseInt(x.outerHeight(false));
+                                        if (I <= C && C <= G + I && D <= B && B <= M + D) {
                                         } else {
                                             a(this).trigger("hidebubblepopup")
                                         }
                                     }
-                                } else {
-                                    if (!J && !N.privateVars.is_mouse_over) {
-                                        if (N.selectable && a("#" + N.privateVars.id).length > 0 && !N.privateVars.is_animating) {
-                                            var x = a("#" + N.privateVars.id);
-                                            var A = x.offset();
-                                            var D = parseInt(A.top);
-                                            var I = parseInt(A.left);
-                                            var G = parseInt(x.outerWidth(false));
-                                            var M = parseInt(x.outerHeight(false));
-                                            if (I <= C && C <= G + I && D <= B && B <= M + D) {} else {
-                                                a(this).trigger("hidebubblepopup")
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }
                     }
-                });
-                a(w).bind("setbubblepopupinnerhtml", function (A, x, z) {
-                    var y = n(this);
-                    if (i(y) && i(y.privateVars) && typeof x != "undefined") {
-                        y.privateVars.last_modified_datetime = f();
-                        if (typeof z == "boolean" && z == true) {
-                            y.innerHtml = x
-                        }
-                        d(this, y);
-                        if (a("#" + y.privateVars.id).length > 0) {
-                            a("#" + y.privateVars.id).find("td." + y.baseClass + "-innerHtml").html(x);
-                            if (y.privateVars.is_animation_complete) {
-                                a(this).trigger("positionbubblepopup", [false])
-                            } else {
-                                a(this).trigger("positionbubblepopup", [true])
-                            }
-                        }
+                }
+            });
+            a(document).on("setbubblepopupinnerhtml", selector, function (A, x, z) {
+                var y = n(this);
+                if (i(y) && i(y.privateVars) && typeof x != "undefined") {
+                    y.privateVars.last_modified_datetime = f();
+                    if (typeof z == "boolean" && z == true) {
+                        y.innerHtml = x
                     }
-                });
-                a(w).bind("setbubblepopupoptions", function (A, z) {
-                    var x = n(this);
-                    if (i(x) && i(x.privateVars)) {
-                        var y = x;
-                        x = g(z);
-                        x.privateVars.id = y.privateVars.id;
-                        x.privateVars.creation_datetime = y.privateVars.creation_datetime;
-                        x.privateVars.last_modified_datetime = f();
-                        x.privateVars.last_display_datetime = y.privateVars.last_display_datetime;
-                        x.privateVars.is_open = y.privateVars.is_open;
-                        x.privateVars.is_freezed = y.privateVars.is_freezed;
-                        x.privateVars.last_options = {};
-                        d(this, x)
-                    }
-                });
-                a(w).bind("positionbubblepopup", function (A, y) {
-                    var z = n(this);
-                    if (i(z) && i(z.privateVars) && a("#" + z.privateVars.id).length > 0 && z.privateVars.is_open == true) {
-                        var x = a("#" + z.privateVars.id);
-                        var C = c(x, a(this), z);
-                        var B = 2;
-                        if (typeof y == "boolean" && y == true) {
-                            x.css({
-                                top: C.top,
-                                left: C.left
-                            })
+                    d(this, y);
+                    if (a("#" + y.privateVars.id).length > 0) {
+                        a("#" + y.privateVars.id).find("td." + y.baseClass + "-innerHtml").html(x);
+                        if (y.privateVars.is_animation_complete) {
+                            a(this).trigger("positionbubblepopup", [false])
                         } else {
-                            switch (z.position) {
+                            a(this).trigger("positionbubblepopup", [true])
+                        }
+                    }
+                }
+            });
+            a(document).on("setbubblepopupoptions", selector, function (A, z) {
+                var x = n(this);
+                if (i(x) && i(x.privateVars)) {
+                    var y = x;
+                    x = g(z);
+                    x.privateVars.id = y.privateVars.id;
+                    x.privateVars.creation_datetime = y.privateVars.creation_datetime;
+                    x.privateVars.last_modified_datetime = f();
+                    x.privateVars.last_display_datetime = y.privateVars.last_display_datetime;
+                    x.privateVars.is_open = y.privateVars.is_open;
+                    x.privateVars.is_freezed = y.privateVars.is_freezed;
+                    x.privateVars.last_options = {};
+                    d(this, x)
+                }
+            });
+            a(document).on("positionbubblepopup", selector, function (A, y) {
+                var z = n(this);
+                if (i(z) && i(z.privateVars) && a("#" + z.privateVars.id).length > 0 && z.privateVars.is_open == true) {
+                    var x = a("#" + z.privateVars.id);
+                    var C = c(x, a(this), z);
+                    var B = 2;
+                    if (typeof y == "boolean" && y == true) {
+                        x.css({
+                            top:C.top,
+                            left:C.left
+                        })
+                    } else {
+                        switch (z.position) {
                             case "left":
                                 x.css({
-                                    top: C.top,
-                                    left: (C.position != z.position ? C.left - (Math.abs(z.themeMargins.difference) * B) : C.left + (Math.abs(z.themeMargins.difference) * B))
+                                    top:C.top,
+                                    left:(C.position != z.position ? C.left - (Math.abs(z.themeMargins.difference) * B) : C.left + (Math.abs(z.themeMargins.difference) * B))
                                 });
                                 break;
                             case "top":
                                 x.css({
-                                    top: (C.position != z.position ? C.top - (Math.abs(z.themeMargins.difference) * B) : C.top + (Math.abs(z.themeMargins.difference) * B)),
-                                    left: C.left
+                                    top:(C.position != z.position ? C.top - (Math.abs(z.themeMargins.difference) * B) : C.top + (Math.abs(z.themeMargins.difference) * B)),
+                                    left:C.left
                                 });
                                 break;
                             case "right":
                                 x.css({
-                                    top: C.top,
-                                    left: (C.position != z.position ? C.left + (Math.abs(z.themeMargins.difference) * B) : C.left - (Math.abs(z.themeMargins.difference) * B))
+                                    top:C.top,
+                                    left:(C.position != z.position ? C.left + (Math.abs(z.themeMargins.difference) * B) : C.left - (Math.abs(z.themeMargins.difference) * B))
                                 });
                                 break;
                             case "bottom":
                                 x.css({
-                                    top: (C.position != z.position ? C.top + (Math.abs(z.themeMargins.difference) * B) : C.top - (Math.abs(z.themeMargins.difference) * B)),
-                                    left: C.left
+                                    top:(C.position != z.position ? C.top + (Math.abs(z.themeMargins.difference) * B) : C.top - (Math.abs(z.themeMargins.difference) * B)),
+                                    left:C.left
                                 });
                                 break
-                            }
                         }
                     }
-                });
-                a(w).bind("freezebubblepopup", function () {
-                    var x = n(this);
-                    if (i(x) && i(x.privateVars)) {
-                        x.privateVars.is_freezed = true;
-                        d(this, x)
+                }
+            });
+            a(document).on("freezebubblepopup", selector, function () {
+                var x = n(this);
+                if (i(x) && i(x.privateVars)) {
+                    x.privateVars.is_freezed = true;
+                    d(this, x)
+                }
+            });
+            a(document).on("unfreezebubblepopup", selector, function () {
+                var x = n(this);
+                if (i(x) && i(x.privateVars)) {
+                    x.privateVars.is_freezed = false;
+                    d(this, x)
+                }
+            });
+            a(document).on("showbubblepopup", selector, function (x, A, D, G) {
+                var H = n(this);
+                var w = this;
+                if ((typeof G == "boolean" && G == true && (i(H) && i(H.privateVars))) || (typeof G == "undefined" && (i(H) && i(H.privateVars) && !H.privateVars.is_freezed && !H.privateVars.is_open))) {
+                    if (typeof G == "boolean" && G == true) {
+                        a(this).trigger("unfreezebubblepopup")
                     }
-                });
-                a(w).bind("unfreezebubblepopup", function () {
-                    var x = n(this);
-                    if (i(x) && i(x.privateVars)) {
-                        x.privateVars.is_freezed = false;
-                        d(this, x)
+                    H.privateVars.is_open = true;
+                    H.privateVars.is_freezed = false;
+                    H.privateVars.is_animating = false;
+                    H.privateVars.is_animation_complete = false;
+                    if (i(H.privateVars.last_options)) {
+                        H = H.privateVars.last_options
+                    } else {
+                        H.privateVars.last_options = {}
                     }
-                });
-                a(w).bind("showbubblepopup", function (x, A, D, G) {
-                    var H = n(this);
-                    if ((typeof G == "boolean" && G == true && (i(H) && i(H.privateVars))) || (typeof G == "undefined" && (i(H) && i(H.privateVars) && !H.privateVars.is_freezed && !H.privateVars.is_open))) {
-                        if (typeof G == "boolean" && G == true) {
-                            a(this).trigger("unfreezebubblepopup")
-                        }
+                    if (i(A)) {
+                        var C = H;
+                        var F = f();
+                        H = g(A);
+                        H.privateVars.id = C.privateVars.id;
+                        H.privateVars.creation_datetime = C.privateVars.creation_datetime;
+                        H.privateVars.last_modified_datetime = F;
+                        H.privateVars.last_display_datetime = F;
                         H.privateVars.is_open = true;
                         H.privateVars.is_freezed = false;
                         H.privateVars.is_animating = false;
                         H.privateVars.is_animation_complete = false;
-                        if (i(H.privateVars.last_options)) {
-                            H = H.privateVars.last_options
-                        } else {
-                            H.privateVars.last_options = {}
+                        H.privateVars.is_mouse_over = C.privateVars.is_mouse_over;
+                        H.privateVars.is_position_changed = C.privateVars.is_position_changed;
+                        H.privateVars.last_options = {};
+                        if (typeof D == "boolean" && D == false) {
+                            C.privateVars.last_modified_datetime = F;
+                            C.privateVars.last_display_datetime = F;
+                            H.privateVars.last_options = C
                         }
-                        if (i(A)) {
-                            var C = H;
-                            var F = f();
-                            H = g(A);
-                            H.privateVars.id = C.privateVars.id;
-                            H.privateVars.creation_datetime = C.privateVars.creation_datetime;
-                            H.privateVars.last_modified_datetime = F;
-                            H.privateVars.last_display_datetime = F;
-                            H.privateVars.is_open = true;
-                            H.privateVars.is_freezed = false;
-                            H.privateVars.is_animating = false;
-                            H.privateVars.is_animation_complete = false;
-                            H.privateVars.is_mouse_over = C.privateVars.is_mouse_over;
-                            H.privateVars.is_position_changed = C.privateVars.is_position_changed;
-                            H.privateVars.last_options = {};
-                            if (typeof D == "boolean" && D == false) {
-                                C.privateVars.last_modified_datetime = F;
-                                C.privateVars.last_display_datetime = F;
-                                H.privateVars.last_options = C
-                            }
+                    }
+                    d(this, H);
+                    b(H);
+                    if (a("#" + H.privateVars.id).length > 0) {
+                        a("#" + H.privateVars.id).remove()
+                    }
+                    var y = {};
+                    var B = p(H);
+                    y = a(B);
+                    y.appendTo("body");
+                    y = a("#" + H.privateVars.id);
+                    y.attr("data-for", w.id);
+                    y.css({
+                        opacity:0,
+                        top:"0px",
+                        left:"0px",
+                        position:"absolute",
+                        display:"block"
+                    });
+                    if (H.dropShadow == true) {
+                        if (a.browser.msie && parseInt(a.browser.version) < 9) {
+                            a("#" + H.privateVars.id + " table").addClass(H.baseClass + "-ie")
                         }
-                        d(this, H);
-                        b(H);
-                        if (a("#" + H.privateVars.id).length > 0) {
-                            a("#" + H.privateVars.id).remove()
-                        }
-                        var y = {};
-                        var B = p(H);
-                        y = a(B);
-                        y.appendTo("body");
-                        y = a("#" + H.privateVars.id);
-                        y.css({
-                            opacity: 0,
-                            top: "0px",
-                            left: "0px",
-                            position: "absolute",
-                            display: "block"
-                        });
-                        if (H.dropShadow == true) {
-                            if (a.browser.msie && parseInt(a.browser.version) < 9) {
-                                a("#" + H.privateVars.id + " table").addClass(H.baseClass + "-ie")
-                            }
-                        }
-                        q(H);
-                        var E = c(y, a(this), H);
-                        y.css({
-                            top: E.top,
-                            left: E.left
-                        });
-                        if (E.position == H.position) {
-                            H.privateVars.is_position_changed = false
-                        } else {
-                            H.privateVars.is_position_changed = true
-                        }
-                        d(this, H);
-                        var z = setTimeout(function () {
-                            H.privateVars.is_animating = true;
-                            d(w, H);
-                            y.stop();
-                            switch (H.position) {
+                    }
+                    q(H);
+                    var E = c(y, a(this), H);
+                    y.css({
+                        top:E.top,
+                        left:E.left
+                    });
+                    if (E.position == H.position) {
+                        H.privateVars.is_position_changed = false
+                    } else {
+                        H.privateVars.is_position_changed = true
+                    }
+                    d(this, H);
+                    var z = setTimeout(function () {
+                        H.privateVars.is_animating = true;
+                        d(w, H);
+                        y.stop();
+                        switch (H.position) {
                             case "left":
                                 y.animate({
-                                    opacity: 1,
-                                    left: (H.privateVars.is_position_changed ? "-=" : "+=") + H.distance + "px"
+                                    opacity:1,
+                                    left:(H.privateVars.is_position_changed ? "-=" : "+=") + H.distance + "px"
                                 }, H.openingSpeed, "swing", function () {
                                     H.privateVars.is_animating = false;
                                     H.privateVars.is_animation_complete = true;
@@ -986,8 +1033,8 @@
                                 break;
                             case "top":
                                 y.animate({
-                                    opacity: 1,
-                                    top: (H.privateVars.is_position_changed ? "-=" : "+=") + H.distance + "px"
+                                    opacity:1,
+                                    top:(H.privateVars.is_position_changed ? "-=" : "+=") + H.distance + "px"
                                 }, H.openingSpeed, "swing", function () {
                                     H.privateVars.is_animating = false;
                                     H.privateVars.is_animation_complete = true;
@@ -1002,8 +1049,8 @@
                                 break;
                             case "right":
                                 y.animate({
-                                    opacity: 1,
-                                    left: (H.privateVars.is_position_changed ? "+=" : "-=") + H.distance + "px"
+                                    opacity:1,
+                                    left:(H.privateVars.is_position_changed ? "+=" : "-=") + H.distance + "px"
                                 }, H.openingSpeed, "swing", function () {
                                     H.privateVars.is_animating = false;
                                     H.privateVars.is_animation_complete = true;
@@ -1018,8 +1065,8 @@
                                 break;
                             case "bottom":
                                 y.animate({
-                                    opacity: 1,
-                                    top: (H.privateVars.is_position_changed ? "+=" : "-=") + H.distance + "px"
+                                    opacity:1,
+                                    top:(H.privateVars.is_position_changed ? "+=" : "-=") + H.distance + "px"
                                 }, H.openingSpeed, "swing", function () {
                                     H.privateVars.is_animating = false;
                                     H.privateVars.is_animation_complete = true;
@@ -1032,39 +1079,39 @@
                                     H.afterShown()
                                 });
                                 break
-                            }
-                        }, H.openingDelay)
-                    }
-                });
-                /** Kuali customization begin **/
-                a(w).bind("hidebubblepopup", function (B, x) {
-
-                    var A = n(this);
-                    if ((typeof x == "boolean" && x == true && (i(A) && i(A.privateVars) && a("#" + A.privateVars.id).length > 0)) || (typeof x == "undefined" && (i(A) && i(A.privateVars) && a("#" + A.privateVars.id).length > 0 && !A.privateVars.is_freezed && A.privateVars.is_open))) {
-                        if (typeof x == "boolean" && x == true) {
-                            a(this).trigger("unfreezebubblepopup")
                         }
-                        A.privateVars.is_open = false;
-                        A.privateVars.is_freezed = false;
-                        A.privateVars.is_animating = false;
-                        A.privateVars.is_animation_complete = false;
-                        d(this, A);
-                        var y = a("#" + A.privateVars.id);
-                        var z = typeof x == "undefined" ? A.closingDelay : 0;
-                        var C = setTimeout(function () {
-                            A.privateVars.is_animating = true;
-                            d(w, A);
-                            y.stop();
-                            if (A.dropShadow == true) {
-                                if (a.browser.msie && parseInt(a.browser.version) > 8) {
-                                    y.removeClass(A.baseClass + "-ie")
-                                }
+                    }, H.openingDelay)
+                }
+            });
+            /** Kuali customization begin **/
+            a(document).on("hidebubblepopup", selector, function (B, x) {
+                var w = this;
+                var A = n(this);
+                if ((typeof x == "boolean" && x == true && (i(A) && i(A.privateVars) && a("#" + A.privateVars.id).length > 0)) || (typeof x == "undefined" && (i(A) && i(A.privateVars) && a("#" + A.privateVars.id).length > 0 && !A.privateVars.is_freezed && A.privateVars.is_open))) {
+                    if (typeof x == "boolean" && x == true) {
+                        a(this).trigger("unfreezebubblepopup")
+                    }
+                    A.privateVars.is_open = false;
+                    A.privateVars.is_freezed = false;
+                    A.privateVars.is_animating = false;
+                    A.privateVars.is_animation_complete = false;
+                    d(this, A);
+                    var y = a("#" + A.privateVars.id);
+                    var z = typeof x == "undefined" ? A.closingDelay : 0;
+                    var C = setTimeout(function () {
+                        A.privateVars.is_animating = true;
+                        d(w, A);
+                        y.stop();
+                        if (A.dropShadow == true) {
+                            if (a.browser.msie && parseInt(a.browser.version) > 8) {
+                                y.removeClass(A.baseClass + "-ie")
                             }
-                            switch (A.position) {
+                        }
+                        switch (A.position) {
                             case "left":
                                 y.animate({
-                                    opacity: 0,
-                                    left: (A.privateVars.is_position_changed ? "+=" : "-=") + A.distance + "px"
+                                    opacity:0,
+                                    left:(A.privateVars.is_position_changed ? "+=" : "-=") + A.distance + "px"
                                 }, A.closingSpeed, "swing", function () {
 
                                     A.privateVars.is_animating = false;
@@ -1076,8 +1123,8 @@
                                 break;
                             case "top":
                                 y.animate({
-                                    opacity: 0,
-                                    top: (A.privateVars.is_position_changed ? "+=" : "-=") + A.distance + "px"
+                                    opacity:0,
+                                    top:(A.privateVars.is_position_changed ? "+=" : "-=") + A.distance + "px"
                                 }, A.closingSpeed, "swing", function () {
                                     A.privateVars.is_animating = false;
                                     A.privateVars.is_animation_complete = true;
@@ -1088,8 +1135,8 @@
                                 break;
                             case "right":
                                 y.animate({
-                                    opacity: 0,
-                                    left: (A.privateVars.is_position_changed ? "-=" : "+=") + A.distance + "px"
+                                    opacity:0,
+                                    left:(A.privateVars.is_position_changed ? "-=" : "+=") + A.distance + "px"
                                 }, A.closingSpeed, "swing", function () {
                                     A.privateVars.is_animating = false;
                                     A.privateVars.is_animation_complete = true;
@@ -1100,8 +1147,8 @@
                                 break;
                             case "bottom":
                                 y.animate({
-                                    opacity: 0,
-                                    top: (A.privateVars.is_position_changed ? "-=" : "+=") + A.distance + "px"
+                                    opacity:0,
+                                    top:(A.privateVars.is_position_changed ? "-=" : "+=") + A.distance + "px"
                                 }, A.closingSpeed, "swing", function () {
                                     A.privateVars.is_animating = false;
                                     A.privateVars.is_animation_complete = true;
@@ -1110,17 +1157,17 @@
                                     A.afterHidden()
                                 });
                                 break
-                            }
-                        }, z);
-                        A.privateVars.last_display_datetime = f();
+                        }
+                    }, z);
+                    A.privateVars.last_display_datetime = f();
 
-                        d(this, A);
-                        s(A)
-                    }
-                })
-                /** Kuali customization end **/
-            })
+                    d(this, A);
+                    s(A)
+                }
+            });
+            /** Kuali customization end **/
         }
-        return this
+
+        return this;
     }
 })(jQuery);

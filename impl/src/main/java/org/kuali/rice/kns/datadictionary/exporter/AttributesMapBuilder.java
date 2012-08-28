@@ -92,7 +92,7 @@ public class AttributesMapBuilder {
         if (attribute.hasFormatterClass()) {
             attributeMap.set("formatterClass", attribute.getFormatterClass());
         }
-
+/**
         // complex properties
         if (attribute.hasValidationPattern()) {
             attributeMap.set(attribute.getValidationPattern().buildExportMap("validationPattern"));
@@ -106,7 +106,7 @@ public class AttributesMapBuilder {
   	
         	// TODO: consider whether to export class names from the attribute security
         }
-
+*/
         attributeMap.set(buildControlMap(attribute));
         if (attribute.getOptionsFinder() != null) {
             attributeMap.set(buildKeyLabelMap(attribute));

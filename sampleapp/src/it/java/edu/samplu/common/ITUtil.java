@@ -6,6 +6,8 @@ import org.junit.Assert;
 import java.util.Calendar;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Common selenium test methods that should be reused rather than recreated for each test.
@@ -16,6 +18,39 @@ public class ITUtil {
 
     public static String DTS = Calendar.getInstance().getTime().getTime() + "";
     public static String WAIT_TO_END_TEST = "5000";
+
+    /**
+     * "FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"
+     * @param selenium
+     * @param docId
+     */
+    public static void assertDocFinal(Selenium selenium, String docId) {
+        docId= "link=" + docId;
+        assertTrue(selenium.isElementPresent(docId));
+        // copied and pasted, but if this if isn't executed if the above assert fails
+        if(selenium.isElementPresent(docId)){
+            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+        }else{
+            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));
+            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+        }
+    }
+
+    public static void blanketApprove(Selenium selenium) throws InterruptedException {
+        selenium.click("methodToCall.blanketApprove");
+        selenium.waitForPageToLoad("30000");
+        try {
+            selenium.selectWindow("null");
+        } catch (Exception e) {
+            // selectWindow null seems to vary? will work locally but not in CI?
+        }
+        waitAndClick(selenium, "//img[@alt='doc search']");
+        selenium.waitForPageToLoad("30000");
+        assertEquals("Kuali Portal Index", selenium.getTitle());
+        selenium.selectFrame("iframeportlet");
+        selenium.click("//input[@name='methodToCall.search' and @value='search']");
+        selenium.waitForPageToLoad("30000");
+    }
 
     /**
      * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.

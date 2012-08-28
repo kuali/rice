@@ -15,13 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
-import java.util.Calendar;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -29,50 +27,26 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryBlanketAppIT extends UpgradedSeleniumITBase {
+public class LocationCountryBlanketAppIT extends AdminMenuITBase {
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    public String getLinkLocator() {
+        return "link=Country";
     }
 
     @Test
     public void testCountry() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Country");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
+        gotoCreateNew();
+
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        String countryName = "Validation Test Country " + ITUtil.DTS;
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Country");
+        selenium.type("//input[@id='document.documentHeader.documentDescription']", countryName);
         selenium.type("//input[@id='document.newMaintainableObject.code']",RandomStringUtils.randomAlphabetic(2).toUpperCase());
        
-        String countryName = "Validation Test Country"+Calendar.getInstance().getTimeInMillis();
         selenium.type("//input[@id='document.newMaintainableObject.name']", countryName);
-         
         selenium.type("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-//        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-      
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
+
+        ITUtil.blanketApprove(selenium);
+        ITUtil.assertDocFinal(selenium, docId);
     }
 }

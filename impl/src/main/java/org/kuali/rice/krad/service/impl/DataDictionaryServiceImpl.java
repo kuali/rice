@@ -180,12 +180,12 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            if (attributeDefinition.hasValidationPattern()) {
-                regex = attributeDefinition.getValidationPattern().getRegexPattern();
-            } else {
-                // workaround for existing calls which don't bother checking for null return values
+//            if (attributeDefinition.hasValidationPattern()) {
+//                regex = attributeDefinition.getValidationPattern().getRegexPattern();
+//            } else {
+//                // workaround for existing calls which don't bother checking for null return values
                 regex = Pattern.compile(".*");
-            }
+//            }
         }
 
         return regex;
@@ -706,10 +706,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public String getAttributeValidatingErrorMessageKey(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            if (attributeDefinition.hasValidationPattern()) {
-                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
-                return validationPattern.getValidationErrorMessageKey();
-            }
+//            if (attributeDefinition.hasValidationPattern()) {
+//                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
+//                return validationPattern.getValidationErrorMessageKey();
+//            }
         }
         return null;
     }
@@ -720,11 +720,11 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public String[] getAttributeValidatingErrorMessageParameters(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            if (attributeDefinition.hasValidationPattern()) {
-                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
-                String attributeLabel = getAttributeErrorLabel(entryName, attributeName);
-                return validationPattern.getValidationErrorMessageParameters(attributeLabel);
-            }
+//            if (attributeDefinition.hasValidationPattern()) {
+//                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
+//                String attributeLabel = getAttributeErrorLabel(entryName, attributeName);
+//                return validationPattern.getValidationErrorMessageParameters(attributeLabel);
+//            }
         }
         return null;
     }

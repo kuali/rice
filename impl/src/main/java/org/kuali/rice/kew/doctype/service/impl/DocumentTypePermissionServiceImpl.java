@@ -15,12 +15,18 @@
  */
 package org.kuali.rice.kew.doctype.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.permission.PermissionService;
@@ -33,11 +39,6 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Implementation of the DocumentTypePermissionService. 
@@ -119,6 +120,22 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
         }
 		return result;
 	}
+	
+    public boolean canAdministerRoutingOnSuTab(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType, 
+            List<RouteNodeInstance> routeNodeInstances, String actionEvent) {
+        validatePrincipalId(principalId);
+        validateDocumentType(documentType);
+
+        List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetailsForSuTab(documentType, routeNodeInstances, actionEvent);
+        // loop over permission details, only one of them needs to be authorized
+        for (Map<String, String> permissionDetails : permissionDetailList) {
+            if (getPermissionService().isAuthorizedByTemplate(principalId, KRADConstants.KNS_NAMESPACE,
+                 KewApiConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, new HashMap<String, String>())) {
+                 return true;
+            }
+        }
+        return false;
+    }
 	
 	public boolean canCancel(String principalId, String documentId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
@@ -386,7 +403,35 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		return detailList;
 	}
 
-	
+    /**
+     * This method generates the permission details for the given document.  Note that this has to match the required
+     * data defined in krim_typ_attr_t for the krim_typ_t with 
+     * srvc_nm='documentTypeAndNodeAndActionEventService'.  
+     * 
+     * @param documentType
+     * @param routeNodeInstances
+     * @param actionEvent
+     * @return
+     */
+    protected List<Map<String, String>> buildDocumentTypePermissionDetailsForSuTab(DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String actionType) {
+        List<Map<String, String>> detailList = new ArrayList<Map<String, String>>();
+        
+        for ( RouteNodeInstance rni : routeNodeInstances ) {
+            Map<String, String> details = buildDocumentTypePermissionDetails(documentType);
+            
+            String routeNodeName = rni.getName();
+            if (!StringUtils.isBlank(routeNodeName)) {
+                details.put(KewApiConstants.ROUTE_NODE_NAME_DETAIL, routeNodeName);
+            } 
+            
+            if (!StringUtils.isBlank(actionType)) {
+                details.put(KewApiConstants.ACTION_EVENT, actionType);
+            }
+            detailList.add(details);
+        }
+        return detailList;
+    }	
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, Map<String, String> permissionDetails) {
 		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (b == null || b) {

@@ -22,6 +22,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.framework.postprocessor.*;
@@ -58,6 +59,9 @@ public class RecallActionTest extends KEWTestCase {
     }
 
     private static final String RECALL_TEST_DOC = "RecallTest";
+    private static final String RECALL_TEST_RESTRICTED_DOC = "RecallTestRestricted";
+    private static final String RECALL_TEST_NOROUTING_DOC = "RecallTestNoRouting";
+    private static final String RECALL_TEST_ONLYADHOC_DOC = "RecallTestOnlyAdhoc";
     private static final String RECALL_NOTIFY_TEST_DOC = "RecallWithPrevNotifyTest";
     private static final String RECALL_NO_PENDING_NOTIFY_TEST_DOC = "RecallWithoutPendingNotifyTest";
     private static final String RECALL_NOTIFY_THIRDPARTY_TEST_DOC = "RecallWithThirdPartyNotifyTest";
@@ -112,6 +116,48 @@ public class RecallActionTest extends KEWTestCase {
 
         Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().findByDocumentId(document.getDocumentId());
         assertEquals("Should not have any action items", 0, actionItems.size());
+    }
+
+    @Test public void testRecallValidActionsTaken() throws Exception {
+        // just complete
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_RESTRICTED_DOC);
+        document.route("routing");
+        document.recall("recalling", true);
+
+        // save and complete
+        document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_RESTRICTED_DOC);
+        document.saveDocument("saving");
+        document.route("routing");
+        document.recall("recalling", true);
+    }
+
+    @Test
+    public void testRecallInvalidActionsTaken() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_RESTRICTED_DOC);
+        document.route("");
+
+        document = WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId());
+        document.approve("");
+
+        try {
+            document.recall("recalling", true);
+            fail("Recall should NOT have succeeded.  Expected InvalidActionTakenException due to invalid 'APROVE' prior action taken.");
+        } catch (InvalidActionTakenException iate) {
+            assertTrue(iate.getMessage().contains("Invalid prior action taken: 'APPROVE'"));
+        }
+    }
+
+    @Test public void testRecallOnlyAdhocRouting() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_ONLYADHOC_DOC);
+        // adhoc it to someone to prevent doc from going final - final is itself an invalid state for recall
+        document.adHocToPrincipal(ActionRequestType.APPROVE, "adhoc approve to JHOPF", JHOPF, "adhocing to prevent finalization", true);
+        document.route("routing");
+        try {
+            document.recall("recalling", true);
+            fail("Recall should NOT have succeeded.  Expected InvalidActionTakenException due to absence of non-adhoc route nodes.");
+        } catch (InvalidActionTakenException iate) {
+            assertTrue(iate.getMessage().contains("No non-adhoc route nodes defined"));
+        }
     }
 
     @Test public void testRecallAsInitiatorAfterSingleApproval() throws Exception {

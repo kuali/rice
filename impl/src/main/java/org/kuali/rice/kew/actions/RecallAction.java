@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.kew.actions;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jdom.input.DOMBuilder;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.impl.CoreServiceImplServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -32,10 +36,14 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.doctype.DocumentTypePolicy;
+import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
+import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.role.KimRoleRecipient;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
@@ -44,6 +52,7 @@ import org.kuali.rice.kew.xml.CommonXmlParser;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -56,6 +65,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -155,6 +165,19 @@ public class RecallAction extends ReturnToPreviousNodeAction {
             return "Document of status '" + getRouteHeader().getDocRouteStatus() + "' cannot taken action '" + ActionType.fromCode(this.getActionTakenCode()).getLabel() + "' to node name " + this.nodeName;
         }
 
+        // validate that recall action can be taken given prior actions taken
+        String errMsg = validateActionsTaken(getRouteHeader());
+        if (errMsg != null) {
+            return errMsg;
+        }
+
+        // validate that the doc will actually route to anybody
+        errMsg = validateRouting(getRouteHeader());
+        if (errMsg != null) {
+            return errMsg;
+        }
+
+
         if (!KEWServiceLocator.getDocumentTypePermissionService().canRecall(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentId(),
                                                                             getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(),
                                                                             getRouteHeader().getDocRouteStatus(), getRouteHeader().getApplicationDocumentStatus(),
@@ -162,6 +185,62 @@ public class RecallAction extends ReturnToPreviousNodeAction {
             return "User is not authorized to Recall document";
         }
         return "";
+    }
+
+    /**
+     * Determines whether prior actions taken are compatible with recall action by checking the RECALL_VALID_ACTIONSTAKEN
+     * document type policy.
+     * @param rh the DocumentRouteHeaderValue
+     * @return null if valid (policy not specified, no actions taken, or all actions taken are in valid actions taken list), or error message if invalid
+     */
+    protected String validateActionsTaken(DocumentRouteHeaderValue rh) {
+        String validActionsTaken = rh.getDocumentType().getPolicyByName(DocumentTypePolicy.RECALL_VALID_ACTIONSTAKEN.getCode(), (String) null).getPolicyStringValue();
+        if (StringUtils.isNotBlank(validActionsTaken)) {
+            // interpret as comma-separated list of codes OR labels
+            String[] validActionsTakenStrings = validActionsTaken.split("\\s*,\\s*");
+            Set<ActionType> validActionTypes = new HashSet<ActionType>(validActionsTakenStrings.length);
+            for (String s: validActionsTakenStrings) {
+                ActionType at = ActionType.fromCodeOrLabel(s);
+                if (at == null) {
+                    throw new IllegalArgumentException("Failed to locate the ActionType with the given code or label: " + s);
+                }
+                validActionTypes.add(at);
+            }
+
+            Collection<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().getActionsTaken(getRouteHeader().getDocumentId());
+
+            for (ActionTakenValue actionTaken: actionsTaken) {
+                ActionType at = ActionType.fromCode(actionTaken.getActionTaken());
+                if (!validActionTypes.contains(at)) {
+                    return "Invalid prior action taken: '" + at.getLabel() + "'. Cannot Recall.";
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Determines whether the doc's type appears to statically define any routing.  If not, then Recall action
+     * doesn't make much sense, and should not be available.  Checks whether any document type processes are defined,
+     * and if so, whether are are any non-"adhoc" nodes (based on literal node name check).
+     * @param rh the DocumentRouteHeaderValue
+     * @return error message if it looks like it's this doc will not route to a person based on static route definition, null (valid) otherwise
+     */
+    protected String validateRouting(DocumentRouteHeaderValue rh) {
+        List<ProcessDefinitionBo> processes = rh.getDocumentType().getProcesses();
+
+        String errMsg = null;
+        if (processes.size() == 0) {
+            // if no processes are present then this doc isn't going to route to anyone
+            errMsg = "No processes are defined for document type. Recall is not applicable.";
+        } else {
+            // if there is not at least one route node not named "ADHOC", then assume this doc will not route to anybody
+            RouteNode initialRouteNode = rh.getDocumentType().getPrimaryProcess().getInitialRouteNode();
+            if (initialRouteNode.getName().equalsIgnoreCase("ADHOC") && initialRouteNode.getNextNodeIds().isEmpty()) {
+                errMsg = "No non-adhoc route nodes defined for document type. Recall is not applicable";
+            }
+        }
+        return errMsg;
     }
 
     @Override // overridden to simply pass through all actionrequests

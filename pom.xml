@@ -83,7 +83,7 @@
     <cglib.version>2.2.2</cglib.version>
     <aspectj.version>1.6.8</aspectj.version>
     <bitronix.version>2.1.2</bitronix.version>
-    <commons-beanutils.version>1.8.3-kuali-2</commons-beanutils.version>
+    <commons-beanutils.version>1.8.3-kuali-4</commons-beanutils.version>
     <commons-codec.version>1.6</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>

@@ -23,6 +23,7 @@ import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.doctype.RoutePath;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -132,6 +133,33 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     }
 
+
+    @Override
+    public boolean isSuperUserForSuTab( String principalId, String documentTypeName, List<RouteNodeInstance> routeNodeInstances, String actionType ) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Determining super user status [principalId=" + principalId + ", documentTypeName="
+                    + documentTypeName + "]");
+        }
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId was null or blank");
+        }
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new RiceIllegalArgumentException("documentTypeId was null or blank");
+        }
+        org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        List<org.kuali.rice.kew.engine.node.RouteNodeInstance> currentNodeInstances = null;
+        if (!routeNodeInstances.isEmpty()) {
+            currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(routeNodeInstances.get(0).getDocumentId());
+        }
+
+        boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRoutingOnSuTab( principalId, documentType, 
+                currentNodeInstances, actionType);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Super user status is " + isSuperUser + ".");
+        }
+        return isSuperUser;
+    }
+    
     @Override
     public boolean hasRouteNodeForDocumentTypeName(String routeNodeName, String documentTypeName)
             throws RiceIllegalArgumentException {

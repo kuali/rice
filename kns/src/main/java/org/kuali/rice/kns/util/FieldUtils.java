@@ -1893,8 +1893,10 @@ public final class FieldUtils {
                         "" :
                         containerName.replaceAll("\\d+", "");
         StringBuilder subTabName = new StringBuilder(cleanedContainerName);
-        for (Field containerField : field.getContainerDisplayFields()) {
-            subTabName.append(containerField.getPropertyValue());
+        if (field.getContainerDisplayFields() != null) {
+            for (Field containerField : field.getContainerDisplayFields()) {
+                subTabName.append(containerField.getPropertyValue());
+            }
         }
         return subTabName.toString();
     }

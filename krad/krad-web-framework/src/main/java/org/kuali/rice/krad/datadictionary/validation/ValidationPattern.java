@@ -17,6 +17,8 @@ package org.kuali.rice.krad.datadictionary.validation;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
+import org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint;
+import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
@@ -96,6 +98,12 @@ abstract public class ValidationPattern implements Serializable {
      */
     abstract public Pattern getRegexPattern();
 
+
+    public ValidCharactersConstraint asValidCharactersConstraint() {
+        ValidCharactersConstraint constraint = new ConfigurationBasedRegexPatternConstraint();
+        constraint.setValue(this.getRegexPattern().pattern());
+        return constraint;
+    }
     /**
      * @return String version of regular expression base, suitable for modification with length-specifiers and used internally by
      *         getRegexPattern

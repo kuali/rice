@@ -522,9 +522,11 @@ abstract class RoleServiceBase {
      */
     protected RoleTypeService getRoleTypeService(String roleId) {
         RoleBoLite roleBo = getRoleBoLite(roleId);
-        KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
-        if (roleType != null) {
-            return getRoleTypeService(roleType);
+        if(roleBo != null){
+            KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
+            if (roleType != null) {
+                return getRoleTypeService(roleType);
+            }
         }
         return null;
     }

@@ -121,7 +121,7 @@
     <property name="minLength" value="1" />
     <property name="maxLength" value="36" />
     <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40" />
@@ -201,7 +201,7 @@
     <property name="minLength" value="1" />
     <property name="maxLength" value="36" />
     <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="dependencyConstraints">
       <list>
@@ -254,7 +254,7 @@
     <property name="minLength" value="1" />
     <property name="maxLength" value="10" />
     <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" />
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10" />

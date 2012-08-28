@@ -173,14 +173,46 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.getSimpleConstraint().setInclusiveMax(inclusiveMax);
     }
 
-    /**
-     * Indicates whether a validation pattern has been set
-     *
-     * @return boolean
-     */
-    public boolean hasValidationPattern() {
-        return (validationPattern != null);
-    }
+	/**
+	 * The validationPattern element defines the allowable character-level or
+	 * field-level values for an attribute.
+	 * 
+	 * JSTL: validationPattern is a Map which is accessed using a key of
+	 * "validationPattern". Each entry may contain some of the keys listed
+	 * below. The keys that may be present for a given attribute are dependent
+	 * upon the type of validationPattern.
+	 * 
+	 * maxLength (String) exactLength type allowWhitespace allowUnderscore
+	 * allowPeriod validChars precision scale allowNegative
+	 * 
+	 * The allowable keys (in addition to type) for each type are: Type****
+	 * ***Keys*** alphanumeric exactLength maxLength allowWhitespace
+	 * allowUnderscore allowPeriod
+	 * 
+	 * alpha exactLength maxLength allowWhitespace
+	 * 
+	 * anyCharacter exactLength maxLength allowWhitespace
+	 * 
+	 * charset validChars
+	 * 
+	 * numeric exactLength maxLength
+	 * 
+	 * fixedPoint allowNegative precision scale
+	 * 
+	 * floatingPoint allowNegative
+	 * 
+	 * date n/a emailAddress n/a javaClass n/a month n/a phoneNumber n/a
+	 * timestamp n/a year n/a zipcode n/a
+	 * 
+	 * Note: maxLength and exactLength are mutually exclusive. If one is
+	 * entered, the other may not be entered.
+	 * 
+	 * Note: See ApplicationResources.properties for exact regex patterns. e.g.
+	 * validationPatternRegex.date for regex used in date validation.
+	 */
+	public void setValidationPattern(ValidationPattern validationPattern) {
+		this.validationPattern = validationPattern;
+	}
 
     /**
      * Defines the allowable character-level or
@@ -224,14 +256,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     public ValidationPattern getValidationPattern() {
         return this.validationPattern;
-    }
-
-    /**
-     *
-     * @param validationPattern
-     */
-    public void setValidationPattern(ValidationPattern validationPattern) {
-        this.validationPattern = validationPattern;
     }
 
     /**
@@ -428,21 +452,20 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.attributeSecurity = attributeSecurity;
     }
 
-    public boolean hasAttributeSecurity() {
-        return (attributeSecurity != null);
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        if (StringUtils.isEmpty(name)) {
-            throw new RuntimeException("blank name for bean: " + id);
+	/**
+	 * This overridden method applies validCharacterConstraint if legacy validation pattern in place
+	 * 
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		if (StringUtils.isEmpty(name)) {
+			throw new RuntimeException("blank name for bean: " + id);
+		}
+        if(this.validCharactersConstraint == null  && validationPattern != null) {
+            this.validCharactersConstraint = validationPattern.asValidCharactersConstraint();
         }
-    }
+	}
 
     /**
      * @return the unique

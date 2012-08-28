@@ -116,7 +116,7 @@ if (attributeEntry == null) {
 </c:choose>
 
 <c:if test="${readOnly}">
-   
+
    <c:choose>
      <c:when test="${readOnlyBody}">
          <jsp:doBody/>
@@ -229,6 +229,10 @@ if (attributeEntry == null) {
    </c:choose>
      </c:otherwise>
    </c:choose>
+
+  <c:if test="${hasErrors}">
+    <kul:fieldShowErrorIcon />
+  </c:if>
 </c:if>
 <c:if test="${!readOnly}">
   <c:choose>

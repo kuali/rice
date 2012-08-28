@@ -87,7 +87,6 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             "initiatorPrincipalName",
             "documentId",
             APPLICATION_DOCUMENT_STATUS,
-            "groupViewerId",
             "dateCreated",
             DOCUMENT_ATTRIBUTE_FIELD_MARKER,
             "saveName"

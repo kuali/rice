@@ -58,6 +58,21 @@ class FieldUtilsTest {
         assertEquals("containerName-Elementcontained value onecontained value twocontained value three", FieldUtils.generateCollectionSubTabName(f))
     }
 
+    @Test
+    void testGenerationCollectionSubTabName_null() {
+        def f = FieldUtils.constructContainerField("collection[1]", "Test Collection", [
+                new Field(fieldLabel: "Field One", propertyName: "field1", propertyValue: "value one"),
+                new Field(fieldLabel: "Field Two", propertyName: "field2", propertyValue: "value two"),
+                new Field(fieldLabel: "Field Three", propertyName: "field3", propertyValue: "value three"),
+                new Field(fieldLabel: "Multi-value Field", propertyName: "multiValueField", propertyValues: [ "value1", "value2", "value3" ])
+        ], 50)
+        f.setContainerElementName("containerName1-Element")
+        f.setContainerName("containerName1")
+        f.setContainerDisplayFields(null)
+
+        assertEquals("containerName-Element", FieldUtils.generateCollectionSubTabName(f))
+    }
+
     /**
      * Performs an as-of-yet very superficial check of remotableattributefield conversion
      */

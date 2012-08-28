@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -40,6 +41,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.responsibility.AddResponsibilityEvent;
 import org.kuali.rice.kim.impl.responsibility.AddResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.KimDocumentResponsibilityRule;
@@ -345,7 +347,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			if(!roleMember.isRole()){
 				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
 				validationErrors.addAll(attributeValidationHelper.convertErrorsForMappedFields(
-                        "document.members[" + memberCounter + "]", errorsTemp));
+                        "members[" + memberCounter + "]", errorsTemp));
 		        memberCounter++;
 			}
 			if (uniqueAttributeNames.size() > 0) {
@@ -414,7 +416,17 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     					for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
     						if (qualifier != null && uniqueQualifierIds.contains(qualifier.getKimAttrDefnId())) {
-    							validationErrors.add(RemotableAttributeError.Builder.create("document.members["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal()).build());
+                                // for new member lines, KimAttribute is not preloaded
+                                // make sure to load it here in order to obtain the name for use in error message
+                                KimAttributeBo attr = qualifier.getKimAttribute();
+                                String attrName = "<unknown>";
+                                if (attr == null && qualifier.getKimAttrDefnId() != null) {
+                                    attr = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(KimAttributeBo.class, qualifier.getKimAttrDefnId());
+                                }
+                                if (attr != null) {
+                                    attrName = attr.getAttributeName();
+                                }
+                                validationErrors.add(RemotableAttributeError.Builder.create("document.members["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+membership.getMemberId()+";"+attrName+";"+qualifier.getAttrVal()).build());
     						}
     						qualifierCount += 1;
     					}

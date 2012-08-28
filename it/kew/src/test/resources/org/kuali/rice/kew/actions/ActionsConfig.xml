@@ -453,6 +453,33 @@
       <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
     </documentType>
     <documentType>
+      <name>RecallTestRestricted</name>
+      <parent>RecallTest</parent>
+      <label>RecallTestRestricted</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+      <policies>
+        <policy>
+          <name>RECALL_VALID_ACTIONSTAKEN</name>
+          <stringValue>SAvEd, cOmPlete</stringValue>
+        </policy>
+      </policies>
+    </documentType>
+    <documentType>
+      <name>RecallTestOnlyAdhoc</name>
+      <label>RecallTestOnlyAdhoc</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc"/>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+    <documentType>
       <name>RecallWithPrevNotifyTest</name>
       <parent>NotificationTest</parent>
       <label>RecallTest</label>
@@ -465,10 +492,9 @@
       </policies>
     </documentType>
     <documentType>
-      <name>RecallWithoutPendingNotifyTest</name>
+      <name>IntermediateRecallDocType</name>
       <parent>NotificationTest</parent>
       <label>RecallTest</label>
-      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
       <policies>
         <policy>
           <name>NOTIFY_COMPLETED_ON_RETURN</name>
@@ -479,6 +505,12 @@
           <value>false</value>
         </policy>
       </policies>
+    </documentType>
+    <documentType>
+      <name>RecallWithoutPendingNotifyTest</name>
+      <parent>IntermediateRecallDocType</parent>
+      <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
     </documentType>
     <documentType>
       <name>RecallWithThirdPartyNotifyTest</name>

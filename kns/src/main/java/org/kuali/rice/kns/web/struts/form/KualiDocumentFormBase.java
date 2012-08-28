@@ -37,6 +37,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -936,7 +937,27 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	}
 	
 	public boolean isSuperUserAuthorized() {
-		return KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeName(GlobalVariables.getUserSession().getPrincipalId(), this.getDocTypeName());
+	    String docId = this.getDocId();
+	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+	    String actionEvent = "*";
+		return KewApiServiceLocator.getDocumentTypeService().isSuperUserForSuTab(
+		        GlobalVariables.getUserSession().getPrincipalId(), this.getDocTypeName(), routeNodeInstances, actionEvent);
+	}
+	
+	public boolean isSuperUserApproveAuthorized() {
+	    String docId = this.getDocId();
+	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+	    String actionEvent = "approve";
+		return KewApiServiceLocator.getDocumentTypeService().isSuperUserForSuTab(
+		        GlobalVariables.getUserSession().getPrincipalId(), this.getDocTypeName(), routeNodeInstances, actionEvent);
+	}
+	
+	public boolean isSuperUserDisapproveAuthorized() {
+	    String docId = this.getDocId();
+	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+	    String actionEvent = "disapprove";
+		return KewApiServiceLocator.getDocumentTypeService().isSuperUserForSuTab(
+		        GlobalVariables.getUserSession().getPrincipalId(), this.getDocTypeName(), routeNodeInstances, actionEvent);
 	}
 	
 	public boolean isStateAllowsSuperUserAction() {

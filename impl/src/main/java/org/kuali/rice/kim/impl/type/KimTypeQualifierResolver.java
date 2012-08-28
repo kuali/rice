@@ -112,8 +112,10 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	// get the appropriate type service for the group being edited
     	String typeId = groupDoc.getGroupTypeId();
     	qualifiers.add( getGroupQualifier(groupDoc.getGroupId(), typeId, groupDoc.getQualifiersAsAttributes(), routeLevel) );
-    	
-        return null;
+    	String customDocTypeName = null;
+        KimTypeService typeService = getTypeService(typeId);
+        customDocTypeName = typeService.getWorkflowDocumentTypeName();
+        return customDocTypeName;
 	}
 
 	protected String handleRoleDocument( List<Map<String, String>> qualifiers, IdentityManagementRoleDocument roleDoc, String routeLevel ) {

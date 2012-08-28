@@ -17,18 +17,23 @@ package org.kuali.rice.kim.document;
 
 import org.apache.cxf.common.util.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -40,6 +45,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 
 	private static final Logger LOG = Logger.getLogger( GenericPermissionMaintainable.class );	
 	private static final long serialVersionUID = -8102504656976243468L;
+    protected transient SequenceAccessorService sequenceAccessorService;
 
     /**
      * Saves the responsibility via the responsibility update service
@@ -72,6 +78,19 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
         }
     }
 	
+    /**
+     * Pre-populates the ID field of the new PermissionBo to be created.
+     *
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     */
+    @Override
+    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
+        super.processAfterCopy(document,parameters);
+        // get id for new permission
+        String newId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S).toString();
+        ((GenericPermissionBo)document.getNewMaintainableObject().getDataObject()).setId(newId);
+    }
+
 	/**
 	 * This overridden method ...
 	 * 
@@ -122,5 +141,12 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 			throw ex;
 		}
 	}
-	
+
+    protected SequenceAccessorService getSequenceAccessorService(){
+        if(this.sequenceAccessorService==null){
+            this.sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+        }
+        return this.sequenceAccessorService;
+    }
+
 }

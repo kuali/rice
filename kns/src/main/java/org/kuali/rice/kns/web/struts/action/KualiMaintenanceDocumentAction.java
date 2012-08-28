@@ -1083,11 +1083,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		oldMaintainable.setShowInactiveRecords(collectionName, showInactive);
 		newMaintainable.setShowInactiveRecords(collectionName, showInactive);
 
-        // toggling the display to be visible again, re-open any previously closed inactive records
-        if (showInactive) {
-            WebUtils.reopenInactiveRecords(maintenanceForm.getSections(), maintenanceForm.getTabStates(), collectionName);
-        }
-
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 

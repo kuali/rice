@@ -64,7 +64,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         "documentTypeName",
         "initiatorPrincipalName",
         "documentId",
-        "groupViewerId",
+        "applicationDocumentStatus",
         "dateCreated",
         "rangeLowerBoundKeyPrefix_dateCreated",
         "saveName"

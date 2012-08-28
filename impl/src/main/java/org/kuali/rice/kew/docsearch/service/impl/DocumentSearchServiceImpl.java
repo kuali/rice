@@ -327,6 +327,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         builder.setStartAtIndex(criteria.getStartAtIndex());
         builder.setMaxResults(criteria.getMaxResults());
         builder.setIsAdvancedSearch(criteria.getIsAdvancedSearch());
+        builder.setSearchOptions(criteria.getSearchOptions());
         return builder;
     }
 

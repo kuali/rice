@@ -96,7 +96,33 @@ public interface WorkflowRuleAttributeHandlerService {
                                                 boolean required)
             throws RiceIllegalArgumentException;
 
-
+    /**
+     * Using the WorkflowRuleAttribute defined by the given extension definition, does the following: validates the
+     * given rule attribute parameters, fetches the list of RemotableAttributeField objects to display for rule 
+     * reporting then determines the rule extension values produced by the attribute and returns this information as a
+     * WorkflowRuleAttributeFields object.
+     *
+     * @param parameters the parameters against which to validate
+     * @param extensionDefinition extension definition of the WorkflowRuleAttribute, cannot be null or blank.
+     * @param required the required flag which should be passed to the WorkflowRuleAttribute prior to processing
+     *
+     * @return the WorkflowRuleAttributeFields, will not return null.
+     *
+     * @throws RiceIllegalArgumentException if the extensionDefinition is null or blank
+     * @throws RiceIllegalArgumentException if the WorkflowRuleAttribute is not found
+     */
+    @WebMethod(operationName = "getRoutingDataFields")
+    @XmlElement(name = "routingDataFields", required = true)
+    @WebResult(name = "routingDataFields")
+    WorkflowRuleAttributeFields getRoutingDataFields(@WebParam(name = "parameters")
+                                              @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                              Map<String, String> parameters,
+                                              @WebParam(name = "extensionDefinition")
+                                              ExtensionDefinition extensionDefinition,
+                                              @WebParam(name = "required")
+                                              boolean required)
+            throws RiceIllegalArgumentException;
+ 
     /**
      * Gets a List of {@link RoleName} objects produced by the RoleAttribute defined by the given extension definition.
      *

@@ -1601,7 +1601,20 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String name = agendaEditor.getCopyRuleName();
         String namespace = agendaEditor.getNamespace();
         // fetch existing rule and copy fields to new rule
+
+        if (StringUtils.isBlank(name)) {
+            GlobalVariables.getMessageMap().putError("AgendaEditorView-AddRule-Page", //"copyRuleName",
+                "error.rule.missingCopyRuleName");
+            return super.refresh(form, result, request, response);
+        }
+
         RuleDefinition oldRuleDefinition = getRuleBoService().getRuleByNameAndNamespace(name, namespace);
+
+        if (oldRuleDefinition == null) {
+            GlobalVariables.getMessageMap().putError("AgendaEditorView-AddRule-Page", /*"copyRuleName",*/ "error.rule.invalidCopyRuleName", namespace + ":" + name);
+            return super.refresh(form, result, request, response);
+        }
+
         RuleBo oldRule = RuleBo.from(oldRuleDefinition);
         RuleBo newRule = RuleBo.copyRule(oldRule);
         agendaEditor.getAgendaItemLine().setRule( newRule );

@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
+import edu.samplu.common.MenuITBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
@@ -27,10 +28,20 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryBlanketAppIT extends AdminMenuITBase {
+public class LocationCountryBlanketAppIT extends MenuITBase {
+    @Override
+    protected String getMenuLinkLocator() {
+        return AdminMenuITBase.ADMIN_LOCATOR;
+    }
+
     @Override
     public String getLinkLocator() {
         return "link=Country";
+    }
+
+    @Override
+    protected String getCreateNewLinkLocator() {
+        return AdminMenuITBase.CREATE_NEW_LOCATOR;
     }
 
     @Test

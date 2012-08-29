@@ -17,8 +17,6 @@ package edu.samplu.common;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -28,15 +26,17 @@ public abstract class AdminMenuITBase extends MenuITBase {
 
     public static final String LABEL_KUALI_KUALI_SYSTEMS = "label=KUALI - Kuali Systems";
     public static final String LABEL_KUALI_DEFAULT = "label=KUALI : Default";
+    public static final String CREATE_NEW_LOCATOR = "//img[@alt='create new']";
+    public static final String ADMIN_LOCATOR = "link=Administration";
 
     @Override
     protected String getCreateNewLinkLocator() {
-        return "//img[@alt='create new']";
+        return CREATE_NEW_LOCATOR;
     }
 
     @Override
     protected String getMenuLinkLocator() {
-        return "link=Administration";
+        return ADMIN_LOCATOR;
     }
 
     @Test

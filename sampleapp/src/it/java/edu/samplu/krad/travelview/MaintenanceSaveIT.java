@@ -46,7 +46,7 @@ public class MaintenanceSaveIT extends KradMenuITBase {
         if (selenium.isElementPresent("//li[@class='uif-errorMessageItem']")) {
             String errorText = selenium.getText("//li[@class='uif-errorMessageItem']");
             if (errorText != null && errorText.contains("errors")) {
-                fail(errorText);
+                fail(errorText + " also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
             }
         }
     }

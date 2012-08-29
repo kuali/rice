@@ -40,7 +40,8 @@ public class ITUtil {
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
         try {
-            selenium.selectWindow("null");
+//            selenium.selectWindow("null");
+            selenium.selectWindow("relative=up");
         } catch (Exception e) {
             // selectWindow null seems to vary? will work locally but not in CI?
         }

@@ -15,11 +15,9 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.MenuITBase;
 import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -28,26 +26,13 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryBlanketAppIT extends MenuITBase {
-    @Override
-    protected String getMenuLinkLocator() {
-        return AdminMenuITBase.ADMIN_LOCATOR;
-    }
-
+public class LocationCountryBlanketAppIT extends AdminMenuBlanketAppITBase {
     @Override
     public String getLinkLocator() {
         return "link=Country";
     }
 
-    @Override
-    protected String getCreateNewLinkLocator() {
-        return AdminMenuITBase.CREATE_NEW_LOCATOR;
-    }
-
-    @Test
-    public void testCountry() throws Exception {
-        gotoCreateNew();
-
+    public String blanketApprove() {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         String countryName = "Validation Test Country " + ITUtil.DTS;
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
@@ -56,8 +41,6 @@ public class LocationCountryBlanketAppIT extends MenuITBase {
        
         selenium.type("//input[@id='document.newMaintainableObject.name']", countryName);
         selenium.type("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
-
-        ITUtil.blanketApprove(selenium);
-        ITUtil.assertDocFinal(selenium, docId);
+        return docId;
     }
 }

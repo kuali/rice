@@ -286,7 +286,7 @@ public class UifComponentsTestController extends UifControllerBase {
     /**
      * Adds warning and info messages to fields defined in the validationMessageFields array
      */
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addWarningInfoMessages")
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addWarnInfoMessages")
     public ModelAndView addWarnInfoMessages(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 

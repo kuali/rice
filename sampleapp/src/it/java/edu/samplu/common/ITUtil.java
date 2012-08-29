@@ -43,9 +43,11 @@ public class ITUtil {
 //        } catch (Exception e) {
 //            // selectWindow null seems to vary? will work locally but not in CI?
 //        }
-        String errorText =  selenium.getText("//div[@class='error']");
-        if (errorText != null && errorText.contains("error(s) found on page.")) {
-            Assert.fail(errorText);
+        if (selenium.isElementPresent("//div[@class='error']")) {
+            String errorText =  selenium.getText("//div[@class='error']");
+            if (errorText != null && errorText.contains("error(s) found on page.")) {
+                Assert.fail(errorText);
+            }
         }
 
         waitAndClick(selenium, "//img[@alt='doc search']");

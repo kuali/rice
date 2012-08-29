@@ -75,6 +75,22 @@ public class ITUtil {
     }
 
     /**
+     * "//li[@class='uif-errorMessageItem']"
+     * @param selenium
+     * @param message
+     */
+    public static void checkErrorMessageItem(Selenium selenium, String message) {
+        final String error_locator = "//li[@class='uif-errorMessageItem']";
+        if (selenium.isElementPresent(error_locator)) {
+            String errorText = selenium.getText(error_locator);
+            if (errorText != null && errorText.contains("errors")) {
+                Assert.fail(errorText + message);
+            }
+        }
+    }
+
+
+    /**
      * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.
      * Trailing slashes are trimmed.  If the remote.public.url does not start with http:// it will be added.
      * @return http://localhost:8080 by default else the value of remote.public.url

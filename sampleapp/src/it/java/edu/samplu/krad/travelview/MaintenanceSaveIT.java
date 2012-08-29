@@ -19,8 +19,6 @@ import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.fail;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -43,11 +41,6 @@ public class MaintenanceSaveIT extends KradMenuITBase {
         selenium.type("name=document.newMaintainableObject.dataObject.subAccount", "a1");
         selenium.click("css=button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
         Thread.sleep(2000);
-        if (selenium.isElementPresent("//li[@class='uif-errorMessageItem']")) {
-            String errorText = selenium.getText("//li[@class='uif-errorMessageItem']");
-            if (errorText != null && errorText.contains("errors")) {
-                fail(errorText + " also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
-            }
-        }
-    }
+        ITUtil.checkErrorMessageItem(selenium, " also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
+     }
 }

@@ -133,7 +133,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="agendaItemLine.rule.namespace" p:label="Namespace" p:readOnly="true" />
+        <bean parent="Uif-InputField" p:id="ruleNamespace" p:propertyName="agendaItemLine.rule.namespace" p:label="Namespace" p:readOnly="true" />
         <bean parent="ruleCustomAttributes"/>
         <bean parent="Uif-InputField" p:propertyName="agendaItemLine.rule.name" p:label="Name" p:required="true" p:constraintText="size 100">
           <property name="control">

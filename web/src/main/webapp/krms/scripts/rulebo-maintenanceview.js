@@ -17,22 +17,44 @@ rulebo_maintenanceview = (function() {
     };
 
     return {
-        // binds event handlers that enable or disables the Copy Rule button depending on whether
+        // binds event handlers that enable or disable the Copy Rule button depending on whether
         // copyRuleName field value is empty
         "bind_copyRuleName": function() {
             var empty_re = /^\\s*$/;
-            var button = jq("#copyRuleButton");
-            var input = jq("#copyRuleName");
+            var copy_button = jq("#copyRuleButton");
+            var name_field = jq("#copyRuleName");
+            var namespace_field = jq("#ruleNamespace_attribute");
+
+            function toggle_enabled(enabled) {
+                if (enabled) {
+                    copy_button.removeAttr("disabled");
+                } else {
+                    copy_button.attr("disabled", "disabled");
+                }
+            }
+
+            function validate_copy_rule_name(rule_name, rule_namespace) {
+                jq.ajax({
+                    url: "krmsAgendaEditor",
+                    data: {
+                        methodToCall: "ajaxValidRuleName",
+                        name: rule_name,
+                        namespace: rule_namespace
+                    }
+                }).done(toggle_enabled);
+            }
+
             function enable_or_disable_copyRuleButton() {
                 var val = jq(this).val();
                 if (!val || empty_re.exec(val)) {
-                    button.attr("disabled", "disabled");
+                    toggle_enabled(false);
                 } else {
-                    button.removeAttr("disabled");
+                    validate_copy_rule_name(val, namespace_field.text());
                 }
             }
-            input.change(enable_or_disable_copyRuleButton);
-            input.keyup(underscore_debounce(enable_or_disable_copyRuleButton, 500));
+
+            name_field.change(enable_or_disable_copyRuleButton);
+            name_field.keyup(underscore_debounce(enable_or_disable_copyRuleButton, 500));
         }
     };
 })();

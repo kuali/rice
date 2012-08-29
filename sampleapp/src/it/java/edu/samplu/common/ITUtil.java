@@ -7,7 +7,6 @@ import java.util.Calendar;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Common selenium test methods that should be reused rather than recreated for each test.
@@ -26,8 +25,6 @@ public class ITUtil {
      */
     public static void assertDocFinal(Selenium selenium, String docId) {
         docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));
-        // copied and pasted, but if this if isn't executed if the above assert fails
         if(selenium.isElementPresent(docId)){
             assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }else{

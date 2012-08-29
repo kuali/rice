@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,4 +106,36 @@ public class WhenConstraint implements Constraint {
 	public void setConstraint(Constraint constraint) {
 		this.constraint = constraint;
 	}
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     * @param parser Set of tools for parsing the xml files which were used to create the component
+     * @return A list of ErrorReports detailing errors found within the component and referenced within it
+     */
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean("WhenConstraint",TracerToken.NO_BEAN_ID);
+
+        if(getConstraint()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("Constraint must be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("constraint = "+getConstraint());
+            reports.add(error);
+        }
+
+        if(getValuePath()==null || getValues()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("Value Path or Values must be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("valuePath = "+getValuePath());
+            error.addCurrentValue("values = "+getValues());
+            reports.add(error);
+        }
+
+        return reports;
+    }
 }

@@ -16,8 +16,12 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.UifConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,4 +85,66 @@ public class MustOccurConstraint extends BaseConstraint {
 	public void setMax(Integer max) {
 		this.max = max;
 	}
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     * @param parser Set of tools for parsing the xml files which were used to create the component
+     * @return A list of ErrorReports detailing errors found within the component and referenced within it
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean("MustOccurConstraint",getLabelKey());
+
+        if(getMax()<=0){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("Max must be greater than 0");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("max ="+getMax());
+            reports.add(error);
+        }
+
+        if(getPrerequisiteConstraints()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("PrerequisiteConstraints cannot be null or empty");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("prerequisiteConstraints ="+getPrerequisiteConstraints());
+            reports.add(error);
+        }else if(getPrerequisiteConstraints().size()==0){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("PrerequisiteConstraints cannot be null or empty");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("prerequisiteConstraints.size ="+getPrerequisiteConstraints().size());
+            reports.add(error);
+        }else{
+            for(int i=0;i<getPrerequisiteConstraints().size();i++){
+                reports.addAll(getPrerequisiteConstraints().get(i).completeValidation(tracer.getCopy(),parser));
+            }
+        }
+
+        if(getMustOccurConstraints()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("MustOccurConstraints cannot be null or empty");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("mustOccurConstraints ="+getMustOccurConstraints());
+            reports.add(error);
+        }else if(getMustOccurConstraints().size()==0){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("MustOccurConstraints cannot be null or empty");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("mustOccurConstraints.size ="+getMustOccurConstraints().size());
+            reports.add(error);
+        }else{
+            for(int i=0;i<getMustOccurConstraints().size();i++){
+                reports.addAll(getMustOccurConstraints().get(i).completeValidation(tracer.getCopy(),parser));
+            }
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
+    }
 }

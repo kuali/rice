@@ -17,6 +17,9 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -103,4 +106,29 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
         return this.validationMessageParams;
     }
 
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     * @param parser Set of tools for parsing the xml files which were used to create the component
+     * @return A list of ErrorReports detailing errors found within the component and referenced within it
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean("CharsetPatternConstraint",getLabelKey());
+
+        if(getValidChars()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("ValidChars must be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("validChars ="+getValidChars());
+            reports.add(error);
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
+    }
 }

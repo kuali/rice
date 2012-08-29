@@ -16,6 +16,9 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.Field;
@@ -277,4 +280,36 @@ public class Group extends ContainerBase {
 		this.items = items;
 	}
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Checks that no invalid items are present
+        for(int i=0;i<getItems().size();i++){
+            if(getItems().get(i).getClass()==PageGroup.class || getItems().get(i).getClass()==NavigationGroup.class){
+                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+                error.setValidationFailed("Items in Group cannot be PageGroup or NaviagtionGroup");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("item("+i+").class ="+getItems().get(i).getClass());
+                reports.add(error);
+            }
+        }
+
+        // Checks that the layout manager is set
+        if(getLayoutManager()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("LayoutManager must be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("layoutManager = "+getLayoutManager());
+            reports.add(error);
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
+    }
 }

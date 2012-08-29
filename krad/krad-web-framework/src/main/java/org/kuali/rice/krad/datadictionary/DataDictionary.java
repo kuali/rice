@@ -26,6 +26,7 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
+import org.kuali.rice.krad.ricedictionaryvalidator.RDVController;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -212,6 +213,10 @@ public class DataDictionary  {
     
     public void validateDD( boolean validateEbos ) {
     	DataDictionary.validateEBOs = validateEbos;
+
+        //RDVController validator = new RDVController();
+        //validator.validate(new String[0], ddBeans,LOG,false);
+
     	Map<String,DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
         for ( DataObjectEntry entry : doBeans.values() ) {
             entry.completeValidation();

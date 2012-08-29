@@ -16,12 +16,17 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -252,5 +257,30 @@ public class Label extends ContentElementBase {
      */
     public void setInlineComponents(List<Component> inlineComponents) {
         this.inlineComponents = inlineComponents;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Checks that text is set if the component is rendered
+        if(isRender() && getLabelText()==null){
+            if(!RDValidator.checkExpressions(this)) {
+                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+                error.setValidationFailed("LabelText should be set if render is true");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("render = "+isRender());
+                error.addCurrentValue("labelText ="+getLabelText());
+                reports.add(error);
+            }
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
     }
 }

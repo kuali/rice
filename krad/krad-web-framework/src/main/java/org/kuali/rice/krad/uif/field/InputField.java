@@ -33,6 +33,9 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteCons
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.Control;
@@ -1054,5 +1057,27 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
                 && quickfinder.isRender()
                 && quickfinder.getQuickfinderAction() != null
                 && quickfinder.getQuickfinderAction().isRender());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Checks that the control is set
+        if(getControl()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+            error.setValidationFailed("Control must be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("control ="+getConstraintText());
+            reports.add(error);
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
     }
 }

@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -109,5 +114,43 @@ public class CaseConstraint extends BaseConstraint {
      */
     public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
+    }
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     * @param parser Set of tools for parsing the xml files which were used to create the component
+     * @return A list of ErrorReports detailing errors found within the component and referenced within it
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean("CaseConstraint",getLabelKey());
+
+        if(getWhenConstraint()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("WhenCaseConstraints should at least have 1 item");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("whenCaseConstraint = "+getWhenConstraint());
+            reports.add(error);
+        }else{
+            if(getWhenConstraint().size()==0){
+                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+                error.setValidationFailed("WhenCaseConstraints should at least have 1 item");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("whenCaseConstraint.size() = "+getWhenConstraint().size());
+                reports.add(error);
+            }else{
+                for(int i=0;i<getWhenConstraint().size();i++){
+                    reports.addAll(getWhenConstraint().get(i).completeValidation(tracer.getCopy(),parser));
+                }
+            }
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
     }
 }

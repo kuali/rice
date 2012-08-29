@@ -16,6 +16,9 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -1111,5 +1114,39 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     public void setTotalValueMapping(Map<String, String> totalValueMapping) {
         this.totalValueMapping = totalValueMapping;
+    }
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     * @param parser Set of tools for parsing the xml files which were used to create the component
+     * @return A list of ErrorReports detailing errors found within the component and referenced within it
+     */
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean("TableLayoutManager",getId());
+
+        if(getRowDetailsGroup()!=null){
+            boolean validTable=false;
+            if(getRichTable()!=null){
+                if(getRichTable().isRender()){
+                    validTable=true;
+                }
+            }
+            if(!validTable){
+                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+                error.setValidationFailed("If rowDetailsGroup is set richTable must be set and its render true");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("rowDetailsGroup ="+getRowDetailsGroup());
+                error.addCurrentValue("richTable ="+getRichTable());
+                if(getRichTable()!=null)error.addCurrentValue("richTable.render ="+getRichTable().isRender());
+                reports.add(error);
+            }
+
+        }
+
+        return reports;
     }
 }

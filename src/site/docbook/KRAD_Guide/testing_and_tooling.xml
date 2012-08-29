@@ -2009,4 +2009,392 @@
             </sect2>
         </sect1>
     </section>
+    <section>
+      <title>Rice Dictionary Validator (Not Yet Actively Implemented)</title>
+      <sect1>
+        <title>Introduction</title>
+        <sect2>
+          <title>Purpose</title>
+          <para>
+            The KRAD Framework works by utilizing a number of interconnected java data objects held together
+            in the programs data dictionary.  These objects are complex and created through the combination
+            of a number of Spring Beans; mistakes in these beans can cause breakdowns in the system causing
+            missing pages or incorrect information to be display.  The purpose of the Rice Dictionary Validator
+            (RDV) is to limit these mistakes by validating that the beans are being created correctly and
+            warning developers of problems that may occur.
+          </para>
+        </sect2>
+        <sect2>
+          <title>What is RDV</title>
+          <para>
+            The Rice Dictionary Validator is a combination of an integrated backbone in the KRAD Framework and
+            a independent tool application within Rice Tools.  It looks through the beans that make up the
+            data dictionary and identifies any problems it finds before reporting them to the developer.  The
+            tool is setup to do this in several ways.  The first is to validate the beans during the start up
+            of the KRAD Framework allowing for the check of the entire dictionary being used.  The other is a
+            more limited check for use during development, loading only a core set of beans and any beans the
+            developer has set to check.
+          </para>
+          <para>
+            Needless of whether the Validator is being ran during the KRAD startup or with the Tools the RDV
+            runs through the complete list of beans being loaded and creates an individual error report for
+            every validation failed before display the report to he user. The output display can be configured
+            based on what is displayed and how it is displayed.
+          </para>
+        </sect2>
+      </sect1>
+      <sect1>
+        <title>Installation and Configuration</title>
+        <sect2>
+          <title>Rice Startup Validation</title>
+          <para>
+            A default version of the RDV is setup to run during the start of the KRAD Framework with the output
+            being handled by the DataDictionary.class logger as info, warn and errors.  This hands responsibility
+            of the display settings over to the log4j properties file. Since it is a developer tool it can be
+            turned on and off in the Framework's properties.  The RDV can be toggled on and off by setting the
+            param validate.data.dictionary to true or false in the xml settings file: common-config-defaults of
+            the rice-impl module.
+          </para>
+        </sect2>
+        <sect2>
+          <title>Rice Tools Validator</title>
+          <para>
+            To setup the independent RDV all that is required is to configure its settings in the properties
+            file.  It can be ran from the Rice Tools application.
+          </para>
+          <itemizedlist>
+            <listitem>
+              ricedictionaryvalidator.corefiles - This is a list of default bean files to be loaded during
+              validation (Default parent beans would examples of files contained)
+            </listitem>
+            <listitem>
+              ricedictionaryvalidator.display.method - This is the default setting for the method of output
+              when displaying the validations
+            </listitem>
+            <listitem>
+              ricedictionaryvalidator.display.method.file - This is the default file to save validation
+              results to if the output type is file
+            </listitem>
+            <listitem>
+              ricedictionaryvalidator.display.errors - Display default for whether to display the number
+              of errors
+            </listitem>
+            <listitem>
+              ricedictionaryvalidator.display.warnings - Display default for whether to display the number
+              of warnings
+            </listitem>
+            <listitem>
+              ricedictionaryvalidator.display.errors.messages - Display default for whether to display the
+              error messages
+            </listitem>
+            <listitem>
+              ricedictionaryvalidator.display.warnings.messages - Display default for whether to display the
+              warning messages
+            </listitem>
+            <listitem>
+              ricedictionaryvalidator.display.xmlfiles - Display default for whether to display the xml
+              files when displaying the error/warning messages
+            </listitem>
+            <listitem>
+              ricedictionaryvalidator.failonwarning - This is the default for whether the validator should
+              fail if warnings are detect instead of just errors
+            </listitem>
+          </itemizedlist>
+        </sect2>
+      </sect1>
+      <sect1>
+        <title>User Guide</title>
+        <para>
+          The Rice Dictionary Validator has two different implementations, a integrated validator to be ran
+          during start up of the KRAD Framework and an extension to run with the Rice Tools application.  The
+          first is to insure that the dictionary is accurate when running the complete application.  The second
+          is to aid in the development of the new bean sets.
+        </para>
+        <sect2>
+          <title>Rice Startup Validation</title>
+          <sect3>
+            <title>Running Validation</title>
+            <para>
+              If the KRAD Framework is set to run validations in its configuration file then the validator
+              will be ran automatically when the application is launched.  The validation option is set in
+              the common-config-defaults of the rice-impl module.
+            </para>
+          </sect3>
+          <sect3>
+            <title>Validations Covered</title>
+            <itemizedlist>
+              <listitem>
+                Uif Component Beans
+              </listitem>
+            </itemizedlist>
+          </sect3>
+          <sect3>
+            <title>Viewing Results</title>
+            <para>
+              By default the validation results are set to be displayed using log4j.  The basic results
+              will be shown as info tags while the messages will be displayed as error and warn tags
+              respectfully.  This can be changed in the DataDictionary.validateDD(boolean) method.
+            </para>
+          </sect3>
+          <sect3>
+            <title>Adding Validation to Data Objects</title>
+            <para>
+              Validation can be added to beans by adding the method:
+            </para>
+            public ArrayList &lt;ErrorReport&gt; DataObject.completeValidation(TracerToken, XmlBeanParser)
+            <para>
+              Within this method first update the Tracer Token using the line appropriate addBean() method
+              and follow by placing any validations that are needed for the data object.  When a validation
+              fails the create an ErrorReport object on it to hold information about the failure.  This
+              information should include at lease: its status as an error or warning (ErrorReport.ERROR or
+              ErrorReport.WARNING), the location of the bean (TracerToken.getBeanLocation), and a description
+              of the validation that failed.  It can also include a list of values that involved and a list
+              of file paths to the xml files involved found using the XmlBeanParser (not yet implemented).
+              An example of a basic report is below (other ways to make reports can be found in the
+              constructors of ErrorReport).
+            </para>
+            <literallayout>
+              ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+              error.setValidationFailed("ProgressiveRender must follow the Spring EL @{} format");
+              error.setBeanLocation(tracer.getBeanLocation());
+              error.addCurrentValue("progressiveRender ="+getProgressiveRender());
+            </literallayout>
+            <para>
+              If the data object extends another object that has validation too all upon its completeValidation()
+              method and compile the list of ErrorReports it returns and any ErrorReports generated during
+              the validations into a single ArrayList before returning them.
+            </para>
+          </sect3>
+        </sect2>
+        <sect2>
+          <title>Rice Tools Validator</title>
+          <sect3>
+            <title>Adding Files for Validation</title>
+            <para>
+              To add a file to the validation list the user can select "Add File to Validation List" in the
+              main menu. They will then be prompted to enter the path of the file to be validated.  The path
+              must be a valid file on the computer.
+            </para>
+          </sect3>
+          <sect3>
+            <title>Removing File for Validation</title>
+            <para>
+              To remove a file from the validation list the user can select "Remove File from Validation List"
+              to have the program display a list of all file paths currently set for validation.  The user
+              can then select one to remove it from the list.
+            </para>
+          </sect3>
+          <sect3>
+            <title>Viewing Files Set for Validation</title>
+            <para>
+              To display the list of files they have added for validation the user can simply select "View
+              Files in Validation List" which then displays the file paths.
+            </para>
+          </sect3>
+          <sect3>
+            <title>Validating Files</title>
+            <para>
+              To validate the files the user can simply select "Validate Files" from the main menu. The program
+              will validate the files then display the output based on the options set by the user.
+            </para>
+          </sect3>
+          <sect3>
+            <title>Changing Settings</title>
+            <para>
+              The Display settings as well as whether to have validations fail if a warning is detected can
+              be set by selecting "Change Settings" from the main menu.  This will take you to a sub menu
+              with options for all the settings that can be changed.  All the settings are controlled by
+              toggling them so the user can select the one they want to change then select yes/no to turn
+              it on/off.
+            </para>
+            <para>
+              The option for setting the output of the validation is slightly different as it asked for
+              additional information based on the output type selected.
+            </para>
+          </sect3>
+          <sect3>
+            <title>Exiting</title>
+            <para>
+              Once the user has completed running validations they can "Exit" the RDV by selecting exit from
+              the main menu.
+            </para>
+          </sect3>
+        </sect2>
+
+      </sect1>
+      <sect1>
+        <title>Technical Guide</title>
+        <sect2>
+          <title>Design Goals</title>
+          <itemizedlist>
+            <listitem>
+              Easily Expandable Validations
+            </listitem>
+            <listitem>
+              Limited need to change the RDV core by developers
+            </listitem>
+            <listitem>
+              Support for multiple varieties of beans
+            </listitem>
+            <listitem>
+              Support both full Rice and Rice Tools applications
+            </listitem>
+          </itemizedlist>
+        </sect2>
+        <sect2>
+          <title>RDV Framework Design</title>
+          <para>
+            The design for the Rice Dictionary Validator based on validating the data objects that the beans
+            are loaded into instead of the xml files themselves.  There are several reasons behind this decision.
+            The first is that by loading the beans Spring will have already partially validate them so the RDV
+            will not have to worry about the structure of the xml files.  Having limited dealings with the
+            xml files' structure is another reason since the possible ways in which the files can be wrote
+            would require creating parsers to deal with every combination.  This would make maintaining the
+            RDV difficult as xml structures change and new components are added; also any changes to the xml
+            format would such as adding custom schemas would break the RDV.  By having the data objects handle
+            their own validations the tool is easily maintainable since validation can be added by developers
+            as they add objects with little interaction with the core RDV.
+          </para>
+          <para>
+            To do this a visitor pattern is implemented in which the validator will cycle through the top level
+            of the beans being checked and call upon their validation methods, passing along tools to help. The
+            The data object validates itself then calls upon any parent classes to do the same. After the bean
+            has finished the objects within it are called to do the same.  Each time a data object is validated
+            any failures are compiled into set of reports which are then pasted up the line until they are
+            given back to the validator.
+          </para>
+          <sect3>
+            <title>Rice Integration</title>
+            <sect4>
+              <title>Data Object Validation</title>
+              <para>
+                The validation for the beans take place in the data objects themselves through the method
+                call completeValidation(TracerToken,XmlBeanParser).  The Data Object then adds itself to
+                the TracerToken before starting to run validations.  When a validation fails the Data
+                Object creates an ErrorReport storing information like whether it was an error or warning,
+                the validation failed, the bean's location from the TracerToken, values and pages involved.
+                All these reports are compiled into a single list.  The Data Object then calls upon its
+                parent to validate and pass it any reports the parent creates. Once it gets the reports
+                from the parent it adds them to its list and passes them all back up until they are given
+                to the validator.
+              </para>
+            </sect4>
+            <sect4>
+              <title>TracerToken</title>
+              <para>
+                The TracerToken is a tool to record the path of the validation through the different beans
+                and data objects involved.  It records the data object of each validation step and any
+                form of identifier that it has (id, propertyName, etc). To add a bean to the data object
+                a addBean() method is used; the default method takes two string but there are also defaults
+                based on the data object being validated.  To retrieve the path of the trace us the method
+                getBeanLocation().
+              </para>
+            </sect4>
+            <sect4>
+              <title>XmlBeanParser (Not Implemented)</title>
+              <para>
+                The XmlBeanParser is a tool set created to help developers identify the xml files containing
+                beans involved in a failed validation.  It contains a complete list of the files being
+                validated.
+              </para>
+            </sect4>
+            <sect4>
+              <title>Validator</title>
+              <para>
+                The Validator runs the validation process and stores the resulting data.  To run the
+                validations the Validator requires both the xml files, beans and whether it should fail
+                if warnings are detected; to meet these requirements there are two entry points for the
+                Validator based on if the both the xmls and beans are being passed or just the xmls.  If
+                the Validator is being supplied with only the xml files it will call upon the BeanLoader
+                to get the beans before running its validations.
+              </para>
+              <para>
+                To run the validations the Validator grabs a list of all the beans of a certain type using
+                factory method getBeansOfType(class).  It then creates the tools for the validation
+                (TracerToken and XmlBeanParser) before calling upon objects in the list to validate themselves.
+                It compiles any reports that it gets back from the objects into a master report list.
+                Because of the differences in the types of beans being used each type of beans being are
+                treated slightly differently.
+              </para>
+              <itemizedlist>
+                <listitem>
+                  UIF Components Beans - The validator cycles through all beans of type View to validate
+                  them and their parent components.  Components contained are handled by cycling through
+                  the getComponentsForLifecycle() and getComponentPrototypes().  This process is down
+                  recursively for each component validated.  The reason for handling this he as opposed
+                  to in the beans themselves is to reduce redundancy and off load burden on developers
+                  adding new components
+                </listitem>
+              </itemizedlist>
+            </sect4>
+            <sect4>
+              <title>Controller</title>
+              <para>
+                The Controller for the RDV core is more of a combination View/Controller since it takes
+                the beans and xml files from the KRAD Framework to pass to the Validator and then handles
+                the output itself using a passed in output method along with its own display settings.
+                The main connection point to the application is a series of validate() methods with the
+                rest of the functionality being hidden.
+              </para>
+            </sect4>
+            <sect4>
+              <title>Bean Loader</title>
+              <para>
+                The BeanLoader loads a set of xml files using the file paths to them.  It does this using
+                the same process that the DataDictionary uses so the beans are both configured and processed
+                correctly.  The files themselves are loaded in two ways based on if they are already in
+                the programs resource path or external, since the Spring XMLBeanDefinitionReader is set to
+                load resources.  Files already in the resource path can be loaded by simply sending their
+                file paths to the loadBeanDefinitions(String[]) method; the external files are transformed
+                into FileSystemResource before being sent to the reader.  Distinguishing between the two
+                types of files is done by checking if "classpath" is present within the file path String.
+                The BeanLoader stores and returns a filled in KualiDefaultListableBeanFactory.
+              </para>
+            </sect4>
+          </sect3>
+          <sect3>
+            <title>Rice Tools Validator</title>
+            <para>
+              The RDV interface for the Rice Tools is divided into two segments, a controller and view,
+              with the RDV core within the KRAD Framework acting as a backbone.
+            </para>
+            <sect4>
+              <title>Controller Extension (RDVStandaloneController)</title>
+              <para>
+                The controller for the Rice Tool Validator acts as the connection to the RDV core by
+                extending the cores controller.  This gives it access to the validation and output
+                properties of the RDV core.  Additional functionality is added since with the validations
+                being ran as standalone there are more options when it comes to output and settings.
+              </para>
+              <itemizedlist>
+                <listitem>
+                  Dynamic Output Types: Allows for the validator to switch between multiple ways to output the
+                  results of their validation
+                </listitem>
+                <listitem>
+                  Tooling GUI Output: Allows the validator to output the results to the Rice Tooling GUI
+                </listitem>
+                <listitem>
+                  Validation File List Management: Handles the Addition of files for testing as well as
+                  core files needed to load the system
+                </listitem>
+                <listitem>
+                  Property File Defaults: Allows for the setup of default settings by drawing from a
+                  properties file
+                </listitem>
+              </itemizedlist>
+            </sect4>
+            <sect4>
+              <title>View (RDVView)</title>
+              <para>
+                The view merely handles the direct interaction with the user.  Allowing them to set settings
+                manually as well as add or remove from the list of files to be validated.  Because there
+                is little variety in the information being collected there is limited validation being
+                done as well, mainly insuring valid index options are picked and valid files are entered.
+              </para>
+            </sect4>
+          </sect3>
+        </sect2>
+      </sect1>
+    </section>
 </chapter>

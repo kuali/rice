@@ -17,6 +17,9 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -27,6 +30,7 @@ import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -947,4 +951,35 @@ public class Action extends ContentElementBase {
         this.disableBlocking = disableBlocking;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Checks that a label or image ui is presence
+        if(getActionLabel()==null && getActionImage()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("ActionLabel and/or actionImage must be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("actionLabel ="+getActionLabel());
+            error.addCurrentValue("actionImage ="+getActionImage());
+            reports.add(error);
+        }
+
+        // Checks that an action is set
+        if(getJumpToIdAfterSubmit()!=null && getJumpToNameAfterSubmit()!=null){
+            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+            error.setValidationFailed("Only 1 jumpTo property should be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("jumpToIdAfterSubmit ="+getJumpToIdAfterSubmit());
+            error.addCurrentValue("jumpToNameAfterSubmit ="+getJumpToNameAfterSubmit());
+            reports.add(error);
+        }
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
+    }
 }

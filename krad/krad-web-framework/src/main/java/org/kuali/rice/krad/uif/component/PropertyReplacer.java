@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,4 +192,38 @@ public class PropertyReplacer extends ConfigurableBase implements Serializable {
         this.replacement = replacement;
     }
 
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     * @param parser Set of tools for parsing the xml files which were used to create the component
+     * @return A list of ErrorReports detailing errors found within the component and referenced within it
+     */
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean("PropertyReplacer",getPropertyName());
+
+        // Checking that required fields are set
+        if(getPropertyName()==null || getCondition()==null || getReplacement()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+            error.setValidationFailed("PropertyName, condition and replacement should be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("propertyName ="+getPropertyName());
+            error.addCurrentValue("condition ="+getCondition());
+            error.addCurrentValue("replacement ="+getReplacement());
+            reports.add(error);
+        }
+
+        // Validating Spring EL in condition
+        if(!RDValidator.validateSpringEL(getCondition())){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("Invalid Spring Expression Language");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("condition ="+getCondition());
+            reports.add(error);
+        }
+
+        return reports;
+    }
 }

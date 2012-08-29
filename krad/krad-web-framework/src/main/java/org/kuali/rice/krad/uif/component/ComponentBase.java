@@ -16,6 +16,10 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
@@ -1596,4 +1600,114 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         return additionalComponentsToRefreshJs;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports =new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Check for invalid characters in the components id
+        if(getId()!=null){
+            if(getId().contains("'")||getId().contains("\"")||getId().contains("[]")||getId().contains(".")||getId().contains("#")){
+                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+                error.setValidationFailed("Id contains invalid characters");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("id = "+getId());
+                reports.add(error);
+            }
+        }
+
+        // Check for a templates presence if the component is not self rendered
+        /*if(!isSelfRendered() && getTemplate()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("Template must be set if selfRendered is false");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("selfRendered = "+isSelfRendered());
+            error.addCurrentValue("template = "+getTemplate());
+            reports.add(error);
+        }*/
+
+        // Check for a render presence if the component is set to render
+        if((isProgressiveRenderViaAJAX()||isProgressiveRenderAndRefresh()) && (getProgressiveRender()==null)){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("ProgressiveRender must be set if progressiveRenderViaAJAX or progressiveRenderAndRefresh are true");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("progressiveRenderViaAJAX = "+isProgressiveRenderViaAJAX());
+            error.addCurrentValue("progressiveRenderAndRefresh = "+isProgressiveRenderAndRefresh());
+            error.addCurrentValue("progressiveRender = "+getProgressiveRender());
+            reports.add(error);
+        }
+
+        // Check for rendered html if the component is set to self render
+        if(isSelfRendered() && getRenderedHtmlOutput()==null) {
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("RenderedHtmlOutput must be set if selfRendered is true");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("selfRendered = "+isSelfRendered());
+            error.addCurrentValue("renderedHtmlOutput = "+getRenderedHtmlOutput());
+            reports.add(error);
+        }
+
+        // Check to prevent over writing of session persistence status
+        if(isDisableSessionPersistence() && isForceSessionPersistence()){
+            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+            error.setValidationFailed("DisableSessionPersistence and forceSessionPersistence cannot be both true");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("disableSessionPersistence = "+isDisableSessionPersistence());
+            error.addCurrentValue("forceSessionPersistence = "+isForceSessionPersistence());
+            reports.add(error);
+        }
+
+        // Check for un-executable data resets when no refresh option is set
+        if(getMethodToCallOnRefresh()!=null || isResetDataOnRefresh()){
+            if(!isProgressiveRenderAndRefresh() && !isRefreshedByAction() && !isProgressiveRenderViaAJAX() && !StringUtils.isNotEmpty(conditionalRefresh) && !(refreshTimer > 0)){
+                ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+                error.setValidationFailed("MethodToCallONRefresh and resetDataONRefresh should only be set when a trigger event is set");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("methodToCallONRefresh = "+getMethodToCallOnRefresh());
+                error.addCurrentValue("resetDataONRefresh = "+isResetDataOnRefresh());
+                error.addCurrentValue("progressiveRenderAndRefresh = "+ isProgressiveRenderAndRefresh());
+                error.addCurrentValue("refreshedByAction = "+ isRefreshedByAction());
+                error.addCurrentValue("progressiveRenderViaAJAX = "+ isProgressiveRenderViaAJAX());
+                error.addCurrentValue("conditionalRefresh = "+ getConditionalRefresh());
+                error.addCurrentValue("refreshTimer = "+ getRefreshTimer());
+                reports.add(error);
+            }
+        }
+
+        // Check to prevent complications with rendering and refreshing a component that is not always shown
+        if(StringUtils.isNotEmpty(getProgressiveRender()) && StringUtils.isNotEmpty(conditionalRefresh)){
+            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+            error.setValidationFailed("DO NOT use progressiveRender and conditionalRefresh on the same component unless "
+                    + "it is known that the component will always be visible in all cases when a conditionalRefresh "
+                    + "happens (ie conditionalRefresh has progressiveRender's condition and with its own condition). "
+                    + "If a component should be refreshed every time it is shown, use the progressiveRenderAndRefresh "
+                    + "option with this property instead.");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("progressiveRender = "+getProgressiveRender());
+            error.addCurrentValue("conditionalRefresh = "+getConditionalRefresh());
+            reports.add(error);
+        }
+
+        // Check for valid Spring EL format for progressiveRender
+        if(!RDValidator.validateSpringEL(getProgressiveRender())){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("ProgressiveRender must follow the Spring EL @{} format");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("progressiveRender ="+getProgressiveRender());
+            reports.add(error);
+        }
+
+        // Check for valid Spring EL format for conditionalRefresh
+        if(!RDValidator.validateSpringEL(getConditionalRefresh())){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("conditionalRefresh must follow the Spring EL @{} format");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("conditionalRefresh ="+getConditionalRefresh());
+            reports.add(error);
+        }
+
+        return reports;
+    }
 }

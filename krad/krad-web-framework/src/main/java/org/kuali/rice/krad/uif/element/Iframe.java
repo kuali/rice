@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+
+import java.util.ArrayList;
 
 /**
  * Content element that encloses an iframe
@@ -86,4 +92,27 @@ public class Iframe extends ContentElementBase {
 		this.frameborder = frameborder;
 	}
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Checks that a source is set
+        if(getSource()==null){
+            if(!RDValidator.checkExpressions(this)){
+                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+                error.setValidationFailed("Source must be set");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("source ="+getSource());
+                reports.add(error);
+            }
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
+    }
 }

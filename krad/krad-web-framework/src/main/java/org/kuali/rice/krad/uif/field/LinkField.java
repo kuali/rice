@@ -16,11 +16,15 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -162,6 +166,38 @@ public class LinkField extends FieldBase {
         }
 
         return null;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Checks that the link is set
+        if(getLink()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("Link should be set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("link = "+getLink());
+            reports.add(error);
+        }
+
+        // Checks that the label is set
+        if(getLabel()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+            error.setValidationFailed("Label is null, link should be used instead");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("label ="+getLabel());
+            error.addCurrentValue("link ="+getLink());
+            reports.add(error);
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
     }
 
 }

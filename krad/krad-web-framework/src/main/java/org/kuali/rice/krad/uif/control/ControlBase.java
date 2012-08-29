@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 
 import java.util.ArrayList;
@@ -112,5 +115,18 @@ public abstract class ControlBase extends ContentElementBase implements Control 
         }
         return super.getComplexDataAttributesJs();*/
         return super.getAllDataAttributesJs();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
     }
 }

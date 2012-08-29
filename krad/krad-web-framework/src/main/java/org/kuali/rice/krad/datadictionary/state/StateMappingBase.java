@@ -17,6 +17,9 @@ package org.kuali.rice.krad.datadictionary.state;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -149,5 +152,33 @@ public class StateMappingBase implements StateMapping {
      */
     public void setCustomClientSideValidationStates(Map<String, String> customClientSideValidationStates) {
         this.customClientSideValidationStates = customClientSideValidationStates;
+    }
+
+    /**
+     * @see StateMapping#completeValidation(org.kuali.rice.krad.ricedictionaryvalidator.TracerToken, org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser)
+     */
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean("StateMappingBase",getStatePropertyName());
+
+        // Checking that propertyName is set
+        if(getStatePropertyName()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.setValidationFailed("The State Property Name must be set");
+            error.addCurrentValue("statePropertyName = null");
+            reports.add(error);
+        }
+
+        // Checking that states are set
+        if(getStates()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.setValidationFailed("States should be set");
+            error.addCurrentValue("states = null");
+            reports.add(error);
+        }
+
+        return reports;
     }
 }

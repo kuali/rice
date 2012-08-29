@@ -16,11 +16,16 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -218,5 +223,30 @@ public class Message extends ContentElementBase {
      */
     public void setInlineComponents(List<Component> inlineComponents) {
         this.inlineComponents = inlineComponents;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Checks that text is set
+        if(getMessageText()==null){
+            if(RDValidator.checkExpressions(this)) {
+                ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+                error.setValidationFailed("MessageText should be set");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("messageText  ="+getMessageText());
+                reports.add(error);
+            }
+        }
+
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
     }
 }

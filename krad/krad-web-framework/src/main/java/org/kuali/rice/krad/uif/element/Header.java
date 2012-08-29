@@ -16,6 +16,10 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
@@ -308,5 +312,47 @@ public class Header extends ContentElementBase {
         if (lowerGroup != null) {
             lowerGroup.setItems(items);
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean(this);
+
+        // Checks that a correct header level is set
+        String headerLevel = getHeaderLevel().toUpperCase();
+        boolean correctHeaderLevel=false;
+        if(headerLevel.compareTo("H1")==0) correctHeaderLevel=true;
+        else if(headerLevel.compareTo("H2")==0) correctHeaderLevel=true;
+        else if(headerLevel.compareTo("H3")==0) correctHeaderLevel=true;
+        else if(headerLevel.compareTo("H4")==0) correctHeaderLevel=true;
+        else if(headerLevel.compareTo("H5")==0) correctHeaderLevel=true;
+        else if(headerLevel.compareTo("H6")==0) correctHeaderLevel=true;
+        else if(headerLevel.compareTo("LABEL")==0) correctHeaderLevel=true;
+        if(!correctHeaderLevel){
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+            error.setValidationFailed("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("headerLevel ="+getHeaderLevel());
+            reports.add(error);
+        }
+
+        // Checks that header text is set
+        if(getHeaderText()==null){
+            if(!RDValidator.checkExpressions(this)){
+                ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+                error.setValidationFailed("HeaderText should be set");
+                error.setBeanLocation(tracer.getBeanLocation());
+                error.addCurrentValue("headertText ="+getHeaderText());
+                reports.add(error);
+            }
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+
+        return reports;
     }
 }

@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
+import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
+import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -199,5 +203,43 @@ public class BaseConstraint implements Constraint {
             }
         }
         this.constraintStateOverrides = constraintStateOverrides;
+    }
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer Record of component's location
+     * @param parser Set of tools for parsing the xml files which were used to create the component
+     * @return A list of ErrorReports detailing errors found within the component and referenced within it
+     */
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+        tracer.addBean("BaseConstraint",getLabelKey());
+
+        if(getConstraintStateOverrides()!=null){
+            for(int i=0;i<constraintStateOverrides.size();i++){
+                if(constraintStateOverrides.get(i).getStates()==null){
+                    ErrorReport error = new ErrorReport(ErrorReport.ERROR);
+                    error.setValidationFailed("Constraints set in State Overrides must have there states property set");
+                    error.setBeanLocation(tracer.getBeanLocation());
+                    error.addCurrentValue("constraintStateOverrides("+i+").labelKey ="+constraintStateOverrides.get(i).getLabelKey());
+                    reports.add(error);
+                }
+                reports.addAll(constraintStateOverrides.get(i).completeValidation(tracer.getCopy(),parser));
+            }
+        }
+
+        if(getLabelKey()==null){
+            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
+            error.setValidationFailed("LabelKey is not set");
+            error.setBeanLocation(tracer.getBeanLocation());
+            error.addCurrentValue("labelKey");
+            reports.add(error);
+        }
+
+
+
+        return reports;
     }
 }

@@ -15,20 +15,13 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
 
 import java.util.Calendar;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -36,39 +29,24 @@ import com.thoughtworks.selenium.Selenium;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowDocTypeBlanketAppIT extends UpgradedSeleniumITBase {
+public class WorkFlowDocTypeBlanketAppIT extends AdminMenuBlanketAppITBase {
+
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=Document Type";
     }
 
-    @Test
-    public void testDocType() throws Exception {
-        String remotePublicUrl = getBaseUrlString();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Document Type");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+    @Override
+    public String blanketApprove() throws Exception {
+        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
+        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type");
+        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type " + ITUtil.DTS);
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        for (int second = 0;; second++) {
-            if (second >= 60) Assert.fail("timeout");
-            try { if (selenium.isElementPresent(parentDocType)) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        selenium.click(parentDocType);
-        selenium.waitForPageToLoad("30000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");        
+        ITUtil.waitAndClick(selenium, parentDocType);
+        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
+        ITUtil.waitAndClick(selenium, "link=return value");
+
         selenium.waitForPageToLoad("30000");
         String docTypeName = "Validation Test Doc Type " + Calendar.getInstance().getTimeInMillis();
         selenium.type("//input[@id='document.newMaintainableObject.name']", docTypeName);
@@ -76,25 +54,6 @@ public class WorkFlowDocTypeBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.type("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
         selenium.type("//input[@id='document.newMaintainableObject.label']", "Workflow Maintenance Document Type Document");
         selenium.type("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']", "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
-       
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        Thread.sleep(2000);
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-       
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
+        return docId;
     }
 }

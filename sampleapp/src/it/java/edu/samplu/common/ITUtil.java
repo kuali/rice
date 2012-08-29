@@ -36,12 +36,18 @@ public class ITUtil {
     public static void blanketApprove(Selenium selenium) throws InterruptedException {
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
+
 //        try {
 //            selenium.selectWindow("null");
 //            selenium.selectWindow("relative=up");
 //        } catch (Exception e) {
 //            // selectWindow null seems to vary? will work locally but not in CI?
 //        }
+        String errorText =  selenium.getText("//div[@class='error']");
+        if (errorText != null && errorText.contains("error(s) found on page.")) {
+            Assert.fail(errorText);
+        }
+
         waitAndClick(selenium, "//img[@alt='doc search']");
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
@@ -112,6 +118,10 @@ public class ITUtil {
         waitAndClick(selenium, elementLocator, 60);
     }
 
+    public static void waitAndClick(Selenium selenium, String elementLocator, String message) throws InterruptedException {
+        waitAndClick(selenium, elementLocator, 60, message);
+    }
+
     /**
      * Wait the given seconds for the elementLocator to be present or fail
      * @param selenium
@@ -120,11 +130,15 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitAndClick(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
-        waitForElement(selenium, elementLocator, 60);
+        waitAndClick(selenium, elementLocator, seconds, "");
+    }
+
+
+    public static void waitAndClick(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
+        waitForElement(selenium, elementLocator, seconds, message);
         selenium.click(elementLocator);
         Thread.sleep(1000);
     }
-
 
     /**
      * Wait 60 seconds for the elementLocator to be present or fail

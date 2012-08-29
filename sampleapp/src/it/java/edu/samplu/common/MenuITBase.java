@@ -40,6 +40,7 @@ public abstract class MenuITBase extends UpgradedSeleniumITBase {
         assertEquals("Kuali Portal Index", selenium.getTitle());
 
         ITUtil.waitAndClick(selenium, getLinkLocator());
+        Thread.sleep(1000);
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");
 

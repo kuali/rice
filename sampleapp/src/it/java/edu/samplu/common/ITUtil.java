@@ -253,6 +253,7 @@ public class ITUtil {
      * @param linkLocator used only in the failure message
      */
     public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
+        selenium.waitForPageToLoad("30000");
         String contents = selenium.getHtmlSource();
         if (contents.contains("Incident Report") && !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );

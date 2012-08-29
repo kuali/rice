@@ -15,10 +15,11 @@
  */
 package edu.samplu.krad.travelview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -35,23 +36,18 @@ public class MaintenanceSaveIT extends KradMenuITBase {
      */
     public void testVerifySave() throws Exception {
         gotoMenuLinkLocator();
-        selenium.type("name=document.documentHeader.documentDescription", "Test Document");
+        selenium.type("name=document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
         selenium.click("name=document.newMaintainableObject.dataObject.number");
         selenium.type("name=document.newMaintainableObject.dataObject.number", "1234567890");
         selenium.type("name=document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
         selenium.type("name=document.newMaintainableObject.dataObject.subAccount", "a1");
         selenium.click("css=button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
-
-        for (int second = 0;; second++) {
-            if (second >= 5) {
-                break;
+        Thread.sleep(2000);
+        if (selenium.isElementPresent("//li[@class='uif-errorMessageItem']")) {
+            String errorText = selenium.getText("//li[@class='uif-errorMessageItem']");
+            if (errorText != null && errorText.contains("errors")) {
+                fail(errorText);
             }
-
-            if (selenium.isTextPresent("error")) {
-                fail("An error appeared after clicking save");
-            }
-
-            Thread.sleep(1000);
         }
     }
 }

@@ -1,4 +1,18 @@
-package edu.samplu.common;
+/**
+ * Copyright 2005-2012 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */package edu.samplu.common;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
@@ -17,6 +31,8 @@ public class ITUtil {
 
     public static final String DTS = Calendar.getInstance().getTime().getTime() + "";
     public static String WAIT_TO_END_TEST = "5000";
+    public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
+    public static final int WAIT_DEFAULT_SECONDS = 60;
 
     /**
      * "FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"
@@ -43,8 +59,8 @@ public class ITUtil {
 //        } catch (Exception e) {
 //            // selectWindow null seems to vary? will work locally but not in CI?
 //        }
-        if (selenium.isElementPresent("//div[@class='error']")) {
-            String errorText =  selenium.getText("//div[@class='error']");
+        if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
+            String errorText =  selenium.getText(DIV_ERROR_LOCATOR);
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 Assert.fail(errorText);
             }
@@ -117,11 +133,11 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitAndClick(Selenium selenium, String elementLocator) throws InterruptedException {
-        waitAndClick(selenium, elementLocator, 60);
+        waitAndClick(selenium, elementLocator, WAIT_DEFAULT_SECONDS);
     }
 
     public static void waitAndClick(Selenium selenium, String elementLocator, String message) throws InterruptedException {
-        waitAndClick(selenium, elementLocator, 60, message);
+        waitAndClick(selenium, elementLocator, WAIT_DEFAULT_SECONDS, message);
     }
 
     /**
@@ -149,7 +165,7 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitForElement(Selenium selenium, String elementLocator) throws InterruptedException {
-        waitForElement(selenium, elementLocator, 60);
+        waitForElement(selenium, elementLocator, WAIT_DEFAULT_SECONDS);
     }
 
     /**
@@ -160,7 +176,7 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitForElement(Selenium selenium, String elementLocator, String message) throws InterruptedException {
-        waitForElement(selenium, elementLocator, 60, message);
+        waitForElement(selenium, elementLocator, WAIT_DEFAULT_SECONDS, message);
     }
 
     /**
@@ -171,7 +187,7 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitForElement(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
-        waitForElement(selenium, elementLocator, 60, "");
+        waitForElement(selenium, elementLocator, WAIT_DEFAULT_SECONDS, "");
     }
 
     /**
@@ -197,7 +213,7 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitForElementVisible(Selenium selenium, String elementLocator) throws InterruptedException {
-        waitForElementVisible(selenium, elementLocator, 60);
+        waitForElementVisible(selenium, elementLocator, WAIT_DEFAULT_SECONDS);
     }
 
     /**
@@ -218,7 +234,7 @@ public class ITUtil {
     /**
      * Fails if a Incident Report is detected, extracting and reporting the View Id, Document Id, and StackTrace
      * @param selenium
-     * @param linkLocator used only in the faillure message
+     * @param linkLocator used only in the failure message
      */
     public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
         String contents = selenium.getHtmlSource();

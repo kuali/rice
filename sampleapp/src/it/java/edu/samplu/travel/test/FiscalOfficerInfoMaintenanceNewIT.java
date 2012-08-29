@@ -15,11 +15,8 @@
  */
 package edu.samplu.travel.test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -43,6 +40,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("50000");
         selenium.selectFrame("iframeportlet");
         // String docId = selenium.getText("//span[contains(@id , '_attribute_span')][position()=1]");
+        ITUtil.checkForIncidentReport(selenium, "");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         selenium.type("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");      
         selenium.type("//input[@name='document.newMaintainableObject.dataObject.id']", "5");      

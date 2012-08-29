@@ -59,7 +59,8 @@ public class UifTooltipIT extends UpgradedSeleniumITBase {
         // check that default tooltip does not display when there are an error message on the field
         selenium.type("name=field1", "1");
         selenium.fireEvent("name=field1", "blur");        
-        selenium.type("name=field1", "1");        
+        selenium.fireEvent("name=field1", "focus");
+        selenium.type("name=field1", "1");
         Thread.sleep(2000);
         Assert.assertTrue(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-kr-error-cs") && !(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black"))
                 && selenium.isVisible("css=img.uif-validationImage"));

@@ -55,7 +55,7 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
         selenium.click("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         for (int second = 0;; second++) {
             if (second >= 15) {
-                fail("timeout");
+                fail("timeout, https://jira.kuali.org/browse/KULRICE-8038");
             }
 
             if (selenium.isElementPresent("name=document.notes[0].noteText")) {

@@ -42,7 +42,7 @@ public class MaintenanceAddDeleteFiscalOfficerIT extends KradMenuITBase {
         
         selenium.click("//button[@data-loadingmessage='Adding Line...']");
         
-        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
+        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number", "https://jira.kuali.org/browse/KULRICE-8038");
        
         assertEquals("1234567890", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
         assertEquals("2", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId"));

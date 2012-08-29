@@ -29,7 +29,7 @@ public abstract class AdminMenuBlanketAppITBase extends MenuITBase{
      * blanket approve document, returning docId as a String
      * @return docId
      */
-    public abstract String blanketApprove();
+    public abstract String blanketApprove() throws Exception;
 
     @Override
     protected String getMenuLinkLocator() {

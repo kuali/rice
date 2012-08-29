@@ -28,6 +28,7 @@ public abstract class AdminMenuITBase extends MenuITBase {
     public static final String LABEL_KUALI_DEFAULT = "label=KUALI : Default";
     public static final String CREATE_NEW_LOCATOR = "//img[@alt='create new']";
     public static final String ADMIN_LOCATOR = "link=Administration";
+    public static final String DOC_ID_LOCATOR = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
 
     @Override
     protected String getCreateNewLinkLocator() {

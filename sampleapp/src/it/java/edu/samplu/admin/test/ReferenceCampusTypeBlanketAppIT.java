@@ -15,57 +15,32 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
 
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 /**
  * tests that user 'admin', on blanket approving a new Campus Type maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeBlanketAppIT extends UpgradedSeleniumITBase {
+public class ReferenceCampusTypeBlanketAppIT extends AdminMenuBlanketAppITBase {
+
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    public String blanketApprove() throws Exception {
+        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
+        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
+        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type " + ITUtil.DTS);
+        selenium.type("//input[@id='document.newMaintainableObject.code']", "I");
+        selenium.type("//input[@id='document.newMaintainableObject.name']", "Indianapolis " + ITUtil.DTS);
+        return docId;
     }
 
-    @Test
-    public void testCampusType() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Campus Type");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type");
-        selenium.type("//input[@id='document.newMaintainableObject.code']", "I");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Indianapolis");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-      
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
+    @Override
+    protected String getLinkLocator() {
+        return "link=Campus Type";
     }
 }

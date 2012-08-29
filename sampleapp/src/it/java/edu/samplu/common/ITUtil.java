@@ -39,12 +39,12 @@ public class ITUtil {
     public static void blanketApprove(Selenium selenium) throws InterruptedException {
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
-        try {
+//        try {
 //            selenium.selectWindow("null");
-            selenium.selectWindow("relative=up");
-        } catch (Exception e) {
-            // selectWindow null seems to vary? will work locally but not in CI?
-        }
+//            selenium.selectWindow("relative=up");
+//        } catch (Exception e) {
+//            // selectWindow null seems to vary? will work locally but not in CI?
+//        }
         waitAndClick(selenium, "//img[@alt='doc search']");
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());

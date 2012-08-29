@@ -76,6 +76,7 @@ public class ServerInfoIT extends UpgradedSeleniumITBase {
 			try { if (!selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
+        selenium.fireEvent("name=field1", "blur");
 
 		Assert.assertTrue(!selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
 		Assert.assertFalse(selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));

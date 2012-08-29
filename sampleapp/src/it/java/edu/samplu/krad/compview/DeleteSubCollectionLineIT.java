@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.compview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 import static org.junit.Assert.assertNotSame;
@@ -41,12 +42,8 @@ public class DeleteSubCollectionLineIT extends UpgradedSeleniumITBase{
         selenium.click("link=Collections");
         Thread.sleep(5000);
         // wait for collections page to load by checking the presence of a sub collection line item
-	
-        for (int second = 0;; second++) {
-            if (second >=5) fail("timeout");
-            try { if (selenium.isElementPresent("name=list4[0].subList[0].field1")) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
+
+        ITUtil.waitForElement(selenium, "name=list4[0].subList[0].field1");
         // change a value in the line to be deleted
         selenium.type("name=list4[0].subList[0].field1", "selenium");
         // click the delete button

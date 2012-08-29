@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ITUtil {
 
-    public static String DTS = Calendar.getInstance().getTime().getTime() + "";
+    public static final String DTS = Calendar.getInstance().getTime().getTime() + "";
     public static String WAIT_TO_END_TEST = "5000";
 
     /**
@@ -72,11 +72,19 @@ public class ITUtil {
      * @param selenium to login with
      */
     public static void login(Selenium selenium) {
+        login(selenium, "admin");
+    }
+
+    /**
+     * If the JVM arg remote.autologin is set, auto login as admin will not be done.
+     * @param selenium to login with
+     */
+    public static void login(Selenium selenium, String user) {
         if (System.getProperty("remote.autologin") == null) {
             if (!"Login".equals(selenium.getTitle())) {
                 fail("Title is not Login as expected, but " + selenium.getTitle());
             }
-            selenium.type("__login_user", "admin");
+            selenium.type("__login_user", user);
             selenium.click("//input[@value='Login']");
             selenium.waitForPageToLoad("30000");
         }

@@ -16,7 +16,6 @@
 package edu.samplu.common;
 
 import com.thoughtworks.selenium.Selenium;
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
@@ -41,6 +40,14 @@ public abstract class UpgradedSeleniumITBase {
      */
     public abstract String getTestUrl();
 
+    /**
+     * Override in test to define a user other than admin
+     * @return
+     */
+    public String getUserName() {
+        return "admin";
+    }
+
     @Before
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
@@ -51,7 +58,7 @@ public abstract class UpgradedSeleniumITBase {
 
         // Login
         selenium.open(ITUtil.getBaseUrlString() + getTestUrl());
-        ITUtil.login(selenium);
+        ITUtil.login(selenium, getUserName());
     }
 
 

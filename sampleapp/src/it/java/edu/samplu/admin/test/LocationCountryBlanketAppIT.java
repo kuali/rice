@@ -32,6 +32,7 @@ public class LocationCountryBlanketAppIT extends AdminMenuBlanketAppITBase {
         return "link=Country";
     }
 
+    @Override
     public String blanketApprove() {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         String countryName = "Validation Test Country " + ITUtil.DTS;

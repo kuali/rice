@@ -31,7 +31,8 @@ public class ITUtil {
 
     public static final String DTS = Calendar.getInstance().getTime().getTime() + "";
     public static String WAIT_TO_END_TEST = "5000";
-    public static final String DIV_ERROR_LOCATOR = "//div[@class='msg-excol']";
+    public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
+//    public static final String DIV_ERROR_LOCATOR = "//div[@class='msg-excol']";
     public static final int WAIT_DEFAULT_SECONDS = 60;
 
     /**
@@ -60,9 +61,13 @@ public class ITUtil {
 //            // selectWindow null seems to vary? will work locally but not in CI?
 //        }
         if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
-            String errorText =  selenium.getText(DIV_ERROR_LOCATOR);
+            String errorText = selenium.getText(DIV_ERROR_LOCATOR);
             if (errorText != null && errorText.contains("error(s) found on page.")) {
-                errorText = errorText.replace("* required field ", "").trim(); // bit of extra ui text we don't care about
+                errorText = errorText.replace("* required field", "").trim(); // bit of extra ui text we don't care about
+                // TODO how to get the actual errors?
+//                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
+//                    errorText = errorText + " " + selenium.getText("//div[@class='left-errmsg']/div/div[1]");
+//                }
                 Assert.fail(errorText);
             }
         }

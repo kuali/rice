@@ -297,23 +297,18 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
     public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
         XPath xpath = null;
         String xPathCacheKey = null;
-        RouteContext rc = docContent.getRouteContext();
-        if (rc != null){
-            RouteNodeInstance rni = docContent.getRouteContext().getNodeInstance();
-            if (rni != null) {
-                xPathCacheKey = "xPath" + rni.getRouteNodeInstanceId() + "-" + rni.getName();
-                if(docContent.getRouteContext().getParameters().containsKey(xPathCacheKey)) {
-                    xpath = (XPath)docContent.getRouteContext().getParameters().get(xPathCacheKey);
-                } else {
-                    xpath = XPathHelper.newXPath(docContent.getDocument());
-                    docContent.getRouteContext().getParameters().put(xPathCacheKey, xpath);
-                }
+        RouteNodeInstance rni = docContent.getRouteContext().getNodeInstance();
+        if (rni != null) {
+            xPathCacheKey = "xPath" + rni.getRouteNodeInstanceId() + "-" + rni.getName();
+            if(docContent.getRouteContext().getParameters().containsKey(xPathCacheKey)) {
+                xpath = (XPath)docContent.getRouteContext().getParameters().get(xPathCacheKey);
             } else {
                 xpath = XPathHelper.newXPath(docContent.getDocument());
                 docContent.getRouteContext().getParameters().put(xPathCacheKey, xpath);
             }
         } else {
             xpath = XPathHelper.newXPath(docContent.getDocument());
+            docContent.getRouteContext().getParameters().put(xPathCacheKey, xpath);
         }
         WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
         resolver.setRuleExtensions(ruleExtensions);

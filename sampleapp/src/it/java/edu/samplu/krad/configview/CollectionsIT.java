@@ -16,8 +16,7 @@
 
 package edu.samplu.krad.configview;
 
-import java.util.Calendar;
-
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,25 +40,20 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
     public void testDefaultTestsTableLayout() throws Exception{
         //Thread.sleep(30000);
         Assert.assertTrue(selenium.isTextPresent("Default Tests"));
-        Assert.assertTrue(selenium.isTextPresent("Table Layout"));
-        Assert.assertTrue(selenium.isTextPresent("* Field 1"));
-        Assert.assertTrue(selenium.isTextPresent("* Field 2"));
-        Assert.assertTrue(selenium.isTextPresent("* Field 3"));
-        Assert.assertTrue(selenium.isTextPresent("* Field 4"));
-        Assert.assertTrue(selenium.isTextPresent("Actions"));
+        assertTableLayout();
 
         selenium.type("name=newCollectionLines['list1'].field1", "asdf1");
         selenium.type("name=newCollectionLines['list1'].field2", "asdf2");
         selenium.type("name=newCollectionLines['list1'].field3", "asdf3");
         selenium.type("name=newCollectionLines['list1'].field4", "asdf4");
         selenium.click("//button[contains(.,'add')]"); // the first button is the one we want
-       
+
         for (int second = 0;; second++) {
             if (second >= 60) Assert.fail("timeout");
             try { if (selenium.getValue("name=newCollectionLines['list1'].field1").equals("")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        
+
         Assert.assertEquals("", selenium.getValue("name=newCollectionLines['list1'].field1"));
         Assert.assertEquals("", selenium.getValue("name=newCollectionLines['list1'].field2"));
         Assert.assertEquals("", selenium.getValue("name=newCollectionLines['list1'].field3"));
@@ -68,9 +62,40 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
         Assert.assertEquals("asdf2", selenium.getValue("name=list1[0].field2"));
         Assert.assertEquals("asdf3", selenium.getValue("name=list1[0].field3"));
         Assert.assertEquals("asdf4", selenium.getValue("name=list1[0].field4"));
-
-        // how to figure out which delete button for the one we just added?
+        // TODO how to figure out which delete button for the one we just added?
     }
+
+    private void assertTableLayout() {
+        Assert.assertTrue(selenium.isTextPresent("Table Layout"));
+        Assert.assertTrue(selenium.isTextPresent("* Field 1"));
+        Assert.assertTrue(selenium.isTextPresent("* Field 2"));
+        Assert.assertTrue(selenium.isTextPresent("* Field 3"));
+        Assert.assertTrue(selenium.isTextPresent("* Field 4"));
+        Assert.assertTrue(selenium.isTextPresent("Actions"));
+    }
+
+    /**
+     * Test adding a column of values to the Add Blank Line Tests Table Layout
+     */
+    @Test
+    public void testAddBlankLine() throws Exception {
+        ITUtil.waitAndClick(selenium, "link=Add Blank Line");
+        ITUtil.waitAndClick(selenium, "//button[contains(.,'Add Line')]");
+
+        ITUtil.waitForElement(selenium, "name=list1[0].field1");
+        assertTableLayout();
+        Assert.assertEquals("", selenium.getValue("name=list1[0].field1"));
+        Assert.assertEquals("", selenium.getValue("name=list1[0].field2"));
+        Assert.assertEquals("", selenium.getValue("name=list1[0].field3"));
+        Assert.assertEquals("", selenium.getValue("name=list1[0].field4"));
+        Assert.assertEquals("5", selenium.getValue("name=list1[1].field1"));
+        Assert.assertEquals("6", selenium.getValue("name=list1[1].field2"));
+        Assert.assertEquals("7", selenium.getValue("name=list1[1].field3"));
+        Assert.assertEquals("8", selenium.getValue("name=list1[1].field4"));
+        // TODO type in new numbers into list1[0] fields and check that sums are updated and correct
+    }
+
+    // TODO similar tests for other Collection Tabs
 
     /**
      * Test action column placement in table layout collections

@@ -32,7 +32,7 @@ public class ITUtil {
     public static final String DTS = Calendar.getInstance().getTime().getTime() + "";
     public static String WAIT_TO_END_TEST = "5000";
     public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
-//    public static final String DIV_ERROR_LOCATOR = "//div[@class='msg-excol']";
+    public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
     public static final int WAIT_DEFAULT_SECONDS = 60;
 
     /**
@@ -64,7 +64,11 @@ public class ITUtil {
             String errorText = selenium.getText(DIV_ERROR_LOCATOR);
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 errorText = errorText.replace("* required field", "").trim(); // bit of extra ui text we don't care about
-                // TODO how to get the actual errors?
+                if (selenium.isElementPresent(DIV_EXCOL_LOCATOR)) { // not present if errors are at the bottom of the page (errmsg)
+                    errorText = selenium.getText(DIV_EXCOL_LOCATOR); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+                    errorText = errorText.replace("* required field", "").trim(); // bit of extra ui text we don't care about
+                }
+
 //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
 //                    errorText = errorText + " " + selenium.getText("//div[@class='left-errmsg']/div/div[1]");
 //                }

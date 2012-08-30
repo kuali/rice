@@ -16,7 +16,10 @@
 package org.kuali.rice.kim.service.impl;
 
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
@@ -24,14 +27,20 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kim.api.KimApiConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
+import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.xml.namespace.QName;
@@ -40,14 +49,26 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.*;
 
 public class RoleServiceImplTest extends KIMTestCase {
+    private RoleService roleService;
+    static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    static final String ROLE_MEMBER_ID1 = "45123";
+    static final String ROLE_ID = "100";
+    static final String MEMBER_ID = "1";
+    static final MemberType MEMBER_TYPE_R = MemberType.ROLE;
+    static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00";
+    static final DateTime ACTIVE_FROM = new DateTime(FORMATTER.parseDateTime(ACTIVE_FROM_STRING));
+    static final String ACTIVE_TO_STRING1 = "2013-01-01 12:00:00";
+    static final String ACTIVE_TO_STRING2 = "2014-01-01 12:00:00";
+    static final DateTime ACTIVE_TO1 = new DateTime(FORMATTER.parseDateTime(ACTIVE_TO_STRING1));
+    static final DateTime ACTIVE_TO2 = new DateTime(FORMATTER.parseDateTime(ACTIVE_TO_STRING2));
+    private BusinessObjectService businessObjectService;
 
-	private RoleService roleService;
-
-	public void setUp() throws Exception {
+    public void setUp() throws Exception {
 		super.setUp();
 		roleService = (RoleService) GlobalResourceLoader.getService(
                 new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.ROLE_SERVICE_SOAP));
@@ -129,8 +150,258 @@ public class RoleServiceImplTest extends KIMTestCase {
         assertTrue("removeDelegates did not update activeToDate",removeDelegate.getActiveToDate().equals(updateDelegateMember.getActiveToDate()));
     }
 
+    @Test
+    public void testRoleMemberCreateUpdate() {
 
-	
+        Role roleId = roleService.getRole(ROLE_ID);
+        List<String> roleIds = new ArrayList<String>();
+        roleIds.add(roleId.getId());
+
+        Map<String,String> attributes = new HashMap<String,String>();
+        attributes.put("parameterName", "parameterNameBefore");
+        attributes.put("namespaceCode", "namespaceCodeBefore");
+        attributes.put("componentName", "componentNameBefore");
+
+        RoleMember roleMember =  roleService.createRoleMember(RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID1, MEMBER_ID, MEMBER_TYPE_R, ACTIVE_FROM, ACTIVE_TO1, attributes, "", "").build());
+        RoleMemberBo rmBo = getRoleMemberBo(roleMember.getId());
+
+        RoleMember.Builder updatedRoleMember = RoleMember.Builder.create(roleMember);
+        updatedRoleMember.setActiveToDate(ACTIVE_TO2);
+        Map<String,String> newAttributes = new HashMap<String,String>();
+        newAttributes.put("parameterName", "parameterNameAfter");
+        newAttributes.put("namespaceCode", "namespaceCodeAfter");
+        newAttributes.put("componentName", "componentNameAfter");
+        updatedRoleMember.setAttributes(newAttributes);
+
+        roleService.updateRoleMember(updatedRoleMember.build());
+        RoleMemberBo updatedRmBo = getRoleMemberBo(roleMember.getId());
+
+        assertEquals(3,rmBo.getAttributeDetails().size());
+        assertEquals(3,updatedRmBo.getAttributeDetails().size());
+
+        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo :  updatedRmBo.getAttributeDetails()) {
+            for (RoleMemberAttributeDataBo oldRoleMemberAttrDataBo :  rmBo.getAttributeDetails()) {
+                if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
+                    newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
+                        assertEquals(new Long(2), newRoleMemberAttrDataBo.getVersionNumber());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testRoleMemberCreateUpdateNoAttrChange() {
+
+        Role roleId = roleService.getRole(ROLE_ID);
+        List<String> roleIds = new ArrayList<String>();
+        roleIds.add(roleId.getId());
+
+        Map<String,String> attributes = new HashMap<String,String>();
+        attributes.put("parameterName", "parameterNameBefore");
+        attributes.put("namespaceCode", "namespaceCodeBefore");
+        attributes.put("componentName", "componentNameBefore");
+
+        RoleMember roleMember =  roleService.createRoleMember(RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID1, MEMBER_ID, MEMBER_TYPE_R, ACTIVE_FROM, ACTIVE_TO1, attributes, "", "").build());
+        RoleMemberBo rmBo = getRoleMemberBo(roleMember.getId());
+
+        RoleMember.Builder updatedRoleMember = RoleMember.Builder.create(roleMember);
+        updatedRoleMember.setActiveToDate(ACTIVE_TO2);
+        updatedRoleMember.setAttributes(rmBo.getAttributes());
+
+        roleService.updateRoleMember(updatedRoleMember.build());
+        RoleMemberBo updatedRmBo = getRoleMemberBo(roleMember.getId());
+
+        assertEquals(3,rmBo.getAttributeDetails().size());
+        assertEquals(3,updatedRmBo.getAttributeDetails().size());
+
+        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo :  updatedRmBo.getAttributeDetails()) {
+            for (RoleMemberAttributeDataBo oldRoleMemberAttrDataBo :  rmBo.getAttributeDetails()) {
+                if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
+                        newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
+                    assertEquals(oldRoleMemberAttrDataBo.getAttributeValue(), newRoleMemberAttrDataBo.getAttributeValue());
+                    assertEquals(new Long(2), newRoleMemberAttrDataBo.getVersionNumber());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testRoleMemberCreateUpdateRemoveOneAttr() {
+
+        Role roleId = roleService.getRole(ROLE_ID);
+        List<String> roleIds = new ArrayList<String>();
+        roleIds.add(roleId.getId());
+
+        Map<String,String> attributes = new HashMap<String,String>();
+        attributes.put("parameterName", "parameterNameBefore");
+        attributes.put("namespaceCode", "namespaceCodeBefore");
+        attributes.put("componentName", "componentNameBefore");
+
+        RoleMember roleMember =  roleService.createRoleMember(RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID1, MEMBER_ID, MEMBER_TYPE_R, ACTIVE_FROM, ACTIVE_TO1, attributes, "", "").build());
+        RoleMemberBo rmBo = getRoleMemberBo(roleMember.getId());
+
+        RoleMember.Builder updatedRoleMember = RoleMember.Builder.create(roleMember);
+        updatedRoleMember.setActiveToDate(ACTIVE_TO2);
+        Map<String,String> newAttributes = new HashMap<String,String>();
+        newAttributes.put("parameterName", "parameterNameAfter");
+        newAttributes.put("namespaceCode", "namespaceCodeAfter");
+        updatedRoleMember.setAttributes(newAttributes);
+
+        roleService.updateRoleMember(updatedRoleMember.build());
+        RoleMemberBo updatedRmBo = getRoleMemberBo(roleMember.getId());
+
+        assertEquals(3,rmBo.getAttributeDetails().size());
+        assertEquals(2, updatedRmBo.getAttributeDetails().size());
+
+        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo :  updatedRmBo.getAttributeDetails()) {
+            for (RoleMemberAttributeDataBo oldRoleMemberAttrDataBo :  rmBo.getAttributeDetails()) {
+                if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
+                        newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
+                    assertEquals(new Long(2), newRoleMemberAttrDataBo.getVersionNumber());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testRoleMemberCreateUpdateAddOneAttr() {
+
+        Role roleId = roleService.getRole(ROLE_ID);
+        List<String> roleIds = new ArrayList<String>();
+        roleIds.add(roleId.getId());
+
+        Map<String,String> attributes = new HashMap<String,String>();
+        attributes.put("parameterName", "parameterNameBefore");
+        attributes.put("namespaceCode", "namespaceCodeBefore");
+
+        RoleMember roleMember =  roleService.createRoleMember(RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID1, MEMBER_ID, MEMBER_TYPE_R, ACTIVE_FROM, ACTIVE_TO1, attributes, "", "").build());
+        RoleMemberBo rmBo = getRoleMemberBo(roleMember.getId());
+
+        RoleMember.Builder updatedRoleMember = RoleMember.Builder.create(roleMember);
+        updatedRoleMember.setActiveToDate(ACTIVE_TO2);
+        Map<String,String> newAttributes = new HashMap<String,String>();
+        newAttributes.put("parameterName", "parameterNameAfter");
+        newAttributes.put("namespaceCode", "namespaceCodeAfter");
+        newAttributes.put("componentName", "componentNameAfter");
+
+        updatedRoleMember.setAttributes(newAttributes);
+
+        roleService.updateRoleMember(updatedRoleMember.build());
+        RoleMemberBo updatedRmBo = getRoleMemberBo(roleMember.getId());
+
+        assertEquals(2,rmBo.getAttributeDetails().size());
+        assertEquals(3,updatedRmBo.getAttributeDetails().size());
+
+        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo :  updatedRmBo.getAttributeDetails()) {
+            for (RoleMemberAttributeDataBo oldRoleMemberAttrDataBo :  rmBo.getAttributeDetails()) {
+                if (newRoleMemberAttrDataBo.getAttributeValue().equals("componentName")) {
+                    assertEquals(new Long(1), newRoleMemberAttrDataBo.getVersionNumber());
+                } else if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
+                        newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
+                    assertEquals(new Long(2), newRoleMemberAttrDataBo.getVersionNumber());
+                }
+            }
+        }
+    }
+
+
+    @Test
+    public void testDelegateMemberCreateUpdateRemoveWithAttr() {
+
+        Role r2 = roleService.getRole(ROLE_ID);
+        RoleMember rm1 = roleService.assignPrincipalToRole("user2", r2.getNamespaceCode(), r2.getName(),
+                new HashMap<String, String>());
+        String kimTypeId = "1";
+
+        //Create delegation
+        String id = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        DelegateTypeBo delegate = new DelegateTypeBo();
+        delegate.setDelegationId(id);
+        delegate.setDelegationType(DelegationType.PRIMARY);
+        delegate.setRoleId(r2.getId());
+        delegate.setActive(true);
+        delegate.setKimTypeId("" + kimTypeId);
+        delegate = KRADServiceLocator.getBusinessObjectService().save(delegate);
+
+        //Create delegate member
+        DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();
+        delegateMemberInfo.setDelegationId(delegate.getDelegationId());
+        delegateMemberInfo.setMemberId("user4");
+        delegateMemberInfo.setRoleMemberId(rm1.getId());
+        delegateMemberInfo.setType( MemberType.PRINCIPAL );
+        Map<String,String> attributes = new HashMap<String,String>();
+        attributes.put("parameterName", "parameterNameBefore");
+        attributes.put("namespaceCode", "namespaceCodeBefore");
+        attributes.put("componentName", "componentNameBefore");
+        delegateMemberInfo.setAttributes(attributes);
+        DelegateMember inDelegateMember =  delegateMemberInfo.build();
+        DelegateMember newDelegateMember = roleService.createDelegateMember(inDelegateMember);
+        assertNotNull("delegateMember not created",newDelegateMember);
+
+        DelegateMemberBo originalDelegateMemberBo = getDelegateMemberBo(newDelegateMember.getDelegationMemberId());
+
+        //Update delegate member
+        delegateMemberInfo.setVersionNumber(newDelegateMember.getVersionNumber());
+        DateTime dateTimeFrom   = DateTime.now().minusDays(3);
+        delegateMemberInfo.setActiveFromDate(dateTimeFrom);
+        DateTime dateTimeTo = DateTime.now().plusDays(3);
+        delegateMemberInfo.setActiveToDate(dateTimeTo);
+        delegateMemberInfo.setDelegationMemberId(newDelegateMember.getDelegationMemberId());
+        Map<String,String> newAttributes = new HashMap<String,String>();
+        newAttributes.put("parameterName", "parameterNameAfter");
+        newAttributes.put("namespaceCode", "namespaceCodeAfter");
+        newAttributes.put("componentName", "componentNameAfter");
+        delegateMemberInfo.setAttributes(newAttributes);
+        newDelegateMember = delegateMemberInfo.build();
+        DelegateMember updateDelegateMember = roleService.updateDelegateMember(newDelegateMember);
+        assertNotNull("updateDelegateMember not updated", updateDelegateMember);
+        assertEquals("activeFromDate not updated",dateTimeFrom,updateDelegateMember.getActiveFromDate());
+        assertEquals("activeToDate not updated",dateTimeTo,updateDelegateMember.getActiveToDate());
+
+        DelegateMemberBo updatedDelegateMemberBo = getDelegateMemberBo(updateDelegateMember.getDelegationMemberId());
+
+        for (DelegateMemberAttributeDataBo newRoleMemberAttrDataBo :  updatedDelegateMemberBo.getAttributeDetails()) {
+            for (DelegateMemberAttributeDataBo oldRoleMemberAttrDataBo :  updatedDelegateMemberBo.getAttributeDetails()) {
+                if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
+                        newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
+                    assertEquals(new Long(2), newRoleMemberAttrDataBo.getVersionNumber());
+                }
+            }
+        }
+
+        //remove (inactivate) delegate member
+        List<DelegateMember>  removeDelegateMembers = new ArrayList<DelegateMember>();
+        removeDelegateMembers.add(updateDelegateMember);
+        roleService.removeDelegateMembers(removeDelegateMembers);
+        DelegateMember removeDelegate = roleService.getDelegationMemberById(updateDelegateMember.getDelegationMemberId()) ;
+        assertTrue("removeDelegates did not update activeToDate",removeDelegate.getActiveToDate().equals(updateDelegateMember.getActiveToDate()));
+    }
+
+    protected RoleMemberBo getRoleMemberBo(String roleMemberId) {
+        if (StringUtils.isBlank(roleMemberId)) {
+            return null;
+        }
+
+        return getBusinessObjectService().findByPrimaryKey(RoleMemberBo.class, Collections.singletonMap(
+                KimConstants.PrimaryKeyConstants.ID, roleMemberId));
+    }
+
+    protected DelegateMemberBo getDelegateMemberBo(String delegationMemberId) {
+        if (StringUtils.isBlank(delegationMemberId)) {
+            return null;
+        }
+
+        return getBusinessObjectService().findByPrimaryKey(DelegateMemberBo.class,
+                Collections.singletonMap(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId));
+    }
+
+    protected BusinessObjectService getBusinessObjectService() {
+        if (businessObjectService == null) {
+            businessObjectService = KRADServiceLocator.getBusinessObjectService();
+        }
+        return businessObjectService;
+    }
+
 	@Test
 	public void testPrincipalHasRoleContainsGroupAssigned() {
 		// "p2" is in "g1" and "g1" assigned to "r2"

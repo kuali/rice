@@ -27,6 +27,7 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LocationCountryBlanketAppIT extends AdminMenuBlanketAppITBase {
+
     @Override
     public String getLinkLocator() {
         return "link=Country";
@@ -44,4 +45,6 @@ public class LocationCountryBlanketAppIT extends AdminMenuBlanketAppITBase {
         selenium.type("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
         return docId;
     }
+
 }
+ 

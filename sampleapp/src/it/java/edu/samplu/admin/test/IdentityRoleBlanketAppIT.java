@@ -18,6 +18,9 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
@@ -26,33 +29,26 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityRoleBlanketAppIT extends UpgradedSeleniumITBase {
-    @Override
-    public String getTestUrl() {
-        return PORTAL;
-    }
+public class IdentityRoleBlanketAppIT extends AdminMenuBlanketAppITBase {
+    
+         @Override
+         protected String getLinkLocator() {
+             return "link=Role";
+         }
 
-    @Test
-    public void testRole() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Role");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
+        @Override
+        public String blanketApprove() throws Exception {
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=return value");
-        selenium.waitForPageToLoad("30000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        selenium.waitForPageToLoad("30000");            
+            
+        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
+        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);        
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role");
-        selenium.select("//select[@id='document.roleNamespace']", IdentityResponsibilityBlanketAppIT.LABEL_KUALI_KUALI_SYSTEMS);
+        selenium.select("//select[@id='document.roleNamespace']", AdminMenuITBase.LABEL_KUALI_KUALI_SYSTEMS);
         selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.roleName']", "Validation Test Role4");
+        selenium.type("//input[@id='document.roleName']", "Validation Test Role " +ITUtil.DTS);
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
@@ -61,22 +57,7 @@ public class IdentityRoleBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         selenium.click("methodToCall.addMember.anchorAssignees");
         selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("KULRICE-7931 : IdentityRoleBlanketAppIT.testRole fails expected:<[ENROUTE]> but was:<[FINAL]>", "FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
+        
+        return docId;
     }
 }

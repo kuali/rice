@@ -18,6 +18,7 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
 import org.junit.Test;
@@ -27,41 +28,26 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityResponsibilityBlanketAppIT extends AdminMenuITBase {
-
+public class IdentityResponsibilityBlanketAppIT extends AdminMenuBlanketAppITBase {
     @Override
     protected String getLinkLocator() {
         return "link=Responsibility";
     }
 
-    @Test
-    public void testResponsibility() throws Exception {
-        gotoCreateNew();
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility");
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", LABEL_KUALI_KUALI_SYSTEMS);
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS);
-        selenium.type("//input[@id='document.newMaintainableObject.documentTypeName']", "Test");
-        selenium.type("//input[@id='document.newMaintainableObject.routeNodeName']", "Test");
-        selenium.click("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
-        selenium.click("//input[@id='document.newMaintainableObject.required']");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));
-        // KULRICE-7748 : IdentityResponsibilityBlanketAppIT fails expected:<[ENROUTE]> but was:<[FINAL]>
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("KULRICE-7748 : IdentityResponsibilityBlanketAppIT fails expected:<[ENROUTE]> but was:<[FINAL]>", "ENROUTE", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));
-            assertEquals("ENROUTE", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
-    }
+
+   @Override
+   public String blanketApprove() throws Exception {
+   ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
+   String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
+   selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility");
+   selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KUALI - Kuali Systems");
+   selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS);
+   selenium.type("//input[@id='document.newMaintainableObject.documentTypeName']", "Test");
+   selenium.type("//input[@id='document.newMaintainableObject.routeNodeName']", "Test");
+   selenium.click("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
+   selenium.click("//input[@id='document.newMaintainableObject.required']");
+   return docId;
+   }
+   
 }
+ 

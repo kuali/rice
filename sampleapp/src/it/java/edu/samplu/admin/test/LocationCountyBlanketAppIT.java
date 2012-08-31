@@ -20,6 +20,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Assert;
@@ -30,27 +33,19 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountyBlanketAppIT extends UpgradedSeleniumITBase {
+public class LocationCountyBlanketAppIT extends AdminMenuBlanketAppITBase {
+    
     @Override
-    public String getTestUrl() {
-        return PORTAL;
+    protected String getLinkLocator() {
+        return "link=County";
     }
 
-    @Test
-    public void testCounty() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=County");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        //selenium.setSpeed("2000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+   @Override
+   public String blanketApprove() throws Exception {
+         
+        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
+        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
+        
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
         for (int second = 0;; second++) {
@@ -79,25 +74,11 @@ public class LocationCountyBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("30000");
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
-        String countyName = "Validation Test County"+Calendar.getInstance().getTimeInMillis();
+        String countyName = "Validation Test County"+ITUtil.DTS;
         selenium.type("//input[@id='document.newMaintainableObject.name']", countyName);
         selenium.click("//input[@id='document.newMaintainableObject.active']");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }        
+        
+        return docId;  
     }
 }
+ 

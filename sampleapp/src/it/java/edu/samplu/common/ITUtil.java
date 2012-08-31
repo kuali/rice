@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ITUtil {
 
-    public static final String DTS = Calendar.getInstance().getTime().getTime() + "";
+    public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
     public static String WAIT_TO_END_TEST = "5000";
     public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
     public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
@@ -53,14 +53,9 @@ public class ITUtil {
     public static void blanketApprove(Selenium selenium) throws InterruptedException {
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
+        Thread.sleep(2000);
 
-//        try {
-//            selenium.selectWindow("null");
-//            selenium.selectWindow("relative=up");
-//        } catch (Exception e) {
-//            // selectWindow null seems to vary? will work locally but not in CI?
-//        }
-        if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
+       if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
             String errorText = selenium.getText(DIV_ERROR_LOCATOR);
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 errorText = errorText.replace("* required field", "").trim(); // bit of extra ui text we don't care about
@@ -75,7 +70,7 @@ public class ITUtil {
                 Assert.fail(errorText);
             }
         }
-
+        
         waitAndClick(selenium, "//img[@alt='doc search']");
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());

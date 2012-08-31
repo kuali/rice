@@ -163,12 +163,6 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
         // stub the RouteContext - it is needed for xpath caching optimization
         RouteContext ctx = new RouteContext();
-        RouteNodeInstance fakeRouteNodeInstance = new RouteNodeInstance();
-        RouteNode fakeRouteNode = new RouteNode();
-        fakeRouteNode.setRouteNodeName("fakeRouteNode");
-        fakeRouteNodeInstance.setRouteNode(fakeRouteNode);
-        fakeRouteNodeInstance.setRouteNodeInstanceId("fakeRouteNodeInstance");
-        ctx.setNodeInstance(fakeRouteNodeInstance);
 
 		docContent = new StandardDocumentContent(documentcontent, ctx);
 

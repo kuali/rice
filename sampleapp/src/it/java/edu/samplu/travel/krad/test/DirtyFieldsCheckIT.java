@@ -54,10 +54,10 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
 
         ITUtil.waitForElement(selenium, "name=field106");
-        focusAndType("name=field106", "this");
-        focusAndType("name=field112", "that");
-        assertEquals("THAT", selenium.getValue("name=field112"));
-		// 'Validation - Regex' navigation link
+        //Asserting text-field style to uppercase. This style would display input text in uppercase.
+        assertEquals("uppercase",selenium.getEval("window.document.getElementsByName('field112')[0].style.textTransform;"));
+        
+     	// 'Validation - Regex' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
         ITUtil.waitForElement(selenium, "name=field101");
         assertEquals("val", selenium.getValue("name=field101")); // form is preset to val

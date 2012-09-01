@@ -50,6 +50,11 @@ public class ITUtil {
         }
     }
 
+    /**
+     * Generic blanket approve behavior
+     * @param selenium
+     * @throws InterruptedException
+     */
     public static void blanketApprove(Selenium selenium) throws InterruptedException {
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");

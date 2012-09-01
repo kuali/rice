@@ -17,7 +17,6 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.ITUtil;
-import org.junit.Assert;
 
 import java.util.Calendar;
 
@@ -41,11 +40,7 @@ public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
         assertEquals("", selenium.getText("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter " + ITUtil.DTS);
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-        for (int second = 0;; second++) {
-            if (second >= 60) Assert.fail("timeout");
-            try { if (selenium.isElementPresent(componentLookUp)) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
+        ITUtil.waitForElement(selenium, componentLookUp);
         selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KR-NS - Kuali Nervous System");
         selenium.click(componentLookUp);
 

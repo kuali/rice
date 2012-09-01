@@ -58,10 +58,9 @@ public class ITUtil {
        if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
             String errorText = selenium.getText(DIV_ERROR_LOCATOR);
             if (errorText != null && errorText.contains("error(s) found on page.")) {
-                errorText = errorText.replace("* required field", "").trim(); // bit of extra ui text we don't care about
-                if (selenium.isElementPresent(DIV_EXCOL_LOCATOR)) { // not present if errors are at the bottom of the page (errmsg)
-                    errorText = selenium.getText(DIV_EXCOL_LOCATOR); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
-                    errorText = errorText.replace("* required field", "").trim(); // bit of extra ui text we don't care about
+                errorText = cleanUpErrorText(errorText);
+                if (selenium.isElementPresent(DIV_EXCOL_LOCATOR)) { // not present if errors are at the bottom of the page (see left-errmsg below)
+                    errorText = cleanUpErrorText(selenium.getText(DIV_EXCOL_LOCATOR)); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
                 }
 
 //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
@@ -77,6 +76,11 @@ public class ITUtil {
         selenium.selectFrame("iframeportlet");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
+    }
+
+    private static String cleanUpErrorText(String errorText) {
+        errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
+        return errorText;
     }
 
     /**

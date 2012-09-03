@@ -58,7 +58,7 @@ public abstract class UpgradedSeleniumITBase {
 
         // Login
         selenium.open(ITUtil.getBaseUrlString() + getTestUrl());
-        ITUtil.login(selenium, getUserName());
+        ITUtil.loginSe(selenium, getUserName());
     }
 
 

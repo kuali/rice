@@ -16,6 +16,7 @@
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -186,21 +187,32 @@ public class ITUtil {
      * If the JVM arg remote.autologin is set, auto login as admin will not be done.
      * @param selenium to login with
      */
-    public static void login(Selenium selenium) {
-        login(selenium, "admin");
+    public static void loginSe(Selenium selenium) {
+        loginSe(selenium, "admin");
+    }
+
+    public static void login(WebDriver driver, String userName) {
+        if (System.getProperty("remote.autologin") == null) {
+            if (!"Login".equals(driver.getTitle())) {
+                fail("Title is not Login as expected, but " + driver.getTitle());
+            }
+            driver.findElement(By.name("__login_user")).clear();
+            driver.findElement(By.name("__login_user")).sendKeys(userName);
+            driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+        }
     }
 
     /**
      * If the JVM arg remote.autologin is set, auto login as admin will not be done.
      * @param selenium to login with
      */
-    public static void login(Selenium selenium, String user) {
+    public static void loginSe(Selenium selenium, String user) {
         if (System.getProperty("remote.autologin") == null) {
             if (!"Login".equals(selenium.getTitle())) {
                 fail("Title is not Login as expected, but " + selenium.getTitle());
             }
             selenium.type("__login_user", user);
-            selenium.click("//input[@value='Login']");
+            selenium.click("//input[@type='submit']"); //using css selector fails
             selenium.waitForPageToLoad("30000");
         }
     }

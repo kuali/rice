@@ -56,6 +56,14 @@ public abstract class WebDriverITBase {
      */
     public abstract String getTestUrl();
 
+    /**
+     * Override in test to define a user other than admin
+     * @return
+     */
+    public String getUserName() {
+        return "admin";
+    }
+
     @BeforeClass
     public static void createAndStartService() throws Exception {
         String driverParam = System.getProperty("remote.public.driver");
@@ -82,13 +90,11 @@ public abstract class WebDriverITBase {
     @Before
     public void setUp() throws Exception {
         driver = ITUtil.getWebDriver();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-        // Login
+        driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        String userName = getUserName();
         driver.get(ITUtil.getBaseUrlString() + getTestUrl());
-        driver.findElement(By.name("__login_user")).clear();
-        driver.findElement(By.name("__login_user")).sendKeys("admin");
-        driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+        // Login
+        ITUtil.login(driver, userName);
     }
 
     /**

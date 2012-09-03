@@ -50,7 +50,7 @@ public abstract class UpgradedSeleniumITBase {
 
     @Before
     public void setUp() throws Exception {
-        driver = new FirefoxDriver();
+        driver = ITUtil.getWebDriver();
         if (!getTestUrl().startsWith("/")) {
             fail("getTestUrl does not start with /"); // TODO add it?
         }

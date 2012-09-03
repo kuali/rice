@@ -16,53 +16,30 @@
 
 package edu.samplu.admin.test;
 
-
-
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.UpgradedSeleniumITBase;
+import edu.samplu.common.WebDriverITBase;
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessorKEWAdapter;
-import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBoLookupableHelperService;
-import org.kuali.rice.kew.util.Utilities;
-
-import com.gargoylesoftware.htmlunit.ElementNotFoundException;
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Tests docsearch url parameters
  */
-@Ignore
-public class DocumentSearchURLParametersIT {
-    private static final String ADMIN_USER_NETWORK_ID = "admin";
+public class DocumentSearchURLParametersIT extends WebDriverITBase {
 
-    private WebDriver driver;
-    private String base;
+    @Override
+    public String getTestUrl() {
+        return UpgradedSeleniumITBase.PORTAL;
+    }
 
     private static final String DOCUMENT_TYPE_NAME = "KualiNotification";
     private static final String ADVANCED_SEARCH_ONLY_FIELD = "applicationDocumentId";
@@ -103,25 +80,6 @@ public class DocumentSearchURLParametersIT {
         ADVANCED_FIELDS.put("isAdvancedSearch", "YES");
     }
 
-    @Before
-    public void setUp() throws Exception {
-        driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.firefox());
-        // default to locally running dev sampleapp
-        base = StringUtils.defaultIfEmpty(System.getProperty("remote.public.url"), "http://localhost:8080/kr-dev");
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        driver.quit();
-    }
-
-    private void performLogin() {
-        driver.get(base);
-        assertEquals("Login", driver.getTitle());
-        driver.findElement(By.name("__login_user")).sendKeys(ADMIN_USER_NETWORK_ID);
-        driver.findElement(By.xpath("//input[@value='Login']")).click();
-    }
-
     private String getDocSearchURL(Map<String, String> params) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry: params.entrySet()) {
@@ -131,15 +89,15 @@ public class DocumentSearchURLParametersIT {
         
     }
     private String getDocSearchURL(String params) {
-        return base + "/kew/DocumentSearch.do?" + params;
+        return ITUtil.getBaseUrlString() + "/kew/DocumentSearch.do?" + params;
     }
     
     private WebElement findElementByTagAndName(String tag, String name) {
-        return driver.findElement(By.xpath("//" + tag + "[@name='" + name + "']"));
+        return driver.findElement(By.cssSelector(tag + "[name=" + name + "]"));
     }
     
     private WebElement findInput(String name) {
-        return findElementByTagAndName("input", name);
+        return driver.findElement(By.xpath("//input[@name='" + name + "']"));
     }
     
     private WebElement findModeToggleButton() {
@@ -165,7 +123,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testBasicSearchMode() throws InterruptedException{
-        performLogin();
         driver.get(getDocSearchURL(""));
         WebElement toggle = findModeToggleButton();
         assertSearchDetailMode(toggle, false);
@@ -175,7 +132,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testAdvancedSearchMode() {
-        performLogin();
         driver.get(getDocSearchURL((KRADConstants.ADVANCED_SEARCH_FIELD + "=YES")));
         WebElement toggle = findModeToggleButton();
         assertSearchDetailMode(toggle, true);
@@ -185,8 +141,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testHeaderBarDisabled() throws InterruptedException{
-        performLogin();
-
         driver.get(getDocSearchURL("headerBarEnabled=false"));
         assertTrue(driver.findElements(By.id("headerarea-small")).isEmpty());
         assertInputPresence(CORE_FIELDS, true);
@@ -197,7 +151,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testCriteriaDisabled() throws InterruptedException{
-        performLogin();
         driver.get(getDocSearchURL("searchCriteriaEnabled=NO"));
         assertInputPresence(CORE_FIELDS, false);
         driver.get(getDocSearchURL("searchCriteriaEnabled=true"));
@@ -206,8 +159,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testBasicSearchFields() throws InterruptedException{
-        performLogin();
-
         // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
         driver.get(getDocSearchURL(BASIC_FIELDS));
 
@@ -228,8 +179,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testBasicSearchFieldsAndExecuteSearch() throws InterruptedException {
-        performLogin();
-
         // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
         Map<String, String> fields = new HashMap<String, String>();
         fields.putAll(BASIC_FIELDS);
@@ -259,8 +208,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testBasicSearchFieldsAndExecuteSearchWithHiddenCriteria() throws InterruptedException {
-        performLogin();
-
         // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
         Map<String, String> fields = new HashMap<String, String>();
         fields.putAll(BASIC_FIELDS);
@@ -278,8 +225,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testAdvancedSearchFields() throws InterruptedException{
-        performLogin();
-
         // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
         Map<String, String> values = new HashMap<String, String>(BASIC_FIELDS);
         values.putAll(ADVANCED_FIELDS);
@@ -294,8 +239,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testAdvancedSearchFieldsAndExecuteSearch() throws InterruptedException{
-        performLogin();
-
         // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
         Map<String, String> expected = new HashMap<String, String>(BASIC_FIELDS);
         expected.putAll(ADVANCED_FIELDS);
@@ -316,8 +259,6 @@ public class DocumentSearchURLParametersIT {
 
     @Test
     public void testAdvancedSearchFieldsAndExecuteSearchWithHiddenCriteria() throws InterruptedException {
-        performLogin();
-
         // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
         Map<String, String> expected = new HashMap<String, String>(BASIC_FIELDS);
         expected.putAll(ADVANCED_FIELDS);
@@ -341,8 +282,6 @@ public class DocumentSearchURLParametersIT {
      */
     @Test
     public void testSupplyingSavedSearchNameDoesNothing() throws InterruptedException {
-        performLogin();
-
         // get the search saved
         driver.get(getDocSearchURL(BASIC_FIELDS));
 

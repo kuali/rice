@@ -16,7 +16,15 @@
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
@@ -119,6 +127,59 @@ public class ITUtil {
             baseUrl = "http://" + baseUrl;
         }
         return baseUrl;
+    }
+
+    /**
+     * In order to run as a smoke test under selenium grid the ability to set the hubUrl via the JVM arg remote.public.hub is required.
+     * Trailing slashes are trimmed.  If the remote.public.hub does not start with http:// it will be added.
+     * @return http://localhost:4444/wd/hub by default else the value of remote.public.hub
+     */
+    public static String getHubUrlString() {
+        String hubUrl = System.getProperty("remote.public.hub");
+        if (hubUrl == null) {
+            hubUrl = "http://localhost:4444/wd/hub";
+        }
+        if (hubUrl.endsWith("/")) {
+            hubUrl = hubUrl.substring(0, hubUrl.length() - 1);
+        }
+        if (!hubUrl.startsWith("http")) {
+            hubUrl = "http://" + hubUrl;
+        }
+        if (!hubUrl.endsWith("/wd/hub")) {
+            hubUrl = hubUrl + "/wd/hub";
+        }
+        return hubUrl;
+    }
+
+    /**
+     * remote.public.driver set to chrome or firefox (null assumes firefox)
+     * if remote.public.hub is set a RemoteWebDriver is created (Selenium Grid)
+     * @return WebDriver or null if unable to create
+     */
+    public static WebDriver getWebDriver() {
+        String driverParam = System.getProperty("remote.public.driver");
+        String hubParam = System.getProperty("remote.public.hub");
+        if (hubParam == null) {
+            if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
+                FirefoxProfile profile = new FirefoxProfile();
+                profile.setEnableNativeEvents(false);
+                return new FirefoxDriver(profile);
+            } else if ("chrome".equalsIgnoreCase(driverParam)) {
+                return new ChromeDriver();
+            }
+        } else {
+            try {
+                if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
+                    return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.firefox());
+                } else if ("chrome".equalsIgnoreCase(driverParam)) {
+                    return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.chrome());
+                }
+            } catch (MalformedURLException mue) {
+                System.out.println(mue.getMessage());
+                mue.printStackTrace();
+            }
+        }
+        return null;
     }
 
     /**

@@ -26,8 +26,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -77,7 +81,7 @@ public abstract class WebDriverITBase {
      */
     @Before
     public void setUp() throws Exception {
-        driver = getWebDriver();
+        driver = ITUtil.getWebDriver();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         // Login
@@ -161,18 +165,6 @@ public abstract class WebDriverITBase {
         driver.switchTo().window(windowName).findElements(By.tagName("head"));
         assertEquals(url, driver.getCurrentUrl());
         driver.switchTo().window(parentWindowHandle);
-    }
-
-    public WebDriver getWebDriver() {
-        String driverParam = System.getProperty("remote.public.driver");
-        if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
-            FirefoxProfile profile = new FirefoxProfile();
-            profile.setEnableNativeEvents(false);
-            return new FirefoxDriver(profile);
-        } else if ("chrome".equalsIgnoreCase(driverParam)) {
-            return new ChromeDriver();
-        }
-        return null;
     }
 }
 

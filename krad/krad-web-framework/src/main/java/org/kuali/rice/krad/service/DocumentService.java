@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveEvent;
 
@@ -308,4 +309,11 @@ public interface DocumentService {
      */
     public Document completeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException;
 
+    /**
+     * Helper method used to save and validate a document
+     *
+     * @param document Document
+     * @param event KualiDocumentEvent
+     */
+    public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException;
 }

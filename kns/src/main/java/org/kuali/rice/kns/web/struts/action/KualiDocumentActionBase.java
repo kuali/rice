@@ -82,6 +82,7 @@ import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
+import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SendAdHocRequestsEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -2051,28 +2052,33 @@ public class KualiDocumentActionBase extends KualiAction {
             return new Response(question, disapprovalNoteText, buttonClicked);
         }
     }
-    
+
     public ActionForward takeSuperUserActions(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-    	KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
-    	if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
-    		GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.annotation.missing", "");
-    		return mapping.findForward(RiceConstants.MAPPING_BASIC);
-    	} else if(documentForm.getSelectedActionRequests().isEmpty()) {
-    		GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.none.selected", "");
-    		return mapping.findForward(RiceConstants.MAPPING_BASIC);
-    	}
-    	for(String actionRequestId : documentForm.getSelectedActionRequests()) {
-    		ActionRequest actionRequest = null;
-    		for(ActionRequest pendingActionRequest : documentForm.getActionRequests()) {
-    			if(StringUtils.equals(pendingActionRequest.getId(), actionRequestId)) {
-    				actionRequest = pendingActionRequest;
-    				break;
-    			}
-    		}
-    		if(actionRequest == null) {
-    			// If the action request isn't pending then skip it
-    			continue;
-    		}
+        KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
+        if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.annotation.missing", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        } else if(documentForm.getSelectedActionRequests().isEmpty()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.none.selected", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+        for(String actionRequestId : documentForm.getSelectedActionRequests()) {
+            ActionRequest actionRequest = null;
+            for(ActionRequest pendingActionRequest : documentForm.getActionRequests()) {
+                if(StringUtils.equals(pendingActionRequest.getId(), actionRequestId)) {
+                    actionRequest = pendingActionRequest;
+                    break;
+                }
+            }
+            if(actionRequest == null) {
+                // If the action request isn't pending then skip it
+                continue;
+            }
+            if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()) ||
+                StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
+                    getDocumentService().validateAndPersistDocument(documentForm.getDocument(), new RouteDocumentEvent(documentForm.getDocument()));
+            }
+
             WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
             DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
             documentActions.superUserTakeRequestedAction(parameters, true, actionRequestId);
@@ -2089,11 +2095,11 @@ public class KualiDocumentActionBase extends KualiAction {
                 messageString = "general.routing.superuser.actionRequestApproved";
             }
             GlobalVariables.getMessageMap().putInfo("document", messageString, documentForm.getDocId(), actionRequestId);
-    	}
+        }
         documentForm.setSuperUserAnnotation("");
-    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     public ActionForward superUserDisapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
     	KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
     	if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {

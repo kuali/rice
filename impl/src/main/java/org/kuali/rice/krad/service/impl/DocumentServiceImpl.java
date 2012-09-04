@@ -816,6 +816,7 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * Validates and persists a document.
      */
+    @Override
     public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException {
         if (document == null) {
             LOG.error("document passed to validateAndPersist was null");

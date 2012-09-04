@@ -88,6 +88,7 @@ public class View extends ContainerBase {
     private ViewTheme theme;
 
     private int idSequence;
+    private Map<String, Integer> visitedIds;
 
     private String stateObjectBindingPath;
     private StateMapping stateMapping;
@@ -184,6 +185,7 @@ public class View extends ContainerBase {
         viewRequestParameters = new HashMap<String, String>();
         expressionVariables = new HashMap<String, String>();
         clientSideState = new HashMap<String, Object>();
+        visitedIds = new HashMap<String, Integer>();
 
         dialogs = new ArrayList<Group>();
     }
@@ -312,6 +314,8 @@ public class View extends ContainerBase {
         // assign ID if necessary
         if (StringUtils.isBlank(component.getId())) {
             component.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
+        } else {
+            component.setId(adjustIdIfNecessary(component.getId()));
         }
 
         // capture current sequence value for component refreshes
@@ -319,8 +323,12 @@ public class View extends ContainerBase {
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
-            if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
-                layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
+            if (layoutManager != null) {
+                if (StringUtils.isBlank(layoutManager.getId())) {
+                    layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
+                } else {
+                    layoutManager.setId(adjustIdIfNecessary(layoutManager.getId()));
+                }
             }
         }
 
@@ -330,6 +338,37 @@ public class View extends ContainerBase {
         for (Component nestedComponent : allNested) {
             assignComponentIds(nestedComponent);
         }
+    }
+
+    /**
+     * Checks against the visited ids to see if the id is duplicate, if so it is adjusted to make
+     * an unique id by appending an unique sequence number
+     *
+     * @param id - id to adjust if necessary
+     * @return String original or adjusted id
+     */
+    protected String adjustIdIfNecessary(String id) {
+        String adjustedId = id;
+
+        if (visitedIds.containsKey(id)) {
+            Integer nextAdjustSeq = visitedIds.get(id);
+            adjustedId = id + nextAdjustSeq;
+
+            // verify the adjustedId does not already exist
+            while (visitedIds.containsKey(adjustedId)) {
+                nextAdjustSeq = nextAdjustSeq + 1;
+                adjustedId = id + nextAdjustSeq;
+            }
+
+            visitedIds.put(adjustedId, new Integer(1));
+
+            nextAdjustSeq = nextAdjustSeq + 1;
+            visitedIds.put(id, nextAdjustSeq);
+        } else {
+            visitedIds.put(id, new Integer(1));
+        }
+
+        return adjustedId;
     }
 
     /**
@@ -515,6 +554,21 @@ public class View extends ContainerBase {
      */
     public void setIdSequence(int idSequence) {
         this.idSequence = idSequence;
+    }
+
+    /**
+     * An internal map that is used to keep track of seen ids and adjust duplicates if necessary
+     *
+     * <p>
+     * If duplicate ids are configured, they will be adjusted by adding a sequence integer to the end. This
+     * is to assure all ids are unique. The first id will be left as is, all duplicates after will have the
+     * sequence appended starting with _1.
+     * </p>
+     *
+     * @return Map<String, Integer> map containing id as key, and duplicate adjustment integer as value
+     */
+    public Map<String, Integer> getVisitedIds() {
+        return visitedIds;
     }
 
     /**

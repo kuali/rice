@@ -79,7 +79,12 @@
 				src="${pageContext.request.contextPath}/${javascriptFile}"></script>
 </c:if>
 </c:forEach>
-  <c:choose>
+
+<script type="text/javascript">
+    var jq = jQuery.noConflict();
+</script>
+
+    <c:choose>
     <c:when test="${lookup}" >
       <c:if test="${not empty KualiForm.headerNavigationTabs}">
         <link href="kr/css/${KualiForm.navigationCss}" rel="stylesheet" type="text/css" />

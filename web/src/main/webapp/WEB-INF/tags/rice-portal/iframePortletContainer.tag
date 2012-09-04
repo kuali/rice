@@ -26,7 +26,7 @@
 <iframe src="${channelUrl}"
         onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>'
         name="iframeportlet" id="iframeportlet" style="width: 100%;"
-        title="E-Doc" scrolling="auto" frameborder="0" width="100%"></iframe>
+        title="E-Doc" scrolling="auto" frameborder="0" height="${frameHeight}" width="100%"></iframe>
 
 <script type="text/javascript">
   jQuery(function () {
@@ -67,7 +67,9 @@
     });
 
     function setupCrossDomainResize() {
-      thisIframe.height(if_height);
+      if (!browserIsIE8) {
+        thisIframe.height(if_height);
+      }
     }
 
     //a function for iframes in the same domain

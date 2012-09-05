@@ -45,7 +45,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DictionaryValidationServiceImplTest {
+public class DictionaryValidationServiceImplTest extends KRADTestCase {
 
 	ClassPathXmlApplicationContext context;
 	private DictionaryValidationServiceImpl service;
@@ -182,6 +182,7 @@ public class DictionaryValidationServiceImplTest {
 	@Test
 	public void testRequiredNestedAttribute() throws IOException{	
 		DataDictionaryService dataDictionaryService = new DataDictionaryServiceImpl(dataDictionary);
+        KualiModuleServiceImpl moduleService = new KualiModuleServiceImpl();
 		service.setDataDictionaryService(dataDictionaryService);
 						
 		//Get object entries from dictionary

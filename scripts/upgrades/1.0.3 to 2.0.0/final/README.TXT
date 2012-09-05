@@ -27,7 +27,6 @@ If you are upgrading a standalone or bundled Oracle database:
     1. Run FIXED-update_final_oracle.sql
     2. Once data is verified, run cleanup_final_oracle.sql to drop temporary tables created during the upgrade
 
-
 If you are upgrading a standalone or bundled MySql database:
 
     1. Run FIXED-update_final_mysql.sql
@@ -59,7 +58,7 @@ If you are upgrading an embedded MySql database:
 /*    Items to Consider                               */
 /******************************************************/
 
-    1.  Are you upgrading to 2.1?  If so, read the following:
+    1. Are you upgrading to 2.1?  If so, read the following:
        https://svn.kuali.org/repos/rice/branches/rice-2.1/scripts/upgrades/2.0.0 to 2.1/final/README.TXT
 
     2.  If your database is extremely large in production, leaving the temp tables to be dropped after the upgrade

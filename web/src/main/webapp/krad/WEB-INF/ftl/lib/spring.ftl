@@ -287,7 +287,7 @@
     <#local controlId="${id}_${option_index}">
     <span>
     <input type="radio" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${controlId}" onclick="jQuery('#${controlId}').attr('checked','checked'); return false;"><@krad.template component=option.message/></label>
+    <label for="${controlId}" onclick="handleRadioLabelClick('${controlId}',event); return false;"><@krad.template component=option.message/></label>
     </span>
     ${separator}
     </#list>

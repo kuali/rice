@@ -141,8 +141,8 @@ button.uif-secondaryActionButton {
     border-radius: 4px;
 }
 
-button.uif-primaryActionButton[disabled="true"], button.uif-primaryActionButton[disabled="disabled"],
-button.uif-primaryActionButton[disabled="true"]:hover, button.uif-primaryActionButton[disabled="disabled"]:hover {
+button.uif-primaryActionButton[disabled],
+button.uif-primaryActionButton[disabled]:hover{
     background-color: #C8EABC;
     border: 1px solid #abdea5;
     color: #7FA393;
@@ -158,8 +158,8 @@ button.uif-primaryActionButton[disabled="true"]:hover, button.uif-primaryActionB
     cursor: default;
 }
 
-button.uif-secondaryActionButton[disabled="true"], button.uif-secondaryActionButton[disabled="disabled"],
-button.uif-secondaryActionButton[disabled="true"]:hover, button.uif-secondaryActionButton[disabled="disabled"]:hover {
+button.uif-secondaryActionButton[disabled],
+button.uif-secondaryActionButton[disabled]:hover {
     background: #f5f5f5; /* Old browsers */
 
     background: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%); /* FF3.6+ */

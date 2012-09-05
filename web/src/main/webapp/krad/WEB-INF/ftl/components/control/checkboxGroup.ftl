@@ -40,4 +40,6 @@
                  options=control.richOptions separator="${control.delimiter!}" attributes="${attributes}"/>
     </fieldset>
 
+    <@krad.disable control=field.control type="checkboxGroup"/>
+
 </#macro>

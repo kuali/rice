@@ -151,10 +151,8 @@ h4 img.uif-disclosure-image[alt="collapse"] {
     font-weight: normal;
 }
 
-.uif-primaryActionButton[disabled="true"], .uif-secondaryActionButton[disabled="true"],
-.uif-primaryActionButton[disabled="true"]:hover, .uif-secondaryActionButton[disabled="true"]:hover,
-.uif-primaryActionButton[disabled="disabled"], .uif-secondaryActionButton[disabled="disabled"],
-.uif-primaryActionButton[disabled="disabled"]:hover, .uif-secondaryActionButton[disabled="disabled"]:hover{
+.uif-primaryActionButton[disabled], .uif-secondaryActionButton[disabled],
+.uif-primaryActionButton[disabled]:hover, .uif-secondaryActionButton[disabled]:hover{
     color: #900000;
     background: #ffffff; /* Old browsers */
     background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */

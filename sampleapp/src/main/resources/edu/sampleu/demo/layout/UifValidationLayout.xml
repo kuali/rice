@@ -171,6 +171,13 @@
             </list>
           </property>
         </bean>
+        <bean id="Demo-ValidationLayout-CollectionsErrorPage" parent="Uif-Page" p:headerText="Collection Add Messages">
+          <property name="items">
+            <list>
+              <ref bean="Demo-ValidationLayout-CollectionErrorSection"/>
+            </list>
+          </property>
+        </bean>
         <bean id="Demo-ValidationLayout-FieldGroupPage" parent="Uif-Page" p:headerText="Field Groups/Tabs">
           <property name="items">
             <list>
@@ -211,6 +218,8 @@
 
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-TripleCollectionsPage"
                       p:actionLabel="Triple Nested Collection"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-CollectionsErrorPage"
+                              p:actionLabel="Collection Add Message"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-FieldGroupPage"
               p:actionLabel="FieldGroups/Tabs"/>
       </list>
@@ -620,6 +629,22 @@
       </list>
     </property>
   </bean>
+
+  <bean id="Demo-ValidationLayout-CollectionErrorSection" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
+     <property name="headerText" value="Error On Add"/>
+     <property name="instructionalText"
+               value="Clicking add on this table will add messages to the map that will be displayed"/>
+     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
+     <property name="propertyName" value="list1"/>
+     <property name="layoutManager.sequencePropertyName" value="field1"/>
+     <property name="items">
+       <list>
+         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
+         <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+       </list>
+     </property>
+   </bean>
 
 
 </beans>

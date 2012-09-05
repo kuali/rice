@@ -40,4 +40,6 @@
     <@spring.formCheckbox id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}"
              label=control.richLabelMessage attributes="${attributes}"/>
 
+    <@krad.disable control=field.control type="checkbox"/>
+
 </#macro>

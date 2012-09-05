@@ -18,6 +18,7 @@
 <#include "attrBuild.ftl" parse=true/>
 <#include "backdoor.ftl" parse=true/>
 <#include "cleanPath.ftl" parse=true/>
+<#include "disable.ftl" parse=true/>
 <#include "div.ftl" parse=true/>
 <#include "eventScript.ftl" parse=true/>
 <#include "fieldLbl.ftl" parse=true/>

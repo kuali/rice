@@ -31,4 +31,6 @@
     <@spring.formInput fieldType="file" id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}"
              attributes="${attributes}"/>
 
+    <@krad.disable control=field.control type="file"/>
+
 </#macro>

@@ -276,6 +276,56 @@ function setupRefreshCheck(controlName, refreshId, condition, methodToCall) {
 }
 
 /**
+ * Setup disabled check handlers that will evaluate a passed in condition and will disable/enable the component
+ * based on the result (true to disable, false to enable).  controlName represents the field to be evaluated and
+ * disableCompId represents the component by id to be disabled/enabled as a result.
+ *
+ * @param controlName name of the control to put a handler on
+ * @param disableCompId id of the component to disable/enable
+ * @param disableCompType type of the component being disabled/enabled
+ * @param condition function that if returns true disables the component, and if returns false enables the component
+ * @param onKeyUp true if evaluating on keyUp, only applies to textarea/text inputs
+ */
+function setupDisabledCheck(controlName, disableCompId, disableCompType, condition, onKeyUp){
+    var theControl = jQuery("[name='" + escapeName(controlName) + "']");
+    var eventType = 'change';
+
+    if(onKeyUp && (theControl.is("textarea") || theControl.is("input[type='text']"))){
+        eventType = 'keyup';
+    }
+
+    if(disableCompType == "radioGroup" || disableCompType == "checkboxGroup"){
+        theControl.on(eventType, function (){
+            if(condition()){
+                jQuery("input[id^='" + disableCompId + "']").prop("disabled", true);
+            }
+            else{
+                jQuery("input[id^='" + disableCompId + "']").prop("disabled", false);
+            }
+        });
+    }
+    else{
+        theControl.on(eventType, function (){
+            var disableControl = jQuery("#" + disableCompId);
+            if(condition()){
+                disableControl.prop("disabled", true);
+                disableControl.addClass("disabled");
+                if(disableCompType === "actionLink" || disableCompType === "action"){
+                    disableControl.attr("tabIndex", "-1");
+                }
+            }
+            else{
+                disableControl.prop("disabled", false);
+                disableControl.removeClass("disabled");
+                if(disableCompType === "actionLink" || disableCompType === "action"){
+                    disableControl.attr("tabIndex", "0");
+                }
+            }
+        });
+    }
+}
+
+/**
  * Sets up the progressive disclosure mechanism in js by adding a change handler to the control
  * which may satisfy the progressive disclosure condition passed in.  When the condition is satisfied,
  * show the necessary content, otherwise hide it.  If the content has not yet been rendered then a server

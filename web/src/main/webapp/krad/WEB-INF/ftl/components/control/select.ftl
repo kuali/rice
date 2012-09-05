@@ -40,4 +40,6 @@ Standard HTML Select Input
                                   attributes="${attributes}"/>
     </#if>
 
+    <@krad.disable control=field.control type="select"/>
+
 </#macro>

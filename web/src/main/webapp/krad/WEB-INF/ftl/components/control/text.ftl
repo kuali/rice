@@ -58,4 +58,6 @@
         <@krad.script value="setupTextPopout('${control.id}', '${field.label!}', '${(field.instructionalMessage.messageText?js_string)!}', '${(field.constraintMessage.messageText?js_string)!}', '${ConfigProperties[\"krad.externalizable.images.url\"]}');" />
     </#if>
 
+    <@krad.disable control=field.control type="text"/>
+
 </#macro>

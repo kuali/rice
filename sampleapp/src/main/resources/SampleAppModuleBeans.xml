@@ -130,6 +130,7 @@
         <value>classpath:edu/sampleu/demo/kitchensink/CollectionsM2Test.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Quickfinder.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/RichMessagesView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/ClientDisableView.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->

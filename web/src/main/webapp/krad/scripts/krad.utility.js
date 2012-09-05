@@ -29,19 +29,38 @@ var profilingOn = false;
  */
 function handleCheckboxLabelClick(checkboxId, event) {
     var checkbox = jQuery("#" + checkboxId);
-    if (jQuery(event.target).is("input, select, textarea, option")) {
-        checkbox.attr("checked", "checked");
-    }
-    else if (jQuery(event.target).is("a, button")) {
-        //do nothing
-    }
-    else {
-        if (checkbox.is(":checked")) {
-            checkbox.removeAttr("checked");
+    if(!checkbox.prop("disabled")){
+        if (jQuery(event.target).is("input, select, textarea, option") && !checkbox.prop("checked")) {
+            checkbox.prop("checked", true);
+            checkbox.change();
+        }
+        else if (jQuery(event.target).is("a, button")) {
+            //do nothing
         }
         else {
-            checkbox.attr("checked", "checked");
+            if (checkbox.prop("checked")) {
+                checkbox.prop("checked", false);
+                checkbox.change();
+            }
+            else {
+                checkbox.prop("checked", true);
+                checkbox.change();
+            }
         }
+    }
+}
+
+/**
+ * Handle radio label clicks to get around issue with rich message content.
+ *
+ * @param radioId id of the radio to check
+ * @param event event with the associated clicked target
+ */
+function handleRadioLabelClick(radioId, event) {
+    var radio = jQuery("#" + radioId);
+    if(!radio.prop("disabled") && !radio.prop("checked")){
+        radio.prop("checked", true);
+        radio.change();
     }
 }
 

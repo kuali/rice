@@ -84,4 +84,6 @@ ${tabindex} ${element.simpleDataAttributes!}>
 
 </a>
 
+    <@krad.disable control=element type="actionLink"/>
+
 </#macro>

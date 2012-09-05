@@ -15,56 +15,127 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
 import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
 import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
+import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Base class for all <code>Control</code> implementations
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  * @see org.kuali.rice.krad.uif.control.Control
  */
 public abstract class ControlBase extends ContentElementBase implements Control {
-	private static final long serialVersionUID = -7898244978136312663L;
-	
-	private int tabIndex;
+    private static final long serialVersionUID = -7898244978136312663L;
+
+    private int tabIndex;
 
     private boolean disabled;
+    private String disabledExpression;
     private String disabledReason;
+    private boolean evaluateDisabledOnKeyUp;
+    
+    private String disabledConditionJs;
+    private List<String> disabledConditionControlNames;
+
+    private List<String> disabledWhenChangedPropertyNames;
+    private List<String> enabledWhenChangedPropertyNames;
 
     public ControlBase() {
         super();
 
         disabled = false;
+        disabledWhenChangedPropertyNames = new ArrayList<String>();
+        enabledWhenChangedPropertyNames = new ArrayList<String>();
     }
 
-	/**
-	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
-	 */
-	@Override
-	public final String getComponentTypeName() {
-		return "control";
-	}
+    /**
+     * Sets the disabledExpression, if any, evaluates it and sets the disabled property
+     *
+     * @param view - view instance to which the component belongs
+     * @param model - Top level object containing the data (could be the form or a
+     * @param parent
+     */
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+        
+        disabledExpression = this.getPropertyExpression("disabled");
+        if(disabledExpression != null){
+            ExpressionEvaluatorService expressionEvaluatorService =
+                                KRADServiceLocatorWeb.getExpressionEvaluatorService();
+            disabledExpression = expressionEvaluatorService.replaceBindingPrefixes(view, this,
+                    disabledExpression);
+            disabled = (Boolean) expressionEvaluatorService.evaluateExpression(model, this.getContext(),
+                    disabledExpression);
+        }
+    }
+
+    /**
+     * Parses the disabled expressions, if any, to equivalent javascript and evaluates the disable/enable when
+     * changed property names.
+     *
+     * @param view - view instance that should be finalized for rendering
+     * @param model - top level object containing the data
+     * @param parent - parent component
+     */
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        if (StringUtils.isNotEmpty(disabledExpression) && !disabledExpression.equalsIgnoreCase("true")
+                && !disabledExpression.equalsIgnoreCase("false")) {
+            disabledConditionControlNames = new ArrayList<String>();
+            disabledConditionJs = ExpressionUtils.parseExpression(disabledExpression,
+                    disabledConditionControlNames);
+        }
+
+        List<String> adjustedDisablePropertyNames = new ArrayList<String>();
+        for (String propertyName : disabledWhenChangedPropertyNames) {
+            adjustedDisablePropertyNames.add(
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
+                            propertyName));
+        }
+        disabledWhenChangedPropertyNames = adjustedDisablePropertyNames;
+
+        List<String> adjustedEnablePropertyNames = new ArrayList<String>();
+        for (String propertyName : enabledWhenChangedPropertyNames) {
+            adjustedEnablePropertyNames.add(
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
+                            propertyName));
+        }
+        enabledWhenChangedPropertyNames = adjustedEnablePropertyNames;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
+     */
+    @Override
+    public final String getComponentTypeName() {
+        return "control";
+    }
 
     /**
      * @see Control#getTabIndex()
      */
-	public int getTabIndex() {
-		return this.tabIndex;
-	}
+    public int getTabIndex() {
+        return this.tabIndex;
+    }
 
     /**
      * @see Control#setTabIndex(int)
      */
-	public void setTabIndex(int tabIndex) {
-		this.tabIndex = tabIndex;
-	}
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
+    }
 
     /**
      * @see Control#isDisabled()
@@ -97,8 +168,10 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     /**
      * Returns js that will add data to this component by the element which matches its id.
      *
-     * <p> This will return script for all the data elements since this component is implemented as a spring form:input tag
-     * that does not allow for the insertion of simple attributes. Therefore, the complex attributes script should include
+     * <p> This will return script for all the data elements since this component is implemented as a spring form:input
+     * tag
+     * that does not allow for the insertion of simple attributes. Therefore, the complex attributes script should
+     * include
      * all the attributes since is it is inserted each time krad:template is used to display a control</p>
      *
      * @return jQuery data script for all data attributes
@@ -128,5 +201,78 @@ public abstract class ControlBase extends ContentElementBase implements Control 
         reports.addAll(super.completeValidation(tracer.getCopy(),parser));
 
         return reports;
+    }
+
+
+    /**
+     * Evaluate the disable condition on controls which disable it on each key up event
+     *
+     * @return true if evaluate on key up, false otherwise
+     */
+    public boolean isEvaluateDisabledOnKeyUp() {
+        return evaluateDisabledOnKeyUp;
+    }
+
+    /**
+     * Set evaluateDisableOnKeyUp
+     *
+     * @param evaluateDisabledOnKeyUp
+     */
+    public void setEvaluateDisabledOnKeyUp(boolean evaluateDisabledOnKeyUp) {
+        this.evaluateDisabledOnKeyUp = evaluateDisabledOnKeyUp;
+    }
+
+    /**
+     * Get the disable condition js derived from the springEL, cannot be set.
+     *
+     * @return the disableConditionJs javascript to be evaluated
+     */
+    public String getDisabledConditionJs() {
+        return disabledConditionJs;
+    }
+
+    /**
+     * Control names to add handlers to for disable functionality, cannot be set
+     *
+     * @return control names to add handlers to for disable
+     */
+    public List<String> getDisabledConditionControlNames() {
+        return disabledConditionControlNames;
+    }
+
+    /**
+     * Gets the property names of fields that when changed, will disable this component
+     *
+     * @return the property names to monitor for change to disable this component
+     */
+    public List<String> getDisabledWhenChangedPropertyNames() {
+        return disabledWhenChangedPropertyNames;
+    }
+
+    /**
+     * Sets the property names of fields that when changed, will disable this component
+     *
+     * @param disabledWhenChangedPropertyNames
+     */
+    public void setDisabledWhenChangedPropertyNames(List<String> disabledWhenChangedPropertyNames) {
+        this.disabledWhenChangedPropertyNames = disabledWhenChangedPropertyNames;
+    }
+
+    /**
+     * Gets the property names of fields that when changed, will enable this component
+     *
+     * @return the property names to monitor for change to enable this component
+     */
+    public List<String> getEnabledWhenChangedPropertyNames() {
+        return enabledWhenChangedPropertyNames;
+    }
+
+    /**
+     * Sets the property names of fields that when changed, will enable this component
+     *
+     * @param enabledWhenChangedPropertyNames
+     */
+    public void setEnabledWhenChangedPropertyNames(List<String> enabledWhenChangedPropertyNames) {
+        this.enabledWhenChangedPropertyNames = enabledWhenChangedPropertyNames;
     }
 }

@@ -106,15 +106,21 @@ select[multiple="multiple"] option:hover {
     background: none repeat scroll 0 0 #ECFCEB;
 }
 
-input[disabled="disabled"], textarea[disabled="disabled"], select[disabled="disabled"] {
+input[disabled], textarea[disabled], select[disabled] {
     background-color: #dddddd;
     color: #999;
     border: 1px solid #AAAAAA;
 }
 
+a.disabled, a[disabled], a.disabled:hover, a[disabled]:hover, a.disabled:focus, a[disabled]:focus{
+    color: #888888;
+    text-decoration: none;
+    cursor: default;
+}
+
 /* disabled inputs sibling labels are greyed out */
-input[disabled="disabled"]+label {
-    color: #999999;
+input[disabled]+label {
+    color: #888888;
 }
 
 /** View structure related **************************************************************************/

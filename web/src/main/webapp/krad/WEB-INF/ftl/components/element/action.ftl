@@ -38,7 +38,7 @@
     </#if>
 
     <#if element.disabled>
-        <#local disabled="disabled=\"true\""/>
+        <#local disabled="disabled=\"disabled\""/>
     </#if>
 
     <#assign imagePlacement="${element.actionImagePlacement}"/>
@@ -95,5 +95,7 @@
     </button>
 
     </#if>
+
+    <@krad.disable control=element type="action"/>
 
 </#macro>

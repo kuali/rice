@@ -45,15 +45,16 @@ If you are upgrading an embedded MySql database:
 /******************************************************/
 
     1. Demo and sample tables were removed from the scripts, along with any corresponding data.
+
     2. Any temp tables that used to be created & dropped as part of the upgrade are now dropped in cleanup_final_*.sql
-    3. Any indexes that used to be dropped as part of the upgrade are now dropped in cleanup_final_*.sql
-    4. For KRIM table unique identifiers, the id that will be used is the next highest number in the table under
-        10,000.  For Example, if ids 1, 2, 6, 10001, KFS123, and KC34 exist in KRIM_PERM_T, The next row created via
-        the upgrade scripts will have an id of 7.
+
+    3. For KRIM table unique identifiers, the id that will be used is the next highest number in the table under
+       10,000.  For Example, if ids 1, 2, 6, 10001, KFS123, and KC34 exist in KRIM_PERM_T, The next row created via
+       the upgrade scripts will have an id of 7.
 
 /******************************************************/
 /*    Items to Consider                               */
 /******************************************************/
 
-    1.  Are you upgrading from 1.0.3?  If so, read the following:
-        https://svn.kuali.org/repos/rice/branches/rice-2.1/scripts/upgrades/1.0.3 to 2.0.0/final/README.TXT
+    1. Are you upgrading from 1.0.3?  If so, read the following:
+       https://svn.kuali.org/repos/rice/branches/rice-2.1/scripts/upgrades/1.0.3 to 2.0.0/final/README.TXT

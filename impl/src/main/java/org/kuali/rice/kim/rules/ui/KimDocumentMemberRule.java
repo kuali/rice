@@ -16,19 +16,25 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddMemberRule;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,7 +96,13 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	i++;
 	    }
 	    
-        if ( kimTypeService != null && !newMember.isRole()) {
+        RoleTypeService roleTypeService = getRoleTypeService(document.getKimType());
+        boolean shouldNotValidate = true;
+        if (roleTypeService != null) {
+            shouldNotValidate = roleTypeService.shouldValidateQualifiersForMemberType( MemberType.fromCode(newMember.getMemberTypeCode()));
+        }
+        if (kimTypeService !=null && !shouldNotValidate) {
+            KimType kt =  document.getKimType();
     		List<RemotableAttributeError> localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
 	        validationErrors.addAll( attributeValidationHelper.convertErrors("member",
                     attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()), localErrors) );
@@ -122,5 +134,22 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 		}
 		return rulePassed;
 	}
+
+
+    protected RoleTypeService getRoleTypeService(KimType typeInfo) {
+        String serviceName = typeInfo.getServiceName();
+        if (serviceName != null) {
+            try {
+                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
+                if (service != null && service instanceof RoleTypeService) {
+                    return (RoleTypeService) service;
+                }
+                return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+            } catch (Exception ex) {
+                return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+            }
+        }
+        return null;
+    }
 
 }

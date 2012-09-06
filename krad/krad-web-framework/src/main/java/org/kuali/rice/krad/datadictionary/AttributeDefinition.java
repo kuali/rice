@@ -411,21 +411,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	}
 
 	/**
-	 * This overridden method applies validCharacterConstraint if legacy validation pattern in place
-	 * 
-	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (StringUtils.isEmpty(name)) {
-			throw new RuntimeException("blank name for bean: " + id);
-		}
-        if(this.validCharactersConstraint == null  && validationPattern != null) {
-            this.validCharactersConstraint = validationPattern.asValidCharactersConstraint();
-        }
-	}
-
-	/**
 	 * @return the unique
 	 */
 	public Boolean getUnique() {

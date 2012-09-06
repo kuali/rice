@@ -16,10 +16,10 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
 
 import java.util.Calendar;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -28,6 +28,7 @@ import static org.junit.Assert.assertEquals;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+
 public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
     @Override
     protected String getLinkLocator() {
@@ -36,22 +37,32 @@ public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
 
     @Override
     public String blanketApprove() throws Exception {
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        assertEquals("", selenium.getText("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter " + ITUtil.DTS);
+ 
+        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
+        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
+        assertEquals("", selenium.getText("methodToCall.cancel"));              
+        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
+        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KR-NS - Kuali Nervous System");
+        
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
         ITUtil.waitForElement(selenium, componentLookUp);
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KR-NS - Kuali Nervous System");
+        
         selenium.click(componentLookUp);
-
-        ITUtil.waitAndClick(selenium, "css=td.infoline > input[name=\"methodToCall.search\"]");
-        ITUtil.waitAndClick(selenium, "//a[@title='return valueNamespace Name=KR-NS Component=Document ']");
         selenium.waitForPageToLoad("30000");
-        String parameterName = "Validation Test Parameter"+Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        selenium.click("//input[@name='methodToCall.search' and @value='search']");
+        selenium.waitForPageToLoad("30000");
+        selenium.click("link=return value");
+        selenium.waitForPageToLoad("30000");
+        
+        String parameterName = "Validation Test Parameter"+ITUtil.DTS;
         selenium.type("//input[@id='document.newMaintainableObject.name']", parameterName);
-        selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Validation Test Parameter Description");
+        selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Validation Test Parameter Description" + ITUtil.DTS);
         selenium.select("//select[@id='document.newMaintainableObject.parameterTypeCode']", "label=Document Validation");
         selenium.click("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
+
+        selenium.waitForPageToLoad("30000");
+
         return docId;
-    }
+    }    
+    
 }

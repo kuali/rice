@@ -18,7 +18,12 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import edu.samplu.common.AdminMenuBlanketAppITBase;
+import edu.samplu.common.AdminMenuITBase;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
+
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
 /**
@@ -26,27 +31,19 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonBlanketAppIT extends UpgradedSeleniumITBase {
-    @Override
-    public String getTestUrl() {
-        return PORTAL;
-    }
+public class IdentityPersonBlanketAppIT extends AdminMenuBlanketAppITBase {
+          @Override
+         protected String getLinkLocator() {
+             return "link=Person";
+         }
 
-    @Test
-    public void testPerson() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Person");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+         @Override
+        public String blanketApprove() throws Exception {
+
+        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
+        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
-        selenium.type("//input[@id='document.principalName']", "principal");
+        selenium.type("//input[@id='document.principalName']", "principal "+ RandomStringUtils.randomAlphabetic(3).toLowerCase());
         selenium.select("newAffln.affiliationTypeCode", "label=Affiliate");
         selenium.select("newAffln.campusCode", "label=BX - BLGTN OFF CAMPUS");
         selenium.select("newAffln.campusCode", "label=BL - BLOOMINGTON");
@@ -61,23 +58,9 @@ public class IdentityPersonBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.click("newName.dflt");
         selenium.click("methodToCall.addName.anchor");
         selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-      
-        docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        }
+
+        return docId;
     }
+    
 }
+ 

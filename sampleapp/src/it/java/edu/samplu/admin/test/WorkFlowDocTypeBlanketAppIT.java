@@ -48,7 +48,7 @@ public class WorkFlowDocTypeBlanketAppIT extends AdminMenuBlanketAppITBase {
         ITUtil.waitAndClick(selenium, "link=return value");
 
         selenium.waitForPageToLoad("30000");
-        String docTypeName = "Validation Test Doc Type " + Calendar.getInstance().getTimeInMillis();
+        String docTypeName = "Validation Test Doc Type " + ITUtil.DTS;
         selenium.type("//input[@id='document.newMaintainableObject.name']", docTypeName);
         selenium.type("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");
         selenium.type("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");

@@ -252,7 +252,7 @@ public class Inquiry extends WidgetBase {
             ModuleService responsibleModuleService =
                     KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(inquiryObjectClass);
             if (responsibleModuleService != null && responsibleModuleService.isExternalizable(inquiryObjectClass)) {
-                inquiryUrl = responsibleModuleService.getExternalizableDataObjectLookupUrl(inquiryObjectClass,
+                inquiryUrl = responsibleModuleService.getExternalizableDataObjectInquiryUrl(inquiryObjectClass,
                         urlParameters);
             } else {
                 inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
@@ -292,7 +292,7 @@ public class Inquiry extends WidgetBase {
 
             // Check if lightbox is set. Get lightbox options.
             String lightBoxOptions = "";
-            boolean lightBoxShow = getInquiryLink().getLightBox() != null;
+            boolean lightBoxShow = (getInquiryLink().getLightBox() != null);
             if (lightBoxShow) {
                 lightBoxOptions = getInquiryLink().getLightBox().getTemplateOptionsJSString();
             }

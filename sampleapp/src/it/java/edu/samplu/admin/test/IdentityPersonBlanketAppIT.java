@@ -50,7 +50,6 @@ public class IdentityPersonBlanketAppIT extends AdminMenuBlanketAppITBase {
         selenium.select("newName.nameSuffix", "label=Mr");
         selenium.click("newName.dflt");
         selenium.click("methodToCall.addName.anchor");
-        ITUtil.waitAndClick(selenium, "methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
         return docId;
     }

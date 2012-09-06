@@ -15,14 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.MenuITBase;
-import org.junit.Test;
 
 /**
  * tests that a blanket approval by user admin of a Namespace maintenance document results in a document in state FINAL

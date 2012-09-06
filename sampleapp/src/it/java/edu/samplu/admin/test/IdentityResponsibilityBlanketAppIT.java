@@ -15,13 +15,9 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-import org.junit.Test;
 
 /**
  * tests that user 'admin', on blanket approving a new Responsibility maintenance document, results in a final document

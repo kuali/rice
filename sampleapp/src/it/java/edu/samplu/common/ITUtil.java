@@ -65,7 +65,7 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void blanketApprove(Selenium selenium) throws InterruptedException {
-        selenium.click("methodToCall.blanketApprove");
+        ITUtil.waitAndClick(selenium, "methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
         Thread.sleep(2000);
 

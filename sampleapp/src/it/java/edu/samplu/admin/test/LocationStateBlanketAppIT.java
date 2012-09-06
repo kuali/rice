@@ -15,17 +15,10 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
-
 import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * tests that user 'admin', on blanket approving a new State maintenance document, results in a final document
@@ -49,16 +42,9 @@ public class LocationStateBlanketAppIT extends AdminMenuBlanketAppITBase {
         //selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
         
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-        for (int second = 0;; second++) {
-            if (second >= 60) Assert.fail("timeout");
-            try { if (selenium.isElementPresent(countryLookUp)) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        selenium.click(countryLookUp);        
-        selenium.waitForPageToLoad("30000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
+        ITUtil.waitAndClick(selenium, countryLookUp);
+        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
+        ITUtil.waitAndClick(selenium, "link=return value");
         selenium.waitForPageToLoad("30000");
         String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
         selenium.type("//input[@id='document.newMaintainableObject.code']", code);

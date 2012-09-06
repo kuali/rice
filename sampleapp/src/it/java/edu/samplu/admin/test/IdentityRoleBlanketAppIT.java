@@ -15,14 +15,9 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.Test;
 
 /**
  * tests that user 'admin', on blanket approving a new Role maintenance document, results in a final document
@@ -31,17 +26,16 @@ import org.junit.Test;
  */
 public class IdentityRoleBlanketAppIT extends AdminMenuBlanketAppITBase {
     
-         @Override
-         protected String getLinkLocator() {
-             return "link=Role";
-         }
+     @Override
+     protected String getLinkLocator() {
+         return "link=Role";
+     }
 
         @Override
-        public String blanketApprove() throws Exception {
+    public String blanketApprove() throws Exception {
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
+        ITUtil.waitAndClick(selenium, "link=return value");
         selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        selenium.waitForPageToLoad("30000");            
             
         ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
         String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);        
@@ -50,12 +44,9 @@ public class IdentityRoleBlanketAppIT extends AdminMenuBlanketAppITBase {
         selenium.waitForPageToLoad("30000");
         selenium.type("//input[@id='document.roleName']", "Validation Test Role " +ITUtil.DTS);
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.addMember.anchorAssignees");
+        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
+        ITUtil.waitAndClick(selenium, "link=return value");
+        ITUtil.waitAndClick(selenium, "methodToCall.addMember.anchorAssignees");
         selenium.waitForPageToLoad("30000");
         
         return docId;

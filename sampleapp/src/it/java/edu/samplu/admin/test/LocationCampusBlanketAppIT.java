@@ -16,19 +16,10 @@
 package edu.samplu.admin.test;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
 /**
  * tests that user 'admin', on blanket approving a new Campus maintenance document, results in a final document
  * 

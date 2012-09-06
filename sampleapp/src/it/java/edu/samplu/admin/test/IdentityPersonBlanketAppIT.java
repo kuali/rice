@@ -15,16 +15,10 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
-
 import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Test;
 
 /**
  * tests that user 'admin', on blanket approving a new Person maintenance document, results in a final document
@@ -49,16 +43,15 @@ public class IdentityPersonBlanketAppIT extends AdminMenuBlanketAppITBase {
         selenium.select("newAffln.campusCode", "label=BL - BLOOMINGTON");
         selenium.click("newAffln.dflt");
         selenium.click("methodToCall.addAffln.anchor");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("tab-Contact-imageToggle");
+        ITUtil.waitAndClick(selenium, "tab-Contact-imageToggle");
         selenium.select("newName.namePrefix", "label=Mr");
         selenium.type("newName.firstName", "First");
         selenium.type("newName.lastName", "Last");
         selenium.select("newName.nameSuffix", "label=Mr");
         selenium.click("newName.dflt");
         selenium.click("methodToCall.addName.anchor");
+        ITUtil.waitAndClick(selenium, "methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
-
         return docId;
     }
     

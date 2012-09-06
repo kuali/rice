@@ -81,6 +81,19 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                 depth);
     }
 
+    /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocument(org.kuali.rice.krad.document.Document)
+     * @param document - document to validate
+     * @deprecated since 2.1.2
+     */
+    @Deprecated
+    @Override
+    public void validateDocument(Document document) {
+        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
+
+        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", true);
+    }
+
     @Override
     @Deprecated
     public void validateBusinessObject(BusinessObject businessObject) {

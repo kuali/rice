@@ -762,9 +762,11 @@ public class CollectionGroupBuilder implements Serializable {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }
 
-            String preSubmitScript = "valid=valid && validateAddLine('" + collectionGroup.getId() + "');";
+            String preSubmitScript = "valid=valid && ";
             if (collectionGroup.isAddViaLightBox()) {
-                preSubmitScript += "if (valid) {closeLightbox();}";
+                preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "', true); if (valid) {closeLightbox();}";
+            }  else {
+                preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "');";
             }
             preSubmitScript += "return valid;";
 

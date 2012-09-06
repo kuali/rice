@@ -170,11 +170,16 @@ function retrieveComponent(id, methodToCall, successCallback, additionalData) {
  * Performs client side validation against the controls present in a collection add line
  *
  * @param collectionGroupId - id for the collection whose add line should be validated
+ * @param addViaLightbox - (optional) flag to indicate if add controls are in a lightbox
  */
-function validateAddLine(collectionGroupId) {
+function validateAddLine(collectionGroupId, addViaLightbox) {
     var collectionGroup = jQuery("#" + collectionGroupId);
-
     var addControls = collectionGroup.data("addcontrols");
+
+    if (addViaLightbox) {
+        collectionGroup = jQuery("#kualiLightboxForm");
+    }
+
     var controlsToValidate = jQuery(addControls, collectionGroup);
 
     var valid = validateFields(controlsToValidate);

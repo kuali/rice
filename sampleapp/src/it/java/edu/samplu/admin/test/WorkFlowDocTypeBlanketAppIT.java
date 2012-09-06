@@ -19,8 +19,6 @@ import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
 
-import java.util.Calendar;
-
 import static org.junit.Assert.assertTrue;
 
 
@@ -47,9 +45,8 @@ public class WorkFlowDocTypeBlanketAppIT extends AdminMenuBlanketAppITBase {
         ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
         ITUtil.waitAndClick(selenium, "link=return value");
 
-        selenium.waitForPageToLoad("30000");
         String docTypeName = "Validation Test Doc Type " + ITUtil.DTS;
-        selenium.type("//input[@id='document.newMaintainableObject.name']", docTypeName);
+        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.name']", docTypeName);
         selenium.type("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");
         selenium.type("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
         selenium.type("//input[@id='document.newMaintainableObject.label']", "Workflow Maintenance Document Type Document");

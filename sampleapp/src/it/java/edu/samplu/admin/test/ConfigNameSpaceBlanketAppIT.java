@@ -15,11 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertTrue;
-
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * tests that a blanket approval by user admin of a Namespace maintenance document results in a document in state FINAL
@@ -41,8 +41,8 @@ public class ConfigNameSpaceBlanketAppIT extends AdminMenuBlanketAppITBase {
  
         ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
         String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
+        ITUtil.waitAndType(selenium, "//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace");
         selenium.type("//input[@id='document.newMaintainableObject.code']", "VTN"+ ITUtil.DTS);
         selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test NameSpace "+ ITUtil.DTS);
         selenium.type("//input[@id='document.newMaintainableObject.applicationId']", "RICE");

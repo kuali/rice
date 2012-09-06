@@ -37,10 +37,9 @@ public class IdentityGroupBlanketAppIT extends AdminMenuBlanketAppITBase {
         ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
         String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
         
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group");
+        ITUtil.waitAndType(selenium, "//input[@id='document.documentHeader.documentDescription']", "Validation Test Group");
         selenium.select("//select[@id='document.groupNamespace']", AdminMenuITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS);
+        ITUtil.waitAndType(selenium, "//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS);
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
         ITUtil.waitAndClick(selenium, "link=return value");

@@ -42,22 +42,18 @@ public class LocationPostCodeBlanketAppIT extends AdminMenuBlanketAppITBase {
         
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
         ITUtil.waitAndClick(selenium, countryLookUp);
-        selenium.waitForPageToLoad("30000");
-        selenium.type("code", "US");
+        ITUtil.waitAndType(selenium, "code", "US");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         ITUtil.waitAndClick(selenium, "link=return value");
-        selenium.waitForPageToLoad("30000");
         String code = RandomStringUtils.randomNumeric(5);
-        selenium.type("//input[@id='document.newMaintainableObject.code']", code);
+        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.code']", code);
         
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         ITUtil.waitAndClick(selenium, stateLookUp);
         ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
         ITUtil.waitAndClick(selenium, "//table[@id='row']/tbody/tr[4]/td[1]/a");
-        selenium.waitForPageToLoad("30000");
         String cityName = "Validation Test Postal Code "+code;
-        
-        selenium.type("//input[@id='document.newMaintainableObject.cityName']", cityName);
+        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.cityName']", cityName);
         
         return docId;  
     }

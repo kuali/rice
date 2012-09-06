@@ -45,9 +45,8 @@ public class LocationStateBlanketAppIT extends AdminMenuBlanketAppITBase {
         ITUtil.waitAndClick(selenium, countryLookUp);
         ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
         ITUtil.waitAndClick(selenium, "link=return value");
-        selenium.waitForPageToLoad("30000");
         String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-        selenium.type("//input[@id='document.newMaintainableObject.code']", code);
+        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.code']", code);
         String state =  "Validation Test State " + code;
         selenium.type("//input[@id='document.newMaintainableObject.name']",state);
         selenium.click("//input[@id='document.newMaintainableObject.active']");

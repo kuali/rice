@@ -41,21 +41,17 @@ public class LocationCountyBlanketAppIT extends AdminMenuBlanketAppITBase {
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
         ITUtil.waitAndClick(selenium, countryLookUp);
-        selenium.waitForPageToLoad("30000");
-        selenium.type("code", "US");
+        ITUtil.waitAndType(selenium, "code", "US");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         ITUtil.waitAndClick(selenium, "link=return value");
-        selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
+        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         ITUtil.waitAndClick(selenium, stateLookUp);
-        selenium.waitForPageToLoad("30000");
-        selenium.type("code", "IN");
+        ITUtil.waitAndType(selenium, "code", "IN");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         ITUtil.waitAndClick(selenium, "link=return value");
-        selenium.waitForPageToLoad("30000");
         String countyName = "Validation Test County"+ITUtil.DTS;
-        selenium.type("//input[@id='document.newMaintainableObject.name']", countyName);
+        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.name']", countyName);
         selenium.click("//input[@id='document.newMaintainableObject.active']");
         
         return docId;  

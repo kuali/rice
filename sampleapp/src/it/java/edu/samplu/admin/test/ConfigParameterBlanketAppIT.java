@@ -19,7 +19,6 @@ import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
 
-import java.util.Calendar;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -40,22 +39,18 @@ public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
  
         ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
         String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        assertEquals("", selenium.getText("methodToCall.cancel"));              
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KR-NS - Kuali Nervous System");
+        ITUtil.waitAndType(selenium, "//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
+        assertEquals("", selenium.getText("methodToCall.cancel"));
+        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']",
+                "label=KR-NS - Kuali Nervous System");
         
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-        ITUtil.waitForElement(selenium, componentLookUp);
-        
-        selenium.click(componentLookUp);
-        selenium.waitForPageToLoad("30000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        selenium.waitForPageToLoad("30000");
-        
+        ITUtil.waitAndClick(selenium, componentLookUp);
+        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
+        ITUtil.waitAndClick(selenium, "link=return value");
+
         String parameterName = "Validation Test Parameter"+ITUtil.DTS;
-        selenium.type("//input[@id='document.newMaintainableObject.name']", parameterName);
+        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.name']", parameterName);
         selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Validation Test Parameter Description" + ITUtil.DTS);
         selenium.select("//select[@id='document.newMaintainableObject.parameterTypeCode']", "label=Document Validation");
         selenium.click("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");

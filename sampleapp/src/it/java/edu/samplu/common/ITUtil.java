@@ -239,6 +239,13 @@ public class ITUtil {
         waitAndClick(selenium, elementLocator, WAIT_DEFAULT_SECONDS);
     }
 
+    /**
+     * Wait 60 seconds for the elementLocator to be present or fail.  Click if present
+     * @param selenium
+     * @param elementLocator
+     * @param message
+     * @throws InterruptedException
+     */
     public static void waitAndClick(Selenium selenium, String elementLocator, String message) throws InterruptedException {
         waitAndClick(selenium, elementLocator, WAIT_DEFAULT_SECONDS, message);
     }
@@ -254,10 +261,43 @@ public class ITUtil {
         waitAndClick(selenium, elementLocator, seconds, "");
     }
 
-
+    /**
+     * Wait the given seconds for the elementLocator to be present or fail
+     * @param selenium
+     * @param elementLocator
+     * @param seconds
+     * @param message
+     * @throws InterruptedException
+     */
     public static void waitAndClick(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
         waitForElement(selenium, elementLocator, seconds, message);
         selenium.click(elementLocator);
+        Thread.sleep(1000);
+    }
+
+    /**
+     * Wait the 60 seconds for the elementLocator to be present or fail, when present type the text.
+     * @param selenium
+     * @param elementLocator
+     * @param text
+     * @throws InterruptedException
+     */
+    public static void waitAndType(Selenium selenium, String elementLocator, String text) throws InterruptedException {
+        waitAndType(selenium, elementLocator, WAIT_DEFAULT_SECONDS, text, "");
+    }
+
+    /**
+     * Wait the given seconds for the elementLocator to be present or fail, when present type the text.
+     * @param selenium
+     * @param elementLocator
+     * @param seconds
+     * @param text
+     * @param message
+     * @throws InterruptedException
+     */
+    public static void waitAndType(Selenium selenium, String elementLocator, int seconds, String text, String message) throws InterruptedException {
+        waitForElement(selenium, elementLocator, seconds, message);
+        selenium.type(elementLocator, text);
         Thread.sleep(1000);
     }
 

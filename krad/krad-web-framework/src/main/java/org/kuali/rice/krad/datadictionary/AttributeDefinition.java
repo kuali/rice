@@ -398,8 +398,20 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 		return this.attributeSecurity;
 	}
 
-	/**
-	 * @param attributeSecurity
+    /**
+    * This overridden method applies validCharacterConstraint if legacy validation pattern in place
+    *
+    * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+    */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (StringUtils.isEmpty(name)) {
+            throw new RuntimeException("blank name for bean: " + id);
+        }
+    }
+
+    /**
+     * @param attributeSecurity
 	 *            the attributeSecurity to set
 	 */
 	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
@@ -408,21 +420,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 
 	public boolean hasAttributeSecurity() {
 		return (attributeSecurity != null);
-	}
-
-	/**
-	 * This overridden method applies validCharacterConstraint if legacy validation pattern in place
-	 * 
-	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (StringUtils.isEmpty(name)) {
-			throw new RuntimeException("blank name for bean: " + id);
-		}
-        if(this.validCharactersConstraint == null  && validationPattern != null) {
-            this.validCharactersConstraint = validationPattern.asValidCharactersConstraint();
-        }
 	}
 
 	/**

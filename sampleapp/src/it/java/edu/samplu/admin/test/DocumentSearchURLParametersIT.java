@@ -28,6 +28,7 @@ import org.openqa.selenium.WebElement;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -296,19 +297,35 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
     }
     
     private void assertInputValues(Map<String, String> fields) {
+        boolean quickmode = false;
         for (Map.Entry<String, String> entry: fields.entrySet()) {
             String value = findInput(entry.getKey()).getAttribute("value");
             assertEquals("Field '" + entry.getKey() + "' expected '" + entry.getValue() + "' got '" + value + "'", entry.getValue(), value);
+            if (!quickmode) { // do the first find slow to make sure the screen has finished loading, then do them fast, else some tests take minutes to run
+                driver.manage().timeouts().implicitlyWait(SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+                quickmode = true;
+            }
+        }
+        if (quickmode) {
+            driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
         }
     }
 
     private void assertInputPresence(Map<String, String> fields, boolean present) {
+        boolean quickmode = false;
         for (String name: fields.keySet()) {
             if (present) {
                 assertTrue("Expected field '" + name + "' to be present", driver.findElements(By.name(name)).size() != 0);
             } else {
                 assertEquals("Expected field '" + name + "' not to be present", 0, driver.findElements(By.name(name)).size());
             }
+            if (!quickmode) { // do the first find slow to make sure the screen has finished loading, then do them fast, else some tests take minutes to run
+                driver.manage().timeouts().implicitlyWait(SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+                quickmode = true;
+            }
+        }
+        if (quickmode) {
+            driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
         }
     }
 }

@@ -22,16 +22,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -43,8 +36,8 @@ import static org.junit.Assert.assertEquals;
  */
 public abstract class WebDriverITBase {
 
-    int DEFAULT_IMPLICIT_WAIT_TIME = 30;
-    int SHORT_IMPLICIT_WAIT_TIME = 1;
+    protected int DEFAULT_IMPLICIT_WAIT_TIME = 30;
+    protected int SHORT_IMPLICIT_WAIT_TIME = 1;
 
     public WebDriver driver;
     static ChromeDriverService chromeDriverService;

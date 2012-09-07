@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var bodyHeight;
 
 /**
  * Takes a name that may have characters incompatible with jQuery selection and escapes them so they can
@@ -33,31 +32,6 @@ function escapeName(name){
         name = name.replace(/\]/g, "\\]");
     }
     return name;
-}
-
-function publishHeight(){
-    var parentUrl = "";
-    if(navigator.cookieEnabled){
-        parentUrl = jQuery.cookie('parentUrl');
-        var passedUrl = decodeURIComponent( document.location.hash.replace( /^#/, '' ) );
-        if(passedUrl && passedUrl.substring(0, 4) === "http"){
-            jQuery.cookie('parentUrl', passedUrl, {path: '/'});
-            parentUrl = passedUrl;
-        }
-    }
-
-    if(parentUrl === ""){
-        //make the assumption for not cross-domain, will have no effect if cross domain (message wont be
-        //received)
-        parentUrl = window.location;
-        parentUrl = decodeURIComponent(parentUrl);
-    }
-
-    var height = jQuery('#view_div:first').outerHeight();
-    if (parentUrl && !isNaN(height) && height > 0 && height !== bodyHeight) {
-        jQuery.postMessage({ if_height: height}, parentUrl, parent);
-        bodyHeight = height;
-    }
 }
 
 /**

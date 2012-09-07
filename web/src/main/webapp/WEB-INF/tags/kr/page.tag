@@ -79,45 +79,12 @@
 				src="${pageContext.request.contextPath}/${javascriptFile}"></script>
 </c:if>
 </c:forEach>
-  
-<!-- new iframe resize logic -->
+
 <script type="text/javascript">
-
-var jq = jQuery.noConflict();
-var bodyHeight;
-function publishHeight(){
-    var parentUrl = "";
-    if(navigator.cookieEnabled){
-        parentUrl = jQuery.cookie('parentUrl');
-        var passedUrl = decodeURIComponent( document.location.hash.replace( /^#/, '' ) );
-        if(passedUrl && passedUrl.substring(0, 4) === "http"){
-            jQuery.cookie('parentUrl', passedUrl, {path: '/'});
-            parentUrl = passedUrl;
-        }
-    }
-
-    if(parentUrl === ""){
-        //make the assumption for not cross-domain, will have no effect if cross domain (message wont be
-        //received)
-        parentUrl = window.location;
-        parentUrl = decodeURIComponent(parentUrl);
-    }
-
-    var height = jQuery('#view_div:first').outerHeight();
-    if (parentUrl && !isNaN(height) && height > 0 && height !== bodyHeight) {
-        jQuery.postMessage({ if_height: height}, parentUrl, parent);
-        bodyHeight = height;
-    }
-}
-
-jQuery(function(){
-  publishHeight();
-  window.onresize = publishHeight;
-  window.setInterval(publishHeight, 500);
-});
+    var jq = jQuery.noConflict();
 </script>
 
-  <c:choose>
+    <c:choose>
     <c:when test="${lookup}" >
       <c:if test="${not empty KualiForm.headerNavigationTabs}">
         <link href="kr/css/${KualiForm.navigationCss}" rel="stylesheet" type="text/css" />

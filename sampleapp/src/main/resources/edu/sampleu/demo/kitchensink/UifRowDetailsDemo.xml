@@ -95,9 +95,7 @@
     <property name="headerText"
               value="Row Details Default"/>
     <property name="instructionalText"
-              value="Row Details with default settings.  Note readOnly is used for this collection.  IMPORTANT:
-              non-readOnly details is NOT supported by the framework (though may work with inputs that do
-              not require javascript)"/>
+              value="Row Details with default settings"/>
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
 

@@ -217,7 +217,8 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1" p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" p:constraintText="Type ref"
+              p:required="true"/>
         <bean parent="Uif-VerticalFieldGroup" p:label="Field Group" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">
           <property name="items">
             <list>
@@ -245,7 +246,7 @@
     <property name="layoutManager.summaryFields" value="field1"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1" p:constraintText="Type show2" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2" p:required="true"
               p:progressiveRender="@{#lp.field1 eq 'show2'}"/>
         <bean parent="Uif-VerticalFieldGroup" p:label="Field Group" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">

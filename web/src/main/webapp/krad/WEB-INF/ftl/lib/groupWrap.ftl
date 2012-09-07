@@ -22,7 +22,7 @@
         <@template component=group.header/>
 
         <#if group.disclosure.render>
-            <div id="${group.id}_disclosureContent" class="uif-disclosureContent">
+            <div id="${group.id}_disclosureContent" data-role="disclosureContent" class="uif-disclosureContent">
         </#if>
 
         <@template component=group.validationMessages/>

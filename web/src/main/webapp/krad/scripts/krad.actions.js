@@ -110,6 +110,11 @@ function validateForm() {
 	if(!validForm){
         validForm = false;
 
+        //ensure all non-visible controls are visible to the user
+        jQuery(".error:not(:visible)").each(function(){
+            cascadeOpen(jQuery(this));
+        });
+
 		jumpToTop();
         showClientSideErrorNotification();
 	}
@@ -182,7 +187,7 @@ function validateAddLine(collectionGroupId, addViaLightbox) {
 
     var controlsToValidate = jQuery(addControls, collectionGroup);
 
-    var valid = validateFields(controlsToValidate);
+    var valid = validateLineFields(controlsToValidate);
     if (!valid) {
         showClientSideErrorNotification();
 
@@ -201,7 +206,7 @@ function validateAddLine(collectionGroupId, addViaLightbox) {
 function validateLine(collectionName, lineIndex) {
     var controlsToValidate = jQuery("[name^='" + collectionName + "[" + lineIndex + "]']");
 
-    var valid = validateFields(controlsToValidate);
+    var valid = validateLineFields(controlsToValidate);
     if (!valid) {
         showClientSideErrorNotification();
 
@@ -217,28 +222,62 @@ function validateLine(collectionName, lineIndex) {
  *
  * @param controlsToValidate - list of controls (jQuery wrapping objects) that should be validated
  */
-function validateFields(controlsToValidate) {
+function validateLineFields(controlsToValidate) {
     var valid = true;
 
     jQuery.watermark.hideAll();
 
     controlsToValidate.each(function () {
-        jQuery(this).removeClass("ignoreValid");
+        var control = jQuery(this);
+        control.removeClass("ignoreValid");
+        var validValue = true;
+
         haltValidationMessaging = true;
 
-        jQuery(this).valid();
+        if(!control.prop("disabled")){
+            validValue = control.valid();
+        }
+
         haltValidationMessaging = false;
 
-        if (jQuery(this).hasClass("error")) {
+        //details visibility check
+        if (control.not(":visible") && !validValue){
+            cascadeOpen(control);
+        }
+
+        if (!validValue) {
             valid = false;
         }
 
-        jQuery(this).addClass("ignoreValid");
+        control.addClass("ignoreValid");
     });
 
     jQuery.watermark.showAll();
 
     return valid;
+}
+
+/**
+ * Ensures that the componentObject is visible by "opening" mechanisms that may be hiding it such as
+ * row details or group disclosure.  Used to make invalid fields visible on validation.
+ *
+ * @param componentObject the object to check for visibility of and "open" parent containing elements to make
+ * it visible
+ */
+function cascadeOpen(componentObject){
+    if(componentObject.not(":visible")){
+        var detailsDivs = componentObject.parents("div[data-role='details']");
+        detailsDivs.each(function(){
+            jQuery(this).parent().find("> a").click();
+        });
+
+        var disclosureDivs = componentObject.parents("div[data-role='disclosureContent']");
+        disclosureDivs.each(function(){
+            if(!jQuery(this).data("open")){
+                jQuery(this).parent().find("a[data-linkfor='" + jQuery(this).attr("id") + "']").click();
+            }
+        });
+    }
 }
 
 /** Progressive Disclosure */
@@ -404,11 +443,13 @@ function hiddenInputValidationToggle(id) {
         if (element.css("display") == "none") {
             jQuery(":input:hidden", element).each(function () {
                 jQuery(this).addClass("ignoreValid");
+                jQuery(this).prop("disabled", true);
             });
         }
         else {
             jQuery(":input:visible", element).each(function () {
                 jQuery(this).removeClass("ignoreValid");
+                jQuery(this).prop("disabled", false);
             });
         }
     }

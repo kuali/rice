@@ -139,7 +139,7 @@ function createLightBoxLink(linkId, options, addAppParms) {
 
                 options['href'] = jQuery("#" + linkId).attr('href');
                 getContext().fancybox(options);
-           });
+            });
         } else {
             jQuery("#" + linkId).attr('target', '_self');
 
@@ -159,9 +159,9 @@ function createLightBoxLink(linkId, options, addAppParms) {
                 }
 
                 jQuery("#" + linkId).attr('href', href + '&renderedInLightBox=true'
-                    + '&showHome=false' + '&showHistory=' + showHistory
+                        + '&showHome=false' + '&showHistory=' + showHistory
                         + '&history=' + jQuery('#historyParameterString').val() + anchor);
-        }
+            }
         }
     });
 }
@@ -231,10 +231,10 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                         // Add the returned URL to the FancyBox href setting
                         options['href'] = data.replace(/&amp;/g, '&');
 
-                                // Open the light box
-                                getContext().fancybox(options);
-                            }
-                        });
+                        // Open the light box
+                        getContext().fancybox(options);
+                    }
+                });
             });
         } else {
             // add parameters for lightbox and do standard submit
@@ -372,7 +372,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
  */
 function closeLightbox() {
     getContext().fancybox.close();
-    }
+}
 
 /**
  * Cleanup form data from server when lightbox window is closed
@@ -417,13 +417,13 @@ function createDatePicker(controlId, options) {
 
         //KULRICE-7310 can't change only month or year with picker (jquery limitation)
         datePickerControl.datepicker('option', 'onChangeMonthYear',
-                function(y, m, i){
+                function (y, m, i) {
                     var d = i.selectedDay;
                     jQuery(this).datepicker('setDate', new Date(y, m - 1, d));
                 });
 
         //KULRICE-7261 fix date format passed back.  jquery expecting mm-dd-yy
-        if(options.dateFormat=="mm-dd-yy" && datePickerControl[0].getAttribute("value").indexOf("/") != -1  )    {
+        if (options.dateFormat == "mm-dd-yy" && datePickerControl[0].getAttribute("value").indexOf("/") != -1) {
             datePickerControl.datepicker('setDate', new Date(datePickerControl[0].getAttribute("value")));
         }
     });
@@ -496,38 +496,46 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
             headerText.prepend(collapseImage);
         }
 
-        headerText.wrap("<a href='#' id='" + groupToggleLinkId + "'></a>");
+        headerText.wrap("<a data-role='disclosureLink' data-linkfor='" + groupAccordionSpanId + "' href='#' "
+                + "id='" + groupToggleLinkId + "'></a>");
 
         var animationFinishedCallback = function () {
             jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", false);
         };
+        var disclosureContent = jQuery("#" + groupAccordionSpanId);
         // perform slide and switch image
         if (defaultOpen) {
+            disclosureContent.data("open", true);
             jQuery("#" + groupToggleLinkId).toggle(
                     function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        jQuery("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
+                        disclosureContent.data("open", false);
+                        disclosureContent.slideUp(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
                     }, function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        jQuery("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
+                        disclosureContent.data("open", true);
+                        disclosureContent.slideDown(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
                     }
             );
         }
         else {
+            disclosureContent.data("open", false);
             jQuery("#" + groupToggleLinkId).toggle(
                     function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        jQuery("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
+                        disclosureContent.data("open", true);
+                        disclosureContent.slideDown(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
 
                     }, function () {
                         jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
-                        jQuery("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
+                        disclosureContent.data("open", false);
+                        disclosureContent.slideUp(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
                     }
@@ -540,14 +548,24 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
  * Expands all the disclosure divs on the page
  */
 function expandDisclosures() {
-    jQuery('img[alt="collapse"]').click();
+    jQuery("a[data-role='disclosureLink']").each(function(){
+        var contentId = jQuery(this).attr("data-linkfor");
+        if(!jQuery("#" + contentId).data("open")){
+            jQuery(this).click();
+        }
+    });
 }
 
 /**
  * Collapses all the disclosure divs on the page
  */
 function collapseDisclosures() {
-    jQuery('img[alt="expand"]').click();
+    jQuery("a[data-role='disclosureLink']").each(function(){
+        var contentId = jQuery(this).attr("data-linkfor");
+        if(jQuery("#" + contentId).data("open")){
+            jQuery(this).click();
+        }
+    });
 }
 
 /**
@@ -608,7 +626,7 @@ function expandDataTableDetail(actionComponent, tableId, useImages) {
             if (useImages && jQuery(actionComponent).find("img").length) {
                 jQuery(actionComponent).find("img").replaceWith(detailsCloseImage.clone());
             }
-            var newRow = oTable.fnOpenCustom(nTr,fieldGroupWrapper.find("[data-role='details']").filter(":first"), "uif-rowDetails");
+            var newRow = oTable.fnOpenCustom(nTr, fieldGroupWrapper.find("[data-role='details']").filter(":first"), "uif-rowDetails");
             var detailsGroup = jQuery(newRow).find("[data-role='details']").filter(":first");
             detailsGroup.slideDown();
         }

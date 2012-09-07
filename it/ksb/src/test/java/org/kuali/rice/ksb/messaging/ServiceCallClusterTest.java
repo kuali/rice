@@ -124,11 +124,11 @@ public class ServiceCallClusterTest extends KSBTestCase {
 	}
 
     /**
-     *  THESE NEXT TWO TESTS NEED TO BE FIXED.
-     *  The services published to the service def table when ServiceCallClusterTest runs have two different application IDs, TestCl1 and TestCl2.
-     *  A fix was contributed from IU so that when a service fails, it fails over to services only using the same application ID.   This is correct, but makes it so the
-     *  tests no longer work.   Both of the test clients need to come up with the same application id in order to truly test the fail over.
-     *
+     *  The services published to the service def table when ServiceCallClusterTest runs used to have
+     *  have two different application IDs, TestCl1 and TestCl2.  A fix was contributed from IU so that when a
+     *  service fails, it fails over to services only using the same application ID.   This is correct, but it made
+     *  the tests no longer work.  The tests now bring up services with the same application ID, TestCl1.
+     */
 	@Test public void testServiceFailOver() throws Exception {
 		QName serviceName = new QName("KEW", "testServiceFailover");
 		List<TestServiceInterface> services = new ArrayList<TestServiceInterface>();
@@ -205,8 +205,7 @@ public class ServiceCallClusterTest extends KSBTestCase {
 		assertFalse(server1Called);
 		assertTrue(server2Called);
 	}
-     */
-	
+
 	@Test public void testDefaultToLocalService() throws Exception {
 		QName serviceName = new QName("KEW", "testLocalServiceFavoriteCall");
 		List<TestServiceInterface> services = new ArrayList<TestServiceInterface>();

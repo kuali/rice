@@ -88,7 +88,11 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
         definition.setLongLabel(baseDefinition.getLabel());
         definition.setShortLabel(baseDefinition.getShortLabel());
         definition.setMaxLength(baseDefinition.getMaxLength());
-        definition.setRequired(baseDefinition.isRequired());
+
+        if (baseDefinition.isRequired() != null) {
+            definition.setRequired(baseDefinition.isRequired());
+        }
+
         definition.setForceUpperCase(baseDefinition.getForceUppercase());
         //set the datatype - needed for successful custom doc searches
         WorkflowAttributePropertyResolutionService propertyResolutionService = KRADServiceLocatorInternal

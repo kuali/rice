@@ -83,7 +83,7 @@ public class ITUtil {
                 Assert.fail(errorText);
             }
         }
-        
+        ITUtil.checkForIncidentReport(selenium, "//img[@alt='doc search']");
         waitAndClick(selenium, "//img[@alt='doc search']");
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
@@ -116,15 +116,17 @@ public class ITUtil {
     /**
      * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.
      * Trailing slashes are trimmed.  If the remote.public.url does not start with http:// it will be added.
-     * @return http://localhost:8080 by default else the value of remote.public.url
+     * @return http://localhost:8080/kr-dev by default else the value of remote.public.url
      */
     public static String getBaseUrlString() {
         String baseUrl = System.getProperty("remote.public.url");
         if (baseUrl == null) {
-            baseUrl = "http://localhost:8080";
-        } else if (baseUrl.endsWith("/")) {
+            baseUrl = "http://localhost:8080/kr-dev";
+        }
+        if (baseUrl.endsWith("/")) {
             baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-        } else if (!baseUrl.startsWith("http")) {
+        }
+        if (!baseUrl.startsWith("http")) {
             baseUrl = "http://" + baseUrl;
         }
         return baseUrl;
@@ -396,7 +398,7 @@ public class ITUtil {
             //            System.out.println(docId);
             //            System.out.println(viewId);
             //            System.out.println(stackTrace);
-            Assert.fail("Incident report navigating to "
+            Assert.fail("\nIncident report navigating to "
                     + linkLocator
                     + " : View Id: "
                     + viewId.trim()

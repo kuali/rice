@@ -82,12 +82,17 @@ public abstract class WebDriverITBase {
      */
     @Before
     public void setUp() throws Exception {
-        driver = ITUtil.getWebDriver();
-        driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
-        String userName = getUserName();
+        if (System.getProperty("remote.driver.saucelabs") == null) {
+            driver = ITUtil.getWebDriver();
+//        } else {
+//            WebDriverWithHelperTest saucelabs = new WebDriverWithHelperTest();
+//            saucelabs.setUp();
+//            driver = saucelabs.driver;
+        }
+        driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         driver.get(ITUtil.getBaseUrlString() + getTestUrl());
-        // Login
-        ITUtil.login(driver, userName);
+        ITUtil.login(driver, getUserName());
+        driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
     }
 
     /**

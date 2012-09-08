@@ -517,7 +517,7 @@
           </property>
         </bean>
 
-        <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field4" p:label="Field 4">
+        <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field114" p:label="Field 4">
           <property name="control">
             <bean parent="Uif-MultiSelectControl"/>
           </property>

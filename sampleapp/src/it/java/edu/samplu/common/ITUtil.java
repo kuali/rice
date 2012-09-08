@@ -342,6 +342,7 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitForElement(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
+        ITUtil.checkForIncidentReport(selenium, elementLocator);
         for (int second = 0;; second++) {
             if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator + " " + message);
             try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}

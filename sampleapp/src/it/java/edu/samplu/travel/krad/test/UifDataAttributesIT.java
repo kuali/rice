@@ -15,23 +15,16 @@
  */
 package edu.samplu.travel.krad.test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
 import edu.samplu.common.UpgradedSeleniumITBase;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  *  Tests that the data attributes are rendered as expected for all controls
@@ -112,7 +105,7 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
     private boolean verifyAllAttributesInScript(String tagId, String suffix) {
         tagId = tagId + suffix;
         String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ tagId +  "')]";
-        assertTrue(tagId + ": complex data attributes script not found see KULRICE-7752", selenium.isElementPresent(complexAttributesXpath));
+        assertTrue(tagId + ": complex data attributes script not found see https://jira.kuali.org/browse/KULRICE-7752", selenium.isElementPresent(complexAttributesXpath));
 
         // the message field does not support complex attributes
         String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");

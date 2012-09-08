@@ -15,12 +15,12 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.thoughtworks.selenium.SeleniumException;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * tests creating and cancelling new and edit Routing Rule maintenance screens 
@@ -54,7 +54,7 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         try {
             selenium.click("methodToCall.processAnswer.button0");            
         } catch (SeleniumException se) {
-            assertTrue("KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.", false);
+            assertTrue("https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.", false);
         }
         selenium.waitForPageToLoad("30000");
     }

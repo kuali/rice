@@ -384,30 +384,34 @@ public class ITUtil {
         selenium.waitForPageToLoad("30000");
         String contents = selenium.getHtmlSource();
         if (contents.contains("Incident Report") && !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
-            String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
-            String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
-            docId = docId.substring(0, docId.indexOf("</span>"));
-            docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
+            try {
+                String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
+                String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
+                docId = docId.substring(0, docId.indexOf("</span>"));
+                docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
 
-            String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
-            viewId = viewId.substring(0, viewId.indexOf("</span>"));
-            viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
+                String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
+                viewId = viewId.substring(0, viewId.indexOf("</span>"));
+                viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
 
-            String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
-            stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
-            stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
+                String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
+                stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
+                stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
 
-            //            System.out.println(docId);
-            //            System.out.println(viewId);
-            //            System.out.println(stackTrace);
-            Assert.fail("\nIncident report navigating to "
-                    + linkLocator
-                    + " : View Id: "
-                    + viewId.trim()
-                    + " Doc Id: "
-                    + docId.trim()
-                    + "\nStackTrace: "
-                    + stackTrace.trim());
+                //            System.out.println(docId);
+                //            System.out.println(viewId);
+                //            System.out.println(stackTrace);
+                Assert.fail("\nIncident report navigating to "
+                        + linkLocator
+                        + " : View Id: "
+                        + viewId.trim()
+                        + " Doc Id: "
+                        + docId.trim()
+                        + "\nStackTrace: "
+                        + stackTrace.trim());
+            } catch (Exception e) {
+                Assert.fail("\nIncident report detected but there was an error during processing: " + e.getMessage() + "\nContents: " + contents);
+            }
         }
     }
 }

@@ -19,7 +19,6 @@ package edu.samplu.admin.test;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import edu.samplu.common.WebDriverITBase;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -29,7 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
+import static com.thoughtworks.selenium.SeleneseTestBase.fail;
+import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
 
 /**
  * Tests docsearch url parameters
@@ -45,7 +46,7 @@ public class DocumentSearchURLParametersITBase extends WebDriverITBase {
     private static final String DOCUMENT_TYPE_NAME = "KualiNotification";
     private static final String ADVANCED_SEARCH_ONLY_FIELD = "applicationDocumentId";
 
-    private static final Map<String, String> CORE_FIELDS = new HashMap<String, String>();
+    protected static final Map<String, String> CORE_FIELDS = new HashMap<String, String>();
     static {
         // basic
         CORE_FIELDS.put("documentTypeName", DOCUMENT_TYPE_NAME);
@@ -122,144 +123,7 @@ public class DocumentSearchURLParametersITBase extends WebDriverITBase {
         }
     }
 
-    @Test
-    public void testHeaderBarDisabled() throws InterruptedException{
-        driver.get(getDocSearchURL("headerBarEnabled=false"));
-        assertTrue(driver.findElements(By.id("headerarea-small")).isEmpty());
-        assertInputPresence(CORE_FIELDS, true);
-        driver.get(getDocSearchURL("headerBarEnabled=true"));
-        assertFalse(driver.findElements(By.id("headerarea-small")).isEmpty());
-        assertInputPresence(CORE_FIELDS, true);
-    }
-
-    @Test
-    public void testCriteriaDisabled() throws InterruptedException{
-        driver.get(getDocSearchURL("searchCriteriaEnabled=NO"));
-        assertInputPresence(CORE_FIELDS, false);
-        driver.get(getDocSearchURL("searchCriteriaEnabled=true"));
-        assertInputPresence(CORE_FIELDS, true);
-    }
-
-    @Test
-    public void testBasicSearchFields() throws InterruptedException{
-        // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
-        driver.get(getDocSearchURL(BASIC_FIELDS));
-
-        assertInputValues(BASIC_FIELDS);
-
-        driver.findElement(By.id("toggleAdvancedSearch")).click();
-
-        Map<String, String> expected = new HashMap<String, String>(BASIC_FIELDS);
-        for (Map.Entry<String, String> entry: ADVANCED_FIELDS.entrySet()) {
-            if (!"isAdvancedSearch".equals(entry.getKey())) {
-                expected.put(entry.getKey(), "");
-            } else {
-                expected.put(entry.getKey(), entry.getValue());
-            }
-        }
-        assertInputValues(expected);
-    }
-
-    @Test
-    public void testBasicSearchFieldsAndExecuteSearch() throws InterruptedException {
-        // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
-        Map<String, String> fields = new HashMap<String, String>();
-        fields.putAll(BASIC_FIELDS);
-        fields.put("methodToCall", "search");
-        driver.get(getDocSearchURL(fields));
-
-        assertInputValues(BASIC_FIELDS);
-
-        // verify that it attempted the search
-        assertTrue(driver.getPageSource().contains("No values match this search"));
-
-        driver.findElement(By.id("toggleAdvancedSearch")).click();
-
-        Map<String, String> expected = new HashMap<String, String>(BASIC_FIELDS);
-        for (Map.Entry<String, String> entry: ADVANCED_FIELDS.entrySet()) {
-            if (!"isAdvancedSearch".equals(entry.getKey())) {
-                expected.put(entry.getKey(), "");
-            } else {
-                expected.put(entry.getKey(), entry.getValue());
-            }
-        }
-        assertInputValues(expected);
-
-        // I guess switching modes doesn't re-execute the search
-        // assertTrue(driver.getPageSource().contains("No values match this search"));
-    }
-
-    @Test
-    public void testBasicSearchFieldsAndExecuteSearchWithHiddenCriteria() throws InterruptedException {
-        // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
-        Map<String, String> fields = new HashMap<String, String>();
-        fields.putAll(BASIC_FIELDS);
-        fields.put("methodToCall", "search");
-        fields.put("searchCriteriaEnabled", "NO");
-        driver.get(getDocSearchURL(fields));
-
-        assertInputPresence(BASIC_FIELDS, false);
-
-        // verify that it attempted the search
-        assertTrue(driver.getPageSource().contains("No values match this search"));
-
-        // NOTE: toggling modes re-enables the search criteria
-    }
-
-    @Test
-    public void testAdvancedSearchFields() throws InterruptedException{
-        // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
-        Map<String, String> values = new HashMap<String, String>(BASIC_FIELDS);
-        values.putAll(ADVANCED_FIELDS);
-        driver.get(getDocSearchURL(values));
-
-        assertInputValues(values);
-
-        driver.findElement(By.id("toggleAdvancedSearch")).click();
-
-        assertInputValues(BASIC_FIELDS);
-    }
-
-    @Test
-    public void testAdvancedSearchFieldsAndExecuteSearch() throws InterruptedException{
-        // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
-        Map<String, String> expected = new HashMap<String, String>(BASIC_FIELDS);
-        expected.putAll(ADVANCED_FIELDS);
-        
-        Map<String, String> values = new HashMap<String, String>(expected);
-        values.put("methodToCall", "search");
-        driver.get(getDocSearchURL(values));
-
-        assertInputValues(expected);
-
-        // verify that it attempted the search
-        assertTrue(driver.getPageSource().contains("No values match this search"));
-
-        driver.findElement(By.id("toggleAdvancedSearch")).click();
-
-        assertInputValues(BASIC_FIELDS);
-    }
-
-    /**
-     * Supplying a saveName does not result in the saved search getting loaded.
-     * @throws InterruptedException
-     */
-    @Test
-    public void testSupplyingSavedSearchNameDoesNothing() throws InterruptedException {
-        // get the search saved
-        driver.get(getDocSearchURL(BASIC_FIELDS));
-
-        driver.get(getDocSearchURL("saveName=testBasicSearchFields_saved_search"));
-        
-        Map<String, String> emptyForm = new HashMap<String, String>();
-        for (String key: CORE_FIELDS.keySet()) {
-            emptyForm.put(key, "");
-        }
-
-        assertInputValues(emptyForm);
-    }
-    
-    private void assertInputValues(Map<String, String> fields) {
+    protected void assertInputValues(Map<String, String> fields) {
         boolean quickmode = false;
         for (Map.Entry<String, String> entry: fields.entrySet()) {
             String value = findInput(entry.getKey()).getAttribute("value");

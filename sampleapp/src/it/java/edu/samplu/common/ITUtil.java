@@ -194,6 +194,12 @@ public class ITUtil {
         loginSe(selenium, "admin");
     }
 
+    /**
+     * If the JVM arg remote.autologin is set, auto login as admin will not be done.
+     * @param driver
+     * @param userName
+     * @throws InterruptedException
+     */
     public static void login(WebDriver driver, String userName) throws InterruptedException {
         if (System.getProperty("remote.autologin") == null) {
             driver.findElement(By.name("__login_user")).clear();
@@ -383,7 +389,9 @@ public class ITUtil {
     public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
         selenium.waitForPageToLoad("30000");
         String contents = selenium.getHtmlSource();
-        if (contents.contains("Incident Report") && !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
+        if (contents.contains("Incident Report") &&
+                !contents.contains("portal.do?channelTitle=Incident%20Report&amp;") && // Incident Report link on sampleapp KRAD tab
+                !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             try {
                 String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
                 String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));

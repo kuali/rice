@@ -47,11 +47,12 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         selenium.click("//button[contains(.,'earch')]");
         ITUtil.waitAndClick(selenium, "link=edit");
         selenium.waitForPageToLoad("30000");
-        assertTrue(selenium.isTextPresent("submit"));
-        assertTrue(selenium.isTextPresent("Save"));
-        assertTrue(selenium.isTextPresent("blanket approve"));
-        assertTrue(selenium.isTextPresent("Close"));
-        assertTrue(selenium.isTextPresent("Cancel"));
+        ITUtil.checkForIncidentReport(selenium, "submit");
+        assertTrue("submit text not present", selenium.isTextPresent("submit"));
+        assertTrue("save text not present", selenium.isTextPresent("Save"));
+        assertTrue("blanket approve text not present", selenium.isTextPresent("blanket approve"));
+        assertTrue("Close text is not present", selenium.isTextPresent("Close"));
+        assertTrue("Cancel text is not present", selenium.isTextPresent("Cancel"));
         lookupAssertions();
         selenium.click("link=Cancel");
         selenium.waitForPageToLoad("30000");

@@ -23,10 +23,6 @@ import org.kuali.rice.krad.service.DictionaryValidationService;
  *
  * @see org.kuali.rice.krad.rules.TransactionalDocumentRuleBase
  */
-public class TransactionalDocumentRuleBase extends org.kuali.rice.krad.rules.TransactionalDocumentRuleBase {
+public class TransactionalDocumentRuleBase extends DocumentRuleBase {
 
-    @Override
-    protected DictionaryValidationService getDictionaryValidationService() {
-        return KNSServiceLocator.getKNSDictionaryValidationService();
-    }
 }

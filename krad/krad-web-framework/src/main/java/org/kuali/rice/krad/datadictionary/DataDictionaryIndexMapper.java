@@ -116,15 +116,21 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 
 		// look in the JSTL key cache
 		DataDictionaryEntry entry = ddIndex.getEntriesByJstlKey().get(className);
-		
-		// check the Object list
-		if (entry == null){
-			entry = ddIndex.getDataObjectEntries().get(className);
-		}
-		// check the document list
-		if ( entry == null ) {
-		    entry = getDocumentEntry(ddIndex, className);
-		}
+
+        // check the Object list
+        if (entry == null){
+            entry = ddIndex.getDataObjectEntries().get(className);
+        }
+        // KULRICE-8005 Breaks when override business object classes
+        // check the BO list
+        if ( entry == null ) {
+            entry = getBusinessObjectEntry(ddIndex, className);
+        }
+        // check the document list
+        if ( entry == null ) {
+            entry = getDocumentEntry(ddIndex, className);
+        }
+
 		return entry;
 	}
 

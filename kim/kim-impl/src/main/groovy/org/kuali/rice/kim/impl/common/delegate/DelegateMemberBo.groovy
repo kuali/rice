@@ -105,4 +105,12 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
                 attributes: immutable.attributes
         )
     }
+
+    @Override
+    public List buildListOfDeletionAwareLists() {
+        List managedLists = super.buildListOfDeletionAwareLists();
+
+        managedLists.add(attributeDetails);
+        return managedLists;
+    }
 }

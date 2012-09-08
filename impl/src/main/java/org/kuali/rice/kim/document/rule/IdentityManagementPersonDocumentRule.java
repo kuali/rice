@@ -94,7 +94,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	protected Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
 	protected Class<? extends AddRoleRule> addRoleRuleClass = PersonDocumentRoleRule.class;
 	protected Class<? extends AddPersonDelegationMemberRule> addPersonDelegationMemberRuleClass = PersonDocumentDelegationMemberRule.class;
-
+    protected ActiveRoleMemberHelper activeRoleMemberHelper = new ActiveRoleMemberHelper();
 	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 
     @Override
@@ -423,7 +423,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	        if ( kimTypeService != null ) {
 		        int j = 0;
-	        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
+
+	        	for ( KimDocumentRoleMember rolePrincipal : activeRoleMemberHelper.getActiveRoleMembers(role.getRolePrncpls()) ) {
 	        		List<RemotableAttributeError> localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), attributeValidationHelper.convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
 			        validationErrors.addAll( attributeValidationHelper.convertErrors(
                             "roles[" + i + "].rolePrncpls[" + j + "]",

@@ -135,9 +135,9 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="id" p:readOnly="true" />
-              <bean parent="Uif-InputField" p:propertyName="namespace" />
-              <bean parent="Uif-InputField" p:propertyName="name" />
-              <bean parent="Uif-InputField" p:propertyName="type" />
+              <bean parent="Uif-InputField" p:propertyName="namespace" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="name" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="type" p:required="true"/>
               <bean parent="Uif-InputField" p:propertyName="description" />
               <bean parent="Uif-InputField" p:propertyName="active" />
               <ref bean="TermSpec-Contexts" />

@@ -53,8 +53,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -622,6 +626,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return getUIFModelAndView(form);
+    }
+
+    /**
+     * Exposes Ajax callback to UI to validate entered rule name to copy
+     * @param name the copyRuleName
+     * @param namespace the rule namespace
+     * @return true or false
+     */
+    @RequestMapping(params = "methodToCall=" + "ajaxValidRuleName", method=RequestMethod.GET)
+    public @ResponseBody boolean ajaxValidRuleName(@RequestParam String name, @RequestParam String namespace) {
+        return (getRuleBoService().getRuleByNameAndNamespace(name, namespace) != null);
     }
 
     /**
@@ -1601,7 +1616,20 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String name = agendaEditor.getCopyRuleName();
         String namespace = agendaEditor.getNamespace();
         // fetch existing rule and copy fields to new rule
+
+        final String copyRuleNameErrorPropertyName = "AgendaEditorView-AddRule-Page"; //"copyRuleName",
+        if (StringUtils.isBlank(name)) {
+            GlobalVariables.getMessageMap().putError(copyRuleNameErrorPropertyName, "error.rule.missingCopyRuleName");
+            return super.refresh(form, result, request, response);
+        }
+
         RuleDefinition oldRuleDefinition = getRuleBoService().getRuleByNameAndNamespace(name, namespace);
+
+        if (oldRuleDefinition == null) {
+            GlobalVariables.getMessageMap().putError(copyRuleNameErrorPropertyName, "error.rule.invalidCopyRuleName", namespace + ":" + name);
+            return super.refresh(form, result, request, response);
+        }
+
         RuleBo oldRule = RuleBo.from(oldRuleDefinition);
         RuleBo newRule = RuleBo.copyRule(oldRule);
         agendaEditor.getAgendaItemLine().setRule( newRule );

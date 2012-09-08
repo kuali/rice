@@ -58,6 +58,7 @@
         <value>krms/scripts/requiredAlerts.js</value>
         <value>krms/scripts/disableButtons.js</value>
         <value>krms/scripts/countdownInputs.js</value>
+        <value>krms/scripts/rulebo-maintenanceview.js</value>
       </list>
     </property>
     <property name="additionalCssFiles">

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.test.KRADTestCase;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
@@ -53,7 +54,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DictionaryValidationServiceImplTest {
+public class DictionaryValidationServiceImplTest extends KRADTestCase {
 
     ClassPathXmlApplicationContext context;
     private DictionaryValidationServiceImpl service;

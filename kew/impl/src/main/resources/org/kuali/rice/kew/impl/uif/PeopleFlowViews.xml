@@ -197,9 +197,8 @@
   ********************************************************************************************************************
   -->
   <bean id="PeopleFlow-Member" parent="Uif-InputField" p:propertyName="memberName" p:label="Member"
-        p:refreshWhenChangedPropertyNames="#lp.memberTypeCode" p:readOnly="@{(#line.memberTypeCode ne 'P') or #view.readOnly}"
-        p:resetDataOnRefresh="true">
-    <property name="quickfinder.render" value="@{!#view.readOnly}"/>
+        p:refreshWhenChanged="#lp.memberTypeCode" p:readOnly="@{#view.readOnly}"
+        p:fieldLookup.render="@{!#view.readOnly}" p:resetDataOnRefresh="true">
     <property name="control">
       <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name" p:watermarkText="Name"/>
     </property>

@@ -35,6 +35,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.persistence.Column;
@@ -153,7 +154,12 @@ public class ActionTakenValue implements Serializable {
         } else {
             String delegatorRoleId = getDelegatorRoleId();
             if (delegatorRoleId != null) {
-                return KimApiServiceLocator.getRoleService().getRole(delegatorRoleId).getName();
+                Role role = KimApiServiceLocator.getRoleService().getRole(delegatorRoleId);
+                if(role != null) {
+                    return role.getName();
+                } else {
+                    return "";
+                }
             } else {
                 return "";
             }

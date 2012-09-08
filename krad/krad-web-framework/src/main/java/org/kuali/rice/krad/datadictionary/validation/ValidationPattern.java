@@ -98,12 +98,6 @@ abstract public class ValidationPattern implements Serializable {
      */
     abstract public Pattern getRegexPattern();
 
-
-    public ValidCharactersConstraint asValidCharactersConstraint() {
-        ValidCharactersConstraint constraint = new ConfigurationBasedRegexPatternConstraint();
-        constraint.setValue(this.getRegexPattern().pattern());
-        return constraint;
-    }
     /**
      * @return String version of regular expression base, suitable for modification with length-specifiers and used internally by
      *         getRegexPattern

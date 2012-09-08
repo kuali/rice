@@ -47,6 +47,7 @@
         <bean parent="ruleEditorBody" />
       </list>
     </property>
+    <property name="additionalScriptFiles" value="/krms/scripts/rulebo-maintenanceview.js"/>
   </bean>
 
   <bean id="ruleEditorBody" parent="ruleEditorBody-parent">
@@ -104,7 +105,7 @@
           </property>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="copyRuleName" p:style="font-size: smaller;" p:showLabel="false">
+              <bean parent="Uif-InputField" p:id="copyRuleName" p:propertyName="copyRuleName" p:style="font-size: smaller;" p:showLabel="false">
                 <property name="label" value="Copy from Existing Rule" />
                 <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
                 <property name="quickfinder.fieldConversions">
@@ -126,12 +127,13 @@
                     p:watermarkText="Existing Rule Name"/>
                   </property>
               </bean>
-              <bean parent="Uif-PrimaryActionButton" p:methodToCall="copyRule" p:actionLabel="Copy Rule"
-                p:style="margin-right: 15pt; float: right;"/>
+              <bean parent="Uif-PrimaryActionButton" p:id="copyRuleButton" p:methodToCall="copyRule" p:actionLabel="Copy Rule"
+                p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt; float: right;"
+                p:refreshWhenChanged="#dp.copyRuleName" p:disabled="@{#empty(#dp.copyRuleName)}" p:onDocumentReadyScript="rulebo_maintenanceview.bind_copyRuleName();" /> <!-- disable button when field is empty -->
             </list>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="agendaItemLine.rule.namespace" p:label="Namespace" p:readOnly="true" />
+        <bean parent="Uif-InputField" p:id="ruleNamespace" p:propertyName="agendaItemLine.rule.namespace" p:label="Namespace" p:readOnly="true" />
         <bean parent="ruleCustomAttributes"/>
         <bean parent="Uif-InputField" p:propertyName="agendaItemLine.rule.name" p:label="Name" p:required="true" p:constraintText="size 100">
           <property name="control">

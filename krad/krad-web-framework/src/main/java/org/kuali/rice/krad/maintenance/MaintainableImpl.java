@@ -35,6 +35,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -428,9 +429,17 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             MaintenanceDocument document = maintenanceForm.getDocument();
 
             // get the old object's collection
+            //KULRICE-7970 support multiple level objects
+            String bindingPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix();
+            String propertyPath = collectionGroup.getPropertyName();
+            if(bindingPrefix!=""&&bindingPrefix!= null)     {
+                propertyPath = bindingPrefix + "." + propertyPath;
+            }
+
             Collection<Object> oldCollection = ObjectPropertyUtils
                     .getPropertyValue(document.getOldMaintainableObject().getDataObject(),
-                            collectionGroup.getPropertyName());
+                            propertyPath);
+
 
             try {
                 Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();

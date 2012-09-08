@@ -181,9 +181,10 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             	if (person != null) {
             		WebFriendlyRecipient rec = new WebFriendlyRecipient(person);
             	    delegators.put((String) ids[0],rec);
-            	    LOG.warn("The name for " + (String) ids[0] + " was not added to the primary delegate drop down list because the delegate does not exist.");
-            	}
-              	
+            	}  else {
+                    LOG.warn("The name for " + (String) ids[0] + " was not added to the primary delegate drop down list because the delegate does not exist.");
+                }
+
             }
         }
         return delegators.values();

@@ -196,4 +196,11 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
 
     }
 
+    @Override
+    public List buildListOfDeletionAwareLists() {
+        List managedLists = super.buildListOfDeletionAwareLists();
+
+        managedLists.add(attributeDetails);
+        return managedLists;
+    }
 }

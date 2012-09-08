@@ -25,23 +25,22 @@
 
 <iframe src="${channelUrl}"
         onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>'
-        name="iframeportlet" id="iframeportlet" style="height: ${frameHeight}px; width: 100%;"
-        title="E-Doc" scrolling="yes" frameborder="0" width="100%"></iframe>
+        name="iframeportlet" id="iframeportlet" style="width: 100%;"
+        title="E-Doc" scrolling="auto" frameborder="0" height="${frameHeight}" width="100%"></iframe>
 
 <script type="text/javascript">
-  jQuery("#Uif-Application").ready(function () {
+  jQuery(function () {
+    var if_height = ${frameHeight};
+    var if_width;
     var channelUrlEscaped = "${channelUrl}".replace(/'/g, "\\'");
-    var iframeSrc = "${channelUrl}";
     var thisIframe = jQuery("iframe[src='" + channelUrlEscaped + "']");
+    var browserIsIE8 = jQuery.browser.msie && jQuery.browser.version == 8.0;
 
-    var previousHeight = "${frameHeight}";
-    var previousWidth = jQuery("#iframe_portlet_container_div").width();
-    var sameDomain = false;
+    //find iframe source host
+    var iframeSrc = "${channelUrl}";
     var regex = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
-    var intervalId = "";
-
-    //iframe resize breaks datatables in older IEs
-    var browserIsOlderIE = jQuery.browser.msie && (jQuery.browser.version == 8.0);
+    var receivingMessages = false;
+    var intervalId;
 
     if (iframeSrc.indexOf("http") == 0 || iframeSrc.indexOf("ftp") == 0) {
       iframeSrc = iframeSrc.match(regex)[1].toString();
@@ -51,66 +50,38 @@
       iframeSrc = window.location.host;
     }
 
-    //Unsupported browser combinations that the iframe resize wont work properly on
-    if ((iframeSrc !== window.location.host && (!navigator.cookieEnabled || jQuery.browser.msie))
-            || (browserIsOlderIE)) {
-/*      jQuery(thisIframe).replaceWith(
-              "<iframe src='${channelUrl}' name='iframeportlet' id='iframeportlet'" +
-                      "title='E-Doc' height='${frameHeight}' width='100%' frameborder='0'></iframe>"
-      );*/
 
-      jQuery(thisIframe).attr("scroll", "yes");
-      jQuery(thisIframe).attr("scrolling", "yes");
-      jQuery(thisIframe).css("overflow", "auto");
+    if (!jQuery.browser.msie) {
+      jQuery(thisIframe).height(if_height);
     }
 
-    if(!browserIsOlderIE){
-      jQuery(thisIframe).attr("scroll", "no");
-      jQuery(thisIframe).attr("scrolling", "no");
-      if (iframeSrc !== window.location.host) {
-        setupCrossDomainResize();
-      }
-      else {
+    if (iframeSrc !== window.location.host) {
+      setupCrossDomainResize()
+    }
+
+    jQuery(thisIframe).load(function () {
+      if (iframeSrc === window.location.host) {
+        setSameDomainIframeHeight();
         intervalId = setInterval(setSameDomainIframeHeight, 500);
       }
-    }
-
-    function resizeIframe() {
-      var skipResize = thisIframe.contents().find("#Uif-Application").attr("data-skipResize");
-      if(skipResize == undefined || skipResize == "false"){
-        var newHeight = thisIframe.contents().find("body").outerHeight(true);
-        var newWidth = jQuery("#iframe_portlet_container_div").width() - 15;
-        thisIframe.contents().find("body").attr("style", "overflow-x: auto; padding-right: 20px;");
-
-        if (newHeight > 100 && (newHeight != previousHeight || newWidth != previousWidth)) {
-          previousHeight = newHeight;
-          previousWidth = newWidth;
-          thisIframe.height(newHeight);
-          thisIframe.width(newWidth);
-        }
-      }
-    }
+    });
 
     function setupCrossDomainResize() {
-      sameDomain = false;
-      if (navigator.cookieEnabled && !jQuery.browser.msie) {
-        //add parent url to hash of iframe to pass it in, it will be stored in the cookie of that
-        //frame for its future page navigations so it can communicate back with postMessage
-        var parentUrl = document.location.href;
-        var newUrl = "${channelUrl}" + '#' + encodeURIComponent(parentUrl);
-        jQuery(thisIframe).attr("src", newUrl);
-        //Also put it in the cookie in this context incase the page being viewed in the iframe switches
-        //to the same host
-        jQuery.cookie('parentUrl', parentUrl, {path:'/'});
+      if (!browserIsIE8) {
+        thisIframe.height(if_height);
       }
     }
 
+    //a function for iframes in the same domain
     function setSameDomainIframeHeight() {
       //check every iteration to see if the iframe is no longer in the same domain
       var url = jQuery(thisIframe).attr('src');
       if ((url.indexOf("http") != 0 && url.indexOf("ftp") != 0) || url.match(regex)[1].toString() === window.location.host) {
         sameDomain = true;
-        resizeIframe();
+        if (!browserIsIE8 && thisIframe[0] && thisIframe[0].contentWindow.document.body) {
+          if_height = thisIframe[0].contentWindow.document.body.scrollHeight;
+          thisIframe.height(if_height);
+        }
       }
       else {
         clearInterval(intervalId);
@@ -118,23 +89,6 @@
       }
     }
 
-    jQuery.receiveMessage(function (e) {
-      console.log("message received");
-      if (!sameDomain) {
-        // Get the height from the passed data
-        var newHeight = Number(e.data.replace(/.*if_height=(\d+)(?:&|$)/, '$1'));
-        var newWidth = jQuery("#iframe_portlet_container_div").width() - 15;
-        if (newWidth < 500) {
-          newWidth = 500;
-        }
-        if (!isNaN(newHeight) && newHeight > 100
-                && (newHeight != previousHeight || newWidth != previousWidth)) {
-          previousHeight = newHeight;
-          previousWidth = newWidth;
-          thisIframe.height(newHeight);
-          thisIframe.width(newWidth);
-        }
-      }
-    });
-  });
+  })
+  ;
 </script>

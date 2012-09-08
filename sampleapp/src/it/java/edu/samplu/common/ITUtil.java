@@ -24,6 +24,8 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
@@ -224,6 +226,19 @@ public class ITUtil {
     }
 
     /**
+     * Write the given stack trace into a String
+     * @param throwable whose stack trace to return
+     * @return String of the given throwable's stack trace.
+     */
+    public static String stackTrace(Throwable throwable) {
+        StringWriter wrt=new StringWriter();
+        PrintWriter pw=new PrintWriter(wrt);
+        throwable.printStackTrace(pw);
+        pw.flush();
+        return wrt.toString();
+    }
+
+    /**
      * Setting the JVM arg remote.driver.dontTearDown to y or t leaves the browser window open when the test has completed.  Valuable when debugging, updating, or creating new tests.
      * When implementing your own tearDown method rather than an inherited one, it is a common courtesy to include this check and not stop and shutdown the browser window to make it easy debug or update your test.
      * {@code }
@@ -418,7 +433,7 @@ public class ITUtil {
                         + "\nStackTrace: "
                         + stackTrace.trim());
             } catch (Exception e) {
-                Assert.fail("\nIncident report detected but there was an error during processing: " + e.getMessage() + "\nContents: " + contents);
+                Assert.fail("\nIncident report detected but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + contents);
             }
         }
     }

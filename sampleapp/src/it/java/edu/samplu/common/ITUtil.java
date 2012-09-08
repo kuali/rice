@@ -191,11 +191,8 @@ public class ITUtil {
         loginSe(selenium, "admin");
     }
 
-    public static void login(WebDriver driver, String userName) {
+    public static void login(WebDriver driver, String userName) throws InterruptedException {
         if (System.getProperty("remote.autologin") == null) {
-            if (!"Login".equals(driver.getTitle())) {
-                fail("Title is not Login as expected, but " + driver.getTitle());
-            }
             driver.findElement(By.name("__login_user")).clear();
             driver.findElement(By.name("__login_user")).sendKeys(userName);
             driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();

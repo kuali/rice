@@ -20,7 +20,6 @@ import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import edu.samplu.common.WebDriverITBase;
 import org.junit.Test;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -34,8 +33,9 @@ import static org.junit.Assert.*;
 
 /**
  * Tests docsearch url parameters
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentSearchURLParametersIT extends WebDriverITBase {
+public class DocumentSearchURLParametersITBase extends WebDriverITBase {
 
     @Override
     public String getTestUrl() {
@@ -54,7 +54,7 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         CORE_FIELDS.put("dateCreated", "11/11/11");
 
     }
-    private static final Map<String, String> BASIC_FIELDS = new HashMap<String, String>();
+    protected static final Map<String, String> BASIC_FIELDS = new HashMap<String, String>();
     static {
         BASIC_FIELDS.putAll(CORE_FIELDS);
         // searchable attrs
@@ -68,7 +68,7 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         BASIC_FIELDS.put("isAdvancedSearch", "NO");
     }
 
-    private static final Map<String, String> ADVANCED_FIELDS = new HashMap<String, String>();
+    protected static final Map<String, String> ADVANCED_FIELDS = new HashMap<String, String>();
     static {
         ADVANCED_FIELDS.put("approverPrincipalName", "testApproverName");
         ADVANCED_FIELDS.put("viewerPrincipalName", "testViewerName");
@@ -81,7 +81,7 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         ADVANCED_FIELDS.put("isAdvancedSearch", "YES");
     }
 
-    private String getDocSearchURL(Map<String, String> params) {
+    String getDocSearchURL(Map<String, String> params) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry: params.entrySet()) {
             sb.append(URLEncoder.encode(entry.getKey()) + "=" + URLEncoder.encode(entry.getValue()) + "&");
@@ -89,7 +89,7 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         return getDocSearchURL(sb.toString());
         
     }
-    private String getDocSearchURL(String params) {
+    protected String getDocSearchURL(String params) {
         return ITUtil.getBaseUrlString() + "/kew/DocumentSearch.do?" + params;
     }
     
@@ -101,7 +101,7 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         return driver.findElement(By.xpath("//input[@name='" + name + "']"));
     }
     
-    private WebElement findModeToggleButton() {
+    protected WebElement findModeToggleButton() {
         WebElement toggleAdvancedSearch = null;
         try {
             return driver.findElement(By.id("toggleAdvancedSearch"));
@@ -111,7 +111,7 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         }
     }
 
-    private void assertSearchDetailMode(WebElement e, boolean advanced) {
+    protected void assertSearchDetailMode(WebElement e, boolean advanced) {
         assertEquals((advanced ? "basic" : "detailed") + " search", e.getAttribute("title"));
 
         try {
@@ -120,24 +120,6 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         } catch (NoSuchElementException nsee) {
             if (advanced) fail("Advanced search field not found in advancedsearch");
         }
-    }
-
-    @Test
-    public void testBasicSearchMode() throws InterruptedException{
-        driver.get(getDocSearchURL(""));
-        WebElement toggle = findModeToggleButton();
-        assertSearchDetailMode(toggle, false);
-        toggle.click();
-        assertSearchDetailMode(findModeToggleButton(), true);
-    }
-
-    @Test
-    public void testAdvancedSearchMode() {
-        driver.get(getDocSearchURL((KRADConstants.ADVANCED_SEARCH_FIELD + "=YES")));
-        WebElement toggle = findModeToggleButton();
-        assertSearchDetailMode(toggle, true);
-        toggle.click();
-        assertSearchDetailMode(findModeToggleButton(), false);
     }
 
     @Test
@@ -258,25 +240,6 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         assertInputValues(BASIC_FIELDS);
     }
 
-    @Test
-    public void testAdvancedSearchFieldsAndExecuteSearchWithHiddenCriteria() throws InterruptedException {
-        // criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName +
-        Map<String, String> expected = new HashMap<String, String>(BASIC_FIELDS);
-        expected.putAll(ADVANCED_FIELDS);
-
-        Map<String, String> values = new HashMap<String, String>(expected);
-        values.put("methodToCall", "search");
-        values.put("searchCriteriaEnabled", "NO");
-        driver.get(getDocSearchURL(values));
-
-        assertInputPresence(expected, false);
-
-        // verify that it attempted the search
-        assertTrue(driver.getPageSource().contains("No values match this search"));
-
-        // NOTE: toggling modes re-enables the search criteria
-    }
-
     /**
      * Supplying a saveName does not result in the saved search getting loaded.
      * @throws InterruptedException
@@ -311,7 +274,7 @@ public class DocumentSearchURLParametersIT extends WebDriverITBase {
         }
     }
 
-    private void assertInputPresence(Map<String, String> fields, boolean present) {
+    protected void assertInputPresence(Map<String, String> fields, boolean present) {
         boolean quickmode = false;
         for (String name: fields.keySet()) {
             if (present) {

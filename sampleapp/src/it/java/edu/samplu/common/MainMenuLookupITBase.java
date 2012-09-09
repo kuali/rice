@@ -42,7 +42,7 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
     @Test
     public void testLookUp() throws Exception {
         selenium.click(getLinkLocator());
-        selenium.waitForPageToLoad("30000");
+        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         selenium.selectFrame("iframeportlet");
         selenium.click("//button[contains(.,'earch')]");
         ITUtil.waitAndClick(selenium, "link=edit");
@@ -55,6 +55,6 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         assertTrue("Cancel text is not present", selenium.isTextPresent("Cancel"));
         lookupAssertions();
         selenium.click("link=Cancel");
-        selenium.waitForPageToLoad("30000");
+        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
     }
 }

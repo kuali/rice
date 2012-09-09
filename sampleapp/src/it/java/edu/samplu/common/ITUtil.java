@@ -62,18 +62,6 @@ public class ITUtil {
         }
     }
 
-    /**
-     * Assert true with a message on failure.
-     * @param value to assert is true
-     * @param message to use as the failure message
-     */
-    public static void assertTrue(boolean value, String message) {
-        if (value != true) {
-            Assert.fail(message);
-        }
-    }
-
-
     private static String blanketApprovalCleanUpErrorText(String errorText) {
         errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
         return errorText;

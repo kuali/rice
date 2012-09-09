@@ -17,8 +17,9 @@ package edu.samplu.krad.compview;
 
 import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
-
 import org.junit.Test;
+
+import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 
 /**
  * Selenium test that tests that tooltips are rendered on mouse over and focus events and hidden on
@@ -62,9 +63,11 @@ public class UifTooltipIT extends UpgradedSeleniumITBase {
         selenium.fireEvent("name=field1", "focus");
         selenium.type("name=field1", "1");
         Thread.sleep(2000);
-        Assert.assertTrue(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-kr-error-cs") && !(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black"))
-                && selenium.isVisible("css=img.uif-validationImage"));
-        
+        assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
+                selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-kr-error-cs") &&
+              !(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")) &&
+                selenium.isVisible("css=img.uif-validationImage"));
+        // TODO figure out this last assert
         //Assert.assertFalse(selenium.isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
     }
 }

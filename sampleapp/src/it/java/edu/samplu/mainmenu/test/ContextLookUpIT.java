@@ -15,8 +15,9 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupITBase;
+
+import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 
 /**
  * tests that user 'admin' can display the Context lookup screen, search,
@@ -32,6 +33,6 @@ public class ContextLookUpIT extends MainMenuLookupITBase {
     }
     @Override
     public void lookupAssertions() {
-        ITUtil.assertTrue(selenium.isTextPresent("Notes and Attachments"), "Text Notes and Attachments not present");
+        assertTrue("Text Notes and Attachments not present", selenium.isTextPresent("Notes and Attachments"));
     }
 }

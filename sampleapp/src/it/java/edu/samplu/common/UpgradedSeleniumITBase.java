@@ -32,6 +32,11 @@ public abstract class UpgradedSeleniumITBase {
     protected Selenium selenium;
     protected WebDriver driver;
 
+
+    protected String getBaseUrlString() {
+        return ITUtil.getBaseUrlString();
+    }
+
     /**
      * Returns the URL to be used with this test
      *
@@ -79,9 +84,5 @@ public abstract class UpgradedSeleniumITBase {
             selenium.stop();
             driver.quit(); // TODO not tested with chrome, the service stop might need this check too
         }
-    }
-    
-    protected String getBaseUrlString() {
-        return ITUtil.getBaseUrlString();
     }
 }

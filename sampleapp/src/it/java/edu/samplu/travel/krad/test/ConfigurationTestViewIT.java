@@ -75,11 +75,9 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
     /**
      * open the configuration test view page
      */
-    private void openConfigurationTestView() {
-        selenium.click("link=KRAD");
-        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-        selenium.isElementPresent("link=Configuration Test View");
-        selenium.click("link=Configuration Test View");
+    private void openConfigurationTestView() throws InterruptedException {
+        ITUtil.waitAndClick(selenium, "link=KRAD");
+        ITUtil.waitAndClick(selenium, "link=Configuration Test View");
         selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
     }
 

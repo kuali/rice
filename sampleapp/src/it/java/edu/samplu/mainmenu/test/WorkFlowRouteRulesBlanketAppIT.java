@@ -35,45 +35,66 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
     @Test
     public void testUntitled() throws Exception {    
         assertEquals("Kuali Portal Index", selenium.getTitle());
+        // click on the main menu Routing Rules link
         selenium.click("link=Routing Rules");
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");
+        // click on the create new button
         selenium.click("//img[@alt='create new']");
         selenium.waitForPageToLoad("30000");
+        // lookup on the Document Type Name
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         selenium.waitForPageToLoad("30000");
+        // type in the name field the text RoutingRuleDocument
         selenium.type("name", "RoutingRuleDocument");
+        // click the search button
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
+        // click the return value link
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
+        // lookup on the Rule Template Name
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         selenium.waitForPageToLoad("30000");
+        // type in the name field the text RuleRoutingTemplate
         selenium.type("name", "RuleRoutingTemplate");
+        // click the search button
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
+        // click the return value link
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
+        // click the create new button
         selenium.click("methodToCall.createRule");
         selenium.waitForPageToLoad("30000");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        // type in the Document Overview Description the text Test Routing Rule
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
+        // click the Force Action checkbox
         selenium.click("//input[@id='document.newMaintainableObject.forceAction']");
+        // type in the Description text area the text Test Routing Rule1
         selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
+        // type in the Document type name field the text DocumentTypeDocument
         selenium.type("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']", "DocumentTypeDocument");
+        // lookup on Person
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
         selenium.waitForPageToLoad("30000");
+        // click the search button
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
+        // click the return value
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
+        // select from the Action Request ACKNOWLEDGE
         selenium.select("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']", "label=ACKNOWLEDGE");
+        // type in the Priority field the text 1
         selenium.type("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
+        // click the add button
         selenium.click("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!)");
         selenium.waitForPageToLoad("30000");
-        ITUtil.checkForIncidentReport(selenium, "methodToCall.blanketApprove");
+        ITUtil.checkForIncidentReport(selenium, "methodToCall.blanketApprove", "KULRICE-8142 Work Flow Route Rule Blanket Approval Incident Report NPE in MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules");
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
         selenium.selectWindow("null");

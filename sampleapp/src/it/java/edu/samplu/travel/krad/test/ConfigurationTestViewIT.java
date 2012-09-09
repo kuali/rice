@@ -16,6 +16,7 @@
 
 package edu.samplu.travel.krad.test;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -76,10 +77,10 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
      */
     private void openConfigurationTestView() {
         selenium.click("link=KRAD");
-        selenium.waitForPageToLoad("30000");
+        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         selenium.isElementPresent("link=Configuration Test View");
         selenium.click("link=Configuration Test View");
-        selenium.waitForPageToLoad("30000");
+        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
     }
 
     /**
@@ -104,7 +105,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         selenium.click("//button");
         Thread.sleep(5000); //allow for line to be added
         //confirm that line has been added
-        assertTrue("line is not present", selenium.isElementPresent("//input[@value='7:06']"));                
+        assertTrue("line (//input[@value='7:06'])is not present", selenium.isElementPresent("//input[@value='7:06']"));
         
     }
 

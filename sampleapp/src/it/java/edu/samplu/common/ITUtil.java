@@ -45,6 +45,7 @@ public class ITUtil {
     public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
     public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
     public static final int WAIT_DEFAULT_SECONDS = 60;
+    public static final String DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT = "30000";
 
     /**
      * "FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"
@@ -61,12 +62,22 @@ public class ITUtil {
         }
     }
 
+    /**
+     * Assert true with a message on failure.
+     * @param value to assert is true
+     * @param message to use as the failure message
+     */
     public static void assertTrue(boolean value, String message) {
         if (value != true) {
             Assert.fail(message);
         }
     }
 
+
+    private static String blanketApprovalCleanUpErrorText(String errorText) {
+        errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
+        return errorText;
+    }
 
     /**
      * Generic blanket approve behavior
@@ -76,15 +87,15 @@ public class ITUtil {
     public static void blanketApprove(Selenium selenium) throws InterruptedException {
         ITUtil.checkForIncidentReport(selenium, "methodToCall.blanketApprove");
         ITUtil.waitAndClick(selenium, "methodToCall.blanketApprove");
-        selenium.waitForPageToLoad("30000");
+        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         Thread.sleep(2000);
 
        if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
             String errorText = selenium.getText(DIV_ERROR_LOCATOR);
             if (errorText != null && errorText.contains("error(s) found on page.")) {
-                errorText = cleanUpErrorText(errorText);
+                errorText = blanketApprovalCleanUpErrorText(errorText);
                 if (selenium.isElementPresent(DIV_EXCOL_LOCATOR)) { // not present if errors are at the bottom of the page (see left-errmsg below)
-                    errorText = cleanUpErrorText(selenium.getText(DIV_EXCOL_LOCATOR)); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+                    errorText = blanketApprovalCleanUpErrorText(selenium.getText(DIV_EXCOL_LOCATOR)); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
                 }
 
 //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
@@ -95,16 +106,11 @@ public class ITUtil {
         }
         ITUtil.checkForIncidentReport(selenium, "//img[@alt='doc search']");
         waitAndClick(selenium, "//img[@alt='doc search']");
-        selenium.waitForPageToLoad("30000");
+        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-    }
-
-    private static String cleanUpErrorText(String errorText) {
-        errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
-        return errorText;
+        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
     }
 
     /**
@@ -228,7 +234,7 @@ public class ITUtil {
             }
             selenium.type("__login_user", user);
             selenium.click("//input[@type='submit']"); //using css selector fails
-            selenium.waitForPageToLoad("30000");
+            selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         }
     }
 
@@ -382,12 +388,14 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitForElement(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
-        ITUtil.checkForIncidentReport(selenium, elementLocator);
+        boolean failed = false;
         for (int second = 0;; second++) {
-            if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator + " " + message);
+            if (second >= seconds) failed = true;
             try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
+        ITUtil.checkForIncidentReport(selenium, elementLocator); // after timeout to be sure page is loaded
+        if (failed) fail("timeout of " + seconds + " seconds waiting for " + elementLocator + " " + message);
     }
 
     /**
@@ -397,7 +405,18 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitForElementVisible(Selenium selenium, String elementLocator) throws InterruptedException {
-        waitForElementVisible(selenium, elementLocator, WAIT_DEFAULT_SECONDS);
+        waitForElementVisible(selenium, elementLocator, WAIT_DEFAULT_SECONDS, "");
+    }
+
+    /**
+     * Wait 60 seconds for the elementLocator to be present or fail including the given message
+     * @param selenium
+     * @param elementLocator
+     * @param message
+     * @throws InterruptedException
+     */
+    public static void waitForElementVisible(Selenium selenium, String elementLocator, String message) throws InterruptedException {
+        waitForElementVisible(selenium, elementLocator, WAIT_DEFAULT_SECONDS, message);
     }
 
     /**
@@ -407,26 +426,44 @@ public class ITUtil {
      * @param seconds
      * @throws InterruptedException
      */
-    public static void waitForElementVisible(Selenium selenium, String elementLocator, int seconds) throws InterruptedException {
+    public static void waitForElementVisible(Selenium selenium, String elementLocator, int seconds, String message) throws InterruptedException {
         for (int second = 0;; second++) {
-            if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator);
+            if (second >= seconds) fail("timeout of " + seconds + " seconds waiting for " + elementLocator + " " + message);
             try { if (selenium.isVisible(elementLocator)) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
     }
 
+    /**
+     * Wait for 60 seconds for the selenium.getTitle to match the given title then fail.
+     * @param selenium
+     * @param title
+     * @throws InterruptedException
+     */
     public static void waitForTitleToEqual(Selenium selenium, String title) throws InterruptedException {
         waitForTitleToEqual(selenium, title, "");
     }
 
+    /**
+     * Wait for 60 seconds for the selenium.getTitle to match the given title then fail including the given message.
+     * @param selenium
+     * @param title
+     * @param message
+     * @throws InterruptedException
+     */
     public static void waitForTitleToEqual(Selenium selenium, String title, String message) throws InterruptedException {
         for (int second = 0;; second++) {
-            if (second >= 60) fail(("timeout of " + 60 + " seconds waiting for title to equal " + title + " " + message).trim());
+            if (second >= WAIT_DEFAULT_SECONDS) fail(("timeout of " + WAIT_DEFAULT_SECONDS + " seconds waiting for title to equal " + title + " " + message).trim());
             try { if (title.equals(selenium.getTitle())) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
     }
 
+    /**
+     * Check the selenium contents for an Incident Report failure with Incident Report Details
+     * @param selenium
+     * @param linkLocator
+     */
     public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
         checkForIncidentReport(selenium, linkLocator, "");
     }
@@ -437,7 +474,7 @@ public class ITUtil {
      * @param linkLocator used only in the failure message
      */
     public static void checkForIncidentReport(Selenium selenium, String linkLocator, String message) {
-        selenium.waitForPageToLoad("30000");
+        selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         String contents = selenium.getHtmlSource();
         if (contents != null &&
             contents.contains("Incident Report") &&
@@ -469,9 +506,16 @@ public class ITUtil {
                         + "\nStackTrace: "
                         + stackTrace.trim());
             } catch (Exception e) {
-                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + contents.replace("\n\n", "\n"));
+                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + deLinespace(
+                        contents));
             }
         }
     }
 
+    private static String deLinespace(String contents) {
+        while (contents.contains("\n\n")) {
+            contents = contents.replace("\n\n", "\n");
+        }
+        return contents;
+    }
 }

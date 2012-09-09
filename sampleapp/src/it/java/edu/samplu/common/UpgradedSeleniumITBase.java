@@ -61,7 +61,7 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
-        ITUtil.waitForTitleToEqual(selenium, "Kuali Portal Index");
+        waitForTitleToEqualKualiPortalIndex("");
     }
 
     protected void waitForTitleToEqualKualiPortalIndex(String message) throws InterruptedException {

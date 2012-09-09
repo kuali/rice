@@ -20,7 +20,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static junit.framework.Assert.fail;
 
@@ -61,6 +60,13 @@ public abstract class UpgradedSeleniumITBase {
         ITUtil.loginSe(selenium, getUserName());
     }
 
+    protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
+        ITUtil.waitForTitleToEqual(selenium, "Kuali Portal Index");
+    }
+
+    protected void waitForTitleToEqualKualiPortalIndex(String message) throws InterruptedException {
+        ITUtil.waitForTitleToEqual(selenium, "Kuali Portal Index", message);
+    }
 
     /**
      * Useful to set -Dremote.driver.dontTearDown=f  -Dremote.driver.dontTearDown=n to not shutdown the browser when

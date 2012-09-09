@@ -1,7 +1,5 @@
 package edu.samplu.common;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -35,13 +33,11 @@ public abstract class MenuITBase extends UpgradedSeleniumITBase {
      * go to the getMenuLinkLocator() Menu and click the getLinkLocator()
      */
     protected void gotoMenuLinkLocator(String message) throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        waitForTitleToEqualKualiPortalIndex();
         ITUtil.waitAndClick(selenium, getMenuLinkLocator(), message);
-        assertEquals("Kuali Portal Index", selenium.getTitle(), message);
-
+        waitForTitleToEqualKualiPortalIndex();
         ITUtil.waitAndClick(selenium, getLinkLocator(), message);
-        Thread.sleep(1000);
-        assertEquals("Kuali Portal Index", selenium.getTitle(), message);
+        waitForTitleToEqualKualiPortalIndex(message);
         selenium.selectFrame("iframeportlet");
 
         ITUtil.checkForIncidentReport(selenium, getLinkLocator(), message);

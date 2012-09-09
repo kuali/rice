@@ -415,6 +415,18 @@ public class ITUtil {
         }
     }
 
+    public static void waitForTitleToEqual(Selenium selenium, String title) throws InterruptedException {
+        waitForTitleToEqual(selenium, title, "");
+    }
+
+    public static void waitForTitleToEqual(Selenium selenium, String title, String message) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= 60) fail(("timeout of " + 60 + " seconds waiting for title to equal " + title + " " + message).trim());
+            try { if (title.equals(selenium.getTitle())) break; } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+    }
+
     public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
         checkForIncidentReport(selenium, linkLocator, "");
     }

@@ -15,11 +15,12 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * tests that user 'admin', on blanket approving a new Routing Rule maintenance document, results in a final document
@@ -72,6 +73,7 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         selenium.type("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
         selenium.click("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!)");
         selenium.waitForPageToLoad("30000");
+        ITUtil.checkForIncidentReport(selenium, "methodToCall.blanketApprove");
         selenium.click("methodToCall.blanketApprove");
         selenium.waitForPageToLoad("30000");
         selenium.selectWindow("null");

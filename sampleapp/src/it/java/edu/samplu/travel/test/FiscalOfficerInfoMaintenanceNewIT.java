@@ -40,7 +40,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         selenium.waitForPageToLoad("50000");
         selenium.selectFrame("iframeportlet");
         // String docId = selenium.getText("//span[contains(@id , '_attribute_span')][position()=1]");
-        ITUtil.checkForIncidentReport(selenium, "");
+        ITUtil.checkForIncidentReport(selenium, "", "KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         selenium.type("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");      
         selenium.type("//input[@name='document.newMaintainableObject.dataObject.id']", "5");      

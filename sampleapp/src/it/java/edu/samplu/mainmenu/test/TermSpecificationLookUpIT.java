@@ -15,7 +15,7 @@
  */
 package edu.samplu.mainmenu.test;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupITBase;
 
 /**
@@ -33,6 +33,6 @@ public class TermSpecificationLookUpIT extends MainMenuLookupITBase {
     
     @Override
     public void lookupAssertions() {
-        SeleneseTestBase.assertTrue(selenium.isTextPresent("Context"));
+        ITUtil.assertTrue(selenium.isTextPresent("Context"), "Text Context not present");
     }
 }

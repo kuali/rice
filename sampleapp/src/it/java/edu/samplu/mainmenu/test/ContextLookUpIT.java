@@ -15,7 +15,7 @@
  */
 package edu.samplu.mainmenu.test;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupITBase;
 
 /**
@@ -32,6 +32,6 @@ public class ContextLookUpIT extends MainMenuLookupITBase {
     }
     @Override
     public void lookupAssertions() {
-        SeleneseTestBase.assertTrue(selenium.isTextPresent("Notes and Attachments"));
+        ITUtil.assertTrue(selenium.isTextPresent("Notes and Attachments"), "Text Notes and Attachments not present");
     }
 }

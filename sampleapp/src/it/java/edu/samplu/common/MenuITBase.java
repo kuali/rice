@@ -34,19 +34,22 @@ public abstract class MenuITBase extends UpgradedSeleniumITBase {
     /**
      * go to the getMenuLinkLocator() Menu and click the getLinkLocator()
      */
-    protected void gotoMenuLinkLocator() throws Exception {
+    protected void gotoMenuLinkLocator(String message) throws Exception {
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        ITUtil.waitAndClick(selenium, getMenuLinkLocator());
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        ITUtil.waitAndClick(selenium, getMenuLinkLocator(), message);
+        assertEquals("Kuali Portal Index", selenium.getTitle(), message);
 
-        ITUtil.waitAndClick(selenium, getLinkLocator());
+        ITUtil.waitAndClick(selenium, getLinkLocator(), message);
         Thread.sleep(1000);
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", selenium.getTitle(), message);
         selenium.selectFrame("iframeportlet");
 
-        ITUtil.checkForIncidentReport(selenium, getLinkLocator());
+        ITUtil.checkForIncidentReport(selenium, getLinkLocator(), message);
     }
 
+    protected void gotoMenuLinkLocator() throws Exception {
+        gotoMenuLinkLocator("");
+    }
     /**
      * go to having clicked create new of the getLinkLocator()
      */

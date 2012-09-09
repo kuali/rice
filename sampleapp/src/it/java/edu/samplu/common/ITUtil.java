@@ -61,6 +61,13 @@ public class ITUtil {
         }
     }
 
+    public static void assertTrue(boolean value, String message) {
+        if (value != true) {
+            Assert.fail(message);
+        }
+    }
+
+
     /**
      * Generic blanket approve behavior
      * @param selenium
@@ -408,17 +415,22 @@ public class ITUtil {
         }
     }
 
+    public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
+        checkForIncidentReport(selenium, linkLocator, "");
+    }
+
     /**
      * Fails if a Incident Report is detected, extracting and reporting the View Id, Document Id, and StackTrace
      * @param selenium
      * @param linkLocator used only in the failure message
      */
-    public static void checkForIncidentReport(Selenium selenium, String linkLocator) {
+    public static void checkForIncidentReport(Selenium selenium, String linkLocator, String message) {
         selenium.waitForPageToLoad("30000");
         String contents = selenium.getHtmlSource();
-        if (contents.contains("Incident Report") &&
-                !contents.contains("portal.do?channelTitle=Incident%20Report&amp;") && // Incident Report link on sampleapp KRAD tab
-                !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
+        if (contents != null &&
+            contents.contains("Incident Report") &&
+            !contents.contains("portal.do?channelTitle=Incident%20Report&amp;") && // Incident Report link on sampleapp KRAD tab
+            !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             try {
                 String chunk =  contents.substring(contents.indexOf("Incident Report"), contents.lastIndexOf("</div>") );
                 String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
@@ -436,7 +448,7 @@ public class ITUtil {
                 //            System.out.println(docId);
                 //            System.out.println(viewId);
                 //            System.out.println(stackTrace);
-                Assert.fail("\nIncident report navigating to "
+                Assert.fail("\nIncident report " + message + " navigating to "
                         + linkLocator
                         + " : View Id: "
                         + viewId.trim()
@@ -445,8 +457,9 @@ public class ITUtil {
                         + "\nStackTrace: "
                         + stackTrace.trim());
             } catch (Exception e) {
-                Assert.fail("\nIncident report detected but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + contents);
+                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + contents);
             }
         }
     }
+
 }

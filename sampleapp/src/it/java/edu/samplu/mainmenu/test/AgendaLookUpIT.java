@@ -15,7 +15,7 @@
  */
 package edu.samplu.mainmenu.test;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupITBase;
 
 /**
@@ -32,6 +32,6 @@ public class AgendaLookUpIT extends MainMenuLookupITBase {
     }
     @Override
     public void lookupAssertions() {
-        SeleneseTestBase.assertTrue(selenium.isTextPresent("Rules"));
+        ITUtil.assertTrue(selenium.isTextPresent("Rules"), "https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'");
     }
 }

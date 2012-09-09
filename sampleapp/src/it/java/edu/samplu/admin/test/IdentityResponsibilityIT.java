@@ -16,6 +16,7 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuITBase;
+import org.junit.Ignore;
 
 /**
  * tests creating and cancelling the new Responsibility maintenance screen 
@@ -27,4 +28,7 @@ public class IdentityResponsibilityIT extends AdminMenuITBase {
     public String getLinkLocator() {
         return "link=Responsibility";
     }
+    @Override
+    @Ignore // No existing entries to attempt to edit
+    public void testEditCancel(){}
 }

@@ -304,7 +304,19 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void waitAndType(Selenium selenium, String elementLocator, String text) throws InterruptedException {
-        waitAndType(selenium, elementLocator, WAIT_DEFAULT_SECONDS, text, "");
+        waitAndType(selenium, elementLocator, text, "");
+    }
+
+    /**
+     * Wait the 60 seconds for the elementLocator to be present or fail, when present type the text.  Include failure message on fail.
+     * @param selenium
+     * @param elementLocator
+     * @param text
+     * @param message
+     * @throws InterruptedException
+     */
+    public static void waitAndType(Selenium selenium, String elementLocator, String text, String message) throws InterruptedException {
+        waitAndType(selenium, elementLocator, WAIT_DEFAULT_SECONDS, text, message);
     }
 
     /**

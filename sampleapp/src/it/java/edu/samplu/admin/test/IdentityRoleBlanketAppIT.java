@@ -33,17 +33,17 @@ public class IdentityRoleBlanketAppIT extends AdminMenuBlanketAppITBase {
 
         @Override
     public String blanketApprove() throws Exception {
-        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
+        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
+        ITUtil.waitAndClick(selenium, "link=return value", "No return value link");
 
         ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
         String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);        
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role");
         selenium.select("//select[@id='document.roleNamespace']", AdminMenuITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        ITUtil.waitAndType(selenium, "//input[@id='document.roleName']", "Validation Test Role " +ITUtil.DTS);
+        ITUtil.waitAndType(selenium, "//input[@id='document.roleName']", "Validation Test Role " +ITUtil.DTS, "No Role Name input to type in.");
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
+        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
+        ITUtil.waitAndClick(selenium, "link=return value", "No return value link");
         ITUtil.waitAndClick(selenium, "methodToCall.addMember.anchorAssignees");
         selenium.waitForPageToLoad("30000");
         

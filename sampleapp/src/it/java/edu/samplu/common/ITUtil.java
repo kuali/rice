@@ -408,7 +408,7 @@ public class ITUtil {
                 !contents.contains("portal.do?channelTitle=Incident%20Report&amp;") && // Incident Report link on sampleapp KRAD tab
                 !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             try {
-                String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
+                String chunk =  contents.substring(contents.indexOf("Incident Report"), contents.lastIndexOf("</div>") );
                 String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
                 docId = docId.substring(0, docId.indexOf("</span>"));
                 docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());

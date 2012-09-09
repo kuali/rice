@@ -457,7 +457,7 @@ public class ITUtil {
                         + "\nStackTrace: "
                         + stackTrace.trim());
             } catch (Exception e) {
-                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + contents);
+                Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + contents.replace("\n\n", "\n"));
             }
         }
     }

@@ -503,6 +503,10 @@ public class ITUtil {
                 Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + deLinespace(
                         contents));
             }
+        } else {
+            if (contents.contains("HTTP Status 404")) {
+                Assert.fail("HTTP Status 404 contents:" + contents);
+            }
         }
     }
 

@@ -47,16 +47,12 @@ public class IdentityRoleIT extends UpgradedSeleniumITBase{
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//img[@alt='create new']");
-        waitForPageToLoad();
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
-        waitForPageToLoad();
         waitAndClick("link=return value");
         waitForPageToLoad();
         assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
-        waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
-        waitForPageToLoad();
     }
 
     @Test
@@ -73,13 +69,10 @@ public class IdentityRoleIT extends UpgradedSeleniumITBase{
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
-        waitForPageToLoad();
         waitAndClick("link=edit");
         waitForPageToLoad();
         assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
-        waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
-        waitForPageToLoad();
     }
 }

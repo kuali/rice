@@ -47,10 +47,7 @@ public class WorkFlowDocTypeIT extends UpgradedSeleniumITBase {
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//img[@alt='create new']");
-        waitForPageToLoad();
-        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
-        waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
         waitForPageToLoad();
     }
@@ -71,12 +68,8 @@ public class WorkFlowDocTypeIT extends UpgradedSeleniumITBase {
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         waitAndClick("link=edit");
-        waitForPageToLoad();
-        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
-        waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
-        waitForPageToLoad();
     }
     
     //Test to validate the requirement of Document Type Label field while submitting a document.
@@ -88,18 +81,15 @@ public class WorkFlowDocTypeIT extends UpgradedSeleniumITBase {
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClick("css=img[alt=\"create new\"]");
-        waitForPageToLoad();
         waitAndType("id=document.documentHeader.documentDescription", "Document Type description");
         waitAndType("id=document.newMaintainableObject.name", "DocType Name");
         waitAndClick("name=methodToCall.route");
         waitForPageToLoad();
         assertTrue(isTextPresent("Document Type Label is required."));
         waitAndClick("name=methodToCall.cancel");
-        waitForPageToLoad();
         waitAndClick("name=methodToCall.processAnswer.button0");
         waitForPageToLoad();
         selectWindow("null");
         waitAndClick("xpath=(//input[@name='imageField'])[2]");
-        waitForPageToLoad();
     }
 }

@@ -15,13 +15,11 @@
  */
 package edu.samplu.mainmenu.test;
 
-import com.thoughtworks.selenium.SeleniumException;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * tests creating and cancelling new and edit Routing Rule maintenance screens 
@@ -46,10 +44,7 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         selectFrame("iframeportlet");
         waitAndClick("//img[@alt='create new']");
 //        selectFrame("relative=up");
-        waitForPageToLoad();
-        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
-        waitForPageToLoad();
         setSpeed("3000");
         // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
         waitAndClick("methodToCall.processAnswer.button0", "https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.");
@@ -66,10 +61,7 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
-        waitForPageToLoad();
         waitAndClick("link=edit");
-        waitForPageToLoad();
-        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitAndClick("methodToCall.processAnswer.button0");
     }

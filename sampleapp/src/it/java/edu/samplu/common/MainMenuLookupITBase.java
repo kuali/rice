@@ -44,7 +44,6 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         selectFrame("iframeportlet");
         waitAndClick("//button[contains(.,'earch')]");
         waitAndClick("link=edit");
-        waitForPageToLoad();
         checkForIncidentReport("submit");
         assertTextPresent("submit");
         assertTextPresent("Save");
@@ -53,6 +52,5 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         assertTextPresent("Cancel");
         lookupAssertions();
         waitAndClick("link=Cancel");
-        waitForPageToLoad();
     }
 }

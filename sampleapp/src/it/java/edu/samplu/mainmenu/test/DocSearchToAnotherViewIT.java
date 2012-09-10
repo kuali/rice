@@ -32,7 +32,6 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
 		waitForPageToLoad();
 		selectFrame("relative=top");
 		waitAndClick("link=Main Menu");
-		waitForPageToLoad();
         setSpeed("2000");
 		waitAndClick("link=People Flow");
 		waitForPageToLoad();

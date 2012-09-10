@@ -47,13 +47,9 @@ public class ReferenceCampusTypeIT extends UpgradedSeleniumITBase {
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
-        waitForPageToLoad();
         waitAndClick("link=edit");
-        waitForPageToLoad();
         assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
-        waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
-        waitForPageToLoad();
     }
 }

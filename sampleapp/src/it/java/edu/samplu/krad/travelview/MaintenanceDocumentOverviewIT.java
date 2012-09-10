@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -36,9 +34,9 @@ public class MaintenanceDocumentOverviewIT extends KradMenuITBase {
      */
     public void testVerifyDocumentOverview() throws Exception {
         gotoMenuLinkLocator();
-        assertTrue(selenium.isTextPresent("Document Overview"));
-        assertTrue(selenium.isElementPresent("//input[@name='document.documentHeader.documentDescription']"));
-        assertTrue(selenium.isElementPresent("//input[@name='document.documentHeader.organizationDocumentNumber']"));
-        assertTrue(selenium.isElementPresent("//textarea[@name='document.documentHeader.explanation']"));
+        assertTextPresent("Document Overview");
+        assertElementPresent("//input[@name='document.documentHeader.documentDescription']");
+        assertElementPresent("//input[@name='document.documentHeader.organizationDocumentNumber']");
+        assertElementPresent("//textarea[@name='document.documentHeader.explanation']");
     }
 }

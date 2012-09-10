@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -35,11 +33,11 @@ public class MaintenanceQuickfinderIconsIT extends KradMenuITBase {
     @Test
     public void testVerifyQuickfinderIcons() throws Exception {
         gotoMenuLinkLocator();
-        assertTrue(selenium.isTextPresent("Document Overview"));
-        assertTrue(selenium.isElementPresent("id=quickfinder1"));
-        assertTrue(selenium.isElementPresent("id=quickfinder2"));
-        assertTrue(selenium.isElementPresent("id=quickfinder3"));
-        assertTrue(selenium.isElementPresent("id=quickfinder4_add"));
+        assertTextPresent("Document Overview");
+        assertElementPresent("id=quickfinder1");
+        assertElementPresent("id=quickfinder2");
+        assertElementPresent("id=quickfinder3");
+        assertElementPresent("id=quickfinder4_add");
         // it would be better to test that the image isn't 404
     }
 }

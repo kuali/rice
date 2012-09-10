@@ -15,8 +15,8 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.MainMenuLookupITBase;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -35,31 +35,39 @@ public class CreateNewAgendaIT extends MainMenuLookupITBase {
     @Test
     public void testCreateNewAgenda() throws Exception {
         gotoMenuLinkLocator("https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'"); // NOT gotoCreateNew because this create new is on the Main Menu screen
-        selenium.select("name=document.newMaintainableObject.dataObject.namespace", "label=Kuali Rules Test");
+        select("name=document.newMaintainableObject.dataObject.namespace", "label=Kuali Rules Test");
         String agendaName = "Agenda Date :"+ Calendar.getInstance().getTime().toString();
-        selenium.type("name=document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
-        selenium.type("name=document.newMaintainableObject.dataObject.contextName", "Context1");
-        selenium.fireEvent("name=document.newMaintainableObject.dataObject.contextName", "blur");
-        selenium.fireEvent("name=document.newMaintainableObject.dataObject.contextName", "focus");
-        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.agenda.typeId", "KULRICE-7924 : KRMS Agenda type select option not rendered w/o using Context lookup");
-        selenium.select("name=document.newMaintainableObject.dataObject.agenda.typeId", "label=Campus Agenda");
-        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
-        selenium.type("name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
-        selenium.click("//div[2]/button");
-        selenium.waitForPageToLoad("30000");
-        //selenium.selectFrame("relative=up");
-        //selenium.click("css=div.jGrowl-close");
-        //selenium.selectFrame("iframeportlet");
-        selenium.click("//div[2]/button[3]");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("xpath=(//input[@name='imageField'])[2]");
+        waitAndType("name=document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
+        waitAndType("name=document.newMaintainableObject.dataObject.contextName", "Context1");
+        fireEvent("name=document.newMaintainableObject.dataObject.contextName", "blur");
+        fireEvent("name=document.newMaintainableObject.dataObject.contextName", "focus");
+        waitForElementPresent("name=document.newMaintainableObject.dataObject.agenda.typeId",
+                "KULRICE-7924 : KRMS Agenda type select option not rendered w/o using Context lookup");
+        select("name=document.newMaintainableObject.dataObject.agenda.typeId", "label=Campus Agenda");
+        waitForElementPresent("name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
+        waitAndType("name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
+        waitAndClick("//div[2]/button");
+        waitForPageToLoad();
+        //selectFrame("relative=up");
+        //waitAndClick("css=div.jGrowl-close");
+        //selectFrame("iframeportlet");
+        waitAndClick("//div[2]/button[3]");
+        waitForPageToLoad();
+        selectWindow("null");
+        waitAndClick("xpath=(//input[@name='imageField'])[2]");
     }
 
-    @Test
-    public void testLookUp() throws Exception {
-        // noop this link create new is off the main menu
+    protected void selectWindow(String windowName) {
+        selenium.selectWindow(windowName);
     }
+
+    protected void fireEvent(String locator, String event) {
+        selenium.fireEvent(locator, event);
+    }
+
+    @Ignore // link to create new is off the main menu
+    @Test
+    public void testLookUp() throws Exception {}
 
     @Override
     public void lookupAssertions() {

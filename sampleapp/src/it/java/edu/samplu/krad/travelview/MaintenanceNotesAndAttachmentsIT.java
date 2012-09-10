@@ -15,11 +15,8 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -36,14 +33,11 @@ public class MaintenanceNotesAndAttachmentsIT  extends KradMenuITBase {
      */
     public void testVerifyNotesAndAttachments() throws Exception {
         gotoMenuLinkLocator();
-        selenium.click("css=span:contains('Notes and Attachments')");
-
-        ITUtil.waitForElement(selenium, "//button[@title='Add a Note']", 15);
-        
-        assertTrue(selenium.isElementPresent("css=span:contains('Notes and Attachments')"));
-        assertTrue(selenium.isElementPresent("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]"));
-        assertTrue(selenium.isElementPresent("//input[@name='attachmentFile']"));
-        assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]"));
-
+        waitAndClick("css=span:contains('Notes and Attachments')");
+        waitForElementPresent("//button[@title='Add a Note']");
+        assertElementPresent("css=span:contains('Notes and Attachments')");
+        assertElementPresent("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]");
+        assertElementPresent("//input[@name='attachmentFile']");
+        assertElementPresent("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]");
     }
 }

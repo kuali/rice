@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -35,9 +33,9 @@ public class MaintenanceHeaderIT extends KradMenuITBase {
      */
     public void testVerifyHeaderFields() throws Exception {
         gotoMenuLinkLocator();
-        assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentNumber')]"));
-        assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentInitiatorNetworkId')]"));
-        assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentStatus')]"));
-        assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentCreateDate')]"));
+        assertElementPresent("//div[contains(@class, 'uif-documentNumber')]");
+        assertElementPresent("//div[contains(@class, 'uif-documentInitiatorNetworkId')]");
+        assertElementPresent("//div[contains(@class, 'uif-documentStatus')]");
+        assertElementPresent("//div[contains(@class, 'uif-documentCreateDate')]");
     }
 }

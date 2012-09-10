@@ -17,6 +17,7 @@ package edu.samplu.common;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
@@ -70,9 +71,16 @@ public abstract class UpgradedSeleniumITBase {
         assertTrue(selenium.isElementPresent(locator));
     }
 
-
     protected void assertTextPresent(String text) {
-        assertTrue(text + " text not present", selenium.isTextPresent(text));
+        assertTextPresent("", text);
+    }
+
+    protected void assertTextPresent(String message, String text) {
+        assertTrue(text + " text not present " + message, selenium.isTextPresent(text));
+    }
+
+    protected void checkErrorMessageItem(String message) {
+        ITUtil.checkErrorMessageItem(selenium, message);
     }
 
     protected void checkForIncidentReport(String locator) {
@@ -81,6 +89,22 @@ public abstract class UpgradedSeleniumITBase {
 
     protected void checkForIncidentReport(String locator, String message) {
         ITUtil.checkForIncidentReport(selenium, message);
+    }
+
+    protected void colapseExpand(String clickLocator, String visibleLocator) throws InterruptedException {
+        selenium.click(clickLocator);
+        waitNotVisible(visibleLocator);
+
+        selenium.click(clickLocator);
+        waitIsVisible(visibleLocator);
+    }
+
+    protected void expandColapse(String clickLocator, String visibleLocator) throws InterruptedException {
+        selenium.click(clickLocator);
+        waitIsVisible(visibleLocator);
+
+        selenium.click(clickLocator);
+        waitNotVisible(visibleLocator);
     }
 
     protected void focusAndType(String fieldLocator, String typeText) {
@@ -121,10 +145,39 @@ public abstract class UpgradedSeleniumITBase {
         ITUtil.waitAndType(selenium, elementLocator, text, message);
     }
 
+    protected void waitNotVisible(String visibleLocator) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= 15) {
+                Assert.fail("timeout");
+            }
+
+            if (!selenium.isVisible(visibleLocator)) {
+                break;
+            }
+
+            Thread.sleep(1000);
+        }
+    }
+
+    protected void waitIsVisible(String visibleLocator) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= 15) {
+                Assert.fail("timeout");
+            }
+
+            if (selenium.isVisible(visibleLocator)) {
+                break;
+            }
+
+            Thread.sleep(1000);
+        }
+    }
+
     protected void waitForElementPresent(String locator) throws InterruptedException {
         waitForElementPresent(locator, "");
     }
 
+    // TODO this should be message first
     protected void waitForElementPresent(String locator, String message) throws InterruptedException {
         ITUtil.waitForElement(selenium, locator, message);
     }

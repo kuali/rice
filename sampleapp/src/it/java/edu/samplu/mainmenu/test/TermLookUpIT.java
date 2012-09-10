@@ -17,8 +17,6 @@ package edu.samplu.mainmenu.test;
 
 import edu.samplu.common.MainMenuLookupITBase;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
-
 /**
  * tests that user 'admin' can display the Term lookup screen, search,
  * initiate an Term maintenance document via an edit action on the search results and
@@ -33,6 +31,6 @@ public class TermLookUpIT extends MainMenuLookupITBase {
     }
     @Override
     public void lookupAssertions() {
-        assertTrue("Text Parameters not present", selenium.isTextPresent("Term Parameters"));
+        assertTextPresent("Text Parameters not present", "Term Parameters");
     }
 }

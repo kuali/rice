@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -35,6 +33,6 @@ public class MaintenanceLookupAddMultipleLinesIT extends KradMenuITBase {
      */
     public void testVerifyLookupAddMultipleLines() throws Exception {
         gotoMenuLinkLocator();
-        assertTrue(selenium.isElementPresent("//a[contains(text(),'Lookup/Add Multiple Lines')]"));
+        assertElementPresent("//a[contains(text(),'Lookup/Add Multiple Lines')]");
     }
 }

@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,13 +38,13 @@ public class MaintenanceDisclosuresIT extends KradMenuITBase{
      */
     public void testVerifyDisclosures() throws Exception {
         gotoMenuLinkLocator();
-        assertTrue(selenium.isElementPresent("//span[contains(.,'Document Overview')]"));
-        assertTrue(selenium.isElementPresent("//span[contains(.,'Document Overview')]"));
-        assertTrue(selenium.isElementPresent("//span[contains(.,'Account Information')]"));
-        assertTrue(selenium.isElementPresent("//span[contains(.,'Fiscal Officer Accounts')]"));
-        assertTrue(selenium.isElementPresent("//span[contains(.,'Notes and Attachments')]"));
-        assertTrue(selenium.isElementPresent("//span[contains(.,'Ad Hoc Recipients')]"));
-        assertTrue(selenium.isElementPresent("//span[contains(.,'Route Log')]"));
+        assertElementPresent("//span[contains(.,'Document Overview')]");
+        assertElementPresent("//span[contains(.,'Document Overview')]");
+        assertElementPresent("//span[contains(.,'Account Information')]");
+        assertElementPresent("//span[contains(.,'Fiscal Officer Accounts')]");
+        assertElementPresent("//span[contains(.,'Notes and Attachments')]");
+        assertElementPresent("//span[contains(.,'Ad Hoc Recipients')]");
+        assertElementPresent("//span[contains(.,'Route Log')]");
 
         colapseExpand("//span[contains(.,'Document Overview')]//img",
                 "//label[contains(.,'Organization Document Number')]");
@@ -59,61 +57,17 @@ public class MaintenanceDisclosuresIT extends KradMenuITBase{
         expandColapse("//span[contains(.,'Ad Hoc Recipients')]", "//span[contains(.,'Ad Hoc Group Requests')]");
 
         // Handle frames
-        selenium.click("//span[contains(.,'Route Log')]//img");
-        selenium.selectFrame("routeLogIFrame");
+        waitAndClick("//span[contains(.,'Route Log')]//img");
+        selectFrame("routeLogIFrame");
 
         waitIsVisible("//img[@alt='refresh']");
 
         // relative=top iframeportlet might look weird but either alone results in something not found.
-        selenium.selectFrame("relative=top");
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//span[contains(.,'Route Log')]//img");
-        selenium.selectFrame("routeLogIFrame");
+        selectFrame("relative=top");
+        selectFrame("iframeportlet");
+        waitAndClick("//span[contains(.,'Route Log')]//img");
+        selectFrame("routeLogIFrame");
 
         waitNotVisible("//img[@alt='refresh']");
-    }
-
-    private void colapseExpand(String clickLocator, String visibleLocator) throws InterruptedException {
-        selenium.click(clickLocator);
-        waitNotVisible(visibleLocator);
-
-        selenium.click(clickLocator);
-        waitIsVisible(visibleLocator);
-    }
-
-    private void expandColapse(String clickLocator, String visibleLocator) throws InterruptedException {
-        selenium.click(clickLocator);
-        waitIsVisible(visibleLocator);
-
-        selenium.click(clickLocator);
-        waitNotVisible(visibleLocator);
-    }
-
-    private void waitNotVisible(String visibleLocator) throws InterruptedException {
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (!selenium.isVisible(visibleLocator)) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
-    }
-
-    private void waitIsVisible(String visibleLocator) throws InterruptedException {
-        for (int second = 0;; second++) {
-            if (second >= 15) {
-                fail("timeout");
-            }
-
-            if (selenium.isVisible(visibleLocator)) {
-                break;
-            }
-
-            Thread.sleep(1000);
-        }
     }
 }

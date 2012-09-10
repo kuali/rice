@@ -17,8 +17,6 @@ package edu.samplu.mainmenu.test;
 
 import edu.samplu.common.MainMenuLookupITBase;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
-
 /**
  * tests that user 'admin' can display the Agenda lookup screen, search,
  * initiate an Agenda maintenance document via a copy action on the search results and
@@ -33,7 +31,6 @@ public class AgendaLookUpIT extends MainMenuLookupITBase {
     }
     @Override
     public void lookupAssertions() {
-        assertTrue("https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'",
-                selenium.isTextPresent("Rules"));
+        assertTextPresent("https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'", "Rules");
     }
 }

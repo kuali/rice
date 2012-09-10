@@ -34,13 +34,13 @@ public class MaintenanceSaveIT extends KradMenuITBase {
      */
     public void testVerifySave() throws Exception {
         gotoMenuLinkLocator();
-        selenium.type("name=document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
-        selenium.click("name=document.newMaintainableObject.dataObject.number");
-        selenium.type("name=document.newMaintainableObject.dataObject.number", "1234567890");
-        selenium.type("name=document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
-        selenium.type("name=document.newMaintainableObject.dataObject.subAccount", "a1");
-        selenium.click("css=button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
+        waitAndType("name=document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
+        waitAndClick("name=document.newMaintainableObject.dataObject.number");
+        waitAndType("name=document.newMaintainableObject.dataObject.number", "1234567890");
+        waitAndType("name=document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
+        waitAndType("name=document.newMaintainableObject.dataObject.subAccount", "a1");
+        waitAndClick("css=button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
         Thread.sleep(2000);
-        ITUtil.checkErrorMessageItem(selenium, " also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
+        checkErrorMessageItem(" also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
      }
 }

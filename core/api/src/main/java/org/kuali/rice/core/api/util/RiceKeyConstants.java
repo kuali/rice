@@ -205,8 +205,11 @@ public final class RiceKeyConstants {
     public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
 
     public static final String ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE = "error.document.identityManagementPerson.qualifier.valueNotUnique";
-    
-	private RiceKeyConstants() {
+
+    // PeopleFlow
+    public static final String PEOPLEFLOW_DUPLICATE = "peopleFlow.duplicate";
+
+    private RiceKeyConstants() {
 		throw new UnsupportedOperationException("do not call");
 	}
 }

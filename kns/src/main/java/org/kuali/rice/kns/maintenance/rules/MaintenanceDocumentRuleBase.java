@@ -129,7 +129,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setBusinessObjectMetaDataService(KNSServiceLocator.getBusinessObjectMetaDataService());
             this.setBoService(KRADServiceLocator.getBusinessObjectService());
             this.setBoDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
-            this.setDictionaryValidationService(getDictionaryValidationService());
+            this.setDictionaryValidationService(super.getDictionaryValidationService());
             this.setConfigService(KRADServiceLocator.getKualiConfigurationService());
             this.setDocumentHelperService(KNSServiceLocator.getDocumentHelperService());
             this.setMaintDocDictionaryService(KNSServiceLocator.getMaintenanceDocumentDictionaryService());

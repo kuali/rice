@@ -297,6 +297,7 @@ public class ITUtil {
         waitForElement(selenium, elementLocator, seconds, message);
         selenium.click(elementLocator);
         Thread.sleep(1000);
+        ITUtil.checkForIncidentReport(selenium, elementLocator, message);
     }
 
     /**
@@ -505,7 +506,7 @@ public class ITUtil {
             }
         } else {
             if (contents.contains("HTTP Status 404")) {
-                Assert.fail("HTTP Status 404 contents:" + contents);
+                Assert.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
             }
         }
     }

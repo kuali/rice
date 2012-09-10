@@ -86,6 +86,10 @@ public abstract class UpgradedSeleniumITBase {
         ITUtil.blanketApprove(selenium);
     }
 
+    protected void close() {
+        selenium.close();
+    }
+
     protected void check(String locator) {
         selenium.check(locator);
     }
@@ -100,6 +104,10 @@ public abstract class UpgradedSeleniumITBase {
 
     protected void checkForIncidentReport(String locator, String message) {
         ITUtil.checkForIncidentReport(selenium, message);
+    }
+
+    protected void chooseCancelOnNextConfirmation() {
+        selenium.chooseCancelOnNextConfirmation();
     }
 
     protected void colapseExpand(String clickLocator, String visibleLocator) throws InterruptedException {
@@ -131,8 +139,24 @@ public abstract class UpgradedSeleniumITBase {
         selenium.type(fieldLocator, typeText);
     }
 
+    protected String[] getAllWindowTitles() {
+        return selenium.getAllWindowTitles();
+    }
+
     protected String getAttribute(String attributeLocator) {
         return selenium.getAttribute(attributeLocator);
+    }
+
+    protected String getConfirmation() {
+        return selenium.getConfirmation();
+    }
+
+    protected String getEval(String script) {
+        return selenium.getEval(script);
+    }
+    
+    protected String getLocation() {
+        return selenium.getLocation();
     }
     
     protected String getText(String locator) {
@@ -142,13 +166,29 @@ public abstract class UpgradedSeleniumITBase {
     protected String getTitle() {
         return selenium.getTitle();
     }
-    
+
+    protected String getValue(String locator) {
+        return selenium.getValue(locator);
+    }
+
     protected boolean isElementPresent(String locator) {
         return selenium.isElementPresent(locator);
     }
     
     protected boolean isTextPresent(String locator) {
         return selenium.isTextPresent(locator);
+    }
+
+    protected boolean isVisible(String locator) {
+        return selenium.isVisible(locator);
+    }
+
+    protected void mouseOver(String locator) {
+        selenium.mouseOver(locator);
+    }
+    
+    protected void mouseOut(String locator) {
+        selenium.mouseOut(locator);
     }
     
     protected void select(String locator, String select) {
@@ -157,6 +197,10 @@ public abstract class UpgradedSeleniumITBase {
 
     protected void selectFrame(String frameName) {
         selenium.selectFrame(frameName);
+    }
+
+    protected void setSpeed(String speed) {
+        selenium.setSpeed(speed);
     }
 
     protected void selectWindow(String windowName) {
@@ -190,7 +234,7 @@ public abstract class UpgradedSeleniumITBase {
                 Assert.fail("timeout");
             }
 
-            if (!selenium.isVisible(visibleLocator)) {
+            if (!isVisible(visibleLocator)) {
                 break;
             }
 
@@ -204,7 +248,7 @@ public abstract class UpgradedSeleniumITBase {
                 Assert.fail("timeout");
             }
 
-            if (selenium.isVisible(visibleLocator)) {
+            if (isVisible(visibleLocator)) {
                 break;
             }
 
@@ -225,12 +269,20 @@ public abstract class UpgradedSeleniumITBase {
         selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
     }
 
+    protected void waitForPageToLoad50000() {
+        selenium.waitForPageToLoad("50000");
+    }
+
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
         waitForTitleToEqualKualiPortalIndex("");
     }
 
     protected void waitForTitleToEqualKualiPortalIndex(String message) throws InterruptedException {
         ITUtil.waitForTitleToEqual(selenium, "Kuali Portal Index", message);
+    }
+
+    protected void windowFocus() {
+        selenium.windowFocus();
     }
 
     /**

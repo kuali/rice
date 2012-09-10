@@ -49,7 +49,7 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
     //		waitAndClick("css=input[type=\"submit\"]");
     //		selenium.waitForPageToLoad("100000");
     		waitAndClick("link=KRAD");
-    		selenium.waitForPageToLoad("50000");
+    		waitForPageToLoad50000();
     		waitAndClick("link=Uif Components (Kitchen Sink)");
     		selenium.waitForPageToLoad("100000");
     		Thread.sleep(2000);
@@ -58,14 +58,14 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
             waitAndType("name=field106", "something");
             focus("name=field110");
             waitAndType("name=field110", "something else");
-            assertEquals("something", selenium.getValue("name=field106"));
-            selenium.chooseCancelOnNextConfirmation();
+            assertEquals("something", getValue("name=field106"));
+            chooseCancelOnNextConfirmation();
             // 'cancel' link
             waitAndClick("link=Cancel");
             // Manually tested. Selenium fails to detect confirmation window. Uncomment once its fixed.
-            // assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-            fail("selenium.chooseCancelOnNextConfirmation(); is not finding the Dialog see https://jira.kuali.org/browse/KULRICE-7850 "
-                    + "selenium.chooseCancelOnNextConfirmation() isn't finding dialog");
+            // assertTrue(getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
+            fail("chooseCancelOnNextConfirmation(); is not finding the Dialog see https://jira.kuali.org/browse/KULRICE-7850 "
+                    + "chooseCancelOnNextConfirmation() isn't finding dialog");
                         
            
         }

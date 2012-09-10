@@ -43,7 +43,7 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
                 Assert.fail("timeout");
             }
             try {
-                if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) {
+                if (isVisible("css=.jquerybubblepopup-innerHtml")) {
                     break;
                 }
             } catch (Exception e) {
@@ -51,7 +51,7 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(selenium.isVisible(
+        Assert.assertTrue(isVisible(
                 "css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
         waitAndType("name=field1", "a");
         fireEvent("name=field1", "blur");
@@ -61,7 +61,7 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
                 Assert.fail("timeout");
             }
             try {
-                if (!selenium.isVisible("css=.jquerybubblepopup-innerHtml")) {
+                if (!isVisible("css=.jquerybubblepopup-innerHtml")) {
                     break;
                 }
             } catch (Exception e) {
@@ -69,7 +69,7 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
             Thread.sleep(1000);
         }
 
-        Assert.assertFalse(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        Assert.assertFalse(isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
         fireEvent("name=field1", "blur");
         Assert.assertFalse(isElementPresent("name=field1@aria-invalid"));
         Assert.assertTrue(getAttribute("name=field1@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));

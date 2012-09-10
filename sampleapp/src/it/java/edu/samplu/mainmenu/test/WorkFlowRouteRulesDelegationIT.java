@@ -71,7 +71,7 @@ public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
         waitForPageToLoad();
         assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
-        selenium.setSpeed("2000");
+        setSpeed("2000");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         waitAndClick("link=edit");

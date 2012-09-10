@@ -35,39 +35,39 @@ public class ServerInfoIT extends UpgradedSeleniumITBase {
 		waitAndClick("//button[contains(.,'Get Info Messages')]");
 		waitForPageToLoad();
         ITUtil.waitForElementVisible(selenium, "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]");
-		Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
+		Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
 		Assert.assertTrue(isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
-		Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
+		Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
 		Assert.assertTrue(isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
 		Assert.assertTrue(isElementPresent("css=div[data-role=\"InputField\"] img[alt=\"Information\"]"));
-		selenium.mouseOver("//a[contains(.,'Field 1')]");
+		mouseOver("//a[contains(.,'Field 1')]");
 		Assert.assertTrue(isElementPresent("css=.uif-infoHighlight"));
 		waitAndClick("//a[contains(.,'Field 1')]");
 		for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
-			try { if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}
+			try { if (isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
 
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+		Assert.assertTrue(isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
+		Assert.assertTrue(isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
 		waitAndType("name=field1", "");
 		fireEvent("name=field1", "blur");
 		fireEvent("name=field1", "focus");
 		for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
-			try { if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}
+			try { if (isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
 
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+		Assert.assertTrue(isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
 		for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
-			try { if (selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) break; } catch (Exception e) {}
+			try { if (isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) break; } catch (Exception e) {}
 			Thread.sleep(1000);
 		}
 
-		Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+		Assert.assertTrue(isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
 		waitAndType("name=field1", "b");
         fireEvent("name=field1", "blur");
         fireEvent("name=field1", "focus");
@@ -78,7 +78,7 @@ public class ServerInfoIT extends UpgradedSeleniumITBase {
 		}
         fireEvent("name=field1", "blur");
 
-		Assert.assertTrue(!selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+		Assert.assertTrue(!isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
 		Assert.assertFalse(isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
 		waitAndType("name=field1", "");
 		fireEvent("name=field1", "focus");

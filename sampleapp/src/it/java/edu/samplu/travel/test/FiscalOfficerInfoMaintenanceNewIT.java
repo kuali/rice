@@ -35,13 +35,13 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
     @Test
     public void testUntitled() throws Exception {
         waitAndClick("link=KRAD");
-        selenium.waitForPageToLoad("50000");
+        waitForPageToLoad50000();
         waitAndClick("//a[@title='FiscalOfficerInfo Maintenance (New)']");
-        selenium.waitForPageToLoad("50000");
+        waitForPageToLoad50000();
         selectFrame("iframeportlet");
-        // String docId = selenium.getText("//span[contains(@id , '_attribute_span')][position()=1]");
-        ITUtil.checkForIncidentReport(selenium, "", "https://jira.kuali.org/browse/KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        // String docId = getText("//span[contains(@id , '_attribute_span')][position()=1]");
+        checkForIncidentReport("", "https://jira.kuali.org/browse/KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
+        String docId = getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         waitAndType("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");
         waitAndType("//input[@name='document.newMaintainableObject.dataObject.id']", "5");
         waitAndType("//input[@name='document.newMaintainableObject.dataObject.userName']", "Jigar");
@@ -61,48 +61,48 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         
         int docIdInt = Integer.valueOf(docId).intValue(); 
         
-        selenium.waitForPageToLoad("50000");
+        waitForPageToLoad50000();
         selectFrame("relative=up");
         waitAndClick("//img[@alt='action list']");
-        selenium.waitForPageToLoad("50000");              
+        waitForPageToLoad50000();
         selectFrame("iframeportlet");
         if(isElementPresent("link=Last")){
             waitAndClick("link=Last");
-            selenium.waitForPageToLoad("50000");
+            waitForPageToLoad50000();
             waitAndClick("link="+docIdInt);
         } else {                                  
             waitAndClick("link="+docIdInt);
         }
         
         Thread.sleep(5000); 
-        String[] windowTitles = selenium.getAllWindowTitles();              
+        String[] windowTitles = getAllWindowTitles();
         selectWindow(windowTitles[1]);
-        selenium.windowFocus();
+        windowFocus();
         assertEquals(windowTitles[1], getTitle());
         
         //------submit-----//
         selectFrame("relative=up");
         waitAndClick("//button[@value='submit']");
-        selenium.waitForPageToLoad("50000");       
-        selenium.close();                   
+        waitForPageToLoad50000();
+        close();
         //------submit over---//        
         
         //----step 2----//  
         selectWindow("null");
-        selenium.windowFocus();
+        windowFocus();
         waitAndClick("//img[@alt='doc search']");
-        selenium.waitForPageToLoad("50000");
+        waitForPageToLoad50000();
         assertEquals(windowTitles[0], getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("50000");
+        waitForPageToLoad50000();
         //----step 2 over ----//
         
         //-----Step 3 verifies that doc is final-------//        
-        assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+        assertEquals("FINAL", getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         selectFrame("relative=up");
         waitAndClick("link=Main Menu");
-        selenium.waitForPageToLoad("50000");
+        waitForPageToLoad50000();
         assertEquals(windowTitles[0], getTitle());
         System.out.println("---------------------- :: Test complete :: ----------------------");
         //-----Step 3 verified that doc is final -------//      

@@ -50,7 +50,7 @@ public class ParentLineIT extends UpgradedSeleniumITBase {
             Thread.sleep(1000);
         }
         // verify that sub collection sizes are displayed as expected
-        assertEquals("SubCollection - (3 lines)", selenium.getText("link=SubCollection - (3 lines)"));
-        assertEquals("SubCollection - (2 lines)", selenium.getText("link=SubCollection - (2 lines)"));
+        assertEquals("SubCollection - (3 lines)", getText("link=SubCollection - (3 lines)"));
+        assertEquals("SubCollection - (2 lines)", getText("link=SubCollection - (2 lines)"));
     }
 }

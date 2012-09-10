@@ -32,7 +32,7 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
 		selectFrame("relative=top");
 		waitAndClick("link=Main Menu");
 		waitForPageToLoad();
-        selenium.setSpeed("2000");
+        setSpeed("2000");
 		waitAndClick("link=People Flow");
 		waitForPageToLoad();
 		selectFrame("iframeportlet");
@@ -42,6 +42,6 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
 		focusAndType("name=document.documentHeader.explanation", "sample explanation");		
         focus("link=Cancel");
 		waitAndClick("link=Cancel");
-        //assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$")); //Removed Confirmation Panel From the page itself
+        //assertTrue(getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$")); //Removed Confirmation Panel From the page itself
 	}
 }

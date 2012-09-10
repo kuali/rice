@@ -16,7 +16,6 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
-import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +38,7 @@ public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
  
         String docId = waitForDocId();
         waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
-        assertEquals("", selenium.getText("methodToCall.cancel"));
+        assertEquals("", getText("methodToCall.cancel"));
         select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KR-NS - Kuali Nervous System");
         
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";

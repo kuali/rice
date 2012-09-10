@@ -44,8 +44,8 @@ public class MaintenanceAddDeleteFiscalOfficerIT extends KradMenuITBase {
 
         waitForElementPresent("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number", "https://jira.kuali.org/browse/KULRICE-8038");
 
-        assertEquals("1234567890", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
-        assertEquals("2", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId"));
+        assertEquals("1234567890", getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
+        assertEquals("2", getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId"));
        
         waitAndClick("//button[@data-loadingmessage='Deleting Line...']");
         

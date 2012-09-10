@@ -36,43 +36,43 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
 		waitAndClick("//button[contains(.,'Get Warning Messages')]");
 		selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
 		assertTrue( "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible https://jira.kuali.org/browse/KULRICE-8140",
-                selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
+                isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
 		assertTrue("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem not present",
                 isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem"));
-		assertTrue("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] not visible", selenium.isVisible(
+		assertTrue("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] not visible", isVisible(
                 "css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
 		assertTrue("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem not present",
                 isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem"));
 		assertTrue("css=div[data-role=\"InputField\"] img[alt=\"Warning\"] not present", isElementPresent(
                 "css=div[data-role=\"InputField\"] img[alt=\"Warning\"]"));
-		selenium.mouseOver("//a[contains(.,'Field 1')]");
+		mouseOver("//a[contains(.,'Field 1')]");
 		assertTrue("css=.uif-warningHighlight no present when //a[contains(.,'Field 1')] is moused over",
                 isElementPresent("css=.uif-warningHighlight"));
 		waitAndClick("//a[contains(.,'Field 1')]");
         ITUtil.waitForElementVisible(selenium, "css=.jquerybubblepopup-innerHtml", " after click on //a[contains(.,'Field 1')]");
 
-		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", selenium.isVisible(
+		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", isVisible(
                 "css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible",
-                selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+                isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
         typeBlurFocus("name=field1", "");
 
         ITUtil.waitForElementVisible(selenium, "css=.jquerybubblepopup-innerHtml", " not visible after typing nothing in name=field1 then firing blur and focus events");
 
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
-                selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+                isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
 
         ITUtil.waitForElementVisible(selenium, "css=.jquerybubblepopup-innerHtml> .uif-clientMessageItems", " not visible after typing nothing in name=field1 then firing blur and focus events");
 
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
-                selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+                isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
 
         typeBlurFocus("name=field1", "b");
 
         ITUtil.waitForElementVisible(selenium, "css=.jquerybubblepopup-innerHtml> .uif-clientMessageItems", " not visible after typing b in name=field1 then firing blur and focus events");
 
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
-                !selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+                !isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems", !isElementPresent(
                 "css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
 

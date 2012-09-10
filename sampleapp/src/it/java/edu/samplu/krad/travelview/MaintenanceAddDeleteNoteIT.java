@@ -65,7 +65,7 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
             Thread.sleep(1000);
         }
 
-        assertEquals("Test note", selenium.getText("name=document.notes[0].noteText"));
+        assertEquals("Test note", getText("name=document.notes[0].noteText"));
         waitAndClick("css=button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
 
         for (int second = 0;; second++) {

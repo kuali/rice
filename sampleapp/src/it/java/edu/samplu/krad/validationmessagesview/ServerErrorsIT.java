@@ -34,14 +34,14 @@ public class ServerErrorsIT extends UpgradedSeleniumITBase {
     public void testServerErrorsIT() throws Exception {
         waitAndClick("//button[contains(.,'Get Error Messages')]");
         waitForPageToLoad();
-//        Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]")); // bugged isVisible? you can see it on the screen...
+//        Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]")); // bugged isVisible? you can see it on the screen...
         Thread.sleep(1000);
         assertElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem");
         waitIsVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]");
         assertElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-errorMessageItem");
         assertElementPresent("css=div[data-role=\"InputField\"] img[alt=\"Error\"]");
         waitAndClick("//a[contains(.,'\"Section 1 Title\"')]");
-        selenium.mouseOver("//a[contains(.,'Field 1')]");
+        mouseOver("//a[contains(.,'Field 1')]");
         assertElementPresent("css=.uif-errorHighlight");
         waitAndClick("//a[contains(.,'Field 1')]");
         waitIsVisible("css=.jquerybubblepopup-innerHtml");

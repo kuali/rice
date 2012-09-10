@@ -50,18 +50,18 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
 
         for (int second = 0;; second++) {
             if (second >= 60) Assert.fail("timeout");
-            try { if (selenium.getValue("name=newCollectionLines['list1'].field1").equals("")) break; } catch (Exception e) {}
+            try { if (getValue("name=newCollectionLines['list1'].field1").equals("")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
 
-        Assert.assertEquals("", selenium.getValue("name=newCollectionLines['list1'].field1"));
-        Assert.assertEquals("", selenium.getValue("name=newCollectionLines['list1'].field2"));
-        Assert.assertEquals("", selenium.getValue("name=newCollectionLines['list1'].field3"));
-        Assert.assertEquals("", selenium.getValue("name=newCollectionLines['list1'].field4"));
-        Assert.assertEquals("asdf1", selenium.getValue("name=list1[0].field1"));
-        Assert.assertEquals("asdf2", selenium.getValue("name=list1[0].field2"));
-        Assert.assertEquals("asdf3", selenium.getValue("name=list1[0].field3"));
-        Assert.assertEquals("asdf4", selenium.getValue("name=list1[0].field4"));
+        Assert.assertEquals("", getValue("name=newCollectionLines['list1'].field1"));
+        Assert.assertEquals("", getValue("name=newCollectionLines['list1'].field2"));
+        Assert.assertEquals("", getValue("name=newCollectionLines['list1'].field3"));
+        Assert.assertEquals("", getValue("name=newCollectionLines['list1'].field4"));
+        Assert.assertEquals("asdf1", getValue("name=list1[0].field1"));
+        Assert.assertEquals("asdf2", getValue("name=list1[0].field2"));
+        Assert.assertEquals("asdf3", getValue("name=list1[0].field3"));
+        Assert.assertEquals("asdf4", getValue("name=list1[0].field4"));
         // TODO how to figure out which delete button for the one we just added?
     }
 
@@ -84,14 +84,14 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
 
         ITUtil.waitForElement(selenium, "name=list1[0].field1");
         assertTableLayout();
-        Assert.assertEquals("", selenium.getValue("name=list1[0].field1"));
-        Assert.assertEquals("", selenium.getValue("name=list1[0].field2"));
-        Assert.assertEquals("", selenium.getValue("name=list1[0].field3"));
-        Assert.assertEquals("", selenium.getValue("name=list1[0].field4"));
-        Assert.assertEquals("5", selenium.getValue("name=list1[1].field1"));
-        Assert.assertEquals("6", selenium.getValue("name=list1[1].field2"));
-        Assert.assertEquals("7", selenium.getValue("name=list1[1].field3"));
-        Assert.assertEquals("8", selenium.getValue("name=list1[1].field4"));
+        Assert.assertEquals("", getValue("name=list1[0].field1"));
+        Assert.assertEquals("", getValue("name=list1[0].field2"));
+        Assert.assertEquals("", getValue("name=list1[0].field3"));
+        Assert.assertEquals("", getValue("name=list1[0].field4"));
+        Assert.assertEquals("5", getValue("name=list1[1].field1"));
+        Assert.assertEquals("6", getValue("name=list1[1].field2"));
+        Assert.assertEquals("7", getValue("name=list1[1].field3"));
+        Assert.assertEquals("8", getValue("name=list1[1].field4"));
         // TODO type in new numbers into list1[0] fields and check that sums are updated and correct
     }
 

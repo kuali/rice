@@ -68,7 +68,7 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         // click the create new button
         waitAndClick("methodToCall.createRule");
         waitForPageToLoad();
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+        String docId = getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(isElementPresent("methodToCall.cancel"));
         // type in the Document Overview Description the text Test Routing Rule
         waitAndType("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
@@ -94,7 +94,7 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         // click the add button
         waitAndClick("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!)");
         waitForPageToLoad();
-        ITUtil.checkForIncidentReport(selenium, "methodToCall.blanketApprove", "KULRICE-8142 Work Flow Route Rule Blanket Approval Incident Report NPE in MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules");
+        checkForIncidentReport("methodToCall.blanketApprove", "KULRICE-8142 Work Flow Route Rule Blanket Approval Incident Report NPE in MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules");
         waitAndClick("methodToCall.blanketApprove");
         waitForPageToLoad();
         selectWindow("null");
@@ -109,10 +109,10 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         docId= "link=" + docId;
         assertTrue(isElementPresent(docId));
         if(isElementPresent(docId)){
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+            assertEquals("FINAL", getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }else{
-            assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            
-            assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+            assertEquals(docId, getText("//table[@id='row']/tbody/tr[1]/td[1]"));
+            assertEquals("FINAL", getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }
     }
 }

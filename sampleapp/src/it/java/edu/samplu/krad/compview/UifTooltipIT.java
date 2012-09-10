@@ -39,23 +39,23 @@ public class UifTooltipIT extends UpgradedSeleniumITBase {
         // check if tooltip opens on focus
         fireEvent("name=field1", "focus");
         fireEvent("name=field1", "over");
-        Assert.assertTrue(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")
-                && selenium.isVisible("css=td.jquerybubblepopup-innerHtml"));
-        Assert.assertEquals("This tooltip is triggered by focus or and mouse over.", selenium.getText("css=td.jquerybubblepopup-innerHtml"));
+        Assert.assertTrue(isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")
+                && isVisible("css=td.jquerybubblepopup-innerHtml"));
+        Assert.assertEquals("This tooltip is triggered by focus or and mouse over.", getText("css=td.jquerybubblepopup-innerHtml"));
        
         // check if tooltip closed on blur
         fireEvent("name=field1", "blur");
-        Assert.assertFalse(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")
-                && selenium.isVisible("css=td.jquerybubblepopup-innerHtml"));
-        //Assert.assertFalse(selenium.isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
+        Assert.assertFalse(isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")
+                && isVisible("css=td.jquerybubblepopup-innerHtml"));
+        //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
         
         // check if tooltip opens on mouse over
-        selenium.mouseOver("name=field2");
-        Assert.assertTrue(selenium.isVisible("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+        mouseOver("name=field2");
+        Assert.assertTrue(isVisible("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
         
         // check if tooltip closed on mouse out
-        selenium.mouseOut("name=field2");
-        Assert.assertFalse(selenium.isVisible("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+        mouseOut("name=field2");
+        Assert.assertFalse(isVisible("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
         
         // check that default tooltip does not display when there are an error message on the field
         waitAndType("name=field1", "1");
@@ -64,10 +64,10 @@ public class UifTooltipIT extends UpgradedSeleniumITBase {
         waitAndType("name=field1", "1");
         Thread.sleep(2000);
         assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
-                selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-kr-error-cs") &&
-              !(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")) &&
-                selenium.isVisible("css=img.uif-validationImage"));
+                isVisible("css=div.jquerybubblepopup.jquerybubblepopup-kr-error-cs") &&
+              !(isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")) &&
+                isVisible("css=img.uif-validationImage"));
         // TODO figure out this last assert
-        //Assert.assertFalse(selenium.isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
+        //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
     }
 }

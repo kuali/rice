@@ -36,12 +36,12 @@ public class MaintenanceConstraintTextIT extends KradMenuITBase {
     public void testVerifyConstraintText() throws Exception {
         gotoMenuLinkLocator();
         
-        assertEquals("Must be 10 digits", selenium.getText("css=div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label=Travel Account Number].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
+        assertEquals("Must be 10 digits", getText("css=div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label=Travel Account Number].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
         
-        assertEquals("Must be 10 digits", selenium.getText("css=div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label=Travel Sub Account Number].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
+        assertEquals("Must be 10 digits", getText("css=div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label=Travel Sub Account Number].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
         
-        assertEquals("Must be 10 digits", selenium.getText("css=div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label=Travel Account Number].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
+        assertEquals("Must be 10 digits", getText("css=div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label=Travel Account Number].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
         
-        assertEquals("* indicates required field", selenium.getText("css=div.uif-boxLayout.uif-horizontalBoxLayout.clearfix > span.uif-message.uif-requiredInstructionsMessage.uif-boxLayoutHorizontalItem"));
+        assertEquals("* indicates required field", getText("css=div.uif-boxLayout.uif-horizontalBoxLayout.clearfix > span.uif-message.uif-requiredInstructionsMessage.uif-boxLayoutHorizontalItem"));
     }
 }

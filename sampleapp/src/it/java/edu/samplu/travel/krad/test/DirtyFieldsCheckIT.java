@@ -37,8 +37,8 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 
     @Test
 	public void testDirtyFieldsCheck() throws Exception {
-        ITUtil.checkForIncidentReport(selenium, getTestUrl());
-        selenium.waitForPageToLoad("50000");
+        checkForIncidentReport(getTestUrl());
+        waitForPageToLoad50000();
 //		selectFrame("iframeportlet");
         Thread.sleep(5000);
         selectWindow("title=Kuali :: Uif Components");
@@ -47,33 +47,33 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 		// 'Other Fields' navigation link
 //        assertCancelConfirmation(); // failing in selenium, but present when testing manually
 
-        ITUtil.waitForElement(selenium, "name=field100");
+        waitForElementPresent("name=field100");
         focusAndType("name=field100", "here");
         focusAndType("name=field103", "there");
 		// 'Validation' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
 
-        ITUtil.waitForElement(selenium, "name=field106");
+        waitForElementPresent("name=field106");
         //Asserting text-field style to uppercase. This style would display input text in uppercase.
-        assertEquals("uppercase",selenium.getEval("window.document.getElementsByName('field112')[0].style.textTransform;"));
+        assertEquals("uppercase",getEval("window.document.getElementsByName('field112')[0].style.textTransform;"));
         
      	// 'Validation - Regex' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
-        ITUtil.waitForElement(selenium, "name=field101");
-        assertEquals("val", selenium.getValue("name=field101")); // form is preset to val
+        waitForElementPresent("name=field101");
+        assertEquals("val", getValue("name=field101")); // form is preset to val
         focusAndType("name=field101", "1");
         focus("name=field104");
-        assertEquals("1", selenium.getValue("name=field101"));
+        assertEquals("1", getValue("name=field101"));
 		waitAndType("name=field104", "2");
         // 'Progressive Disclosure' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
-        fail("selenium.chooseCancelOnNextConfirmation(); is not finding the Dialog see https://jira.kuali.org/browse/KULRICE-7850 "
-                + "selenium.chooseCancelOnNextConfirmation() isn't finding dialog");
+        fail("chooseCancelOnNextConfirmation(); is not finding the Dialog see https://jira.kuali.org/browse/KULRICE-7850 "
+                + "chooseCancelOnNextConfirmation() isn't finding dialog");
 	}
 
     private void assertCancelConfirmation() throws InterruptedException {
-        selenium.chooseCancelOnNextConfirmation();
+        chooseCancelOnNextConfirmation();
         waitAndClick("link=Cancel");
-        assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
+        assertTrue(getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
     }
 }

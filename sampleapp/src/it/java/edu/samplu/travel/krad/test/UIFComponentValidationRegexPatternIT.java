@@ -573,11 +573,11 @@ public class UIFComponentValidationRegexPatternIT extends UpgradedSeleniumITBase
             try {
                 if (validateVisible) {
                     
-                    if (selenium.isVisible("css=img.uif-validationImage"));
+                    if (isVisible("css=img.uif-validationImage"));
                         break;
                 } else {
                     
-                    if (! selenium.isVisible("css=img.uif-validationImage"))
+                    if (! isVisible("css=img.uif-validationImage"))
                         break;
                 }
 
@@ -585,9 +585,9 @@ public class UIFComponentValidationRegexPatternIT extends UpgradedSeleniumITBase
             Thread.sleep(1000);
         }
         if (validateVisible) {
-            Assert.assertTrue(selenium.isVisible("css=img.uif-validationImage"));
+            Assert.assertTrue(isVisible("css=img.uif-validationImage"));
         } else {
-            Assert.assertTrue(! selenium.isVisible("css=img.uif-validationImage"));
+            Assert.assertTrue(! isVisible("css=img.uif-validationImage"));
         }        
     }
 }

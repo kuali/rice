@@ -39,17 +39,17 @@ public class AttributeDefinitionLookUpIT extends UpgradedSeleniumITBase{
         waitAndClick("css=button:contains(earch)");
         Thread.sleep(3000);
         waitForPageToLoad();
-        selenium.isTextPresent("Actions"); // there are no actions, but the header is the only unique text from searching
+        isTextPresent("Actions"); // there are no actions, but the header is the only unique text from searching
         waitAndClick("link=1000");
         waitForPageToLoad();
 
-        selenium.isTextPresent("Attribute Inquiry");
-        selenium.isTextPresent("KRMS Attributes");
-        selenium.isTextPresent("Attribute Label");
-        selenium.isTextPresent("1000");
-        selenium.isTextPresent("peopleFlowId");
-        selenium.isTextPresent("KR-RULE");
-        selenium.isTextPresent("PeopleFlow");
+        isTextPresent("Attribute Inquiry");
+        isTextPresent("KRMS Attributes");
+        isTextPresent("Attribute Label");
+        isTextPresent("1000");
+        isTextPresent("peopleFlowId");
+        isTextPresent("KR-RULE");
+        isTextPresent("PeopleFlow");
 //        selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
 //        waitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
 //        Thread.sleep(500);

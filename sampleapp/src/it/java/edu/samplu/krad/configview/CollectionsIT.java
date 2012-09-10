@@ -39,13 +39,13 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
     @Test
     public void testDefaultTestsTableLayout() throws Exception{
         //Thread.sleep(30000);
-        Assert.assertTrue(selenium.isTextPresent("Default Tests"));
+        Assert.assertTrue(isTextPresent("Default Tests"));
         assertTableLayout();
 
-        selenium.type("name=newCollectionLines['list1'].field1", "asdf1");
-        selenium.type("name=newCollectionLines['list1'].field2", "asdf2");
-        selenium.type("name=newCollectionLines['list1'].field3", "asdf3");
-        selenium.type("name=newCollectionLines['list1'].field4", "asdf4");
+        waitAndType("name=newCollectionLines['list1'].field1", "asdf1");
+        waitAndType("name=newCollectionLines['list1'].field2", "asdf2");
+        waitAndType("name=newCollectionLines['list1'].field3", "asdf3");
+        waitAndType("name=newCollectionLines['list1'].field4", "asdf4");
         waitAndClick("//button[contains(.,'add')]"); // the first button is the one we want
 
         for (int second = 0;; second++) {
@@ -66,12 +66,12 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
     }
 
     private void assertTableLayout() {
-        Assert.assertTrue(selenium.isTextPresent("Table Layout"));
-        Assert.assertTrue(selenium.isTextPresent("* Field 1"));
-        Assert.assertTrue(selenium.isTextPresent("* Field 2"));
-        Assert.assertTrue(selenium.isTextPresent("* Field 3"));
-        Assert.assertTrue(selenium.isTextPresent("* Field 4"));
-        Assert.assertTrue(selenium.isTextPresent("Actions"));
+        Assert.assertTrue(isTextPresent("Table Layout"));
+        Assert.assertTrue(isTextPresent("* Field 1"));
+        Assert.assertTrue(isTextPresent("* Field 2"));
+        Assert.assertTrue(isTextPresent("* Field 3"));
+        Assert.assertTrue(isTextPresent("* Field 4"));
+        Assert.assertTrue(isTextPresent("Actions"));
     }
 
     /**
@@ -113,31 +113,31 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
         Thread.sleep(2000);
         //waitAndClick("css=div.jGrowl-close");
         // check if actions column RIGHT by default
-        //Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
+        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= 60) Assert.fail("timeout");
-            try { if (selenium.isElementPresent("//tr[2]/td[6]/div/fieldset/div/div[2]/button")) break; } catch (Exception e) {}
+            try { if (isElementPresent("//tr[2]/td[6]/div/fieldset/div/div[2]/button")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        Assert.assertTrue(selenium.isElementPresent("//tr[2]/td[6]/div/fieldset/div/div[2]/button"));
+        Assert.assertTrue(isElementPresent("//tr[2]/td[6]/div/fieldset/div/div[2]/button"));
 
         // check if actions column is LEFT
-        //Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
+        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= 60) Assert.fail("timeout");
-            try { if (selenium.isElementPresent("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button")) break; } catch (Exception e) {}
+            try { if (isElementPresent("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        Assert.assertTrue(selenium.isElementPresent("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"));
+        Assert.assertTrue(isElementPresent("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"));
         
         // check if actions column is 3rd in a sub collection
-        //Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
+        //Assert.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= 60) Assert.fail("timeout");
-            try { if (selenium.isElementPresent("//tr[2]/td[3]/div/fieldset/div/div[2]/button")) break; } catch (Exception e) {}
+            try { if (isElementPresent("//tr[2]/td[3]/div/fieldset/div/div[2]/button")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        Assert.assertTrue(selenium.isElementPresent("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
+        Assert.assertTrue(isElementPresent("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
 
         
     }

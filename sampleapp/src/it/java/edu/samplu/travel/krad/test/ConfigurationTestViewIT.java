@@ -47,7 +47,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         openConfigurationTestView();
 
         // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
-        String styleValue = selenium.getAttribute("//span[@id='" + idPrefix + "TextInputField_label_span']@style");
+        String styleValue = getAttribute("//span[@id='" + idPrefix + "TextInputField_label_span']@style");
         // log.info("styleValue is " + styleValue);
         Assert.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains(
                 "color:red"));
@@ -58,7 +58,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         String refreshTextSelectLocator = "id=" + idPrefix + "RefreshTextField_control";
         String[] options1 = selenium.getSelectOptions(refreshTextSelectLocator);
         String dropDownSelectLocator = "id=" + idPrefix + "DropDown_control";
-        selenium.select(dropDownSelectLocator, "label=Vegetables");
+        select(dropDownSelectLocator, "label=Vegetables");
         waitAndClick("//option[@value='Vegetables']");
         Thread.sleep(3000);
         //get list of options after change
@@ -66,9 +66,9 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         //verify that the change has occurred
         assertFalse(options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
         //confirm that control gets disabled
-        selenium.select(dropDownSelectLocator, "label=None");
+        select(dropDownSelectLocator, "label=None");
         Thread.sleep(3000);
-        assertEquals("true", selenium.getAttribute(refreshTextSelectLocator+ "@disabled"));
+        assertEquals("true", getAttribute(refreshTextSelectLocator+ "@disabled"));
 
 	}
 
@@ -76,9 +76,9 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
      * open the configuration test view page
      */
     private void openConfigurationTestView() throws InterruptedException {
-        ITUtil.waitAndClick(selenium, "link=KRAD");
-        ITUtil.waitAndClick(selenium, "link=Configuration Test View");
-        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
+        waitAndClick("link=KRAD");
+        waitAndClick("link=Configuration Test View");
+        waitForPageToLoad();
     }
 
     /**
@@ -92,18 +92,18 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         
         String startTimeId = "id=" +idPrefix + "StartTime" + addLineIdSuffix;
         selectFrame("iframeportlet");
-        selenium.focus(startTimeId);
+        focus(startTimeId);
         String inputTime = "7:06";
-        selenium.type(startTimeId, inputTime);
+        waitAndType(startTimeId, inputTime);
         String amPmSelectLocator = "id=" + idPrefix + "StartTimeAmPm" + addLineIdSuffix;
        // waitAndClick(amPmSelectLocator);
-        selenium.select(amPmSelectLocator, "label=PM");
+        select(amPmSelectLocator, "label=PM");
         assertEquals("PM", selenium.getSelectedLabel(amPmSelectLocator));
         Thread.sleep(5000); //allow for ajax refresh        
         waitAndClick("//button");
         Thread.sleep(5000); //allow for line to be added
         //confirm that line has been added
-        assertTrue("line (//input[@value='7:06'])is not present", selenium.isElementPresent("//input[@value='7:06']"));
+        assertTrue("line (//input[@value='7:06'])is not present", isElementPresent("//input[@value='7:06']"));
         
     }
 
@@ -118,12 +118,12 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
 
             String startTimeId = "id=" +idPrefix + "StartTime" + addLineIdSuffix;
             selectFrame("iframeportlet");
-            selenium.focus(startTimeId);
+            focus(startTimeId);
             String inputTime = "5:20";
-            selenium.type(startTimeId, inputTime);
+            waitAndType(startTimeId, inputTime);
 
             String allDaySelector = "id=" + idPrefix + "AllDay" + addLineIdSuffix;
-            selenium.focus(allDaySelector);
+            focus(allDaySelector);
             Thread.sleep(5000); //allow for ajax refresh
             waitAndClick(allDaySelector);
             
@@ -132,7 +132,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
             /*
             String amPmSelectLocator = "id=" + idPrefix + "StartTimeAmPm" + addLineIdSuffix;
             waitAndClick(amPmSelectLocator);
-            selenium.select(amPmSelectLocator, "label=PM");
+            select(amPmSelectLocator, "label=PM");
             assertEquals("PM", selenium.getSelectedLabel(amPmSelectLocator));
              */
           
@@ -141,7 +141,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
             Thread.sleep(5000); //allow for line to be added           
             
             //Since All Day checkbox is selected, asserting Start time's presence would fails the test. Commenting out.
-            //assertTrue("line is not present", selenium.isElementPresent("//input[@value='5:20']"));
+            //assertTrue("line is not present", isElementPresent("//input[@value='5:20']"));
         }
 
     /**
@@ -152,7 +152,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
 
         for (String id: addLineIds) {
             String tagId = "id=" + idPrefix + id + addLineIdSuffix;
-           assertTrue("Did not find id " + tagId, selenium.isElementPresent(tagId));
+           assertTrue("Did not find id " + tagId, isElementPresent(tagId));
         }
     }
 
@@ -171,7 +171,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         int rowCount = (selenium.getCssCount(cssCountRows)).intValue();
 
         String allDayId = "id=" + idPrefix + "AllDay" + addLineIdSuffix;
-        selenium.focus(allDayId);
+        focus(allDayId);
         Thread.sleep(5000); //allow for ajax refresh
         waitAndClick(allDayId);
         waitAndClick("css=div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");

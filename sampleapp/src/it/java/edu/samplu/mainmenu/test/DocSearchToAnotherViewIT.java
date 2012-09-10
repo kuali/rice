@@ -40,7 +40,7 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
 		waitForPageToLoad();
 		focusAndType("name=document.documentHeader.documentDescription", "sample description");
 		focusAndType("name=document.documentHeader.explanation", "sample explanation");		
-        selenium.focus("link=Cancel");
+        focus("link=Cancel");
 		waitAndClick("link=Cancel");
         //assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$")); //Removed Confirmation Panel From the page itself
 	}

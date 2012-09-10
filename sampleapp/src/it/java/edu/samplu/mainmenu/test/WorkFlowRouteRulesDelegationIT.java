@@ -37,10 +37,10 @@ public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
      * tests that a new Routing Rule Delegation maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Routing Rules Delegation");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//img[@alt='create new']");
 //        selectFrame("relative=up");
@@ -54,7 +54,7 @@ public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
         waitAndClick("name=parentResponsibilityId");
         waitAndClick("name=methodToCall.createDelegateRule");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
@@ -66,17 +66,17 @@ public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
      * tests that a Routing Rule Delegation maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditRouteRulesDelegation() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Routing Rules Delegation");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         selenium.setSpeed("2000");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         waitAndClick("link=edit");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");

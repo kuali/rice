@@ -36,8 +36,8 @@ public class MaintenanceExpandCollapseIT extends KradMenuITBase {
      */
     public void testVerifyExpandCollapse() throws Exception {
         gotoMenuLinkLocator();
-        assertTrue(selenium.isElementPresent("//button[contains(@class, 'uif-expandDisclosuresButton')]"));
-        assertTrue(selenium.isElementPresent("//button[contains(@class, 'uif-collapseDisclosuresButton')]"));
+        assertTrue(isElementPresent("//button[contains(@class, 'uif-expandDisclosuresButton')]"));
+        assertTrue(isElementPresent("//button[contains(@class, 'uif-collapseDisclosuresButton')]"));
     }
 
 }

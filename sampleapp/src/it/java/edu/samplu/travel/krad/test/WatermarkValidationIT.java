@@ -45,7 +45,7 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
          */
         public void testWatermarking() throws Exception {
     //        selenium.open(System.getProperty("remote.public.url"));
-    //		selenium.type("name=__login_user", "quickstart");
+    //		waitAndType("name=__login_user", "quickstart");
     //		waitAndClick("css=input[type=\"submit\"]");
     //		selenium.waitForPageToLoad("100000");
     		waitAndClick("link=KRAD");
@@ -54,10 +54,10 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
     		selenium.waitForPageToLoad("100000");
     		Thread.sleep(2000);
             selectWindow("title=Kuali :: Uif Components");
-            selenium.focus("name=field106");
-            selenium.type("name=field106", "something");
-            selenium.focus("name=field110");
-            selenium.type("name=field110", "something else");
+            focus("name=field106");
+            waitAndType("name=field106", "something");
+            focus("name=field110");
+            waitAndType("name=field110", "something else");
             assertEquals("something", selenium.getValue("name=field106"));
             selenium.chooseCancelOnNextConfirmation();
             // 'cancel' link
@@ -71,8 +71,8 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
         }
 
     public void clearText(String field) throws Exception {
-        selenium.focus(field);
-        selenium.type(field, "");  
+        focus(field);
+        waitAndType(field, "");
         Thread.sleep(100); 
     }
 }

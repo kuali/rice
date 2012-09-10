@@ -46,7 +46,7 @@ public class ParentLineIT extends UpgradedSeleniumITBase {
 //        // wait for collections page to load by checking the presence of a sub collection line item
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("link=SubCollection - (3 lines)")) break; } catch (Exception e) {}
+            try { if (isElementPresent("link=SubCollection - (3 lines)")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
         // verify that sub collection sizes are displayed as expected

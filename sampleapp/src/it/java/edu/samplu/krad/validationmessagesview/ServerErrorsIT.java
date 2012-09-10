@@ -64,7 +64,7 @@ public class ServerErrorsIT extends UpgradedSeleniumITBase {
                 Assert.fail("timeout");
             }
             try {
-                if (!selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
+                if (!isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
                     break;
                 }
             } catch (Exception e) {
@@ -73,6 +73,6 @@ public class ServerErrorsIT extends UpgradedSeleniumITBase {
         }
 
         waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
-        Assert.assertFalse(selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        Assert.assertFalse(isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
     }
 }

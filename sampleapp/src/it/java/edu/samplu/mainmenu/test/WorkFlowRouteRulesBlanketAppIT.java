@@ -34,11 +34,11 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
     }
     @Test
     public void testUntitled() throws Exception {    
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         // click on the main menu Routing Rules link
         waitAndClick("link=Routing Rules");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         // click on the create new button
         waitAndClick("//img[@alt='create new']");
@@ -47,7 +47,7 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         waitForPageToLoad();
         // type in the name field the text RoutingRuleDocument
-        selenium.type("name", "RoutingRuleDocument");
+        waitAndType("name", "RoutingRuleDocument");
         // click the search button
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
@@ -58,7 +58,7 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         waitForPageToLoad();
         // type in the name field the text RuleRoutingTemplate
-        selenium.type("name", "RuleRoutingTemplate");
+        waitAndType("name", "RuleRoutingTemplate");
         // click the search button
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
@@ -69,15 +69,15 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         waitAndClick("methodToCall.createRule");
         waitForPageToLoad();
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         // type in the Document Overview Description the text Test Routing Rule
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Test Routing Rule");
         // click the Force Action checkbox
         waitAndClick("//input[@id='document.newMaintainableObject.forceAction']");
         // type in the Description text area the text Test Routing Rule1
-        selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
+        waitAndType("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
         // type in the Document type name field the text DocumentTypeDocument
-        selenium.type("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']", "DocumentTypeDocument");
+        waitAndType("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']", "DocumentTypeDocument");
         // lookup on Person
         waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
         waitForPageToLoad();
@@ -88,9 +88,9 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         waitAndClick("link=return value");
         waitForPageToLoad();
         // select from the Action Request ACKNOWLEDGE
-        selenium.select("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']", "label=ACKNOWLEDGE");
+        select("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']", "label=ACKNOWLEDGE");
         // type in the Priority field the text 1
-        selenium.type("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
+        waitAndType("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
         // click the add button
         waitAndClick("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!)");
         waitForPageToLoad();
@@ -101,14 +101,14 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         Thread.sleep(2000);
         waitAndClick("//img[@alt='doc search']");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
        
         docId= "link=" + docId;
-        assertTrue(selenium.isElementPresent(docId));       
-        if(selenium.isElementPresent(docId)){            
+        assertTrue(isElementPresent(docId));
+        if(isElementPresent(docId)){
             assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
         }else{
             assertEquals(docId, selenium.getText("//table[@id='row']/tbody/tr[1]/td[1]"));            

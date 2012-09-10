@@ -38,15 +38,15 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
      * tests that a new Routing Rule maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Routing Rules");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//img[@alt='create new']");
 //        selectFrame("relative=up");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         selenium.setSpeed("3000");
@@ -64,16 +64,16 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
      * tests that a Routing Rule maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditRouteRules() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Routing Rules");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         waitAndClick("link=edit");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");

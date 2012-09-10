@@ -38,7 +38,7 @@ public class CategoryLookUpIT extends UpgradedSeleniumITBase{
         waitAndClick("css=button:contains(earch)");
         Thread.sleep(3000);
         waitForPageToLoad();
-        selenium.isTextPresent("Actions"); // there are no actions, but the header is the only unique text from searching
+        isTextPresent("Actions"); // there are no actions, but the header is the only unique text from searching
 // Category's don't have actions (yet)
 //        waitAndClick("id=u80");
 //        waitForPageToLoad();

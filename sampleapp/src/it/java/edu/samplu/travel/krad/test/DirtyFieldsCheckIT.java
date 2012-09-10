@@ -62,9 +62,9 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
         ITUtil.waitForElement(selenium, "name=field101");
         assertEquals("val", selenium.getValue("name=field101")); // form is preset to val
         focusAndType("name=field101", "1");
-        selenium.focus("name=field104");
+        focus("name=field104");
         assertEquals("1", selenium.getValue("name=field101"));
-		selenium.type("name=field104", "2");
+		waitAndType("name=field104", "2");
         // 'Progressive Disclosure' navigation link
 //      assertCancelConfirmation(); // failing in selenium, but present when testing manually
         fail("selenium.chooseCancelOnNextConfirmation(); is not finding the Dialog see https://jira.kuali.org/browse/KULRICE-7850 "

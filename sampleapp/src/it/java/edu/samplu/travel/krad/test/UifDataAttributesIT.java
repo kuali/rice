@@ -50,7 +50,7 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
         // test the attributes that are set via the data attributes list
         tagId = tagId + tagIdSuffix;
         String simpleAttributesXpath="//" + tag + "[(@id='" + tagId + "') and (@data-iconTemplateName='cool-icon-%s.png') and (@data-transitions='3')]";
-        assertTrue(tagId + " does not have simple data attributes (via list) present", selenium.isElementPresent(simpleAttributesXpath));
+        assertTrue(tagId + " does not have simple data attributes (via list) present", isElementPresent(simpleAttributesXpath));
         verifyStaticDataAttributes(tag, tagId);
 
     }
@@ -66,7 +66,7 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
         simpleAttributesXpath="//" + tag + "[(@id='" + tagId + "')"
                 + " and (@data-role='role') and (@data-type='type') and (@data-meta='meta')]";
         assertTrue(tagId + " does not have simple data attributes (via data*Attribute) properties present",
-                selenium.isElementPresent(simpleAttributesXpath));
+                isElementPresent(simpleAttributesXpath));
     }
 
     /**
@@ -78,11 +78,11 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
     private void verifyComplexAttributes(String tagId, String suffix) {
         tagId = tagId + suffix;
         String complexAttributesXpath="//input[(@type='hidden') and (@data-role='dataScript') and (@data-for='"+ tagId +  "')]";
-        assertTrue(tagId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
+        assertTrue(tagId + ": complex data attributes script not found", isElementPresent(complexAttributesXpath));
 
         // the message field does not support complex attributes
         //if (!tagId.equalsIgnoreCase("messageField")) {
-            String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
+            String scriptValue = getAttribute(complexAttributesXpath + "@value");
             assertNotNull("script value is null",scriptValue);
         boolean ok = scriptValue.contains(
                 "jQuery('#" + tagId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});")
@@ -105,10 +105,10 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
     private boolean verifyAllAttributesInScript(String tagId, String suffix) {
         tagId = tagId + suffix;
         String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ tagId +  "')]";
-        assertTrue(tagId + ": complex data attributes script not found see https://jira.kuali.org/browse/KULRICE-7752", selenium.isElementPresent(complexAttributesXpath));
+        assertTrue(tagId + ": complex data attributes script not found see https://jira.kuali.org/browse/KULRICE-7752", isElementPresent(complexAttributesXpath));
 
         // the message field does not support complex attributes
-        String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
+        String scriptValue = getAttribute(complexAttributesXpath + "@value");
         assertNotNull("script value is null",scriptValue);
         // log.info("scriptValue for " + tagId + " is " + scriptValue);
         return scriptValue.contains("jQuery('#" + tagId + "').data('transitions', 3);") &&
@@ -123,10 +123,10 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
      */
     @Test
     public void testDataAttributesPresentInControls () {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selenium.open(
                 "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
-        selenium.waitForPageToLoad("50000");
+        waitForPageToLoad(); // if this times out make a special one that 50000
 
         // custom suffix to mark  test bean ids
         String testIdSuffix = "_attrs";

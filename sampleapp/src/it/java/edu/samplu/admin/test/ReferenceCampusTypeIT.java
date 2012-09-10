@@ -37,19 +37,19 @@ public class ReferenceCampusTypeIT extends UpgradedSeleniumITBase {
      * tests that a new Campus Type maintenance document can be cancelled
      */
     public void testEditCampusType() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Administration");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Campus Type");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         waitAndClick("link=edit");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");

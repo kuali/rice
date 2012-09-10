@@ -37,13 +37,13 @@ public class IdentityRoleIT extends UpgradedSeleniumITBase{
      * tests that a new Role maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Administration");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Role");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//img[@alt='create new']");
         waitForPageToLoad();
@@ -51,7 +51,7 @@ public class IdentityRoleIT extends UpgradedSeleniumITBase{
         waitForPageToLoad();
         waitAndClick("link=return value");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
@@ -63,19 +63,19 @@ public class IdentityRoleIT extends UpgradedSeleniumITBase{
      * tests that a Role maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditRole() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Administration");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Role");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         waitAndClick("link=edit");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");

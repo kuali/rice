@@ -90,34 +90,34 @@ public class HelpIT extends UpgradedSeleniumITBase {
     @Test
     public void testTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for section help - tooltip help\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for section help - tooltip help\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for section help - tooltip help\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for field help - label left\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for field help - label left\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for field help - label left\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for field help - label right\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for field help - label right\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for field help - label right\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for field help - label top\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for field help - label top\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for field help - label top\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for standalone help widget tooltip which will never be rendered\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for standalone help widget tooltip which will never be rendered\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for standalone help widget tooltip which will never be rendered\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for field help - there is also an on-focus tooltip\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for field help - there is also an on-focus tooltip\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for field help - there is also an on-focus tooltip\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for on-focus event tooltip\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for on-focus event tooltip\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for on-focus event tooltip\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for check box help\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for check box help\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for check box help\")"));
         }
 
@@ -128,7 +128,7 @@ public class HelpIT extends UpgradedSeleniumITBase {
         assertFalse(selenium.isVisible("css=td:contains(\"Sample text for section help - tooltip help\")"));
 
         // verify that no external help exist
-        assertFalse(selenium.isElementPresent("css=#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
+        assertFalse(isElementPresent("css=#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
 
         // test tooltip help of field with label to the left
         selenium.mouseOver("id=field-label-left_label");
@@ -149,12 +149,12 @@ public class HelpIT extends UpgradedSeleniumITBase {
         assertFalse(selenium.isVisible("css=td:contains(\"Sample text for field help - label top\")"));
 
         // verify that standalone help with tooltip is not rendered
-        assertFalse(selenium.isElementPresent("id=standalone-help-not-rendered"));
+        assertFalse(isElementPresent("id=standalone-help-not-rendered"));
 
         // test tooltip help when it overrides a tooltip
         selenium.mouseOver("id=override-tooltip_label");
         assertTrue(selenium.isVisible("css=td:contains(\"Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip\")"));
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip\")"));
         }
         selenium.mouseOut("id=override-tooltip_label");
@@ -183,10 +183,10 @@ public class HelpIT extends UpgradedSeleniumITBase {
     @Test
     public void testDisplayOnlyTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for sub-section help\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for sub-section help\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for sub-section help\")"));
         }
-        if (selenium.isElementPresent("css=td:contains(\"Sample text for read only field help\")")) {
+        if (isElementPresent("css=td:contains(\"Sample text for read only field help\")")) {
             assertFalse(selenium.isVisible("css=td:contains(\"Sample text for read only field help\")"));
         }
 
@@ -209,21 +209,21 @@ public class HelpIT extends UpgradedSeleniumITBase {
     @Test
     public void testMissingTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
-        assertFalse(selenium.isElementPresent("css=.jquerybubblepopup"));
+        assertFalse(isElementPresent("css=.jquerybubblepopup"));
 
         // verify that no external help exist
-        assertFalse(selenium.isElementPresent("css=#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
+        assertFalse(isElementPresent("css=#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
 
         // test tooltip help of section header
         selenium.mouseOver("css=#ConfigurationTestView-Help-Section2 h3 .uif-headerText-span");
-        assertFalse(selenium.isElementPresent("css=.jquerybubblepopup"));
+        assertFalse(isElementPresent("css=.jquerybubblepopup"));
         selenium.mouseOut("css=#ConfigurationTestView-Help-Section1 h3 .uif-headerText-span");
-        assertFalse(selenium.isElementPresent("css=.jquerybubblepopup"));
+        assertFalse(isElementPresent("css=.jquerybubblepopup"));
 
         // test tooltip help of field
         selenium.mouseOver("id=missing-tooltip-help_label");
-        assertFalse(selenium.isElementPresent("css=.jquerybubblepopup"));
+        assertFalse(isElementPresent("css=.jquerybubblepopup"));
         selenium.mouseOut("id=missing-tooltip-help_label");
-        assertFalse(selenium.isElementPresent("css=.jquerybubblepopup"));
+        assertFalse(isElementPresent("css=.jquerybubblepopup"));
     }
 }

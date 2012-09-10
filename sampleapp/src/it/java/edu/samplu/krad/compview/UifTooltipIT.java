@@ -37,14 +37,14 @@ public class UifTooltipIT extends UpgradedSeleniumITBase {
     @Test
     public void testTooltip() throws Exception {
         // check if tooltip opens on focus
-        selenium.fireEvent("name=field1", "focus");
-        selenium.fireEvent("name=field1", "over");
+        fireEvent("name=field1", "focus");
+        fireEvent("name=field1", "over");
         Assert.assertTrue(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")
                 && selenium.isVisible("css=td.jquerybubblepopup-innerHtml"));
         Assert.assertEquals("This tooltip is triggered by focus or and mouse over.", selenium.getText("css=td.jquerybubblepopup-innerHtml"));
        
         // check if tooltip closed on blur
-        selenium.fireEvent("name=field1", "blur");
+        fireEvent("name=field1", "blur");
         Assert.assertFalse(selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")
                 && selenium.isVisible("css=td.jquerybubblepopup-innerHtml"));
         //Assert.assertFalse(selenium.isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
@@ -58,10 +58,10 @@ public class UifTooltipIT extends UpgradedSeleniumITBase {
         Assert.assertFalse(selenium.isVisible("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
         
         // check that default tooltip does not display when there are an error message on the field
-        selenium.type("name=field1", "1");
-        selenium.fireEvent("name=field1", "blur");        
-        selenium.fireEvent("name=field1", "focus");
-        selenium.type("name=field1", "1");
+        waitAndType("name=field1", "1");
+        fireEvent("name=field1", "blur");
+        fireEvent("name=field1", "focus");
+        waitAndType("name=field1", "1");
         Thread.sleep(2000);
         assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
                 selenium.isVisible("css=div.jquerybubblepopup.jquerybubblepopup-kr-error-cs") &&

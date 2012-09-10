@@ -38,16 +38,16 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
 		assertTrue( "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible https://jira.kuali.org/browse/KULRICE-8140",
                 selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
 		assertTrue("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem not present",
-                selenium.isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem"));
+                isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem"));
 		assertTrue("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] not visible", selenium.isVisible(
                 "css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
 		assertTrue("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem not present",
-                selenium.isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem"));
-		assertTrue("css=div[data-role=\"InputField\"] img[alt=\"Warning\"] not present", selenium.isElementPresent(
+                isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem"));
+		assertTrue("css=div[data-role=\"InputField\"] img[alt=\"Warning\"] not present", isElementPresent(
                 "css=div[data-role=\"InputField\"] img[alt=\"Warning\"]"));
 		selenium.mouseOver("//a[contains(.,'Field 1')]");
 		assertTrue("css=.uif-warningHighlight no present when //a[contains(.,'Field 1')] is moused over",
-                selenium.isElementPresent("css=.uif-warningHighlight"));
+                isElementPresent("css=.uif-warningHighlight"));
 		waitAndClick("//a[contains(.,'Field 1')]");
         ITUtil.waitForElementVisible(selenium, "css=.jquerybubblepopup-innerHtml", " after click on //a[contains(.,'Field 1')]");
 
@@ -73,21 +73,21 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
 
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
                 !selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
-		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems", !selenium.isElementPresent(
+		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems", !isElementPresent(
                 "css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
 
-		selenium.type("name=field1", "");
-		selenium.fireEvent("name=field1", "focus");
-		selenium.fireEvent("name=field1", "blur");
+		waitAndType("name=field1", "");
+		fireEvent("name=field1", "focus");
+		fireEvent("name=field1", "blur");
 		assertTrue("css=.uif-hasError is not present after typing nothing in name=field1 and then firing focus and blur events",
-                selenium.isElementPresent("css=.uif-hasError"));
+                isElementPresent("css=.uif-hasError"));
 		assertTrue( "css=img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",
-                selenium.isElementPresent("css=img[src*=\"error.png\"]"));
+                isElementPresent("css=img[src*=\"error.png\"]"));
 	}
 
-    private void typeBlurFocus(String name, String text) {
-        selenium.type(name, text);
-        selenium.fireEvent(name, "blur");
-        selenium.fireEvent(name, "focus");
+    private void typeBlurFocus(String name, String text) throws InterruptedException{
+        waitAndType(name, text);
+        fireEvent(name, "blur");
+        fireEvent(name, "focus");
     }
 }

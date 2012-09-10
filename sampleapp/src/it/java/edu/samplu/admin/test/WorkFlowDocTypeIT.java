@@ -37,17 +37,17 @@ public class WorkFlowDocTypeIT extends UpgradedSeleniumITBase {
      * tests that a new Document Type maintenance document can be cancelled
      */
     public void testCreateNew() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Administration");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Document Type");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//img[@alt='create new']");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
@@ -59,19 +59,19 @@ public class WorkFlowDocTypeIT extends UpgradedSeleniumITBase {
      * tests that a Document Type maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditDocType() throws Exception {
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Administration");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         waitAndClick("link=Document Type");
         waitForPageToLoad();
-        assertEquals("Kuali Portal Index", selenium.getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         waitAndClick("link=edit");
         waitForPageToLoad();
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
@@ -88,11 +88,11 @@ public class WorkFlowDocTypeIT extends UpgradedSeleniumITBase {
         selectFrame("iframeportlet");
         waitAndClick("css=img[alt=\"create new\"]");
         waitForPageToLoad();
-        selenium.type("id=document.documentHeader.documentDescription", "Document Type description");
-        selenium.type("id=document.newMaintainableObject.name", "DocType Name");
+        waitAndType("id=document.documentHeader.documentDescription", "Document Type description");
+        waitAndType("id=document.newMaintainableObject.name", "DocType Name");
         waitAndClick("name=methodToCall.route");
         waitForPageToLoad();
-        assertTrue(selenium.isTextPresent("Document Type Label is required."));
+        assertTrue(isTextPresent("Document Type Label is required."));
         waitAndClick("name=methodToCall.cancel");
         waitForPageToLoad();
         waitAndClick("name=methodToCall.processAnswer.button0");

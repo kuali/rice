@@ -71,7 +71,7 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     protected void assertElementPresent(String locator) {
-        assertTrue(selenium.isElementPresent(locator));
+        assertTrue(isElementPresent(locator));
     }
 
     protected void assertTextPresent(String text) {
@@ -79,13 +79,17 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     protected void assertTextPresent(String message, String text) {
-        assertTrue(text + " text not present " + message, selenium.isTextPresent(text));
+        assertTrue(text + " text not present " + message, isTextPresent(text));
     }
 
     protected void blanketApproveTest() throws InterruptedException {
         ITUtil.blanketApprove(selenium);
     }
 
+    protected void check(String locator) {
+        selenium.check(locator);
+    }
+    
     protected void checkErrorMessageItem(String message) {
         ITUtil.checkErrorMessageItem(selenium, message);
     }
@@ -118,25 +122,45 @@ public abstract class UpgradedSeleniumITBase {
         selenium.fireEvent(locator, event);
     }
 
+    protected void focus(String locator) {
+        selenium.focus(locator);
+    }
+
     protected void focusAndType(String fieldLocator, String typeText) {
         selenium.focus(fieldLocator);
         selenium.type(fieldLocator, typeText);
     }
 
+    protected String getAttribute(String attributeLocator) {
+        return selenium.getAttribute(attributeLocator);
+    }
+    
     protected String getText(String locator) {
         return selenium.getText(locator);
     }
 
+    protected String getTitle() {
+        return selenium.getTitle();
+    }
+    
+    protected boolean isElementPresent(String locator) {
+        return selenium.isElementPresent(locator);
+    }
+    
+    protected boolean isTextPresent(String locator) {
+        return selenium.isTextPresent(locator);
+    }
+    
     protected void select(String locator, String select) {
-        selenium.select(locator, select);
+        select(locator, select);
     }
 
     protected void selectFrame(String frameName) {
-        selectFrame(frameName);
+        selenium.selectFrame(frameName);
     }
 
     protected void selectWindow(String windowName) {
-        selectWindow(windowName);
+        selenium.selectWindow(windowName);
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {

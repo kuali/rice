@@ -42,16 +42,16 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         // String docId = selenium.getText("//span[contains(@id , '_attribute_span')][position()=1]");
         ITUtil.checkForIncidentReport(selenium, "", "https://jira.kuali.org/browse/KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        selenium.type("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");      
-        selenium.type("//input[@name='document.newMaintainableObject.dataObject.id']", "5");      
-        selenium.type("//input[@name='document.newMaintainableObject.dataObject.userName']", "Jigar");
+        waitAndType("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");
+        waitAndType("//input[@name='document.newMaintainableObject.dataObject.id']", "5");
+        waitAndType("//input[@name='document.newMaintainableObject.dataObject.userName']", "Jigar");
         
-//        selenium.type("newCollectionLines['document.newMaintainableObject.dataObject.accounts'].number", "123123");       
-//        selenium.type("xpath = //input[@name='document.newMaintainableObject.dataObject.accounts[0].number']", "123123");
-//        selenium.type("//input[contains(@name , '.number')]", "123123");
-//        selenium.type("newCollectionLines['document.newMaintainableObject.dataObject.accounts'].name", "ChrisTravelAcc");
-//        selenium.type("xpath = //input[@name='document.newMaintainableObject.dataObject.accounts[0].name']", "ChrisTravelAcc");
-//        selenium.type("//input[contains(@name , '.name')]", "JustinTravelAcc");
+//        waitAndType("newCollectionLines['document.newMaintainableObject.dataObject.accounts'].number", "123123");
+//        waitAndType("xpath = //input[@name='document.newMaintainableObject.dataObject.accounts[0].number']", "123123");
+//        waitAndType("//input[contains(@name , '.number')]", "123123");
+//        waitAndType("newCollectionLines['document.newMaintainableObject.dataObject.accounts'].name", "ChrisTravelAcc");
+//        waitAndType("xpath = //input[@name='document.newMaintainableObject.dataObject.accounts[0].name']", "ChrisTravelAcc");
+//        waitAndType("//input[contains(@name , '.name')]", "JustinTravelAcc");
 //        waitAndClick("add");
 //        waitAndClick("//input[@value='add']");
 //        System.out.println("adding Row");
@@ -66,7 +66,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         waitAndClick("//img[@alt='action list']");
         selenium.waitForPageToLoad("50000");              
         selectFrame("iframeportlet");
-        if(selenium.isElementPresent("link=Last")){
+        if(isElementPresent("link=Last")){
             waitAndClick("link=Last");
             selenium.waitForPageToLoad("50000");
             waitAndClick("link="+docIdInt);
@@ -78,7 +78,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         String[] windowTitles = selenium.getAllWindowTitles();              
         selectWindow(windowTitles[1]);
         selenium.windowFocus();
-        assertEquals(windowTitles[1], selenium.getTitle());
+        assertEquals(windowTitles[1], getTitle());
         
         //------submit-----//
         selectFrame("relative=up");
@@ -92,7 +92,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         selenium.windowFocus();
         waitAndClick("//img[@alt='doc search']");
         selenium.waitForPageToLoad("50000");
-        assertEquals(windowTitles[0], selenium.getTitle());
+        assertEquals(windowTitles[0], getTitle());
         selectFrame("iframeportlet");
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("50000");
@@ -103,7 +103,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
         selectFrame("relative=up");
         waitAndClick("link=Main Menu");
         selenium.waitForPageToLoad("50000");
-        assertEquals(windowTitles[0], selenium.getTitle());
+        assertEquals(windowTitles[0], getTitle());
         System.out.println("---------------------- :: Test complete :: ----------------------");
         //-----Step 3 verified that doc is final -------//      
      

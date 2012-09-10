@@ -34,10 +34,10 @@ public class MaintenanceButtonsIT extends KradMenuITBase {
      */
     public void testVerifyButtons() throws Exception {
         gotoMenuLinkLocator();
-        assertTrue(selenium.isElementPresent("//button[contains(.,'ubmit')]"));
-        assertTrue(selenium.isElementPresent("//button[contains(.,'ave')]"));
-        assertTrue(selenium.isElementPresent("//button[contains(.,'lanket approve')]"));
-        assertTrue(selenium.isElementPresent("//button[contains(.,'lose')]"));
-        assertTrue(selenium.isElementPresent("//a[contains(.,'ancel')]"));
+        assertTrue(isElementPresent("//button[contains(.,'ubmit')]"));
+        assertTrue(isElementPresent("//button[contains(.,'ave')]"));
+        assertTrue(isElementPresent("//button[contains(.,'lanket approve')]"));
+        assertTrue(isElementPresent("//button[contains(.,'lose')]"));
+        assertTrue(isElementPresent("//a[contains(.,'ancel')]"));
     }
 }

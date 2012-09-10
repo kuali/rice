@@ -45,7 +45,7 @@ public class AgendaEditRuleRefreshIT extends UpgradedSeleniumITBase {
 		waitForPageToLoad();
 		waitAndClick("css=a[title='edit Agenda Definition withAgenda Id=T1000 ']");  // waitAndClick("id=194_line0");
 		waitForPageToLoad();
-        ITUtil.checkForIncidentReport(selenium, "", "https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'");
+        checkForIncidentReport("", "https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'");
 		waitAndClick("css=div.uif-message:contains(Rule1: stub rule lorem ipsum)"); // waitAndClick("//li[@id='473_node_0_parent_root']/a");
         waitAndClick("css=//li/a/span.uif-message:contains('When TRUE')");
 		waitAndClick("link=[-] collapse all");
@@ -54,7 +54,7 @@ public class AgendaEditRuleRefreshIT extends UpgradedSeleniumITBase {
         for (int i=0; i<6; i++) {
             for (int second = 0;; second++) {
                 if (second >= 60) fail("timeout");
-                try { if (selenium.isElementPresent("css=button.kr-refresh-button")) break; } catch (Exception e) {}
+                try { if (isElementPresent("css=button.kr-refresh-button")) break; } catch (Exception e) {}
                 Thread.sleep(1000);
             }
 

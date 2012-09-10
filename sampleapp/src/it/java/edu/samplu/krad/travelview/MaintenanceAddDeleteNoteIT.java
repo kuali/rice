@@ -43,7 +43,7 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
             if (second >= 15) {
                 fail("timeout");
             }
-            if (selenium.isElementPresent("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton")) {
+            if (isElementPresent("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton")) {
                 break;
             }
 
@@ -51,14 +51,14 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
         }
 
         waitAndClick("name=newCollectionLines['document.notes'].noteText");
-        selenium.type("name=newCollectionLines['document.notes'].noteText", "Test note");
+        waitAndType("name=newCollectionLines['document.notes'].noteText", "Test note");
         waitAndClick("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         for (int second = 0;; second++) {
             if (second >= 15) {
                 fail("timeout, https://jira.kuali.org/browse/KULRICE-8038");
             }
 
-            if (selenium.isElementPresent("name=document.notes[0].noteText")) {
+            if (isElementPresent("name=document.notes[0].noteText")) {
                 break;
             }
 
@@ -73,7 +73,7 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
                 fail("timeout");
             }
 
-            if (!selenium.isElementPresent("name=document.notes[0].noteText")) {
+            if (!isElementPresent("name=document.notes[0].noteText")) {
                 break;
             }
 

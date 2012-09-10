@@ -45,7 +45,7 @@ public class DeleteSubCollectionLineIT extends UpgradedSeleniumITBase{
 
         ITUtil.waitForElement(selenium, "name=list4[0].subList[0].field1");
         // change a value in the line to be deleted
-        selenium.type("name=list4[0].subList[0].field1", "selenium");
+        waitAndType("name=list4[0].subList[0].field1", "selenium");
         // click the delete button
         waitAndClick("css=div[title='Line Summary \'A\' With Expression'].uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure tr.odd button[data-loadingmessage='Deleting Line...'].uif-action.uif-secondaryActionButton.uif-smallActionButton");
         Thread.sleep(2000);

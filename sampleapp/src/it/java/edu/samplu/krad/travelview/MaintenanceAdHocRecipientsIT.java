@@ -43,19 +43,19 @@ public class MaintenanceAdHocRecipientsIT extends KradMenuITBase {
 //                fail("timeout");
 //            }
 //
-//            if (selenium.isElementPresent("css=#u440 > h4.uif-headerText > span.uif-headerText-span")) {
+//            if (isElementPresent("css=#u440 > h4.uif-headerText > span.uif-headerText-span")) {
 //                break;
 //            }
 //
 //            Thread.sleep(1000);
 //        }
 
-        assertTrue(selenium.isElementPresent("//select[@name=\"newCollectionLines['document.adHocRoutePersons'].actionRequested\"]"));
-        assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.adHocRoutePersons'].name\" and @type=\"text\"]"));
-//        assertTrue(selenium.isElementPresent("css=#u551_add")); // id is generated and has changed
-        assertTrue(selenium.isElementPresent("//select[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].actionRequested\"]"));
-        assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']"));
-        assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']"));
-//        assertTrue(selenium.isElementPresent("css=#u700_add")); // id is generated and has changed
+        assertTrue(isElementPresent("//select[@name=\"newCollectionLines['document.adHocRoutePersons'].actionRequested\"]"));
+        assertTrue(isElementPresent("//input[@name=\"newCollectionLines['document.adHocRoutePersons'].name\" and @type=\"text\"]"));
+//        assertTrue(isElementPresent("css=#u551_add")); // id is generated and has changed
+        assertTrue(isElementPresent("//select[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].actionRequested\"]"));
+        assertTrue(isElementPresent("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']"));
+        assertTrue(isElementPresent("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']"));
+//        assertTrue(isElementPresent("css=#u700_add")); // id is generated and has changed
     }
 }

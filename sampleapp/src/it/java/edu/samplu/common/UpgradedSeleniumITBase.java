@@ -66,6 +66,11 @@ public abstract class UpgradedSeleniumITBase {
         ITUtil.loginSe(selenium, getUserName());
     }
 
+    protected void assertElementPresent(String locator) {
+        assertTrue(selenium.isElementPresent(locator));
+    }
+
+
     protected void assertTextPresent(String text) {
         assertTrue(text + " text not present", selenium.isTextPresent(text));
     }
@@ -78,6 +83,19 @@ public abstract class UpgradedSeleniumITBase {
         ITUtil.checkForIncidentReport(selenium, message);
     }
 
+    protected void focusAndType(String fieldLocator, String typeText) {
+        selenium.focus(fieldLocator);
+        selenium.type(fieldLocator, typeText);
+    }
+
+    protected String getText(String locator) {
+        return selenium.getText(locator);
+    }
+
+    protected void select(String locator, String select) {
+        selenium.select(locator, select);
+    }
+
     protected void selectFrame(String frameName) {
         selenium.selectFrame(frameName);
     }
@@ -88,6 +106,27 @@ public abstract class UpgradedSeleniumITBase {
 
     protected void waitAndClick(String locator, String message) throws InterruptedException {
         ITUtil.waitAndClick(selenium, locator, message);
+    }
+
+    protected String waitForDocId() throws InterruptedException {
+        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
+        return selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
+    }
+
+    protected void waitAndType(String elementLocator, String text) throws InterruptedException {
+        waitAndType(elementLocator, text, "");
+    }
+
+    protected void waitAndType(String elementLocator, String text, String message) throws InterruptedException {
+        ITUtil.waitAndType(selenium, elementLocator, text, message);
+    }
+
+    protected void waitForElementPresent(String locator) throws InterruptedException {
+        waitForElementPresent(locator, "");
+    }
+
+    protected void waitForElementPresent(String locator, String message) throws InterruptedException {
+        ITUtil.waitForElement(selenium, locator, message);
     }
 
     protected void waitForPageToLoad() {

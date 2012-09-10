@@ -16,10 +16,7 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
-import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * tests that user 'admin', on blanket approving a new Campus Type maintenance document, results in a final document
@@ -30,12 +27,11 @@ public class ReferenceCampusTypeBlanketAppIT extends AdminMenuBlanketAppITBase {
 
     @Override
     public String blanketApprove() throws Exception {
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type " + ITUtil.DTS);
-        selenium.type("//input[@id='document.newMaintainableObject.code']", "I");
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Indianapolis " + ITUtil.DTS);
+        String docId = waitForDocId();
+        assertElementPresent("methodToCall.cancel");
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type " + ITUtil.DTS);
+        waitAndType("//input[@id='document.newMaintainableObject.code']", "I");
+        waitAndType("//input[@id='document.newMaintainableObject.name']", "Indianapolis " + ITUtil.DTS);
         return docId;
     }
 

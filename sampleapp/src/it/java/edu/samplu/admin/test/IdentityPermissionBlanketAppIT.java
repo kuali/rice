@@ -15,14 +15,9 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-
 import edu.samplu.common.AdminMenuBlanketAppITBase;
 import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-import org.junit.Test;
 
 /**
  * tests that user 'admin', on blanket approving a new Permission maintenance document, results in a final document
@@ -38,17 +33,13 @@ public class IdentityPermissionBlanketAppIT extends AdminMenuBlanketAppITBase {
 
     @Override
     public String blanketApprove() throws Exception {
-       
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        selenium.type("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission");
-        selenium.type("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
-        selenium.select("//select[@name='document.newMaintainableObject.namespaceCode']", AdminMenuITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        selenium.select("//select[@name='document.newMaintainableObject.templateId']", AdminMenuITBase.LABEL_KUALI_DEFAULT);
-        selenium.type("//input[@name='document.newMaintainableObject.name']","Validation Test Responsibility " + ITUtil.DTS);
-
+        String docId = waitForDocId();
+        waitAndType("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission");
+        waitAndType("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
+        select("//select[@name='document.newMaintainableObject.namespaceCode']", AdminMenuITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        select("//select[@name='document.newMaintainableObject.templateId']", AdminMenuITBase.LABEL_KUALI_DEFAULT);
+        waitAndType("//input[@name='document.newMaintainableObject.name']","Validation Test Responsibility " + ITUtil.DTS);
         return docId;
     }
-  
 }
  

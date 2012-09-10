@@ -26,33 +26,30 @@ import org.apache.commons.lang.RandomStringUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityPersonBlanketAppIT extends AdminMenuBlanketAppITBase {
-          @Override
-         protected String getLinkLocator() {
-             return "link=Person";
-         }
+      @Override
+     protected String getLinkLocator() {
+         return "link=Person";
+     }
 
-         @Override
-        public String blanketApprove() throws Exception {
-
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
-        selenium.type("//input[@id='document.principalName']", "principal "+ RandomStringUtils.randomAlphabetic(3).toLowerCase());
-        selenium.select("newAffln.affiliationTypeCode", "label=Affiliate");
-        selenium.select("newAffln.campusCode", "label=BX - BLGTN OFF CAMPUS");
-        selenium.select("newAffln.campusCode", "label=BL - BLOOMINGTON");
-        selenium.click("newAffln.dflt");
-        selenium.click("methodToCall.addAffln.anchor");
-        ITUtil.waitAndClick(selenium, "tab-Contact-imageToggle");
-        selenium.select("newName.namePrefix", "label=Mr");
-        selenium.type("newName.firstName", "First");
-        selenium.type("newName.lastName", "Last");
-        selenium.select("newName.nameSuffix", "label=Mr");
-        selenium.click("newName.dflt");
-        selenium.click("methodToCall.addName.anchor");
-        selenium.waitForPageToLoad("30000");
+     @Override
+    public String blanketApprove() throws Exception {
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
+        waitAndType("//input[@id='document.principalName']", "principal "+ RandomStringUtils.randomAlphabetic(3).toLowerCase());
+        select("newAffln.affiliationTypeCode", "label=Affiliate");
+        select("newAffln.campusCode", "label=BX - BLGTN OFF CAMPUS");
+        select("newAffln.campusCode", "label=BL - BLOOMINGTON");
+        waitAndClick("newAffln.dflt");
+        waitAndClick("methodToCall.addAffln.anchor");
+        waitAndClick("tab-Contact-imageToggle");
+        select("newName.namePrefix", "label=Mr");
+        waitAndType("newName.firstName", "First");
+        waitAndType("newName.lastName", "Last");
+        select("newName.nameSuffix", "label=Mr");
+        waitAndClick("newName.dflt");
+        waitAndClick("methodToCall.addName.anchor");
+        waitForPageToLoad();
         return docId;
     }
-    
 }
  

@@ -16,6 +16,7 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuITBase;
+import org.junit.Ignore;
 
 /**
  * tests creating and cancelling the new County maintenance screen
@@ -32,6 +33,7 @@ public class LocationCountyIT extends AdminMenuITBase {
      * Noop, there are no results from search for County
      * @throws Exception
      */
+    @Ignore // no data to edit
     @Override
     public void testEditCancel() throws Exception {}
 }

@@ -33,22 +33,16 @@ public class IdentityGroupBlanketAppIT extends AdminMenuBlanketAppITBase {
 
     @Override
     public String blanketApprove() throws Exception {
-        
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        
-        ITUtil.waitAndType(selenium, "//input[@id='document.documentHeader.documentDescription']", "Validation Test Group");
-        selenium.select("//select[@id='document.groupNamespace']", AdminMenuITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        ITUtil.waitAndType(selenium, "//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS);
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
-        ITUtil.waitAndClick(selenium, "methodToCall.addMember.anchorAssignees");
-        selenium.waitForPageToLoad("30000");
-
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Group");
+        select("//select[@id='document.groupNamespace']", AdminMenuITBase.LABEL_KUALI_KUALI_SYSTEMS);
+        waitAndType("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS);
+        waitAndClick("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=return value");
+        waitAndClick("methodToCall.addMember.anchorAssignees");
+        waitForPageToLoad();
         return docId;
-        
     }
-   
 }
  

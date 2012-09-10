@@ -16,8 +16,6 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
-import edu.samplu.common.AdminMenuITBase;
-import edu.samplu.common.ITUtil;
 import org.apache.commons.lang.RandomStringUtils;
 
 /**
@@ -34,27 +32,21 @@ public class LocationPostCodeBlanketAppIT extends AdminMenuBlanketAppITBase {
 
    @Override
    public String blanketApprove() throws Exception {
-         
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");        
-        
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-        ITUtil.waitAndClick(selenium, countryLookUp);
-        ITUtil.waitAndType(selenium, "code", "US");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
+        waitAndClick(countryLookUp);
+        waitAndType("code", "US");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=return value");
         String code = RandomStringUtils.randomNumeric(5);
-        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.code']", code);
-        
+        waitAndType( "//input[@id='document.newMaintainableObject.code']", code);
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        ITUtil.waitAndClick(selenium, stateLookUp);
-        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "//table[@id='row']/tbody/tr[4]/td[1]/a");
+        waitAndClick(stateLookUp);
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("//table[@id='row']/tbody/tr[4]/td[1]/a");
         String cityName = "Validation Test Postal Code "+code;
-        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.cityName']", cityName);
-        
+        waitAndType("//input[@id='document.newMaintainableObject.cityName']", cityName);
         return docId;  
     }
 }

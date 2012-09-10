@@ -16,7 +16,6 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
-import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
 
 /**
@@ -30,20 +29,17 @@ public class IdentityResponsibilityBlanketAppIT extends AdminMenuBlanketAppITBas
         return "link=Responsibility";
     }
 
-
-   @Override
-   public String blanketApprove() throws Exception {
-   ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-   String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-   selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility");
-   selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KUALI - Kuali Systems");
-   selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS);
-   selenium.type("//input[@id='document.newMaintainableObject.documentTypeName']", "Test");
-   selenium.type("//input[@id='document.newMaintainableObject.routeNodeName']", "Test");
-   selenium.click("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
-   selenium.click("//input[@id='document.newMaintainableObject.required']");
-   return docId;
-   }
-   
+    @Override
+    public String blanketApprove() throws Exception {
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility");
+        select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KUALI - Kuali Systems");
+        waitAndType("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS);
+        waitAndType("//input[@id='document.newMaintainableObject.documentTypeName']", "Test");
+        waitAndType("//input[@id='document.newMaintainableObject.routeNodeName']", "Test");
+        waitAndClick("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
+        waitAndClick("//input[@id='document.newMaintainableObject.required']");
+        return docId;
+    }
 }
  

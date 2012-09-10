@@ -15,10 +15,7 @@
  */
 package edu.samplu.admin.test;
 
-
 import edu.samplu.common.AdminMenuBlanketAppITBase;
-import edu.samplu.common.AdminMenuITBase;
-import edu.samplu.common.ITUtil;
 
 /**
  * tests that user 'admin', on blanket approving a new Campus maintenance document, results in a final document
@@ -34,17 +31,13 @@ public class LocationCampusBlanketAppIT extends AdminMenuBlanketAppITBase {
 
    @Override
    public String blanketApprove() throws Exception {
-         
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR); 
-        selenium.type("id=document.documentHeader.documentDescription", "Validation Test Campus");
-        selenium.type("id=document.newMaintainableObject.code", "VC");
-        selenium.type("id=document.newMaintainableObject.name", "Validation Test Campus");
-        selenium.type("id=document.newMaintainableObject.shortName", "VTC");
-        selenium.select("id=document.newMaintainableObject.campusTypeCode", "label=B - BOTH");
-        
-        return docId;
-        
+       String docId = waitForDocId();
+       waitAndType("id=document.documentHeader.documentDescription", "Validation Test Campus");
+       waitAndType("id=document.newMaintainableObject.code", "VC");
+       waitAndType("id=document.newMaintainableObject.name", "Validation Test Campus");
+       waitAndType("id=document.newMaintainableObject.shortName", "VTC");
+       select("id=document.newMaintainableObject.campusTypeCode", "label=B - BOTH");
+       return docId;
     }
 }
  

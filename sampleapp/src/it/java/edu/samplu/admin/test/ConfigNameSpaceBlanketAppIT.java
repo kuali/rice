@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class ConfigNameSpaceBlanketAppIT extends AdminMenuBlanketAppITBase {
 
-   
     @Override
     protected String getLinkLocator() {
         return "link=Namespace";
@@ -38,16 +37,13 @@ public class ConfigNameSpaceBlanketAppIT extends AdminMenuBlanketAppITBase {
 
     @Override
     public String blanketApprove() throws Exception {
- 
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        ITUtil.waitAndType(selenium, "//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace");
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.newMaintainableObject.code']", "VTN"+ ITUtil.DTS);
-        selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test NameSpace "+ ITUtil.DTS);
-        selenium.type("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
-        selenium.click("//input[@id='document.newMaintainableObject.active']");        
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace");
+        assertTextPresent("methodToCall.cancel");
+        waitAndType("//input[@id='document.newMaintainableObject.code']", "VTN" + ITUtil.DTS);
+        waitAndType("//input[@id='document.newMaintainableObject.name']", "Validation Test NameSpace " + ITUtil.DTS);
+        waitAndType("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
+        waitAndClick("//input[@id='document.newMaintainableObject.active']");
         return docId;
     }
-
 }

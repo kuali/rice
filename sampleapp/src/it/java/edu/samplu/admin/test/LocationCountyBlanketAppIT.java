@@ -34,26 +34,22 @@ public class LocationCountyBlanketAppIT extends AdminMenuBlanketAppITBase {
 
    @Override
    public String blanketApprove() throws Exception {
-         
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-        ITUtil.waitAndClick(selenium, countryLookUp);
-        ITUtil.waitAndType(selenium, "code", "US");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
-        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
+        waitAndClick(countryLookUp);
+        waitAndType("code", "US");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=return value");
+        waitAndType("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        ITUtil.waitAndClick(selenium, stateLookUp);
-        ITUtil.waitAndType(selenium, "code", "IN");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
+        waitAndClick(stateLookUp);
+        waitAndType("code", "IN");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=return value");
         String countyName = "Validation Test County"+ITUtil.DTS;
-        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.name']", countyName);
-        selenium.click("//input[@id='document.newMaintainableObject.active']");
-        
+        waitAndType("//input[@id='document.newMaintainableObject.name']", countyName);
+        waitAndClick("//input[@id='document.newMaintainableObject.active']");
         return docId;  
     }
 }

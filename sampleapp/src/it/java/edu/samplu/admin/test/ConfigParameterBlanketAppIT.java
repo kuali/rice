@@ -37,27 +37,25 @@ public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
     @Override
     public String blanketApprove() throws Exception {
  
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        ITUtil.waitAndType(selenium, "//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
         assertEquals("", selenium.getText("methodToCall.cancel"));
         selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']",
                 "label=KR-NS - Kuali Nervous System");
         
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-        ITUtil.waitAndClick(selenium, componentLookUp);
-        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
+        waitAndClick(componentLookUp);
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=return value");
 
         String parameterName = "Validation Test Parameter"+ITUtil.DTS;
-        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.name']", parameterName);
-        selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Validation Test Parameter Description" + ITUtil.DTS);
-        selenium.select("//select[@id='document.newMaintainableObject.parameterTypeCode']", "label=Document Validation");
-        selenium.click("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
+        waitAndType("//input[@id='document.newMaintainableObject.name']", parameterName);
+        waitAndType("//textarea[@id='document.newMaintainableObject.description']",
+                "Validation Test Parameter Description" + ITUtil.DTS);
+        select("//select[@id='document.newMaintainableObject.parameterTypeCode']", "label=Document Validation");
+        waitAndClick("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
 
-        selenium.waitForPageToLoad("30000");
-
+        waitForPageToLoad();
         return docId;
-    }    
-    
+    }
 }

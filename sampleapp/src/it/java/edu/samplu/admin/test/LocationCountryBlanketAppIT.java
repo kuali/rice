@@ -34,17 +34,15 @@ public class LocationCountryBlanketAppIT extends AdminMenuBlanketAppITBase {
     }
 
     @Override
-    public String blanketApprove() {
-        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
+    public String blanketApprove() throws InterruptedException{
+        String docId = getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         String countryName = "Validation Test Country " + ITUtil.DTS;
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", countryName);
-        selenium.type("//input[@id='document.newMaintainableObject.code']",RandomStringUtils.randomAlphabetic(2).toUpperCase());
-       
-        selenium.type("//input[@id='document.newMaintainableObject.name']", countryName);
-        selenium.type("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
+        assertElementPresent("methodToCall.cancel");
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", countryName);
+        waitAndType("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
+        waitAndType("//input[@id='document.newMaintainableObject.name']", countryName);
+        waitAndType("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
         return docId;
     }
-
 }
  

@@ -40,20 +40,16 @@ public class MaintenanceAddDeleteFiscalOfficerIT extends KradMenuITBase {
         focusAndType("name=newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number", "1234567890");
         focusAndType("name=newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
         
-        selenium.click("//button[@data-loadingmessage='Adding Line...']");
-        
-        ITUtil.waitForElement(selenium, "name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number", "https://jira.kuali.org/browse/KULRICE-8038");
-       
+        waitAndClick("//button[@data-loadingmessage='Adding Line...']");
+
+        waitForElementPresent("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number", "https://jira.kuali.org/browse/KULRICE-8038");
+
         assertEquals("1234567890", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
         assertEquals("2", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId"));
        
-        selenium.click("//button[@data-loadingmessage='Deleting Line...']");
+        waitAndClick("//button[@data-loadingmessage='Deleting Line...']");
         
-        ITUtil.waitForElement(selenium,  "name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");       
+        waitForElementPresent("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
     }
-    
-    private void focusAndType(String fieldLocator, String typeText) {
-        selenium.focus(fieldLocator);
-        selenium.type(fieldLocator, typeText);
-    }
+
 }

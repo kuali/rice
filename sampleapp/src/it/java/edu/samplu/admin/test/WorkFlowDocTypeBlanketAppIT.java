@@ -16,11 +16,7 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
-import edu.samplu.common.AdminMenuITBase;
 import edu.samplu.common.ITUtil;
-
-import static org.junit.Assert.assertTrue;
-
 
 /**
  * tests that user 'admin', on blanket approving a new Document Type maintenance document, results in a final document
@@ -36,21 +32,19 @@ public class WorkFlowDocTypeBlanketAppIT extends AdminMenuBlanketAppITBase {
 
     @Override
     public String blanketApprove() throws Exception {
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type " + ITUtil.DTS);
+        String docId = waitForDocId();
+        assertElementPresent("methodToCall.cancel");
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type " + ITUtil.DTS);
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        ITUtil.waitAndClick(selenium, parentDocType);
-        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
-
+        waitAndClick(parentDocType);
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=return value");
         String docTypeName = "Validation Test Doc Type " + ITUtil.DTS;
-        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.name']", docTypeName);
-        selenium.type("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");
-        selenium.type("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
-        selenium.type("//input[@id='document.newMaintainableObject.label']", "Workflow Maintenance Document Type Document");
-        selenium.type("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']", "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
+        waitAndType("//input[@id='document.newMaintainableObject.name']", docTypeName);
+        waitAndType("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");
+        waitAndType("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
+        waitAndType("//input[@id='document.newMaintainableObject.label']", "Workflow Maintenance Document Type Document");
+        waitAndType("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']", "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         return docId;
     }
 }

@@ -16,8 +16,6 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuBlanketAppITBase;
-import edu.samplu.common.AdminMenuITBase;
-import edu.samplu.common.ITUtil;
 import org.apache.commons.lang.RandomStringUtils;
 
 /**
@@ -34,23 +32,18 @@ public class LocationStateBlanketAppIT extends AdminMenuBlanketAppITBase {
 
    @Override
    public String blanketApprove() throws Exception {
-         
-        ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
-        String docId = selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);
-        
-        selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
+        String docId = waitForDocId();
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
         //selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
-        
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
-        ITUtil.waitAndClick(selenium, countryLookUp);
-        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=return value");
+        waitAndClick(countryLookUp);
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=return value");
         String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-        ITUtil.waitAndType(selenium, "//input[@id='document.newMaintainableObject.code']", code);
+        waitAndType("//input[@id='document.newMaintainableObject.code']", code);
         String state =  "Validation Test State " + code;
-        selenium.type("//input[@id='document.newMaintainableObject.name']",state);
-        selenium.click("//input[@id='document.newMaintainableObject.active']");
-        
+        waitAndType("//input[@id='document.newMaintainableObject.name']",state);
+        waitAndClick("//input[@id='document.newMaintainableObject.active']");
         return docId;
     }
 }

@@ -382,7 +382,7 @@ public class ITUtil {
         boolean failed = false;
         for (int second = 0;; second++) {
             if (second >= seconds) failed = true;
-            try { if (selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
+            try { if (failed || selenium.isElementPresent(elementLocator)) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
         ITUtil.checkForIncidentReport(selenium, elementLocator); // after timeout to be sure page is loaded

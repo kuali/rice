@@ -42,7 +42,7 @@ public class CreateNewAgendaIT extends MainMenuLookupITBase {
         fireEvent("name=document.newMaintainableObject.dataObject.contextName", "blur");
         fireEvent("name=document.newMaintainableObject.dataObject.contextName", "focus");
         waitForElementPresent("name=document.newMaintainableObject.dataObject.agenda.typeId",
-                "KULRICE-7924 : KRMS Agenda type select option not rendered w/o using Context lookup");
+                "https://jira.kuali.org/browse/KULRICE-7924 : KRMS Agenda type select option not rendered w/o using Context lookup");
         select("name=document.newMaintainableObject.dataObject.agenda.typeId", "label=Campus Agenda");
         waitForElementPresent("name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         waitAndType("name=document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");

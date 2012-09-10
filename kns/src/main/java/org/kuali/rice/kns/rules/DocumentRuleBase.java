@@ -16,8 +16,7 @@
 package org.kuali.rice.kns.rules;
 
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
 
 /**
  * KNS version of DocumentRuleBase

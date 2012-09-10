@@ -29,14 +29,6 @@ public abstract class MenuITBase extends UpgradedSeleniumITBase {
      */
     protected abstract String getCreateNewLinkLocator();
 
-    protected void assertDocFinal(String docId) {
-        ITUtil.assertDocFinal(selenium, docId);
-    }
-
-    protected void blanketApproveTest() throws InterruptedException {
-        ITUtil.blanketApprove(selenium);
-    }
-
     /**
      * go to the getMenuLinkLocator() Menu and click the getLinkLocator()
      */

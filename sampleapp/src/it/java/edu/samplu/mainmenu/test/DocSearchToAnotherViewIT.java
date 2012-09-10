@@ -44,10 +44,4 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
 		selenium.click("link=Cancel");
         //assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$")); //Removed Confirmation Panel From the page itself
 	}
-	   
-
-    private void focusAndType(String fieldLocator, String typeText) {
-        selenium.focus(fieldLocator);
-        selenium.type(fieldLocator, typeText);
-    }
 }

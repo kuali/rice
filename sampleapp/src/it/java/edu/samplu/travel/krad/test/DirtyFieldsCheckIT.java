@@ -76,9 +76,4 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
         selenium.click("link=Cancel");
         assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
     }
-
-    private void focusAndType(String fieldLocator, String typeText) {
-        selenium.focus(fieldLocator);
-        selenium.type(fieldLocator, typeText);
-    }
 }

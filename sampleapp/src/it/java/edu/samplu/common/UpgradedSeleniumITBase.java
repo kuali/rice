@@ -67,6 +67,10 @@ public abstract class UpgradedSeleniumITBase {
         ITUtil.loginSe(selenium, getUserName());
     }
 
+    protected void assertDocFinal(String docId) {
+        ITUtil.assertDocFinal(selenium, docId);
+    }
+
     protected void assertElementPresent(String locator) {
         assertTrue(selenium.isElementPresent(locator));
     }
@@ -77,6 +81,10 @@ public abstract class UpgradedSeleniumITBase {
 
     protected void assertTextPresent(String message, String text) {
         assertTrue(text + " text not present " + message, selenium.isTextPresent(text));
+    }
+
+    protected void blanketApproveTest() throws InterruptedException {
+        ITUtil.blanketApprove(selenium);
     }
 
     protected void checkErrorMessageItem(String message) {
@@ -107,6 +115,10 @@ public abstract class UpgradedSeleniumITBase {
         waitNotVisible(visibleLocator);
     }
 
+    protected void fireEvent(String locator, String event) {
+        selenium.fireEvent(locator, event);
+    }
+
     protected void focusAndType(String fieldLocator, String typeText) {
         selenium.focus(fieldLocator);
         selenium.type(fieldLocator, typeText);
@@ -122,6 +134,10 @@ public abstract class UpgradedSeleniumITBase {
 
     protected void selectFrame(String frameName) {
         selenium.selectFrame(frameName);
+    }
+
+    protected void selectWindow(String windowName) {
+        selenium.selectWindow(windowName);
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {

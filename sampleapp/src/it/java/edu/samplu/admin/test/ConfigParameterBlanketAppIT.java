@@ -40,8 +40,7 @@ public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
         String docId = waitForDocId();
         waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
         assertEquals("", selenium.getText("methodToCall.cancel"));
-        selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']",
-                "label=KR-NS - Kuali Nervous System");
+        select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KR-NS - Kuali Nervous System");
         
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
         waitAndClick(componentLookUp);

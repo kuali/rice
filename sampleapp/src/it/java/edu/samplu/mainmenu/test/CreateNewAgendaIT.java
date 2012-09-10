@@ -57,14 +57,6 @@ public class CreateNewAgendaIT extends MainMenuLookupITBase {
         waitAndClick("xpath=(//input[@name='imageField'])[2]");
     }
 
-    protected void selectWindow(String windowName) {
-        selenium.selectWindow(windowName);
-    }
-
-    protected void fireEvent(String locator, String event) {
-        selenium.fireEvent(locator, event);
-    }
-
     @Ignore // link to create new is off the main menu
     @Test
     public void testLookUp() throws Exception {}

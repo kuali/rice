@@ -302,6 +302,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         if (proposition != null) { // Null props are allowed.
 
+            if (StringUtils.isBlank(proposition.getDescription())) {
+                GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.missingDescription");
+                result &= false;
+            }
+
             if (StringUtils.isBlank(proposition.getCompoundOpCode())) {
                 // then this is a simple proposition, validate accordingly
 

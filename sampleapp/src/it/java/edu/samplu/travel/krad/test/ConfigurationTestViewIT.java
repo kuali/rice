@@ -53,13 +53,13 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
                 "color:red"));
 
         // testing for refreshWhenChanged when using spel expressions
-        selenium.selectFrame("iframeportlet");
+        selectFrame("iframeportlet");
         // get current list of options
         String refreshTextSelectLocator = "id=" + idPrefix + "RefreshTextField_control";
         String[] options1 = selenium.getSelectOptions(refreshTextSelectLocator);
         String dropDownSelectLocator = "id=" + idPrefix + "DropDown_control";
         selenium.select(dropDownSelectLocator, "label=Vegetables");
-        selenium.click("//option[@value='Vegetables']");
+        waitAndClick("//option[@value='Vegetables']");
         Thread.sleep(3000);
         //get list of options after change
         String[] options2 = selenium.getSelectOptions(refreshTextSelectLocator);
@@ -91,16 +91,16 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         confirmAddLineControlsPresent();
         
         String startTimeId = "id=" +idPrefix + "StartTime" + addLineIdSuffix;
-        selenium.selectFrame("iframeportlet");
+        selectFrame("iframeportlet");
         selenium.focus(startTimeId);
         String inputTime = "7:06";
         selenium.type(startTimeId, inputTime);
         String amPmSelectLocator = "id=" + idPrefix + "StartTimeAmPm" + addLineIdSuffix;
-       // selenium.click(amPmSelectLocator);
+       // waitAndClick(amPmSelectLocator);
         selenium.select(amPmSelectLocator, "label=PM");
         assertEquals("PM", selenium.getSelectedLabel(amPmSelectLocator));
         Thread.sleep(5000); //allow for ajax refresh        
-        selenium.click("//button");
+        waitAndClick("//button");
         Thread.sleep(5000); //allow for line to be added
         //confirm that line has been added
         assertTrue("line (//input[@value='7:06'])is not present", selenium.isElementPresent("//input[@value='7:06']"));
@@ -117,7 +117,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
             confirmAddLineControlsPresent();
 
             String startTimeId = "id=" +idPrefix + "StartTime" + addLineIdSuffix;
-            selenium.selectFrame("iframeportlet");
+            selectFrame("iframeportlet");
             selenium.focus(startTimeId);
             String inputTime = "5:20";
             selenium.type(startTimeId, inputTime);
@@ -125,19 +125,19 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
             String allDaySelector = "id=" + idPrefix + "AllDay" + addLineIdSuffix;
             selenium.focus(allDaySelector);
             Thread.sleep(5000); //allow for ajax refresh
-            selenium.click(allDaySelector);
+            waitAndClick(allDaySelector);
             
             //Since All Day checkbox is selected, asserting PM with default AM would fails the test. Commenting out.
             //Or Else put the commented piece of code before selecting the checkbox. 
             /*
             String amPmSelectLocator = "id=" + idPrefix + "StartTimeAmPm" + addLineIdSuffix;
-            selenium.click(amPmSelectLocator);
+            waitAndClick(amPmSelectLocator);
             selenium.select(amPmSelectLocator, "label=PM");
             assertEquals("PM", selenium.getSelectedLabel(amPmSelectLocator));
              */
           
             Thread.sleep(5000); //allow for ajax refresh
-            selenium.click("css=div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
+            waitAndClick("css=div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
             Thread.sleep(5000); //allow for line to be added           
             
             //Since All Day checkbox is selected, asserting Start time's presence would fails the test. Commenting out.
@@ -173,8 +173,8 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         String allDayId = "id=" + idPrefix + "AllDay" + addLineIdSuffix;
         selenium.focus(allDayId);
         Thread.sleep(5000); //allow for ajax refresh
-        selenium.click(allDayId);
-        selenium.click("css=div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
+        waitAndClick(allDayId);
+        waitAndClick("css=div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
         Thread.sleep(5000); //allow for line to be added
 
         //confirm that line has been added (by checking for the new delete button)

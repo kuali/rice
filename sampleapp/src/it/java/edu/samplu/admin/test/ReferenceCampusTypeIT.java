@@ -38,21 +38,21 @@ public class ReferenceCampusTypeIT extends UpgradedSeleniumITBase {
      */
     public void testEditCampusType() throws Exception {
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Administration");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Campus Type");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Campus Type");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
+        selectFrame("iframeportlet");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClick("link=edit");
+        waitForPageToLoad();
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
     }
 }

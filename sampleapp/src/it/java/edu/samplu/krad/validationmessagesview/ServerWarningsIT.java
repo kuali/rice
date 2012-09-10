@@ -33,7 +33,7 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
 
 	@Test
 	public void testServerWarningsIT() throws Exception {
-		selenium.click("//button[contains(.,'Get Warning Messages')]");
+		waitAndClick("//button[contains(.,'Get Warning Messages')]");
 		selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
 		assertTrue( "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible https://jira.kuali.org/browse/KULRICE-8140",
                 selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
@@ -48,7 +48,7 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
 		selenium.mouseOver("//a[contains(.,'Field 1')]");
 		assertTrue("css=.uif-warningHighlight no present when //a[contains(.,'Field 1')] is moused over",
                 selenium.isElementPresent("css=.uif-warningHighlight"));
-		selenium.click("//a[contains(.,'Field 1')]");
+		waitAndClick("//a[contains(.,'Field 1')]");
         ITUtil.waitForElementVisible(selenium, "css=.jquerybubblepopup-innerHtml", " after click on //a[contains(.,'Field 1')]");
 
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", selenium.isVisible(

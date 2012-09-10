@@ -37,18 +37,18 @@ public class AgendaEditRuleRefreshIT extends UpgradedSeleniumITBase {
      * test that repeated ajax refreshes work
      */
 	public void testAgendaEditRuleRefreshIT() throws Exception {
-		selenium.click("link=Agenda Lookup");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("css=button:contains(earch)"); //  selenium.click("id=32");
+		waitAndClick("link=Agenda Lookup");
+		waitForPageToLoad();
+		selectFrame("iframeportlet");
+		waitAndClick("css=button:contains(earch)"); //  waitAndClick("id=32");
         Thread.sleep(3000);
-		selenium.waitForPageToLoad("30000");
-		selenium.click("css=a[title='edit Agenda Definition withAgenda Id=T1000 ']");  // selenium.click("id=194_line0");
-		selenium.waitForPageToLoad("30000");
+		waitForPageToLoad();
+		waitAndClick("css=a[title='edit Agenda Definition withAgenda Id=T1000 ']");  // waitAndClick("id=194_line0");
+		waitForPageToLoad();
         ITUtil.checkForIncidentReport(selenium, "", "https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'");
-		selenium.click("css=div.uif-message:contains(Rule1: stub rule lorem ipsum)"); // selenium.click("//li[@id='473_node_0_parent_root']/a");
-        selenium.click("css=//li/a/span.uif-message:contains('When TRUE')");
-		selenium.click("link=[-] collapse all");
+		waitAndClick("css=div.uif-message:contains(Rule1: stub rule lorem ipsum)"); // waitAndClick("//li[@id='473_node_0_parent_root']/a");
+        waitAndClick("css=//li/a/span.uif-message:contains('When TRUE')");
+		waitAndClick("link=[-] collapse all");
 
         // click refresh  several times
         for (int i=0; i<6; i++) {
@@ -58,7 +58,7 @@ public class AgendaEditRuleRefreshIT extends UpgradedSeleniumITBase {
                 Thread.sleep(1000);
             }
 
-            selenium.click("css=button.kr-refresh-button");
+            waitAndClick("css=button.kr-refresh-button");
         }
 	}
 }

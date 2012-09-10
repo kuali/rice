@@ -39,9 +39,9 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
 	public void testDirtyFieldsCheck() throws Exception {
         ITUtil.checkForIncidentReport(selenium, getTestUrl());
         selenium.waitForPageToLoad("50000");
-//		selenium.selectFrame("iframeportlet");
+//		selectFrame("iframeportlet");
         Thread.sleep(5000);
-        selenium.selectWindow("title=Kuali :: Uif Components");		
+        selectWindow("title=Kuali :: Uif Components");
         focusAndType("name=field1", "test 1");
         focusAndType("name=field102", "test 2");
 		// 'Other Fields' navigation link
@@ -71,9 +71,9 @@ public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
                 + "selenium.chooseCancelOnNextConfirmation() isn't finding dialog");
 	}
 
-    private void assertCancelConfirmation() {
+    private void assertCancelConfirmation() throws InterruptedException {
         selenium.chooseCancelOnNextConfirmation();
-        selenium.click("link=Cancel");
+        waitAndClick("link=Cancel");
         assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
     }
 }

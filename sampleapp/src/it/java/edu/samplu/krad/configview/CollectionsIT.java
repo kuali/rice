@@ -46,7 +46,7 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
         selenium.type("name=newCollectionLines['list1'].field2", "asdf2");
         selenium.type("name=newCollectionLines['list1'].field3", "asdf3");
         selenium.type("name=newCollectionLines['list1'].field4", "asdf4");
-        selenium.click("//button[contains(.,'add')]"); // the first button is the one we want
+        waitAndClick("//button[contains(.,'add')]"); // the first button is the one we want
 
         for (int second = 0;; second++) {
             if (second >= 60) Assert.fail("timeout");
@@ -109,9 +109,9 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
         
         
         
-        selenium.click("link=Column Sequence");
+        waitAndClick("link=Column Sequence");
         Thread.sleep(2000);
-        //selenium.click("css=div.jGrowl-close");
+        //waitAndClick("css=div.jGrowl-close");
         // check if actions column RIGHT by default
         //Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {

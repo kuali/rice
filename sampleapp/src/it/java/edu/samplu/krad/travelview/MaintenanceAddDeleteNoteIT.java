@@ -36,7 +36,7 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
      */
     public void testVerifyAddDeleteNote() throws Exception {
         gotoMenuLinkLocator();
-        selenium.click("css=div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
+        waitAndClick("css=div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
         
 
         for (int second = 0;; second++) {
@@ -50,9 +50,9 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
             Thread.sleep(1000);
         }
 
-        selenium.click("name=newCollectionLines['document.notes'].noteText");
+        waitAndClick("name=newCollectionLines['document.notes'].noteText");
         selenium.type("name=newCollectionLines['document.notes'].noteText", "Test note");
-        selenium.click("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
+        waitAndClick("css=button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         for (int second = 0;; second++) {
             if (second >= 15) {
                 fail("timeout, https://jira.kuali.org/browse/KULRICE-8038");
@@ -66,7 +66,7 @@ public class MaintenanceAddDeleteNoteIT extends KradMenuITBase {
         }
 
         assertEquals("Test note", selenium.getText("name=document.notes[0].noteText"));
-        selenium.click("css=button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
+        waitAndClick("css=button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
 
         for (int second = 0;; second++) {
             if (second >= 15) {

@@ -34,7 +34,6 @@ public abstract class UpgradedSeleniumITBase {
     protected Selenium selenium;
     protected WebDriver driver;
 
-
     protected String getBaseUrlString() {
         return ITUtil.getBaseUrlString();
     }
@@ -100,18 +99,18 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     protected void colapseExpand(String clickLocator, String visibleLocator) throws InterruptedException {
-        selenium.click(clickLocator);
+        waitAndClick(clickLocator);
         waitNotVisible(visibleLocator);
 
-        selenium.click(clickLocator);
+        waitAndClick(clickLocator);
         waitIsVisible(visibleLocator);
     }
 
     protected void expandColapse(String clickLocator, String visibleLocator) throws InterruptedException {
-        selenium.click(clickLocator);
+        waitAndClick(clickLocator);
         waitIsVisible(visibleLocator);
 
-        selenium.click(clickLocator);
+        waitAndClick(clickLocator);
         waitNotVisible(visibleLocator);
     }
 
@@ -133,11 +132,11 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     protected void selectFrame(String frameName) {
-        selenium.selectFrame(frameName);
+        selectFrame(frameName);
     }
 
     protected void selectWindow(String windowName) {
-        selenium.selectWindow(windowName);
+        selectWindow(windowName);
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {

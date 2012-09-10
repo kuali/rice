@@ -38,27 +38,27 @@ public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
      */
     public void testCreateNew() throws Exception {
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules Delegation");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Routing Rules Delegation");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");        
-//        selenium.selectFrame("relative=up");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("css=td.infoline > input[name=\"methodToCall.search\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("css=a[title=\"return valueRule Id=1046 \"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("name=parentResponsibilityId");
-        selenium.click("name=methodToCall.createDelegateRule");
-        selenium.waitForPageToLoad("30000");
+        selectFrame("iframeportlet");
+        waitAndClick("//img[@alt='create new']");
+//        selectFrame("relative=up");
+        waitForPageToLoad();
+        waitAndClick("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        waitAndClick("css=td.infoline > input[name=\"methodToCall.search\"]");
+        waitForPageToLoad();
+        waitAndClick("css=a[title=\"return valueRule Id=1046 \"]");
+        waitForPageToLoad();
+        waitAndClick("name=parentResponsibilityId");
+        waitAndClick("name=methodToCall.createDelegateRule");
+        waitForPageToLoad();
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
     }
 
 //    @Test // There are no results from the search so no edit link to click on
@@ -67,45 +67,45 @@ public class WorkFlowRouteRulesDelegationIT extends UpgradedSeleniumITBase {
      */
     public void testEditRouteRulesDelegation() throws Exception {
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules Delegation");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Routing Rules Delegation");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
+        selectFrame("iframeportlet");
         selenium.setSpeed("2000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClick("link=edit");
+        waitForPageToLoad();
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
               
     }
     
     @Test
     public void testCreateNewRRDTravelRequestDestRouting() throws Exception {
-        selenium.click("link=Routing Rules Delegation");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectFrame("iframeportlet");
-        selenium.click("css=img[alt=\"create new\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("css=td.infoline > input[name=\"methodToCall.search\"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("css=a[title=\"return valueRule Id=1046 \"]");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("name=parentResponsibilityId");
-        selenium.click("name=methodToCall.createDelegateRule");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("name=methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("name=methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectWindow("null");
-        selenium.click("xpath=(//input[@name='imageField'])[2]");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Routing Rules Delegation");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClick("css=img[alt=\"create new\"]");
+        waitForPageToLoad();
+        waitAndClick("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForPageToLoad();
+        waitAndClick("css=td.infoline > input[name=\"methodToCall.search\"]");
+        waitForPageToLoad();
+        waitAndClick("css=a[title=\"return valueRule Id=1046 \"]");
+        waitForPageToLoad();
+        waitAndClick("name=parentResponsibilityId");
+        waitAndClick("name=methodToCall.createDelegateRule");
+        waitForPageToLoad();
+        waitAndClick("name=methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("name=methodToCall.processAnswer.button0");
+        waitForPageToLoad();
+        selectWindow("null");
+        waitAndClick("xpath=(//input[@name='imageField'])[2]");
+        waitForPageToLoad();
     }
 }

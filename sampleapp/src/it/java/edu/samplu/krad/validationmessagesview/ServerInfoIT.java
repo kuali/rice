@@ -32,8 +32,8 @@ public class ServerInfoIT extends UpgradedSeleniumITBase {
 
 	@Test
 	public void testServerInfoIT() throws Exception {
-		selenium.click("//button[contains(.,'Get Info Messages')]");
-		selenium.waitForPageToLoad("30000");
+		waitAndClick("//button[contains(.,'Get Info Messages')]");
+		waitForPageToLoad();
         ITUtil.waitForElementVisible(selenium, "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]");
 		Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
 		Assert.assertTrue(selenium.isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
@@ -42,7 +42,7 @@ public class ServerInfoIT extends UpgradedSeleniumITBase {
 		Assert.assertTrue(selenium.isElementPresent("css=div[data-role=\"InputField\"] img[alt=\"Information\"]"));
 		selenium.mouseOver("//a[contains(.,'Field 1')]");
 		Assert.assertTrue(selenium.isElementPresent("css=.uif-infoHighlight"));
-		selenium.click("//a[contains(.,'Field 1')]");
+		waitAndClick("//a[contains(.,'Field 1')]");
 		for (int second = 0;; second++) {
 			if (second >= 60) Assert.fail("timeout");
 			try { if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) break; } catch (Exception e) {}

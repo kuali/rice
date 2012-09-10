@@ -24,24 +24,24 @@ public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
      * and therefore interfere with JS functionality like validation
      */
 	public void testDocSearchToAnotherView() throws Exception {
-		selenium.click("css=img[alt=\"doc search\"]");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("css=td.infoline > input[name=\"methodToCall.search\"]");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("relative=top");
-		selenium.click("link=Main Menu");
-		selenium.waitForPageToLoad("30000");
+		waitAndClick("css=img[alt=\"doc search\"]");
+		waitForPageToLoad();
+		selectFrame("iframeportlet");
+		waitAndClick("css=td.infoline > input[name=\"methodToCall.search\"]");
+		waitForPageToLoad();
+		selectFrame("relative=top");
+		waitAndClick("link=Main Menu");
+		waitForPageToLoad();
         selenium.setSpeed("2000");
-		selenium.click("link=People Flow");
-		selenium.waitForPageToLoad("30000");
-		selenium.selectFrame("iframeportlet");
-		selenium.click("link=Create New");
-		selenium.waitForPageToLoad("30000");
+		waitAndClick("link=People Flow");
+		waitForPageToLoad();
+		selectFrame("iframeportlet");
+		waitAndClick("link=Create New");
+		waitForPageToLoad();
 		focusAndType("name=document.documentHeader.documentDescription", "sample description");
 		focusAndType("name=document.documentHeader.explanation", "sample explanation");		
         selenium.focus("link=Cancel");
-		selenium.click("link=Cancel");
+		waitAndClick("link=Cancel");
         //assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$")); //Removed Confirmation Panel From the page itself
 	}
 }

@@ -38,24 +38,24 @@ public class IdentityRoleIT extends UpgradedSeleniumITBase{
      */
     public void testCreateNew() throws Exception {
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Administration");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Role");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Role");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=return value");
-        selenium.waitForPageToLoad("30000");
+        selectFrame("iframeportlet");
+        waitAndClick("//img[@alt='create new']");
+        waitForPageToLoad();
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClick("link=return value");
+        waitForPageToLoad();
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
     }
 
     @Test
@@ -64,21 +64,21 @@ public class IdentityRoleIT extends UpgradedSeleniumITBase{
      */
     public void testEditRole() throws Exception {
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Administration");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Administration");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Role");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Role");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
+        selectFrame("iframeportlet");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClick("link=edit");
+        waitForPageToLoad();
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
     }
 }

@@ -52,7 +52,7 @@ public abstract class MenuITBase extends UpgradedSeleniumITBase {
     protected void gotoCreateNew() throws Exception {
         gotoMenuLinkLocator();
         waitAndClick(getCreateNewLinkLocator(), "");
-        //        selenium.selectFrame("relative=up");
+        //        selectFrame("relative=up");
         checkForIncidentReport(getCreateNewLinkLocator());
     }
 }

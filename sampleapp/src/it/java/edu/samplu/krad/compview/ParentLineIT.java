@@ -42,7 +42,7 @@ public class ParentLineIT extends UpgradedSeleniumITBase {
      */
     public void testSubCollectionSize() throws Exception {
 //        // click on collections page link
-        selenium.click("link=Collections");
+        waitAndClick("link=Collections");
 //        // wait for collections page to load by checking the presence of a sub collection line item
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");

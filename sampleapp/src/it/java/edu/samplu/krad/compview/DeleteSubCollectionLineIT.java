@@ -39,7 +39,7 @@ public class DeleteSubCollectionLineIT extends UpgradedSeleniumITBase{
      */
     public void deleteSubCollectionLine() throws Exception {
         // click on collections page link
-        selenium.click("link=Collections");
+        waitAndClick("link=Collections");
         Thread.sleep(5000);
         // wait for collections page to load by checking the presence of a sub collection line item
 
@@ -47,7 +47,7 @@ public class DeleteSubCollectionLineIT extends UpgradedSeleniumITBase{
         // change a value in the line to be deleted
         selenium.type("name=list4[0].subList[0].field1", "selenium");
         // click the delete button
-        selenium.click("css=div[title='Line Summary \'A\' With Expression'].uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure tr.odd button[data-loadingmessage='Deleting Line...'].uif-action.uif-secondaryActionButton.uif-smallActionButton");
+        waitAndClick("css=div[title='Line Summary \'A\' With Expression'].uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure tr.odd button[data-loadingmessage='Deleting Line...'].uif-action.uif-secondaryActionButton.uif-smallActionButton");
         Thread.sleep(2000);
         // confirm that the input box containing the modified value is not present
         

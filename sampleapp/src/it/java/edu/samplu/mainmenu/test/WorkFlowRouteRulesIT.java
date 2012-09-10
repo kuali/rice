@@ -39,24 +39,24 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
      */
     public void testCreateNew() throws Exception {
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Routing Rules");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//img[@alt='create new']");        
-//        selenium.selectFrame("relative=up");
-        selenium.waitForPageToLoad("30000");
+        selectFrame("iframeportlet");
+        waitAndClick("//img[@alt='create new']");
+//        selectFrame("relative=up");
+        waitForPageToLoad();
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
         selenium.setSpeed("3000");
         // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
         try {
-            selenium.click("methodToCall.processAnswer.button0");            
+            waitAndClick("methodToCall.processAnswer.button0");
         } catch (SeleniumException se) {
             assertTrue("https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.", false);
         }
-        selenium.waitForPageToLoad("30000");
+        waitForPageToLoad();
     }
 
     @Test
@@ -65,19 +65,19 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
      */
     public void testEditRouteRules() throws Exception {
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.click("link=Routing Rules");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=Routing Rules");
+        waitForPageToLoad();
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=edit");
-        selenium.waitForPageToLoad("30000");
+        selectFrame("iframeportlet");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitForPageToLoad();
+        waitAndClick("link=edit");
+        waitForPageToLoad();
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
-        selenium.click("methodToCall.cancel");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("methodToCall.cancel");
+        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
               
     }
 }

@@ -16,7 +16,6 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -33,69 +32,30 @@ public class ServerErrorsIT extends UpgradedSeleniumITBase {
 
     @Test
     public void testServerErrorsIT() throws Exception {
-        selenium.click("//button[contains(.,'Get Error Messages')]");        
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("//button[contains(.,'Get Error Messages')]");
+        waitForPageToLoad();
 //        Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]")); // bugged isVisible? you can see it on the screen...
         Thread.sleep(1000);
-        Assert.assertTrue(selenium.isElementPresent(
-                "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem"));
-        Assert.assertTrue(selenium.isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
-        Assert.assertTrue(selenium.isElementPresent(
-                "css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-errorMessageItem"));
-        Assert.assertTrue(selenium.isElementPresent("css=div[data-role=\"InputField\"] img[alt=\"Error\"]"));
-        selenium.click("//a[contains(.,'\"Section 1 Title\"')]");
+        assertElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem");
+        waitIsVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]");
+        assertElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-errorMessageItem");
+        assertElementPresent("css=div[data-role=\"InputField\"] img[alt=\"Error\"]");
+        waitAndClick("//a[contains(.,'\"Section 1 Title\"')]");
         selenium.mouseOver("//a[contains(.,'Field 1')]");
-        Assert.assertTrue(selenium.isElementPresent("css=.uif-errorHighlight"));
-        selenium.click("//a[contains(.,'Field 1')]");
-        for (int second = 0; ; second++) {
-            if (second >= 60) {
-                Assert.fail("timeout");
-            }
-            try {
-                if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) {
-                    break;
-                }
-            } catch (Exception e) {
-            }
-            Thread.sleep(1000);
-        }
+        assertElementPresent("css=.uif-errorHighlight");
+        waitAndClick("//a[contains(.,'Field 1')]");
+        waitIsVisible("css=.jquerybubblepopup-innerHtml");
 
-        Assert.assertTrue(selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
-        Assert.assertTrue(selenium.isVisible(
-                "css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field"));
-        selenium.type("name=field1", "");
-        selenium.fireEvent("name=field1", "blur");
-        selenium.fireEvent("name=field1", "focus");
-        for (int second = 0; ; second++) {
-            if (second >= 60) {
-                Assert.fail("timeout");
-            }
-            try {
-                if (selenium.isVisible("css=.jquerybubblepopup-innerHtml")) {
-                    break;
-                }
-            } catch (Exception e) {
-            }
-            Thread.sleep(1000);
-        }
+        waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems");
+        waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
+        waitAndType("name=field1", "");
+        fireEvent("name=field1", "blur");
+        fireEvent("name=field1", "focus");
+        waitIsVisible("css=.jquerybubblepopup-innerHtml");
 
-        Assert.assertTrue(selenium.isVisible(
-                "css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field"));
-        for (int second = 0; ; second++) {
-            if (second >= 60) {
-                Assert.fail("timeout");
-            }
-            try {
-                if (selenium.isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
-                    break;
-                }
-            } catch (Exception e) {
-            }
-            Thread.sleep(1000);
-        }
-
-        Assert.assertTrue(selenium.isVisible(
-                "css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
+        waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems");
+        waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field");
         selenium.keyDown("name=field1", "t");
         selenium.keyPress("name=field1", "t");
         selenium.keyUp("name=field1", "t");
@@ -112,8 +72,7 @@ public class ServerErrorsIT extends UpgradedSeleniumITBase {
             Thread.sleep(1000);
         }
 
-        Assert.assertTrue(selenium.isVisible(
-                "css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field"));
+        waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
         Assert.assertFalse(selenium.isElementPresent("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
     }
 }

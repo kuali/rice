@@ -78,7 +78,7 @@ public class ITUtil {
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         Thread.sleep(2000);
 
-       if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
+        if (selenium.isElementPresent(DIV_ERROR_LOCATOR)) {
             String errorText = selenium.getText(DIV_ERROR_LOCATOR);
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 errorText = blanketApprovalCleanUpErrorText(errorText);
@@ -86,9 +86,9 @@ public class ITUtil {
                     errorText = blanketApprovalCleanUpErrorText(selenium.getText(DIV_EXCOL_LOCATOR)); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
                 }
 
-//                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
-//                    errorText = errorText + " " + selenium.getText("//div[@class='left-errmsg']/div/div[1]");
-//                }
+                //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
+                //                    errorText = errorText + " " + selenium.getText("//div[@class='left-errmsg']/div/div[1]");
+                //                }
                 Assert.fail(errorText);
             }
         }
@@ -466,9 +466,9 @@ public class ITUtil {
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         String contents = selenium.getHtmlSource();
         if (contents != null &&
-            contents.contains("Incident Report") &&
-            !contents.contains("portal.do?channelTitle=Incident%20Report&amp;") && // Incident Report link on sampleapp KRAD tab
-            !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
+                contents.contains("Incident Report") &&
+                !contents.contains("portal.do?channelTitle=Incident%20Report&amp;") && // Incident Report link on sampleapp KRAD tab
+                !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             try {
                 if (contents.indexOf("Incident Feedback") > -1) {
                     String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );

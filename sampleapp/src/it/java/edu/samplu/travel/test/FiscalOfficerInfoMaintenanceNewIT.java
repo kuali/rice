@@ -34,11 +34,11 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
 
     @Test
     public void testUntitled() throws Exception {
-        selenium.click("link=KRAD");
+        waitAndClick("link=KRAD");
         selenium.waitForPageToLoad("50000");
-        selenium.click("//a[@title='FiscalOfficerInfo Maintenance (New)']");
+        waitAndClick("//a[@title='FiscalOfficerInfo Maintenance (New)']");
         selenium.waitForPageToLoad("50000");
-        selenium.selectFrame("iframeportlet");
+        selectFrame("iframeportlet");
         // String docId = selenium.getText("//span[contains(@id , '_attribute_span')][position()=1]");
         ITUtil.checkForIncidentReport(selenium, "", "https://jira.kuali.org/browse/KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
@@ -52,56 +52,56 @@ public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
 //        selenium.type("newCollectionLines['document.newMaintainableObject.dataObject.accounts'].name", "ChrisTravelAcc");
 //        selenium.type("xpath = //input[@name='document.newMaintainableObject.dataObject.accounts[0].name']", "ChrisTravelAcc");
 //        selenium.type("//input[contains(@name , '.name')]", "JustinTravelAcc");
-//        selenium.click("add");
-//        selenium.click("//input[@value='add']");
+//        waitAndClick("add");
+//        waitAndClick("//input[@value='add']");
 //        System.out.println("adding Row");
 //        selenium.wait(90000);
     
-        selenium.click("//button[@value='save']");
+        waitAndClick("//button[@value='save']");
         
         int docIdInt = Integer.valueOf(docId).intValue(); 
         
         selenium.waitForPageToLoad("50000");
-        selenium.selectFrame("relative=up");
-        selenium.click("//img[@alt='action list']");     
+        selectFrame("relative=up");
+        waitAndClick("//img[@alt='action list']");
         selenium.waitForPageToLoad("50000");              
-        selenium.selectFrame("iframeportlet");
+        selectFrame("iframeportlet");
         if(selenium.isElementPresent("link=Last")){
-            selenium.click("link=Last");
+            waitAndClick("link=Last");
             selenium.waitForPageToLoad("50000");
-            selenium.click("link="+docIdInt);
+            waitAndClick("link="+docIdInt);
         } else {                                  
-            selenium.click("link="+docIdInt);            
+            waitAndClick("link="+docIdInt);
         }
         
         Thread.sleep(5000); 
         String[] windowTitles = selenium.getAllWindowTitles();              
-        selenium.selectWindow(windowTitles[1]);  
+        selectWindow(windowTitles[1]);
         selenium.windowFocus();
         assertEquals(windowTitles[1], selenium.getTitle());
         
         //------submit-----//
-        selenium.selectFrame("relative=up");
-        selenium.click("//button[@value='submit']");
+        selectFrame("relative=up");
+        waitAndClick("//button[@value='submit']");
         selenium.waitForPageToLoad("50000");       
         selenium.close();                   
         //------submit over---//        
         
         //----step 2----//  
-        selenium.selectWindow("null");
+        selectWindow("null");
         selenium.windowFocus();
-        selenium.click("//img[@alt='doc search']");
+        waitAndClick("//img[@alt='doc search']");
         selenium.waitForPageToLoad("50000");
         assertEquals(windowTitles[0], selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//input[@name='methodToCall.search' and @value='search']");
+        selectFrame("iframeportlet");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("50000");
         //----step 2 over ----//
         
         //-----Step 3 verifies that doc is final-------//        
         assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
-        selenium.selectFrame("relative=up");
-        selenium.click("link=Main Menu");
+        selectFrame("relative=up");
+        waitAndClick("link=Main Menu");
         selenium.waitForPageToLoad("50000");
         assertEquals(windowTitles[0], selenium.getTitle());
         System.out.println("---------------------- :: Test complete :: ----------------------");

@@ -43,7 +43,7 @@ public class UIFComponentValidationRegexPatternIT extends UpgradedSeleniumITBase
          *  
          */
      
-        selenium.click("//a[contains(text(),'Validation - Regex')]");
+        waitAndClick("//a[contains(text(),'Validation - Regex')]");
         ITUtil.waitForElement(selenium, "name=field50");
         
         //---------------------------------------------Fixed Point------------------------------//

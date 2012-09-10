@@ -33,15 +33,15 @@ public class AttributeDefinitionLookUpIT extends UpgradedSeleniumITBase{
     
     @Test
     public void testAttributeDefinitionLookUp() throws Exception {
-        selenium.click("link=Attribute Definition Lookup");
-        selenium.waitForPageToLoad("30000");
-        selenium.selectFrame("iframeportlet");
-        selenium.click("css=button:contains(earch)");
+        waitAndClick("link=Attribute Definition Lookup");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClick("css=button:contains(earch)");
         Thread.sleep(3000);
-        selenium.waitForPageToLoad("30000");
+        waitForPageToLoad();
         selenium.isTextPresent("Actions"); // there are no actions, but the header is the only unique text from searching
-        selenium.click("link=1000");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("link=1000");
+        waitForPageToLoad();
 
         selenium.isTextPresent("Attribute Inquiry");
         selenium.isTextPresent("KRMS Attributes");
@@ -50,18 +50,18 @@ public class AttributeDefinitionLookUpIT extends UpgradedSeleniumITBase{
         selenium.isTextPresent("peopleFlowId");
         selenium.isTextPresent("KR-RULE");
         selenium.isTextPresent("PeopleFlow");
-//        selenium.selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
-//        selenium.click("css=button:contains(Close)"); // looks lower case, but is upper
+//        selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
+//        waitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
 //        Thread.sleep(500);
-//        selenium.click("css=button:contains(cancel)");
+//        waitAndClick("css=button:contains(cancel)");
 
 // AttributeDefinition's don't have actions (yet)
-//        selenium.click("id=u80");
-//        selenium.waitForPageToLoad("30000");
-//        selenium.click("id=u86");
-//        selenium.waitForPageToLoad("30000");
-//        selenium.selectWindow("null");
-//        selenium.click("xpath=(//input[@name='imageField'])[2]");
-//        selenium.waitForPageToLoad("30000");
+//        waitAndClick("id=u80");
+//        waitForPageToLoad();
+//        waitAndClick("id=u86");
+//        waitForPageToLoad();
+//        selectWindow("null");
+//        waitAndClick("xpath=(//input[@name='imageField'])[2]");
+//        waitForPageToLoad();
     }
 }

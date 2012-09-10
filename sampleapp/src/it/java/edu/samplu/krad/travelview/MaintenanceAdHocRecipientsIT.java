@@ -36,8 +36,8 @@ public class MaintenanceAdHocRecipientsIT extends KradMenuITBase {
      */
     public void testVerifyAdHocRecipients() throws Exception {
         gotoMenuLinkLocator();
-        selenium.click("css=a > span:contains(Fiscal Officer Accounts)");
-//        selenium.click("css=#u416_toggle > span.uif-headerText-span");  // id is generated and has changed
+        waitAndClick("css=a > span:contains(Fiscal Officer Accounts)");
+//        waitAndClick("css=#u416_toggle > span.uif-headerText-span");  // id is generated and has changed
 //        for (int second = 0;; second++) {
 //            if (second >= 15) {
 //                fail("timeout");

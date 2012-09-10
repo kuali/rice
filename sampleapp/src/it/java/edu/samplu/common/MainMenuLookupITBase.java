@@ -41,20 +41,20 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
 
     @Test
     public void testLookUp() throws Exception {
-        selenium.click(getLinkLocator());
-        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-        selenium.selectFrame("iframeportlet");
-        selenium.click("//button[contains(.,'earch')]");
-        ITUtil.waitAndClick(selenium, "link=edit");
-        selenium.waitForPageToLoad("30000");
-        ITUtil.checkForIncidentReport(selenium, "submit");
-        assertTrue("submit text not present", selenium.isTextPresent("submit"));
-        assertTrue("save text not present", selenium.isTextPresent("Save"));
-        assertTrue("blanket approve text not present", selenium.isTextPresent("blanket approve"));
-        assertTrue("Close text is not present", selenium.isTextPresent("Close"));
-        assertTrue("Cancel text is not present", selenium.isTextPresent("Cancel"));
+        waitAndClick(getLinkLocator());
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitAndClick("//button[contains(.,'earch')]");
+        waitAndClick("link=edit");
+        waitForPageToLoad();
+        checkForIncidentReport("submit");
+        assertTextPresent("submit");
+        assertTextPresent("Save");
+        assertTextPresent("blanket approve");
+        assertTextPresent("Close");
+        assertTextPresent("Cancel");
         lookupAssertions();
-        selenium.click("link=Cancel");
-        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
+        waitAndClick("link=Cancel");
+        waitForPageToLoad();
     }
 }

@@ -44,11 +44,8 @@ public abstract class AdminMenuBlanketAppITBase extends MenuITBase{
     @Test
     public void testBlanketApprove() throws Exception {
         gotoCreateNew();
-
         String docId = blanketApprove();
-
-        ITUtil.blanketApprove(selenium);
-        ITUtil.assertDocFinal(selenium, docId);
+        blanketApproveTest();
+        assertDocFinal(docId);
     }
-
 }

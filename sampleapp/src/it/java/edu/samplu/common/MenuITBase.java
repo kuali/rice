@@ -29,18 +29,26 @@ public abstract class MenuITBase extends UpgradedSeleniumITBase {
      */
     protected abstract String getCreateNewLinkLocator();
 
+    protected void assertDocFinal(String docId) {
+        ITUtil.assertDocFinal(selenium, docId);
+    }
+
+    protected void blanketApproveTest() throws InterruptedException {
+        ITUtil.blanketApprove(selenium);
+    }
+
     /**
      * go to the getMenuLinkLocator() Menu and click the getLinkLocator()
      */
     protected void gotoMenuLinkLocator(String message) throws Exception {
         waitForTitleToEqualKualiPortalIndex();
-        ITUtil.waitAndClick(selenium, getMenuLinkLocator(), message);
+        waitAndClick(getMenuLinkLocator(), message);
         waitForTitleToEqualKualiPortalIndex();
-        ITUtil.waitAndClick(selenium, getLinkLocator(), message);
+        waitAndClick(getLinkLocator(), message);
         waitForTitleToEqualKualiPortalIndex(message);
-        selenium.selectFrame("iframeportlet");
+        selectFrame("iframeportlet");
 
-        ITUtil.checkForIncidentReport(selenium, getLinkLocator(), message);
+        checkForIncidentReport(getLinkLocator(), message);
     }
 
     protected void gotoMenuLinkLocator() throws Exception {
@@ -51,8 +59,8 @@ public abstract class MenuITBase extends UpgradedSeleniumITBase {
      */
     protected void gotoCreateNew() throws Exception {
         gotoMenuLinkLocator();
-        ITUtil.waitAndClick(selenium,getCreateNewLinkLocator());
+        waitAndClick(getCreateNewLinkLocator(), "");
         //        selenium.selectFrame("relative=up");
-        ITUtil.checkForIncidentReport(selenium, getCreateNewLinkLocator());
+        checkForIncidentReport(getCreateNewLinkLocator());
     }
 }

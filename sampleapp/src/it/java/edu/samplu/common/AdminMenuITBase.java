@@ -46,9 +46,9 @@ public abstract class AdminMenuITBase extends MenuITBase {
      */
     public void testCreateNewCancel() throws Exception {
         gotoCreateNew();
-        ITUtil.waitAndClick(selenium, "methodToCall.cancel");
-        ITUtil.waitAndClick(selenium, "methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("methodToCall.cancel");
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
     }
 
     @Test
@@ -57,10 +57,10 @@ public abstract class AdminMenuITBase extends MenuITBase {
      */
     public void testEditCancel() throws Exception {
         gotoMenuLinkLocator();
-        ITUtil.waitAndClick(selenium, "//input[@name='methodToCall.search' and @value='search']");
-        ITUtil.waitAndClick(selenium, "link=edit");
-        ITUtil.waitAndClick(selenium, "methodToCall.cancel");
-        ITUtil.waitAndClick(selenium, "methodToCall.processAnswer.button0");
-        selenium.waitForPageToLoad("30000");
+        waitAndClick("//input[@name='methodToCall.search' and @value='search']");
+        waitAndClick("link=edit");
+        waitAndClick("methodToCall.cancel");
+        waitAndClick("methodToCall.processAnswer.button0");
+        waitForPageToLoad();
     }
 }

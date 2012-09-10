@@ -22,6 +22,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
 import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @deprecated Use WebDriverITBase for new tests.
@@ -63,6 +64,34 @@ public abstract class UpgradedSeleniumITBase {
         // Login
         selenium.open(ITUtil.getBaseUrlString() + getTestUrl());
         ITUtil.loginSe(selenium, getUserName());
+    }
+
+    protected void assertTextPresent(String text) {
+        assertTrue(text + " text not present", selenium.isTextPresent(text));
+    }
+
+    protected void checkForIncidentReport(String locator) {
+        checkForIncidentReport(locator, "");
+    }
+
+    protected void checkForIncidentReport(String locator, String message) {
+        ITUtil.checkForIncidentReport(selenium, message);
+    }
+
+    protected void selectFrame(String frameName) {
+        selenium.selectFrame(frameName);
+    }
+
+    protected void waitAndClick(String locator) throws InterruptedException {
+        waitAndClick(locator, "");
+    }
+
+    protected void waitAndClick(String locator, String message) throws InterruptedException {
+        ITUtil.waitAndClick(selenium, locator, message);
+    }
+
+    protected void waitForPageToLoad() {
+        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
     }
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {

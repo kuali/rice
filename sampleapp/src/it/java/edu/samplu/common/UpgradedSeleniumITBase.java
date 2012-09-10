@@ -79,7 +79,7 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     protected void assertTextPresent(String message, String text) {
-        assertTrue(text + " text not present " + message, isTextPresent(text));
+        assertTrue(text + " text not present " + message, selenium.isTextPresent(text));
     }
 
     protected void blanketApproveTest() throws InterruptedException {

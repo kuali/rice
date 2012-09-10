@@ -32,7 +32,7 @@ import static junit.framework.Assert.*;
 public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
     /** bean id prefix in used in view */
     private String idPrefix = "ConfigurationTestView-ProgressiveRender-";

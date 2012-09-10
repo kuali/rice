@@ -7,7 +7,7 @@ package edu.samplu.common;
 public abstract class MenuITBase extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
 
     /**

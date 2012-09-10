@@ -1,5 +1,6 @@
 package edu.samplu.mainmenu.test;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class DocSearchToAnotherViewIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
 
 	@Test

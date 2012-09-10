@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 public class FiscalOfficerInfoMaintenanceNewIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
 
     @Test

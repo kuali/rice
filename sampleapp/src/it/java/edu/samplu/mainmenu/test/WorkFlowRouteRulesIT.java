@@ -16,6 +16,7 @@
 package edu.samplu.mainmenu.test;
 
 import com.thoughtworks.selenium.SeleniumException;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ import static org.junit.Assert.assertTrue;
 public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
 
     @Test
@@ -51,12 +52,7 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         waitForPageToLoad();
         setSpeed("3000");
         // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
-        try {
-            waitAndClick("methodToCall.processAnswer.button0");
-        } catch (SeleniumException se) {
-            assertTrue("https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.", false);
-        }
-        waitForPageToLoad();
+        waitAndClick("methodToCall.processAnswer.button0", "https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.");
     }
 
     @Test
@@ -75,9 +71,6 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         waitForPageToLoad();
         assertTrue(isElementPresent("methodToCall.cancel"));
         waitAndClick("methodToCall.cancel");
-        waitForPageToLoad();
         waitAndClick("methodToCall.processAnswer.button0");
-        waitForPageToLoad();
-              
     }
 }

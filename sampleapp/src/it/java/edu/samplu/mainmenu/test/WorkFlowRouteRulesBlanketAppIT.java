@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
 public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
     @Test
     public void testUntitled() throws Exception {    

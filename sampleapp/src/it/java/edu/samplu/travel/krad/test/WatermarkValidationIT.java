@@ -17,6 +17,7 @@ package edu.samplu.travel.krad.test;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.After;
 import org.junit.Before;
@@ -35,7 +36,7 @@ import static org.junit.Assert.assertTrue;
 public class WatermarkValidationIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
 
          @Test

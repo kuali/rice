@@ -40,7 +40,7 @@ public class DocumentSearchURLParametersITBase extends WebDriverITBase {
 
     @Override
     public String getTestUrl() {
-        return UpgradedSeleniumITBase.PORTAL;
+        return ITUtil.PORTAL;
     }
 
     private static final String DOCUMENT_TYPE_NAME = "KualiNotification";

@@ -16,6 +16,7 @@
 
 package edu.samplu.mainmenu.test;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ import org.junit.Test;
 public class AttributeDefinitionLookUpIT extends UpgradedSeleniumITBase{
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
     
     @Test

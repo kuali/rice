@@ -15,6 +15,7 @@
  */
 package edu.samplu.travel.krad.test;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,7 +35,7 @@ import static org.junit.Assert.*;
 public class UifDataAttributesIT extends UpgradedSeleniumITBase {
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
 
     private  Log log = LogFactory.getLog(getClass());

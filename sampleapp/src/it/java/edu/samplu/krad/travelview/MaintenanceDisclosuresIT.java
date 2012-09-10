@@ -15,6 +15,7 @@
  */
 package edu.samplu.krad.travelview;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuITBase;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ import org.junit.Test;
 public class MaintenanceDisclosuresIT extends KradMenuITBase{
     @Override
     public String getTestUrl() {
-        return PORTAL;
+        return ITUtil.PORTAL;
     }
 
     @Override

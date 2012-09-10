@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UpgradedSeleniumITBase {
-    public final static String PORTAL = "/portal.do";
     protected Selenium selenium;
     protected WebDriver driver;
 

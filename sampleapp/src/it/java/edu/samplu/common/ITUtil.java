@@ -40,6 +40,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ITUtil {
 
+    public final static String PORTAL = "/portal.do";
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
     public static String WAIT_TO_END_TEST = "5000";
     public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";

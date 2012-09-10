@@ -192,7 +192,7 @@ public abstract class UpgradedSeleniumITBase {
     }
     
     protected void select(String locator, String select) {
-        select(locator, select);
+        selenium.select(locator, select);
     }
 
     protected void selectFrame(String frameName) {

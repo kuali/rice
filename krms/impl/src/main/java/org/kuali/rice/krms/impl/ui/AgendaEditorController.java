@@ -2032,7 +2032,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
                 // create a new compound proposition
                 PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(propBo, true);
-                compound.setDescription("New Compound Proposition " + UUID.randomUUID().toString());
+                compound.setDescription("New Compound Proposition");
                 compound.setEditMode(false);
 
                 if (parent.getData() == null) { // SPECIAL CASE: this is the only proposition in the tree

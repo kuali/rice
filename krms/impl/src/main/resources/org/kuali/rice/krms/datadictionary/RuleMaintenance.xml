@@ -320,7 +320,7 @@
 
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('addparent');
           if (enabled) {
-              ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
+              ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-TreeGroup');
           }
           "
               p:actionLabel="Add Parent">

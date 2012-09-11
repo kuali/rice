@@ -50,11 +50,11 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         waitAndClick("link=edit", getFailureMessage());
         checkForIncidentReport("submit", getFailureMessage());
         assertTextPresent("submit");
-        assertTextPresent("Save");
+        assertTextPresent("save");
         assertTextPresent("blanket approve");
-        assertTextPresent("Close");
-        assertTextPresent("Cancel");
+        assertTextPresent("close");
+        assertTextPresent("cancel");
         lookupAssertions();
-        waitAndClick("link=Cancel");
+        waitAndClick("link=cancel");
     }
 }

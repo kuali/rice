@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UpgradedSeleniumITBase {
-    protected Selenium selenium;
+    private Selenium selenium;
     protected WebDriver driver;
 
     protected String getBaseUrlString() {
@@ -319,7 +319,7 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     protected void waitForTitleToEqualKualiPortalIndex(String message) throws InterruptedException {
-        ITUtil.waitForTitleToEqual(selenium, "Kuali Portal Index", message);
+        ITUtil.waitForTitleToEqual(selenium, ITUtil.KUALI_PORTAL_TITLE, message);
     }
 
     protected void windowFocus() {

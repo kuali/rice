@@ -19,7 +19,6 @@ package edu.samplu.common;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public abstract class KradMenuITBase extends MenuITBase {
     @Override
     protected String getCreateNewLinkLocator() {

@@ -40,6 +40,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ITUtil {
 
+    public static final String KUALI_PORTAL_TITLE = "Kuali Portal Index";
     public final static String PORTAL = "/portal.do";
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
     public static String WAIT_TO_END_TEST = "5000";

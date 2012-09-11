@@ -36,9 +36,6 @@ import static org.junit.Assert.assertEquals;
  */
 public abstract class WebDriverITBase {
 
-    protected int DEFAULT_IMPLICIT_WAIT_TIME = 30;
-    protected int SHORT_IMPLICIT_WAIT_TIME = 1;
-
     public WebDriver driver;
     static ChromeDriverService chromeDriverService;
 
@@ -59,19 +56,8 @@ public abstract class WebDriverITBase {
 
     @BeforeClass
     public static void createAndStartService() throws Exception {
-        String driverParam = System.getProperty("remote.public.driver");
-        if (driverParam != null && "chrome".equals(driverParam.toLowerCase())) {
-            if (System.getProperty("webdriver.chrome.driver") == null) {
-                if (System.getProperty("remote.public.chrome") != null) {
-                    System.setProperty("webdriver.chrome.driver", System.getProperty("remote.public.chrome"));
-                }
-            }
-            ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
-                    .usingChromeDriverExecutable(new File(System.getProperty("remote.public.chrome")))
-                    .usingAnyFreePort()
-                    .build();
-            chromeDriverService.start();
-        }
+        chromeDriverService = WebDriverUtil.createAndStartService();
+        if (chromeDriverService != null) chromeDriverService.start();
     }
 
 
@@ -82,17 +68,7 @@ public abstract class WebDriverITBase {
      */
     @Before
     public void setUp() throws Exception {
-        if (System.getProperty("remote.driver.saucelabs") == null) {
-            driver = ITUtil.getWebDriver();
-//        } else {
-//            WebDriverWithHelperTest saucelabs = new WebDriverWithHelperTest();
-//            saucelabs.setUp();
-//            driver = saucelabs.driver;
-        }
-        driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
-        driver.get(ITUtil.getBaseUrlString() + getTestUrl());
-        ITUtil.login(driver, getUserName());
-        driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl());
     }
 
     /**
@@ -149,9 +125,9 @@ public abstract class WebDriverITBase {
      * @return true if the element is present, false otherwise
      */
     public boolean isElementPresentQuick(By by) {
-        driver.manage().timeouts().implicitlyWait(SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
         boolean result = isElementPresent(by);
-        driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
         return result;
     }
 

@@ -19,6 +19,7 @@ package edu.samplu.admin.test;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.UpgradedSeleniumITBase;
 import edu.samplu.common.WebDriverITBase;
+import edu.samplu.common.WebDriverUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -129,12 +130,12 @@ public class DocumentSearchURLParametersITBase extends WebDriverITBase {
             String value = findInput(entry.getKey()).getAttribute("value");
             assertEquals("Field '" + entry.getKey() + "' expected '" + entry.getValue() + "' got '" + value + "'", entry.getValue(), value);
             if (!quickmode) { // do the first find slow to make sure the screen has finished loading, then do them fast, else some tests take minutes to run
-                driver.manage().timeouts().implicitlyWait(SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+                driver.manage().timeouts().implicitlyWait(WebDriverUtil.SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
                 quickmode = true;
             }
         }
         if (quickmode) {
-            driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(WebDriverUtil.DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
         }
     }
 
@@ -147,12 +148,12 @@ public class DocumentSearchURLParametersITBase extends WebDriverITBase {
                 assertEquals("Expected field '" + name + "' not to be present", 0, driver.findElements(By.name(name)).size());
             }
             if (!quickmode) { // do the first find slow to make sure the screen has finished loading, then do them fast, else some tests take minutes to run
-                driver.manage().timeouts().implicitlyWait(SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+                driver.manage().timeouts().implicitlyWait(WebDriverUtil.SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
                 quickmode = true;
             }
         }
         if (quickmode) {
-            driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(WebDriverUtil.DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
         }
     }
 }

@@ -55,7 +55,7 @@ import java.util.List;
     in which the elements were defined in XML.
 
  */
-public interface DataDictionaryEntry {
+public interface DataDictionaryEntry extends DictionaryBean {
     /**
      * @return String used as a globally-unique key for this entry's jstl-exported version
      */

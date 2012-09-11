@@ -36,7 +36,7 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Serializable, InitializingBean {
+abstract public class DataDictionaryEntryBase extends DictionaryBeanBase implements DataDictionaryEntry, Serializable, InitializingBean {
     protected List<AttributeDefinition> attributes;
     protected List<ComplexAttributeDefinition> complexAttributes;
     protected List<CollectionDefinition> collections;

@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.Configurable;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 
@@ -33,7 +33,7 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface LayoutManager extends Configurable, Serializable {
+public interface LayoutManager extends UifDictionaryBean, Serializable {
 
 	/**
 	 * The unique id (within a given tree) for the layout manager instance

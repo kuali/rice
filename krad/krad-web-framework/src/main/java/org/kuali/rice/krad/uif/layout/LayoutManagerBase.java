@@ -16,15 +16,13 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.CssConstants;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
-import sun.misc.Regexp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +42,7 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LayoutManagerBase extends ConfigurableBase implements LayoutManager {
+public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements LayoutManager {
 	private static final long serialVersionUID = -2657663560459456814L;
 
 	private String id;

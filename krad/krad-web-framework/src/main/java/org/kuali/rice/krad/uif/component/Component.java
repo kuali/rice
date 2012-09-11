@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
@@ -53,7 +54,7 @@ import java.util.Map;
  * @see org.kuali.rice.krad.uif.field.Field
  * @see org.kuali.rice.krad.uif.widget.Widget
  */
-public interface Component extends Configurable, Serializable, Ordered, ScriptEventSupport {
+public interface Component extends UifDictionaryBean, Serializable, Ordered, ScriptEventSupport {
 
     /**
      * The unique id (within a given tree) for the component

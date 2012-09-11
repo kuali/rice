@@ -73,13 +73,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private volatile DocumentTypeService documentTypeService;
 
     /**
-     * @see org.kuali.rice.krad.service.DataDictionaryService#setBaselinePackages(java.lang.String)
-     */
-    public void setBaselinePackages(List baselinePackages) throws IOException {
-        this.addDataDictionaryLocations(baselinePackages);
-    }
-
-    /**
      * Default constructor.
      */
     public DataDictionaryServiceImpl() {
@@ -88,6 +81,23 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     public DataDictionaryServiceImpl(DataDictionary dataDictionary) {
         this.dataDictionary = dataDictionary;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#setBaselinePackages(java.util.List)
+     */
+    public void setBaselinePackages(List baselinePackages) throws IOException {
+      //  this.addDataDictionaryLocations(baselinePackages);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#addDataDictionaryLocations(
+     * java.lang.String, java.util.List<java.lang.String>)
+     */
+    public void addDataDictionaryLocations(String namespaceCode, List<String> locations) throws IOException {
+        for (String location : locations) {
+            dataDictionary.addConfigFileLocation(namespaceCode, location);
+        }
     }
 
     /**
@@ -878,16 +888,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      */
     public View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey) {
         return dataDictionary.getViewByTypeIndex(viewTypeName, indexKey);
-    }
-
-    public void addDataDictionaryLocation(String location) throws IOException {
-        dataDictionary.addConfigFileLocation(location);
-    }
-
-    public void addDataDictionaryLocations(List<String> locations) throws IOException {
-        for (String location : locations) {
-            addDataDictionaryLocation(location);
-        }
     }
 
     /**

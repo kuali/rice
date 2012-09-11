@@ -41,27 +41,38 @@ import java.util.regex.Pattern;
 public interface DataDictionaryService {
 
     /**
-     * Sequentially adds each package named (as a String) in the given List as a source of unique entries to the DataDictionary
-     * being constructed. Duplicate entries among any of the XML files in any of these packages will result in exceptions being
-     * thrown, hence service-initialization failure.
+     * Sequentially adds each package named (as a String) in the given List as a source of unique entries to the
+     * DataDictionary being constructed
+     *
+     * <p>
+     * Duplicate entries among any of the XML files in any of these packages will result in exceptions
+     * being thrown, hence service-initialization failure
+     * </p>
      *
      * @param baselinePackages
      * @throws IOException if any of the given packages can't be located
      */
-    void setBaselinePackages(List baselinePackages) throws IOException;
+    public void setBaselinePackages(List baselinePackages) throws IOException;
+
+    /**
+     * Sequentially adds each package named (as a String) in the given List as a source of unique entries to the
+     * DataDictionary being constructed
+     *
+     * <p>
+     * Duplicate entries among any of the XML files in any of these packages will result in exceptions
+     * being thrown, hence service-initialization failure
+     * </p>
+     *
+     * @param namespaceCode - namespace the beans loaded from the location should be associated with
+     * @param locations - list of locations to add (either classpath entries or file/folder locations)
+     * @throws IOException if any of the given packages can't be located
+     */
+    public void addDataDictionaryLocations(String namespaceCode, List<String> locations) throws IOException;
 
     /**
      * @return current DataDictionary
      */
-    DataDictionary getDataDictionary();
-
-    void addDataDictionaryLocations(List<String> locations) throws IOException;
-
-//    /**
-//     * Hook to allow the dataDictionary service to perform any post-build initialization tasks needed before the dataDictionary
-//     * itself will be publicly available.
-//     */
-//    public void completeInitialization();
+    public DataDictionary getDataDictionary();
 
     /**
      * the html control type used to render the field
@@ -298,14 +309,16 @@ public interface DataDictionaryService {
     /**
      * @param entryName
      * @param relationshipName
-     * @return List<String> of source attributeNames for the given relationship, or null if there is no relationship with that name
+     * @return List<String> of source attributeNames for the given relationship, or null if there is no relationship
+     *         with that name
      */
     List<String> getRelationshipSourceAttributes(String entryName, String relationshipName);
 
     /**
      * @param entryName
      * @param relationshipName
-     * @return List<String> of target attributeNames for the given relationship, or null if there is no relationship with that name
+     * @return List<String> of target attributeNames for the given relationship, or null if there is no relationship
+     *         with that name
      */
     List<String> getRelationshipTargetAttributes(String entryName, String relationshipName);
 
@@ -353,12 +366,12 @@ public interface DataDictionaryService {
      */
     List<String> getRelationshipNames(String entryName);
 
-//    /**
-//     * Returns the list of document class names
-//     * 
-//     * @return
-//     */
-//    public List getDocumentObjectClassnames();
+    //    /**
+    //     * Returns the list of document class names
+    //     *
+    //     * @return
+    //     */
+    //    public List getDocumentObjectClassnames();
 
     /**
      * This method returns the user friendly label based on the workflow doc type name

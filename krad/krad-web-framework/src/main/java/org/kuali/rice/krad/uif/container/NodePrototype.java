@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.element.Message;
 
 import java.io.Serializable;
 
-public class NodePrototype extends ConfigurableBase implements Serializable {
+public class NodePrototype extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Message labelPrototype;

@@ -66,7 +66,7 @@ public class DataDictionaryBuilderTest {
 		boolean failedAsExpected = false;
 
 		try {
-			dd.addConfigFileLocation(null);
+			dd.addConfigFileLocation("KR-SAP", null);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -81,7 +81,7 @@ public class DataDictionaryBuilderTest {
 		boolean failedAsExpected = false;
 
 		try {
-			dd.addConfigFileLocation(INPUT_FILE);
+			dd.addConfigFileLocation("KR-SAP", INPUT_FILE);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -96,7 +96,7 @@ public class DataDictionaryBuilderTest {
 		boolean failedAsExpected = false;
 
 		try {
-			dd.addConfigFileLocation(UNKNOWN_PACKAGE);
+			dd.addConfigFileLocation("KR-SAP", UNKNOWN_PACKAGE);
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
 		}
@@ -111,7 +111,7 @@ public class DataDictionaryBuilderTest {
 		boolean failedAsExpected = false;
 
 		try {
-			dd.addConfigFileLocation(INPUT_FILE);
+			dd.addConfigFileLocation("KR-SAP", INPUT_FILE);
 			dd.parseDataDictionaryConfigurationFiles( false );
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;
@@ -130,7 +130,7 @@ public class DataDictionaryBuilderTest {
 		boolean failedAsExpected = false;
 
 		try {
-			dd.addConfigFileLocation(INPUT_FILE);
+			dd.addConfigFileLocation("KR-SAP", INPUT_FILE);
 			dd.parseDataDictionaryConfigurationFiles( false );
 		} catch (DataDictionaryException e) {
 			failedAsExpected = true;

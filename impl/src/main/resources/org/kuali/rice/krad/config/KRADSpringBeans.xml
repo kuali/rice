@@ -67,7 +67,6 @@
     <property name="jcdAliases">
       <list>
         <value>kradApplicationDataSource</value>
-        <!--<value>kradServerDataSource</value>-->
       </list>
     </property>
     <property name="metadataLocation" value="classpath:org/kuali/rice/krad/config/OJB-repository-krad.xml"/>
@@ -89,7 +88,6 @@
   </bean>
 
   <bean id="kradApplicationModuleConfiguration" parent="kradApplicationModuleConfiguration-parentBean"/>
-
   <bean id="kradApplicationModuleConfiguration-parentBean" class="org.kuali.rice.krad.bo.ModuleConfiguration"
         abstract="true">
     <property name="namespaceCode" value="KR-NS"/>
@@ -150,41 +148,6 @@
   <bean id="dataDictionaryService" class="org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl" scope="singleton">
     <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>
-    <property name="baselinePackages">
-      <list>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/Attachment.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml</value>
-
-        <value>classpath:org/kuali/rice/coreservice/web/namespace/Namespace.xml</value>
-        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterType.xml</value>
-        <value>classpath:org/kuali/rice/coreservice/web/component/Component.xml</value>
-        <value>classpath:org/kuali/rice/coreservice/web/parameter/Parameter.xml</value>
-
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml</value>
-        <value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml</value>
-
-        <value>classpath:org/kuali/rice/coreservice/web/namespace/NamespaceMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/coreservice/web/component/ComponentMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterMaintenanceDocument.xml</value>
-
-        <value>classpath:org/kuali/rice/core/web/cache/CacheAdmin.xml</value>
-
-        <value>classpath:org/kuali/rice/location/web/campus/CampusMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/location/web/campus/CampusTypeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/location/web/country/CountryMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/location/web/county/CountyMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/location/web/state/StateMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="businessObjectService" class="org.kuali.rice.krad.service.impl.BusinessObjectServiceImpl">
@@ -1033,6 +996,20 @@
     <property name="kualiModuleService" ref="kualiModuleService"/>
     <!--<property name="componentService" ref="rice.krad.import.componentService"/>-->
     <property name="applicationId" value="${application.id}"/>
+  </bean>
+
+  <bean id="messageService" class="org.kuali.rice.krad.messages.MessageServiceImpl">
+    <property name="messageProviders">
+      <list>
+        <ref bean="databaseMessageProvider"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="databaseMessageProvider" class="org.kuali.rice.krad.messages.providers.table.DatabaseMessageProvider">
+    <property name="businessObjectService">
+      <ref bean="businessObjectService"/>
+    </property>
   </bean>
 
 </beans>

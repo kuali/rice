@@ -1427,7 +1427,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
         ((UifFormBase) model).getAddedCollectionItems().add(newLine);
-
     }
 
     /**

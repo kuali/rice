@@ -16,16 +16,15 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.Configurable;
 import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -53,14 +52,14 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
 
     /**
      * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#evaluateExpressionsOnConfigurable(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.component.Configurable, java.lang.Object, java.util.Map<java.lang.String,java.lang.Object>)
+     *      org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, java.lang.Object, java.util.Map<java.lang.String,java.lang.Object>)
      */
-    public void evaluateExpressionsOnConfigurable(View view, Configurable configurable, Object contextObject,
+    public void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable, Object contextObject,
             Map<String, Object> evaluationParameters) {
-        if ((configurable instanceof Component) || (configurable instanceof LayoutManager)) {
-            evaluatePropertyReplacers(view, configurable, contextObject, evaluationParameters);
+        if ((expressionConfigurable instanceof Component) || (expressionConfigurable instanceof LayoutManager)) {
+            evaluatePropertyReplacers(view, expressionConfigurable, contextObject, evaluationParameters);
         }
-        evaluatePropertyExpressions(view, configurable, contextObject, evaluationParameters);
+        evaluatePropertyExpressions(view, expressionConfigurable, contextObject, evaluationParameters);
     }
 
     /**
@@ -161,29 +160,29 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      * corresponding property
      *
      * @param view - view instance being rendered
-     * @param configurable - configurable instance with property replacers list, should be either a component or layout
+     * @param expressionConfigurable - expressionConfigurable instance with property replacers list, should be either a component or layout
      * manager
      * @param contextObject - context for el evaluation
      * @param evaluationParameters - parameters for el evaluation
      */
-    protected void evaluatePropertyReplacers(View view, Configurable configurable, Object contextObject,
+    protected void evaluatePropertyReplacers(View view, UifDictionaryBean expressionConfigurable, Object contextObject,
             Map<String, Object> evaluationParameters) {
         List<PropertyReplacer> replacers = null;
-        if (Component.class.isAssignableFrom(configurable.getClass())) {
-            replacers = ((Component) configurable).getPropertyReplacers();
-        } else if (LayoutManager.class.isAssignableFrom(configurable.getClass())) {
-            replacers = ((LayoutManager) configurable).getPropertyReplacers();
+        if (Component.class.isAssignableFrom(expressionConfigurable.getClass())) {
+            replacers = ((Component) expressionConfigurable).getPropertyReplacers();
+        } else if (LayoutManager.class.isAssignableFrom(expressionConfigurable.getClass())) {
+            replacers = ((LayoutManager) expressionConfigurable).getPropertyReplacers();
         }
 
         for (PropertyReplacer propertyReplacer : replacers) {
             String expression = propertyReplacer.getCondition();
-            String adjustedExpression = replaceBindingPrefixes(view, configurable, expression);
+            String adjustedExpression = replaceBindingPrefixes(view, expressionConfigurable, expression);
 
             String conditionEvaluation = evaluateExpressionTemplate(contextObject, evaluationParameters,
                     adjustedExpression);
             boolean conditionSuccess = Boolean.parseBoolean(conditionEvaluation);
             if (conditionSuccess) {
-                ObjectPropertyUtils.setPropertyValue(configurable, propertyReplacer.getPropertyName(),
+                ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyReplacer.getPropertyName(),
                         propertyReplacer.getReplacement());
             }
         }
@@ -199,28 +198,28 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      * </p>
      *
      * @param view - view instance that is being rendered
-     * @param configurable - object instance to evaluate expressions for
+     * @param expressionConfigurable - object instance to evaluate expressions for
      * @param contextObject - object providing the default context for expressions
      * @param evaluationParameters - map of additional parameters that may be used within the expressions
      */
-    protected void evaluatePropertyExpressions(View view, Configurable configurable, Object contextObject,
+    protected void evaluatePropertyExpressions(View view, UifDictionaryBean expressionConfigurable, Object contextObject,
             Map<String, Object> evaluationParameters) {
-        Map<String, String> propertyExpressions = configurable.getPropertyExpressions();
+        Map<String, String> propertyExpressions = expressionConfigurable.getPropertyExpressions();
         for (Entry<String, String> propertyExpression : propertyExpressions.entrySet()) {
             String propertyName = propertyExpression.getKey();
             String expression = propertyExpression.getValue();
 
             // check whether expression should be evaluated or property should retain the expression
-            if (CloneUtils.fieldHasAnnotation(configurable.getClass(), propertyName, KeepExpression.class)) {
+            if (CloneUtils.fieldHasAnnotation(expressionConfigurable.getClass(), propertyName, KeepExpression.class)) {
                 // set expression as property value to be handled by the component
-                ObjectPropertyUtils.setPropertyValue(configurable, propertyName, expression);
+                ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyName, expression);
                 continue;
             }
 
             Object propertyValue = null;
 
             // replace binding prefixes (lp, dp, fp) in expression before evaluation
-            String adjustedExpression = replaceBindingPrefixes(view, configurable, expression);
+            String adjustedExpression = replaceBindingPrefixes(view, expressionConfigurable, expression);
 
             // determine whether the expression is a string template, or evaluates to another object type
             if (StringUtils.startsWith(adjustedExpression, UifConstants.EL_PLACEHOLDER_PREFIX) && StringUtils.endsWith(
@@ -237,7 +236,7 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
             if (StringUtils.endsWith(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR)) {
                 StringUtils.removeEnd(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR);
 
-                Collection collectionValue = ObjectPropertyUtils.getPropertyValue(configurable, propertyName);
+                Collection collectionValue = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, propertyName);
                 if (collectionValue == null) {
                     throw new RuntimeException("Property name: "
                             + propertyName
@@ -245,7 +244,7 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
                 }
                 collectionValue.add(propertyValue);
             } else {
-                ObjectPropertyUtils.setPropertyValue(configurable, propertyName, propertyValue);
+                ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyName, propertyValue);
             }
         }
     }

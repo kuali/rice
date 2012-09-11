@@ -82,17 +82,17 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase {
 
         service = (DictionaryValidationServiceImpl) context.getBean("dictionaryValidationService");
 
-        dataDictionary.addConfigFileLocation(
+        dataDictionary.addConfigFileLocation("KR-NS",
                 "classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml");
-        dataDictionary.addConfigFileLocation(
+        dataDictionary.addConfigFileLocation("KR-NS",
                 "classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
-        dataDictionary.addConfigFileLocation(
+        dataDictionary.addConfigFileLocation("KR-NS",
                 "classpath:org/kuali/rice/krad/test/datadictionary/validation/Company.xml");
-        dataDictionary.addConfigFileLocation(
+        dataDictionary.addConfigFileLocation("KR-NS",
                 "classpath:org/kuali/rice/krad/test/datadictionary/validation/Address.xml");
-        dataDictionary.addConfigFileLocation(
+        dataDictionary.addConfigFileLocation("KR-NS",
                 "classpath:org/kuali/rice/krad/test/datadictionary/validation/Employee.xml");
-        dataDictionary.addConfigFileLocation("classpath:org/kuali/rice/krad/test/datadictionary/validation/Person.xml");
+        dataDictionary.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/test/datadictionary/validation/Person.xml");
 
         dataDictionary.parseDataDictionaryConfigurationFiles(false);
 

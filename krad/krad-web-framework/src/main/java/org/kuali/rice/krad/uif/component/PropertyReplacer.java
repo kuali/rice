@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.RDValidator;
 import org.kuali.rice.krad.datadictionary.validator.TracerToken;
@@ -64,7 +65,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PropertyReplacer extends ConfigurableBase implements Serializable {
+public class PropertyReplacer extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -8405429643299461398L;
 
     private String propertyName;

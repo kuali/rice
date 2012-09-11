@@ -38,6 +38,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface TestDictionaryConfig {
+    // namespace the dictionary beans should be associated with
+    String namespaceCode();
+
     // list of dictionary files (separated by a comma) that will be loaded in the test dictionary
     String dataDictionaryFiles() default "";
 }

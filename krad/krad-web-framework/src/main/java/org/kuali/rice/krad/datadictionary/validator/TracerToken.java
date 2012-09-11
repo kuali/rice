@@ -18,8 +18,8 @@ package org.kuali.rice.krad.datadictionary.validator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.Configurable;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.springframework.core.io.ResourceLoader;
 import org.w3c.dom.Document;
@@ -122,7 +122,7 @@ public class TracerToken {
      *
      * @param configurable - The object to be added
      */
-    public void addBean(Configurable configurable) {
+    public void addBean(UifDictionaryBean configurable) {
         String beanId = "configurable";
         String beanType = configurable.getClass().getSimpleName();
         addBean(beanType, beanId);

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.kuali.rice.krad.datadictionary.DataDictionaryLocationConfigurer;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceService;
@@ -122,6 +121,50 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		jobNames = new ArrayList<String>();
 		triggerNames = new ArrayList<String>();
 	}
+
+    /**
+     * Performs additional custom initialization after the bean is created and it's properties are set by the
+     * Spring framework.
+     *
+     * <p>
+     * Loads the data dictionary packages configured for this module.
+     * Also loads any OJB database repository files configured.
+     * </p>
+     *
+     * @throws Exception
+     */
+	@Override
+    public void afterPropertiesSet() throws Exception {
+        if (isInitializeDataDictionary() && getDataDictionaryPackages() != null &&
+                !getDataDictionaryPackages().isEmpty()) {
+            if (getDataDictionaryService() == null) {
+                setDataDictionaryService(KRADServiceLocatorWeb.getDataDictionaryService());
+            }
+
+            if (getDataDictionaryService() == null) {
+                setDataDictionaryService((DataDictionaryService) applicationContext.getBean(
+                        KRADServiceLocatorWeb.DATA_DICTIONARY_SERVICE));
+            }
+
+            if (dataDictionaryService != null) {
+                dataDictionaryService.addDataDictionaryLocations(getNamespaceCode(), getDataDictionaryPackages());
+            }
+        }
+
+        if (getDatabaseRepositoryFilePaths() != null) {
+            for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
+                // Need the OJB persistence service because it is the only one ever using the database repository files
+                if (getPersistenceService() == null) {
+                    setPersistenceService(KRADServiceLocatorWeb.getPersistenceServiceOjb());
+                }
+                if (persistenceService == null) {
+                    setPersistenceService((PersistenceService) applicationContext.getBean(
+                            KRADServiceLocatorWeb.PERSISTENCE_SERVICE_OJB));
+                }
+                getPersistenceService().loadRepositoryDescriptor(repositoryLocation);
+            }
+        }
+    }
 
 	/**
      * Retrieves the database repository file paths to be used by the persistence service configured for this module.
@@ -268,44 +311,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	public void setScriptConfigurationFilePaths(
 			List<String> scriptConfigurationFilePaths) {
 		this.scriptConfigurationFilePaths = scriptConfigurationFilePaths;
-	}
-
-    /**
-     * Performs additional custom initialization after the bean is created and it's properties are set by the
-     * Spring framework.
-     *
-     * <p>
-     * Loads the data dictionary packages configured for this module.
-     * Also loads any OJB database repository files configured.
-     * </p>
-     *
-     * @throws Exception
-     */
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (isInitializeDataDictionary() && getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty() ) {
-			if ( getDataDictionaryService() == null ) {
-				setDataDictionaryService(KRADServiceLocatorWeb.getDataDictionaryService());
-			}
-			if ( getDataDictionaryService() == null ) {
-				setDataDictionaryService((DataDictionaryService)applicationContext.getBean( KRADServiceLocatorWeb.DATA_DICTIONARY_SERVICE ));
-			}
-			DataDictionaryLocationConfigurer ddl = new DataDictionaryLocationConfigurer( getDataDictionaryService() );
-			ddl.setDataDictionaryPackages(getDataDictionaryPackages());
-			ddl.afterPropertiesSet();
-		}
-		if (getDatabaseRepositoryFilePaths() != null) {
-		    for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
-				// Need the OJB persistence service because it is the only one ever using the database repository files
-		    	if (getPersistenceService() == null) {
-		    		setPersistenceService(KRADServiceLocatorWeb.getPersistenceServiceOjb());
-		    	}
-		    	if ( persistenceService == null ) {
-		    		setPersistenceService((PersistenceService)applicationContext.getBean( KRADServiceLocatorWeb.PERSISTENCE_SERVICE_OJB  ));
-		    	}
-		    	getPersistenceService().loadRepositoryDescriptor( repositoryLocation );
-			}
-		}
 	}
 
 	/**

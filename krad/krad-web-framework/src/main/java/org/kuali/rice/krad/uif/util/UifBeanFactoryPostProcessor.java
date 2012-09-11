@@ -18,9 +18,9 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.Configurable;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
@@ -103,7 +103,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     protected void processBeanDefinition(String beanName, BeanDefinition beanDefinition,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
         Class<?> beanClass = getBeanClass(beanDefinition, beanFactory);
-        if ((beanClass == null) || !Configurable.class.isAssignableFrom(beanClass) || processedBeanNames.contains(
+        if ((beanClass == null) || !UifDictionaryBean.class.isAssignableFrom(beanClass) || processedBeanNames.contains(
                 beanName)) {
               return;
         }
@@ -128,7 +128,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     }
 
     /**
-     * If the bean class is type Configurable, iterate through configured property values
+     * If the bean class is type UifDictionaryBean, iterate through configured property values
      * and check for expressions
      *
      * @param beanName - name of the bean in the factory (only set for top level beans, not nested)
@@ -142,7 +142,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             String nestedPropertyName, Map<String, String> expressionGraph,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
         Class<?> beanClass = getBeanClass(beanDefinition, beanFactory);
-        if ((beanClass == null) || !Configurable.class.isAssignableFrom(beanClass) || processedBeanNames.contains(
+        if ((beanClass == null) || !UifDictionaryBean.class.isAssignableFrom(beanClass) || processedBeanNames.contains(
                 beanName)) {
             return;
         }

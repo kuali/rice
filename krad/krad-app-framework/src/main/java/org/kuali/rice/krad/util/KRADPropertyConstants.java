@@ -48,6 +48,7 @@ public final class KRADPropertyConstants {
 	public static final String CAMPUS_TYPE_CODE = "code";
 	public static final String CREATE_DATE = "createDate";
 	public static final String CODE = "code";
+    public static final String COMPONENT_CODE = "componentCode";
 	public static final String CURRENT = "current";
 	public static final String DATA_OBJECT_MAINTENANCE_CODE_ACTIVE_INDICATOR = "dataObjectMaintenanceCodeActiveIndicator";
 	public static final String DESCRIPTION = "description";
@@ -75,6 +76,7 @@ public final class KRADPropertyConstants {
 	public static final String INITIATOR_NETWORK_ID = "initiatorNetworkId";
 	public static final String LOOKUP_DATE = "lookupDate";
 	public static final String NAME = "name";
+    public static final String NAMESPACE_CODE = "namespaceCode";
 	public static final String NEW_DOCUMENT_NOTE = "newDocumentNote";
 	public static final String NEW_COLLECTION_RECORD = "newCollectionRecord";
 	public static final String NEW_MAINTAINABLE_OBJECT = "newMaintainableObject";

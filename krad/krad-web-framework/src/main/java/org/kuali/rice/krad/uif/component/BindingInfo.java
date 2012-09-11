@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -34,7 +35,7 @@ import java.io.Serializable;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BindingInfo extends ConfigurableBase implements Serializable {
+public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -7389398061672136091L;
 
     private boolean bindToForm;

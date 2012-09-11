@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.datadictionary;
+package org.kuali.rice.krad.datadictionary.uif;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
@@ -82,7 +81,7 @@ public class UifDictionaryIndex implements Runnable {
      *
      * @param viewId - the unique id for the view
      * @return View instance with the given id
-     * @throws DataDictionaryException if view doesn't exist for id
+     * @throws org.kuali.rice.krad.datadictionary.DataDictionaryException if view doesn't exist for id
      */
     public View getViewById(final String viewId) {
         // check for preloaded view
@@ -123,7 +122,7 @@ public class UifDictionaryIndex implements Runnable {
      *
      * @param viewId - id of the view to retrieve
      * @return View instance for view with specified id
-     * @throws DataDictionaryException if view doesn't exist for id
+     * @throws org.kuali.rice.krad.datadictionary.DataDictionaryException if view doesn't exist for id
      */
     protected View getViewInstanceFromFactory(String viewId) {
         String beanName = viewBeanEntriesById.get(viewId);

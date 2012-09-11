@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @TestDictionaryConfig(
+        namespaceCode = "KR-KRAD",
         dataDictionaryFiles = "classpath:org/kuali/rice/krad/uif/UifBeanFactoryPostProcessorTestBeans.xml")
 public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
 

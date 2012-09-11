@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Extends the DataDictionary to add reloading of changed dictionary files
@@ -94,28 +95,31 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
         dictionaryUrlMonitor = new URLMonitor(reloadInterval);
         dictionaryUrlMonitor.addListener(this);
 
-        // need to copy the configFileLocations list here because it gets
-        // cleared out after processing by super
-        List<String> configLocations = new ArrayList<String>(configFileLocations);
-
         super.parseDataDictionaryConfigurationFiles(allowConcurrentValidation);
-        for (String configLocation : configLocations) {
-            Resource classFileResource = getFileResource(configLocation);
-            try {
-                if (classFileResource.getURI().toString().startsWith("jar:")) {
-                    LOG.debug("Monitoring dictionary file at URI: " + classFileResource.getURI().toString());
-                    dictionaryUrlMonitor.addURI(classFileResource.getURL());
-                } else {
-                    String filePathClassesDir = classFileResource.getFile().getAbsolutePath();
-                    String sourceFilePath = StringUtils.replace(filePathClassesDir, classesDir, sourceDir);
-                    File dictionaryFile = new File(filePathClassesDir);
-                    if (dictionaryFile.exists()) {
-                        LOG.debug("Monitoring dictionary file: " + dictionaryFile.getName());
-                        dictionaryFileMonitor.addFile(dictionaryFile);
+
+        // add listener for each dictionary file
+        for (Map.Entry<String, List<String>> moduleDictionary : moduleDictionaryFiles.entrySet()) {
+            List<String> configLocations = moduleDictionary.getValue();
+
+            for (String configLocation : configLocations) {
+                Resource classFileResource = getFileResource(configLocation);
+                try {
+                    if (classFileResource.getURI().toString().startsWith("jar:")) {
+                        LOG.trace("Monitoring dictionary file at URI: " + classFileResource.getURI().toString());
+                        dictionaryUrlMonitor.addURI(classFileResource.getURL());
+                    } else {
+                        String filePathClassesDir = classFileResource.getFile().getAbsolutePath();
+                        String sourceFilePath = StringUtils.replace(filePathClassesDir, classesDir, sourceDir);
+
+                        File dictionaryFile = new File(filePathClassesDir);
+                        if (dictionaryFile.exists()) {
+                            LOG.trace("Monitoring dictionary file: " + dictionaryFile.getName());
+                            dictionaryFileMonitor.addFile(dictionaryFile);
+                        }
                     }
+                } catch (Exception e) {
+                    LOG.info("Exception in picking up dictionary file for monitoring:  " + e.getMessage(), e);
                 }
-            } catch (Exception e) {
-                LOG.info("Exception in picking up dictionary file for monitoring:  " + e.getMessage(), e);
             }
         }
 
@@ -133,6 +137,7 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
     public void fileChanged(File file) {
         LOG.info("reloading dictionary configuration for " + file.getName());
         try {
+            // TODO: if new beans are introduced the associated namespace will not get picked up, see super
             Resource resource = new FileSystemResource(file);
             xmlReader.loadBeanDefinitions(resource);
 
@@ -153,6 +158,7 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
             InputStream urlStream = url.openStream();
             InputStreamResource resource = new InputStreamResource(urlStream);
 
+            // TODO: if new beans are introduced the associated namespace will not get picked up, see super
             int originalValidationMode = xmlReader.getValidationMode();
             xmlReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_XSD);
             xmlReader.loadBeanDefinitions(resource);
@@ -177,7 +183,8 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
             context.addApplicationListener(new ApplicationListener<ContextClosedEvent>() {
                 @Override
                 public void onApplicationEvent(ContextClosedEvent e) {
-                    LOG.info("Context '" + e.getApplicationContext().getDisplayName() + "' closed, shutting down URLMonitor scheduler");
+                    LOG.info("Context '" + e.getApplicationContext().getDisplayName() +
+                            "' closed, shutting down URLMonitor scheduler");
                     dictionaryUrlMonitor.shutdownScheduler();
                 }
             });

@@ -83,6 +83,8 @@ import java.util.List;
  * <oldMaintainableObject>... </oldMaintainableObject> <newMaintainableObject>... </newMaintainableObject>
  * </maintainableDocumentContents> Maintenance Document
  * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name = "KRNS_MAINT_DOC_T")
@@ -349,7 +351,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @return the value of the element, or null if none was there
      */
     protected String getMaintenanceAction(Document xmlDocument, String oldOrNewElementName) {
-
         if (StringUtils.isBlank(oldOrNewElementName)) {
             throw new IllegalArgumentException("oldOrNewElementName may not be blank, null, or empty-string.");
         }
@@ -1039,6 +1040,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     /**
      * This method to check whether the document class implements SessionDocument
+     *
+     * TODO: move to KNS maintenance document base
      *
      * @return
      */

@@ -15,13 +15,15 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+
 /**
  * This is a description of what this class does - mpham don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class WorkflowAttributeMetadata extends DataDictionaryDefinitionBase {
+public class WorkflowAttributeMetadata extends UifDictionaryBeanBase {
 	private static final long serialVersionUID = -6250577044174437101L;
 
 	/**

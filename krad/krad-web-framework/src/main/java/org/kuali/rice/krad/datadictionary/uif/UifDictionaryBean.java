@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.component;
+package org.kuali.rice.krad.datadictionary.uif;
+
+import org.kuali.rice.krad.datadictionary.DictionaryBean;
 
 import java.util.Map;
 
@@ -27,7 +29,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface Configurable {
+public interface UifDictionaryBean extends DictionaryBean {
 
     /**
      * Map of expressions that were configured for the object's graph
@@ -109,7 +111,7 @@ public interface Configurable {
      * Returns the expression configured for the property with the given name
      *
      * @return String expression for property or null if expression is not configured
-     * @see Component#getPropertyExpressions()
+     * @see org.kuali.rice.krad.uif.component.Component#getPropertyExpressions()
      */
     public String getPropertyExpression(String propertyName);
 }

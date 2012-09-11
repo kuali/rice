@@ -75,10 +75,11 @@ public abstract class KRADTestCase extends BaselineTestCase {
                     TestDictionaryConfig testDictionaryConfig = (TestDictionaryConfig) c.getAnnotation(
                             TestDictionaryConfig.class);
 
+                    String namespaceCode = testDictionaryConfig.namespaceCode();
                     String dictionaryFileString = testDictionaryConfig.dataDictionaryFiles();
                     String[] dictionaryFiles = StringUtils.split(dictionaryFileString, ",");
                     for (String dictionaryFile : dictionaryFiles) {
-                        dd.addConfigFileLocation(dictionaryFile);
+                        dd.addConfigFileLocation(namespaceCode, dictionaryFile);
                     }
                 }
             }

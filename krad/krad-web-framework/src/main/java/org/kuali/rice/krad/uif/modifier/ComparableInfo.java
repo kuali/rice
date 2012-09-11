@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.component.Ordered;
 
 import java.io.Serializable;
@@ -38,7 +38,7 @@ import java.io.Serializable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.modifier.CompareFieldCreateModifier
  */
-public class ComparableInfo extends ConfigurableBase implements Serializable, Ordered  {
+public class ComparableInfo extends UifDictionaryBeanBase implements Serializable, Ordered  {
 	private static final long serialVersionUID = -5926058412202550266L;
 
 	private String bindingObjectPath;

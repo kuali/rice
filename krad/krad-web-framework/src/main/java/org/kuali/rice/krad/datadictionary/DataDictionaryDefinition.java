@@ -20,7 +20,7 @@ import java.io.Serializable;
 /**
  * Defines methods common to all DataDictionaryDefinition types.
  */
-public interface DataDictionaryDefinition extends Serializable {
+public interface DataDictionaryDefinition extends DictionaryBean, Serializable {
 	
     /**
      * Performs complete intra-definition validation which couldn't be done earlier - for example, verifies that field references

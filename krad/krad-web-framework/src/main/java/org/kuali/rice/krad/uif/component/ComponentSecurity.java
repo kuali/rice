@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +35,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentSecurity extends ConfigurableBase implements Serializable {
+public class ComponentSecurity extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 726347449984853891L;
 
     private boolean editAuthz;

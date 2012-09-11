@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.junit.Test;
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -113,7 +113,7 @@ public class ExpressionUtilsTest {
     /**
      * Mock class used to test expression handling
      */
-    public class MockConfigurable extends ConfigurableBase {
+    public class MockConfigurable extends UifDictionaryBeanBase {
         private String property1;
         private String property2;
 

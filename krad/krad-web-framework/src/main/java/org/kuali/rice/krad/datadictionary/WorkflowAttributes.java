@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +30,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class WorkflowAttributes extends DataDictionaryDefinitionBase {
+public class WorkflowAttributes extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 6435015497886060280L;
     
 	private List<SearchingTypeDefinition> searchingTypeDefinitions;

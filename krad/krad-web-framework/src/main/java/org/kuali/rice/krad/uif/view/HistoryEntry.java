@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
 import java.io.Serializable;
 
@@ -27,7 +27,7 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HistoryEntry extends ConfigurableBase implements Serializable {
+public class HistoryEntry extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -8310916657379268794L;
 
     private String viewId;

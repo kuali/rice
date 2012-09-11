@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentModifierBase extends ConfigurableBase implements ComponentModifier {
+public abstract class ComponentModifierBase extends UifDictionaryBeanBase implements ComponentModifier {
 	private static final long serialVersionUID = -8284332412469942130L;
 
 	private String runPhase;

@@ -386,7 +386,7 @@ public class ViewIndex implements Serializable {
      * </p>
      *
      * @return Map<String, Map<String, String>> key is component id and value is expression graph map
-     * @see org.kuali.rice.krad.uif.util.ExpressionUtils#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.uif.component.Configurable,
+     * @see org.kuali.rice.krad.uif.util.ExpressionUtils#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean,
      *      boolean)
      */
     public Map<String, Map<String, String>> getComponentExpressionGraphs() {

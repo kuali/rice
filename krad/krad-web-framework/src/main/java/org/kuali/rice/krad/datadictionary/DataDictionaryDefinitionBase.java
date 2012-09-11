@@ -24,7 +24,7 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  *  @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefinition, InitializingBean {
+abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase implements DataDictionaryDefinition, InitializingBean {
     private static final long serialVersionUID = -2003626577498716712L;
     
 	protected String id;

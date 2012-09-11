@@ -17,6 +17,7 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeSecurity extends DataDictionaryDefinitionBase {
+public class AttributeSecurity extends UifDictionaryBeanBase {
 	private static final long serialVersionUID = -7923499408946975318L;
 	
 	private boolean readOnly = false;

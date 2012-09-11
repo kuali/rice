@@ -26,7 +26,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="KRNS_MAINT_DOC_ATT_LST_T")
 public class MultiDocumentAttachment extends PersistableAttachmentBase {
-
     private static final long serialVersionUID = 1L;
 
     @Id

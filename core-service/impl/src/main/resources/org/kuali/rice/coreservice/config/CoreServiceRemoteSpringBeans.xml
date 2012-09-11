@@ -61,7 +61,15 @@
         class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="KR-CR"/>
     <property name="dataSourceName" value="coreServiceDataSource"/>
-    <property name="initializeDataDictionary" value="false"/>
+    <property name="initializeDataDictionary" value="true"/>
+    <property name="dataDictionaryPackages">
+      <list>
+        <value>classpath:org/kuali/rice/coreservice/web/namespace/Namespace.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterType.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/component/Component.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/parameter/Parameter.xml</value>
+      </list>
+    </property>
     <property name="packagePrefixes">
       <list>
         <value>org.kuali.rice.coreservice.</value>

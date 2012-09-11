@@ -1,6 +1,6 @@
 package org.kuali.rice.krad.uif;
 
-import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifTestBeanObject extends ConfigurableBase {
+public class UifTestBeanObject extends UifDictionaryBeanBase {
 
     private String property1;
     private String property2;

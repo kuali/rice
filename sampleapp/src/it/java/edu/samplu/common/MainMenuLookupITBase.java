@@ -55,10 +55,6 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         assertTextPresent("lose");
         assertTextPresent("ancel");
         lookupAssertions();
-        try {
-            waitAndClick("link=cancel");
-        } catch (Exception e) {
-            waitAndClick("link=Cancel");
-        }
+        waitAndClickEither("link=cancel", "link=Cancel");
     }
 }

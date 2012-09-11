@@ -141,7 +141,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
-            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S")
+            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class)
                     .toString());
             if (StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
                 rule.setNamespace("");
@@ -253,7 +253,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
         MaintenanceDocument document = maintenanceForm.getDocument();
         if (rule.processAgendaItemBusinessRules(document)) {
-            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S")
+            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S", AgendaItemBo.class)
                     .toString());
             newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
             if (agenda.getFirstItemId() == null) {
@@ -501,7 +501,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     private String getCreateAgendaId(AgendaBo agenda) {
         if (agenda.getId() == null) {
-            agenda.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_S").toString());
+            agenda.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_S", AgendaItemBo.class).toString());
         }
         return agenda.getId();
     }

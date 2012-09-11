@@ -15,10 +15,9 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
@@ -131,36 +130,33 @@ public class Link extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
-        // Checks that href is set
-        if(getHref()==null){
-            if(!RDValidator.checkExpressions(this)){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("Href must be set");
-                error.setBeanLocation(tracer.getBeanLocation());
-                error.addCurrentValue("href ="+getHref());
-                error.addCurrentValue("ExpressionGraph = "+getExpressionGraph());
-                error.addCurrentValue("ExpressionProperty = "+getPropertyExpressions());
-                error.addCurrentValue("ExpressionRender = "+getRefreshExpressionGraph());
-                reports.add(error);
+        if(tracer.getValidationStage()==TracerToken.BUILD){
+
+            // Checks that href is set
+            if(getHref()==null){
+                if(!RDValidator.checkExpressions(this,"href")){
+                    ErrorReport error = ErrorReport.createError("Href must be set",tracer);
+                    error.addCurrentValue("href ="+getHref());
+                    reports.add(error);
+                }
             }
+
+            // Checks that the text is set
+            if(getLinkText()==null){
+                if(!RDValidator.checkExpressions(this,"linkText")){
+                    ErrorReport error = ErrorReport.createError("LinkText must be set",tracer);
+                    error.addCurrentValue("linkText = "+getLinkText());
+                    reports.add(error);
+                }
+            }
+
         }
 
-        // Checks that the text is set
-        if(getLinkText()==null){
-            if(!RDValidator.checkExpressions(this)){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("LinkText must be set");
-                error.setBeanLocation(tracer.getBeanLocation());
-                error.addCurrentValue("linkText ="+getLinkText());
-                reports.add(error);
-            }
-        }
-
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

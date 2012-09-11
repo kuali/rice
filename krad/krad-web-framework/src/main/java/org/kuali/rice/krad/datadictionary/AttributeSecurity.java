@@ -17,6 +17,10 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+
+import java.util.ArrayList;
 
 /**
  * Defines a set of restrictions that are possible on an attribute
@@ -141,6 +145,32 @@ public class AttributeSecurity extends DataDictionaryDefinitionBase {
 					"PartialMaskFormatter is required");
 		}
 	}
+
+    /**
+     * Directly validate simple fields
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     */
+    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean(this.getClass().getSimpleName(),TracerToken.NO_BEAN_ID);
+
+        if (mask && maskFormatter == null) {
+            ErrorReport error = ErrorReport.createError("MaskFormatter is required",tracer);
+            error.addCurrentValue("mask = "+mask);
+            error.addCurrentValue("maskFormatter = "+maskFormatter);
+            reports.add(error);
+        }
+        if (partialMask && partialMaskFormatter == null) {
+            ErrorReport error = ErrorReport.createError("PartialMaskFormatter is required",tracer);
+            error.addCurrentValue("partialMask = "+partialMask);
+            error.addCurrentValue("partialMaskFormatter = "+partialMaskFormatter);
+            reports.add(error);
+        }
+
+        return reports;
+    }
+
 
 	/**
 	 * Returns whether any of the restrictions defined in this class are true.

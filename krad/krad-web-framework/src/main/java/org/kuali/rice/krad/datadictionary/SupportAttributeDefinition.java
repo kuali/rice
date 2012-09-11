@@ -16,7 +16,11 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
+
+import java.util.ArrayList;
 
 /**
     Support attributes define additional attributes that can be used to generate
@@ -64,6 +68,39 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
         		&& !ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface( otherBusinessObjectClass )) {
             throw new AttributeValidationException("unable to find attribute '" + getTargetName() + "' in related class '" + otherBusinessObjectClass.getName() + "' (" + "" + ")");
         }
+    }
+
+    /**
+     * Directly validate simple fields
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     */
+    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean(this.getClass().getSimpleName(),TracerToken.NO_BEAN_ID);
+
+        try{
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getSourceName())) {
+                ErrorReport error = ErrorReport.createError("Unable to find attribute in class", tracer);
+                error.addCurrentValue("attribute = "+getSourceName());
+                error.addCurrentValue("class = "+rootBusinessObjectClass);
+                reports.add(error);
+            }
+            if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, getTargetName())
+                    && !ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface( otherBusinessObjectClass )) {
+                ErrorReport error = ErrorReport.createError("Unable to find attribute in class", tracer);
+                error.addCurrentValue("attribute = "+getTargetName());
+                error.addCurrentValue("class = "+otherBusinessObjectClass);
+                reports.add(error);
+            }
+        }catch (RuntimeException ex) {
+            ErrorReport error = ErrorReport.createError("Unable to validate attribute",tracer);
+            error.addCurrentValue("Exception = "+ex.getMessage());
+            reports.add(error);
+        }
+
+
+        return reports;
     }
     
     /**

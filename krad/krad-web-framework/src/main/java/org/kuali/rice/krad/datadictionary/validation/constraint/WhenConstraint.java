@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,10 +111,9 @@ public class WhenConstraint implements Constraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @param parser Set of tools for parsing the xml files which were used to create the component
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean("WhenConstraint",TracerToken.NO_BEAN_ID);
 

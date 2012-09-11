@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
-import org.kuali.rice.krad.ricedictionaryvalidator.RDVController;
+import org.kuali.rice.krad.datadictionary.validator.RDVController;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -63,6 +63,8 @@ public class DataDictionary  {
 
 	protected KualiDefaultListableBeanFactory ddBeans = new KualiDefaultListableBeanFactory();
     protected XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
+
+    private String[] configFileLocationsArray;
 
 	// logger
 	private static final Log LOG = LogFactory.getLog(DataDictionary.class);
@@ -187,6 +189,7 @@ public class DataDictionary  {
         configFileLocations.clear(); // empty the list out so other items can be added
         try {
             xmlReader.loadBeanDefinitions(configFileLocationsArray);
+            this.configFileLocationsArray=configFileLocationsArray;
         } catch (Exception e) {
             LOG.error("Error loading bean definitions", e);
             throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage());
@@ -214,8 +217,8 @@ public class DataDictionary  {
     public void validateDD( boolean validateEbos ) {
     	DataDictionary.validateEBOs = validateEbos;
 
-        //RDVController validator = new RDVController();
-        //validator.validate(new String[0], ddBeans,LOG,false);
+//        RDVController validator = new RDVController(true,true,true,true,true);
+//        validator.validate(configFileLocationsArray, xmlReader.getResourceLoader(),ddBeans,LOG,false);
 
     	Map<String,DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
         for ( DataObjectEntry entry : doBeans.values() ) {

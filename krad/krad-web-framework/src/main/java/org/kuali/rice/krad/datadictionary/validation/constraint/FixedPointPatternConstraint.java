@@ -19,9 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -129,11 +128,10 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @param parser Set of tools for parsing the xml files which were used to create the component
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean("FixedPointPatternConstraint",getLabelKey());
 
@@ -146,7 +144,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
             reports.add(error);
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

@@ -16,9 +16,8 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 
@@ -453,7 +452,7 @@ public class AttributeQuery implements Serializable {
     /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean("AttributeQuery", TracerToken.NO_BEAN_ID);
 

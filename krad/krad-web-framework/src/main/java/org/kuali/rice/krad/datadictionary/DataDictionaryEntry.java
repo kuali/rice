@@ -16,7 +16,10 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -64,6 +67,14 @@ public interface DataDictionaryEntry {
      * @throws org.kuali.rice.krad.datadictionary.exception.CompletionException if a problem arises during validation-completion
      */
     public void completeValidation();
+
+    /**
+     * Validates that the data objects created from the Spring Beans are correct
+     *
+     * @param tracer - Record of object's location
+     * @return  A list of ErrorReports detailing errors found within the data dictionary and referenced within it
+     */
+    ArrayList<ErrorReport> completeValidation(TracerToken tracer);
 
     /**
      * @param attributeName

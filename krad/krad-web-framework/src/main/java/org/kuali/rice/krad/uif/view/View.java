@@ -18,9 +18,9 @@ package org.kuali.rice.krad.uif.view;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
@@ -1657,7 +1657,7 @@ public class View extends ContainerBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
@@ -1671,20 +1671,18 @@ public class View extends ContainerBase {
             validPageId=true;
         }
         if(!validPageId)  {
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("Items must contain an item with a matching id to entryPageId");
-            error.setBeanLocation(tracer.getBeanLocation());
+            ErrorReport error = ErrorReport.createError("Items must contain an item with a matching id to entryPageId",tracer);
             error.addCurrentValue("entryPageId = "+getEntryPageId());
             reports.add(error);
         }
 
         // Check to insure the view as not already been set
-        if(getViewStatus().compareTo(UifConstants.ViewStatus.CREATED)!=0){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("ViewStatus should not be set");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("viewStatus = "+getViewStatus());
-            reports.add(error);
+        if(tracer.getValidationStage()==TracerToken.START_UP){
+            if(getViewStatus().compareTo(UifConstants.ViewStatus.CREATED)!=0){
+                ErrorReport error = ErrorReport.createError("ViewStatus should not be set",tracer);
+                error.addCurrentValue("viewStatus = "+getViewStatus());
+                reports.add(error);
+            }
         }
 
         // Check to insure the binding object path is a valid property
@@ -1695,9 +1693,7 @@ public class View extends ContainerBase {
             validDefaultBindingObjectPath=true;
         }
         if(!validDefaultBindingObjectPath){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("DefaultBingdingObjectPath must be a valid property of the formClass");
-            error.setBeanLocation(tracer.getBeanLocation());
+            ErrorReport error = ErrorReport.createError("DefaultBingdingObjectPath must be a valid property of the formClass",tracer);
             error.addCurrentValue("formClass = "+getFormClass());
             error.addCurrentValue("defaultBindingPath = "+getDefaultBindingObjectPath());
             reports.add(error);
@@ -1706,18 +1702,14 @@ public class View extends ContainerBase {
         // Check to insure the page is set if the view is a single page
         if(isSinglePageView()){
             if(getPage()==null){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("Page must be set if singlePageView is true");
-                error.setBeanLocation(tracer.getBeanLocation());
+                ErrorReport error = ErrorReport.createError("Page must be set if singlePageView is true",tracer);
                 error.addCurrentValue("singlePageView = "+isSinglePageView());
                 error.addCurrentValue("page = "+getPage());
                 reports.add(error);
             }
             for(int i=0;i<getItems().size();i++){
                 if(getItems().get(i).getClass()==PageGroup.class){
-                    ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                    error.setValidationFailed("Items cannot be pageGroups if singlePageView is true");
-                    error.setBeanLocation(tracer.getBeanLocation());
+                    ErrorReport error = ErrorReport.createError("Items cannot be pageGroups if singlePageView is true",tracer);
                     error.addCurrentValue("singlePageView = "+isSinglePageView());
                     error.addCurrentValue("items("+i+") = "+getItems().get(i).getClass());
                     reports.add(error);
@@ -1727,29 +1719,25 @@ public class View extends ContainerBase {
 
         // Checks to insure the Growls are set if growl messaging is enabled
         if(isGrowlMessagingEnabled()==true && getGrowls()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("Growls cannot be null if Growl Messaging is enabled");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("growlMessagingEnabled = "+isGrowlMessagingEnabled());
-            error.addCurrentValue("growls = "+getGrowls());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"growls")){
+                ErrorReport error = ErrorReport.createError("Growls cannot be null if Growl Messaging is enabled",tracer);
+                error.addCurrentValue("growlMessagingEnabled = "+isGrowlMessagingEnabled());
+                error.addCurrentValue("growls = "+getGrowls());
+                reports.add(error);
+            }
         }
 
         // Checks that there are items present if the view is not a single page
         if(!isSinglePageView()){
             if(getItems().size()==0) {
-                ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-                error.setValidationFailed("Items cannot be empty if singlePageView is false");
-                error.setBeanLocation(tracer.getBeanLocation());
+                ErrorReport error = ErrorReport.createWarning("Items cannot be empty if singlePageView is false",tracer);
                 error.addCurrentValue("singlePageView = "+isSinglePageView());
                 error.addCurrentValue("items.size = "+getItems().size());
                 reports.add(error);
             }  else {
                 for(int i=0;i<getItems().size();i++){
                     if(getItems().get(i).getClass()!=PageGroup.class){
-                        ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                        error.setValidationFailed("Items must be pageGroups if singlePageView is false");
-                        error.setBeanLocation(tracer.getBeanLocation());
+                        ErrorReport error = ErrorReport.createError("Items must be pageGroups if singlePageView is false",tracer);
                         error.addCurrentValue("singlePageView = "+isSinglePageView());
                         error.addCurrentValue("items("+i+") = "+getItems().get(i).getClass());
                         reports.add(error);
@@ -1758,7 +1746,7 @@ public class View extends ContainerBase {
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

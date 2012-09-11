@@ -16,10 +16,9 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -263,23 +262,23 @@ public class Label extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
-        // Checks that text is set if the component is rendered
-        if(isRender() && getLabelText()==null){
-            if(!RDValidator.checkExpressions(this)) {
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("LabelText should be set if render is true");
-                error.setBeanLocation(tracer.getBeanLocation());
-                error.addCurrentValue("render = "+isRender());
-                error.addCurrentValue("labelText ="+getLabelText());
-                reports.add(error);
+        if(tracer.getValidationStage()==TracerToken.BUILD){
+            // Checks that text is set if the component is rendered
+            if(isRender() && getLabelText()==null){
+                if(!RDValidator.checkExpressions(this,"labelText")) {
+                    ErrorReport error = ErrorReport.createError("LabelText should be set if render is true",tracer);
+                    error.addCurrentValue("render = "+isRender());
+                    error.addCurrentValue("labelText ="+getLabelText());
+                    reports.add(error);
+                }
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

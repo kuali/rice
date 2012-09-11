@@ -21,10 +21,9 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -892,16 +891,14 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that the property is connected to the field
         if(getPropertyName()==null){
-            if(!RDValidator.checkExpressions(this)){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("Property Name not set");
-                error.setBeanLocation(tracer.getBeanLocation());
+            if(!RDValidator.checkExpressions(this,"propertyName")){
+                ErrorReport error = ErrorReport.createError("Property name not set",tracer);
                 error.addCurrentValue("propertyName = "+getPropertyName());
                 reports.add(error);
             }
@@ -909,9 +906,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
 
         // Checks that the default values  present
         if(getDefaultValue()!=null && getDefaultValues()!=null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Both Default Value and Default Values set");
-            error.setBeanLocation(tracer.getBeanLocation());
+            ErrorReport error = ErrorReport.createWarning("Both Default Value and Default Values set",tracer);
             error.addCurrentValue("defaultValue ="+getDefaultValue());
             error.addCurrentValue("defaultValues Size ="+getDefaultValues().length);
             reports.add(error);
@@ -920,16 +915,14 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         // Checks that a mask formatter is set if the data field is to be masked
         if(isApplyMask()){
             if(maskFormatter==null){
-                ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-                error.setValidationFailed("Apply mask is true, but no value is set for maskFormatter");
-                error.setBeanLocation(tracer.getBeanLocation());
+                ErrorReport error = ErrorReport.createWarning("Apply mask is true, but no value is set for maskFormatter",tracer);
                 error.addCurrentValue("applyMask ="+isApplyMask());
                 error.addCurrentValue("maskFormatter ="+maskFormatter);
                 reports.add(error);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

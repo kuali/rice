@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.ricedictionaryvalidator;
+
+package org.kuali.rice.krad.datadictionary.validator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.krad.uif.component.Component;
 import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -27,8 +30,14 @@ import java.io.PrintStream;
 /**
  * A combination view controller for the Rice Dictionary Validator that handles both the setup/execution of the
  * validation and the output of the results.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RDVController {
+
+    // logger
+    private static final Log LOG = LogFactory.getLog(RDVController.class);
+
     protected static final String endl=System.getProperty("line.separator");
 
     protected boolean displayWarnings;
@@ -37,11 +46,9 @@ public class RDVController {
     protected boolean displayErrorMessages;
     protected boolean displayWarningMessages;
 
-    // logger
-    private static final Log LOG = LogFactory.getLog(RDVController.class);
-
     /**
      * Constructor creating a new Rice Dictionary Validator with limited information during output
+     *
      * @param displayErrors - True if the Validator should show the number of error during output
      * @param displayWarnings - True if the Validator should show the number of warnings during output
      * @param displayErrorMessages - True if the Validator should show the messages for the error reports
@@ -71,115 +78,38 @@ public class RDVController {
     }
 
     /**
-     * Sets the displayWarnings
-     * @param display
-     */
-    public void setDisplayWarnings(boolean display){
-        displayWarnings=display;
-    }
-
-    /**
-     * Sets the displayErrors
-     * @param display
-     */
-    public void setDisplayErrors(boolean display){
-        displayErrors=display;
-    }
-
-    /**
-     * Sets the displayXmlPages
-     * @param display
-     */
-    public void setDisplayXmlPages(boolean display){
-        displayXmlPages=display;
-    }
-
-    /**
-     * Sets the displayErrorMessages
-     * @param display
-     */
-    public void setDisplayErrorMessages(boolean display){
-        displayErrorMessages=display;
-    }
-
-    /**
-     * Sets the displayWarningMessages
-     * @param display
-     */
-    public void setDisplayWarningMessages(boolean display){
-        displayWarningMessages=display;
-    }
-
-    /**
-     * Gets the displayWarnings
-     * @return displayWarnings
-     */
-    public boolean isDisplayWarnings(){
-        return displayWarnings;
-    }
-
-    /**
-     * Gets the displayErrors
-     * @return displayErros
-     */
-    public boolean isDisplayErrors(){
-        return displayErrors;
-    }
-
-    /**
-     * Gets the displayXmlPages
-     * @return displayXmlPages
-     */
-    public boolean isDisplayXmlPages(){
-        return displayXmlPages;
-    }
-
-    /**
-     * Gets the displayErrorMessages
-     * @return displayErrorMessages
-     */
-    public boolean isDisplayErrorMessages(){
-        return displayErrorMessages;
-    }
-
-    /**
-     * Gets the displayWarningMessages
-     * @return displayWarningMessages
-     */
-    public boolean isDisplayWarningMessages(){
-        return displayWarningMessages;
-    }
-
-    /**
      * Validates a collection of Spring Beans with no output
+     *
      * @param xmlFiles - The collection of xml files used to load the provided beans
      * @param beans - Collection of preloaded beans
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, KualiDefaultListableBeanFactory beans, boolean failOnWarning){
+    public boolean validate(String[] xmlFiles,ResourceLoader loader, KualiDefaultListableBeanFactory beans, boolean failOnWarning){
         LOG.debug("Validating without output");
         RDValidator validator = new RDValidator();
 
-        boolean passed=validator.validate(xmlFiles,beans,failOnWarning);
+        boolean passed=validator.validate(xmlFiles,loader,beans,failOnWarning);
 
         return passed;
     }
 
     /**
      * Validates a collection of Spring Beans with output going to a file
+     *
      * @param xmlFiles - The collection of xml files used to load the provided beans
+     * @param loader - The source that was used to load the beans
      * @param beans - Collection of preloaded beans
      * @param outputFile - The file location to save the output to
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, KualiDefaultListableBeanFactory beans, String outputFile, boolean
+    public boolean validate(String[] xmlFiles,ResourceLoader loader, KualiDefaultListableBeanFactory beans, String outputFile, boolean
             failOnWarning){
         RDValidator validator = new RDValidator();
         LOG.debug("Validating with file output to "+outputFile);
 
-        boolean passed=validator.validate(xmlFiles,beans,failOnWarning);
+        boolean passed=validator.validate(xmlFiles,loader,beans,failOnWarning);
 
         writeToFile(outputFile,validator,passed);
 
@@ -188,18 +118,20 @@ public class RDVController {
 
     /**
      * Validates a collection of Spring Beans with output going to a print stream
+     *
      * @param xmlFiles - The collection of xml files used to load the provided beans
+     * @param loader - The source that was used to load the beans
      * @param beans - Collection of preloaded beans
      * @param stream - The PrintStream the output is sent to
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, KualiDefaultListableBeanFactory beans, PrintStream stream, boolean
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans, PrintStream stream, boolean
             failOnWarning){
         RDValidator validator = new RDValidator();
         LOG.debug("Validating with Print Stream output");
 
-        boolean passed=validator.validate(xmlFiles,beans, failOnWarning);
+        boolean passed=validator.validate(xmlFiles,loader,beans, failOnWarning);
 
         writeToStream(stream,validator,passed);
 
@@ -208,17 +140,19 @@ public class RDVController {
 
     /**
      * Validates a collection of Spring Beans with output going to Log4j
+     *
      * @param xmlFiles - The collection of xml files used to load the provided beans
+     * @param loader - The source that was used to load the beans
      * @param beans - Collection of preloaded beans
      * @param log - The Log4j logger the output is sent to
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, KualiDefaultListableBeanFactory beans, Log log, boolean failOnWarning){
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans, Log log, boolean failOnWarning){
         RDValidator validator = new RDValidator();
         LOG.debug("Validating with Log4j output");
 
-        boolean passed=validator.validate(xmlFiles,beans, failOnWarning);
+        boolean passed=validator.validate(xmlFiles,loader,beans, failOnWarning);
 
         writeToLog(log,validator,passed);
 
@@ -227,6 +161,7 @@ public class RDVController {
 
     /**
      * Validates a collection of Spring Beans with no output
+     *
      * @param xmlFiles - The collection of xml files used to load the beans
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
@@ -242,6 +177,7 @@ public class RDVController {
 
     /**
      * Validates a collection of Spring Beans with output going to a file
+     *
      * @param xmlFiles - The collection of xml files used to load the beans
      * @param outputFile - The file location to save the output to
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
@@ -260,6 +196,7 @@ public class RDVController {
 
     /**
      * Validates a collection of Spring Beans with output going to a print stream
+     *
      * @param xmlFiles - The collection of xml files used to load the beans
      * @param stream - The PrintStream the output is sent to
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
@@ -278,6 +215,7 @@ public class RDVController {
 
     /**
      * Validates a collection of Spring Beans with output going to Log4j
+     *
      * @param xmlFiles - The collection of xml files used to load the provided beans
      * @param log - The Log4j logger the output is sent to
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
@@ -295,7 +233,27 @@ public class RDVController {
     }
 
     /**
+     * Validates a Component with output going to Log4j
+     *
+     * @param object - The component to be validated
+     * @param log - The Log4j logger the output is sent to
+     * @param failOnWarning - Whether detecting a warning should cause the validation to fail
+     * @return Returns true if the beans past validation
+     */
+    public boolean validate(Component object, Log log, boolean failOnWarning){
+        RDValidator validator = new RDValidator();
+        LOG.debug("Validating with Log4j output");
+
+        boolean passed=validator.validate(object, failOnWarning);
+
+        writeToLog(log,validator,passed);
+
+        return passed;
+    }
+
+    /**
      * Writes the results of the validation to an output file
+     *
      * @param path - The path to the file to write results to
      * @param validator - The filled validator
      * @param passed - Whether the validation passed or not
@@ -311,9 +269,13 @@ public class RDVController {
 
             if(displayErrorMessages){
                 for(int i=0;i<validator.getErrorReportSize();i++){
-                    fout.write(endl);
-                    if(displayWarningMessages) fout.write(validator.getErrorReport(i).errorMessage());
-                    else if(validator.getErrorReport(i).getErrorStatus()== ErrorReport.ERROR) fout.write(validator.getErrorReport(i).errorMessage());
+                    if(displayWarningMessages){
+                        fout.write(endl);
+                        fout.write(validator.getErrorReport(i).errorMessage());
+                    }else if(validator.getErrorReport(i).getErrorStatus()== ErrorReport.ERROR){
+                        fout.write(endl);
+                        fout.write(validator.getErrorReport(i).errorMessage());
+                    }
 
                     if(displayXmlPages) fout.write(validator.getErrorReport(i).errorPageList());
                 }
@@ -327,6 +289,7 @@ public class RDVController {
 
     /**
      * Writes the results of the validation to an output file
+     *
      * @param stream - The PrintStream the output is sent to
      * @param validator - The filled validator
      * @param passed - Whether the validation passed or not
@@ -350,6 +313,7 @@ public class RDVController {
 
     /**
      * Writes the results of the validation to an output file
+     *
      * @param log - The Log4j logger the output is sent to
      * @param validator - The filled validator
      * @param passed - Whether the validation passed or not
@@ -377,4 +341,93 @@ public class RDVController {
         }
     }
 
+    /**
+     * Sets the displayWarnings
+     *
+     * @param display
+     */
+    public void setDisplayWarnings(boolean display){
+        displayWarnings=display;
+    }
+
+    /**
+     * Sets the displayErrors
+     *
+     * @param display
+     */
+    public void setDisplayErrors(boolean display){
+        displayErrors=display;
+    }
+
+    /**
+     * Sets the displayXmlPages
+     *
+     * @param display
+     */
+    public void setDisplayXmlPages(boolean display){
+        displayXmlPages=display;
+    }
+
+    /**
+     * Sets the displayErrorMessages
+     *
+     * @param display
+     */
+    public void setDisplayErrorMessages(boolean display){
+        displayErrorMessages=display;
+    }
+
+    /**
+     * Sets the displayWarningMessages
+     *
+     * @param display
+     */
+    public void setDisplayWarningMessages(boolean display){
+        displayWarningMessages=display;
+    }
+
+    /**
+     * Gets the displayWarnings, whether the number of warnings should be displayed
+     *
+     * @return displayWarnings
+     */
+    public boolean isDisplayWarnings(){
+        return displayWarnings;
+    }
+
+    /**
+     * Gets the displayErrors, whether the number of errors should be displayed
+     *
+     * @return displayErros
+     */
+    public boolean isDisplayErrors(){
+        return displayErrors;
+    }
+
+    /**
+     * Gets the displayXmlPages, whether the xml pages involved should be displayed
+     *
+     * @return displayXmlPages
+     */
+    public boolean isDisplayXmlPages(){
+        return displayXmlPages;
+    }
+
+    /**
+     * Gets the displayErrorMessages, whether the error messages should be displayed
+     *
+     * @return displayErrorMessages
+     */
+    public boolean isDisplayErrorMessages(){
+        return displayErrorMessages;
+    }
+
+    /**
+     * Gets the displayWarningMessages, whether the warning messages should be displayed
+     *
+     * @return displayWarningMessages
+     */
+    public boolean isDisplayWarningMessages(){
+        return displayWarningMessages;
+    }
 }

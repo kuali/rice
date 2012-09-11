@@ -21,7 +21,10 @@ import org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,6 +64,27 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
         }
 
         super.completeValidation();
+    }
+
+    /**
+     * Directly validate simple fields
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     */
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean(this.getClass().getSimpleName(),dataObjectClass.getSimpleName());
+
+        if(StringUtils.isBlank(getObjectLabel())){
+            ErrorReport error = ErrorReport.createError("Object Label is not set",tracer);
+            error.addCurrentValue("objectLabel = "+getObjectLabel());
+            reports.add(error);
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy()));
+
+        return reports;
     }
 
     /**

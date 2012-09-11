@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,11 +120,10 @@ public class CaseConstraint extends BaseConstraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @param parser Set of tools for parsing the xml files which were used to create the component
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean("CaseConstraint",getLabelKey());
 
@@ -144,12 +142,12 @@ public class CaseConstraint extends BaseConstraint {
                 reports.add(error);
             }else{
                 for(int i=0;i<getWhenConstraint().size();i++){
-                    reports.addAll(getWhenConstraint().get(i).completeValidation(tracer.getCopy(),parser));
+                    reports.addAll(getWhenConstraint().get(i).completeValidation(tracer.getCopy()));
                 }
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

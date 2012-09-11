@@ -16,9 +16,8 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.element.Header;
@@ -431,21 +430,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks for over writing of the instructional text or message
         if(getInstructionalText()!=null && getInstructionalMessage()!=null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("InstructionalMessage will override instructioanlText");
-            error.setBeanLocation(tracer.getBeanLocation());
+            ErrorReport error = ErrorReport.createWarning("InstructionalMessage will override instructioanlText",tracer);
             error.addCurrentValue("instructionalMessage.text = "+getInstructionalMessage().getMessageText());
             error.addCurrentValue("instructionalText = "+getInstructionalText());
             reports.add(error);
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

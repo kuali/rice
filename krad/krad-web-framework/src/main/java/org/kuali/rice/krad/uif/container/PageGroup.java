@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
@@ -81,22 +80,20 @@ public class PageGroup extends Group {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that no invalid items are present
         for(int i=0;i<getItems().size();i++){
             if(getItems().get(i).getClass()==PageGroup.class || getItems().get(i).getClass()==NavigationGroup.class){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("Items in PageGroup cannot be PageGroup or NaviagtionGroup");
-                error.setBeanLocation(tracer.getBeanLocation());
+                ErrorReport error = ErrorReport.createError("Items in PageGroup cannot be PageGroup or NaviagtionGroup",tracer);
                 error.addCurrentValue("item("+i+").class ="+getItems().get(i).getClass());
                 reports.add(error);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
 
@@ -88,30 +88,30 @@ public class MessageField extends FieldBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that the message is set
         if(getMessage()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Message should not be null");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("message ="+getMessage());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"message")){
+                ErrorReport error = ErrorReport.createWarning("Message should not be null",tracer);
+                error.addCurrentValue("message ="+getMessage());
+                reports.add(error);
+            }
         }
 
         // Checks that the label is set
         if(getLabel()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Label is null, message should be used instead");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("label ="+getLabel());
-            error.addCurrentValue("Message ="+getMessage());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"label")){
+                ErrorReport error = ErrorReport.createWarning("Label is null, message should be used instead",tracer);
+                error.addCurrentValue("label ="+getLabel());
+                error.addCurrentValue("Message ="+getMessage());
+                reports.add(error);
+            }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

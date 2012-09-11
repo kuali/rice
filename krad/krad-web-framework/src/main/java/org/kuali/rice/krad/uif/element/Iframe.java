@@ -15,10 +15,9 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 
 import java.util.ArrayList;
 
@@ -96,22 +95,20 @@ public class Iframe extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that a source is set
         if(getSource()==null){
-            if(!RDValidator.checkExpressions(this)){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("Source must be set");
-                error.setBeanLocation(tracer.getBeanLocation());
+            if(!RDValidator.checkExpressions(this,"source")){
+                ErrorReport error = ErrorReport.createError("Source must be set",tracer);
                 error.addCurrentValue("source ="+getSource());
                 reports.add(error);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

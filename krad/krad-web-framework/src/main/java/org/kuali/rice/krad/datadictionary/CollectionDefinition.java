@@ -18,6 +18,10 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.CollectionSizeConstrainable;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+
+import java.util.ArrayList;
 
 /**
  * CollectionDefinition defines a single Collection attribute definition in the DataDictionary
@@ -207,6 +211,26 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
         if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
             throw new AttributeValidationException("property '" + name + "' is not a collection property of class '" + rootBusinessObjectClass + "' (" + "" + ")");
         }
+    }
+
+    /**
+     * Directly validate simple fields, call completeValidation on Definition
+     * fields.
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     */
+    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getName());
+
+        if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
+            ErrorReport error = ErrorReport.createError("Property is not collection property of the class",tracer);
+            error.addCurrentValue("property = "+getName());
+            error.addCurrentValue("Class ="+ rootBusinessObjectClass);
+            reports.add(error);
+        }
+
+        return reports;
     }
 
     /**

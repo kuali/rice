@@ -16,9 +16,8 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -1137,10 +1136,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @param parser Set of tools for parsing the xml files which were used to create the component
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean("TableLayoutManager",getId());
 
@@ -1152,9 +1150,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
             if(!validTable){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("If rowDetailsGroup is set richTable must be set and its render true");
-                error.setBeanLocation(tracer.getBeanLocation());
+                ErrorReport error = ErrorReport.createError("If rowDetailsGroup is set richTable must be set and its render true",tracer);
                 error.addCurrentValue("rowDetailsGroup ="+getRowDetailsGroup());
                 error.addCurrentValue("richTable ="+getRichTable());
                 if(getRichTable()!=null)error.addCurrentValue("richTable.render ="+getRichTable().isRender());

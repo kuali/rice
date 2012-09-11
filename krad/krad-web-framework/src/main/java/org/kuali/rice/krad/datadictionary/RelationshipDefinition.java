@@ -18,6 +18,8 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +153,49 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
             supportAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass);
         }
+    }
+
+    /**
+     * Directly validate simple fields
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     */
+    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer){
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getObjectAttributeName());
+        try{
+        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getObjectAttributeName())) {
+            ErrorReport error = ErrorReport.createError("Property is not an attribute of the class",tracer);
+            error.addCurrentValue("property = "+getObjectAttributeName());
+            error.addCurrentValue("Class ="+ rootBusinessObjectClass);
+            reports.add(error);
+        }
+        }catch (RuntimeException ex) {
+            ErrorReport error = ErrorReport.createError("Unable to validate attribute",tracer);
+            error.addCurrentValue("attribute = "+getObjectAttributeName());
+            error.addCurrentValue("Exception = "+ex.getMessage());
+            reports.add(error);
+        }
+
+
+        if (targetClass == null) {
+            Class propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
+            if (propertyClass == null) {
+                ErrorReport error = ErrorReport.createError("Cannot get valid class for property", tracer);
+                error.addCurrentValue("property = "+getObjectAttributeName());
+                error.addCurrentValue("sourceClass = "+getSourceClass());
+                reports.add(error);
+            }
+        }
+
+        for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
+            reports.addAll(primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass,tracer.getCopy()));
+        }
+        for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
+            reports.addAll(supportAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass,tracer.getCopy()));
+        }
+
+        return reports;
     }
 
 

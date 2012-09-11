@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.ActionSecurity;
 import org.kuali.rice.krad.uif.element.Image;
-import org.kuali.rice.krad.uif.widget.LightBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -369,30 +367,30 @@ public class ActionField extends FieldBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that the action is set
         if(getAction()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Action should not be null");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("action ="+getAction());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"action")){
+                ErrorReport error = ErrorReport.createWarning("Action should not be null",tracer);
+                error.addCurrentValue("action ="+getAction());
+                reports.add(error);
+            }
         }
 
         // checks that the label is set
         if(getLabel()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Label is null, action should be used instead");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("label ="+getLabel());
-            error.addCurrentValue("action ="+getAction());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"label")){
+                ErrorReport error = ErrorReport.createWarning("Label is null, action should be used instead",tracer);
+                error.addCurrentValue("label ="+getLabel());
+                error.addCurrentValue("action ="+getAction());
+                reports.add(error);
+            }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

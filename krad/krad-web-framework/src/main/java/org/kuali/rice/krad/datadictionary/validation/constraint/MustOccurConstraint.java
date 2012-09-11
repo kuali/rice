@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
-import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,11 +88,10 @@ public class MustOccurConstraint extends BaseConstraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @param parser Set of tools for parsing the xml files which were used to create the component
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean("MustOccurConstraint",getLabelKey());
 
@@ -121,7 +117,7 @@ public class MustOccurConstraint extends BaseConstraint {
             reports.add(error);
         }else{
             for(int i=0;i<getPrerequisiteConstraints().size();i++){
-                reports.addAll(getPrerequisiteConstraints().get(i).completeValidation(tracer.getCopy(),parser));
+                reports.addAll(getPrerequisiteConstraints().get(i).completeValidation(tracer.getCopy()));
             }
         }
 
@@ -139,11 +135,11 @@ public class MustOccurConstraint extends BaseConstraint {
             reports.add(error);
         }else{
             for(int i=0;i<getMustOccurConstraints().size();i++){
-                reports.addAll(getMustOccurConstraints().get(i).completeValidation(tracer.getCopy(),parser));
+                reports.addAll(getMustOccurConstraints().get(i).completeValidation(tracer.getCopy()));
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

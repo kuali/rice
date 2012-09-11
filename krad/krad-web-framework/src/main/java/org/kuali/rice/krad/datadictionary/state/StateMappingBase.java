@@ -17,13 +17,11 @@ package org.kuali.rice.krad.datadictionary.state;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -155,17 +153,15 @@ public class StateMappingBase implements StateMapping {
     }
 
     /**
-     * @see StateMapping#completeValidation(org.kuali.rice.krad.ricedictionaryvalidator.TracerToken, org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser)
+     * @see StateMapping#completeValidation(org.kuali.rice.krad.datadictionary.validator.TracerToken)
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean("StateMappingBase",getStatePropertyName());
 
         // Checking that propertyName is set
         if(getStatePropertyName()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.setValidationFailed("The State Property Name must be set");
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR,"The State Property Name must be set",tracer);
             error.addCurrentValue("statePropertyName = null");
             reports.add(error);
         }

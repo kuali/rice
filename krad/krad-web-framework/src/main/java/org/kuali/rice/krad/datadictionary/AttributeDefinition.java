@@ -40,11 +40,14 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstra
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.PropertyEditor;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -428,6 +431,69 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
                     "Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage(), ex);
             throw ex;
         }
+    }
+
+    /**
+     * Directly validate simple fields, call completeValidation on Definition
+     * fields.
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     */
+    public ArrayList<ErrorReport> completeValidation(Class rootObjectClass, Class otherObjectClass, TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getName());
+
+        try {
+            if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
+                ErrorReport error = ErrorReport.createError("Property is not found in class",tracer);
+                error.addCurrentValue("property = "+getName());
+                error.addCurrentValue("class = "+rootObjectClass.getName());
+                reports.add(error);
+            }
+
+            //TODO currently requiring a control or controlField, but this should not be case (AttrField should probably do the check)
+            if (getControl() == null && getControlField() == null) {
+                ErrorReport error = ErrorReport.createError("Property does not have a control defined in the class",tracer);
+                error.addCurrentValue("property = "+getName());
+                error.addCurrentValue("class = "+rootObjectClass.getName());
+                reports.add(error);
+            }
+
+            if (getControl() != null) {
+                getControl().completeValidation(rootObjectClass, otherObjectClass);
+            }
+
+            if (attributeSecurity != null) {
+                attributeSecurity.completeValidation(rootObjectClass, otherObjectClass);
+            }
+
+            if (validationPattern != null) {
+                validationPattern.completeValidation();
+            }
+
+            if (formatterClass != null) {
+                try {
+                    Class formatterClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(),
+                            getFormatterClass());
+                    if (!Formatter.class.isAssignableFrom(formatterClassObject)) {
+                        ErrorReport error = ErrorReport.createError("FormatterClass is not a valid instance",tracer);
+                        error.addCurrentValue("formatterClassObject = "+formatterClassObject.getName());
+                        reports.add(error);
+                    }
+                } catch (ClassNotFoundException e) {
+                    ErrorReport error = ErrorReport.createError("FormatterClass could not be found",tracer);
+                    error.addCurrentValue("class = "+getFormatterClass());
+                    reports.add(error);
+                }
+            }
+        } catch (RuntimeException ex) {
+            ErrorReport error = ErrorReport.createError("Unable to validate attribute",tracer);
+            error.addCurrentValue("attribute = "+rootObjectClass + "." + getName());
+            error.addCurrentValue("Exception = "+ex.getMessage());
+            reports.add(error);
+        }
+
+        return reports;
     }
 
     /**

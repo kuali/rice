@@ -17,9 +17,8 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -1021,15 +1020,13 @@ public class Action extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser) {
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
         ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that a label or image ui is presence
         if (getActionLabel() == null && getActionImage() == null) {
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("ActionLabel and/or actionImage must be set");
-            error.setBeanLocation(tracer.getBeanLocation());
+            ErrorReport error = ErrorReport.createError("ActionLabel and/or actionImage must be set",tracer);
             error.addCurrentValue("actionLabel =" + getActionLabel());
             error.addCurrentValue("actionImage =" + getActionImage());
             reports.add(error);
@@ -1037,14 +1034,12 @@ public class Action extends ContentElementBase {
 
         // Checks that an action is set
         if (getJumpToIdAfterSubmit() != null && getJumpToNameAfterSubmit() != null) {
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Only 1 jumpTo property should be set");
-            error.setBeanLocation(tracer.getBeanLocation());
+            ErrorReport error = ErrorReport.createWarning("Only 1 jumpTo property should be set",tracer);
             error.addCurrentValue("jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit());
             error.addCurrentValue("jumpToNameAfterSubmit =" + getJumpToNameAfterSubmit());
             reports.add(error);
         }
-        reports.addAll(super.completeValidation(tracer.getCopy(), parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

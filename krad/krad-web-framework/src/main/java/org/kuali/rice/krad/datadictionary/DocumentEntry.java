@@ -18,6 +18,8 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentAuthorizer;
 import org.kuali.rice.krad.document.DocumentAuthorizerBase;
@@ -169,9 +171,9 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Validate common fields for subclass' benefit
+     * Directly validate simple fields
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
      */
     public void completeValidation() {
         super.completeValidation();
@@ -182,6 +184,22 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         }
     }
 
+    @Override
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean(this.getClass().getSimpleName(),getDocumentTypeName());
+
+        if(workflowProperties != null && workflowAttributes != null){
+            ErrorReport error = ErrorReport.createError("WorkflowProperties and workflowAttributes cannot both be defined for a document",tracer);
+            error.addCurrentValue("workflowProperties = "+getWorkflowProperties());
+            error.addCurrentValue("workflowAttributes = "+getWorkflowAttributes());
+            reports.add(error);
+        }
+
+        reports.addAll(super.completeValidation(tracer.getCopy()));
+
+        return reports;
+    }
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getFullClassName()
      */

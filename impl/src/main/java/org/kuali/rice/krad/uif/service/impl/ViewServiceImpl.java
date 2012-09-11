@@ -19,8 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.kuali.rice.krad.datadictionary.validator.RDVController;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
@@ -119,6 +122,10 @@ public class ViewServiceImpl implements ViewService {
 
         // run view lifecycle
         performViewLifecycle(view, model, parameters);
+
+//        RDVController validator = new RDVController(true,true,true,true,false);
+//        Log tempLogger = LogFactory.getLog(ViewServiceImpl.class);
+//        validator.validate(view,tempLogger,false);
     }
 
     /**

@@ -17,6 +17,10 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+
+import java.util.ArrayList;
 
 /**
                     The primitiveAttribute element identifies one pair of
@@ -87,7 +91,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     /**
      * Directly validate simple fields.
      * 
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, sourceName)) {
@@ -110,6 +114,56 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
             	throw new AttributeValidationException("source attribute '" + sourcePath + "' (" + sourceClass + ") and target attribute '" + targetPath + "' (" + targetClass + ") are of differing types (" + "" + ")");
             }
         }
+    }
+
+    /**
+     * Directly validate simple fields
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     */
+    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean(this.getClass().getSimpleName(),TracerToken.NO_BEAN_ID);
+        try{
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, sourceName)) {
+                ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
+                error.addCurrentValue("attribute = "+getSourceName());
+                error.addCurrentValue("class = "+rootBusinessObjectClass);
+                reports.add(error);
+            }
+
+            if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, targetName)) {
+                ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
+                error.addCurrentValue("attribute = "+getTargetName());
+                error.addCurrentValue("class = "+otherBusinessObjectClass);
+                reports.add(error);
+            }
+
+            Class sourceClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, sourceName);
+            Class targetClass = DataDictionary.getAttributeClass(otherBusinessObjectClass, targetName);
+            if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils.equals(sourceClass.getName(), targetClass.getName())) {
+                String sourceClassName = rootBusinessObjectClass.getName();
+                String targetClassName = otherBusinessObjectClass.getName();
+                String sourcePath = sourceClassName + "." + sourceName;
+                String targetPath = targetClassName + "." + targetName;
+
+                // Just a temp hack to ignore null Person objects
+                if ((sourcePath != null && !StringUtils.contains(sourcePath, ".principalId")) && (targetPath != null && !StringUtils.contains(targetPath, ".principalId"))) {
+                    ErrorReport error = ErrorReport.createError("Source and target of of different types", tracer);
+                    error.addCurrentValue("source = "+sourcePath + "' (" + sourceClass + ")");
+                    error.addCurrentValue("target = "+targetPath + "' (" + targetClass + ")");
+                    reports.add(error);
+                }
+            }
+        }catch (RuntimeException ex) {
+            ErrorReport error = ErrorReport.createError("Unable to validate property",tracer);
+            error.addCurrentValue("Exception = "+ex.getMessage());
+            reports.add(error);
+        }
+
+
+
+        return reports;
     }
 
 

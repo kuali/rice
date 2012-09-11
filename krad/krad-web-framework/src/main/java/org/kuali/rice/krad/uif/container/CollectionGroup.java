@@ -17,9 +17,9 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -1040,20 +1040,20 @@ public class CollectionGroup extends Group implements DataBinding {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checking if collectionObjectClass is set
         if(getCollectionObjectClass()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("CollectionObjectClass is not set (disregard if part of an abstract)");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("collectionObjectClass ="+getCollectionObjectClass());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"collectionObjectClass")){
+                ErrorReport error = ErrorReport.createWarning("CollectionObjectClass is not set (disregard if part of an abstract)",tracer);
+                error.addCurrentValue("collectionObjectClass = "+getCollectionObjectClass());
+                reports.add(error);
+            }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.view.View;
@@ -172,30 +172,30 @@ public class LinkField extends FieldBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that the link is set
         if(getLink()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("Link should be set");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("link = "+getLink());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"link")){
+                ErrorReport error = ErrorReport.createError("Link should be set",tracer);
+                error.addCurrentValue("link = "+getLink());
+                reports.add(error);
+            }
         }
 
         // Checks that the label is set
         if(getLabel()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Label is null, link should be used instead");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("label ="+getLabel());
-            error.addCurrentValue("link ="+getLink());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"label")){
+                ErrorReport error = ErrorReport.createWarning("Label is null, link should be used instead",tracer);
+                error.addCurrentValue("label ="+getLabel());
+                error.addCurrentValue("link ="+getLink());
+                reports.add(error);
+            }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

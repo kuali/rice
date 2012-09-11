@@ -16,10 +16,9 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
@@ -318,7 +317,7 @@ public class Header extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
@@ -333,25 +332,21 @@ public class Header extends ContentElementBase {
         else if(headerLevel.compareTo("H6")==0) correctHeaderLevel=true;
         else if(headerLevel.compareTo("LABEL")==0) correctHeaderLevel=true;
         if(!correctHeaderLevel){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label");
-            error.setBeanLocation(tracer.getBeanLocation());
+            ErrorReport error = ErrorReport.createError("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label",tracer);
             error.addCurrentValue("headerLevel ="+getHeaderLevel());
             reports.add(error);
         }
 
         // Checks that header text is set
         if(getHeaderText()==null){
-            if(!RDValidator.checkExpressions(this)){
-                ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-                error.setValidationFailed("HeaderText should be set");
-                error.setBeanLocation(tracer.getBeanLocation());
+            if(!RDValidator.checkExpressions(this,"headerText")){
+                ErrorReport error = ErrorReport.createWarning("HeaderText should be set",tracer);
                 error.addCurrentValue("headertText ="+getHeaderText());
                 reports.add(error);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

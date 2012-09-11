@@ -25,6 +25,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -168,6 +170,28 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
         for ( RelationshipDefinition relationshipDefinition : relationships ) {
             relationshipDefinition.completeValidation(getEntryClass(), null);
         }
+    }
+
+    /**
+     * Directly validate simple fields, call completeValidation on Definition
+     * fields.
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     */
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+
+        for(AttributeDefinition definition : getAttributes()){
+            reports.addAll(definition.completeValidation(getEntryClass(),null,tracer.getCopy()));
+        }
+        for(CollectionDefinition definition : getCollections()){
+            reports.addAll(definition.completeValidation(getEntryClass(),null,tracer.getCopy()));
+        }
+        for(RelationshipDefinition definition : getRelationships()){
+            reports.addAll(definition.completeValidation(getEntryClass(),null,tracer.getCopy()));
+        }
+
+        return reports;
     }
 
     /**

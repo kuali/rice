@@ -16,14 +16,12 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.ricedictionaryvalidator.ErrorReport;
-import org.kuali.rice.krad.ricedictionaryvalidator.RDValidator;
-import org.kuali.rice.krad.ricedictionaryvalidator.TracerToken;
-import org.kuali.rice.krad.ricedictionaryvalidator.XmlBeanParser;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.RDValidator;
+import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.widget.Help;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -329,16 +327,14 @@ public class Image extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer, XmlBeanParser parser){
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that a source is set
         if(getSource()==null){
-            if(!RDValidator.checkExpressions(this)){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("Source must be set");
-                error.setBeanLocation(tracer.getBeanLocation());
+            if(!RDValidator.checkExpressions(this,"source")){
+                ErrorReport error = ErrorReport.createError("Source must be set",tracer);
                 error.addCurrentValue("source ="+getSource());
                 reports.add(error);
             }
@@ -346,14 +342,14 @@ public class Image extends ContentElementBase {
 
         // Checks that alt text is set
         if(getAltText().compareTo("")==0){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Alt text should be set, violates accessibility standards if not set");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("altText ="+getAltText());
-            reports.add(error);
+            if(RDValidator.checkExpressions(this,"altText")){
+                ErrorReport error = ErrorReport.createWarning("Alt text should be set, violates accessibility standards if not set",tracer);
+                error.addCurrentValue("altText ="+getAltText());
+                reports.add(error);
+            }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy(),parser));
+        reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
     }

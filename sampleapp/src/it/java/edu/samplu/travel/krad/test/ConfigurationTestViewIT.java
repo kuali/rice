@@ -64,7 +64,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         //get list of options after change
         String[] options2 = selenium.getSelectOptions(refreshTextSelectLocator);
         //verify that the change has occurred
-        assertFalse(options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
+        assertFalse("Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection", options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
         //confirm that control gets disabled
         select(dropDownSelectLocator, "label=None");
         Thread.sleep(3000);
@@ -103,7 +103,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         waitAndClick("//button");
         Thread.sleep(5000); //allow for line to be added
         //confirm that line has been added
-        assertTrue("line (//input[@value='7:06'])is not present", isElementPresent("//input[@value='7:06']"));
+        assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline", isElementPresent("//input[@value='7:06']"));
         
     }
 

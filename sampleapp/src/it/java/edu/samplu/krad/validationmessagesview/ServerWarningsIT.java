@@ -69,7 +69,7 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
 
         typeBlurFocus("name=field1", "b");
 
-        ITUtil.waitForElementVisible(selenium, "css=.jquerybubblepopup-innerHtml> .uif-clientMessageItems", " not visible after typing b in name=field1 then firing blur and focus events");
+        ITUtil.waitForElementVisible(selenium, "css=.jquerybubblepopup-innerHtml> .uif-clientMessageItems", " not visible after typing b in name=field1 then firing blur and focus events https://jira.kuali.org/browse/KULRICE-8140 Investigate Server Warnings");
 
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
                 !isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));

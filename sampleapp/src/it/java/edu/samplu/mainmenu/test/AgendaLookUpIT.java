@@ -33,4 +33,8 @@ public class AgendaLookUpIT extends MainMenuLookupITBase {
     public void lookupAssertions() {
         assertTextPresent("https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'", "Rules");
     }
+    @Override
+    protected String getFailureMessage() {
+        return "https://jira.kuali.org/browse/KULRICE-8160 NPE at TableLayoutManager.buildLine(TableLayoutManager.java:341) for create new context";
+    }
 }

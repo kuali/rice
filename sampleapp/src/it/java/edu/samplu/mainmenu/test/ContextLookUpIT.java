@@ -33,4 +33,8 @@ public class ContextLookUpIT extends MainMenuLookupITBase {
     public void lookupAssertions() {
         assertTextPresent("Text Notes and Attachments not present", "Notes and Attachments");
     }
+    @Override
+    protected String getFailureMessage() {
+        return "https://jira.kuali.org/browse/KULRICE-8160 NPE at TableLayoutManager.buildLine(TableLayoutManager.java:341) for create new context";
+    }
 }

@@ -44,7 +44,7 @@ public class WorkFlowRouteRulesIT extends UpgradedSeleniumITBase {
         selectFrame("iframeportlet");
         waitAndClick("//img[@alt='create new']");
 //        selectFrame("relative=up");
-        waitAndClick("methodToCall.cancel");
+        waitAndClick("methodToCall.cancel", "https://jira.kuali.org/browse/KULRICE-8161 Work Flow Route Rules cancel new yields 404 not found");
         setSpeed("3000");
         // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
         waitAndClick("methodToCall.processAnswer.button0", "https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.");

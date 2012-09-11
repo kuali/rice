@@ -605,7 +605,7 @@ function expandDataTableDetail(actionComponent, tableId, useImages) {
     jQuery(tables).each(function () {
         var dataTable = jQuery(this).dataTable();
         //ensure the dataTable is the one that contains the action that was clicked
-        if (jQuery(actionComponent).closest("table").is(dataTable)) {
+        if (dataTable.attr("id") == tableId) {
             oTable = dataTable;
         }
     });

@@ -95,6 +95,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private Group rowDetailsGroup;
     private String rowDetailsLinkName = "Details";
     private boolean rowDetailsUseImage;
+    private boolean rowDetailsOpen;
     
     private List<String> totalColumns;
     private Map<String, String> totalValueMapping;
@@ -105,6 +106,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         renderSequenceField = true;
         generateAutoSequence = false;
         separateAddLine = false;
+        rowDetailsOpen = false;
 
         headerLabels = new ArrayList<Label>();
         dataFields = new ArrayList<Component>();
@@ -331,6 +333,16 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             // action field
             if (!renderActionsLast && cellPosition == (actionColumnIndex - extraColumns - 1)) {
                 addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
+            }
+            
+            //deatails action
+            if(lineField instanceof FieldGroup && ((FieldGroup)lineField).getItems() != null){
+                for (Component component: ((FieldGroup)lineField).getItems()){
+                    if(component instanceof Action && component.getDataAttributes().get("role").equals("detailsLink")){
+                        ((Action)component).setActionScript(
+                            "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");
+                    }
+                }
             }
         }
 
@@ -1038,6 +1050,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             detailsFieldGroup.setDataAttributes(dataAttributes);
             Action rowDetailsAction = ComponentFactory.getActionLink();
             rowDetailsAction.addStyleClass("uif-detailsAction");
+            rowDetailsAction.addDataAttribute("role", "detailsLink");
             view.assignComponentIds(rowDetailsAction);
 
             if (rowDetailsUseImage) {
@@ -1052,8 +1065,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
 
             //build js for link
-            rowDetailsAction.setActionScript(
-                    "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");
+            /*rowDetailsAction.setActionScript(
+                    "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");*/
+            if(rowDetailsOpen){
+
+            }
 
             List<Component> detailsItems = new ArrayList<Component>();
 

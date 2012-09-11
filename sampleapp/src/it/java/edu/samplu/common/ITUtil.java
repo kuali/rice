@@ -218,7 +218,11 @@ public class ITUtil {
      */
     public static void loginSe(Selenium selenium, String user) {
         if (System.getProperty("remote.autologin") == null) {
-            selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
+            try {
+                selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
+            } catch (Exception e) {
+                Assert.fail("Login page not loaded app started?");
+            }
             if (!"Login".equals(selenium.getTitle())) {
                 fail("Title is not Login as expected, but " + selenium.getTitle());
             }

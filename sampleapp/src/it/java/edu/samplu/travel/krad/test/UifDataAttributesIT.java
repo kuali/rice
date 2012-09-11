@@ -125,8 +125,7 @@ public class UifDataAttributesIT extends UpgradedSeleniumITBase {
     @Test
     public void testDataAttributesPresentInControls () {
         assertEquals("Kuali Portal Index", getTitle());
-        selenium.open(
-                "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
+        open( "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
         waitForPageToLoad(); // if this times out make a special one that 50000
 
         // custom suffix to mark  test bean ids

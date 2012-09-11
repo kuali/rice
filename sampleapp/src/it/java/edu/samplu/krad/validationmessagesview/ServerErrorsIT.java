@@ -56,9 +56,9 @@ public class ServerErrorsIT extends UpgradedSeleniumITBase {
         waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
         waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems");
         waitIsVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field");
-        selenium.keyDown("name=field1", "t");
-        selenium.keyPress("name=field1", "t");
-        selenium.keyUp("name=field1", "t");
+        keyDown("name=field1", "t");
+        keyPress("name=field1", "t");
+        keyUp("name=field1", "t");
         for (int second = 0; ; second++) {
             if (second >= 60) {
                 Assert.fail("timeout");

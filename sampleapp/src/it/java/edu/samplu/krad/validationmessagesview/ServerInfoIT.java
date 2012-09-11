@@ -33,7 +33,7 @@ public class ServerInfoIT extends UpgradedSeleniumITBase {
 	@Test
 	public void testServerInfoIT() throws Exception {
 		waitAndClick("//button[contains(.,'Get Info Messages')]");
-        ITUtil.waitForElementVisible(selenium, "css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]");
+        waitIsVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]");
 		Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
 		Assert.assertTrue(isElementPresent("css=div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
 		Assert.assertTrue(isVisible("css=div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));

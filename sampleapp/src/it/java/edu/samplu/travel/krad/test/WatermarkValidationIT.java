@@ -45,14 +45,14 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
          * the scripts will be working ok
          */
         public void testWatermarking() throws Exception {
-    //        selenium.open(System.getProperty("remote.public.url"));
+    //        open(System.getProperty("remote.public.url"));
     //		waitAndType("name=__login_user", "quickstart");
     //		waitAndClick("css=input[type=\"submit\"]");
     //		selenium.waitForPageToLoad("100000");
     		waitAndClick("link=KRAD");
     		waitForPageToLoad50000();
     		waitAndClick("link=Uif Components (Kitchen Sink)");
-    		selenium.waitForPageToLoad("100000");
+    		waitForPageToLoad("100000");
     		Thread.sleep(2000);
             selectWindow("title=Kuali :: Uif Components");
             focus("name=field106");

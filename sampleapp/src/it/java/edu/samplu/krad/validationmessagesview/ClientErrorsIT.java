@@ -99,7 +99,7 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
         Assert.assertTrue(getAttribute("name=field3@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         Assert.assertFalse(isElementPresent("//select[@name='field3']/../img[@alt='Error']"));
         fireEvent("name=field114", "focus");
-        selenium.removeAllSelections("name=field114");
+        removeAllSelections("name=field114");
         fireEvent("name=field114", "blur");
         Assert.assertEquals("true", getAttribute("name=field114@aria-invalid"));
         Assert.assertTrue(getAttribute("name=field114@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
@@ -111,7 +111,7 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
         Assert.assertTrue(getAttribute("name=field114@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         Assert.assertFalse(isElementPresent("//select[@name='field114']/../img[@alt='Error']"));
         fireEvent("name=field117 value=3", "focus");
-        selenium.uncheck("name=field117 value=3");
+        uncheck("name=field117 value=3");
         fireEvent("name=field117", "blur");
         for (int second = 0; ; second++) {
             if (second >= 60) {
@@ -149,7 +149,7 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
         Assert.assertTrue(getAttribute("name=field117 value=3@class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
         Assert.assertFalse(isElementPresent("//input[@name='field117']/../../../img[@alt='Error']"));
         fireEvent("name=bField1", "focus");
-        selenium.uncheck("name=bField1");
+        uncheck("name=bField1");
         fireEvent("name=bField1", "blur");
         Assert.assertEquals("true", getAttribute("name=bField1@aria-invalid"));
         Assert.assertTrue(getAttribute("name=bField1@class").matches("^[\\s\\S]*error[\\s\\S]*$"));
@@ -163,8 +163,8 @@ public class ClientErrorsIT extends UpgradedSeleniumITBase {
         Assert.assertFalse(isElementPresent(
                 "//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
         fireEvent("name=field115 value=3", "focus");
-        selenium.uncheck("name=field115 value=3");
-        selenium.uncheck("name=field115 value=4");
+        uncheck("name=field115 value=3");
+        uncheck("name=field115 value=4");
         fireEvent("name=field115", "blur");
         for (int second = 0; ; second++) {
             if (second >= 60) {

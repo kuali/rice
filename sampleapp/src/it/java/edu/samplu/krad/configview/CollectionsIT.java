@@ -79,10 +79,10 @@ public class CollectionsIT extends UpgradedSeleniumITBase {
      */
     @Test
     public void testAddBlankLine() throws Exception {
-        ITUtil.waitAndClick(selenium, "link=Add Blank Line");
-        ITUtil.waitAndClick(selenium, "//button[contains(.,'Add Line')]");
+        waitAndClick("link=Add Blank Line");
+        waitAndClick("//button[contains(.,'Add Line')]");
 
-        ITUtil.waitForElement(selenium, "name=list1[0].field1");
+        waitForElementPresent("name=list1[0].field1");
         assertTableLayout();
         Assert.assertEquals("", getValue("name=list1[0].field1"));
         Assert.assertEquals("", getValue("name=list1[0].field2"));

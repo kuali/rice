@@ -56,13 +56,13 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         selectFrame("iframeportlet");
         // get current list of options
         String refreshTextSelectLocator = "id=" + idPrefix + "RefreshTextField_control";
-        String[] options1 = selenium.getSelectOptions(refreshTextSelectLocator);
+        String[] options1 = getSelectOptions(refreshTextSelectLocator);
         String dropDownSelectLocator = "id=" + idPrefix + "DropDown_control";
         select(dropDownSelectLocator, "label=Vegetables");
         waitAndClick("//option[@value='Vegetables']");
         Thread.sleep(3000);
         //get list of options after change
-        String[] options2 = selenium.getSelectOptions(refreshTextSelectLocator);
+        String[] options2 = getSelectOptions(refreshTextSelectLocator);
         //verify that the change has occurred
         assertFalse("Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection", options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
         //confirm that control gets disabled
@@ -98,7 +98,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         String amPmSelectLocator = "id=" + idPrefix + "StartTimeAmPm" + addLineIdSuffix;
        // waitAndClick(amPmSelectLocator);
         select(amPmSelectLocator, "label=PM");
-        assertEquals("PM", selenium.getSelectedLabel(amPmSelectLocator));
+        assertEquals("PM", getSelectedLabel(amPmSelectLocator));
         Thread.sleep(5000); //allow for ajax refresh        
         waitAndClick("//button");
         Thread.sleep(5000); //allow for line to be added
@@ -168,7 +168,7 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
 
         //store number of rows before adding the lines
         String cssCountRows = "div#ConfigurationTestView-ProgressiveRender-TimeInfoSection.uif-group div#ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent.uif-disclosureContent table tbody tr";
-        int rowCount = (selenium.getCssCount(cssCountRows)).intValue();
+        int rowCount = (getCssCount(cssCountRows)).intValue();
 
         String allDayId = "id=" + idPrefix + "AllDay" + addLineIdSuffix;
         focus(allDayId);
@@ -178,6 +178,6 @@ public class ConfigurationTestViewIT extends UpgradedSeleniumITBase {
         Thread.sleep(5000); //allow for line to be added
 
         //confirm that line has been added (by checking for the new delete button)
-        assertEquals("line was not added", rowCount + 1, (selenium.getCssCount(cssCountRows)).intValue());
+        assertEquals("line was not added", rowCount + 1, (getCssCount(cssCountRows)).intValue());
     }
 }

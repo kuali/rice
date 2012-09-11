@@ -150,6 +150,18 @@ public abstract class UpgradedSeleniumITBase {
         return selenium.getConfirmation();
     }
 
+    protected Number getCssCount(String cssCountRows) {
+        return selenium.getCssCount(cssCountRows);
+    }
+
+    protected String getSelectedLabel(String locator) {
+        return selenium.getSelectedLabel(locator);
+    }
+
+    protected String[] getSelectOptions(String locator) {
+        return selenium.getSelectOptions(locator);
+    }
+    
     protected String getEval(String script) {
         return selenium.getEval(script);
     }
@@ -182,12 +194,32 @@ public abstract class UpgradedSeleniumITBase {
         return selenium.isVisible(locator);
     }
 
+    protected void keyDown(String locator, String key) {
+        selenium.keyDown(locator, key);
+    }
+
+    protected void keyPress(String locator, String key) {
+        selenium.keyPress(locator, key);
+    }
+
+    protected void keyUp(String locator, String key) {
+        selenium.keyUp(locator, key);
+    }
+
     protected void mouseOver(String locator) {
         selenium.mouseOver(locator);
     }
     
     protected void mouseOut(String locator) {
         selenium.mouseOut(locator);
+    }
+    
+    protected void open(String url) {
+        selenium.open(url);
+    }
+    
+    protected void removeAllSelections(String locator) {
+        selenium.removeAllSelections(locator);
     }
     
     protected void select(String locator, String select) {
@@ -206,6 +238,10 @@ public abstract class UpgradedSeleniumITBase {
         selenium.selectWindow(windowName);
     }
 
+    protected void uncheck(String locator) {
+        selenium.uncheck(locator);
+    }
+    
     protected void waitAndClick(String locator) throws InterruptedException {
         waitAndClick(locator, "");
     }
@@ -246,11 +282,9 @@ public abstract class UpgradedSeleniumITBase {
             if (second >= 15) {
                 Assert.fail("timeout");
             }
-
             if (isVisible(visibleLocator)) {
                 break;
             }
-
             Thread.sleep(1000);
         }
     }
@@ -263,15 +297,23 @@ public abstract class UpgradedSeleniumITBase {
     protected void waitForElementPresent(String locator, String message) throws InterruptedException {
         ITUtil.waitForElement(selenium, locator, message);
     }
+    
+    protected void waitForElementVisible(String locator, String message) throws InterruptedException {
+        ITUtil.waitForElementVisible(selenium, locator, message);
+    }
 
     protected void waitForPageToLoad() {
-        selenium.waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
+        waitForPageToLoad(ITUtil.DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
     }
 
     protected void waitForPageToLoad50000() {
-        selenium.waitForPageToLoad("50000");
+        waitForPageToLoad("50000");
     }
 
+    protected void waitForPageToLoad(String number) {
+        selenium.waitForPageToLoad(number);
+    }
+    
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
         waitForTitleToEqualKualiPortalIndex("");
     }

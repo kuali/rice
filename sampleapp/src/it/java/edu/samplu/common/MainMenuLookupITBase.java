@@ -49,12 +49,16 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         waitAndClick("//button[contains(.,'earch')]");
         waitAndClick("link=edit", getFailureMessage());
         checkForIncidentReport("submit", getFailureMessage());
-        assertTextPresent("submit");
-        assertTextPresent("save");
-        assertTextPresent("blanket approve");
-        assertTextPresent("close");
-        assertTextPresent("cancel");
+        assertTextPresent("ubmit");
+        assertTextPresent("ave");
+        assertTextPresent("pprove");
+        assertTextPresent("lose");
+        assertTextPresent("ancel");
         lookupAssertions();
-        waitAndClick("link=cancel");
+        try {
+            waitAndClick("link=cancel");
+        } catch (Exception e) {
+            waitAndClick("link=Cancel");
+        }
     }
 }

@@ -7,8 +7,10 @@
     <file url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
     <file url="file://$PROJECT_DIR$/../../../standalone/overlays" />
     <file type="web" url="file://$PROJECT_DIR$/../../../sampleapp" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../serviceregistry" />
     <file type="web" url="file://$PROJECT_DIR$/../../../standalone" />
     <file type="web" url="file://$PROJECT_DIR$/../../../web" />
+    <type id="Osmorc" />
   </component>
   <component name="IdProvider" IDEtalkID="A852111713F178A034A16367BA05A747" />
   <component name="JavadocGenerationManager">
@@ -33,6 +35,13 @@
       <list>
         <option value="$PROJECT_DIR$/../../../pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../../../it/config/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../it/vc/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../kim/kim-ldap/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="NullableNotNullManager">

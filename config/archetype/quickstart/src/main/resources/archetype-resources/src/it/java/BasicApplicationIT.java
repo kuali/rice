@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
 public class BasicApplicationIT {
     @Test
     public void testBasicApplicationStartup() throws Exception {
-        URL url = new URL("http://localhost:" + System.getProperty("jetty.port") + "/${artifactId}");
+        URL url = new URL("http://localhost:" + System.getProperty("test.port") + "/${artifactId}");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         assertEquals(200, connection.getResponseCode());

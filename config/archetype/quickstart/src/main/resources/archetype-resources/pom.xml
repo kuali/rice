@@ -74,7 +74,6 @@
 
     <!-- other properties -->
     <jetty.port>8080</jetty.port>
-    <jetty.stop.port>9999</jetty.stop.port>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <plugin.compiler.source>${kuali.compile.source}</plugin.compiler.source>
     <plugin.compiler.target>${kuali.compile.target}</plugin.compiler.target>
@@ -155,40 +154,13 @@
       -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-sure-plugin</artifactId>
+        <artifactId>maven-surefire-plugin</artifactId>
         <version>\${plugin.surefire.version}</version>
       </plugin>
 
       <!--
-        This executes integration tests. These tests are NOT executed by default when the project is built.
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>\${plugin.failsafe.version}</version>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <encoding>\${project.build.sourceEncoding}</encoding>
-          <skip>\${maven.failsafe.skip}</skip>
-          <failIfNoTests>false</failIfNoTests>
-          <includes>
-            <include>**/*IT.java</include>
-          </includes>
-        </configuration>
-      </plugin>
-
-      <!--
         This allows the application be be launched in a jetty server using a maven command.
-        This also starts up Jetty to be available for integration tests.
-        A tomcat plugin could also be configured and used if desired
+        A tomcat plugin could also be configured and used if desired.
       -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -204,48 +176,6 @@
             </connector>
           </connectors>
         </configuration>
-        <executions>
-          <execution>
-            <id>start-jetty</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>start</goal>
-            </goals>
-            <configuration>
-              <webAppConfig>
-                <contextPath>/\${artifactId}</contextPath>
-              </webAppConfig>
-              <connectors>
-                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                  <port>\${jetty.port}</port>
-                </connector>
-              </connectors>
-              <scanIntervalSeconds>0</scanIntervalSeconds>
-              <daemon>true</daemon>
-              <stopKey>stop_jetty</stopKey>
-              <stopPort>\${jetty.stop.port}</stopPort>
-            </configuration>
-          </execution>
-          <execution>
-            <id>stop-jetty</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>stop</goal>
-            </goals>
-            <configuration>
-              <webAppConfig>
-                <contextPath>/\${artifactId}</contextPath>
-              </webAppConfig>
-              <connectors>
-                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                  <port>\${jetty.port}</port>
-                </connector>
-              </connectors>
-              <stopKey>stop_jetty</stopKey>
-              <stopPort>\${jetty.stop.port}</stopPort>
-            </configuration>
-          </execution>
-        </executions>
         <dependencies>
           <dependency>
             <groupId>\${database.groupId}</groupId>
@@ -258,6 +188,110 @@
 
     </plugins>
   </build>
+
+  <!--
+  This is a profile activate and enables a special build configuration when executing integration tests.
+  The profile is activated by setting the property maven.failsafe.skip to false.
+  -->
+  <profiles>
+    <profile>
+      <id>itests</id>
+      <activation>
+        <property>
+          <name>maven.failsafe.skip</name>
+          <value>false</value>
+        </property>
+      </activation>
+      <properties>
+        <jetty.stop.port>9999</jetty.stop.port>
+      </properties>
+      <build>
+        <plugins>
+
+          <!--
+            This executes integration tests. These tests are NOT executed by default when the project is built.
+          -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>\${plugin.failsafe.version}</version>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <encoding>\${project.build.sourceEncoding}</encoding>
+              <skip>\${maven.failsafe.skip}</skip>
+              <failIfNoTests>false</failIfNoTests>
+              <includes>
+                <include>**/*IT.java</include>
+              </includes>
+              <systemPropertyVariables>
+                <test.port>${jetty.port}</test.port>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+
+          <!--
+          This configures jetty to startup and shut down for integration tests.  This allows integration
+          tests to call into the application using web requests.
+          A tomcat plugin could also be configured and used if desired.
+          -->
+          <plugin>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <version>\${plugin.jetty.version}</version>
+            <configuration>
+              <webAppConfig>
+                <contextPath>/\${artifactId}</contextPath>
+              </webAppConfig>
+              <connectors>
+                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                  <port>\${jetty.port}</port>
+                </connector>
+              </connectors>
+              <stopKey>stop_jetty</stopKey>
+              <stopPort>\${jetty.stop.port}</stopPort>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-jetty</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+                <configuration>
+                  <scanIntervalSeconds>0</scanIntervalSeconds>
+                  <daemon>true</daemon>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-jetty</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>\${database.groupId}</groupId>
+                <artifactId>\${database.artifactId}</artifactId>
+                <version>\${database.version}</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <dependencies>
 

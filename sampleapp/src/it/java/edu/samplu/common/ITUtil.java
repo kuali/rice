@@ -59,13 +59,13 @@ public class ITUtil {
                 "KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'");
 
         jiraMatches.put("org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules(MaintenanceDocumentRuleBase.",
-                "KULRICE-8142");
+                "KULRICE-8142 NPE in MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules");
 
         jiraMatches.put("at org.kuali.rice.krad.rules.DocumentRuleBase.isDocumentOverviewValid(DocumentRuleBase.",
-                "KULRICE-8134");
+                "KULRICE-8134 NPE in DocumentRuleBase.isDocumentOverviewValid(DocumentRuleBase");
 
         jiraMatches.put("org.kuali.rice.krad.uif.layout.TableLayoutManager.buildLine(TableLayoutManager.",
-                "KULRICE-8160");
+                "KULRICE-8160 NPE at TableLayoutManager.buildLine(TableLayoutManager");
 //        jiraMatches.put("",
 //                "");
 

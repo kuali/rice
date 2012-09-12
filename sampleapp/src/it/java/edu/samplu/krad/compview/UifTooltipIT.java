@@ -28,6 +28,8 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifTooltipIT extends UpgradedSeleniumITBase {
+    private static final String NAME_FIELD_1 = "name=remoteFieldValuesMap[remoteField1]";
+    private static final String NAME_FIELD_2 = "name=remoteFieldValuesMap[remoteField2]";
     @Override
     public String getTestUrl() {
         // open Other Examples page in kitchen sink view
@@ -37,31 +39,31 @@ public class UifTooltipIT extends UpgradedSeleniumITBase {
     @Test
     public void testTooltip() throws Exception {
         // check if tooltip opens on focus
-        fireEvent("name=field1", "focus");
-        fireEvent("name=field1", "over");
+        fireEvent(NAME_FIELD_1, "focus");
+        fireEvent(NAME_FIELD_1, "over");
         Assert.assertTrue(isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")
                 && isVisible("css=td.jquerybubblepopup-innerHtml"));
         Assert.assertEquals("This tooltip is triggered by focus or and mouse over.", getText("css=td.jquerybubblepopup-innerHtml"));
        
         // check if tooltip closed on blur
-        fireEvent("name=field1", "blur");
+        fireEvent(NAME_FIELD_1, "blur");
         Assert.assertFalse(isVisible("css=div.jquerybubblepopup.jquerybubblepopup-black")
                 && isVisible("css=td.jquerybubblepopup-innerHtml"));
         //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
         
         // check if tooltip opens on mouse over
-        mouseOver("name=field2");
+        mouseOver(NAME_FIELD_2);
         Assert.assertTrue(isVisible("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
         
         // check if tooltip closed on mouse out
-        mouseOut("name=field2");
+        mouseOut(NAME_FIELD_2);
         Assert.assertFalse(isVisible("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
         
         // check that default tooltip does not display when there are an error message on the field
-        waitAndType("name=field1", "1");
-        fireEvent("name=field1", "blur");
-        fireEvent("name=field1", "focus");
-        waitAndType("name=field1", "1");
+        waitAndType(NAME_FIELD_1, "1");
+        fireEvent(NAME_FIELD_1, "blur");
+        fireEvent(NAME_FIELD_1, "focus");
+        waitAndType(NAME_FIELD_1, "1");
         Thread.sleep(2000);
         assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
                 isVisible("css=div.jquerybubblepopup.jquerybubblepopup-kr-error-cs") &&

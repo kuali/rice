@@ -206,7 +206,7 @@ public class ITUtil {
                     return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.chrome());
                 }
             } catch (MalformedURLException mue) {
-                System.out.println(mue.getMessage());
+                System.out.println(ITUtil.getHubUrlString() + " " + mue.getMessage());
                 mue.printStackTrace();
             }
         }

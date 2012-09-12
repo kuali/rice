@@ -16,8 +16,11 @@
 
 package ${package};
 
+import java.net.URL;
+import java.net.HttpURLConnection;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 /**
  * Kuali Rice ArcheType Help
  *
@@ -26,7 +29,10 @@ import org.junit.Test;
  */
 public class BasicApplicationIT {
     @Test
-    public void testBasicApplication() {
-         //leaving this test to be filled in as a later exercise.
+    public void testBasicApplicationStartup() throws Exception {
+        URL url = new URL("http://localhost:" + System.getProperty("jetty.port") + "/${artifactId}");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        assertEquals(200, connection.getResponseCode());
     }
 }

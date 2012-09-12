@@ -74,6 +74,7 @@
 
     <!-- other properties -->
     <jetty.port>8080</jetty.port>
+    <jetty.stop.port>9999</jetty.stop.port>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <plugin.compiler.source>${kuali.compile.source}</plugin.compiler.source>
     <plugin.compiler.target>${kuali.compile.target}</plugin.compiler.target>
@@ -186,6 +187,7 @@
 
       <!--
         This allows the application be be launched in a jetty server using a maven command.
+        This also starts up Jetty to be available for integration tests.
         A tomcat plugin could also be configured and used if desired
       -->
       <plugin>
@@ -201,13 +203,49 @@
               <port>\${jetty.port}</port>
             </connector>
           </connectors>
-          <systemProperties>
-            <systemProperty>
-              <name>web.bootstrap.spring.file</name>
-              <value>classpath:${packageDir}/BootStrapSpringBeans.xml</value>
-            </systemProperty>
-          </systemProperties>
         </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+            <configuration>
+              <webAppConfig>
+                <contextPath>/\${artifactId}</contextPath>
+              </webAppConfig>
+              <connectors>
+                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                  <port>\${jetty.port}</port>
+                </connector>
+              </connectors>
+              <scanIntervalSeconds>0</scanIntervalSeconds>
+              <daemon>true</daemon>
+              <stopKey>stop_jetty</stopKey>
+              <stopPort>\${jetty.stop.port}</stopPort>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <configuration>
+              <webAppConfig>
+                <contextPath>/\${artifactId}</contextPath>
+              </webAppConfig>
+              <connectors>
+                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                  <port>\${jetty.port}</port>
+                </connector>
+              </connectors>
+              <stopKey>stop_jetty</stopKey>
+              <stopPort>\${jetty.stop.port}</stopPort>
+            </configuration>
+          </execution>
+        </executions>
         <dependencies>
           <dependency>
             <groupId>\${database.groupId}</groupId>

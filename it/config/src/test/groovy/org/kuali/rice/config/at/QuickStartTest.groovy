@@ -212,49 +212,47 @@ class QuickStartTest {
         }
     }
 
+
+    /**
+     * This test generates a new project in a temp directory using the maven archetype plugin. It then executes a clean install while also running the integration tests on the project.
+     * This tests that the sample project's the application successfully generates, it compiles, and the unit and integration tests pass.
+     * The integration test in the projects make sure the project successfully starts up.
+     */
+    @Test
+    void test_quickstart_gen_clean_install_int_tests() {
+
+        def processBuilder = getProcessBuilderForPlatform(mvnCommandPath + BASE_MVN_CMD + getDBArgs() + getVersionArg() + "-Dgoals=\"clean install -Dmaven.failsafe.skip=false ${getPortArg()}\"")
+        //println processBuilder.command();
+        processBuilder.redirectErrorStream(true)
+        processBuilder.directory(tempBaseDir)
+        def output = "";
+        def process = null
+        try {
+            process = processBuilder.start()
+            output = process.text;
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
+        }
+        //println output;
+
+        if (output.count("BUILD SUCCESS") != 2) {
+            fail("the output did not contain two occurances of BUILD SUCCESS \n ${output}")
+        }
+    }
+
     /**
      * This test generates a new project in a temp directory using the maven archetype plugin. It then executes a clean install on the project.
      * This tests that the sample project's the application successfully generates, it compiles, and the unit and integration tests pass and jetty starts up.
      */
     @Test @Ignore("http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4770092")
     void test_quickstart_gen_clean_install_jetty_run() {
-        //process isn't being destroyed.  see:
-        //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4770092
-        //maybe want to use jetty:start & jetty:stop?
-        def process = null;
-        def processBuilder = getProcessBuilderForPlatform(mvnCommandPath + BASE_MVN_CMD + getDBArgs() + getVersionArg() + """-Dgoals="clean install jetty:run ${getPortArg()}" """)
-        println processBuilder.command();
-        processBuilder.redirectErrorStream(true)
-        processBuilder.directory(tempBaseDir)
-        StringBuilder out = new StringBuilder("");
-        StringBuilder err = new StringBuilder("");
-
-        try {
-            process = processBuilder.start()
-            process.consumeProcessOutput(out, err)
-            //probably could be more intelligent here
-            Thread.sleep(1000*60*2); //two minutes
-
-            def url = new URL("http://localhost:" + getPort() + "/qstest")
-            println url
-            def connection = url.openConnection()
-
-
-            println out;
-            println err;
-
-            assertEquals(200, connection.responseCode)
-        } finally {
-            if (process != null) {
-                process.destroy();
-            }
-        }
-
-        //println out;
-        //println err;
-
-        if (!out.contains("Started Jetty Server")) {
-            fail("the output did not contain Started Jetty Server \n ${out} \n ${err}")
-        }
+        /*this test was suppose to run the jetty:run command to make sure it is properly configured and jetty can startup.
+          the problem is the child processes being created were not being destroyed.
+          it is probably ok that we do not have this test because successful startup is being tested
+          by the test_quickstart_gen_clean_install_int_tests when it executes the generated project's
+          integration test
+        */
     }
 }

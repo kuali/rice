@@ -216,7 +216,7 @@ class QuickStartTest {
     /**
      * This test generates a new project in a temp directory using the maven archetype plugin. It then executes a clean install while also running the integration tests on the project.
      * This tests that the sample project's the application successfully generates, it compiles, and the unit and integration tests pass.
-     * The integration test in the projects make sure the project successfully starts up.
+     * The integration test in the project make sure the project successfully starts up in an app server.
      */
     @Test
     void test_quickstart_gen_clean_install_int_tests() {

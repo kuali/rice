@@ -94,7 +94,7 @@ public class WorkFlowRouteRulesBlanketAppIT extends UpgradedSeleniumITBase {
         // click the add button
         waitAndClick("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!)");
         waitForPageToLoad();
-        checkForIncidentReport("methodToCall.blanketApprove", "KULRICE-8142 Work Flow Route Rule Blanket Approval Incident Report NPE in MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules");
+        checkForIncidentReport("methodToCall.blanketApprove");
         waitAndClick("methodToCall.blanketApprove");
         waitForPageToLoad();
         selectWindow("null");

@@ -29,6 +29,9 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static org.junit.Assert.assertEquals;
@@ -48,6 +51,25 @@ public class ITUtil {
     public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
     public static final int WAIT_DEFAULT_SECONDS = 60;
     public static final String DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT = "30000";
+    static Map<String, String> jiraMatches;
+
+    static {
+        jiraMatches = new HashMap<String, String>();
+        jiraMatches.put("Error setting property values; nested exception is org.springframework.beans.NotWritablePropertyException: Invalid property 'refreshWhenChanged' of bean class [org.kuali.rice.krad.uif.element.Action]: Bean property 'refreshWhenChanged' is not writable or has an invalid setter method. Does the parameter type of the setter match the return type of the getter?",
+                "KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'");
+
+        jiraMatches.put("org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules(MaintenanceDocumentRuleBase.",
+                "KULRICE-8142");
+
+        jiraMatches.put("at org.kuali.rice.krad.rules.DocumentRuleBase.isDocumentOverviewValid(DocumentRuleBase.",
+                "KULRICE-8134");
+
+        jiraMatches.put("org.kuali.rice.krad.uif.layout.TableLayoutManager.buildLine(TableLayoutManager.",
+                "KULRICE-8160");
+//        jiraMatches.put("",
+//                "");
+
+    }
 
     /**
      * "FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"
@@ -478,6 +500,15 @@ public class ITUtil {
                 !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             try {
                 if (contents.indexOf("Incident Feedback") > -1) {
+                    Iterator<String> iter = jiraMatches.keySet().iterator();
+                    String key = null;
+                    while (iter.hasNext()) {
+                        key = iter.next();
+                        if (contents.contains(key)) {
+                            Assert.fail("https://jira.kuali.org/browse/" + jiraMatches.get(key));
+                        }
+                    }
+
                     String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
                     String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
                     docId = docId.substring(0, docId.indexOf("</span>"));
@@ -505,7 +536,7 @@ public class ITUtil {
                 } else {
                     Assert.fail("\nIncident report detected " + message + "\nContents that triggered exception: " + deLinespace(contents));
                 }
-            } catch (Exception e) {
+            } catch (IndexOutOfBoundsException e) {
                 Assert.fail("\nIncident report detected " + message + " but there was an exception during processing: " + e.getMessage() + "\nStack Trace from processing exception" + stackTrace(e) + "\nContents that triggered exception: " + deLinespace(
                         contents));
             }

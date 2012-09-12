@@ -32,10 +32,6 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         return "link=Main Menu";
     }
 
-    protected String getFailureMessage() {
-        return "";
-    }
-    
     /**
      * Override to execute assertions once a looked-up item's edit action is clicked.
      */
@@ -47,8 +43,8 @@ public abstract class MainMenuLookupITBase extends MenuITBase {
         waitForPageToLoad();
         selectFrame("iframeportlet");
         waitAndClick("//button[contains(.,'earch')]");
-        waitAndClick("link=edit", getFailureMessage());
-        checkForIncidentReport("submit", getFailureMessage());
+        waitAndClick("link=edit");
+        checkForIncidentReport("submit");
         assertTextPresent("ubmit");
         assertTextPresent("ave");
         assertTextPresent("pprove");

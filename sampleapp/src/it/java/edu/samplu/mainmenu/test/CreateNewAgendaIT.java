@@ -34,7 +34,7 @@ public class CreateNewAgendaIT extends MainMenuLookupITBase {
 
     @Test
     public void testCreateNewAgenda() throws Exception {
-        gotoMenuLinkLocator("https://jira.kuali.org/browse/KULRICE-8137 Agenda Rule edit Incident report Invalid property 'refreshWhenChanged'"); // NOT gotoCreateNew because this create new is on the Main Menu screen
+        gotoMenuLinkLocator(); // NOT gotoCreateNew because this create new is on the Main Menu screen
         select("name=document.newMaintainableObject.dataObject.namespace", "label=Kuali Rules Test");
         String agendaName = "Agenda Date :"+ Calendar.getInstance().getTime().toString();
         waitAndType("name=document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);

@@ -25,6 +25,7 @@ import static org.junit.Assert.*
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
 import org.apache.commons.lang.SystemUtils
 import org.junit.Ignore
+import org.junit.BeforeClass
 
 /**
  * These test call maven commands.  They require that the MAVEN_HOME or M2_HOME environment variable is set.
@@ -33,16 +34,39 @@ class QuickStartTest {
 
     private static final BASE_MVN_CMD = """mvn org.apache.maven.plugins:maven-archetype-plugin:2.2:generate -DinteractiveMode=false -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -Dmaven.failsafe.skip=false -DgroupId=org.kuali.rice -DartifactId=qstest -Dversion=1.0-SNAPSHOT -Dpackage=org.kuali.rice.qstest """
 
-    private File tempBaseDir;
+    private static String basedir
+
+    private File targetDir
     private String mvnCommandPath;
+    private JAXBConfigImpl config;
 
-    JAXBConfigImpl config;
-
-    @Before
-    void createBaseDir() {
-        tempBaseDir = Files.createTempDir();
+    /**
+     * determines the basedir for generating projects
+     */
+    @BeforeClass
+    static void setupBaseDir() {
+        basedir = System.getProperty("basedir")
+        if (basedir == null) {
+            final String userDir = System.getProperty("user.dir");
+            basedir = userDir + ((userDir.endsWith(File.separator + "it" + File.separator + "config")) ? "" : File.separator + "it" + File.separator + "config")
+        }
     }
 
+    /**
+     * creates the directory to generate the projects in
+     */
+    @Before
+    void createTargetDir() {
+        targetDir = new File(basedir + "/target/projects")
+        if (!targetDir.exists()) {
+            targetDir.mkdir();
+        }
+        println targetDir
+    }
+
+    /**
+     * creates the maven path based on env vars
+     */
     @Before
     void createMavenPath() {
         def mvnHome = System.env['MAVEN_HOME']
@@ -57,13 +81,19 @@ class QuickStartTest {
         mvnCommandPath = mvnHome + "/bin/"
     }
 
+    /**
+     * parses the test config
+     */
     @Before
     void setConfig() {
-        config = new JAXBConfigImpl("classpath:META-INF/core-test-config.xml");
+        config = new JAXBConfigImpl("classpath:META-INF/config-test-config.xml");
     }
 
+    /**
+     * deletes the directory to generate the projects in
+     */
     @After
-    void removeBaseDir() {
+    void removeTargetDir() {
         def recursiveDel;
         recursiveDel = {
             it.eachDir( recursiveDel )
@@ -73,19 +103,9 @@ class QuickStartTest {
             it.delete()
         }
 
-        if (tempBaseDir != null) {
-            recursiveDel( tempBaseDir )
+        if (targetDir != null) {
+            recursiveDel( targetDir )
         }
-    }
-
-    @After
-    void clearMavenPath() {
-        mvnCommandPath = null;
-    }
-
-    @Before
-    void clearConfig() {
-        config = null;
     }
 
     def getDBArgs() {
@@ -165,7 +185,7 @@ class QuickStartTest {
         def processBuilder = getProcessBuilderForPlatform(mvnCommandPath + BASE_MVN_CMD + getDBArgs() + getVersionArg())
         //println processBuilder.command();
         processBuilder.redirectErrorStream(true)
-        processBuilder.directory(tempBaseDir)
+        processBuilder.directory(targetDir)
         def output = "";
         def process = null
         try {
@@ -194,7 +214,7 @@ class QuickStartTest {
         def processBuilder = getProcessBuilderForPlatform(mvnCommandPath + BASE_MVN_CMD + getDBArgs() + getVersionArg() + "-Dgoals=\"clean install\"")
         //println processBuilder.command();
         processBuilder.redirectErrorStream(true)
-        processBuilder.directory(tempBaseDir)
+        processBuilder.directory(targetDir)
         def output = "";
         def process = null
         try {
@@ -224,7 +244,7 @@ class QuickStartTest {
         def processBuilder = getProcessBuilderForPlatform(mvnCommandPath + BASE_MVN_CMD + getDBArgs() + getVersionArg() + "-Dgoals=\"clean install -Dmaven.failsafe.skip=false ${getPortArg()}\"")
         //println processBuilder.command();
         processBuilder.redirectErrorStream(true)
-        processBuilder.directory(tempBaseDir)
+        processBuilder.directory(targetDir)
         def output = "";
         def process = null
         try {

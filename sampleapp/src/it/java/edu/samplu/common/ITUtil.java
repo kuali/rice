@@ -305,21 +305,6 @@ public class ITUtil {
         ITUtil.checkForIncidentReport(selenium, elementLocator, message);
     }
 
-    public static void waitAndClickEither(Selenium selenium, String elementLocator1, String elementLocator2) throws InterruptedException {
-        for (int second = 0;; second++) {
-            if (second >= 60) ;
-            try { if (selenium.isVisible(elementLocator1) || selenium.isVisible(elementLocator2)) break; } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-        if (selenium.isVisible(elementLocator1)) {
-            waitAndClick(selenium, elementLocator1);
-        } else if (selenium.isVisible(elementLocator1)) {
-            waitAndClick(selenium, elementLocator2);
-        } else {
-            Assert.fail("Neither " + elementLocator1 + " or " + elementLocator2 + " found.  timeout");
-        }
-    }
-
     /**
      * Wait the 60 seconds for the elementLocator to be present or fail, when present type the text.
      * @param selenium

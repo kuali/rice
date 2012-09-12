@@ -250,10 +250,6 @@ public abstract class UpgradedSeleniumITBase {
         ITUtil.waitAndClick(selenium, locator, message);
     }
 
-    protected void waitAndClickEither(String locator1, String locator2) throws InterruptedException {
-        ITUtil.waitAndClickEither(selenium, locator1, locator2);
-    }
-
     protected String waitForDocId() throws InterruptedException {
         ITUtil.waitForElement(selenium, AdminMenuITBase.DOC_ID_LOCATOR);
         return selenium.getText(AdminMenuITBase.DOC_ID_LOCATOR);

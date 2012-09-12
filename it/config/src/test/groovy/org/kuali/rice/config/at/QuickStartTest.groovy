@@ -46,9 +46,12 @@ class QuickStartTest {
     @Before
     void createMavenPath() {
         def mvnHome = System.env['MAVEN_HOME']
+        if (!mvnHome) {
+            mvnHome = System.env['M2_HOME']
+        }
 
         if (!mvnHome) {
-            fail("MAVEN_HOME not set");
+            fail("MAVEN_HOME or M2_HOME not set");
         }
 
         mvnCommandPath = mvnHome + "/bin/"

@@ -27,10 +27,10 @@ import org.apache.commons.lang.SystemUtils
 import org.junit.Ignore
 
 /**
- * These test call maven commands.  They require that the MAVEN_HOME environment variable is set.
+ * These test call maven commands.  They require that the MAVEN_HOME or M2_HOME environment variable is set.
  */
 class QuickStartTest {
-    //FIXME: how should I get the rice version out of this.
+
     private static final BASE_MVN_CMD = """mvn org.apache.maven.plugins:maven-archetype-plugin:2.2:generate -DinteractiveMode=false -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -Dmaven.failsafe.skip=false -DgroupId=org.kuali.rice -DartifactId=qstest -Dversion=1.0-SNAPSHOT -Dpackage=org.kuali.rice.qstest """
 
     private File tempBaseDir;

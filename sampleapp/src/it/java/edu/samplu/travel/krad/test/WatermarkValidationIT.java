@@ -39,7 +39,7 @@ public class WatermarkValidationIT extends UpgradedSeleniumITBase {
         return ITUtil.PORTAL;
     }
 
-      //   @Test
+         @Test
         /**
          * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
          * the scripts will be working ok

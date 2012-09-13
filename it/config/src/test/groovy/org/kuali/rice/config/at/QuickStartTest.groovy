@@ -26,8 +26,7 @@ import org.junit.Ignore
 import org.junit.BeforeClass
 
 /**
- * http://svn.kuali.org/repos/foundation/trunk/kuali-mvn/src/main/java/org/kuali/maven/common/MvnExecutor.java
- * These test call maven commands.  They require that the MAVEN_HOME or M2_HOME environment variable is set.
+ * Test for the quickstart archetype.  Executes maven commands.
  */
 class QuickStartTest {
     private static String basedir
@@ -99,7 +98,8 @@ class QuickStartTest {
     def getJettyPort() { config.getProperty("kns.test.port") ?: "8080" }
     def getArchetypeVersion() { config.getProperty("rice.version") }
 
-    private addStandardParams(context) {
+    private OutputAwareMvnContext createStandardContext() {
+        def context = new OutputAwareMvnContextImpl()
         context.args = ["org.apache.maven.plugins:maven-archetype-plugin:generate"]
         context.workingDir = targetDir
         context.basedir = targetDir
@@ -110,16 +110,16 @@ class QuickStartTest {
         context.deleteTempPom = true
         context.stdOutWriter = new StringWriter()
         context.stdErrWriter = new StringWriter()
+        return context;
     }
 
-    private addStandardPropertyValues(properties) {
-        properties.putAll(
+    private Properties createStandardProperties() {
+        return new Properties(
                 [
                         "interactiveMode": "false",
                         "archetypeGroupId":"org.kuali.rice",
                         "archetypeArtifactId": "rice-archetype-quickstart",
                         "archetypeVersion": getArchetypeVersion(),
-                        "maven.failsafe.skip": "true",
                         "groupId": "org.kuali.rice",
                         "artifactId": "qstest",
                         "version": "1.0-SNAPSHOT",
@@ -142,13 +142,10 @@ class QuickStartTest {
      */
     @Test
     void test_quickstart_gen() {
-        def context = new OutputAwareMvnContextImpl()
-        addStandardParams(context)
-        def properties = new Properties()
-        addStandardPropertyValues(properties)
+        def context = createStandardContext()
+        def properties = createStandardProperties()
         context.projectProperties = properties;
         context.properties = properties.keySet() as List;
-
         executeMaven(context)
 
         if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 1) {
@@ -164,11 +161,9 @@ class QuickStartTest {
      */
     @Test
     void test_quickstart_gen_clean_install() {
-        def context = new OutputAwareMvnContextImpl()
-        addStandardParams(context)
-        def properties = new Properties()
-        addStandardPropertyValues(properties)
-        properties["goals"] = "clean install"
+        def context = createStandardContext()
+        def properties = createStandardProperties()
+        properties["goals"] = "clean install -Dmaven.failsafe.skip=true"
         context.projectProperties = properties;
         context.properties = properties.keySet() as List;
 
@@ -189,10 +184,8 @@ class QuickStartTest {
      */
     @Test
     void test_quickstart_gen_clean_install_int_tests() {
-        def context = new OutputAwareMvnContextImpl()
-        addStandardParams(context)
-        def properties = new Properties()
-        addStandardPropertyValues(properties)
+        def context = createStandardContext()
+        def properties = createStandardProperties()
 
         //add port & db args
         properties["jetty.port"] = getJettyPort()

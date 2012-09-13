@@ -66,6 +66,9 @@ public class ITUtil {
 
         jiraMatches.put("org.kuali.rice.krad.uif.layout.TableLayoutManager.buildLine(TableLayoutManager.",
                 "KULRICE-8160 NPE at TableLayoutManager.buildLine(TableLayoutManager");
+
+        jiraMatches.put("Bean property 'configFileLocations' is not writable or has an invalid setter method. Does the parameter type of the setter match the return type of the getter?",
+                "https://jira.kuali.org/browse/KULRICE-8173 Bean property 'configFileLocations' is not writable or has an invalid setter method");
 //        jiraMatches.put("",
 //                "");
 

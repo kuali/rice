@@ -19,25 +19,20 @@ package org.kuali.rice.config.at
 import org.junit.Test
 import org.junit.Before
 import org.junit.After
-import com.google.common.io.Files
 
 import static org.junit.Assert.*
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
-import org.apache.commons.lang.SystemUtils
 import org.junit.Ignore
 import org.junit.BeforeClass
 
 /**
+ * http://svn.kuali.org/repos/foundation/trunk/kuali-mvn/src/main/java/org/kuali/maven/common/MvnExecutor.java
  * These test call maven commands.  They require that the MAVEN_HOME or M2_HOME environment variable is set.
  */
 class QuickStartTest {
-
-    private static final BASE_MVN_CMD = """mvn org.apache.maven.plugins:maven-archetype-plugin:2.2:generate -DinteractiveMode=false -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -Dmaven.failsafe.skip=false -DgroupId=org.kuali.rice -DartifactId=qstest -Dversion=1.0-SNAPSHOT -Dpackage=org.kuali.rice.qstest """
-
     private static String basedir
 
     private File targetDir
-    private String mvnCommandPath;
     private JAXBConfigImpl config;
 
     /**
@@ -61,24 +56,7 @@ class QuickStartTest {
         if (!targetDir.exists()) {
             targetDir.mkdir();
         }
-        println targetDir
-    }
-
-    /**
-     * creates the maven path based on env vars
-     */
-    @Before
-    void createMavenPath() {
-        def mvnHome = System.env['MAVEN_HOME']
-        if (!mvnHome) {
-            mvnHome = System.env['M2_HOME']
-        }
-
-        if (!mvnHome) {
-            fail("MAVEN_HOME or M2_HOME not set");
-        }
-
-        mvnCommandPath = mvnHome + "/bin/"
+        //println targetDir
     }
 
     /**
@@ -87,6 +65,8 @@ class QuickStartTest {
     @Before
     void setConfig() {
         config = new JAXBConfigImpl("classpath:META-INF/config-test-config.xml");
+        config.parseConfig();
+        //println config;
     }
 
     /**
@@ -94,6 +74,10 @@ class QuickStartTest {
      */
     @After
     void removeTargetDir() {
+        if (!targetDir.exists()) {
+            return
+        }
+
         def recursiveDel;
         recursiveDel = {
             it.eachDir( recursiveDel )
@@ -108,72 +92,49 @@ class QuickStartTest {
         }
     }
 
-    def getDBArgs() {
-        def args = "";
+    def getDatasourceOjbPlatform() { config.getProperty("datasource.ojb.platform") }
+    def getDatasourceUrl() { config.getProperty("datasource.url") }
+    def getDatasourceUsername() { config.getProperty("datasource.username") }
+    def getDatasourcePassword() { config.getProperty("datasource.password") }
+    def getJettyPort() { config.getProperty("kns.test.port") ?: "8080" }
+    def getArchetypeVersion() { config.getProperty("rice.version") }
 
-        def platform = config.getProperty("datasource.ojb.platform");
-        def url = config.getProperty("datasource.url");
-        def username = config.getProperty("datasource.username");
-        def pass = config.getProperty("datasource.password");
-
-        if (platform) {
-            args += "-Ddatasource_ojb_platform=" + platform;
-        }
-
-        if (url) {
-            args += "-Ddatasource_url=" + url;
-        }
-
-        if (username) {
-            args += "-Ddatasource_username=" + username;
-        }
-
-        if (pass) {
-            args += "-Ddatasource_password=" + pass;
-        }
-        return args;
+    private addStandardParams(context) {
+        context.args = ["org.apache.maven.plugins:maven-archetype-plugin:generate"]
+        context.workingDir = targetDir
+        context.basedir = targetDir
+        context.addMavenOpts = true
+        context.quiet = false
+        context.silent = false
+        context.failOnError = true
+        context.deleteTempPom = true
+        context.stdOutWriter = new StringWriter()
+        context.stdErrWriter = new StringWriter()
     }
 
-    def getPort() {
-        def port = config.getProperty("kns.test.port");
-
-        if (port) {
-            return port;
-        }
-        return "8080";
+    private addStandardPropertyValues(properties) {
+        properties.putAll(
+                [
+                        "interactiveMode": "false",
+                        "archetypeGroupId":"org.kuali.rice",
+                        "archetypeArtifactId": "rice-archetype-quickstart",
+                        "archetypeVersion": getArchetypeVersion(),
+                        "maven.failsafe.skip": "true",
+                        "groupId": "org.kuali.rice",
+                        "artifactId": "qstest",
+                        "version": "1.0-SNAPSHOT",
+                        "package": "org.kuali.rice.qstest",
+                ]
+        )
     }
 
-    def getPortArg() {
-        def args = "";
-        def port = getPort();
-
-        if (port) {
-            args += "-Djetty.port=" + port;
+    private executeMaven(context) {
+        try {
+            new OutputAwareMvnExecutor().execute(context);
+        } finally {
+            //println context.stdOutWriter;
+            //println context.stdErrWriter;
         }
-
-        return args;
-    }
-
-    def getVersionArg() {
-        def arg = "";
-
-        def version = config.getProperty("rice.version");
-        if (version) {
-            arg = "-DarchetypeVersion=" + version;
-        }
-
-        return arg;
-    }
-
-    private ProcessBuilder getProcessBuilderForPlatform(String command) {
-        def processBuilder;
-        if (SystemUtils.IS_OS_WINDOWS) {
-            processBuilder = new ProcessBuilder("""cmd """, "/c", command)
-        } else {
-            processBuilder = new ProcessBuilder(command)
-        }
-
-        return processBuilder;
     }
 
     /**
@@ -181,27 +142,20 @@ class QuickStartTest {
      */
     @Test
     void test_quickstart_gen() {
+        def context = new OutputAwareMvnContextImpl()
+        addStandardParams(context)
+        def properties = new Properties()
+        addStandardPropertyValues(properties)
+        context.projectProperties = properties;
+        context.properties = properties.keySet() as List;
 
-        def processBuilder = getProcessBuilderForPlatform(mvnCommandPath + BASE_MVN_CMD + getDBArgs() + getVersionArg())
-        //println processBuilder.command();
-        processBuilder.redirectErrorStream(true)
-        processBuilder.directory(targetDir)
-        def output = "";
-        def process = null
-        try {
-            process = processBuilder.start()
-            output = process.text;
-        } finally {
-            if (process != null) {
-                process.destroy();
-            }
+        executeMaven(context)
+
+        if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 1) {
+            fail("the output did not contain one occurances of BUILD SUCCESS \n ${context.stdOutWriter} \n ${context.stdErrWriter}")
         }
 
-        //println output;
-
-        if (output.count("BUILD SUCCESS") != 1) {
-            fail("the output did not contain two occurances of BUILD SUCCESS \n ${output}")
-        }
+        assertEquals("output written to std err", "", context.stdErrWriter.toString().trim())
     }
 
     /**
@@ -210,26 +164,21 @@ class QuickStartTest {
      */
     @Test
     void test_quickstart_gen_clean_install() {
+        def context = new OutputAwareMvnContextImpl()
+        addStandardParams(context)
+        def properties = new Properties()
+        addStandardPropertyValues(properties)
+        properties["goals"] = "clean install"
+        context.projectProperties = properties;
+        context.properties = properties.keySet() as List;
 
-        def processBuilder = getProcessBuilderForPlatform(mvnCommandPath + BASE_MVN_CMD + getDBArgs() + getVersionArg() + "-Dgoals=\"clean install\"")
-        //println processBuilder.command();
-        processBuilder.redirectErrorStream(true)
-        processBuilder.directory(targetDir)
-        def output = "";
-        def process = null
-        try {
-            process = processBuilder.start()
-            output = process.text;
-        } finally {
-            if (process != null) {
-                process.destroy();
-            }
-        }
-        //println output;
+        executeMaven(context)
 
-        if (output.count("BUILD SUCCESS") != 2) {
-            fail("the output did not contain two occurances of BUILD SUCCESS \n ${output}")
+        if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 2) {
+            fail("the output did not contain two occurances of BUILD SUCCESS ${context.stdOutWriter} \n ${context.stdErrWriter}")
         }
+
+        assertEquals("output written to std err", "", context.stdErrWriter.toString().trim())
     }
 
 
@@ -240,26 +189,30 @@ class QuickStartTest {
      */
     @Test
     void test_quickstart_gen_clean_install_int_tests() {
+        def context = new OutputAwareMvnContextImpl()
+        addStandardParams(context)
+        def properties = new Properties()
+        addStandardPropertyValues(properties)
 
-        def processBuilder = getProcessBuilderForPlatform(mvnCommandPath + BASE_MVN_CMD + getDBArgs() + getVersionArg() + "-Dgoals=\"clean install -Dmaven.failsafe.skip=false ${getPortArg()}\"")
-        //println processBuilder.command();
-        processBuilder.redirectErrorStream(true)
-        processBuilder.directory(targetDir)
-        def output = "";
-        def process = null
-        try {
-            process = processBuilder.start()
-            output = process.text;
-        } finally {
-            if (process != null) {
-                process.destroy();
-            }
-        }
-        //println output;
+        //add port & db args
+        properties["jetty.port"] = getJettyPort()
+        properties["datasource_ojb_platform"] = getDatasourceOjbPlatform()
+        properties["datasource_url"] = getDatasourceUrl()
+        properties["datasource_username"] = getDatasourceUsername()
+        properties["datasource_password"] = getDatasourcePassword()
 
-        if (output.count("BUILD SUCCESS") != 2) {
-            fail("the output did not contain two occurances of BUILD SUCCESS \n ${output}")
+        //turn on integration tests
+        properties["goals"] = "clean install -Dmaven.failsafe.skip=false"
+        context.projectProperties = properties;
+        context.properties = properties.keySet() as List;
+
+        executeMaven(context)
+
+        if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 2) {
+            fail("the output did not contain two occurances of BUILD SUCCESS \n ${context.stdOutWriter} \n ${context.stdErrWriter}")
         }
+
+        assertEquals("output written to std err", context.stdErrWriter.toString().trim(), "")
     }
 
     /**

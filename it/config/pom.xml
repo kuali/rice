@@ -55,5 +55,12 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.kuali.common</groupId>
+      <artifactId>kuali-mvn</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 </project>

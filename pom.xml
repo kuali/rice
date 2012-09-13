@@ -15,8 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.pom</groupId>
@@ -104,6 +103,7 @@
     <groovy.version>1.8.5</groovy.version>
     <guava.version>11.0</guava.version>
     <hibernate.version>3.6.9.Final</hibernate.version>
+    <kuali-mvn.version>1.0.2</kuali-mvn.version>
     <mail.version>1.4.4</mail.version>
     <jackson.version>1.8.8</jackson.version>
     <javassist.version>3.15.0-GA</javassist.version>
@@ -936,7 +936,7 @@
             <configuration>
               <target>
                 <delete quiet="true">
-                  <fileset dir="${rice.docbook.dest}/pdf" includes="**/*.fo" />
+                  <fileset dir="${rice.docbook.dest}/pdf" includes="**/*.fo"/>
                 </delete>
               </target>
             </configuration>
@@ -994,6 +994,7 @@
     <module>client-contrib</module>
     <module>dist</module>
     <module>config</module>
+    <module>qstest</module>
   </modules>
 
   <repositories>
@@ -1684,6 +1685,12 @@
       </dependency>
 
       <dependency>
+        <groupId>org.kuali.common</groupId>
+        <artifactId>kuali-mvn</artifactId>
+        <version>${kuali-mvn.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.kuali.commons</groupId>
         <artifactId>commons-beanutils</artifactId>
         <version>${commons-beanutils.version}</version>
@@ -2000,4 +2007,3 @@
   </scm>
 
 </project>
-

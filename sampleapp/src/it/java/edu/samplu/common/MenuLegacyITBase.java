@@ -11,13 +11,15 @@ public abstract class MenuLegacyITBase extends WebDriverLegacyITBase {
     }
 
     /**
-     * Override to return menu click selector (e.g. "link=Main Menu")
+     * TODO when the UpgradedSelenium tests have been converted over, rename this to getMenuLinkText
+     * Override to return menu click selector (e.g. "Main Menu")
      * @return selenium locator to click on
      */
     protected abstract String getMenuLinkLocator();
 
     /**
-     * Override to return main menu click selector (e.g. "link=Agenda lookup")
+     * TODO when the UpgradedSelenium tests have been converted over, rename this to getLinkText
+     * Override to return main menu click selector (e.g. "Agenda lookup")
      * @return selenium locator to click on
      */
     protected abstract String getLinkLocator();
@@ -34,9 +36,9 @@ public abstract class MenuLegacyITBase extends WebDriverLegacyITBase {
      */
     protected void gotoMenuLinkLocator(String message) throws Exception {
         waitForTitleToEqualKualiPortalIndex();
-        waitAndClick(getMenuLinkLocator(), message);
+        waitAndClickByLinkText(getMenuLinkLocator(), message);
         waitForTitleToEqualKualiPortalIndex();
-        waitAndClick(getLinkLocator(), message);
+        waitAndClickByLinkText(getLinkLocator(), message);
         waitForTitleToEqualKualiPortalIndex(message);
         selectFrame("iframeportlet");
         checkForIncidentReport(getLinkLocator(), message);

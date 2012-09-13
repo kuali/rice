@@ -14,6 +14,9 @@ import static com.thoughtworks.selenium.SeleneseTestBase.fail;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class WebDriverLegacyITBase {
+
+    public static final int DEFAULT_WAIT_SEC = 60;
+
     public abstract String getTestUrl();
 
     public WebDriver driver;
@@ -82,17 +85,45 @@ public abstract class WebDriverLegacyITBase {
         waitAndClick(locator, "");
     }
 
-    protected void waitAndClick(String locator, String message) throws InterruptedException {
+    protected void waitForPageToLoad() {
+
+    }
+
+    protected void waitFor(By by, String message) throws InterruptedException {
         for (int second = 0;; second++) {
-            if (second >= 60) fail(locator + " " + message + " timeout.");
-            try { if (driver.findElement(By.cssSelector(locator)) != null ) break; } catch (Exception e) {}
+            if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
+            try { if (driver.findElement(by) != null ) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
+    }
+
+    protected void waitAndClick(By by, String message) throws InterruptedException {
+        waitFor(by, message);
         try {
-            (driver.findElement(By.cssSelector(locator))).click();
+            (driver.findElement(by)).click();
         } catch (Exception e) {
-            fail(e.getMessage() + " " + locator + " " + message);
+            fail(e.getMessage() + " " + by.toString() + " " + message);
             e.printStackTrace();
         }
+    }
+
+    protected void waitAndClick(String locator, String message) throws InterruptedException {
+        waitAndClick(By.cssSelector(locator), message);
+    }
+
+    protected void waitAndClickByLinkText(String text) throws InterruptedException {
+        waitAndClick(By.linkText(text),"");
+    }
+
+    protected void waitAndClickByLinkText(String text, String message) throws InterruptedException {
+        waitAndClick(By.linkText(text), message);
+    }
+
+    protected void waitAndClickByName(String name) throws InterruptedException {
+        waitAndClick(By.name(name), "");
+    }
+
+    protected void waitAndClickByName(String name, String message) throws InterruptedException {
+        waitAndClick(By.name(name), message);
     }
 }

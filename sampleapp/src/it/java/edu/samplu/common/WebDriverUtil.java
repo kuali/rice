@@ -57,7 +57,7 @@ public class WebDriverUtil {
     }
 
     public static void checkForIncidentReport(WebDriver driver, String locator, String message) {
-        //TODO EGHM
+        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, message);
     }
 
     public static ChromeDriverService createAndStartService() {

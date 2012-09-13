@@ -312,8 +312,10 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
         DocumentTypeSecurity security = session.getDocumentTypeSecurity().get(documentTypeName);
         if (security == null) {
             DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-            security = docType.getDocumentTypeSecurity();
-            session.getDocumentTypeSecurity().put(documentTypeName, security);
+            if (docType != null) {
+                security = docType.getDocumentTypeSecurity();
+                session.getDocumentTypeSecurity().put(documentTypeName, security);
+            }
         }
         return security;
     }

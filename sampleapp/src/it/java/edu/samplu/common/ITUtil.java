@@ -68,7 +68,11 @@ public class ITUtil {
                 "KULRICE-8160 NPE at TableLayoutManager.buildLine(TableLayoutManager");
 
         jiraMatches.put("Bean property 'configFileLocations' is not writable or has an invalid setter method. Does the parameter type of the setter match the return type of the getter?",
-                "https://jira.kuali.org/browse/KULRICE-8173 Bean property 'configFileLocations' is not writable or has an invalid setter method");
+                "KULRICE-8173 Bean property 'configFileLocations' is not writable or has an invalid setter method");
+
+        jiraMatches.put("Bean property 'componentSecurity' is not readable or has an invalid getter method: Does the return type of the getter match the parameter type of the setter?",
+                "KULRICE-8182 JDK7 Bean property 'componentSecurity' is not readable...");
+
 //        jiraMatches.put("",
 //                "");
 
@@ -497,6 +501,10 @@ public class ITUtil {
     public static void checkForIncidentReport(Selenium selenium, String linkLocator, String message) {
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         String contents = selenium.getHtmlSource();
+        checkForIncidentReport(contents, linkLocator, message);
+    }
+
+    protected static void checkForIncidentReport(String contents, String linkLocator, String message) {
         if (contents != null &&
                 contents.contains("Incident Report") &&
                 !contents.contains("portal.do?channelTitle=Incident%20Report&amp;") && // Incident Report link on sampleapp KRAD tab

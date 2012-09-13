@@ -200,6 +200,11 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
             if (member.getMemberName() == null) {
                 member.updateRelatedObject();
             }
+            for (PeopleFlowDelegateBo delegate: member.getDelegates()) {
+                if (delegate.getMemberName() == null) {
+                    delegate.updateRelatedObject();
+                }
+            }
         }
     }
 

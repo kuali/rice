@@ -37,7 +37,9 @@ public class PeopleFlowBusRule extends MaintenanceDocumentRuleBase {
     protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
         boolean result = super.processCustomSaveDocumentBusinessRules(document);
         PeopleFlowBo peopleFlowDoc = (PeopleFlowBo)document.getNewMaintainableObject().getDataObject();
-        result &= checkIfDuplicatePeopleFlow(peopleFlowDoc);
+        if (StringUtils.isBlank(peopleFlowDoc.getId())) {
+            result &= checkIfDuplicatePeopleFlow(peopleFlowDoc);
+        }
         return result;
     }
 

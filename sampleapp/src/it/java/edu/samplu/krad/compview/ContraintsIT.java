@@ -32,6 +32,7 @@ public class ContraintsIT extends UpgradedSeleniumITBase {
 
     @Test
     public void testContraintsIT() throws Exception {
+        checkForIncidentReport("name=field9");
         focus("name=field9");
         waitAndType("name=field9", "1");
         fireEvent("name=field9", "blur");

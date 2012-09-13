@@ -41,6 +41,7 @@ public class ParentLineIT extends UpgradedSeleniumITBase {
      * tests that the size of a sub collection is correctly displayed using the parentLine el variable
      */
     public void testSubCollectionSize() throws Exception {
+        checkForIncidentReport("link=Collections");
 //        // click on collections page link
         waitAndClick("link=Collections");
 //        // wait for collections page to load by checking the presence of a sub collection line item

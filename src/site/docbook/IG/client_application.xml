@@ -268,116 +268,149 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
     </section> 
     
     <section><title>New Project Setup</title>
-        
-         <para>Now let’s look at creating a new Rice enabled
-            project. To do this, we will use a tool from the Rice project that performs most of the
-            initial bootstrapping. The tool is included within the Rice project therefore we need to
-            start by downloading the Rice 2.0 release. The Rice distribution can be downloaded
-            at:</para>
+      <para>
+        Some common description and mention of the requirements (eg the database).
+      </para>
+
+      <section><title>Maven CLI</title>
+        <procedure>
+          <step>
+            <para>
+              Run either the mvn archetype:generate command either in interactive or the automated mode to create the
+              project.
+              <itemizedlist>
+                <listitem>
+                  Interactive mode:
+                  <programlisting>
+C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=2.2.0-M4-SNAPSHOT</programlisting>
+                </listitem>
+                <listitem>
+                  Automated mode:
+                  <programlisting>
+C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=2.2.0-M4-SNAPSHOT
+-DgroupId=org.foo
+-DartifactId=bar
+-Dversion=1.0-SNAPSHOT
+-Dpackage=org.foo.bar
+-Ddatasource_ojb_platform=Oracle
+-Ddatasource_url=jdbc:oracle:thin:@localhost:1521:XE
+-Ddatasource_username=RICE
+-Ddatasource_password=RICE</programlisting>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </step>
+          <step>
+            Enter the project path and build the project.
+            <para>
+              <programlisting>
+C:\project> cd bar
+C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</programlisting>
+              This will clean, compile, run unit and integration tests and startup the project in jetty.
+            </para>
+          </step>
+          <step>
+            <para>
+              Navigate to <ulink url="http://localhost:8080/bar">http://localhost:8080/bar</ulink>
+            </para>
+          </step>
+        </procedure>
+
+      </section>
+
+      <section><title>Eclipse 3.7.2 JEE Edition</title>
         <para>
-            <link xlink:href="http://kuali.org/download"> http://kuali.org/download </link>
+          The following plugins are required:
+          <itemizedlist>
+            <listitem>
+              m2e - this is the core maven plugin for eclipse.
+            </listitem>
+            <listitem>
+              m2e - connector for the buildhelper plugin. It is not necessary to install this plugin ahead of time.
+              m2e will show an error and give the option to install it via the Eclipse Market Place.
+            </listitem>
+            <listitem>
+              Maven Integration for WTP - this allows maven to integrate with WTP (Eclipse Web Tools Platform). To
+              install this plugin search for <emphasis>m2e-wtp</emphasis> on the Eclipse Market Place (<guilabel>help</guilabel>
+              -> <guilabel>Market Place</guilabel>).
+            </listitem>
+          </itemizedlist>
         </para>
-        
-        <para>Or the project may be checked out through Subversion with the following repository
-        location:</para>
-        
-        <para>
-            <link xlink:href="https://svn.kuali.org/repos/rice">
-                https://svn.kuali.org/repos/rice</link>
-        </para>
-        
-        <para>Note the full project must be checked out, not just the tool. The tool creates the initial artifacts
-            by copying from the Rice working copy.</para>
-        
-        <para>The Rice project contents should be
-            placed into a folder in the local file system. A standard practice is to create a top
-            level directory named ‘java’, followed by a ‘projects’ directory, and then a directory
-            named ‘rice’ that contains the actual project (‘/java/projects/rice’).</para>
-        
-        <para>The particular tool we will be using was written in Groovy, therefore we need to download
-        the Groovy runtime. This can be downloaded at the following URL:</para>
-        
-        <para>
-            <link xlink:href="http://groovy.codehaus.org/Download">
-                http://groovy.codehaus.org/Download </link>
-        </para> 
-        
-        <para>Install instructions are also available on the above site. For users of
-            Windows, a Windows-Installer can be downloaded which will install Groovy and perform any
-            necessary configuration (including add groovy to your path).</para>
-        
-        <para>Once groovy is installed we are ready to run the create project script. Start up a console (on Windows
-            can use the PowerShell) and change into the directory that contains the Rice project (eg
-            ‘/java/projects/rice’). From the root project folder, change into the scripts folder.
-            This folder should contain a file named ‘createproject.groovy’.</para>
-        
-        <para>There are a few options supported by the create project script, but let’s start with the most basic
-            way of running. The command we will give is:</para>
-        
-        <programlisting>groovy createproject.groovy -name PROJECT_NAME</programlisting>
-        
-        <para>First we are invoking the groovy executable (this assumes
-            groovy is on your path, if not the full path to the groovy executable needs to be
-            specified). Groovy then expects the name of the script we want to run, which is
-            ‘creatproject.groovy’. Next we specify the one required argument for the create project
-            script which is the name for the project we want to create. Assuming we want to create a
-            new project named ‘MyRiceApp’, the command would be the following:</para>
-        
-        <programlisting>groovy createproject.groovy -name MyRiceApp</programlisting>
-        
-        <para>After typing the command hit enter to
-        start the script. You should then see a prompt as follows:\</para>
-        
-        <programlisting> ================================================================== 
-                                    WARNING 
-         ================================================================== 
-        This program will delete the following directory and replace it 
-         with a new project: 
-           /java/projects/MyRiceApp 
-        It will also create or replace the
-            following files in USER_HOME: 
-            1) C:\Users\jkneal.ADS/kuali/main/dev/MyRiceApp-config.xml 
-             2) C:\Users\jkneal.ADS/kuali/main/dev/rice.keystore   
-         If this is not what you want, please supply more information: 
-             usage: groovy createproject -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir
-            RICE_DIR] [-mdir MAVEN_HOME]    
-                Do you want to continue (yes/no)? </programlisting>
-        
-        <para>Type ‘yes’ and then enter to resume the program. You will then see logging output from
-            the script about various files being created, the maven build, and finally should see
-            printed instructions and how to complete the project setup. </para>
-       
-        <para>Notice we did not tell the script where to put our new project nor where to find the
-            Rice project. This is because the script defaults to the project location of
-            ‘/java/projects’. If we want our project to be generated in a different location, we can
-            do so by passing the directory path with the ‘-pdir’ argument:</para>
-            
-        <programlisting>groovy createproject.groovy -name MyRiceApp –pdir /home/myapps</programlisting>
-        
-        <para>The project directory given will be the parent for the project folder. The script will
-        create another folder within this with the same name as the given project name.</para>
-        
-        <para>Similarly if our source Rice project is in another directory, we can specify that
-        using the ‘-rdir’ argument:</para>
-        
-        <programlisting>groovy createproject.groovy -name MyRiceApp –rdir /home/myapps/rice</programlisting>
-            
-        <para>Unlike this project directory argument, this does specify the full path to the
-        project (nothing will be appended).</para>
-        
-        <para>Finally the create project script gives us a couple more options for the project
-            generation. We can include the Rice sampleapp in our project by passing the –sampleapp
-            flag:</para>
-        
-        <programlisting>groovy createproject.groovy -name MyRiceApp –sampleapp</programlisting>
-        
-        <para>Having the various examples of the sampleapp can be very useful in particular if doing
-        development with the KRAD framework.</para>
-        
-        <para>Lastly, we can have a project generated that is setup to go against a standalone Rice
-        instance. To do this we pass the –standalone flag:</para>
-        
-        <programlisting>groovy createproject.groovy -name MyRiceApp –standalone</programlisting>
+          <procedure><title>Eclipse 3.7.2 JEE Edition</title>
+          <step>
+            <para>
+              Follow the <menuchoice><guimenu>File</guimenu><guisubmenu>New</guisubmenu><guimenuitem>Project...</guimenuitem>
+              </menuchoice> menu choices.  On the <guilabel>New Project</guilabel> window choose <menuchoice>
+              <guimenu>Maven</guimenu><guisubmenu>Maven Project</guisubmenu></menuchoice> and press the
+              <guibutton>Next</guibutton> button twice to get to the <guilabel>Select an Archtype</guilabel> window.
+              <figure>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/archetype/2_eclipse.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </para>
+          </step>
+          <step>
+            <para>
+              Add Archetype if rice-archetype-quickstart does not exist in the list.
+              <substeps>
+                <step>
+                  <para>
+                    Click the <guibutton>Add Archetype...</guibutton> button.
+                  </para>
+                </step>
+                <step>
+                  <para>
+                    Fill in:
+                    <itemizedlist>
+                      <listitem>
+                        <para>Archetype Group Id: org.kuali.rice</para>
+                      </listitem>
+                      <listitem>
+                        <para>Archetype Artifact Id: rice-archetype-quickstart</para>
+                      </listitem>
+                      <listitem>
+                        <para>Archetype Version: ${project.version}</para>
+                      </listitem>
+                      <listitem>
+                        <para>Archetype Group Id: org.kuali.rice</para>
+                      </listitem>
+                    </itemizedlist>
+                  </para>
+                </step>
+                <step>
+                  <para>
+                    Click the <guibutton>OK</guibutton> button.
+                  </para>
+                </step>
+              </substeps>
+            </para>
+          </step>
+          <step>
+            <para>
+              If needed check the <guilabel>Include snapshot archetypes</guilabel> check box
+            </para>
+          </step>
+          <step>
+            <para>
+              Select <guilabel>org.kuali.rice:rice-archetype-quickstart:${project.version}</guilabel> and click
+              the <guibutton>Next</guibutton> button.
+            </para>
+            <figure>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/archetype/3_eclipse.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </step>
+        </procedure>
+      </section>
+
+      <section><title>Intellij IDEA Ultimate 11.1</title>
+      </section>
     </section>
     
     <section>

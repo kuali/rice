@@ -18,7 +18,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.7.1</version>
+    <version>1.7.4</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -208,6 +208,12 @@
       <properties>
         <skipTests>true</skipTests>
         <plugin.site.version>3.0-beta-3</plugin.site.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>kuali-release</id>
+      <properties>
+        <license.phase>none</license.phase>
       </properties>
     </profile>
     <profile>

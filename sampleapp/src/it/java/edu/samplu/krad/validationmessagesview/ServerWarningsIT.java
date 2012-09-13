@@ -56,7 +56,7 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible",
                 isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
         typeBlurFocus("name=field1", "");
-
+        fireEvent("name=field1","hover");
         waitForElementVisible("css=.jquerybubblepopup-innerHtml", " not visible after typing nothing in name=field1 then firing blur and focus events");
 
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
@@ -68,17 +68,18 @@ public class ServerWarningsIT extends UpgradedSeleniumITBase {
                 isVisible("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
 
         typeBlurFocus("name=field1", "b");
-
-        waitForElementVisible("css=.jquerybubblepopup-innerHtml> .uif-clientMessageItems", " not visible after typing b in name=field1 then firing blur and focus events https://jira.kuali.org/browse/KULRICE-8140 Investigate Server Warnings");
+        fireEvent("name=field1","hover");
+        waitForElementVisible("css=.jquerybubblepopup-innerHtml> .uif-serverMessageItems", " not visible after typing b in name=field1 then firing blur and focus events https://jira.kuali.org/browse/KULRICE-8140 Investigate Server Warnings");
 
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
-                !isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+                isVisible("css=.jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
 		assertTrue("css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems", !isElementPresent(
                 "css=.jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
 
 		waitAndType("name=field1", "");
 		fireEvent("name=field1", "focus");
 		fireEvent("name=field1", "blur");
+		fireEvent("name=field1","hover");
 		assertTrue("css=.uif-hasError is not present after typing nothing in name=field1 and then firing focus and blur events",
                 isElementPresent("css=.uif-hasError"));
 		assertTrue( "css=img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",

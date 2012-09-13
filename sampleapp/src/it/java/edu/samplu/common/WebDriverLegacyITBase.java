@@ -1,5 +1,6 @@
 package edu.samplu.common;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
@@ -38,6 +39,16 @@ public abstract class WebDriverLegacyITBase {
         driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl());
     }
 
+    protected void assertTextPresent(String text) {
+        assertTextPresent(text, "");
+    }
+
+    protected void assertTextPresent(String text, String message) {
+        if (!driver.getPageSource().contains(text)) {
+            Assert.fail(text + " not present " + message);
+        }
+    }
+
     protected void checkForIncidentReport() {
         checkForIncidentReport("", "");
     }
@@ -73,9 +84,9 @@ public abstract class WebDriverLegacyITBase {
     protected void waitForTitleToEqualKualiPortalIndex(String message) throws InterruptedException {
         boolean failed = false;
         for (int second = 0;; second++) {
+            Thread.sleep(1000);
             if (second >= 60) failed = true;
             try { if (failed || ITUtil.KUALI_PORTAL_TITLE.equals(driver.getTitle())) break; } catch (Exception e) {}
-            Thread.sleep(1000);
         }
         WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
         if (failed) fail("timeout of " + 60 + " seconds " + message);
@@ -86,15 +97,23 @@ public abstract class WebDriverLegacyITBase {
     }
 
     protected void waitForPageToLoad() {
+        // noop webdriver doesn't it need it, except when it does...
+    }
 
+    protected void waitFor(By by) throws InterruptedException {
+        waitFor(by, "");
     }
 
     protected void waitFor(By by, String message) throws InterruptedException {
         for (int second = 0;; second++) {
+            Thread.sleep(1000);
             if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
             try { if (driver.findElement(by) != null ) break; } catch (Exception e) {}
-            Thread.sleep(1000);
         }
+    }
+
+    protected void waitAndClick(By by) throws InterruptedException {
+        waitAndClick(by, "");
     }
 
     protected void waitAndClick(By by, String message) throws InterruptedException {

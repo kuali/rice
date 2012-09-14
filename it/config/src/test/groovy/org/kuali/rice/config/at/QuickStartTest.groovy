@@ -65,6 +65,10 @@ class QuickStartTest {
     void setConfig() {
         config = new JAXBConfigImpl("classpath:META-INF/config-test-config.xml");
         config.parseConfig();
+
+        //override jetty port in config:
+        config.putProperty("http.port", getJettyPort());
+
         //println config;
     }
 
@@ -187,15 +191,15 @@ class QuickStartTest {
         def context = createStandardContext()
         def properties = createStandardProperties()
 
-        //add port & db args
+        //db args for archetype generation
         properties["jetty.port"] = getJettyPort()
         properties["datasource_ojb_platform"] = getDatasourceOjbPlatform()
         properties["datasource_url"] = getDatasourceUrl()
         properties["datasource_username"] = getDatasourceUsername()
         properties["datasource_password"] = getDatasourcePassword()
 
-        //turn on integration tests
-        properties["goals"] = "clean install -Dmaven.failsafe.skip=false"
+        //turn on integration tests, set jetty.port for integration test run
+        properties["goals"] = "clean install -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
         context.projectProperties = properties;
         context.properties = properties.keySet() as List;
 

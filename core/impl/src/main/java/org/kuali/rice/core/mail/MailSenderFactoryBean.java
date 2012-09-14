@@ -43,7 +43,6 @@ public class MailSenderFactoryBean extends AbstractFactoryBean {
     private static final String HOST_PROPERTY = "mail.smtp.host";
     private static final String PORT_PROPERTY = "mail.smtp.port";
     private static final String PROTOCOL_PROPERTY = "mail.transport.protocol";
-
     private Session mailSession;
     
     @Override

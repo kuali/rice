@@ -77,6 +77,7 @@ public class SOAPConnector extends AbstractServiceConnector {
 		
 		//Set logging, transformation, and security interceptors
         clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+        clientFactory.getOutFaultInterceptors().add(new LoggingOutInterceptor());
         CXFWSS4JOutInterceptor outSecurityInterceptor = new CXFWSS4JOutInterceptor(getServiceConfiguration().getBusSecurity());
         clientFactory.getOutInterceptors().add(outSecurityInterceptor);
         clientFactory.getOutFaultInterceptors().add(outSecurityInterceptor);
@@ -85,6 +86,7 @@ public class SOAPConnector extends AbstractServiceConnector {
 		}
 
 	    clientFactory.getInInterceptors().add(new LoggingInInterceptor());
+        clientFactory.getInFaultInterceptors().add(new LoggingInInterceptor());
         CXFWSS4JInInterceptor inSecurityInterceptor = new CXFWSS4JInInterceptor(getServiceConfiguration().getBusSecurity());
         clientFactory.getInInterceptors().add(inSecurityInterceptor);
         clientFactory.getInFaultInterceptors().add(inSecurityInterceptor);

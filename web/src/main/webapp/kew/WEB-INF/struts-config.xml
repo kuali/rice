@@ -60,7 +60,7 @@
         <forward name="save" path="/index.html" redirect="true" />
         <forward name="cancel" path="/index.html" redirect="true" />
         <forward name="close" path="/index.html" redirect="true" />
-        <forward name="portal" path="/index.html" redirect="true" />
+        <forward name="portal" path="/.." redirect="true" />
         <forward name="route_report" path="/../kr/WEB-INF/jsp/RoutingReportForward.jsp"/>
         <forward name="updateTextArea" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         <forward name="exceptionIncidentHandler" path="/../kr/kualiExceptionIncidentReport.do" />
@@ -128,7 +128,7 @@
 			scope="session" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
 			<forward name="init" path="/WEB-INF/jsp/rule/RuleInit.jsp" />
-	  </action>
+    </action>
 
 	  <action path="/RuleQuickLinks" name="RuleQuickLinksForm" input="/WEB-INF/jsp/rule/RuleQuickLinks.jsp" type="org.kuali.rice.kew.rule.web.RuleQuickLinksAction"
 	        scope="request" parameter="methodToCall" validate="false" attribute="KualiForm">

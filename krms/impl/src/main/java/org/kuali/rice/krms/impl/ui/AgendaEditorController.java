@@ -141,7 +141,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
-            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S")
+            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class)
                     .toString());
             if (StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
                 rule.setNamespace("");
@@ -253,7 +253,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
         MaintenanceDocument document = maintenanceForm.getDocument();
         if (rule.processAgendaItemBusinessRules(document)) {
-            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S")
+            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S", AgendaItemBo.class)
                     .toString());
             newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
             if (agenda.getFirstItemId() == null) {
@@ -301,6 +301,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         boolean result = true;
 
         if (proposition != null) { // Null props are allowed.
+
+            if (StringUtils.isBlank(proposition.getDescription())) {
+                GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.missingDescription");
+                result &= false;
+            }
 
             if (StringUtils.isBlank(proposition.getCompoundOpCode())) {
                 // then this is a simple proposition, validate accordingly
@@ -495,7 +501,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     private String getCreateAgendaId(AgendaBo agenda) {
         if (agenda.getId() == null) {
-            agenda.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_S").toString());
+            agenda.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_S", AgendaItemBo.class).toString());
         }
         return agenda.getId();
     }
@@ -2026,7 +2032,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
                 // create a new compound proposition
                 PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(propBo, true);
-                compound.setDescription("New Compound Proposition " + UUID.randomUUID().toString());
+                compound.setDescription("New Compound Proposition");
                 compound.setEditMode(false);
 
                 if (parent.getData() == null) { // SPECIAL CASE: this is the only proposition in the tree

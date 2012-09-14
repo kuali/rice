@@ -295,6 +295,7 @@
     <property name="layoutManager">
       <bean parent="Uif-HorizontalBoxLayout" p:style="padding: 5px;"/>
     </property>
+    <property name="onDocumentReadyScript" value="loadControlsInit();"/>
       
     <property name="items">
       <list>
@@ -317,7 +318,7 @@
 
         <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('addparent');
           if (enabled) {
-              ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
+              ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-TreeGroup');
           }
           "
               p:actionLabel="Add Parent">
@@ -426,6 +427,12 @@
           }
           "
               p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
+          <property name="styleClasses">
+            <list merge="true">
+              <value>tree-bar-button</value>
+              <value>kr-delete-button</value>
+            </list>
+          </property>
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"
                   p:altText="Delete"/>
@@ -564,7 +571,7 @@
             </bean>
 
             <bean parent="Uif-InputField" p:propertyName="proposition.description" p:constraintText="size 100"
-                  p:style="margin-left: 1pt;" p:showLabel="false" p:label="id" p:maxLength="255">
+                  p:style="margin-left: 1pt;" p:showLabel="true" p:label="Description" p:labelPlacement="TOP" p:maxLength="255" p:required="true">
               <property name="control">
                 <bean parent="Uif-TextControl" p:size="93" p:maxLength="100" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;"
                       p:cssClasses="editDescription"/>

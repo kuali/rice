@@ -71,7 +71,6 @@
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <version>${persistence.version}</version>
     </dependency>
     <dependency>
       <groupId>xapool</groupId>

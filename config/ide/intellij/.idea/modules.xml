@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/rice.iml" filepath="$PROJECT_DIR$/rice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-archetype.iml" filepath="$PROJECT_DIR$/rice-archetype.iml" group="rice-config and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-archetype-quickstart.iml" filepath="$PROJECT_DIR$/rice-archetype-quickstart.iml" group="rice-config and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-checkstyle.iml" filepath="$PROJECT_DIR$/rice-checkstyle.iml" group="rice-config and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-client-contrib.iml" filepath="$PROJECT_DIR$/rice-client-contrib.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-config.iml" filepath="$PROJECT_DIR$/rice-config.iml" group="rice-config and modules" />
@@ -33,6 +35,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-impex-server-demo.iml" filepath="$PROJECT_DIR$/rice-impex-server-demo.iml" group="rice-db and modules/rice-impex and modules/rice-impex-server and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-impl.iml" filepath="$PROJECT_DIR$/rice-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-it.iml" filepath="$PROJECT_DIR$/rice-it.iml" group="rice-it and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-config.iml" filepath="$PROJECT_DIR$/rice-it-config.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-core.iml" filepath="$PROJECT_DIR$/rice-it-core.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-edl.iml" filepath="$PROJECT_DIR$/rice-it-edl.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-impl.iml" filepath="$PROJECT_DIR$/rice-it-impl.iml" group="rice-it and modules" />
@@ -46,7 +49,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-it-ksb.iml" filepath="$PROJECT_DIR$/rice-it-ksb.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-location.iml" filepath="$PROJECT_DIR$/rice-it-location.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-remote.iml" filepath="$PROJECT_DIR$/rice-it-remote.iml" group="rice-it and modules" />
-      <module fileurl="file://$PROJECT_DIR$/../../../it/vc/rice-it-vc.iml" filepath="$PROJECT_DIR$/../../../it/vc/rice-it-vc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-vc.iml" filepath="$PROJECT_DIR$/rice-it-vc.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ken.iml" filepath="$PROJECT_DIR$/rice-ken.iml" group="rice-ken and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ken-api.iml" filepath="$PROJECT_DIR$/rice-ken-api.iml" group="rice-ken and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kew.iml" filepath="$PROJECT_DIR$/rice-kew.iml" group="rice-kew and modules" />
@@ -57,7 +60,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-kim-api.iml" filepath="$PROJECT_DIR$/rice-kim-api.iml" group="rice-kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-framework.iml" filepath="$PROJECT_DIR$/rice-kim-framework.iml" group="rice-kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-impl.iml" filepath="$PROJECT_DIR$/rice-kim-impl.iml" group="rice-kim and modules" />
-      <module fileurl="file://$PROJECT_DIR$/../../../kim/kim-ldap/rice-kim-ldap.iml" filepath="$PROJECT_DIR$/../../../kim/kim-ldap/rice-kim-ldap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim-ldap.iml" filepath="$PROJECT_DIR$/rice-kim-ldap.iml" group="rice-kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kns.iml" filepath="$PROJECT_DIR$/rice-kns.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad.iml" filepath="$PROJECT_DIR$/rice-krad.iml" group="rice-krad and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-app-framework.iml" filepath="$PROJECT_DIR$/rice-krad-app-framework.iml" group="rice-krad and modules" />

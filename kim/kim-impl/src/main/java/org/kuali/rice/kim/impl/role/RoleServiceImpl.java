@@ -1448,10 +1448,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : roleIds) {
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
             if (roleTypeService != null) {
-                List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                    copyRoleIds.remove(roleId);
-                    roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                try {
+                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                        copyRoleIds.remove(roleId);
+                        roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                    }
+                } catch (Exception e) {
+                    LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
                 }
             }
         }

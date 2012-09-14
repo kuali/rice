@@ -35,7 +35,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 
 	transient protected static DocumentDictionaryService documentDictionaryService;
 
-	public final boolean canCreate(Class boClass, Person user) {
+	public boolean canCreate(Class boClass, Person user) {
 		Map<String, String> permissionDetails = new HashMap<String, String>();
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				getDocumentDictionaryService().getMaintenanceDocumentTypeName(
@@ -51,7 +51,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
                                 new HashMap<String, String>());
 	}
 
-	public final boolean canMaintain(Object dataObject, Person user) {
+	public boolean canMaintain(Object dataObject, Person user) {
 		Map<String, String> permissionDetails = new HashMap<String, String>(2);
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				getDocumentDictionaryService().getMaintenanceDocumentTypeName(
@@ -68,7 +68,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 						user.getPrincipalId(), permissionDetails, null);
 	}
 
-	public final boolean canCreateOrMaintain(
+	public boolean canCreateOrMaintain(
 			MaintenanceDocument maintenanceDocument, Person user) {
 		return !permissionExistsByTemplate(maintenanceDocument,
 				KRADConstants.KNS_NAMESPACE,

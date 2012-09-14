@@ -65,14 +65,23 @@ function markNodeAsSelected(parentLiNode) {
     if (!jq(parentLiNode).hasClass('ruleCutSelected')) {
         jq(parentLiNode).addClass('ruleBlockSelected');
     }
-    ;
-    enableTreeButtons(); // disableButtons.js
-    // show hidden edit image link
-    jq(parentLiNode).find(".actionReveal").first().show();
+
+    if (!propositionAddInProgress()) {
+        enableTreeButtons(); // disableButtons.js
+        // show hidden edit image link
+        jq(parentLiNode).find(".actionReveal").first().show();
+    }
 }
+
 function handlePropositionNodeClick(parentLiNode) {
     var propositionId = getPropositionIdFromParentLi(parentLiNode);
     var selectedItemTracker = getSelectedPropositionInput();
+
+    // Don't allow other propositions to be selected when the proposition description is blank
+    if (propositionWithoutDescription(parentLiNode)) {
+        jQuery(".editDescription").focusout()
+        return;
+    }
 
     // make li show containment of children
     jq('li').each(function() {
@@ -84,15 +93,53 @@ function handlePropositionNodeClick(parentLiNode) {
     if (selectedItemTracker.val() == propositionId) {
         // if this item is already selected, deselect it
         selectedItemTracker.val('');
-        disableTreeButtons(); // disableButtons.js
-        enableAddButton(); // disableButtons.js
-        enableRefreshButton(); // disableButtons.js
+        if (!propositionAddInProgress()) {
+            disableTreeButtons(); // disableButtons.js
+            enableAddButton(); // disableButtons.js
+            enableRefreshButton(); // disableButtons.js
+        }
     } else {
         selectedItemTracker.val(propositionId);
         markNodeAsSelected(parentLiNode);
-        enableTreeButtons(); // disableButtons.js
     }
 }
+
+/**
+ * Check if a proposition is missing a description.
+ *
+ * When a different proposition is selected and the added/edited proposition has a blank description then this method
+ * returns true
+ *
+ * @return true if description is missing, false otherwise
+ */
+function propositionWithoutDescription(parentLiNode) {
+    var description =  propositionAddInProgress();
+    // check if edit is in progress
+    if (description) {
+        // check if edited proposition is the selected proposition
+        if (parentLiNode.find && parentLiNode.find('.editDescription').attr('id') == description.attr('id')) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Check if a proposition is currently being added.
+ *
+ * As long as the proposition does not have a description the proposition is considered as being
+ * in an add status.
+ *
+ * @return description jQuery object of the proposition that is being added, null if none is currently being added
+ */
+function propositionAddInProgress() {
+    var description =  jQuery(".editDescription");
+    return ((description.length > 0) && (jQuery.trim(description.val()) == "")) ? description : null;
+}
+
 function initRuleTree(componentId){
 
     // binding to tree loaded event

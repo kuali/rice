@@ -375,6 +375,7 @@
     <property name="layoutManager">
       <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
+    <property name="onDocumentReadyScript" value="loadControlsInit();"/>
 
     <property name="items">
       <list>

@@ -154,8 +154,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                                             new String[principalIds.size()])),
                                     equal("members.typeCode", KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()),
                                     and(
-                                        or(isNull("members.activeFromDateValue"), greaterThanOrEqual("members.activeFromDateValue", currentTime)),
-                                        or(isNull("members.activeToDateValue"), lessThan("members.activeToDateValue", currentTime))
+                                            or(isNull("members.activeFromDateValue"), lessThanOrEqual("members.activeFromDateValue", currentTime)),
+                                            or(isNull("members.activeToDateValue"), greaterThan("members.activeToDateValue", currentTime))
                                     )
                                 ));
                 }

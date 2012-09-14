@@ -157,7 +157,7 @@ class QuickStartTest {
 
     /**
      * This test generates a new project in a temp directory using the maven archetype plugin. It then executes a clean install on the project.
-     * This tests that the sample project's the application successfully generates, it compiles, and the unit and integration tests pass.
+     * This tests that the quickstart application successfully generates, it compiles, and the unit and integration tests pass.
      */
     @Test
     void test_quickstart_gen_clean_install() {
@@ -179,7 +179,7 @@ class QuickStartTest {
 
     /**
      * This test generates a new project in a temp directory using the maven archetype plugin. It then executes a clean install while also running the integration tests on the project.
-     * This tests that the sample project's the application successfully generates, it compiles, and the unit and integration tests pass.
+     * This tests that the quickstart application successfully generates, it compiles, and the unit and integration tests pass.
      * The integration test in the project make sure the project successfully starts up in an app server.
      */
     @Test
@@ -208,13 +208,10 @@ class QuickStartTest {
         assertEquals("output written to std err", context.stdErrWriter.toString().trim(), "")
     }
 
-    /**
-     * This test generates a new project in a temp directory using the maven archetype plugin. It then executes a clean install on the project.
-     * This tests that the sample project's the application successfully generates, it compiles, and the unit and integration tests pass and jetty starts up.
-     */
     @Test @Ignore("http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4770092")
     void test_quickstart_gen_clean_install_jetty_run() {
-        /*this test was suppose to run the jetty:run command to make sure it is properly configured and jetty can startup.
+        /*
+          this test was suppose to run the jetty:run command to make sure it is properly configured and jetty can startup.
           the problem is the child processes being created were not being destroyed.
           it is probably ok that we do not have this test because successful startup is being tested
           by the test_quickstart_gen_clean_install_int_tests when it executes the generated project's

@@ -95,7 +95,7 @@ class QuickStartTest {
     def getDatasourceUrl() { config.getProperty("datasource.url") }
     def getDatasourceUsername() { config.getProperty("datasource.username") }
     def getDatasourcePassword() { config.getProperty("datasource.password") }
-    def getJettyPort() { config.getProperty("kns.test.port") ?: "8080" }
+    def getJettyPort() { config.getProperty("unittest.jetty.server1.port") }
     def getArchetypeVersion() { config.getProperty("rice.version") }
 
     private OutputAwareMvnContext createStandardContext() {

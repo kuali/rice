@@ -1,7 +1,7 @@
 /*
  * Copyright 2006-2012 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -32,7 +32,7 @@ class QuickStartTest {
     private static String basedir
 
     private File targetDir
-    private JAXBConfigImpl config;
+    private JAXBConfigImpl config
 
     /**
      * determines the basedir for generating projects
@@ -41,7 +41,7 @@ class QuickStartTest {
     static void setupBaseDir() {
         basedir = System.getProperty("basedir")
         if (basedir == null) {
-            final String userDir = System.getProperty("user.dir");
+            final String userDir = System.getProperty("user.dir")
             basedir = userDir + ((userDir.endsWith(File.separator + "it" + File.separator + "config")) ? "" : File.separator + "it" + File.separator + "config")
         }
     }
@@ -53,7 +53,7 @@ class QuickStartTest {
     void createTargetDir() {
         targetDir = new File(basedir + "/target/projects")
         if (!targetDir.exists()) {
-            targetDir.mkdir();
+            targetDir.mkdir()
         }
         //println targetDir
     }
@@ -63,13 +63,13 @@ class QuickStartTest {
      */
     @Before
     void setConfig() {
-        config = new JAXBConfigImpl("classpath:META-INF/config-test-config.xml");
-        config.parseConfig();
+        config = new JAXBConfigImpl("classpath:META-INF/config-test-config.xml")
+        config.parseConfig()
 
         //override jetty port in config:
-        config.putProperty("http.port", getJettyPort());
+        config.putProperty("http.port", getJettyPort())
 
-        //println config;
+        //println config
     }
 
     /**
@@ -81,7 +81,7 @@ class QuickStartTest {
             return
         }
 
-        def recursiveDel;
+        def recursiveDel
         recursiveDel = {
             it.eachDir( recursiveDel )
             it.eachFile {
@@ -103,41 +103,40 @@ class QuickStartTest {
     def getArchetypeVersion() { config.getProperty("rice.version") }
 
     private OutputAwareMvnContext createStandardContext() {
-        def context = new OutputAwareMvnContextImpl()
-        context.args = ["org.apache.maven.plugins:maven-archetype-plugin:generate"]
-        context.workingDir = targetDir
-        context.basedir = targetDir
-        context.addMavenOpts = true
-        context.quiet = false
-        context.silent = false
-        context.failOnError = true
-        context.deleteTempPom = true
-        context.stdOutWriter = new StringWriter()
-        context.stdErrWriter = new StringWriter()
-        return context;
+        return new OutputAwareMvnContextImpl(
+            args: ["org.apache.maven.plugins:maven-archetype-plugin:generate"],
+            workingDir: targetDir,
+            basedir: targetDir,
+            addMavenOpts: true,
+            quiet: false,
+            silent: false,
+            failOnError: true,
+            deleteTempPom: true,
+            stdOutWriter: new StringWriter(),
+            stdErrWriter: new StringWriter())
     }
 
     private Properties createStandardProperties() {
         return new Properties(
-                [
-                        "interactiveMode": "false",
-                        "archetypeGroupId":"org.kuali.rice",
-                        "archetypeArtifactId": "rice-archetype-quickstart",
-                        "archetypeVersion": getArchetypeVersion(),
-                        "groupId": "org.kuali.rice",
-                        "artifactId": "qstest",
-                        "version": "1.0-SNAPSHOT",
-                        "package": "org.kuali.rice.qstest",
-                ]
+            [
+                "interactiveMode": "false",
+                "archetypeGroupId":"org.kuali.rice",
+                "archetypeArtifactId": "rice-archetype-quickstart",
+                "archetypeVersion": getArchetypeVersion(),
+                "groupId": "org.kuali.rice",
+                "artifactId": "qstest",
+                "version": "1.0-SNAPSHOT",
+                "package": "org.kuali.rice.qstest",
+            ]
         )
     }
 
     private executeMaven(context) {
         try {
-            new OutputAwareMvnExecutor().execute(context);
+            new OutputAwareMvnExecutor().execute(context)
         } finally {
-            //println context.stdOutWriter;
-            //println context.stdErrWriter;
+            //println context.stdOutWriter
+            //println context.stdErrWriter
         }
     }
 
@@ -148,8 +147,8 @@ class QuickStartTest {
     void test_quickstart_gen() {
         def context = createStandardContext()
         def properties = createStandardProperties()
-        context.projectProperties = properties;
-        context.properties = properties.keySet() as List;
+        context.projectProperties = properties
+        context.properties = properties.keySet() as List
         executeMaven(context)
 
         if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 1) {
@@ -168,8 +167,8 @@ class QuickStartTest {
         def context = createStandardContext()
         def properties = createStandardProperties()
         properties["goals"] = "clean install -Dmaven.failsafe.skip=true"
-        context.projectProperties = properties;
-        context.properties = properties.keySet() as List;
+        context.projectProperties = properties
+        context.properties = properties.keySet() as List
 
         executeMaven(context)
 
@@ -200,8 +199,8 @@ class QuickStartTest {
 
         //turn on integration tests, set jetty.port for integration test run
         properties["goals"] = "clean install -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
-        context.projectProperties = properties;
-        context.properties = properties.keySet() as List;
+        context.projectProperties = properties
+        context.properties = properties.keySet() as List
 
         executeMaven(context)
 

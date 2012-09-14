@@ -21,11 +21,15 @@ import java.net.HttpURLConnection;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+
 /**
  * Kuali Rice ArcheType Help
  *
  * An integration test for the application.  Integration tests are the type of tests you write when the test code is
  * long running or depends on unstable or external resources (ex: databases, remote service calls, app servers).
+ *
+ * Since integration tests are generally slow and less stable compared to unit tests, they are only executed upon
+ * project build when specifically requested.
  */
 public class BasicApplicationIT {
     @Test

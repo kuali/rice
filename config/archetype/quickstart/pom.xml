@@ -27,6 +27,7 @@
   <packaging>maven-archetype</packaging>
 
   <name>Rice Archetype Quickstart Project</name>
+  <description>This is a archetype which creates a Kuali Rice based application. It uses a basic project structure demonstrating war overlays, service implementation, unit and integration testing.  It is configured in a bundled integration model with Kuali Rice.</description>
   <properties>
     <kuali.testjar.phase>none</kuali.testjar.phase>
     <plugin.archetype.version>2.2</plugin.archetype.version>

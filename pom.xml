@@ -994,7 +994,6 @@
     <module>client-contrib</module>
     <module>dist</module>
     <module>config</module>
-    <module>qstest</module>
   </modules>
 
   <repositories>

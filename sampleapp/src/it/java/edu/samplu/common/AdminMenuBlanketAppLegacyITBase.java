@@ -16,6 +16,9 @@
 package edu.samplu.common;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * blanket approving a new document, results in a final document
@@ -45,7 +48,20 @@ public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
     public void testBlanketApprove() throws Exception {
         gotoCreateNew();
         String docId = blanketApprove();
-//        blanketApproveTest();
-//        assertDocFinal(docId);
+        blanketApproveTest();
+        assertDocFinal(docId);
+    }
+
+    protected void assertDocFinal(String docId) {
+        if(isElementPresent(By.linkText(docId))){
+            assertEquals("FINAL", getDocStatus());
+        }else{
+            assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]")));
+            assertEquals("FINAL", getDocStatus());
+        }
+    }
+
+    private String getDocStatus() {
+        return driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText();
     }
 }

@@ -316,6 +316,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
         component.setOnLoadScript(clientStateScript);
 
+        // get script for generating growl messages
+        String growlScript = buildGrowlScript(view);
+        ((ViewModel) model).setGrowlScript(growlScript);
+
         view.getViewIndex().indexComponent(component);
     }
 
@@ -1362,10 +1366,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
             // make a new instance for the add line
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
-
-            // get script for generating growl messages
-            String growlScript = buildGrowlScript(view);
-            ((ViewModel) model).setGrowlScript(growlScript);
         }
 
         ((UifFormBase) model).getAddedCollectionItems().add(addLine);

@@ -352,6 +352,7 @@ public class UifComponentsTestController extends UifControllerBase {
     @Override
     public ModelAndView addLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
+        GlobalVariables.getMessageMap().addGrowlMessage("Greetings!", "kitchenSink.welcome");
         if (uifForm.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-CollectionsErrorPage")) {
             GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-CollectionErrorSection",
                     "errorSectionTest");

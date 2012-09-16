@@ -37,36 +37,40 @@
 
     <#if manager.dataFields?? && (manager.dataFields?size gt 0)>
 
-        <table id="${manager.id}" ${style!} ${styleClass!}>
+    <table id="${manager.id}" ${style!} ${styleClass!}>
 
-            <#if manager.headerLabels?? && (manager.headerLabels?size gt 0)>
-                <thead>
-                    <@krad.grid items=manager.headerLabels numberOfColumns=manager.numberOfColumns
-                    renderHeaderRow=true renderAlternatingHeaderColumns=false
-                    applyDefaultCellWidths=manager.applyDefaultCellWidths/>
-                </thead>
-            </#if>
+        <#if manager.headerLabels?? && (manager.headerLabels?size gt 0)>
+            <thead>
+                <@krad.grid items=manager.headerLabels numberOfColumns=manager.numberOfColumns
+                renderHeaderRow=true renderAlternatingHeaderColumns=false
+                applyDefaultCellWidths=manager.applyDefaultCellWidths/>
+            </thead>
+        </#if>
 
-            <tbody>
-                <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumns
-                    applyAlternatingRowStyles=manager.applyAlternatingRowStyles
-                    applyDefaultCellWidths=manager.applyDefaultCellWidths
-                    renderAlternatingHeaderColumns=false
-                    rowCssClasses=manager.rowCssClasses/>
-            </tbody>
+        <tbody>
+            <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumns
+            applyAlternatingRowStyles=manager.applyAlternatingRowStyles
+            applyDefaultCellWidths=manager.applyDefaultCellWidths
+            renderAlternatingHeaderColumns=false
+            rowCssClasses=manager.rowCssClasses/>
+        </tbody>
 
-             <#if manager.totalColumns?? && (manager.totalColumns?size gt 0)>
-                <tfoot>
-                    <tr>
-                        <#list 1..manager.numberOfColumns as x>
-                            <th rowspan="1" colspan="1"></th>
-                        </#list>
-                    </tr>
-                </tfoot>
-             </#if>
-        </table>
+        <#if manager.footerCalculationComponents?has_content>
+            <tfoot>
+            <tr>
+                <#list manager.footerCalculationComponents as component>
+                    <th rowspan="1" colspan="1">
+                        <#if component??>
+                            <@krad.template component=component/>
+                        </#if>
+                    </th>
+                </#list>
+            </tr>
+            </tfoot>
+        </#if>
+    </table>
 
-        <#-- invoke table tools widget -->
+    <#-- invoke table tools widget -->
         <@krad.template component=manager.richTable componentId="${manager.id}"/>
 
     </#if>

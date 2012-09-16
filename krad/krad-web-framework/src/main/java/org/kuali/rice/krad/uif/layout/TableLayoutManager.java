@@ -31,7 +31,9 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -40,9 +42,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -95,9 +95,19 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private String rowDetailsLinkName = "Details";
     private boolean rowDetailsUseImage;
     private boolean rowDetailsOpen;
-    
-    private List<String> totalColumns;
-    private Map<String, String> totalValueMapping;
+
+    private List<String> columnsToCalculate;
+
+    private boolean renderOnlyLeftTotalLabels;
+    private boolean showTotal;
+    private boolean showPageTotal;
+    private boolean showGroupTotal;
+    private Label totalLabel;
+    private Label pageTotalLabel;
+    private Label groupTotalLabelPrototype;
+
+    List<ColumnCalculationInfo> columnCalculations;
+    List<Component> footerCalculationComponents;
 
     public TableLayoutManager() {
         useShortLabels = false;
@@ -109,8 +119,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         headerLabels = new ArrayList<Label>();
         dataFields = new ArrayList<Component>();
-        totalColumns = new ArrayList<String>();
-        totalValueMapping = new HashMap<String, String>();
+        columnsToCalculate = new ArrayList<String>();
     }
 
     /**
@@ -142,6 +151,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             sequenceFieldPrototype = ComponentFactory.getMessageField();
             view.assignComponentIds(getSequenceFieldPrototype());
         }
+
     }
 
     /**
@@ -183,6 +193,122 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
             collectionGroup.setOnDocumentReadyScript(highlightScript);
         }
+
+        //setup the column calculations functionality and components
+        if (columnCalculations != null) {
+            setupColumnCalculations(view, model, container, totalColumns);
+        }
+    }
+
+    /**
+     * Setup the column calculations functionality and components
+     *
+     * @param view the view
+     * @param model the model
+     * @param container the parent container
+     * @param totalColumns total number of columns in the table
+     */
+    private void setupColumnCalculations(View view, Object model, Container container, int totalColumns) {
+        footerCalculationComponents = new ArrayList<Component>(totalColumns);
+
+        //add nulls for each column to start - nulls will be processed by the ftl as a blank cell
+        for (int i = 0; i < totalColumns; i++) {
+            footerCalculationComponents.add(null);
+        }
+
+        for (ColumnCalculationInfo cInfo : columnCalculations) {
+            //columnNumber is REQUIRED throws exception if not set
+            if (cInfo.getColumnNumber() != null) {
+                this.getColumnsToCalculate().add(cInfo.getColumnNumber().toString());
+            } else {
+                throw new RuntimeException("TableLayoutManager(" + container.getId() + "->" + this.getId() +
+                        ") ColumnCalculationInfo MUST have a columnNumber set");
+            }
+
+            FieldGroup calculationFieldGroup;
+            List<Component> groupItems;
+            Component columnComponent = footerCalculationComponents.get(cInfo.getColumnNumber());
+
+            //Create a new field group to hold the totals fields
+            calculationFieldGroup = ComponentFactory.getFieldGroup();
+            calculationFieldGroup.addDataAttribute("role", "totalsBlock");
+            groupItems = new ArrayList<Component>();
+
+            if (cInfo.isShowPageTotal()) {
+                //setup the pageTotal field
+                Field pageTotalDataField = cInfo.getPageTotalField();
+                pageTotalDataField.addDataAttribute("role", "pageTotal");
+                pageTotalDataField.addDataAttribute("function", cInfo.getCalculationFunctionName());
+                pageTotalDataField.addDataAttribute("params", cInfo.getCalculationFunctionExtraData());
+
+                if (cInfo.getColumnNumber() != 0) {
+                    //do not render labels for columns which have totals and the renderOnlyLeftTotalLabels
+                    //flag is set
+                    pageTotalDataField.getFieldLabel().setRender(!this.isRenderOnlyLeftTotalLabels());
+                } else if (cInfo.getColumnNumber() == 0 && this.isRenderOnlyLeftTotalLabels()) {
+                    //renderOnlyLeftTotalLabel is set to true, but the column has a total itself - set the layout
+                    //manager settings directly into the field
+                    pageTotalDataField.setFieldLabel(this.getPageTotalLabel());
+                }
+
+                if (this.isRenderOnlyLeftTotalLabels()) {
+                    pageTotalDataField.setRender(this.isShowPageTotal());
+                }
+                groupItems.add(pageTotalDataField);
+            }
+
+            if (cInfo.isShowTotal()) {
+                //setup the totals field
+                Field totalDataField = cInfo.getTotalField();
+                totalDataField.addDataAttribute("role", "total");
+                totalDataField.addDataAttribute("function", cInfo.getCalculationFunctionName());
+                totalDataField.addDataAttribute("params", cInfo.getCalculationFunctionExtraData());
+                if (!cInfo.isRecalculateTotalClientside()) {
+                    totalDataField.addDataAttribute("skipTotal", "true");
+                }
+
+                if (cInfo.getColumnNumber() != 0) {
+                    //do not render labels for columns which have totals and the renderOnlyLeftTotalLabels
+                    //flag is set
+                    totalDataField.getFieldLabel().setRender(!this.isRenderOnlyLeftTotalLabels());
+                } else if (cInfo.getColumnNumber() == 0 && this.isRenderOnlyLeftTotalLabels()) {
+                    //renderOnlyLeftTotalLabel is set to true, but the column has a total itself - set the layout
+                    //manager settings directly into the field
+                    totalDataField.setFieldLabel(this.getTotalLabel());
+                }
+
+                if (this.isRenderOnlyLeftTotalLabels()) {
+                    totalDataField.setRender(this.isShowTotal());
+                }
+
+                groupItems.add(totalDataField);
+            }
+
+            calculationFieldGroup.setItems(groupItems);
+            view.assignComponentIds(calculationFieldGroup);
+            footerCalculationComponents.set(cInfo.getColumnNumber(), calculationFieldGroup);
+        }
+
+        if (this.renderOnlyLeftTotalLabels && footerCalculationComponents.get(0) == null) {
+            Group labelGroup = ComponentFactory.getVerticalBoxGroup();
+            view.assignComponentIds(labelGroup);
+            List<Component> groupItems = new ArrayList<Component>();
+
+            groupItems.add(pageTotalLabel);
+            groupItems.add(totalLabel);
+            labelGroup.setItems(groupItems);
+
+            footerCalculationComponents.set(0, labelGroup);
+        }
+
+        for (Component component : footerCalculationComponents) {
+            if (component != null) {
+                component.performInitialization(view, model);
+                component.performApplyModel(view, model, container);
+                component.performFinalize(view, model, container);
+            }
+        }
+
     }
 
     /**
@@ -212,6 +338,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 && !collectionGroup.isReadOnly()
                 && !isSeparateAddLine()) {
             getRowCssClasses().add(collectionGroup.getAddItemCssClass());
+            this.addStyleClass("uif-hasAddLine");
         } else if (lineIndex != -1) {
             getRowCssClasses().add("");
         }
@@ -321,6 +448,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         // now add the fields in the correct position
         int cellPosition = 0;
+        int columnNumber = 0;
 
         boolean renderActionsLast = actionColumnIndex == -1 || actionColumnIndex > lineFields.size() + extraColumns;
 
@@ -328,21 +456,36 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             dataFields.add(lineField);
 
             cellPosition += lineField.getColSpan();
+            columnNumber++;
 
             // action field
             if (!renderActionsLast && cellPosition == (actionColumnIndex - extraColumns - 1)) {
                 addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
             }
-            
-            //deatails action
-            if(lineField instanceof FieldGroup && ((FieldGroup)lineField).getItems() != null){
-                for (Component component: ((FieldGroup)lineField).getItems()){
-                    if(component instanceof Action && component.getDataAttributes().get("role").equals("detailsLink")){
-                        ((Action)component).setActionScript(
-                            "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");
+
+            //details action
+            if (lineField instanceof FieldGroup && ((FieldGroup) lineField).getItems() != null) {
+                for (Component component : ((FieldGroup) lineField).getItems()) {
+                    if (component != null && component instanceof Action && component.getDataAttributes().get("role")
+                            != null && component.getDataAttributes().get("role").equals("detailsLink")) {
+                        ((Action) component).setActionScript(
+                                "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");
                     }
                 }
             }
+
+            if (lineField instanceof InputField && columnCalculations != null) {
+                for (ColumnCalculationInfo cInfo : columnCalculations) {
+                    if (cInfo.getColumnNumber() == columnNumber) {
+                        if (cInfo.isCalculateOnKeyUp()) {
+                            lineField.addDataAttribute("total", "keyup");
+                        } else {
+                            lineField.addDataAttribute("total", "change");
+                        }
+                    }
+                }
+            }
+
         }
 
         if (renderActions && renderActionsLast) {
@@ -1066,7 +1209,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //build js for link
             /*rowDetailsAction.setActionScript(
                     "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");*/
-            if(rowDetailsOpen){
+            if (rowDetailsOpen) {
 
             }
 
@@ -1088,7 +1231,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * A list of all the columns to be totalled
+     * A list of all the columns to be calculated
      *
      * <p>
      * The list must contain valid column indexes. The indexes takes all displayed columns into account.
@@ -1096,39 +1239,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return List<String> the total columns list
      */
-    public List<String> getTotalColumns() {
-        return totalColumns;
-    }
-
-    /**
-     * Setter for the column indexes that must be totalled
-     *
-     * @param totalColumns
-     */
-    public void setTotalColumns(List<String> totalColumns) {
-        this.totalColumns = totalColumns;
-    }
-
-    /**
-     * Mapping between total columns and fields that must display the total value
-     *
-     * <p>
-     * The mapped field will be updated with the total value in addition to the totals being displayed in the table.
-     * </p>
-     *
-     * @return total mapping
-     */
-    public Map<String, String> getTotalValueMapping() {
-        return totalValueMapping;
-    }
-
-    /**
-     * Setter for the total to field mapping
-     *
-     * @param totalValueMapping
-     */
-    public void setTotalValueMapping(Map<String, String> totalValueMapping) {
-        this.totalValueMapping = totalValueMapping;
+    public List<String> getColumnsToCalculate() {
+        return columnsToCalculate;
     }
 
     /**
@@ -1138,27 +1250,211 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param tracer Record of component's location
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("TableLayoutManager",getId());
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean("TableLayoutManager", getId());
 
-        if(getRowDetailsGroup()!=null){
-            boolean validTable=false;
-            if(getRichTable()!=null){
-                if(getRichTable().isRender()){
-                    validTable=true;
+        if (getRowDetailsGroup() != null) {
+            boolean validTable = false;
+            if (getRichTable() != null) {
+                if (getRichTable().isRender()) {
+                    validTable = true;
                 }
             }
-            if(!validTable){
-                ErrorReport error = ErrorReport.createError("If rowDetailsGroup is set richTable must be set and its render true",tracer);
-                error.addCurrentValue("rowDetailsGroup ="+getRowDetailsGroup());
-                error.addCurrentValue("richTable ="+getRichTable());
-                if(getRichTable()!=null)error.addCurrentValue("richTable.render ="+getRichTable().isRender());
+            if (!validTable) {
+                ErrorReport error = ErrorReport.createError(
+                        "If rowDetailsGroup is set richTable must be set and its render true", tracer);
+                error.addCurrentValue("rowDetailsGroup =" + getRowDetailsGroup());
+                error.addCurrentValue("richTable =" + getRichTable());
+                if (getRichTable() != null) {
+                    error.addCurrentValue("richTable.render =" + getRichTable().isRender());
+                }
                 reports.add(error);
             }
 
         }
 
         return reports;
+    }
+
+    /**
+     * Gets showTotal. showTotal shows/calculates the total field when true, otherwise it is not rendered.
+     * <br/>
+     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the ColumnConfigurationInfo setting.
+     * Otherwise, the ColumnConfigurationInfo setting takes precedence.</b>
+     *
+     * @return true if showing the total, false otherwise.
+     */
+    public boolean isShowTotal() {
+        return showTotal;
+    }
+
+    /**
+     * Sets showTotal. showTotal shows/calculates the total field when true, otherwise it is not rendered.
+     * <br/>
+     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the ColumnConfigurationInfo setting.
+     * Otherwise, the ColumnConfigurationInfo setting takes precedence.</b>
+     *
+     * @param showTotal
+     */
+    public void setShowTotal(boolean showTotal) {
+        this.showTotal = showTotal;
+    }
+
+    /**
+     * Gets showTotal. showTotal shows/calculates the total field when true, otherwise it is not rendered.
+     * <br/>
+     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the ColumnConfigurationInfo setting.
+     * Otherwise, the ColumnConfigurationInfo setting takes precedence.</b>
+     *
+     * @return true if showing the page total, false otherwise.
+     */
+    public boolean isShowPageTotal() {
+        return showPageTotal;
+    }
+
+    /**
+     * Sets showPageTotal. showPageTotal shows/calculates the total field for the page when true (and only
+     * when the table actually has pages), otherwise it is not rendered.
+     * <br/>
+     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the ColumnConfigurationInfo setting.
+     * Otherwise, the ColumnConfigurationInfo setting takes precedence.</b>
+     *
+     * @param showPageTotal
+     */
+    public void setShowPageTotal(boolean showPageTotal) {
+        this.showPageTotal = showPageTotal;
+    }
+
+    /**
+     * Gets showGroupTotal. showGroupTotal shows/calculates the total field for each grouping when true (and only
+     * when the table actually has grouping turned on), otherwise it is not rendered.
+     * <br/>
+     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the ColumnConfigurationInfo setting.
+     * Otherwise, the ColumnConfigurationInfo setting takes precedence.</b>
+     *
+     * @return true if showing the group total, false otherwise.
+     */
+    public boolean isShowGroupTotal() {
+        return showGroupTotal;
+    }
+
+    /**
+     * Sets showGroupTotal. showGroupTotal shows/calculates the total field for each grouping when true (and only
+     * when the table actually has grouping turned on), otherwise it is not rendered.
+     * <br/>
+     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the ColumnConfigurationInfo setting.
+     * Otherwise, the ColumnConfigurationInfo setting takes precedence.</b>
+     *
+     * @param showGroupTotal
+     */
+    public void setShowGroupTotal(boolean showGroupTotal) {
+        this.showGroupTotal = showGroupTotal;
+    }
+
+    /**
+     * The total label to use when renderOnlyLeftTotalLabels is TRUE for total.
+     * This label will appear in the left most column.
+     *
+     * @return the totalLabel
+     */
+    public Label getTotalLabel() {
+        return totalLabel;
+    }
+
+    /**
+     * Sets the total label to use when renderOnlyLeftTotalLabels is TRUE for total.
+     *
+     * @param totalLabel
+     */
+    public void setTotalLabel(Label totalLabel) {
+        this.totalLabel = totalLabel;
+    }
+
+    /**
+     * The pageTotal label to use when renderOnlyLeftTotalLabels is TRUE for total.  This label will appear in the
+     * left most column.
+     *
+     * @return the totalLabel
+     */
+    public Label getPageTotalLabel() {
+        return pageTotalLabel;
+    }
+
+    /**
+     * Sets the pageTotal label to use when renderOnlyLeftTotalLabels is TRUE for total.
+     *
+     * @param pageTotalLabel
+     */
+    public void setPageTotalLabel(Label pageTotalLabel) {
+        this.pageTotalLabel = pageTotalLabel;
+    }
+
+    /**
+     * The groupTotal label to use when renderOnlyLeftTotalLabels is TRUE.  This label will appear in the left most
+     * column.
+     *
+     * @return the totalLabel
+     */
+    public Label getGroupTotalLabelPrototype() {
+        return groupTotalLabelPrototype;
+    }
+
+    /**
+     * Sets the groupTotal label to use when renderOnlyLeftTotalLabels is TRUE.
+     *
+     * @param groupTotalLabelPrototype
+     */
+    public void setGroupTotalLabelPrototype(Label groupTotalLabelPrototype) {
+        this.groupTotalLabelPrototype = groupTotalLabelPrototype;
+    }
+
+    /**
+     * Gets the column calculations.  This is a list of ColumnCalcuationInfo that when set provides calculations
+     * to be performed on the columns they specify.  These calculations appear in the table's footer.  This feature is
+     * only available when using richTable functionality.
+     *
+     * @return the columnCalculations to use
+     */
+    public List<ColumnCalculationInfo> getColumnCalculations() {
+        return columnCalculations;
+    }
+
+    /**
+     * Sets the columnCalculations.
+     *
+     * @param columnCalculations
+     */
+    public void setColumnCalculations(List<ColumnCalculationInfo> columnCalculations) {
+        this.columnCalculations = columnCalculations;
+    }
+
+    /**
+     * When true, labels for the totals fields will only appear in the left most column.  Showing of the totals
+     * is controlled by the settings on the TableLayoutManager itself when this property is true.
+     *
+     * @return true when rendering totals footer labels in the left-most column, false otherwise
+     */
+    public boolean isRenderOnlyLeftTotalLabels() {
+        return renderOnlyLeftTotalLabels;
+    }
+
+    /**
+     * Set the renderOnlyLeftTotalLabels flag for rendring total labels in the left-most column
+     *
+     * @param renderOnlyLeftTotalLabels
+     */
+    public void setRenderOnlyLeftTotalLabels(boolean renderOnlyLeftTotalLabels) {
+        this.renderOnlyLeftTotalLabels = renderOnlyLeftTotalLabels;
+    }
+
+    /**
+     * Gets the footer calculation components to be used by the layout.  These are set by the framework and cannot
+     * be set directly.
+     *
+     * @return the list of components for the footer
+     */
+    public List<Component> getFooterCalculationComponents() {
+        return footerCalculationComponents;
     }
 }

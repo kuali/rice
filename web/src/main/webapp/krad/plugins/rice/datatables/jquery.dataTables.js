@@ -5787,6 +5787,13 @@
 			return nNewRow;
 		};
 
+        /* Kuali customization - this method allows us to invoke the footer callback directly instead of redrawing */
+        this.fnCallFooterCallback = function(){
+            var oSettings = _fnSettingsFromNode( this[DataTable.ext.iApiIndex] );
+            _fnCallbackFire( oSettings, 'aoFooterCallback', 'footer', [ $(oSettings.nTFoot).children('tr')[0],
+                _fnGetDataMaster( oSettings ), oSettings._iDisplayStart, oSettings.fnDisplayEnd(), oSettings.aiDisplay ] );
+        }
+
         /* Kuali customization begin */
         /**
          * Kuali custom method, same as fnOpen except takes in a jqObject instead of html to detach
@@ -6123,8 +6130,11 @@
 						_fnSetCellData( oSettings, iRow, iColumn, sDisplay );
 					}
 				}
-				
-				if ( oSettings.aoData[iRow].nTr !== null )
+
+                /* Kuali customization - changed meaning of bRedraw to include omitting the redraw of the cell
+                 * content itself
+                 */
+				if ( (bRedraw || bRedraw === undefined) && oSettings.aoData[iRow].nTr !== null )
 				{
 					/* Do the actual HTML update */
                     /*
@@ -11260,7 +11270,7 @@
          * KULRICE-6959
          */
         "subtractAddLineRow": function (recordCount) {
-            if ($(this.nTable).find("[class ~= 'uif-collectionAddItem']").length != 0) {
+            if ($(this.nTable).hasClass("uif-hasAddLine")) {
                 return recordCount - 1;
             } else {
                 return recordCount;

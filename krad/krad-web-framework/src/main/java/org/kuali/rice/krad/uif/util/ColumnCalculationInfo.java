@@ -1,0 +1,271 @@
+/*
+ * Copyright 2006-2012 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.kuali.rice.krad.uif.util;
+
+import org.kuali.rice.krad.uif.field.Field;
+
+/**
+ * ColumnCalculationInfo is used to specify which columns and what types of calculations are performed on those columns
+ * of table collection.  This functionality can only be used when the dataTables plugin is being used
+ * (richTable.render="true" for TableLayoutManager)
+ */
+public class ColumnCalculationInfo {
+    private Integer columnNumber;
+
+    private boolean showTotal;
+    private boolean showPageTotal;
+    private boolean showGroupTotal;
+
+    private Field totalField;
+    private Field pageTotalField;
+    private Field groupTotalFieldPrototype;
+
+    private String calculationFunctionName;
+    private String calculationFunctionExtraData;
+
+    private boolean calculateOnKeyUp;
+    private boolean recalculateTotalClientside;
+
+    /**
+     * Gets the column number.  This is the number/index of the column to perform calculations on.
+     * This MUST be specified.
+     *
+     * @return columnNumber to perform calculations on
+     */
+    public Integer getColumnNumber() {
+        return columnNumber;
+    }
+
+    /**
+     * Sets the column number.  This is the number/index of the column to perform calculations on.
+     * This MUST be specified.
+     *
+     * @param columnNumber
+     */
+    public void setColumnNumber(Integer columnNumber) {
+        this.columnNumber = columnNumber;
+    }
+
+    /**
+     * Gets showTotal. showTotal shows/calculates the total field when true, otherwise it is not rendered.
+     *
+     * @return true if showing the total, false otherwise.
+     */
+    public boolean isShowTotal() {
+        return showTotal;
+    }
+
+    /**
+     * Sets showTotal. showTotal shows/calculates the total field when true, otherwise it is not rendered.
+     *
+     * @param showTotal
+     */
+    public void setShowTotal(boolean showTotal) {
+        this.showTotal = showTotal;
+    }
+
+    /**
+     * Gets showTotal. showTotal shows/calculates the total field when true, otherwise it is not rendered.
+     *
+     * @return true if showing the page total, false otherwise.
+     */
+    public boolean isShowPageTotal() {
+        return showPageTotal;
+    }
+
+    /**
+     * Sets showPageTotal. showPageTotal shows/calculates the total field for the page when true (and only
+     * when the table actually has pages), otherwise it is not rendered.
+     *
+     * @param showPageTotal
+     */
+    public void setShowPageTotal(boolean showPageTotal) {
+        this.showPageTotal = showPageTotal;
+    }
+
+    /**
+     * Gets showGroupTotal. showGroupTotal shows/calculates the total field for each grouping when true (and only
+     * when the table actually has grouping turned on), otherwise it is not rendered.
+     *
+     * @return true if showing the group total, false otherwise.
+     */
+    public boolean isShowGroupTotal() {
+        return showGroupTotal;
+    }
+
+    /**
+     * Sets showGroupTotal. showGroupTotal shows/calculates the total field for each grouping when true (and only
+     * when the table actually has grouping turned on), otherwise it is not rendered.
+     *
+     * @param showGroupTotal
+     */
+    public void setShowGroupTotal(boolean showGroupTotal) {
+        this.showGroupTotal = showGroupTotal;
+    }
+
+    /**
+     * Gets the js calculationFunctionName.  This is the name of the js function to use in column calculations.
+     *
+     * <p>
+     * <b>This must be ONLY the function by name (no parenthesis or params)</b><br/>
+     * The actual js function declaration MUST take in an array of values as its first parameter.  The values passed in
+     * will be all the relavant values for the calculation.  Optionally, the function can also take a second parameter
+     * which can be specified by calculationFunctionExtraData.  This parameter can take any valid javascript value
+     * (integer, string, JSON object, etc).  In either case, the values parameter MUST be the first parameter.
+     * </p>
+     *
+     * @return calculatinoFunctionName to call for column calculations in js
+     */
+    public String getCalculationFunctionName() {
+        return calculationFunctionName;
+    }
+
+    /**
+     * Sets the calculationFunctionName to call when doing column calculations
+     *
+     * @param calculationFunctionName
+     */
+    public void setCalculationFunctionName(String calculationFunctionName) {
+        this.calculationFunctionName = calculationFunctionName;
+    }
+
+    /**
+     * Gets the totalField.  This field is the field which holds the total for the column and specifies its label.
+     * This SHOULD NOT BE SET except by the base bean (in MOST cases).
+     *
+     * @return the totalField
+     */
+    public Field getTotalField() {
+        return totalField;
+    }
+
+    /**
+     * Sets the totalField.  This SHOULD NOT BE SET except by the base bean (in MOST cases).  Setting this property
+     * without the appropriate settings WILL break functionality.
+     *
+     * @param totalField
+     */
+    public void setTotalField(Field totalField) {
+        this.totalField = totalField;
+    }
+
+    /**
+     * Gets the pageTotalField.  This field is the field which holds the pageTotal for the column
+     * and specifies its label. This SHOULD NOT BE SET except by the base bean (in MOST cases).
+     *
+     * @return the pageTotalField
+     */
+    public Field getPageTotalField() {
+        return pageTotalField;
+    }
+
+    /**
+     * Sets the pageTotalField.  This SHOULD NOT BE SET except by the base bean (in MOST cases).  Setting this property
+     * without the appropriate settings WILL break functionality.
+     *
+     * @param pageTotalField
+     */
+    public void setPageTotalField(Field pageTotalField) {
+        this.pageTotalField = pageTotalField;
+    }
+
+    /**
+     * Gets the groupTotalFieldPrototype.  This field is copied and holds the groupTotal for the column
+     * and specifies its label. This SHOULD NOT BE SET except by the base bean (in MOST cases).
+     *
+     * @return the groupTotalFieldPrototype
+     */
+    public Field getGroupTotalFieldPrototype() {
+        return groupTotalFieldPrototype;
+    }
+
+    /**
+     * Sets the groupTotalFieldPrototype.  This SHOULD NOT BE SET except by the base bean (in MOST cases).
+     * Setting this property without the appropriate settings WILL break functionality.
+     *
+     * @param groupTotalFieldPrototype
+     */
+    public void setGroupTotalFieldPrototype(Field groupTotalFieldPrototype) {
+        this.groupTotalFieldPrototype = groupTotalFieldPrototype;
+    }
+
+    /**
+     * If true, the column is calculated when the user enters a character on each key up.  There is a small delay
+     * built in to prevent calculations from being fired for each key stroke.
+     *
+     * @return true if calculated the column on key up, false if calculating on change (default)
+     */
+    public boolean isCalculateOnKeyUp() {
+        return calculateOnKeyUp;
+    }
+
+    /**
+     * Sets calculateOnKeyUp which controls the type of handler used
+     *
+     * @param calculateOnKeyUp
+     */
+    public void setCalculateOnKeyUp(boolean calculateOnKeyUp) {
+        this.calculateOnKeyUp = calculateOnKeyUp;
+    }
+
+    /**
+     * When set to false, calculations will not be fired for the totalField client-side.  This ONLY effects the
+     * totalField.  If page and group totals are still shown, they will (and can only) be calculated client-side.
+     *
+     * <p>
+     * To use this particular feature: set this to false, and use springEL in the totalField's message.messageText
+     * to get a pre-calculated total from a field on the form.  This will be refreshed when the table is refreshed,
+     * but will not be updated by client-side interactions - used for complex or special calculation mechanisms
+     * that may require server only information.
+     * </p>
+     *
+     * @return true if calculating the totalField client-side, false otherwise
+     */
+    public boolean isRecalculateTotalClientside() {
+        return recalculateTotalClientside;
+    }
+
+    /**
+     * Set the recalculateTotalClientside flag
+     *
+     * @param recalculateTotalClientside
+     */
+    public void setRecalculateTotalClientside(boolean recalculateTotalClientside) {
+        this.recalculateTotalClientside = recalculateTotalClientside;
+    }
+
+    /**
+     * This specifies extra data to be sent to the calculation function.  This can be any valid javascript value
+     * (number, string, JSON - for passing multiple settings, etc).
+     * <br/>
+     * <b>The function specified by calculationFunctionName MUST take a second parameter when using this option.</b>
+     *
+     * @return the extra data to pass into the function specified by name in calculationFunctionName
+     */
+    public String getCalculationFunctionExtraData() {
+        return calculationFunctionExtraData;
+    }
+
+    /**
+     * Sets the calculationFunctionExtraData which specifies additional data to pass into the calculationFunction.
+     *
+     * @param calculationFunctionExtraData
+     */
+    public void setCalculationFunctionExtraData(String calculationFunctionExtraData) {
+        this.calculationFunctionExtraData = calculationFunctionExtraData;
+    }
+}

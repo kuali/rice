@@ -134,7 +134,7 @@ public class RichTable extends WidgetBase {
 
         if (layoutManager instanceof TableLayoutManager) {
 
-            List<String> totalColumns  = ((TableLayoutManager)layoutManager).getTotalColumns();
+            List<String> totalColumns  = ((TableLayoutManager)layoutManager).getColumnsToCalculate();
 
             if (totalColumns.size() > 0) {
                 String array = "[";

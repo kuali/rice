@@ -120,10 +120,12 @@ public class ComponentFactory {
     protected static final String FIELD_GROUP = "Uif-VerticalFieldGroup";
     protected static final String HORIZONTAL_FIELD_GROUP = "Uif-HorizontalFieldGroup";
 
-    protected static final String GROUP = "Uif-BoxSection";
+    protected static final String GROUP = "Uif-GroupBase";
+    protected static final String VERTICAL_BOX_GROUP = "Uif-VerticalBoxGroup";
+    protected static final String HORIZONTAL_BOX_GROUP = "Uif-HorizontalBoxGroup";
     protected static final String PAGE_GROUP = "Uif-Page";
     protected static final String GROUP_GRID_LAYOUT = "Uif-GridSection";
-    protected static final String GROUP_BODY_ONLY = "Uif-BoxGroup";
+    protected static final String GROUP_BODY_ONLY = "Uif-BoxGroupBase";
     protected static final String GROUP_GRID_BODY_ONLY = "Uif-GridGroup";
     protected static final String TAB_GROUP = "Uif-TabSection";
     protected static final String NAVIGATION_GROUP = "Uif-NavigationGroupBase";
@@ -862,6 +864,24 @@ public class ComponentFactory {
      */
     public static Group getGroup() {
         return (Group) getNewComponentInstance(GROUP);
+    }
+
+    /**
+     * Gets the vertical box group
+     *
+     * @return Group group
+     */
+    public static Group getVerticalBoxGroup() {
+        return (Group) getNewComponentInstance(VERTICAL_BOX_GROUP);
+    }
+
+    /**
+     * Gets the horizontal box group
+     *
+     * @return Group group
+     */
+    public static Group getHorizontalBoxGroup() {
+        return (Group) getNewComponentInstance(HORIZONTAL_BOX_GROUP);
     }
 
     /**

@@ -36,6 +36,15 @@ var detailsOpenImage;
 var detailsCloseImage;
 var ajaxReturnHandlers = {};
 
+//delay function
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
+
 // map of componentIds and refreshTimers
 var refreshTimerComponentMap = {};
 
@@ -367,6 +376,16 @@ function initFieldHandlers() {
                     }
                 }
             });
+
+    jQuery(document).on("change", "table.dataTable div[data-role='InputField'][data-total='change'] :input", function(){
+        refreshDatatableCellRedraw(this);
+    });
+
+    jQuery(document).on("keyup", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function(){
+        var input = this;
+        delay(function(){refreshDatatableCellRedraw(input)}, 300);
+    });
+
 }
 
 /**

@@ -1543,7 +1543,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             return js;
         } else {
             for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
-                if(data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
+                if(data != null && data.getValue() != null &&
+                        data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
                     js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
                             +"', " + data.getValue() +");";
                 }
@@ -1564,7 +1565,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             return attributes;
         } else {
             for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
-                if(!data.getValue().trim().startsWith("{")){
+                if(data != null && data.getValue() != null && !data.getValue().trim().startsWith("{")){
                     attributes = attributes + " " + "data-" + data.getKey() + "=\"" + data.getValue() + "\"";
                 }
             }

@@ -312,15 +312,15 @@ public class CollectionGroupBuilder implements Serializable {
 
                 // Add script to recalculate totals
                 // TODO : only add to total column fields, and add the add line
-                if (collectionGroup.getLayoutManager() instanceof TableLayoutManager) {
+/*                if (collectionGroup.getLayoutManager() instanceof TableLayoutManager) {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {
                             ControlBase control = (ControlBase)((InputField) f).getControl();
-                            control.setOnChangeScript(control.getOnChangeScript()==null?";refreshDatatableCellRedraw(this);":control.getOnChangeScript() +
-                                    ";refreshDatatableCellRedraw(this);");
+                            collectionGroup.getLayoutManager()
+                            control.addDataAttribute("total", "true");
                         }
                     }
-                }
+                }*/
             }
 
             ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE,

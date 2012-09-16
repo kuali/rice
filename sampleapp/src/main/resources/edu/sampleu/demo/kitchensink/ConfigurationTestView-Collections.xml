@@ -128,12 +128,20 @@
     <property name="propertyName" value="list1" />
     <property name="layoutManager.generateAutoSequence" value="true" />
     <property name="layoutManager.richTable.render" value="true" />
-    <property name="layoutManager.totalColumns">
+    <property name="layoutManager.columnCalculations">
+      <list>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:columnNumber="1" p:calculateOnKeyUp="true"/>
+        <bean parent="Uif-ColumnCalculationInfo-Average" p:columnNumber="2" p:calculationFunctionExtraData="3"/>
+        <bean parent="Uif-ColumnCalculationInfo-Min" p:columnNumber="3"/>
+        <bean parent="Uif-ColumnCalculationInfo-Max" p:columnNumber="4"/>
+      </list>
+    </property>
+<!--    <property name="layoutManager.totalColumns">
     <list>
       <value>2</value>
       <value>4</value>
     </list>
-  </property>
+  </property>-->
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"

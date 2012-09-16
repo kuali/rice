@@ -140,6 +140,15 @@
       <bean parent="Uif-PagedRichTable"/>
     </property>
     <property name="suppressLineWrapping" value="true"/>
+    <property name="totalLabel">
+      <bean parent="Uif-Label" p:labelText="Total"/>
+    </property>
+    <property name="pageTotalLabel">
+      <bean parent="Uif-Label" p:labelText="Page Total"/>
+    </property>
+    <property name="groupTotalLabelPrototype">
+      <bean parent="Uif-Label" p:labelText="Group Total"/>
+    </property>
   </bean>
 
   <!--Stacked Collection Layout Managers-->

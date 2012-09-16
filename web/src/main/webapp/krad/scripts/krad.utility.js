@@ -29,7 +29,7 @@ var profilingOn = false;
  */
 function handleCheckboxLabelClick(checkboxId, event) {
     var checkbox = jQuery("#" + checkboxId);
-    if(!checkbox.prop("disabled")){
+    if (!checkbox.prop("disabled")) {
         if (jQuery(event.target).is("input, select, textarea, option") && !checkbox.prop("checked")) {
             checkbox.prop("checked", true);
             checkbox.change();
@@ -58,7 +58,7 @@ function handleCheckboxLabelClick(checkboxId, event) {
  */
 function handleRadioLabelClick(radioId, event) {
     var radio = jQuery("#" + radioId);
-    if(!radio.prop("disabled") && !radio.prop("checked")){
+    if (!radio.prop("disabled") && !radio.prop("checked")) {
         radio.prop("checked", true);
         radio.change();
     }
@@ -96,7 +96,7 @@ function convertToHtml(text, removeAnchors) {
         text = text.replace(/&lt;\/a&gt;/gi, "");
     }
 
-    return jQuery("<span />", { html: text }).text();
+    return jQuery("<span />", { html:text }).text();
 }
 
 /**
@@ -109,7 +109,7 @@ function publishHeight() {
         parentUrl = jQuery.cookie('parentUrl');
         var passedUrl = decodeURIComponent(document.location.hash.replace(/^#/, ''));
         if (passedUrl && passedUrl.substring(0, 4) === "http") {
-            jQuery.cookie('parentUrl', passedUrl, {path: '/'});
+            jQuery.cookie('parentUrl', passedUrl, {path:'/'});
             parentUrl = passedUrl;
         }
     }
@@ -124,7 +124,7 @@ function publishHeight() {
     var height = jQuery("body").outerHeight();
     jQuery("body").attr("style", "overflow-x: auto; padding-right: 20px;");
     if (parentUrl && !isNaN(height) && height > 0) {
-        jQuery.postMessage({ if_height: height}, parentUrl, parent);
+        jQuery.postMessage({ if_height:height}, parentUrl, parent);
         bodyHeight = height;
     }
 }
@@ -319,7 +319,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         runScriptsForId(id);
 
         //reinit dirty fields
-        jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
+        jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
         //reinitialize BubblePopup
         initBubblePopups();
@@ -559,10 +559,10 @@ function checkDirty(event) {
             if (ul.length > 0) {
                 var pageId = jQuery("[name='view.currentPageId']").val();
                 if (ul.hasClass(kradVariables.TAB_MENU_CLASS)) {
-                    jQuery("#" + ul.attr("id")).selectTab({selectPage: pageId});
+                    jQuery("#" + ul.attr("id")).selectTab({selectPage:pageId});
                 }
                 else {
-                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage: pageId});
+                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage:pageId});
                 }
             }
 
@@ -666,7 +666,7 @@ function jumpToElementByName(name) {
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset: {top: headerOffset}});
+            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
         }
     }
 }
@@ -680,7 +680,7 @@ function jumpToElementById(id) {
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset: {top: headerOffset}});
+            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
         }
     }
 }
@@ -966,7 +966,7 @@ function showLightboxComponent(componentId, overrideOptions) {
     // set renderedInLightBox indicator and remove it when lightbox is closed
     if (jQuery('#renderedInLightBox').val() != true) {
         jQuery('#renderedInLightBox').val(true);
-        _appendCallbackFunctions(overrideOptions, {afterClose: function () {
+        _appendCallbackFunctions(overrideOptions, {afterClose:function () {
             jQuery('#renderedInLightBox').val(false);
         }});
     }
@@ -996,7 +996,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
     if (top == self) {
         // ensure that component of KualiForm gets updated after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
+        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -1005,7 +1005,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         }});
     } else {
         // reattach component to KualiForm after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
+        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             parent.jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -1035,7 +1035,7 @@ function showLightboxContent(content, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type: 'html', content: content}, overrideOptions);
+    _initAndOpenLightbox({type:'html', content:content}, overrideOptions);
 }
 
 /**
@@ -1054,7 +1054,7 @@ function showLightboxUrl(url, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type: 'iframe', href: url}, overrideOptions);
+    _initAndOpenLightbox({type:'iframe', href:url}, overrideOptions);
 }
 
 /**
@@ -1069,14 +1069,14 @@ function showLightboxUrl(url, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function _initAndOpenLightbox(contentOptions, overrideOptions) {
-    var options = {fitToView: true,
-        openEffect: 'fade',
-        closeEffect: 'fade',
-        openSpeed: 200,
-        closeSpeed: 200,
-        minHeight: 10,
-        minWidth: 10,
-        helpers: {overlay: {css: {cursor: 'arrow'}, closeClick: false}}
+    var options = {fitToView:true,
+        openEffect:'fade',
+        closeEffect:'fade',
+        openSpeed:200,
+        closeSpeed:200,
+        minHeight:10,
+        minWidth:10,
+        helpers:{overlay:{css:{cursor:'arrow'}, closeClick:false}}
     };
 
     // override fancybox content options
@@ -1095,7 +1095,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         // Remove portal css and add lightbox css for the duration of the lightbox's life
         parent.jQuery('link[href="/kr-dev/rice-portal/css/portal.css"]').remove();
         parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/lightbox.css" rel="stylesheet" type="text/css">');
-        _appendCallbackFunctions(options, {afterClose: function () {
+        _appendCallbackFunctions(options, {afterClose:function () {
             parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/portal.css" rel="stylesheet" type="text/css">');
             parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove();
         }});
@@ -1112,7 +1112,7 @@ function setupLightboxForm() {
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);
-    kualiLightboxForm.dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
+    kualiLightboxForm.dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 }
 
 /**
@@ -1207,6 +1207,7 @@ function lightboxButtonScript() {
 }
 
 /**
+ * Initialize/recalculate the totals placed in the footer of a richTable
  *
  * @param nRow "TR" element for the footer
  * @param aaData Full table data (as derived from the original HTML)
@@ -1216,59 +1217,201 @@ function lightboxButtonScript() {
  * @param columns to total
  */
 function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) {
-    var onePage = iStart == 0 && iEnd == (aaData.length - 1);
-    var hasAddRow = jQuery(nRow).closest('table').find('tr.uif-collectionAddItem').length > 0;
-    if (hasAddRow) {
+    var dataTable = jQuery(nRow).closest('table.dataTable');
+
+    if (jQuery(dataTable).hasClass("uif-hasAddLine")) {
         iEnd = iEnd + 1;
-        iStart = iStart + 1;
+    }
+    var onePage = iStart == 0 && iEnd == aaData.length;
+
+    if (onePage) {
+        jQuery(nRow).find("div[data-role='pageTotal'], label[data-role='pageTotal']").hide();
     }
 
     // Total each column in the columns list
     for (var c = 0; c < columns.length; c++) {
+        var nCells = nRow.getElementsByTagName('th');
+        var cell = jQuery(nCells[columns[c]]);
 
+        //find the totalsBlocks in each column footer cell, and calculate the appropriate totals
+        jQuery("div[data-role='totalsBlock']", cell).each(function () {
+            var totalDiv = jQuery(this).find("div[data-role='total']");
+            var skipTotal = totalDiv.data("skipTotal");
+
+            if(!skipTotal){
+                calculateTotal(totalDiv, 0, aaData.length, columns[c], aaData, aiDisplay);
+            }
+
+            if (!onePage) {
+                var pageTotalDiv = jQuery(this).find("div[data-role='pageTotal']");
+                calculateTotal(totalDiv, iStart, iEnd, columns[c], aaData, aiDisplay);
+            }
+        });
+    }
+}
+
+/**
+ * Calculates a total/calculation for a column with the specified parameters
+ *
+ * @param totalDiv div of the total field
+ * @param start start of the rows to total
+ * @param end end of the rows to total
+ * @param currentColumn the current column
+ * @param aaData all the data
+ * @param aiDisplay the rows display order
+ */
+function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay){
+    if (totalDiv.length && totalDiv.is(":visible") && totalDiv.data("function")) {
+        var totalType = totalDiv.data("role");
+        var functionName = totalDiv.data("function");
+        var extraData = totalDiv.data("params");
         var total = 0;
+        var values = new Array();
+        var hasInvalidValues = false;
+
         // Calculate the total for all rows, even outside this page
-        for (var i = 0; i < aaData.length; i++) {
-            total += parseFloat(coerceTableCellValue(aaData[i][columns[c]]));
-        }
-
-        if (!onePage) {
-
-            var pageTotal = 0;
-            // calculate totals for this page
-            for (var i = iStart; i < iEnd; i++) {
-                pageTotal += parseFloat(coerceTableCellValue(aaData[aiDisplay[i]][columns[c]]));
+        for (var i = start; i < end; i++) {
+            var currentCell;
+            if(totalType == "total"){
+                currentCell = aaData[i][currentColumn];
+            }
+            else if (totalType = "pageTotal"){
+                currentCell = aaData[aiDisplay[i]][currentColumn];
+            }
+            //skip over cells which contain add line content
+            if (currentCell && jQuery(currentCell).find(":input[name^='newCollectionLines']").length == 0) {
+                var value = coerceTableCellValue(currentCell);
+                //set hasInvalidValues to true if value is undefined
+                if (value == undefined) {
+                    hasInvalidValues = true;
+                    break;
+                }
+                //skip over value when blank
+                if (value != "") {
+                    value = parseFloat(value);
+                    values.push(value);
+                }
             }
         }
 
-        // modify the footer row
-        var nCells = nRow.getElementsByTagName('th');
+        if (!hasInvalidValues) {
+            if(extraData != undefined){
+                total = window[functionName](values, extraData);
+            }
+            else{
+                total = window[functionName](values);
+            }
+        }
+        else {
+            total = "N/A";
+        }
 
-        if (onePage) {
-            nCells[columns[c]].innerHTML = 'Total : ' + total;
-        } else {
-            nCells[columns[c]].innerHTML = 'Page : ' + pageTotal +
-                    '<br/>Total : ' + total;
+        var totalValueSpan = totalDiv.find("span[data-role='totalValue']");
+
+        if (totalValueSpan.length) {
+            totalValueSpan.html(total);
+        }
+        else {
+            var newSpan = jQuery("<span data-role='totalValue'>" + total + "</span>");
+            totalDiv.append(newSpan);
         }
     }
 }
 
 /**
+ * Get the sum of the values passed in
+ *
+ * @param values the values
+ */
+function sumValues(values) {
+    var total = 0;
+    for(var i = 0; i < values.length; i++){
+        total += values[i];
+    }
+    return total;
+}
+
+/**
+ * Get the average value from an array of values
+ *
+ * @param values the values
+ * @param decimalPlaces (optional) the number of the decimals to show, 2 if not set
+ */
+function averageValues(values, decimalPlaces) {
+    var total = "N/A";
+
+    if(!decimalPlaces){
+        decimalPlaces = 2;
+    }
+
+    if (values.length) {
+        total = 0;
+        for(var i = 0; i < values.length; i++){
+            total += values[i];
+        }
+        total = (total / (values.length)).toFixed(decimalPlaces);
+    }
+
+    return total;
+}
+
+/**
+ * Get the maximum value from an array of values
+ *
+ * @param values the values
+ */
+function maxValue(values) {
+    var max = "N/A";
+
+    if (values.length) {
+        max = values[0];
+    }
+
+    for(var i = 1; i < values.length; i++){
+        if (values[i] > max) {
+            max = values[i];
+        }
+    }
+
+    return max;
+}
+
+/**
+ * Get the minimum value from an array of values
+ *
+ * @param values the values
+ */
+function minValue(values) {
+    var min = "N/A";
+
+    if (values.length) {
+        min = values[0];
+    }
+
+    for(var i = 1; i < values.length; i++){
+        if (values[i] < min) {
+            min = values[i];
+        }
+    }
+
+    return min;
+}
+
+/**
  * Update the cell value on the Datatables data and redraw
  *
- * @param field - the table cell
+ * @param input - the table cell's input
  */
-function refreshDatatableCellRedraw(field) {
-    // Is blur necesary?
-    jQuery(field).blur();
-    var cell = jQuery(field).closest('td');
-    var div = jQuery(field).closest('div').get(0);
-    var table = jQuery(field).closest('table');
+function refreshDatatableCellRedraw(input) {
+    input = jQuery(input);
+    var cell = input.closest("table.dataTable tr td");
+    var fieldDiv = input.closest("div[data-role='InputField']");
+    var table = input.closest('table.dataTable');
     var dataTable = jQuery(table).dataTable();
     var pos = dataTable.fnGetPosition(cell.get(0));
     // Have to update cell otherwise datatables does not read it
-    dataTable.fnUpdate(div, pos[0], pos[1]);
-    dataTable.fnDraw(true);
+    dataTable.fnUpdate(fieldDiv, pos[0], pos[1], false, false);
+    dataTable.fnCallFooterCallback();
 }
 
 /**
@@ -1296,10 +1439,13 @@ function coerceTableCellValue(td) {
         }
     }
 
-    if (!isNaN(parseFloat(inputFieldValue)) && isFinite(inputFieldValue)) {
+    if (inputFieldValue === "" || inputField.prop("disabled")) {
+        return "";
+    }
+    else if (jQuery.isNumeric(inputFieldValue)) {
         return inputFieldValue;
     } else {
-        return 0;
+        return undefined;
     }
 }
 
@@ -1317,14 +1463,14 @@ function clearServerSideForm(formKey) {
     var postUrl = getConfigParam("kradUrl") + "/listener";
 
     jQuery.ajax({
-        url: postUrl,
-        dataType: "json",
-        data: queryData,
-        async: false,
-        beforeSend: null,
-        complete: null,
-        error: null,
-        success: null
+        url:postUrl,
+        dataType:"json",
+        data:queryData,
+        async:false,
+        beforeSend:null,
+        complete:null,
+        error:null,
+        success:null
     });
 }
 

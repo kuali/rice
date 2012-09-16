@@ -534,49 +534,44 @@
                             </thead>
                             <tbody>
                                 <row>
-                                    <entry> autoScale </entry>
+                                    <entry> fitToView </entry>
                                     <entry> true </entry>
-                                    <entry> If true, the lightbox is scaled to fit in viewport </entry>
+                                    <entry> If set to true, fancyBox is resized to fit inside viewport before opening </entry>
                                 </row>
                                 <row>
-                                    <entry> centerOnScroll </entry>
-                                    <entry> true </entry>
-                                    <entry> When true, the lightbox is centered while scrolling page </entry>
-                                </row>
-                                <row>
-                                    <entry> transitionIn </entry>
+                                    <entry> openEffect </entry>
                                     <entry> fade </entry>
                                     <entry> The transition type. Can be set to ‘elastic’, ‘fade’ or
                                         ‘none’ </entry>
                                 </row>
                                 <row>
-                                    <entry> transitionOut </entry>
+                                    <entry> closeEffect </entry>
                                     <entry> fade </entry>
                                     <entry> The transition type. Can be set to ‘elastic’, ‘fade’ or
                                         ‘none’ </entry>
                                 </row>
                                 <row>
-                                    <entry> speedIn </entry>
+                                    <entry> openSpeed </entry>
                                     <entry> 200 </entry>
                                     <entry> Speed of the fade and elastic transitions, in
                                         milliseconds </entry>
                                 </row>
                                 <row>
-                                    <entry> speedOut </entry>
+                                    <entry> closeSpeed </entry>
                                     <entry> 200 </entry>
                                     <entry> Speed of the fade and elastic transitions, in
                                         milliseconds </entry>
                                 </row>
                                 <row>
-                                    <entry> hideOnOverlayClick </entry>
-                                    <entry> false </entry>
-                                    <entry> Toggle if clicking the overlay should close the
-                                        lightbox. </entry>
+                                    <entry> helpers </entry>
+                                    <entry> overlay:{css:{cursor:'arrow'},closeClick:false} </entry>
+                                    <entry> Settings for additional fancybox helpers.  Defaults specify
+                                    an arrow cursor and disables closing of lightbox on mouse click.</entry>
                                 </row>
                                 <row>
                                     <entry> type </entry>
                                     <entry> iframe </entry>
-                                    <entry> Forces content type. Can be set to ‘image’, ’ajax’,
+                                    <entry> Forces content type. Can be set to ‘image’, 'html', ’ajax’,
                                         ’iframe’, ’swf’ or ‘inline’ </entry>
                                 </row>
                             </tbody>

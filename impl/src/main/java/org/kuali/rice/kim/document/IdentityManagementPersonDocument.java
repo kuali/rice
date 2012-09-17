@@ -42,6 +42,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
+import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
@@ -317,10 +318,10 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 
     public void initializeDocumentForNewPerson() {
         if(StringUtils.isBlank(this.principalId)){
-            this.principalId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PRNCPL_ID_S).toString();
+            this.principalId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PRNCPL_ID_S, this.getClass()).toString();
         }
         if(StringUtils.isBlank(this.entityId)){
-            this.entityId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ENTITY_ID_S).toString();
+            this.entityId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ENTITY_ID_S, this.getClass()).toString();
         }
     }
 

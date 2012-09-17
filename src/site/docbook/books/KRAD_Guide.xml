@@ -20,7 +20,7 @@
   <info>
     <title> Kuali Rice ${project.version} KRAD Guide</title>
   </info>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/about_krad.xml"/>
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/about_krad.xml"/>
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/getting_started.xml"/>
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/data_objects.xml"/>
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/data_dictionary.xml"/>
@@ -34,5 +34,4 @@
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/controllers.xml"/>
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/view_types.xml"/>
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/testing_and_tooling.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../common/glossary.xml"/>
 </book>

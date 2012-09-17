@@ -519,7 +519,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <step>
                   <para>
                     Run the BasicApplicationIT.java integration test by right clicking on
-                    <guilabel>src/it/java/foo/bar/BasicApplicationIT.java</guilabel> in the Project Explorer and
+                    <guilabel>src/it/java/org/foo/bar/BasicApplicationIT.java</guilabel> in the Project Explorer and
                     choosing <menuchoice><guimenu>Run As</guimenu> <guimenuitem>JUnit Test</guimenuitem></menuchoice>
                     from the menu.
                   </para>
@@ -534,7 +534,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <step>
                   <para>
                     Run the three unit tests (AbstractproductServiceImplTest, AdditionProductServiceImplTest,
-                    MultiplicationProductServiceTest) by right clicking on <guilabel>src/test/java/foo/bar</guilabel>
+                    MultiplicationProductServiceTest) by right clicking on <guilabel>src/test/java/org/foo/bar</guilabel>
                     in the Project Explorer and choosing <menuchoice><guimenu>Run As</guimenu>
                     <guimenuitem>JUnit Test</guimenuitem></menuchoice> from the menu.
                   </para>
@@ -889,7 +889,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               </step>
               <step>
                 <para>
-                  Right click on <guilabel>src/it/java/foo/bar/BasicApplicationIT.java</guilabel> and choose
+                  Right click on <guilabel>src/it/java/org/foo/BasicApplicationIT.java</guilabel> and choose
                   <menuchoice><guimenuitem>Run 'BasicApplicationIT'</guimenuitem></menuchoice> from the menu to run the
                   integration test.
                 </para>
@@ -903,8 +903,8 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               </step>
               <step>
                 <para>
-                  Right click on <guilabel>src/test/java/foo/bar/</guilabel> folder and choose
-                  <menuchoice><guimenuitem>Run 'Tests in 'foo.bar''</guimenuitem></menuchoice> from the menu to run the
+                  Right click on <guilabel>src/test/java/org/foo/</guilabel> folder and choose
+                  <menuchoice><guimenuitem>Run 'Tests in 'org.foo''</guimenuitem></menuchoice> from the menu to run the
                   unit tests.
                 </para>
                 <figure>
@@ -950,7 +950,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               </step>
               <step>
                 <para>
-                  Specify the server name in the <guilabel>Name</guilabel> field (e.g. "Local Tomcat6"). Choose the
+                  Specify the server name in the <guilabel>Name</guilabel> field (e.g. "Local Tomcat 6"). Choose the
                   tomcat server in the <guilabel>Application server</guilabel> drop down. Add more memory by specifying
                   "-Xms512m -Xmx2g -XX:MaxPermSize=512m" in the <guilabel>VM options</guilabel> field.
                 </para>
@@ -978,6 +978,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               </step>
               <step>
                 <para>
+                  Specify "/bar" as the <guilabel>Application context</guilabel>.
                   Click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>

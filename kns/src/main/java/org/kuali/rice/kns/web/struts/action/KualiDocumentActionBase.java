@@ -35,9 +35,13 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kew.api.document.DocumentContent;
+import org.kuali.rice.kew.api.document.DocumentDetail;
+import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -65,6 +69,7 @@ import org.kuali.rice.kns.web.struts.form.BlankFormFile;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.kns.web.struts.form.pojo.PojoForm;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
@@ -100,6 +105,7 @@ import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.springmodules.orm.ojb.OjbOperationException;
 
@@ -173,6 +179,9 @@ public class KualiDocumentActionBase extends KualiAction {
         // if found methodToCall, pass control to that method
         try {
             returnForward = super.execute(mapping, form, request, response);
+            if (returnForward.getRedirect() && returnForward.getName()!=null && returnForward.getName().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
+                throw new Exception(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME);
+            }
         } catch (OjbOperationException e) {
             // special handling for OptimisticLockExceptions
             OjbOperationException ooe = e;
@@ -344,6 +353,12 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         String command = kualiDocumentFormBase.getCommand();
 
+        if (kualiDocumentFormBase.getDocId()!= null && getDocumentService().getByDocumentHeaderId(kualiDocumentFormBase.getDocId()) == null) {
+            ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+            String url = kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_INITIATED_DOCUMENT_URL_KEY);
+            response.sendRedirect(url);
+            return new ActionForward(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME, url ,true);
+        }
         // in all of the following cases we want to load the document
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && kualiDocumentFormBase.getDocId() != null) {
             loadDocument(kualiDocumentFormBase);

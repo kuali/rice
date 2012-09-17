@@ -216,6 +216,10 @@ public class KualiRequestProcessor extends RequestProcessor {
 
             if (forward != null) {
                 // ProcessDefinition the returned ActionForward instance
+                if (forward.getRedirect() && forward.getName()!= null && forward.getName().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
+                    LOG.info("Attempt to open a document with a status of \"Initiated\" detected");
+                    return;
+                }
 			    processForwardConfig(request, response, forward);
             }
         }
@@ -485,6 +489,10 @@ public class KualiRequestProcessor extends RequestProcessor {
 						try {
 							actionForward = action.execute(mapping, form, request, response);
 						} catch (Exception e) {
+                            if (e.getMessage().equals("InitiatedDocView")) {
+//                                return new ActionForward("InitiatedDocView", "", true);
+                                return new ActionForward("InitiatedDocView", "../kr-krad/initdocinfo?viewId=InitiatedDocumentView&methodToCall=start", true);
+                            }
 							// the doInTransaction method has no means for
 							// throwing exceptions, so we will wrap the
 							// exception in

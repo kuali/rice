@@ -27,6 +27,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
@@ -60,6 +61,9 @@ import org.kuali.rice.krad.util.GlobalVariables;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -77,7 +81,7 @@ public class ActionListAction extends KualiAction {
     private static final String ACTION_LIST_USER_KEY = "actionList.user";
     /*private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";*/
     private static final String ACTION_ITEM_COUNT_FOR_USER_KEY = "actionList.count";
-    private static final String MAX_ACTION_ITEM_ID_FOR_USER_KEY = "actionList.maxActionItemId";
+    private static final String MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY = "actionList.maxActionItemDateAssigned";
 
     private static final String ACTIONREQUESTCD_PROP = "actionRequestCd";
     private static final String CUSTOMACTIONLIST_PROP = "customActionList";
@@ -258,35 +262,36 @@ public class ActionListAction extends KualiAction {
                 actionList = new ArrayList<OutboxItemActionListExtension>(actionListSrv.getOutbox(principalId, filter));
                 form.setOutBoxEmpty(actionList.isEmpty());
             } else {
-                if (actionList == null) {
-                    List<Integer> countAndMaxId = actionListSrv.getMaxActionItemIdAndCountForUser(principalId);
-                    request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, countAndMaxId.get(0));
-                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, countAndMaxId.get(1));
-                    // fetch the action list
-                    actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
 
-                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                } else if (forceListRefresh) {
-                    // force a refresh... usually based on filter change or parameter specifying refresh needed
-                    actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
-                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                    List<Integer> countAndMaxId = actionListSrv.getMaxActionItemIdAndCountForUser(principalId);
-                    request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, countAndMaxId.get(0));
-                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, countAndMaxId.get(1));
+                    SimpleDateFormat dFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+                    if (actionList == null) {
+                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
+                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
+                        // fetch the action list
+                        actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
 
-                }else if (refreshList(request,principalId)){
-                    actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
-                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-//                    List<Integer> countAndMaxId = actionListSrv.getMaxActionItemIdAndCountForUser(principalId);
-//                    request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, countAndMaxId.get(0));
-//                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, countAndMaxId.get(1));
-                } else {
-                    Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
-                    if (update == null || !update) {
-                        freshActionList = false;
+                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+                    } else if (forceListRefresh) {
+                        // force a refresh... usually based on filter change or parameter specifying refresh needed
+                        actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
+                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
+                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
+
+                    }else if (refreshList(request,principalId)){
+                        actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
+                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+
+                    } else {
+                        Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
+                        if (update == null || !update) {
+                            freshActionList = false;
+                        }
                     }
-                }
-                request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
+                    request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
+
             }
             // reset the requery action list key
             request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, null);
@@ -346,18 +351,27 @@ public class ActionListAction extends KualiAction {
 
     private boolean refreshList(HttpServletRequest request,String principalId ){
         int count = 0;
-        int maxActionItemId = 0;
-        List<Integer> countAndMaxActionItemId = KEWServiceLocator.getActionListService().getMaxActionItemIdAndCountForUser(principalId);
-        maxActionItemId = countAndMaxActionItemId.get(0);
-        count = countAndMaxActionItemId.get(1);
+        Date maxActionItemDateAssigned = null;
+        List<Object> maxActionItemDateAssignedAndCount = KEWServiceLocator.getActionListService().getMaxActionItemDateAssignedAndCountForUser(
+                principalId);
+        maxActionItemDateAssigned = (Date) maxActionItemDateAssignedAndCount.get(0);
+        count = (Integer) maxActionItemDateAssignedAndCount.get(1);
         int previousCount = Integer.parseInt(request.getSession().getAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY).toString());
-        int previousMaxActionItemId = Integer.parseInt(request.getSession().getAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY).toString());
+        SimpleDateFormat dFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+        Date previousMaxActionItemDateAssigned= null;
+        Date maxActionItemDateAssignedParsed = null;
+        try{
+            previousMaxActionItemDateAssigned = dFormatter.parse(request.getSession().getAttribute(
+                MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY).toString());
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
         if(previousCount!= count){
-            request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, maxActionItemId);
+            request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, maxActionItemDateAssigned);
             request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, count);
             return true;
-        }else if(previousMaxActionItemId!= maxActionItemId){
-            request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, maxActionItemId);
+        }else if(previousMaxActionItemDateAssigned.compareTo(maxActionItemDateAssigned)!=0){
+            request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(maxActionItemDateAssigned).toString());
             request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, count);
             return true;
         } else{

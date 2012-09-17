@@ -378,11 +378,11 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         });
     }
 
-    private static final String ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY = "select cast((max(actn_itm_id))as decimal) as max_id, count(distinct(doc_hdr_id)) as total_records"
+    private static final String MAX_ACTION_ITEM_DATE_ASSIGNED_AND_ACTION_LIST_COUNT_AND_QUERY = "select max(ASND_DT) as max_date, count(distinct(doc_hdr_id)) as total_records"
             + "  from ("
-            + "       select actn_itm_id,doc_hdr_id  "
+            + "       select ASND_DT,doc_hdr_id  "
             + "         from KREW_ACTN_ITM_T   where    prncpl_id=? "
-            + "         group by  actn_itm_id,doc_hdr_id "
+            + "         group by  ASND_DT,doc_hdr_id "
             + "       ) T";
 
 
@@ -391,22 +391,22 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      *
      * @return A List with the first value being the maxActionItemId and the second value being the count
      */
-    public List<Integer> getMaxActionItemIdAndCountForUser(final String principalId){
-        return (List<Integer>)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+    public List<Object> getMaxActionItemDateAssignedAndCountForUser(final String principalId){
+        return (List<Object>)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
                 PreparedStatement statement = null;
                 ResultSet resultSet = null;
-                List<Integer> result = new ArrayList<Integer>();
+                List<Object> result = new ArrayList<Object>();
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
-                    statement = connection.prepareStatement(ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY);
+                    statement = connection.prepareStatement(MAX_ACTION_ITEM_DATE_ASSIGNED_AND_ACTION_LIST_COUNT_AND_QUERY);
                     statement.setString(1, principalId);
                     resultSet = statement.executeQuery();
                     if (!resultSet.next()) {
                         throw new WorkflowRuntimeException("Error determining Action List Count and Max Action Item Id.");
                     }
                     else{
-                        result.add(resultSet.getInt(1));
+                        result.add(resultSet.getTimestamp(1));
                         result.add(resultSet.getInt(2));
                     }
                     return result;

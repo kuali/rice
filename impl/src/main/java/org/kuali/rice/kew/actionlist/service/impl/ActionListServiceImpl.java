@@ -269,8 +269,8 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionListDAO().getCount(principalId);
     }
 
-    public List<Integer> getMaxActionItemIdAndCountForUser(String principalId) {
-        return getActionListDAO().getMaxActionItemIdAndCountForUser(principalId);
+    public List<Object> getMaxActionItemDateAssignedAndCountForUser(String principalId) {
+        return getActionListDAO().getMaxActionItemDateAssignedAndCountForUser(principalId);
     }
 
     /**

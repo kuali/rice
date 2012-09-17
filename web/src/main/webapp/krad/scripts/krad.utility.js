@@ -30,9 +30,11 @@ var profilingOn = false;
 function handleCheckboxLabelClick(checkboxId, event) {
     var checkbox = jQuery("#" + checkboxId);
     if (!checkbox.prop("disabled")) {
-        if (jQuery(event.target).is("input, select, textarea, option") && !checkbox.prop("checked")) {
-            checkbox.prop("checked", true);
-            checkbox.change();
+        if (jQuery(event.target).is("input, select, textarea, option")) {
+            if(!checkbox.prop("checked")){
+                checkbox.prop("checked", true);
+                checkbox.change();
+            }
         }
         else if (jQuery(event.target).is("a, button")) {
             //do nothing

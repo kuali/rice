@@ -1050,15 +1050,15 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
       <para>Uif-VerticalBoxGroup – General group configured with a vertical box layout. Adds a
                 style class of ‘uif-verticalBoxGroup’ to the group.</para>
       <para>Uif-VerticalBoxSection – Section level group configured with a vertical box
-                layout. Adds a style class of ‘uif-boxSection’ to the group.</para>
+        layout. Adds a style class of ‘Uif-VerticalBoxSection’ to the group.</para>
       <para>Uif-VerticalBoxSubSection – Sub-Section level group configured with a vertical box
-                layout. Adds a style class of ‘uif-boxSubSection’ to the group.</para>
+        layout. Adds a style class of ‘Uif-VerticalBoxSubSection’ to the group.</para>
       <para>Uif-HorizontalBoxGroup - General group configured with a horizontal box layout.
                 Adds a style class of ‘uif-horizontalBoxGroup’ to the group.</para>
       <para>Uif-HorizontalBoxSection - Section level group configured with a horizontal box
-                layout. Adds a style class of ‘uif-boxSection’ to the group.</para>
+        layout. Adds a style class of ‘Uif-VerticalBoxSection’ to the group.</para>
       <para>Uif-HorizontalBoxSubSection - Sub-Section level group configured with a horizontal
-                box layout. Adds a style class of ‘uif-boxSubSection’ to the group.</para>
+        box layout. Adds a style class of ‘Uif-VerticalBoxSubSection’ to the group.</para>
       <para>Using these beans we can rewrite our previous example as:</para>
       <programlisting>
 &lt;bean id=”MyGroup” parent=”Uif-VerticalBoxGroup” p:title=”Group with Box Layout”/&gt;
@@ -1620,7 +1620,7 @@ public class Test1Object {
                 the same type as the collection items). If it is desired to have a different set of
                 fields for the add line (for example, some fields might get defaulted or are not
                 necessary to show until the line has been added), an alternate set of items can be
-                specify using the <emphasis role="bold">addLineFields</emphasis> property. This
+                specify using the <emphasis role="bold">addLineItems</emphasis> property. This
                 property holds a list of components similar to the generic group’s items
                 property.</para>
       <para>Lastly the collection group provides a nested Label component for the add line
@@ -1994,7 +1994,7 @@ public class Test2Object {
         <listitem>
           <para>By default the components configured in the items property will be used
                         for the add line as well. We can however configure a different list of
-                        components using the <emphasis role="bold">addLineFields</emphasis>
+                        components using the <emphasis role="bold">addLineItems</emphasis>
                         property</para>
         </listitem>
         <listitem>
@@ -2164,7 +2164,8 @@ public class Test2Object {
                 sequence value should come from. One way of doing this is to allow the framework to
                 create the sequence value for us. This is basically a numbering of each line
                 starting with one. To use autosequencing we set the property generateAutoSequence to
-                true.<section>
+                true.</para>
+      <section>
           <title>Row Details Group option</title>
           <para>Table collections can now display addition details per a row.  When using this functionality an additional column with a “Details” link will be available, and when the user clicks on it the configured group to display for that row will be revealed/disclosed below that row.  The intended uses of this functionality is for the user to be able to discover additional information about that collection item without having to leave the page, or hide content that can become large, such as descriptions.
 </para>
@@ -2209,7 +2210,7 @@ If neither a name nor images are set to be used, the link will be called “Deta
               </imageobject>
             </mediaobject>
           </figure>
-        </section></para>
+          
     </section>
     <section>
       <title>Stacked Layout</title>
@@ -2537,5 +2538,6 @@ If neither a name nor images are set to be used, the link will be called “Deta
         </listitem>
       </itemizedlist>
     </section>
+  </section>
   </section>
 </chapter>

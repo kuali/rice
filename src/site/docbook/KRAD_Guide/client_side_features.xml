@@ -187,7 +187,7 @@
                         being rendered </para>
         </listitem>
         <listitem>
-          <para>For configuring partial refreshes, the AjaxActionField is provided </para>
+          <para>For configuring partial refreshes, the Uif-PrimaryActionButton is provided </para>
         </listitem>
         <listitem>
           <para>Ajax action fields have all the same properties as action components, but
@@ -218,25 +218,25 @@
   </section>
   <section>
     <title>Lightbox</title>
-    <para>The recommended way to use lightboxes is through the <link linkend='linkAndLinkField'>Uif-Link</link> or
+    <para>The recommended way to use lightboxes is through the <link linkend="linkAndLinkField">Uif-Link</link> or
       the Uif-Dialog beans. For cases where this isn't possible the following JavaScript functions can be used to
       open lightboxes.</para>
     <variablelist>
       <varlistentry>
         <term>showLightboxUrl(url)</term>
-        <listitem>The content for the lightbox is loaded from the specified url.</listitem>
+        <listitem><para>The content for the lightbox is loaded from the specified url.</para></listitem>
       </varlistentry>
     </variablelist>
     <variablelist>
       <varlistentry>
         <term>showLightboxComponent(componentId)</term>
-        <listitem>The content for the lightbox is a Uif component (e.g. a section) and is specified via the component id.</listitem>
+        <listitem><para>The content for the lightbox is a Uif component (e.g. a section) and is specified via the component id.</para></listitem>
       </varlistentry>
     </variablelist>
     <variablelist>
       <varlistentry>
         <term>showLightboxContent(content)</term>
-        <listitem>The content of the lightbox is passed as the parameter which could be either plain or html formatted text.</listitem>
+        <listitem><para>The content of the lightbox is passed as the parameter which could be either plain or html formatted text.</para></listitem>
       </varlistentry>
     </variablelist>
     <para>Each of the three function can accept a second <emphasis role="bold">overrideOptions</emphasis> parameter
@@ -246,6 +246,7 @@
   </section>
   <section>
     <title>Working in the Client with jQuery </title>
+    <para></para>
 <!-- TODO: Add content here -->
   </section>
   <section>
@@ -391,9 +392,9 @@
       <para>Server-side messages are shown for any messages that are added to the MessageMap from one of your controller method calls (as described in 6.13 ValidationMessages content element).</para>
       <para>Each message type will have different icons (and background patterns) associated with the messages when displayed.   By default these icons are:</para>
       <itemizedlist>
-        <listitem><inlinegraphic fileref="../images/KRAD_Guide/error.png" align="center"/> Error</listitem>
-        <listitem><inlinegraphic fileref="../images/KRAD_Guide/warning.png" align="center"/> Warning</listitem>
-        <listitem><inlinegraphic fileref="../images/KRAD_Guide/info.png" align="center"/> Info</listitem>
+        <listitem><para><inlinemediaobject><imageobject><imagedata fileref="../images/KRAD_Guide/error.png" align="center"></imagedata></imageobject></inlinemediaobject> Error</para></listitem>
+        <listitem><para><inlinemediaobject><imageobject><imagedata fileref="../images/KRAD_Guide/warning.png" align="center"></imagedata></imageobject></inlinemediaobject> Warning</para></listitem>
+        <listitem><para><inlinemediaobject><imageobject><imagedata fileref="../images/KRAD_Guide/info.png" align="center"></imagedata></imageobject></inlinemediaobject> Info</para></listitem>
       </itemizedlist>
       <para>When validation messages are received from the server they are always displayed in a summary at the top of the page and at the sections for which they apply. </para>
       <para> At the page level, if sections exist, the summary will include the total number of messages on the screen and links to each section which contains the fields/sections that have validation messages. Messages which apply to the entire page are also displayed at this level.  If the page has no sections, the page level summary will include links directly to the fields which have messages.</para>

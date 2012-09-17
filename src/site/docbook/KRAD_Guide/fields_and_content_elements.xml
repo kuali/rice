@@ -417,15 +417,15 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
       <para>As is the case throughout much of the UIF, there is more than one way to
                 accomplish this. The first method we can use is to directly configure the alternate
                 or additional value that should be displayed. This is done using the
-                alternateDisplayValue and additionalDisplayValue properties respectively. For
+                readOnlyDisplayReplacement and readOnlyDisplaySuffix properties respectively. For
                 example, instead of display the value for the bookId property, we want to display
                 the string ‘Id Val’:</para>
-      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:alternateDisplayValue=”Id Val”/&gt;</programlisting>
+      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:readOnlyDisplayReplacement=”Id Val”/&gt;</programlisting>
       <para>This would result in the text ‘Id Val’ being displayed (along with the field
                 label).</para>
       <para>Now, we decide we just want to append the ‘Id Val’ string the actual value of the
                 bookId property, our configuration would then be:</para>
-      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:additionalDisplayValue=”Id Val”/&gt;</programlisting>
+      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:readOnlyDisplaySuffix=”Id Val”/&gt;</programlisting>
       <para>Assuming the bookId is ‘3’, this would result in the text ‘3 *-* Id Val’ being
                 displayed as shown below.</para>
       <figure>
@@ -447,19 +447,19 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
       <para>This has limited benefits by itself, but as mentioned earlier, KRAD allows us to
                 use expressions to set a value. With EL we can display one or more other property
                 values, perform operations and functions, and mix in static text! </para>
-      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:additionalDisplayValue=”with title @{bookTitle}”/&gt;</programlisting>
+      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:readOnlyDisplaySuffix=”with title @{bookTitle}”/&gt;</programlisting>
       <para>Again assuming the bookId is ‘3’ and bookTitle is ‘Dogs and Cats’, this would
                 result in the text ‘3 *-* with title Dogs and Cats’ being displayed.</para>
       <para>Often, there is a need to display another property value as the alternate or
                 additional display value. For example, when we have an id or code field (that
                 generally doesn’t have any meaning to the user), it is preferred to display the name
                 instead of the code or in addition to. For these cases, you can simply configure the
-                alternateDisplayPropertyName or additionalDisplayPropertyName properties with the
+                readOnlyDisplayReplacementPropertyName or readOnlyDisplaySuffixPropertyName properties with the
                 name of the property whose value should be used:</para>
-      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId”&#160;p:alternateDisplayPropertyName=”bookTitle”/&gt;</programlisting>
+      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId”&#160;p:readOnlyDisplayReplacementPropertyName=”bookTitle”/&gt;</programlisting>
       <para>Assuming bookTitle is ‘Dogs and Cats’, this would result in the text ‘Dogs and
                 Cats’.</para>
-      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId”&#160;p:additionalDisplayPropertyName =”bookTitle”/&gt;</programlisting>
+      <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId”&#160;p:readOnlyDisplaySuffixPropertyName =”bookTitle”/&gt;</programlisting>
       <para>Assuming bookId is ‘3’ and bookTitle is ‘Dogs and Cats’, this would result in the text ‘3 *-* Dogs and Cats’.</para>
       <tip>
         <title>Alternate/Additional Display and Input Field</title>
@@ -534,7 +534,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
           <listitem>
             <para>In some cases when the state is read-only we might need to display the
                             value for another property instead of the field’s property, or display
-                            the value in addition to. this is done by using the <emphasis role="bold">alternateDisplayPropertyName</emphasis> and <emphasis role="bold">additionalDisplayPropertyName</emphasis>
+                            the value in addition to. this is done by using the <emphasis role="bold">readOnlyDisplayReplacementPropertyName</emphasis> and <emphasis role="bold">readOnlyDisplaySuffixPropertyName</emphasis>
                             properties</para>
           </listitem>
         </itemizedlist>
@@ -2925,7 +2925,7 @@ public class QueryUtils {
         <para>For example, let&apos;s assume we have the following input field:</para>
         <programlisting>
 &lt;bean parent=”Uif-InputField” p:propertyName=”bookId”
-    p:additionalDisplayPropertyName=”bookTitle”
+    p:readOnlyDisplaySuffixPropertyName=”bookTitle”
     p:informationalDisplayPropertyNames=”bookTitle,bookCopyright”&gt;
     &lt;property name=”fieldLookup”&gt;
         &lt;bean parent=”Uif-Quickfinder”
@@ -3263,14 +3263,14 @@ public class QueryUtils {
                 Rice configurers.</para>
     </tip>
     <para>By default, the image will display to the left of the label text in the button. We can
-            change this to one of the other positions (top, right, bottom) by setting the <emphasis role="bold">actionImageLocation</emphasis> property:</para>
+      change this to one of the other positions (top, right, bottom) by setting the <emphasis role="bold">actionImagePlacement</emphasis> property:</para>
     <programlisting>
 &lt;bean parent=”Uif-PrimaryActionButton” p:actionLabel=”Save” 
     p:methodToCall=”performSave”&gt;
     &lt;property name=”actionImage”&gt;
         &lt;bean parent=”Uif-Image” 
             p:source=”@{#ConfigProperties[&apos;krad.externalizable.images.url&apos;]}searchicon.gif”
-            p:actionImageLocation=”RIGHT”/&gt;
+            p:actionImagePlacement=”RIGHT”/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
         </programlisting>
@@ -3440,13 +3440,13 @@ p:jumpToIdAfterSubmit=”newAccount.accountNumber”/&gt;
                 an action is taken. The UIF includes an example of this in the collection group.
                 After the add action is taken, the focus is set back to the first field on the
                 collection add line.</para>
-      <para>We can configure the focused component using the focusOnAfterSubmit property. This
+      <para>We can configure the focused component using the focusOnIdAfterSubmit property. This
                 is the id of the field that should be receive focus when the page (or component)
                 refreshes. The keyword “FIRST” exists to set focus to the first visible input field
                 control on the view:</para>
       <programlisting>
 &lt;bean parent=”Uif-PrimaryActionButton” p:actionLabel=”Save” 
-p:methodToCall=”save” p:focusOnAfterSubmit=”FIRST”/&gt;
+p:methodToCall=”save” p:focusOnIdAfterSubmit=”FIRST”/&gt;
             </programlisting>
     </section>
     <section>
@@ -3528,7 +3528,7 @@ p:methodToCall=”save” p:focusOnAfterSubmit=”FIRST”/&gt;
           <listitem>
             <para>By default an image configured for a button displays to the left of
                             the label, however its position can be changed to TOP, RIGHT, or BOTTOM
-                            by setting the property actionImageLocation (to be renamed to
+                            by setting the property actionImagePlacement (to be renamed to
                             actionImagePosition)</para>
           </listitem>
           <listitem>
@@ -3581,7 +3581,7 @@ p:methodToCall=”save” p:focusOnAfterSubmit=”FIRST”/&gt;
           </listitem>
           <listitem>
             <para>The element to focus on after a refresh is configured using the
-                            focusOnAfterSubmit property</para>
+              focusOnIdAfterSubmit property</para>
           </listitem>
           <listitem>
             <para>Like controls, actions can be disabled by setting the disabled
@@ -3783,16 +3783,16 @@ the display flag being turned off at a certain levels:  if display is off for an
 level up will display that fields full uncollapsed message text, and if display is off at a section the
  next section up will display those messages nested in a sublist.</para>
       </listitem>
-      <listitem><emphasis role="bold">displayFieldLabelWithMessages (GroupValidationMessage level)</emphasis> – Boolean that indicates whether the field label should be displayed with messages that are associated with a field in the Section level summary. When set to true, the message will be displayed as ‘{Field Label} – {Message}’. For example: ‘Book Title – Must not be longer than 50 characters.’.</listitem>
-      <listitem><emphasis role="bold">collapseAdditionalFieldLinkMessages (GroupValidationMessage level)</emphasis> <emphasis role="bold">-- </emphasis>When collapseAdditionalFieldLinkMessages is set to true, the messages generated on field links will be summarized to limit the space they take up with an appendage similar to [+n message type] appended for additional messages that are omitted. When this flag is false, all messages will be part of the link separated by a comma.</listitem>
-      <listitem><emphasis role="bold">useTooltip (FieldValidationMessage level) </emphasis> <emphasis role="bold">--</emphasis> When true, use the tooltip on fields to display their relevant messages. When false, these messages will appear directly below the control. </listitem>
+      <listitem><para><emphasis role="bold">displayFieldLabelWithMessages (GroupValidationMessage level)</emphasis> – Boolean that indicates whether the field label should be displayed with messages that are associated with a field in the Section level summary. When set to true, the message will be displayed as ‘{Field Label} – {Message}’. For example: ‘Book Title – Must not be longer than 50 characters.’.</para></listitem>
+      <listitem><para><emphasis role="bold">collapseAdditionalFieldLinkMessages (GroupValidationMessage level)</emphasis> <emphasis role="bold">-- </emphasis>When collapseAdditionalFieldLinkMessages is set to true, the messages generated on field links will be summarized to limit the space they take up with an appendage similar to [+n message type] appended for additional messages that are omitted. When this flag is false, all messages will be part of the link separated by a comma.</para></listitem>
+      <listitem><para><emphasis role="bold">useTooltip (FieldValidationMessage level) </emphasis> <emphasis role="bold">--</emphasis> When true, use the tooltip on fields to display their relevant messages. When false, these messages will appear directly below the control. </para></listitem>
     </itemizedlist>
     <para>Below shows ValidationMessages for various elements of a page which are configured with the default settings and displaying multiple errors:</para>
     <para><figure>
         <title>ValidationMessages for a Page</title>
         <mediaobject>
           <imageobject>
-            <graphic fileref="../images/KRAD_Guide/page_errors.png" align="center"/>
+            <imagedata fileref="../images/KRAD_Guide/page_errors.png" align="center"/>
           </imageobject>
         </mediaobject>
       </figure></para>
@@ -3800,7 +3800,7 @@ level up will display that fields full uncollapsed message text, and if display 
       <title>ValidationMessages for a Section</title>
       <mediaobject>
         <imageobject>
-          <graphic fileref="../images/KRAD_Guide/section_errors.png" align="center"/>
+          <imagedata fileref="../images/KRAD_Guide/section_errors.png" align="center"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -3808,7 +3808,7 @@ level up will display that fields full uncollapsed message text, and if display 
       <title>ValidationMessages for an InputField</title>
       <mediaobject>
         <imageobject>
-          <graphic fileref="../images/KRAD_Guide/field_error.png" align="center"/>
+          <imagedata fileref="../images/KRAD_Guide/field_error.png" align="center"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -3828,7 +3828,7 @@ level up will display that fields full uncollapsed message text, and if display 
             <para>The ValidationMessages component displays validation messages and other
                             information as part of a request/response.</para>
           </listitem>
-          <listitem>ValidationMessages only really apply to 3 levels: Page, Section (any group with a header), and InputFields.</listitem>
+                  <listitem><para>ValidationMessages only really apply to 3 levels: Page, Section (any group with a header), and InputFields.</para></listitem>
           <listitem>
             <para>Groups can be nested to form conceptual groupings of the view such as
                             page, section, sub-section, and field groups. thus we might want to
@@ -3867,9 +3867,9 @@ level up will display that fields full uncollapsed message text, and if display 
           <listitem>
             <para>We can configure which areas to display messages at and the framework will automatically determine where the next available area is to display this message - so a message should never be lost unless display is off for all levels.</para>
           </listitem>
-          <listitem>The <emphasis role="bold">displayFieldLabelWithMessages</emphasis> property determines if field label&apos;s should be prepended to messages matched to fields at the section level.</listitem>
-          <listitem>The <emphasis role="bold">collapseAdditionalFieldLinkMessages</emphasis> property determines if the additional messages beyond the first message associated with a field should be summarized at the section level.</listitem>
-          <listitem>The <emphasis role="bold">useTooltip</emphasis> property determines if the tooltip should be used to display messages at the field level</listitem>
+                  <listitem><para>The <emphasis role="bold">displayFieldLabelWithMessages</emphasis> property determines if field label&apos;s should be prepended to messages matched to fields at the section level.</para></listitem>
+                  <listitem><para>The <emphasis role="bold">collapseAdditionalFieldLinkMessages</emphasis> property determines if the additional messages beyond the first message associated with a field should be summarized at the section level.</para></listitem>
+                  <listitem><para>The <emphasis role="bold">useTooltip</emphasis> property determines if the tooltip should be used to display messages at the field level</para></listitem>
         </itemizedlist>
             </para>
     </section>
@@ -4060,7 +4060,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
     <para>There are additional messages we can configure to display with the Image component.
             These are known as the caption header and cutline text (traditional newspaper terms). To
             specify caption header text we use the captionHeaderText property. We can choose to have
-            the caption display above or below the image by setting the captionHeaderAboveImage
+            the caption display above or below the image by setting the captionHeaderPlacementAboveImage
             Boolean (defaults to true in base bean). Cutline text gives a summary of the image
             contents and is specified using the cutlineText property. Here is an example of using
             these properties:</para>
@@ -4106,7 +4106,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
           </listitem>
           <listitem>
             <para>We can add a caption to our image using the <emphasis role="bold">captionHeaderText</emphasis> property. The caption can be rendered
-                            above or below the image by setting the <emphasis role="bold">captionHeaderAboveImage</emphasis> property</para>
+              above or below the image by setting the <emphasis role="bold">captionHeaderPlacementAboveImage</emphasis> property</para>
           </listitem>
           <listitem>
             <para>Finally we can add a summary of our image using the <emphasis role="bold">cutlineText</emphasis> property. By default the cutline
@@ -4116,7 +4116,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
             </para>
     </section>
   </section>
-  <section id='linkAndLinkField'>
+  <section xml:id="linkAndLinkField">
     <title>Link and Link Field </title>
     <para>The Link and Link Field components are used to generate the HTML a (link) tag. The a
             tag is used to link to another document (the primary mechanism of navigation in the

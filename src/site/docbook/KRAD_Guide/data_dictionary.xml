@@ -744,9 +744,10 @@ State based validation allows you to change what validations (in other words, wh
         </listitem>
       </itemizedlist>
       <para>After you have the StateMapping object defined, you need to define states on your validation constraints to use state-based validation. </para>
-      <para><section>
+        <section>
           <title>Defining Constraint state Information</title>
-        </section>Constraints without states defined fallback to “stateless” and will always apply for all states.
+          <para>
+        Constraints without states defined fallback to “stateless” and will always apply for all states.
 BaseConstraints now have a property called states.  This represents the list of states at which that constraint applies.  If the list is empty or null, the constraint will apply at every state.  If the list contains at least 1 item, the constraint will apply at ONLY the states specified.  To limit the amount of xml required when entering states, there are some helper patterns allowed in this list.  These are:
 </para>
       <para><emphasis role="bold">“+”</emphasis>: when entering a state name followed by a plus sign, this means the constraint is applied to that state and every state afterwards. Examples: “state1+”, “I+”
@@ -761,32 +762,30 @@ BaseConstraints now have a property called states.  This represents the list of 
       <para>Rules for constraintStateOverrides:
 </para>
       <itemizedlist>
-        <listitem>Overrides if configured always take precedence over their parent when they apply. If no overrides match the state or if the constraintStateOverrides list is empty, the parent constraint will apply (if it is applicable for the state). </listitem>
-        <listitem>If there are there are 2 overrides that both apply at the same state, the last on the list will always take precedence.</listitem>
+        <listitem><para>Overrides if configured always take precedence over their parent when they apply. If no overrides match the state or if the constraintStateOverrides list is empty, the parent constraint will apply (if it is applicable for the state).</para></listitem>
+        <listitem><para>If there are there are 2 overrides that both apply at the same state, the last on the list will always take precedence.</para></listitem>
       </itemizedlist>
-      <para><section>
+      </section>
+        <section>
           <title>State-based Validation at the Controller</title>
-        </section>While the client-side validation is automatic (always validates against “n+1” unless configured otherwise), the server-side validation is completely up to the implementer.  If you would like to validate your View (or alternatively DataDictionaryEntry), there are methods provided to do so.  The main point is that server validation is NOT automatic and is application controlled.  These new state-based validation methods are (some overloaded version not noted here):
-</para>
-      <emphasis role="bold">
-        <para>For ViewValidationService (should be used for KRAD views):</para>
-      </emphasis>
-      <emphasis role="bold">
         <para>
+        While the client-side validation is automatic (always validates against “n+1” unless configured otherwise), the server-side validation is completely up to the implementer.  If you would like to validate your View (or alternatively DataDictionaryEntry), there are methods provided to do so.  The main point is that server validation is NOT automatic and is application controlled.  These new state-based validation methods are (some overloaded version not noted here):
 </para>
-      </emphasis>
+      <para><emphasis role="bold">
+        For ViewValidationService (should be used for KRAD views):
+      </emphasis></para>
       <itemizedlist>
-        <listitem><emphasis role="bold">validateView(View view)</emphasis> - This is the main validation method that should be used when validating Views. This method validates against the current state if state based validation is setup. </listitem>
-        <listitem><emphasis role="bold">validateView(View view, ViewModel model, String forcedValidationState)</emphasis> - Validate the view against the specific validationState instead of the default (current state). If forcedValidationState is null, validates against the current state, if state-based validation is setup.</listitem>
-        <listitem><emphasis role="bold">validateViewAgainstNextState(View view, ViewModel model) </emphasis>- Validate the view against the next state based on the order of the states in the view’s StateMapping. This will validate against current state + 1. If there is no next state, this will validate against the current state.</listitem>
-        <listitem><emphasis role="bold">validateViewSimulation(View view, ViewModel model)</emphasis> - Simulate view validation - this will run all validations against all states from the current state to the last state in the list of states in the view&apos;s stateMapping. Validation errors received for the current state will be added as errors to the MessageMap. Validation errors for future states will be warnings.</listitem>
+        <listitem><para><emphasis role="bold">validateView(View view)</emphasis> - This is the main validation method that should be used when validating Views. This method validates against the current state if state based validation is setup.</para></listitem>
+        <listitem><para><emphasis role="bold">validateView(View view, ViewModel model, String forcedValidationState)</emphasis> - Validate the view against the specific validationState instead of the default (current state). If forcedValidationState is null, validates against the current state, if state-based validation is setup.</para></listitem>
+        <listitem><para><emphasis role="bold">validateViewAgainstNextState(View view, ViewModel model) </emphasis>- Validate the view against the next state based on the order of the states in the view’s StateMapping. This will validate against current state + 1. If there is no next state, this will validate against the current state.</para></listitem>
+        <listitem><para><emphasis role="bold">validateViewSimulation(View view, ViewModel model)</emphasis> - Simulate view validation - this will run all validations against all states from the current state to the last state in the list of states in the view&apos;s stateMapping. Validation errors received for the current state will be added as errors to the MessageMap. Validation errors for future states will be warnings.</para></listitem>
       </itemizedlist>
       <para><emphasis role="bold">For DictionaryValidationService </emphasis>(recommended only when you don’t have a view.  Also note that state-based validation only works for DataDictionaryEntry backed objects with StateMappings setup):
 </para>
       <itemizedlist>
-        <listitem><emphasis role="bold">validate(Object object)</emphasis> – Validates against the current state (if state-based validation is set up). </listitem>
-        <listitem><emphasis role="bold">validateAgainstState(Object object, String validationState) </emphasis>– validates against the state specified by validationState. </listitem>
-        <listitem><emphasis role="bold">validateAgainstNextState(Object object)</emphasis> – validates against the next state as defined by the state mapping. </listitem>
+        <listitem><para><emphasis role="bold">validate(Object object)</emphasis> – Validates against the current state (if state-based validation is set up).</para></listitem>
+        <listitem><para><emphasis role="bold">validateAgainstState(Object object, String validationState) </emphasis>– validates against the state specified by validationState.</para></listitem>
+        <listitem><para><emphasis role="bold">validateAgainstNextState(Object object)</emphasis> – validates against the next state as defined by the state mapping.</para></listitem>
       </itemizedlist>
       <para>What is done in response to validation errors is also completely up to the implementation of the controller logic (it is recommended you halt action and return back the same view passed in, this will automatically display the discovered validation errors for the user).
 </para>
@@ -810,15 +809,16 @@ return getUIFModelAndView(form);</programlisting>
         </mediaobject>
       </figure>
       <para>In this image, you may notice the &quot;**&quot; indicator.  In KRAD, this means the field is required for the next state.</para>
+    </section>
       <section>
         <title>State-based Validation helper beans</title>
-      </section>
-      <para>There are a few beans available for use to help with a couple aspects of state based validation:</para>
+            <para>There are a few beans available for use to help with a couple aspects of state based validation:</para>
       <itemizedlist>
-        <listitem><emphasis role="bold">StateMapping</emphasis> - base StateMapping bean to parent from, defaults statePropertyName to &quot;state&quot;</listitem>
-        <listitem><emphasis role="bold">WorkflowStateMapping</emphasis> - suggested workflow StateMapping bean properties, for use with documents. Important: use only if you know your state-based validation is tied directly to workflow status.</listitem>
-        <listitem><emphasis role="bold">Uif-StateBased-RequiredInstructionsMessage</emphasis> - message that indicates that &quot;**&quot; means required for the next state. May be enhanced in the future to tell the user what the actual next state is.</listitem>
+        <listitem><para><emphasis role="bold">StateMapping</emphasis> - base StateMapping bean to parent from, defaults statePropertyName to &quot;state&quot;</para></listitem>
+        <listitem><para><emphasis role="bold">WorkflowStateMapping</emphasis> - suggested workflow StateMapping bean properties, for use with documents. Important: use only if you know your state-based validation is tied directly to workflow status.</para></listitem>
+        <listitem><para><emphasis role="bold">Uif-StateBased-RequiredInstructionsMessage</emphasis> - message that indicates that &quot;**&quot; means required for the next state. May be enhanced in the future to tell the user what the actual next state is.</para></listitem>
       </itemizedlist>
+      </section>  
     </section>
   </section>
   <section>

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -30,6 +31,7 @@ import static org.junit.Assert.assertEquals;
 
 public class DataDictionaryLazyLoadingTest extends KRADTestCase {
 
+    @Ignore
 	@Test
 	public void testBusinessObjectDataDictionaryEntriesAreSame() {
 		BusinessObjectEntry entry1 = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(AdHocRoutePerson.class.getName());
@@ -41,6 +43,7 @@ public class DataDictionaryLazyLoadingTest extends KRADTestCase {
 		assertEquals(entry2, entry3);
 	}
 
+    @Ignore
 	@Test
 	public void testDocumentDataDictionaryEntriesAreSame() {
 		DocumentEntry entry1 = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry("CampusMaintenanceDocument");

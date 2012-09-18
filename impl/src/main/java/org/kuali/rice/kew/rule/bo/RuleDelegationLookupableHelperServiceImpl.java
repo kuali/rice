@@ -31,6 +31,7 @@ import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.WorkflowRuleAttributeRows;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
@@ -292,10 +293,16 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 for (Object element : myColumns.getColumns()) {
                     KeyValue pair = (KeyValue) element;
                     final KeyValue newPair;
-                    if (record.getRuleExtensionValue(pair.getKey(), pair.getKey().toString()) != null) {
-                    	newPair = new ConcreteKeyValue(pair.getKey(), record.getRuleExtensionValue(pair.getValue(), pair.getKey().toString()).getValue());
+                    List<RuleExtensionBo> ruleExts = record.getRuleExtensions();
+                    for (RuleExtensionBo ruleExt : ruleExts) {
+                        if(ruleExt.getExtensionValuesMap().containsKey(pair.getKey().toString())){
+                            ruleTemplateIdParam = ruleExt.getRuleTemplateAttributeId();
+                        }
+                    }
+                    if (record.getRuleExtensionValue(ruleTemplateIdParam, pair.getKey().toString()) != null) {
+                        newPair = new ConcreteKeyValue(pair.getKey(), record.getRuleExtensionValue(ruleTemplateIdParam, pair.getKey().toString()).getValue());
                     } else {
-                    	newPair = new ConcreteKeyValue(pair.getKey(), KewApiConstants.HTML_NON_BREAKING_SPACE);
+                        newPair = new ConcreteKeyValue(pair.getKey(), KewApiConstants.HTML_NON_BREAKING_SPACE);
                     }
                     myNewColumns.getColumns().add(newPair);
                     record.getFieldValues().put(newPair.getKey(), newPair.getValue());

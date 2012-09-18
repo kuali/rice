@@ -119,7 +119,9 @@ public class DeprecatedDocumentTagsTest extends DocumentSearchTestBase {
             List<Row> rowList = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
             assertEquals("The searching rows list should have exactly one element", 1, rowList.size());
             assertEquals("The searching row should have exactly one field", 1, rowList.get(0).getFields().size());
-            assertEquals("The rule attribute field does not have the expected visibility", visibleStates[i],
+            boolean colVis = rowList.get(0).getField(0).isColumnVisible();
+            assertEquals("The rule attribute field does not have the expected visibility", true, colVis);
+            assertEquals("The rule attribute field is not hidden", true,
                     rowList.get(0).getField(0).getFieldType() != Field.HIDDEN);
         }
     	// Ensure that the document type called "DocTypeWithSecurity" has the correct group defined for its <security> section.

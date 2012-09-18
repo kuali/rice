@@ -53,7 +53,7 @@ public class DialogManager implements Serializable {
         public DialogInfo(String dialogId, String returnMethod){
             this.dialogId = dialogId;
             this.asked = false;
-            this.asked = answered;
+            this.answered = false;
             this.answer = null;
             this.explanation = null;
             this.returnMethod = returnMethod;

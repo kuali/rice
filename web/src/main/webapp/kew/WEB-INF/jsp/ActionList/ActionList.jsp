@@ -258,8 +258,8 @@
 					<display:setProperty name="export.banner" value="" />
 					<display:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display:setProperty name="css.tr.odd" value="actionlist_anyRow" />
-                    <c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null} && ActionListForm.hasDisplayParameters}">
-  					  <display:column title="&nbsp;">
+          <c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasDisplayParameters}">
+          <display:column title="&nbsp;">
 						<c:choose>
 						   <c:when test="${result.displayParameters != null}">
                              <br>

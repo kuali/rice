@@ -1,10 +1,13 @@
 package edu.samplu.common;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
@@ -112,6 +115,10 @@ public abstract class WebDriverLegacyITBase {
     protected void selectFrame(String locator) {
         driver.switchTo().frame(locator);
     }
+    
+    protected void selectWindow(String locator) {
+        driver.switchTo().window(locator);
+    }
 
     protected String waitForDocId() throws InterruptedException {
         waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
@@ -200,6 +207,10 @@ public abstract class WebDriverLegacyITBase {
     protected void waitAndClickByName(String name, String message) throws InterruptedException {
         waitAndClick(By.name(name), message);
     }
+    
+    protected void waitAndClickByXpath(String xpath, String message) throws InterruptedException {
+        waitAndClick(By.xpath(xpath), message);
+    }
 
     protected void waitAndType(By by, String text) throws InterruptedException {
         waitFor(by, "");
@@ -211,7 +222,61 @@ public abstract class WebDriverLegacyITBase {
         }
     }
     
+    protected void waitAndType(By by, String text, String message) throws InterruptedException {
+        waitFor(by, "");
+        try {
+            (driver.findElement(by)).sendKeys(text);
+        } catch (Exception e) {
+            fail(e.getMessage() + " " + by.toString() + " " + text + "  "+message);
+            e.printStackTrace();
+        }
+    }
+    
     protected void waitAndTypeByXpath(String locator, String text) throws InterruptedException {
         waitAndType(By.xpath(locator), text);
     }
+    
+    protected void waitAndTypeByXpath(String locator, String text, String message) throws InterruptedException {
+        waitAndType(By.xpath(locator), text, message);
+    }
+    
+    protected void waitAndTypeByName(String name, String text) throws InterruptedException {
+        waitAndType(By.name(name), text);
+    }
+    
+    protected void selectByXpath(String locator, String select) throws InterruptedException {
+        select(By.xpath(locator), select);
+    }
+    
+    protected void selectByName(String name, String select) throws InterruptedException {
+        select(By.name(name), select);
+    }
+    
+    protected void select(By by, String select)  throws InterruptedException {
+        WebElement select1 = driver.findElement(by);
+        List<WebElement> options = select1.findElements(By.tagName("option"));
+        for(WebElement option : options){
+            if(option.getText().equals(select)){
+                option.click();
+                break;
+            }
+        }
+    }
+    
+    protected String getTextByName(String name) throws InterruptedException {
+        return getText(By.name(name));
+    }
+    
+    protected String getTextByXpath(String locator) throws InterruptedException {
+        return getText(By.xpath(locator));
+    }
+    
+    protected String getText(By by)  throws InterruptedException {
+        return driver.findElement(by).getText();        
+    }
+    
+    protected String getBaseUrlString() {
+        return ITUtil.getBaseUrlString();
+    }
+    
 }

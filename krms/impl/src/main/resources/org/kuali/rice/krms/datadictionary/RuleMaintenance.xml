@@ -128,8 +128,8 @@
                   </property>
               </bean>
               <bean parent="Uif-PrimaryActionButton" p:id="copyRuleButton" p:methodToCall="copyRule" p:actionLabel="Copy Rule"
-                p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt; float: right;"
-                p:refreshWhenChanged="#dp.copyRuleName" p:disabled="@{#empty(#dp.copyRuleName)}" p:onDocumentReadyScript="rulebo_maintenanceview.bind_copyRuleName();" /> <!-- disable button when field is empty -->
+                p:cssClasses="buttonClasses" p:style="margin-right: 15pt; float: right;"
+                p:refreshWhenChangedPropertyNames="#dp.copyRuleName" p:disabled="@{#empty(#dp.copyRuleName)}" p:onDocumentReadyScript="rulebo_maintenanceview.bind_copyRuleName();" /> <!-- disable button when field is empty -->
             </list>
           </property>
         </bean>
@@ -427,7 +427,7 @@
           }
           "
               p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
-          <property name="styleClasses">
+          <property name="cssClasses">
             <list merge="true">
               <value>tree-bar-button</value>
               <value>kr-delete-button</value>

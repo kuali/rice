@@ -38,6 +38,7 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -47,7 +48,7 @@ import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -828,7 +829,7 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 
 	protected DictionaryValidationService getDictionaryValidationService() {
 		if ( dictionaryValidationService == null ) {
-			dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
+			dictionaryValidationService = KNSServiceLocator.getKNSDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}

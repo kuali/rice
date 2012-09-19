@@ -41,12 +41,13 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -630,7 +631,7 @@ public abstract class AttributeValidatingTypeServiceBase {
     // lazy initialization holder class
     private static class DictionaryValidationServiceHolder {
         public static DictionaryValidationService dictionaryValidationService =
-                KRADServiceLocatorWeb.getDictionaryValidationService();
+                KNSServiceLocator.getKNSDictionaryValidationService();
     }
 
 	protected DictionaryValidationService getDictionaryValidationService() {

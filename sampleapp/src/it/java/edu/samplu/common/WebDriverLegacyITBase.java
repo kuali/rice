@@ -132,6 +132,10 @@ public abstract class WebDriverLegacyITBase {
     protected void waitForElementPresentByXpath(String locator) throws InterruptedException {
         waitFor(By.xpath(locator));
     }
+    
+    protected void waitForElementPresentByName(String name) throws InterruptedException {
+        waitFor(By.name(name));
+    }
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
         waitForTitleToEqualKualiPortalIndex("");

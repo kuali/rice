@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,10 @@ public class BreadCrumbs extends WidgetBase {
     private boolean displayPassedHistory;
     private boolean displayBreadcrumbsWhenOne;
     private List<HistoryEntry> homewardPathList;
+
+    public BreadCrumbs() {
+        homewardPathList = new ArrayList<HistoryEntry>();
+    }
 
     /**
      * The following updates are done here:

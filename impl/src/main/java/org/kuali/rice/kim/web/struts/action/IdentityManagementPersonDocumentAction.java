@@ -132,7 +132,12 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 		for (PersonDocumentRole role : personDoc.getRoles()) {
 //			try {
             KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType(role.getKimTypeId());
-            KimTypeService kimTypeService = (KimTypeService) KimImplServiceLocator.getBean(type.getServiceName());
+            KimTypeService kimTypeService = null;
+            if (StringUtils.isNotBlank(type.getServiceName()))  {
+                kimTypeService = (KimTypeService) KimImplServiceLocator.getBean(type.getServiceName());
+            } else {
+                kimTypeService = getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
+            }
 	        if ( kimTypeService != null ) {
                 role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
 	        }

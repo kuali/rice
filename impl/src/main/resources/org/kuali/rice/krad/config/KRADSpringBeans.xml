@@ -313,9 +313,6 @@
     <property name="documentDictionaryService">
       <ref bean="documentDictionaryService"/>
     </property>
-    <property name="dictionaryValidationService">
-      <ref bean="dictionaryValidationService"/>
-    </property>
     <property name="dataDictionaryService">
       <ref bean="dataDictionaryService"/>
     </property>

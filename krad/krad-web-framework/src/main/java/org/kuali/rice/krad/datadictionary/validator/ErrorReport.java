@@ -83,11 +83,11 @@ public class ErrorReport {
      * @param validationFailed - The validation that was failed
      * @param trace - TracerToken containing information on xml files and location
      */
-    public ErrorReport(int errorStatus, String validationFailed, TracerToken trace){
-        this.errorStatus=errorStatus;
-        this.validationFailed=validationFailed;
-        this.xmlPages=trace.getRelatedXmls();
-        this.beanLocation=trace.getBeanLocation();
+    public ErrorReport(int errorStatus, String validationFailed, TracerToken trace) {
+        this.errorStatus = errorStatus;
+        this.validationFailed = validationFailed;
+        this.xmlPages = trace.getRelatedXmls();
+        this.beanLocation = trace.getBeanLocation();
         this.currentValues = new ArrayList<String>();
     }
 
@@ -99,11 +99,11 @@ public class ErrorReport {
      * @param trace - TracerToken containing information on xml files and location
      * @param values - An array of the values effected
      */
-    public ErrorReport(int errorStatus, String validationFailed, TracerToken trace, String values[]){
-        this.errorStatus=errorStatus;
-        this.validationFailed=validationFailed;
-        this.beanLocation=trace.getBeanLocation();
-        this.xmlPages=trace.getRelatedXmls();
+    public ErrorReport(int errorStatus, String validationFailed, TracerToken trace, String values[]) {
+        this.errorStatus = errorStatus;
+        this.validationFailed = validationFailed;
+        this.beanLocation = trace.getBeanLocation();
+        this.xmlPages = trace.getRelatedXmls();
         this.currentValues = new ArrayList<String>();
 
         for (int i = 0; i < values.length; i++) {
@@ -133,8 +133,8 @@ public class ErrorReport {
      * @param trace - TracerToken containing information on xml files and location
      * @return Returns a new ErrorReport of ERROR status
      */
-    public static ErrorReport createError(String validationFailed,TracerToken trace){
-        return new ErrorReport(ERROR,validationFailed,trace);
+    public static ErrorReport createError(String validationFailed, TracerToken trace) {
+        return new ErrorReport(ERROR, validationFailed, trace);
     }
 
     /**
@@ -144,8 +144,8 @@ public class ErrorReport {
      * @param trace - TracerToken containing information on xml files and location
      * @return Returns a new ErrorReport of WARNING status
      */
-    public static ErrorReport createWarning(String validationFailed,TracerToken trace){
-        return new ErrorReport(WARNING,validationFailed,trace);
+    public static ErrorReport createWarning(String validationFailed, TracerToken trace) {
+        return new ErrorReport(WARNING, validationFailed, trace);
     }
 
     /**

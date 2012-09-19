@@ -44,7 +44,7 @@ public class TracerToken {
 
     private ArrayList<String> beanIds;
     private ArrayList<String> beanTypes;
-    private Map<String,Document> beanMap;
+    private Map<String, Document> beanMap;
     private ArrayList<String> relatedXmls;
 
     private int validationStage;
@@ -61,19 +61,19 @@ public class TracerToken {
     /**
      * Constructor for an empty token to start a trace
      */
-    public TracerToken(){
+    public TracerToken() {
         beanIds = new ArrayList<String>();
         beanTypes = new ArrayList<String>();
-        beanMap = new HashMap<String,Document>();
+        beanMap = new HashMap<String, Document>();
     }
 
     /**
      * Constructor for an empty token to start a trace
      */
-    public TracerToken(String[] files,ResourceLoader loader) {
+    public TracerToken(String[] files, ResourceLoader loader) {
         beanIds = new ArrayList<String>();
         beanTypes = new ArrayList<String>();
-        beanMap = new HashMap<String,Document>();
+        beanMap = new HashMap<String, Document>();
         loadFiles(files, loader);
     }
 
@@ -174,20 +174,20 @@ public class TracerToken {
      * @param beanFiles - The list of file paths used in the creation of the beans
      * @param loader - The source that was used to load the beans
      */
-    private void loadFiles(String[] beanFiles,ResourceLoader loader){
+    private void loadFiles(String[] beanFiles, ResourceLoader loader) {
         LOG.debug("Started Loading Parser Files");
 
-        for(int i=0;i<beanFiles.length;i++){
-            try{
+        for (int i = 0; i < beanFiles.length; i++) {
+            try {
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document document;
                 String file = beanFiles[i];//.substring(0,10)+"/"+beanFiles[i].substring(10);
-                LOG.debug("Loading file: "+file);
+                LOG.debug("Loading file: " + file);
                 document = builder.parse(loader.getResource(file).getInputStream());
                 beanMap.put(file, document);
-            }catch(Exception e){
-                LOG.debug("Not Found: "+beanFiles[i]);
+            } catch (Exception e) {
+                LOG.error("Not Found: " + beanFiles[i]);
                 //System.exit(1);
             }
         }
@@ -196,31 +196,33 @@ public class TracerToken {
 
     /**
      * Parse the the Documents contained in the Map an finding the map entries whos documents contain the passed in Id
-     * in a bean element's attributes. All attributes are checked because the id used in the trace can be from different
+     * in a bean element's attributes. All attributes are checked because the id used in the trace can be from
+     * different
      * properties on different beans and not just the id attribute.
      *
      * @param id - The attribute value to be found
      * @param beans - A Map containing the Documents to be looked through
      * @return - A sub set of maps from the past in list that contains the value being looked for
      */
-    private Map<String, Document> findBeanById(String id, Map<String,Document> beans){
-        Map<String,Document> result = new HashMap<String,Document>();
-        LOG.debug("Searching for bean of Id: "+id);
+    private Map<String, Document> findBeanById(String id, Map<String, Document> beans) {
+        Map<String, Document> result = new HashMap<String, Document>();
+        LOG.debug("Searching for bean of Id: " + id);
 
         Iterator iter = beans.entrySet().iterator();
 
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
-            Document document= (Document) entry.getValue();
+            Document document = (Document) entry.getValue();
             NodeList nodes = document.getElementsByTagName("bean");
 
-            for(int i=0;i<nodes.getLength();i++){
-                if(nodes.item(i).hasAttributes()){
-                    for(int j=0;j<nodes.item(i).getAttributes().getLength();j++){
-                        if(nodes.item(i).getAttributes().item(j).getNodeValue().compareTo(id)==0){
-                            LOG.debug("Found bean of Id = "+id);
+            for (int i = 0; i < nodes.getLength(); i++) {
+                if (nodes.item(i).hasAttributes()) {
+                    for (int j = 0; j < nodes.item(i).getAttributes().getLength(); j++) {
+                        if (nodes.item(i).getAttributes().item(j).getNodeValue().toLowerCase().compareTo(
+                                id.toLowerCase()) == 0) {
+                            LOG.debug("Found bean of Id = " + id);
 
-                            result.put((String)entry.getKey(),(Document) entry.getValue());
+                            result.put((String) entry.getKey(), (Document) entry.getValue());
 
                             break;
                         }
@@ -239,23 +241,23 @@ public class TracerToken {
      *
      * @return A list of file paths to the xmls in which the beans were found
      */
-    public ArrayList<String> findXmlFiles(){
-        Map<String,Document> result = new HashMap<String,Document>();
+    public ArrayList<String> findXmlFiles() {
+        Map<String, Document> result = new HashMap<String, Document>();
         LOG.debug("Looking for Xml files");
 
-        for(int i=0;i<getTraceSize();i++){
-            if(getBeanId(i)!=null){
-                if(getBeanId(i).compareTo(NO_BEAN_ID)!=0){
-                    result.putAll(findBeanById(getBeanId(i),beanMap));
+        for (int i = 0; i < getTraceSize(); i++) {
+            if (getBeanId(i) != null) {
+                if (getBeanId(i).compareTo(NO_BEAN_ID) != 0) {
+                    result.putAll(findBeanById(getBeanId(i), beanMap));
                 }
             }
         }
 
         ArrayList<String> files = new ArrayList<String>();
         Iterator iter = result.entrySet().iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
-            files.add((String)entry.getKey());
+            files.add((String) entry.getKey());
         }
 
         return files;
@@ -275,8 +277,8 @@ public class TracerToken {
      *
      * @param newMap - The map to be stored
      */
-    private void setBeanMap(Map<String,Document> newMap){
-        beanMap=newMap;
+    private void setBeanMap(Map<String, Document> newMap) {
+        beanMap = newMap;
     }
 
     /**
@@ -343,7 +345,7 @@ public class TracerToken {
      *
      * @return A list of file paths to the related xmls
      */
-    public ArrayList<String> getRelatedXmls(){
+    public ArrayList<String> getRelatedXmls() {
         return findXmlFiles();
     }
 }

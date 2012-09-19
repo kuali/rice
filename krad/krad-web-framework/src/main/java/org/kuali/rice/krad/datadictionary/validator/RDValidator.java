@@ -72,55 +72,59 @@ public class RDValidator {
     private boolean runValidations(KualiDefaultListableBeanFactory beans, boolean failOnWarning) {
         LOG.info("Starting Dictionary Validation");
 
-        /*Map<String, View> uifBeans;
+        Map<String, View> uifBeans;
 
         try {
             uifBeans = beans.getBeansOfType(View.class);
             for (View views : uifBeans.values()) {
-                try{
+                try {
+                    TracerToken tracer = tracerTemp.getCopy();
                     if (doValidationOnUIFBean(views)) {
-                        TracerToken tracer = tracerTemp.getCopy();
                         tracer.setValidationStage(TracerToken.START_UP);
-                        runValidationsOnComponents(views,tracer);
+                        runValidationsOnComponents(views, tracer);
                     }
                 } catch (Exception e) {
-                    String value[] = {views.getId(),"Exception = "+e.getMessage()};
-                    ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View", "During Validation",value);
+                    String value[] = {views.getId(), "Exception = " + e.getMessage()};
+                    ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View",
+                            "During Validation", value);
                     ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
                     temp.add(error);
                     compileReports(temp);
                 }
             }
-        }catch (Exception e){
-            String value[] = {"Validation set = views","Exception = "+e.getMessage()};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans", "Before Validation",value);
+        } catch (Exception e) {
+            String value[] = {"Validation set = views", "Exception = " + e.getMessage()};
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans", "Before Validation",
+                    value);
             ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
             temp.add(error);
             compileReports(temp);
-        }*/
+        }
 
         Map<String, DataDictionaryEntry> ddBeans;
 
-        try{
-            ddBeans=beans.getBeansOfType(DataDictionaryEntry.class);
-            for(DataDictionaryEntry entry : ddBeans.values()){
-                try{
+        try {
+            ddBeans = beans.getBeansOfType(DataDictionaryEntry.class);
+            for (DataDictionaryEntry entry : ddBeans.values()) {
+                try {
 
                     TracerToken tracer = tracerTemp.getCopy();
                     tracer.setValidationStage(TracerToken.BUILD);
                     compileReports(entry.completeValidation(tracer));
 
-                }catch(Exception e){
-                    String value[] = {"Validation set = Data Dictionary Entries","Exception = "+e.getMessage()};
-                    ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans", "During Validation",value);
+                } catch (Exception e) {
+                    String value[] = {"Validation set = Data Dictionary Entries", "Exception = " + e.getMessage()};
+                    ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans",
+                            "During Validation", value);
                     ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
                     temp.add(error);
                     compileReports(temp);
                 }
             }
-        }catch(Exception e){
-            String value[] = {"Validation set = Data Dictionary Entries","Exception = "+e.getMessage()};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans", "Before Validation",value);
+        } catch (Exception e) {
+            String value[] = {"Validation set = Data Dictionary Entries", "Exception = " + e.getMessage()};
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans", "Before Validation",
+                    value);
             ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
             temp.add(error);
             compileReports(temp);
@@ -205,8 +209,9 @@ public class RDValidator {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String xmlFiles[],ResourceLoader loader,KualiDefaultListableBeanFactory beans, boolean failOnWarning) {
-        tracerTemp=new TracerToken(xmlFiles,loader);
+    public boolean validate(String xmlFiles[], ResourceLoader loader, KualiDefaultListableBeanFactory beans,
+            boolean failOnWarning) {
+        tracerTemp = new TracerToken(xmlFiles, loader);
         return runValidations(beans, failOnWarning);
     }
 
@@ -216,45 +221,49 @@ public class RDValidator {
      * @param component - The component being checked
      * @param tracer - The current bean trace for the validation line
      */
-    private void runValidationsOnComponents(Component component,TracerToken tracer){
+    private void runValidationsOnComponents(Component component, TracerToken tracer) {
 
         ArrayList<ErrorReport> reports;
 
-        try{
+        try {
             ExpressionUtils.populatePropertyExpressionsFromGraph(component, false);
-        }catch (Exception e){
-            String value[] = {"view = "+component.getId()};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View", "Loading Expressions",value);
+        } catch (Exception e) {
+            String value[] = {"view = " + component.getId()};
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View", "Loading Expressions",
+                    value);
             ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
             temp.add(error);
         }
 
         LOG.debug("Validating View: " + component.getId());
 
-        try{
+        try {
             reports = component.completeValidation(tracer.getCopy());
             compileReports(reports);
-        }catch (Exception e){
+        } catch (Exception e) {
             String value[] = {component.getId()};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View", "During Data Object Validation",value);
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View",
+                    "During Data Object Validation", value);
             ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
             temp.add(error);
         }
 
-        try{
+        try {
             runValidationsOnLifecycle(component, tracer.getCopy());
-        }catch (Exception e){
-            String value[] = {component.getId(),component.getComponentsForLifecycle().size()+""};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View", "During Lifecycle Validations",value);
+        } catch (Exception e) {
+            String value[] = {component.getId(), component.getComponentsForLifecycle().size() + ""};
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View",
+                    "During Lifecycle Validations", value);
             ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
             temp.add(error);
         }
 
-        try{
+        try {
             runValidationsOnPrototype(component, tracer.getCopy());
-        }catch (Exception e){
-            String value[] = {component.getId(),component.getComponentPrototypes().size()+""};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View", "During Prototype Validations",value);
+        } catch (Exception e) {
+            String value[] = {component.getId(), component.getComponentPrototypes().size() + ""};
+            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View",
+                    "During Prototype Validations", value);
             ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
             temp.add(error);
         }
@@ -396,7 +405,7 @@ public class RDValidator {
      * @param xmlFiles
      * @return The Spring Bean Factory for the provided list of xml files
      */
-    public KualiDefaultListableBeanFactory loadBeans(String[] xmlFiles){
+    public KualiDefaultListableBeanFactory loadBeans(String[] xmlFiles) {
 
         LOG.info("Starting XML File Load");
         KualiDefaultListableBeanFactory beans = new KualiDefaultListableBeanFactory();
@@ -415,21 +424,20 @@ public class RDValidator {
             throw new RuntimeException("Cannot create component decorator post processor: " + e1.getMessage(), e1);
         }
 
-
-        ArrayList<String> coreFiles=new ArrayList<String>();
+        ArrayList<String> coreFiles = new ArrayList<String>();
         ArrayList<String> testFiles = new ArrayList<String>();
 
-        for(int i=0;i<xmlFiles.length;i++){
-            if(xmlFiles[i].contains("classpath")){
+        for (int i = 0; i < xmlFiles.length; i++) {
+            if (xmlFiles[i].contains("classpath")) {
                 coreFiles.add(xmlFiles[i]);
-            }else{
+            } else {
                 testFiles.add(xmlFiles[i]);
             }
         }
-        String core[]=new String[coreFiles.size()];
+        String core[] = new String[coreFiles.size()];
         coreFiles.toArray(core);
 
-        String test[]=new String[testFiles.size()];
+        String test[] = new String[testFiles.size()];
         testFiles.toArray(test);
 
         try {
@@ -449,7 +457,7 @@ public class RDValidator {
         UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
         factoryPostProcessor.postProcessBeanFactory(beans);
 
-        tracerTemp=new TracerToken(xmlFiles,xmlReader.getResourceLoader());
+        tracerTemp = new TracerToken(xmlFiles, xmlReader.getResourceLoader());
 
         LOG.info("Completed XML File Load");
 
@@ -462,10 +470,10 @@ public class RDValidator {
      * @param files The list of file paths for conversion
      * @return A list of resources created from the file paths
      */
-    private Resource[] getResources(String files[]){
+    private Resource[] getResources(String files[]) {
         Resource resources[] = new Resource[files.length];
-        for(int i=0;i<files.length;i++){
-            resources[0]=new FileSystemResource(files[i]);
+        for (int i = 0; i < files.length; i++) {
+            resources[0] = new FileSystemResource(files[i]);
         }
 
         return resources;

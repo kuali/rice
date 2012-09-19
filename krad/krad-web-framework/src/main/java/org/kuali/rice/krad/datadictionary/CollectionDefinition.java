@@ -29,32 +29,39 @@ import java.util.ArrayList;
  * <p>It contains information relating to the display, validation,
  * and general maintenance of a specific Collection attribute of an entry. It helps to provide meaningful labels for
  * collections on a business or data object.
- * It can be used to define collections that are generated at runtime and marked using @{@code Transient} in the containing
+ * It can be used to define collections that are generated at runtime and marked using @{@code Transient} in the
+ * containing
  * business or data object class.</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CollectionDefinition extends DataDictionaryDefinitionBase implements CollectionSizeConstrainable{
+
+public class CollectionDefinition extends DataDictionaryDefinitionBase implements CollectionSizeConstrainable {
     private static final long serialVersionUID = -2644072136271281041L;
-    
+
     protected String dataObjectClass;
+
     protected String name;
+
     protected String label;
+
     protected String shortLabel;
+
     protected String elementLabel;
-    
+
     protected String summary;
 
-	protected String description;
-    
-	protected Integer minOccurs;
-	protected Integer maxOccurs;
+    protected String description;
+
+    protected Integer minOccurs;
+
+    protected Integer maxOccurs;
 
     /**
      * default constructor
      */
     public CollectionDefinition() {
-    	//empty
+        //empty
     }
 
     /**
@@ -132,7 +139,7 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     }
 
     /**
- 	 *  gets the element label
+     * gets the element label
      *
      * <p>The elementLabel defines the name to be used for a single object within the collection.
      * For example: "Address" may be the name
@@ -155,16 +162,16 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     }
 
     /**
-	 * gets the summary
+     * gets the summary
      */
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
     /**
-     *  gets the description
+     * gets the description
      *
-     *  <p>The description element is used to provide a long description of the
+     * <p>The description element is used to provide a long description of the
      * attribute or collection.  This is designed to be used for help purposes.</p>
      *
      * @return the description
@@ -174,42 +181,48 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     }
 
     /**
-	 * sets the description
+     * sets the description
      *
      * @param description - the description to set
      */
     public void setDescription(String description) {
         this.description = description;
     }
-    
-           
+
     /**
      * gets the data object class
      *
      * <p>This is the Java class type of the object contained in this collection</p>
      *
-	 * @return the dataObjectClass
-	 */
-	public String getDataObjectClass() {
-		return this.dataObjectClass;
-	}
+     * @return the dataObjectClass
+     */
+    public String getDataObjectClass() {
+        return this.dataObjectClass;
+    }
 
-	/**
+    /**
      * sets the data object class
-	 * @param dataObjectClass the dataObjectClass to set
-	 */
-	public void setDataObjectClass(String dataObjectClass) {
-		this.dataObjectClass = dataObjectClass;
-	}
+     *
+     * @param dataObjectClass the dataObjectClass to set
+     */
+    public void setDataObjectClass(String dataObjectClass) {
+        this.dataObjectClass = dataObjectClass;
+    }
 
-	/**
+    /**
      * Directly validate simple fields, call completeValidation on Definition fields
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
-            throw new AttributeValidationException("property '" + name + "' is not a collection property of class '" + rootBusinessObjectClass + "' (" + "" + ")");
+            throw new AttributeValidationException("property '"
+                    + name
+                    + "' is not a collection property of class '"
+                    + rootBusinessObjectClass
+                    + "' ("
+                    + ""
+                    + ")");
         }
     }
 
@@ -219,14 +232,15 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
      */
-    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer) {
+    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass,
+            TracerToken tracer) {
         ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
-        tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getName());
+        tracer.addBean(this.getClass().getSimpleName(), "Attribute: " + getName());
 
         if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
-            ErrorReport error = ErrorReport.createError("Property is not collection property of the class",tracer);
-            error.addCurrentValue("property = "+getName());
-            error.addCurrentValue("Class ="+ rootBusinessObjectClass);
+            ErrorReport error = ErrorReport.createError("Property is not collection property of the class", tracer);
+            error.addCurrentValue("property = " + getName());
+            error.addCurrentValue("Class =" + rootBusinessObjectClass);
             reports.add(error);
         }
 
@@ -234,64 +248,64 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     }
 
     /**
-     * @see java.lang.Object#toString()
      * @return a descriptive string with the collection name
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "CollectionDefinition for collection " + getName();
     }
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.CollectionSizeConstraint#getMaximumNumberOfElements()
-	 */
-	@Override
-	public Integer getMaximumNumberOfElements() {
-		return this.maxOccurs;
-	}
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.CollectionSizeConstraint#getMaximumNumberOfElements()
+     */
+    @Override
+    public Integer getMaximumNumberOfElements() {
+        return this.maxOccurs;
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.CollectionSizeConstraint#getMinimumNumberOfElements()
-	 */
-	@Override
-	public Integer getMinimumNumberOfElements() {
-		return this.minOccurs;
-	}
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.CollectionSizeConstraint#getMinimumNumberOfElements()
+     */
+    @Override
+    public Integer getMinimumNumberOfElements() {
+        return this.minOccurs;
+    }
 
     /**
      * gets the minimum amount of items in this collection
      *
-	 * @return the minOccurs
-	 */
-	public Integer getMinOccurs() {
-		return this.minOccurs;
-	}
+     * @return the minOccurs
+     */
+    public Integer getMinOccurs() {
+        return this.minOccurs;
+    }
 
-	/**
+    /**
      * gets the minimum amount of items in this collection
      *
-	 * @param minOccurs the minOccurs to set
-	 */
-	public void setMinOccurs(Integer minOccurs) {
-		this.minOccurs = minOccurs;
-	}
+     * @param minOccurs the minOccurs to set
+     */
+    public void setMinOccurs(Integer minOccurs) {
+        this.minOccurs = minOccurs;
+    }
 
-	/**
+    /**
      * gets maximum amount of items in this collection
      *
-	 * @return the maxOccurs
-	 */
-	public Integer getMaxOccurs() {
-		return this.maxOccurs;
-	}
+     * @return the maxOccurs
+     */
+    public Integer getMaxOccurs() {
+        return this.maxOccurs;
+    }
 
-	/**
+    /**
      * sets maximum amount of items in this collection
      *
-	 * @param maxOccurs the maxOccurs to set
-	 */
-	public void setMaxOccurs(Integer maxOccurs) {
-		this.maxOccurs = maxOccurs;
-	}
+     * @param maxOccurs the maxOccurs to set
+     */
+    public void setMaxOccurs(Integer maxOccurs) {
+        this.maxOccurs = maxOccurs;
+    }
 
 }

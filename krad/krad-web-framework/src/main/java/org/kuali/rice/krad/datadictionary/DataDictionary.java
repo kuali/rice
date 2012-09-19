@@ -27,8 +27,8 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
-import org.kuali.rice.krad.datadictionary.validator.RDVController;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
+import org.kuali.rice.krad.datadictionary.validator.RDVController;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -78,6 +78,10 @@ public class DataDictionary {
 
     protected Map<String, List<String>> moduleDictionaryFiles = new HashMap<String, List<String>>();
 
+    protected String[] configFileLocationsArray;
+
+    protected ArrayList<String> beanValidationFiles = new ArrayList<String>();
+
     /**
      * Populates and processes the dictionary bean factory based on the configured files and
      * performs indexing
@@ -109,13 +113,14 @@ public class DataDictionary {
         List<String> allBeanNames = new ArrayList<String>();
         for (Map.Entry<String, List<String>> moduleDictionary : moduleDictionaryFiles.entrySet()) {
             String namespaceCode = moduleDictionary.getKey();
-
-            String[] configFileLocationsArray = new String[moduleDictionary.getValue().size()];
+            configFileLocationsArray = new String[moduleDictionary.getValue().size()];
             configFileLocationsArray = moduleDictionary.getValue().toArray(configFileLocationsArray);
-
+//            for (int i = 0; i < configFileLocationsArray.length; i++) {
+//                beanValidationFiles.add(configFileLocationsArray[i]);
+//            }
             try {
                 xmlReader.loadBeanDefinitions(configFileLocationsArray);
-                
+
                 // get updated bean names from factory and compare to our previous list to get those that
                 // were added by the last namespace
                 List<String> addedBeanNames = Arrays.asList(ddBeans.getBeanDefinitionNames());
@@ -159,8 +164,11 @@ public class DataDictionary {
     public void validateDD(boolean validateEbos) {
         DataDictionary.validateEBOs = validateEbos;
 
-        //RDVController validator = new RDVController();
-        //validator.validate(new String[0], ddBeans,LOG,false);
+//        RDVController validator = new RDVController();
+//        String files[] = new String[beanValidationFiles.size()];
+//        files = beanValidationFiles.toArray(files);
+//        validator.validate(files, xmlReader.getResourceLoader(), ddBeans,
+//                "C:\\Users\\johglove\\Desktop\\rdvResults.txt", false);
 
         Map<String, DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
         for (DataObjectEntry entry : doBeans.values()) {
@@ -236,7 +244,7 @@ public class DataDictionary {
 
     protected Resource getFileResource(String sourceName) {
         DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
-        
+
         return resourceLoader.getResource(sourceName);
     }
 
@@ -266,8 +274,8 @@ public class DataDictionary {
             moduleFileLocations = moduleDictionaryFiles.get(namespaceCode);
         }
         moduleFileLocations.add(location);
-        
-        moduleDictionaryFiles.put(namespaceCode, moduleFileLocations);  
+
+        moduleDictionaryFiles.put(namespaceCode, moduleFileLocations);
     }
 
     /**
@@ -275,7 +283,7 @@ public class DataDictionary {
      * that namespace
      *
      * @return Map<String, List<String>> where map key is namespace code, and value is list of dictionary
-     * file locations
+     *         file locations
      */
     public Map<String, List<String>> getModuleDictionaryFiles() {
         return moduleDictionaryFiles;
@@ -709,8 +717,10 @@ public class DataDictionary {
 
                     } else {
                         throw new RuntimeException(
-                                "Can't determine the Class of Collection elements because persistenceStructureService.isPersistable(" +
-                                        currentClass.getName() +
+                                "Can't determine the Class of Collection elements because persistenceStructureService.isPersistable("
+                                        +
+                                        currentClass.getName()
+                                        +
                                         ") returns false.");
                     }
 
@@ -773,8 +783,10 @@ public class DataDictionary {
                         } else {
 
                             throw new RuntimeException(
-                                    "Can't determine the Class of Collection elements because persistenceStructureService.isPersistable(" +
-                                            currentClass.getName() +
+                                    "Can't determine the Class of Collection elements because persistenceStructureService.isPersistable("
+                                            +
+                                            currentClass.getName()
+                                            +
                                             ") returns false.");
 
                         }

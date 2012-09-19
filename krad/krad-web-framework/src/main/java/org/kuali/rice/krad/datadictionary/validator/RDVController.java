@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.datadictionary.validator;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.uif.component.Component;
 import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
 import org.springframework.core.io.ResourceLoader;
@@ -34,10 +33,7 @@ import java.io.PrintStream;
  */
 public class RDVController {
 
-    // logger
-    private static final Log LOG = LogFactory.getLog(RDVController.class);
-
-    protected static final String endl=System.getProperty("line.separator");
+    protected static final String endl = System.getProperty("line.separator");
 
     protected boolean displayWarnings;
     protected boolean displayErrors;
@@ -54,26 +50,26 @@ public class RDVController {
      * @param displayWarningMessages - True if the Validator should show messages involving warnings
      * @param displayXmlPages - True if the Validator should show the list of xml pages for the error reports
      */
-    public RDVController(boolean  displayErrors,boolean displayWarnings,boolean displayErrorMessages,boolean
-            displayWarningMessages, boolean displayXmlPages){
-        LOG.debug("Creating new Rice Dictionary Validator with limited output");
-        this.displayErrors=displayErrors;
-        this.displayWarnings=displayWarnings;
-        this.displayErrorMessages=displayErrorMessages;
-        this.displayWarningMessages=displayWarningMessages;
-        this.displayXmlPages=displayXmlPages;
+    public RDVController(boolean displayErrors, boolean displayWarnings, boolean displayErrorMessages,
+            boolean displayWarningMessages, boolean displayXmlPages) {
+        //LOG.debug("Creating new Rice Dictionary Validator with limited output");
+        this.displayErrors = displayErrors;
+        this.displayWarnings = displayWarnings;
+        this.displayErrorMessages = displayErrorMessages;
+        this.displayWarningMessages = displayWarningMessages;
+        this.displayXmlPages = displayXmlPages;
     }
 
     /**
      * Constructor creating a new Rice Dictionary Validator
      */
-    public RDVController(){
-        LOG.debug("Creating new Rice Dictionary Validator");
-        displayErrors=true;
-        displayWarnings=true;
-        displayErrorMessages=true;
-        displayWarningMessages=true;
-        displayXmlPages=true;
+    public RDVController() {
+        //LOG.debug("Creating new Rice Dictionary Validator");
+        displayErrors = true;
+        displayWarnings = true;
+        displayErrorMessages = true;
+        displayWarningMessages = true;
+        displayXmlPages = true;
     }
 
     /**
@@ -84,11 +80,12 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles,ResourceLoader loader, KualiDefaultListableBeanFactory beans, boolean failOnWarning){
-        LOG.debug("Validating without output");
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans,
+            boolean failOnWarning) {
+        // LOG.debug("Validating without output");
         RDValidator validator = new RDValidator();
 
-        boolean passed=validator.validate(xmlFiles,loader,beans,failOnWarning);
+        boolean passed = validator.validate(xmlFiles, loader, beans, failOnWarning);
 
         return passed;
     }
@@ -103,14 +100,14 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles,ResourceLoader loader, KualiDefaultListableBeanFactory beans, String outputFile, boolean
-            failOnWarning){
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans,
+            String outputFile, boolean failOnWarning) {
         RDValidator validator = new RDValidator();
-        LOG.debug("Validating with file output to "+outputFile);
+        // LOG.debug("Validating with file output to "+outputFile);
 
-        boolean passed=validator.validate(xmlFiles,loader,beans,failOnWarning);
+        boolean passed = validator.validate(xmlFiles, loader, beans, failOnWarning);
 
-        writeToFile(outputFile,validator,passed);
+        writeToFile(outputFile, validator, passed);
 
         return passed;
     }
@@ -125,14 +122,14 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans, PrintStream stream, boolean
-            failOnWarning){
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans,
+            PrintStream stream, boolean failOnWarning) {
         RDValidator validator = new RDValidator();
-        LOG.debug("Validating with Print Stream output");
+        // LOG.debug("Validating with Print Stream output");
 
-        boolean passed=validator.validate(xmlFiles,loader,beans, failOnWarning);
+        boolean passed = validator.validate(xmlFiles, loader, beans, failOnWarning);
 
-        writeToStream(stream,validator,passed);
+        writeToStream(stream, validator, passed);
 
         return passed;
     }
@@ -147,13 +144,14 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans, Log log, boolean failOnWarning){
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans, Log log,
+            boolean failOnWarning) {
         RDValidator validator = new RDValidator();
-        LOG.debug("Validating with Log4j output");
+        //LOG.debug("Validating with Log4j output");
 
-        boolean passed=validator.validate(xmlFiles,loader,beans, failOnWarning);
+        boolean passed = validator.validate(xmlFiles, loader, beans, failOnWarning);
 
-        writeToLog(log,validator,passed);
+        writeToLog(log, validator, passed);
 
         return passed;
     }
@@ -165,11 +163,11 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, boolean failOnWarning){
-        LOG.debug("Validating without output");
+    public boolean validate(String[] xmlFiles, boolean failOnWarning) {
+        // LOG.debug("Validating without output");
         RDValidator validator = new RDValidator();
 
-        boolean passed=validator.validate(xmlFiles,failOnWarning);
+        boolean passed = validator.validate(xmlFiles, failOnWarning);
 
         return passed;
     }
@@ -182,13 +180,13 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, String outputFile, boolean failOnWarning){
+    public boolean validate(String[] xmlFiles, String outputFile, boolean failOnWarning) {
         RDValidator validator = new RDValidator();
-        LOG.debug("Validating with file output to "+outputFile);
+        //LOG.debug("Validating with file output to "+outputFile);
 
-        boolean passed=validator.validate(xmlFiles,failOnWarning);
+        boolean passed = validator.validate(xmlFiles, failOnWarning);
 
-        writeToFile(outputFile,validator,passed);
+        writeToFile(outputFile, validator, passed);
 
         return passed;
     }
@@ -201,13 +199,13 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, PrintStream stream, boolean failOnWarning){
+    public boolean validate(String[] xmlFiles, PrintStream stream, boolean failOnWarning) {
         RDValidator validator = new RDValidator();
-        LOG.debug("Validating with Print Stream output");
+        //LOG.debug("Validating with Print Stream output");
 
-        boolean passed=validator.validate(xmlFiles, failOnWarning);
+        boolean passed = validator.validate(xmlFiles, failOnWarning);
 
-        writeToStream(stream,validator,passed);
+        writeToStream(stream, validator, passed);
 
         return passed;
     }
@@ -220,13 +218,13 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, Log log, boolean failOnWarning){
+    public boolean validate(String[] xmlFiles, Log log, boolean failOnWarning) {
         RDValidator validator = new RDValidator();
-        LOG.debug("Validating with Log4j output");
+        //LOG.debug("Validating with Log4j output");
 
-        boolean passed=validator.validate(xmlFiles, failOnWarning);
+        boolean passed = validator.validate(xmlFiles, failOnWarning);
 
-       writeToLog(log,validator,passed);
+        writeToLog(log, validator, passed);
 
         return passed;
     }
@@ -239,13 +237,13 @@ public class RDVController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(Component object, Log log, boolean failOnWarning){
+    public boolean validate(Component object, Log log, boolean failOnWarning) {
         RDValidator validator = new RDValidator();
-        LOG.debug("Validating with Log4j output");
+        //LOG.debug("Validating with Log4j output");
 
-        boolean passed=validator.validate(object, failOnWarning);
+        boolean passed = validator.validate(object, failOnWarning);
 
-        writeToLog(log,validator,passed);
+        writeToLog(log, validator, passed);
 
         return passed;
     }
@@ -257,32 +255,38 @@ public class RDVController {
      * @param validator - The filled validator
      * @param passed - Whether the validation passed or not
      */
-    protected void writeToFile(String path, RDValidator validator, boolean passed){
-        try{
+    protected void writeToFile(String path, RDValidator validator, boolean passed) {
+        try {
             BufferedWriter fout = new BufferedWriter(new FileWriter(path));
 
             fout.write("Validation Results" + endl);
             fout.write("Passed: " + passed + endl);
-            if(displayErrors) fout.write("Number of Errors: " + validator.getNumberOfErrors() + endl);
-            if(displayWarnings) fout.write("Number of Warnings: " + validator.getNumberOfWarnings() + endl);
+            if (displayErrors) {
+                fout.write("Number of Errors: " + validator.getNumberOfErrors() + endl);
+            }
+            if (displayWarnings) {
+                fout.write("Number of Warnings: " + validator.getNumberOfWarnings() + endl);
+            }
 
-            if(displayErrorMessages){
-                for(int i=0;i<validator.getErrorReportSize();i++){
-                    if(displayWarningMessages){
+            if (displayErrorMessages) {
+                for (int i = 0; i < validator.getErrorReportSize(); i++) {
+                    if (displayWarningMessages) {
                         fout.write(endl);
                         fout.write(validator.getErrorReport(i).errorMessage());
-                    }else if(validator.getErrorReport(i).getErrorStatus()== ErrorReport.ERROR){
+                    } else if (validator.getErrorReport(i).getErrorStatus() == ErrorReport.ERROR) {
                         fout.write(endl);
                         fout.write(validator.getErrorReport(i).errorMessage());
                     }
 
-                    if(displayXmlPages) fout.write(validator.getErrorReport(i).errorPageList());
+                    if (displayXmlPages) {
+                        fout.write(validator.getErrorReport(i).errorPageList());
+                    }
                 }
             }
 
             fout.close();
-        }catch (IOException e){
-            LOG.warn("Exception when writing file", e);
+        } catch (IOException e) {
+            //LOG.warn("Exception when writing file", e);
         }
     }
 
@@ -293,19 +297,28 @@ public class RDVController {
      * @param validator - The filled validator
      * @param passed - Whether the validation passed or not
      */
-    protected void writeToStream(PrintStream stream, RDValidator validator, boolean passed){
+    protected void writeToStream(PrintStream stream, RDValidator validator, boolean passed) {
         stream.println("Validation Results");
-        stream.println("Passed: "+passed);
-        if(displayErrors) stream.println("Number of Errors: "+validator.getNumberOfErrors());
-        if(displayWarnings) stream.println("Number of Warnings: "+validator.getNumberOfWarnings());
+        stream.println("Passed: " + passed);
+        if (displayErrors) {
+            stream.println("Number of Errors: " + validator.getNumberOfErrors());
+        }
+        if (displayWarnings) {
+            stream.println("Number of Warnings: " + validator.getNumberOfWarnings());
+        }
 
-        if(displayErrorMessages){
-            for(int i=0;i<validator.getErrorReportSize();i++){
+        if (displayErrorMessages) {
+            for (int i = 0; i < validator.getErrorReportSize(); i++) {
                 stream.println();
-                if(displayWarningMessages) stream.println(validator.getErrorReport(i).errorMessage());
-                else if(validator.getErrorReport(i).getErrorStatus()== ErrorReport.ERROR)stream.println(validator.getErrorReport(i).errorMessage());
+                if (displayWarningMessages) {
+                    stream.println(validator.getErrorReport(i).errorMessage());
+                } else if (validator.getErrorReport(i).getErrorStatus() == ErrorReport.ERROR) {
+                    stream.println(validator.getErrorReport(i).errorMessage());
+                }
 
-                if(displayXmlPages) stream.println(validator.getErrorReport(i).errorPageList());
+                if (displayXmlPages) {
+                    stream.println(validator.getErrorReport(i).errorPageList());
+                }
             }
         }
     }
@@ -317,24 +330,35 @@ public class RDVController {
      * @param validator - The filled validator
      * @param passed - Whether the validation passed or not
      */
-    protected void writeToLog(Log log, RDValidator validator, boolean passed){
-        log.info("Passed: "+passed);
-        if(displayErrors) log.info("Number of Errors: "+validator.getNumberOfErrors());
-        if(displayWarnings) log.info("Number of Warnings: "+validator.getNumberOfWarnings());
+    protected void writeToLog(Log log, RDValidator validator, boolean passed) {
+        log.info("Passed: " + passed);
+        if (displayErrors) {
+            log.info("Number of Errors: " + validator.getNumberOfErrors());
+        }
+        if (displayWarnings) {
+            log.info("Number of Warnings: " + validator.getNumberOfWarnings());
+        }
 
-        if(displayErrorMessages){
-            for(int i=0;i<validator.getErrorReportSize();i++){
-                if(validator.getErrorReport(i).getErrorStatus()== ErrorReport.ERROR){
-                    if(displayXmlPages) log.error(validator.getErrorReport(i).errorMessage()+validator.getErrorReport(i).errorPageList());
-                    else log.error(validator.getErrorReport(i).errorMessage());
+        if (displayErrorMessages) {
+            for (int i = 0; i < validator.getErrorReportSize(); i++) {
+                if (validator.getErrorReport(i).getErrorStatus() == ErrorReport.ERROR) {
+                    if (displayXmlPages) {
+                        log.error(validator.getErrorReport(i).errorMessage() + validator.getErrorReport(i)
+                                .errorPageList());
+                    } else {
+                        log.error(validator.getErrorReport(i).errorMessage());
+                    }
 
-                } else{
-                    if(displayWarningMessages) {
-                        if(displayXmlPages) log.warn(validator.getErrorReport(i).errorMessage()+validator.getErrorReport(i).errorPageList());
-                        else log.warn(validator.getErrorReport(i).errorMessage());
+                } else {
+                    if (displayWarningMessages) {
+                        if (displayXmlPages) {
+                            log.warn(validator.getErrorReport(i).errorMessage() + validator.getErrorReport(i)
+                                    .errorPageList());
+                        } else {
+                            log.warn(validator.getErrorReport(i).errorMessage());
+                        }
                     }
                 }
-
 
             }
         }
@@ -345,8 +369,8 @@ public class RDVController {
      *
      * @param display
      */
-    public void setDisplayWarnings(boolean display){
-        displayWarnings=display;
+    public void setDisplayWarnings(boolean display) {
+        displayWarnings = display;
     }
 
     /**
@@ -354,8 +378,8 @@ public class RDVController {
      *
      * @param display
      */
-    public void setDisplayErrors(boolean display){
-        displayErrors=display;
+    public void setDisplayErrors(boolean display) {
+        displayErrors = display;
     }
 
     /**
@@ -363,8 +387,8 @@ public class RDVController {
      *
      * @param display
      */
-    public void setDisplayXmlPages(boolean display){
-        displayXmlPages=display;
+    public void setDisplayXmlPages(boolean display) {
+        displayXmlPages = display;
     }
 
     /**
@@ -372,8 +396,8 @@ public class RDVController {
      *
      * @param display
      */
-    public void setDisplayErrorMessages(boolean display){
-        displayErrorMessages=display;
+    public void setDisplayErrorMessages(boolean display) {
+        displayErrorMessages = display;
     }
 
     /**
@@ -381,8 +405,8 @@ public class RDVController {
      *
      * @param display
      */
-    public void setDisplayWarningMessages(boolean display){
-        displayWarningMessages=display;
+    public void setDisplayWarningMessages(boolean display) {
+        displayWarningMessages = display;
     }
 
     /**
@@ -390,7 +414,7 @@ public class RDVController {
      *
      * @return displayWarnings
      */
-    public boolean isDisplayWarnings(){
+    public boolean isDisplayWarnings() {
         return displayWarnings;
     }
 
@@ -399,7 +423,7 @@ public class RDVController {
      *
      * @return displayErros
      */
-    public boolean isDisplayErrors(){
+    public boolean isDisplayErrors() {
         return displayErrors;
     }
 
@@ -408,7 +432,7 @@ public class RDVController {
      *
      * @return displayXmlPages
      */
-    public boolean isDisplayXmlPages(){
+    public boolean isDisplayXmlPages() {
         return displayXmlPages;
     }
 
@@ -417,7 +441,7 @@ public class RDVController {
      *
      * @return displayErrorMessages
      */
-    public boolean isDisplayErrorMessages(){
+    public boolean isDisplayErrorMessages() {
         return displayErrorMessages;
     }
 
@@ -426,7 +450,7 @@ public class RDVController {
      *
      * @return displayWarningMessages
      */
-    public boolean isDisplayWarningMessages(){
+    public boolean isDisplayWarningMessages() {
         return displayWarningMessages;
     }
 }

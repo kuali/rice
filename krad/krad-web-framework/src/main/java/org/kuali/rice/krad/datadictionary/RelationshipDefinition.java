@@ -164,12 +164,12 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
         tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getObjectAttributeName());
         try{
-        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getObjectAttributeName())) {
-            ErrorReport error = ErrorReport.createError("Property is not an attribute of the class",tracer);
-            error.addCurrentValue("property = "+getObjectAttributeName());
-            error.addCurrentValue("Class ="+ rootBusinessObjectClass);
-            reports.add(error);
-        }
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getObjectAttributeName())) {
+                ErrorReport error = ErrorReport.createError("Property is not an attribute of the class",tracer);
+                error.addCurrentValue("property = "+getObjectAttributeName());
+                error.addCurrentValue("Class ="+ rootBusinessObjectClass);
+                reports.add(error);
+            }
         }catch (RuntimeException ex) {
             ErrorReport error = ErrorReport.createError("Unable to validate attribute",tracer);
             error.addCurrentValue("attribute = "+getObjectAttributeName());
@@ -185,6 +185,8 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
                 error.addCurrentValue("property = "+getObjectAttributeName());
                 error.addCurrentValue("sourceClass = "+getSourceClass());
                 reports.add(error);
+            }else{
+                targetClass = propertyClass;
             }
         }
 

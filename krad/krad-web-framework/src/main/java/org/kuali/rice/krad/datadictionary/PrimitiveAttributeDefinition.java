@@ -131,14 +131,28 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
                 error.addCurrentValue("class = "+rootBusinessObjectClass);
                 reports.add(error);
             }
-
+        }catch (RuntimeException ex) {
+            ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
+            error.addCurrentValue("attribute = "+getSourceName());
+            error.addCurrentValue("class = "+rootBusinessObjectClass);
+            error.addCurrentValue("Exception = "+ex.getMessage());
+            reports.add(error);
+        }
+        try{
             if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, targetName)) {
                 ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
                 error.addCurrentValue("attribute = "+getTargetName());
                 error.addCurrentValue("class = "+otherBusinessObjectClass);
                 reports.add(error);
             }
-
+        }catch (RuntimeException ex) {
+            ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
+            error.addCurrentValue("attribute = "+getTargetName());
+            error.addCurrentValue("class = "+otherBusinessObjectClass);
+            error.addCurrentValue("Exception = " + ex.getMessage());
+            reports.add(error);
+        }
+        try{
             Class sourceClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, sourceName);
             Class targetClass = DataDictionary.getAttributeClass(otherBusinessObjectClass, targetName);
             if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils.equals(sourceClass.getName(), targetClass.getName())) {
@@ -149,7 +163,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
                 // Just a temp hack to ignore null Person objects
                 if ((sourcePath != null && !StringUtils.contains(sourcePath, ".principalId")) && (targetPath != null && !StringUtils.contains(targetPath, ".principalId"))) {
-                    ErrorReport error = ErrorReport.createError("Source and target of of different types", tracer);
+                    ErrorReport error = ErrorReport.createError("Source and target of different types", tracer);
                     error.addCurrentValue("source = "+sourcePath + "' (" + sourceClass + ")");
                     error.addCurrentValue("target = "+targetPath + "' (" + targetClass + ")");
                     reports.add(error);

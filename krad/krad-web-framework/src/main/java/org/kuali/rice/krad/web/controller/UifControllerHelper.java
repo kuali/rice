@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -169,6 +170,9 @@ public class UifControllerHelper {
             Component comp = ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
 
             View postedView = form.getPostedView();
+
+            // Reset visited id's on the view to avoid component id adjustment
+            postedView.setVisitedIds(new HashMap<String, Integer>());
 
             // run lifecycle and update in view
             postedView.getViewHelperService().performComponentLifecycle(postedView, form, comp, refreshComponentId);

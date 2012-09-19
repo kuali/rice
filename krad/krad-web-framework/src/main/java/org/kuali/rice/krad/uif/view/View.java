@@ -1750,4 +1750,13 @@ public class View extends ContainerBase {
 
         return reports;
     }
+
+    /**
+     * Setter for the map that is used to keep track of seen ids
+     *
+     * @param visitedIds - map containing id as key, and duplicate adjustment integer as value
+     */
+    public void setVisitedIds(Map<String, Integer> visitedIds) {
+        this.visitedIds = visitedIds;
+    }
 }

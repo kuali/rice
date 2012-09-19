@@ -67,7 +67,7 @@
     <property name="maxLength" value="10"/>
     <property name="constraintText" value="Must be 10 digits"/>
     <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern"/>
+      <bean parent="numericPatternConstraint"/>
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>

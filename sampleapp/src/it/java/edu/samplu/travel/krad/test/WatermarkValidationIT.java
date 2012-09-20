@@ -15,53 +15,40 @@
  */
 package edu.samplu.travel.krad.test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
-import org.junit.After;
-import org.junit.Before;
+import static junit.framework.Assert.assertEquals;
+
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.WebDriverITBase;
 
 /**
- * tests whether the watermarks is work as expected even when they contain an apostrophe
+ * tests whether the watermarks is work as expected even when they contain an
+ * apostrophe
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WatermarkValidationIT extends UpgradedSeleniumITBase {
-    @Override
-    public String getTestUrl() {
-        return ITUtil.PORTAL;
-    }
+public class WatermarkValidationIT extends WebDriverITBase {
+	@Override
+	public String getTestUrl() {
+		return ITUtil.PORTAL;
+	}
 
-         @Test
-        /**
-         * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
-         * the scripts will be working ok
-         */
-        public void testWatermarking() throws Exception {
-    
-    		waitAndClick("link=KRAD");
-    		waitForPageToLoad50000();
-    		waitAndClick("link=Uif Components (Kitchen Sink)");
-    		waitForPageToLoad("100000");
-    		Thread.sleep(2000);
-            selectWindow("title=Kuali :: Uif Components");
-            Thread.sleep(3000);
-           
-            assertEquals("It's watermarked ",getEval("window.document.getElementsByName('field106')[0].placeholder;"));
-            assertEquals("Watermark... ",getEval("window.document.getElementsByName('field110')[0].placeholder;"));
-         
-        }
-
-    public void clearText(String field) throws Exception {
-        focus(field);
-        waitAndType(field, "");
-        Thread.sleep(100); 
-    }
+	@Test
+	/**
+	 * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
+	 * the scripts will be working ok
+	 */
+	public void testWatermarking() throws Exception {
+		waitAndClickByLinkText("KRAD");
+		Thread.sleep(5000);
+		waitAndClickByLinkText("Uif Components (Kitchen Sink)");
+		Thread.sleep(5000);
+		Thread.sleep(2000);
+		//Switch to new window.
+		switchWindow();
+		Thread.sleep(3000);
+		assertEquals("It's watermarked ",getAttributeValueByName("field106", "placeholder"));
+		assertEquals("Watermark... ",getAttributeValueByName("field110", "placeholder"));
+	}
 }

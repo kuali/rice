@@ -17,63 +17,64 @@
 package edu.samplu.travel.krad.test;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.UpgradedSeleniumITBase;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
+import edu.samplu.common.WebDriverITBase;
+
 /**
  * test that dirty fields check happens for all pages in a view
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DirtyFieldsCheckIT extends UpgradedSeleniumITBase {
-    @Override
-    public String getTestUrl() {
-        // open Other Examples page in kitchen sink view
-        return "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
-    }
-
-    @Test
-	public void testDirtyFieldsCheck() throws Exception {
-        checkForIncidentReport(getTestUrl());
-        waitForPageToLoad50000();
-//		selectFrame("iframeportlet");
-        Thread.sleep(5000);
-        selectWindow("title=Kuali :: Uif Components");
-        focusAndType("name=field1", "test 1");
-        focusAndType("name=field102", "test 2");
-		// 'Other Fields' navigation link
-//        assertCancelConfirmation(); // failing in selenium, but present when testing manually
-
-        waitForElementPresent("name=field100");
-        focusAndType("name=field100", "here");
-        focusAndType("name=field103", "there");
-		// 'Validation' navigation link
-//      assertCancelConfirmation(); // failing in selenium, but present when testing manually
-
-        waitForElementPresent("name=field106");
-        //Asserting text-field style to uppercase. This style would display input text in uppercase.
-        assertEquals("uppercase",getEval("window.document.getElementsByName('field112')[0].style.textTransform;"));
-        
-     	// 'Validation - Regex' navigation link
-//      assertCancelConfirmation(); // failing in selenium, but present when testing manually
-        waitForElementPresent("name=field101");
-        assertEquals("val", getValue("name=field101")); // form is preset to val
-        focusAndType("name=field101", "1");
-        focus("name=field104");
-        assertEquals("1", getValue("name=field101"));
-		waitAndType("name=field104", "2");
-        // 'Progressive Disclosure' navigation link
-//      assertCancelConfirmation(); // failing in selenium, but present when testing manually
-        fail("chooseCancelOnNextConfirmation(); is not finding the Dialog see https://jira.kuali.org/browse/KULRICE-7850 "
-                + "chooseCancelOnNextConfirmation() isn't finding dialog");
+public class DirtyFieldsCheckIT extends WebDriverITBase {
+	@Override
+	public String getTestUrl() {
+		// open Other Examples page in kitchen sink view
+		return "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
 	}
 
-    private void assertCancelConfirmation() throws InterruptedException {
-        chooseCancelOnNextConfirmation();
-        waitAndClick("link=Cancel");
-        assertTrue(getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
-    }
+	@Test
+	public void testDirtyFieldsCheck() throws Exception {
+		checkForIncidentReport(getTestUrl());
+		Thread.sleep(5000);
+		
+		waitAndTypeByName("field1", "test 1");
+		waitAndTypeByName("field102", "test 2");
+		
+		assertCancelConfirmation(); 
+	
+		// testing manually
+		waitForElementPresentByName("field100");
+		waitAndTypeByName("field100", "here");
+		waitAndTypeByName("field103", "there");
+		
+	    // 'Validation' navigation link
+		assertCancelConfirmation();
+	
+		// testing manually
+		waitForElementPresentByName("field106");
+		// //Asserting text-field style to uppercase. This style would display
+		// input text in uppercase.
+		assertEquals("text-transform: uppercase;",getAttributeValueByName("field112", "style"));
+		assertCancelConfirmation(); 
+		waitForElementPresentByName("field101");
+		assertEquals("val", getAttributeValueByName("field101","value")); 
+		clearTextByName("field101");
+		waitAndTypeByName("field101", "1");
+		waitAndTypeByName("field104", "");
+
+		assertEquals("1", getAttributeValueByName("field101","value"));
+		waitAndTypeByName("field104", "2");
+		// 'Progressive Disclosure' navigation link
+		assertCancelConfirmation();
+									
+	}
+
+	private void assertCancelConfirmation() throws InterruptedException {
+		waitAndClickByLinkText("Cancel");
+		dismissAlert();
+	}
 }

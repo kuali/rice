@@ -170,13 +170,13 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     protected void sendEmail(Person user, EmailSubject subject,
             EmailBody body, DocumentType documentType) {
         try {
-
-            mailer.sendEmail(getEmailFrom(documentType),
-                                getEmailTo(user),
-                                subject,
-                                body,
-                                false);
-
+            if (StringUtils.isNotBlank(user.getEmailAddressUnmasked())) {
+                mailer.sendEmail(getEmailFrom(documentType),
+                    getEmailTo(user),
+                    subject,
+                    body,
+                    false);
+            }
         } catch (Exception e) {
             LOG.error("Error sending Action List email to " + user.getEmailAddressUnmasked(), e);
         }

@@ -41,9 +41,9 @@ public class EDLGlobalConfig {
 	private Map preProcessors = new HashMap();
 	private Map postProcessors = new HashMap();
 	private Map stateComponents = new HashMap();
-	private Map configProcessors = new LinkedHashMap();
-	
-	public void addPreProcessor(String preProcessorName, Element element) {
+    private Map configProcessors = new HashMap();
+
+    public void addPreProcessor(String preProcessorName, Element element) {
 		try {
 			preProcessors.put(Class.forName(preProcessorName), element);	
 		} catch (ClassNotFoundException ce) {
@@ -94,10 +94,14 @@ public class EDLGlobalConfig {
 		return stateComponents;
 	}
 
-	public Class getConfigProcessor(Node configElement) {
+	public Class getConfigProcessor(Node configElement, EDLContext edlContext) {
 		if (configElement instanceof Element) {
-
-			XPath xpath = XPathFactory.newInstance().newXPath();
+            XPath xpath = null;
+            if (edlContext != null) {
+                xpath = edlContext.getXpath();
+            } else {
+                xpath = XPathFactory.newInstance().newXPath();
+            }
 			String xpathExpression = "";
 			try {
 				for (Iterator iter = configProcessors.entrySet().iterator(); iter.hasNext();) {

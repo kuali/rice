@@ -7,11 +7,11 @@ package edu.samplu.common;
 public abstract class KradMenuLegacyITBase extends MenuLegacyITBase {
     @Override
     protected String getCreateNewLinkLocator() {
-        return "a[title=Create New]";
+        return "Create New";
     }
 
     @Override
     protected String getMenuLinkLocator() {
-        return "a[title=KRAD]";
+        return "KRAD";
     }
 }

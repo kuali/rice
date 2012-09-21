@@ -11,16 +11,17 @@ import org.junit.Test;
 public class MaintenanceRouteLogLegacyIT extends KradMenuLegacyITBase {
     @Override
     protected String getLinkLocator() {
-        return "a[Travel Account Maintenance (New)]";
+        return "Travel Account Maintenance (New)";
     }
 
-    @Ignore // need to figure out css locators
+    @Test // need to figure out css locators
     /**
      * Verify the Route Log section exists and contains an IFrame
      */
     public void testVerifyRouteLog() throws Exception {
         gotoMenuLinkLocator();
-        waitAndClick("css=span:contains('Route Log')");
+        waitAndClickByLinkText("Route Log");
         waitForElementPresent("//iframe[contains(@src,'RouteLog.do')]");
     }
+
 }

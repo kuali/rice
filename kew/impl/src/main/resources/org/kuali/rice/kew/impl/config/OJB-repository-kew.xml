@@ -799,6 +799,17 @@
       <fk-pointing-to-this-class column="FROM_RTE_NODE_INSTN_ID"/>
       <fk-pointing-to-element-class column="TO_RTE_NODE_INSTN_ID"/>
     </collection-descriptor>
+    <collection-descriptor name="initialDocumentRouteHeaderValues"
+        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+        element-class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue"
+        auto-retrieve="false"
+        auto-update="none"
+        auto-delete="none"
+        proxy="true"
+        indirection-table="KREW_INIT_RTE_NODE_INSTN_T">
+      <fk-pointing-to-this-class column="RTE_NODE_INSTN_ID"/>
+      <fk-pointing-to-element-class column="DOC_HDR_ID"/>
+    </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.engine.node.Branch" table="KREW_RTE_BRCH_T">

@@ -1,7 +1,6 @@
 package edu.samplu.krad.travelview;
 
 import edu.samplu.common.KradMenuLegacyITBase;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -14,7 +13,7 @@ public class MaintenanceRouteLogLegacyIT extends KradMenuLegacyITBase {
         return "Travel Account Maintenance (New)";
     }
 
-    @Test // need to figure out css locators
+    @Test 
     /**
      * Verify the Route Log section exists and contains an IFrame
      */

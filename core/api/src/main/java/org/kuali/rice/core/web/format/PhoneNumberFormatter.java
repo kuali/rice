@@ -70,7 +70,8 @@ public class PhoneNumberFormatter extends Formatter {
             // end Kuali Foundation modification
 
 		// begin Kuali Foundation modification
-        String digits = (String) value;
+        String digits = ((String) value).replaceAll("[^0-9]", "");
+
         if (digits.length() != NUM_DIGITS)
             throw new FormatException("formatting", RiceKeyConstants.ERROR_PHONE_NUMBER, value.toString());
         // end Kuali Foundation modification

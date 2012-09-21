@@ -99,6 +99,29 @@
             </list>
           </property>
         </bean>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="groupBo"/>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="groupReviewerName" p:targetName="name"/>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="groupReviewerNamespace" p:targetName="namespaceCode"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="personImpl"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="personReviewer" p:targetName="principalName"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="personReviewer" p:targetName="principalName"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
 

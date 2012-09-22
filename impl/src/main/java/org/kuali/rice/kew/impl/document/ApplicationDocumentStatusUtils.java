@@ -81,44 +81,46 @@ public class ApplicationDocumentStatusUtils {
     public static LinkedHashMap<String, List<String>> getApplicationDocumentStatusCategories(DocumentType documentType) {
         LinkedHashMap<String, List<String>> results = new LinkedHashMap<String, List<String>>();
 
-        // check the hierarchy
-        Parameter appDocStatusCategoriesParameter = null;
-        DocumentType docTypeAncestor = documentType;
-        while (docTypeAncestor != null) {
-            ParameterKey parameterKey =
-                    ParameterKey.create(docTypeAncestor.getApplicationId(), CATEGORIES_COMPONENT_NAMESPACE, documentType.getName(),
-                            CATEGORIES_PARAMETER_NAME);
+        if (documentType != null) {
+            // check the hierarchy
+            Parameter appDocStatusCategoriesParameter = null;
+            DocumentType docTypeAncestor = documentType;
+            while (docTypeAncestor != null) {
+                ParameterKey parameterKey =
+                        ParameterKey.create(docTypeAncestor.getApplicationId(), CATEGORIES_COMPONENT_NAMESPACE, documentType.getName(),
+                                CATEGORIES_PARAMETER_NAME);
 
-            appDocStatusCategoriesParameter = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameter(parameterKey);
+                appDocStatusCategoriesParameter = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameter(parameterKey);
 
-            // save a potentially un-needed fetch of the parent doc type fetch
-            if (appDocStatusCategoriesParameter != null) break;
+                // save a potentially un-needed fetch of the parent doc type fetch
+                if (appDocStatusCategoriesParameter != null) break;
 
-            // walk up the hierarchy
-            docTypeAncestor = docTypeAncestor.getParentDocType();
-        }
-
-        if (appDocStatusCategoriesParameter != null) {
-            // parse groupings and create headings
-            String categoriesString = appDocStatusCategoriesParameter.getValue();
-
-            Matcher categoriesMatcher = categoriesPattern.matcher(categoriesString);
-            while (categoriesMatcher.find()) {
-                String groupName = categoriesMatcher.group(1).trim();
-                String groupBody = categoriesMatcher.group(2);
-
-                List<String> categoryElements = new ArrayList<String>();
-
-                Matcher categoryElementsMatcher = categoryElementsPattern.matcher(groupBody);
-
-                while (categoryElementsMatcher.find()) {
-                    String groupElement = categoryElementsMatcher.group().trim();
-                    categoryElements.add(groupElement);
-                }
-
-                results.put(groupName, categoryElements);
+                // walk up the hierarchy
+                docTypeAncestor = docTypeAncestor.getParentDocType();
             }
 
+            if (appDocStatusCategoriesParameter != null) {
+                // parse groupings and create headings
+                String categoriesString = appDocStatusCategoriesParameter.getValue();
+
+                Matcher categoriesMatcher = categoriesPattern.matcher(categoriesString);
+                while (categoriesMatcher.find()) {
+                    String groupName = categoriesMatcher.group(1).trim();
+                    String groupBody = categoriesMatcher.group(2);
+
+                    List<String> categoryElements = new ArrayList<String>();
+
+                    Matcher categoryElementsMatcher = categoryElementsPattern.matcher(groupBody);
+
+                    while (categoryElementsMatcher.find()) {
+                        String groupElement = categoryElementsMatcher.group().trim();
+                        categoryElements.add(groupElement);
+                    }
+
+                    results.put(groupName, categoryElements);
+                }
+
+            }
         }
         return results;
     }

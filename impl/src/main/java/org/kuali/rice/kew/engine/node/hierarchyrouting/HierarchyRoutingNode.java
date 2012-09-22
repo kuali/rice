@@ -239,7 +239,9 @@ public class HierarchyRoutingNode implements DynamicNode {
             }
 
             Stop requestNodeStop = provider.getStop(requestNode);
-            LOG.debug("Request node: " + requestNode.getRouteNodeInstanceId() + " has stop " + requestNodeStop.toString());
+            if (requestNodeStop != null) {
+                LOG.debug("Request node: " + requestNode.getRouteNodeInstanceId() + " has stop " + requestNodeStop.toString());
+            }
             if (requestNodeStop != null && provider.equals(currentStop, requestNodeStop)) {
                 LOG.debug("Skipping node " + requestNode.getName() + " because it is associated with the current stop");
                 continue;
@@ -427,7 +429,7 @@ public class HierarchyRoutingNode implements DynamicNode {
      * @return true - if child or one of it's eventual parents reports to parent false - if child or one of it's eventual parents does not report to parent
      */
     private boolean hasAsParent(HierarchyProvider provider, Stop parent, Stop child) {
-        if (provider.isRoot(child)) {
+        if (child == null || provider.isRoot(child)) {
             return false;
         } else if (provider.equals(parent, child)) {
             return true;

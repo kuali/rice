@@ -48,6 +48,9 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
 import org.kuali.rice.kew.framework.document.search.StandardResultField;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslator;
+import org.kuali.rice.kew.impl.document.search.FormFields;
 import org.kuali.rice.kew.lookup.valuefinder.SavedSearchValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
@@ -469,6 +472,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                     isSuperUserSearch());
         } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(propertyName)) {
             return generateRouteLogUrl(criteriaBo.getDocumentId());
+        } else if(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR_DISPLAY_NAME.equals(propertyName)) {
+            return generateInitiatorUrl(criteriaBo.getInitiatorPerson());
         }
         return super.getInquiryUrl(bo, propertyName);
     }
@@ -519,6 +524,21 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         link.setDisplayText("Route Log for document " + documentId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/" +
                 "RouteLog.do?documentId=" + documentId;
+        link.setHref(url);
+        return link;
+    }
+
+    protected HtmlData.AnchorHtmlData generateInitiatorUrl(Person person) {
+        HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
+        if (isRouteLogPopup()) {
+            link.setTarget("_blank");
+        }
+        else {
+            link.setTarget("_self");
+        }
+        link.setDisplayText("Initiator Inquiry for User with ID:" + person.getPrincipalId());
+        String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KIM_URL) + "/" +
+                "identityManagementPersonInquiry.do?principalId=" + person.getPrincipalId();
         link.setHref(url);
         return link;
     }

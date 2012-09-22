@@ -27,6 +27,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPathFactory;
 import java.util.Stack;
 
 
@@ -93,7 +94,8 @@ public class EDLControllerChain {
 		edlContext.setUserSession(GlobalVariables.getUserSession());
 		edlContext.setTransformer(transformer);
 		edlContext.setRequestParser(requestParser);
-		return edlContext;
+        edlContext.setXpath(XPathFactory.newInstance().newXPath());
+        return edlContext;
 	}
 
 }

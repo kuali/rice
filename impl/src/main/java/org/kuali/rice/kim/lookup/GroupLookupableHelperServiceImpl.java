@@ -131,6 +131,10 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         criteriaMap.remove(KRADConstants.DOC_FORM_KEY);
         criteriaMap.remove(KRADConstants.BACK_LOCATION);
         criteriaMap.remove(KRADConstants.DOC_NUM);
+        String refToRef = criteriaMap.get(KRADConstants.REFERENCES_TO_REFRESH);
+        if (StringUtils.isNotBlank(refToRef) && refToRef.equalsIgnoreCase("GroupBo")) {
+            criteriaMap.remove(KRADConstants.REFERENCES_TO_REFRESH);
+        }
 
         if (!criteriaMap.isEmpty()) {
             List<Predicate> predicates = new ArrayList<Predicate>();

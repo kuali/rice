@@ -23,7 +23,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.rule.ui.AddPermissionRule;
-import org.kuali.rice.krad.rules.DocumentRuleBase;
+import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.HashMap;

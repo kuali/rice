@@ -214,11 +214,6 @@
     <property name="displayPassedHistory" value="true"/>
     <property name="displayBreadcrumbsWhenOne" value="false"/>
     <property name="cssClasses" value="uif-breadcrumbs"/>
-    <property name="homewardPathList">
-      <list>
-        <bean parent="Uif-HistoryEntry" p:title="Home" p:url="@{#ConfigProperties['application.url']}/portal.do"/>
-      </list>
-    </property>
   </bean>
 
   <!-- Growls default settings -->

@@ -27,6 +27,11 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -328,6 +333,13 @@ class XMLSearchableAttributeContent {
                         if (group_def_found) {
                             if (StringUtils.isEmpty(groupName) || StringUtils.isEmpty(groupNamespace)) {
                                 throw new RuntimeException("Both group name and group namespace must be present for group-based visibility.");
+                            }
+
+                            GroupService groupService = KimApiServiceLocator.getGroupService();
+                            Group group = groupService.getGroupByNamespaceCodeAndName(groupNamespace, groupName);
+                            UserSession session = GlobalVariables.getUserSession();
+                            if (session != null) {
+                             visible =  group == null ? false : groupService.isMemberOfGroup(session.getPerson().getPrincipalId(), group.getId());
                             }
                         }
                     }

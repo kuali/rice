@@ -16,6 +16,8 @@
 package org.kuali.rice.edl.impl;
 
 import javax.xml.transform.Transformer;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.krad.UserSession;
@@ -37,11 +39,21 @@ public class EDLContext {
 	private boolean inError;
 	private UserAction userAction;
 	private String redirectUrl;
-	
-	public EDLContext() {
+    private XPath xpath;
+
+    public EDLContext() {
 		redirectUrl = null;
-	}
-	
+        xpath = XPathFactory.newInstance().newXPath();
+    }
+
+    public XPath getXpath() {
+        return xpath;
+    }
+
+    public void setXpath(XPath xpath) {
+        this.xpath = xpath;
+    }
+
 	public UserSession getUserSession() {
 		return userSession;
 	}

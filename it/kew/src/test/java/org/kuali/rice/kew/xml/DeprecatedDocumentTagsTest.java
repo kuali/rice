@@ -120,7 +120,7 @@ public class DeprecatedDocumentTagsTest extends DocumentSearchTestBase {
             assertEquals("The searching rows list should have exactly one element", 1, rowList.size());
             assertEquals("The searching row should have exactly one field", 1, rowList.get(0).getFields().size());
             assertEquals("The rule attribute field does not have the expected visibility", visibleStates[i],
-                    rowList.get(0).getField(0).getFieldType() != Field.HIDDEN);
+                    rowList.get(0).getField(0).isColumnVisible());
         }
     	// Ensure that the document type called "DocTypeWithSecurity" has the correct group defined for its <security> section.
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("DocTypeWithSecurity");

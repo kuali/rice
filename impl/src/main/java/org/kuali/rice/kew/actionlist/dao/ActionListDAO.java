@@ -35,7 +35,7 @@ public interface ActionListDAO {
     public Collection<ActionItemActionListExtension> getActionList(String principalId, ActionListFilter filter);
     public Collection<ActionItemActionListExtension> getActionListForSingleDocument(String documentId);
     public int getCount(String workflowId);
-    public List<Integer> getMaxActionItemIdAndCountForUser(String principalId);
+    public List<Object> getMaxActionItemDateAssignedAndCountForUser(String principalId);
 
     /**
      *

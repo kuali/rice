@@ -334,8 +334,8 @@ public final class WebRuleUtils {
 					String propertyName;
 
 					if (delegateRule) {
-						propertyName = "delegationRuleBaseValues.fieldValues(" + valueKey + ")";
-					} else {
+                        propertyName = "delegationRule.fieldValues(" + valueKey + ")";
+                    } else {
 						propertyName = "fieldValues(" + valueKey + ")";
 					}
 

@@ -125,6 +125,7 @@
         <value>classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifInitiateDocumentInfoDefinitions.xml</value>
       </list>
     </property>
     <property name="packagePrefixes">
@@ -230,9 +231,6 @@
   <bean id="kualiRuleService" class="org.kuali.rice.krad.service.impl.KualiRuleServiceImpl">
     <property name="documentDictionaryService">
       <ref bean="documentDictionaryService"/>
-    </property>
-    <property name="dictionaryValidationService">
-      <ref bean="dictionaryValidationService"/>
     </property>
     <property name="dataDictionaryService">
       <ref bean="dataDictionaryService"/>

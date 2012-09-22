@@ -226,7 +226,13 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         }
 
         // get the class of the attribute name
-        Class referenceClass = ObjectUtils.getPropertyType( bo, referenceName, persistenceStructureService );
+        Class referenceClass = null;
+        if(bo instanceof PersistableBusinessObject) {
+            referenceClass = persistenceStructureService.getBusinessObjectAttributeClass(((PersistableBusinessObject)bo).getClass(), referenceName);
+        }
+        if(referenceClass == null) {
+            referenceClass = ObjectUtils.getPropertyType( bo, referenceName, persistenceStructureService );
+        }
         if ( referenceClass == null ) {
         	referenceClass = propertyDescriptor.getPropertyType();
         }

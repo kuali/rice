@@ -119,7 +119,7 @@
     <param name="rice.server.url" override="false">${application.url}</param>
     <param name="workflow.url" override="false">${rice.server.url}/kew</param>
     <param name="workflow.documentsearch.base.url" override="false">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>
-
+    <param name="initiated.document.url" override="false">${krad.url}/initdocinfo?viewId=InitiatedDocumentView&amp;methodToCall=start</param>
     <param name="rice.default.soap.service" override="false">false</param>
 
     <param name="cas.context.name" override="false">cas</param>

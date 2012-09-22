@@ -127,6 +127,45 @@ public class NotificationServiceTest extends KEWTestCase {
 		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 	}
 
+
+    /**
+     * Tests email for individual document type
+     */
+    @Test public void testIndDocTypeEmailPreferences() throws Exception {
+        String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
+        String jitruePrincipalId = getPrincipalIdForName("jitrue");
+        String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
+        String jhopfPrincipalId = getPrincipalIdForName("jhopf");
+        String bmcgoughPrincipalId = getPrincipalIdForName("bmcgough");
+        String user1PrincipalId = getPrincipalIdForName("user1");
+
+        Preferences prefs = getPreferencesService().getPreferences(ewestfalPrincipalId);
+        Preferences.Builder preferencesBuilder = Preferences.Builder.create(prefs);
+
+        prefs = getPreferencesService().getPreferences(ewestfalPrincipalId);
+        preferencesBuilder = Preferences.Builder.create(prefs);
+        preferencesBuilder.setEmailNotification(KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
+        preferencesBuilder.setDocumentTypeNotificationPreference("NotificationTest", "immediate");
+        getPreferencesService().savePreferences(ewestfalPrincipalId, preferencesBuilder.build());
+
+        // also turn off notification for jhopf
+        prefs = getPreferencesService().getPreferences(jhopfPrincipalId);
+        preferencesBuilder = Preferences.Builder.create(prefs);
+        preferencesBuilder.setEmailNotification(KewApiConstants.EMAIL_RMNDR_NO_VAL);
+        preferencesBuilder.setDocumentTypeNotificationPreference("NotificationTest", "daily");
+        getPreferencesService().savePreferences(jhopfPrincipalId, preferencesBuilder.build());
+
+        // route the document
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "NotificationTest");
+        document.route("");
+
+        assertEquals("ewestfal should have one emails.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("rkirkend should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("jhopf should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("jitrue should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+    }
+
 	/**
 	 * Tests that the fromNotificationAddress on the document type works properly.  Used to test implementation of KULWF-628.
 	 */

@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -59,7 +60,8 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 		serviceRemovalExceptions.add(ConnectTimeoutException.class);
 		serviceRemovalExceptions.add(ConnectionPoolTimeoutException.class);
 		serviceRemovalExceptions.add(ConnectException.class);
-	}
+        serviceRemovalExceptions.add(SocketTimeoutException.class);
+    }
 	
 	static {
 	    serviceRemovalResponseCodes.add(new Integer(404));
@@ -84,8 +86,8 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 			} catch (Throwable throwable) {			
 				if (isServiceRemovalException(throwable)) {
 					synchronized (failoverLock) {
-						LOG.error("Exception caught accessing remote service " + this.serviceConfiguration.getServiceName(), throwable);
-						if (servicesTried == null) {
+                        LOG.error("Exception caught accessing remote service " + this.serviceConfiguration.getServiceName() + " at " + this.serviceConfiguration.getEndpointUrl(), throwable);
+                        if (servicesTried == null) {
 							servicesTried = new HashSet<ServiceConfiguration>();
 							servicesTried.add(serviceConfiguration);
 						}
@@ -94,12 +96,15 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 						for (Endpoint endpoint : endpoints) {
 							if (!servicesTried.contains(endpoint.getServiceConfiguration())) {
 								failoverService = endpoint.getService();
+                                if(Proxy.isProxyClass(failoverService.getClass()) && Proxy.getInvocationHandler(failoverService) instanceof BusClientFailureProxy) {
+                                    failoverService = ((BusClientFailureProxy)Proxy.getInvocationHandler(failoverService)).getTarget();
+                                }
 								servicesTried.add(endpoint.getServiceConfiguration());
 							}
 						}									
 						if (failoverService != null) {
-							LOG.info("Refetched replacement service for service " + this.serviceConfiguration.getServiceName());
-							// as per KULRICE-4287, reassign target to the new service we just fetched, hopefully this one works better!
+                            LOG.info("Refetched replacement service for service " + this.serviceConfiguration.getServiceName() + " at " + this.serviceConfiguration.getEndpointUrl());
+                            // as per KULRICE-4287, reassign target to the new service we just fetched, hopefully this one works better!
 							setTarget(failoverService);
 						} else {
 							LOG.error("Didn't find replacement service throwing exception");

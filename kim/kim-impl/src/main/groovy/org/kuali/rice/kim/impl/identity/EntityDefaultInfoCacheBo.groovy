@@ -41,8 +41,9 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 class EntityDefaultInfoCacheBo extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
+    private static final String UNAVAILABLE = "Unavailable";
 
-	@Transient
+    @Transient
 	Long versionNumber; // prevent JPA from attempting to persist the version number attribute
 
 	// principal data
@@ -86,7 +87,11 @@ class EntityDefaultInfoCacheBo extends PersistableBusinessObjectBase {
 			entityId = entity.getEntityId();
 			if ( entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
 				principalId = entity.getPrincipals().get(0).getPrincipalId();
-				principalName = entity.getPrincipals().get(0).getPrincipalName();
+                if(entity.getPrincipals().get(0).getPrincipalName() != null) {
+                    principalName = entity.getPrincipals().get(0).getPrincipalName();
+                } else {
+                    principalName = UNAVAILABLE;
+                }
 			}
 			if ( entity.getEntityTypeContactInfos() != null && !entity.getEntityTypeContactInfos().isEmpty() ) {
 				entityTypeCode = entity.getEntityTypeContactInfos().get(0).getEntityTypeCode();
@@ -115,7 +120,12 @@ class EntityDefaultInfoCacheBo extends PersistableBusinessObjectBase {
 		info.setActive( this.isActive() );
 
 		// principal info
-		Principal.Builder principalInfo = Principal.Builder.create(this.getPrincipalName());
+        Principal.Builder principalInfo = null;
+        if(this.getPrincipalName() != null) {
+            principalInfo = Principal.Builder.create(this.getPrincipalName());
+        } else {
+            principalInfo = Principal.Builder.create(UNAVAILABLE);
+        }
 		principalInfo.setEntityId(this.getEntityId());
 		principalInfo.setPrincipalId(this.getPrincipalId());
 		principalInfo.setActive(this.isActive());

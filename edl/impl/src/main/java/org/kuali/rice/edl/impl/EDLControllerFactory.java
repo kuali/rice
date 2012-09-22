@@ -23,6 +23,7 @@ import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,6 +31,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Templates;
+import javax.xml.xpath.XPathFactory;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -53,8 +55,9 @@ public final class EDLControllerFactory {
 	public static EDLController createEDLController(EDocLiteAssociation edlAssociation, EDLGlobalConfig edlGlobalConfig) {
         EDLController edlController = new EDLController();
 		edlController.setEdocLiteAssociation(edlAssociation);
+        edlController.setEdlContext(getPreEDLContext(edlController));
 
-		try {
+        try {
 			edlController.setEdlGlobalConfig(edlGlobalConfig);
 			edlController.setDefaultDOM(getDefaultDOM(edlAssociation));
 			loadConfigProcessors(edlController, edlGlobalConfig);
@@ -126,7 +129,7 @@ public final class EDLControllerFactory {
         NodeList edlDefinitionNodes = definitionElement.getChildNodes();
         for (int i = 0; i < edlDefinitionNodes.getLength(); i++) {
             Node definitionNode = edlDefinitionNodes.item(i);
-            Class configProcessorClass = edlGlobalConfig.getConfigProcessor(definitionNode);
+            Class configProcessorClass = edlGlobalConfig.getConfigProcessor(definitionNode, edlController.getEdlContext());
             if (configProcessorClass != null) {
                 configProcessorMappings.put(definitionNode, configProcessorClass);
             }
@@ -167,4 +170,12 @@ public final class EDLControllerFactory {
 		
 		return dom;
 	}
+
+    public static EDLContext getPreEDLContext(EDLController edlController) {
+        EDLContext edlContext = new EDLContext();
+        edlContext.setEdocLiteAssociation(edlController.getEdocLiteAssociation());
+        edlContext.setUserSession(GlobalVariables.getUserSession());
+        edlContext.setXpath(XPathFactory.newInstance().newXPath());
+        return edlContext;
+    }
 }

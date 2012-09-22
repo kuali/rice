@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.api.rule.RuleDelegationContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.CascadeType;
@@ -204,7 +208,20 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
         this.personReviewerType = personReviewerType;
     }
 
+    public GroupBo getGroupBo() {
+        GroupBo groupBo = null;
+        if (StringUtils.isNotBlank(getGroupReviewerName())) {
+            if ( groupBo == null ) {
+                groupBo = GroupBo.from(KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
+                        getGroupReviewerNamespace(), getGroupReviewerName()));
+            }
+        }
+        return groupBo;
+    }
 
+    public PersonImpl getPersonImpl() {
+        return new PersonImpl();
+    }
 
         /**
        * An override of the refresh() method that properly preserves the RuleBaseValues instance. If the delegationRuleBaseValues property

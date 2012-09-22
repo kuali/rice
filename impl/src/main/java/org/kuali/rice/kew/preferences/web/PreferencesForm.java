@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.preferences.web.PreferencesConstants;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -141,7 +142,57 @@ public class PreferencesForm extends KualiForm {
 	}
 
     public void validatePreferences() {
-     
+        if((!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorSaved()))  ||
+                (!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorInitiated())) ||
+                (!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorDisapproved())) ||
+                (!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorEnroute())) ||
+                (!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorApproved())) ||
+                (!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorFinal())) ||
+                (!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorProcessed())) ||
+                (!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorException())) ||
+                (!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorCanceled()))
+                ){
+            throw new RiceRuntimeException("Preferences cannot be saved since they have been tampered with. Please refresh the page and try again");
+        }
+
+        if(!PreferencesConstants.EmailNotificationPreferences.getEmailNotificationPreferences().contains(preferences.getEmailNotification())) {
+            throw new RiceRuntimeException("Email notifications cannot be saved since they have been tampered with. Please refresh the page and try again");
+        }
+
+        if(!PreferencesConstants.DelegatorFilterValues.getDelegatorFilterValues().contains(preferences.getDelegatorFilter())) {
+            throw new RiceRuntimeException("Delegator filter values cannot be saved since they have been tampered with. Please refresh the page and try again");
+
+        }
+
+        if(!PreferencesConstants.PrimaryDelegateFilterValues.getPrimaryDelegateFilterValues().contains(preferences.getPrimaryDelegateFilter())) {
+            throw new RiceRuntimeException("Primary delegator filter values cannot be saved since they have been tampered with. Please refresh the page and try again");
+        }
+
+        if((!StringUtils.isBlank(preferences.getNotifyPrimaryDelegation())) &&
+           (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getNotifyPrimaryDelegation()))) {
+            throw new RiceRuntimeException("Invalid value found for checkbox \"Recieve Primary Delegate Email\"");
+        }
+
+        if((!StringUtils.isBlank(preferences.getNotifySecondaryDelegation())) &&
+           (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getNotifySecondaryDelegation()))) {
+            throw new RiceRuntimeException("Invalid value found for checkbox \"Recieve Secondary Delegate Email\"");
+        }
+
+        if((!StringUtils.isBlank(preferences.getShowDocType())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDocType())) ||
+                (!StringUtils.isBlank(preferences.getShowDocTitle())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDocTitle())) ||
+                (!StringUtils.isBlank(preferences.getShowActionRequested())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowActionRequested())) ||
+                (!StringUtils.isBlank(preferences.getShowInitiator())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowInitiator())) ||
+                (!StringUtils.isBlank(preferences.getShowDelegator())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDelegator())) ||
+                (!StringUtils.isBlank(preferences.getShowDateCreated())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDateCreated())) ||
+                (!StringUtils.isBlank(preferences.getShowDateApproved())) &&(!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDateApproved())) ||
+                (!StringUtils.isBlank(preferences.getShowCurrentNode())) &&	(!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowCurrentNode())) ||
+                (!StringUtils.isBlank(preferences.getShowWorkgroupRequest())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowWorkgroupRequest())) ||
+                (!StringUtils.isBlank(preferences.getShowDocumentStatus())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDocumentStatus())) ||
+                (!StringUtils.isBlank(preferences.getShowClearFyi())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowClearFyi())) ||
+                (!StringUtils.isBlank(preferences.getUseOutbox())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getUseOutbox()))) {
+            throw new RiceRuntimeException("Preferences for fields displayed in action list cannot be saved since they have in tampered with. Please refresh the page and try again");
+        }
+
         try {
             new Integer(preferences.getRefreshRate().trim());
         } catch (NumberFormatException e) {
@@ -151,8 +202,9 @@ public class PreferencesForm extends KualiForm {
         }
 
         try {
-            if(new Integer(preferences.getPageSize().trim()) == 0){
-            	 GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be non-zero ");
+            new Integer(preferences.getPageSize().trim());
+            if((new Integer(preferences.getPageSize().trim()) <= 0) || (new Integer(preferences.getPageSize().trim()) > 500)) {
+                GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be between 1 and 500");
             }    
         } catch (NumberFormatException e) {
             GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be in whole minutes");

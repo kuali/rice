@@ -29,121 +29,23 @@
   </parent>
   <artifactId>rice-it-internal-tools</artifactId>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-deploy</artifactId>
-        <version>${jetty.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-jsp</artifactId>
-        <version>${jetty.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-        <version>${jetty.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-servlet</artifactId>
-        <version>${jetty.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-webapp</artifactId>
-        <version>${jetty.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-        	<!-- the jsp libraries have not been moved over to eclipse as of jetty 7 - this is required for jetty 7 -->
-      <dependency>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>jsp-2.1-glassfish</artifactId>
-        <version>${jsp-2.1-glassfish.version}</version>
-        <scope>test</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>servlet-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-impl</artifactId>
       <version>${project.version}</version>
-      <exclusions>
-	      	<!-- the versions from the jetty server -->
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>jstl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.servlet.jsp</groupId>
-          <artifactId>jsp-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-impl</artifactId>
       <version>${project.version}</version>
-      <exclusions>
-	      	<!-- the versions from the jetty server -->
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>jstl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.servlet.jsp</groupId>
-          <artifactId>jsp-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-ksb-web</artifactId>
       <version>${project.version}</version>
-      <exclusions>
-	      	<!-- the versions from the jetty server -->
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>jstl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.servlet.jsp</groupId>
-          <artifactId>jsp-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
 
@@ -186,43 +88,6 @@
       <groupId>javax.transaction</groupId>
       <artifactId>jta</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-deploy</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-webapp</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jsp-2.1-glassfish</artifactId>
-      <scope>compile</scope>
-      <exclusions>
-        <!-- prevent ant:ant versus org.apache.ant:ant collision -->
-        <exclusion>
-        <groupId>ant</groupId>
-        <artifactId>ant</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     
     <dependency>
       <groupId>no.geosoft</groupId>
@@ -240,5 +105,20 @@
     <artifactId>ant</artifactId>
     <version>${ant.version}</version>
   </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
   </dependencies>
 </project>

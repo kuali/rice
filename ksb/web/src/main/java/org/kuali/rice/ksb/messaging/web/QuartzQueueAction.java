@@ -73,15 +73,17 @@ public class QuartzQueueAction extends KSBAction {
 	    HttpServletResponse response) throws Exception {
 	
 	QuartzQueueForm quartzForm = (QuartzQueueForm)form;
-	
+
 	JobDetail job = KSBServiceLocator.getScheduler().getJobDetail(quartzForm.getJobName(), quartzForm.getJobGroup());
 	PersistedMessageBO message = (PersistedMessageBO)job.getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
-	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
-	
-	KSBServiceLocator.getMessageQueueService().save(message);
-	KSBServiceLocator.getScheduler().deleteJob(quartzForm.getJobName(), quartzForm.getJobGroup());
-	request.setAttribute(RENDER_LIST_OVERRIDE, new Object());
-	establishRequiredState(request, form);
+     if(message != null){
+	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
+
+        KSBServiceLocator.getMessageQueueService().save(message);
+        KSBServiceLocator.getScheduler().deleteJob(quartzForm.getJobName(), quartzForm.getJobGroup());
+     }
+    request.setAttribute(RENDER_LIST_OVERRIDE, new Object());
+    establishRequiredState(request, form);
 	return mapping.findForward("joblisting");
     }
     

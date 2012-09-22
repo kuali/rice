@@ -21,7 +21,10 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm;
+import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
@@ -138,6 +141,10 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
                     Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(
                             request.getParameterMap());
                     view = getViewService().getViewByType(viewType, parameterMap);
+                }
+                if (view.getId().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
+                    form = new InitiatedDocumentInfoForm();
+                    return;
                 }
 
                 // if view not found attempt to find one based on the cached form

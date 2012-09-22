@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
@@ -34,6 +35,8 @@ import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -640,9 +643,16 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         this.personReviewer = personReviewer;
     }
 
-    /*public Group getKimGroupImpl() {
-        return new GroupImpl;
-    }*/
+    public GroupBo getGroupBo() {
+        GroupBo groupBo = null;
+        if (StringUtils.isNotBlank(getGroupReviewerName())) {
+            if ( groupBo == null ) {
+                groupBo = GroupBo.from(KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
+                        getGroupReviewerNamespace(), getGroupReviewerName()));
+            }
+        }
+        return groupBo;
+    }
 
     public PersonImpl getPersonImpl() {
         return new PersonImpl();

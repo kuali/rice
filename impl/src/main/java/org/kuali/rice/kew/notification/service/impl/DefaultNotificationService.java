@@ -59,8 +59,8 @@ public class DefaultNotificationService implements NotificationService {
 		Set sentNotifications = new HashSet();
 		for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
-			if (!sentNotifications.contains(actionItem.getPrincipalId()) && shouldNotify(actionItem)) {
-				sentNotifications.add(actionItem.getPrincipalId());
+            if (!sentNotifications.contains(actionItem.getPrincipalId()) && shouldNotify(actionItem)) {
+                sentNotifications.add(actionItem.getPrincipalId());
 				sendNotification(actionItem);
 			}
 		}
@@ -78,18 +78,10 @@ public class DefaultNotificationService implements NotificationService {
 
 	protected boolean shouldNotify(ActionItem actionItem) {
 		try {
+            boolean sendEmail = true;
+            // Removed preferences items since they will be checked before it sends
+            // the email in the action list email service
 
-			Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
-			boolean sendEmail = false;
-			if (KewApiConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
-				if (DelegationType.PRIMARY.equals(actionItem.getDelegationType())) {
-					sendEmail = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-				} else if (DelegationType.SECONDARY.equals(actionItem.getDelegationType())) {
-					sendEmail = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
-				} else {
-					sendEmail = true;
-				}
-			}
 			// don't send notification if this action item came from a SAVE action and the NOTIFY_ON_SAVE policy is not set
 			if (sendEmail && isItemOriginatingFromSave(actionItem) && !shouldNotifyOnSave(actionItem)) {
 				sendEmail = false;

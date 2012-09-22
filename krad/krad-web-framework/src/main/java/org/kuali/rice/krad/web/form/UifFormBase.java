@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.web.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -23,6 +25,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
+import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -52,6 +55,9 @@ import java.util.UUID;
  */
 public class UifFormBase implements ViewModel {
     private static final long serialVersionUID = 8432543267099454434L;
+
+    // logger
+    private static final Log LOG = LogFactory.getLog(UifFormBase.class);
 
     // current view
     protected String viewId;
@@ -533,6 +539,31 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setView(View view) {
         this.view = view;
+        initHomewardPathList();
+    }
+
+    /**
+     * Set the "Home" url of the homewardPathList (ie. breadcrumbs history)
+     */
+    private void initHomewardPathList() {
+        if (getReturnLocation() == null) {
+            LOG.warn("Could not init homewardPathList.  returnLocation is null.");
+            return;
+        }
+
+        List<HistoryEntry> homewardPathList = new ArrayList<HistoryEntry>();
+        if ((view != null) && (view.getBreadcrumbs() != null) && (view.getBreadcrumbs().getHomewardPathList() != null)) {
+            homewardPathList = view.getBreadcrumbs().getHomewardPathList();
+        }
+
+        HistoryEntry historyEntry = new HistoryEntry("","","Home",getReturnLocation(),"");
+        if (homewardPathList.isEmpty()) {
+            homewardPathList.add(historyEntry);
+        } else if (StringUtils.equals(homewardPathList.get(0).getTitle(), "Home")) {
+            homewardPathList.set(0, historyEntry);
+        } else {
+            homewardPathList.add(0, historyEntry);
+        }
     }
 
     /**

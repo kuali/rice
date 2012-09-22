@@ -38,6 +38,7 @@ import org.kuali.rice.kew.api.KewApiConstants
 import org.kuali.rice.kew.api.extension.ExtensionDefinition
 import org.kuali.rice.kim.api.KimConstants
 import org.apache.commons.lang.StringUtils
+import org.kuali.rice.kim.api.group.GroupService
 
 /**
  *
@@ -57,6 +58,8 @@ class XMLSearchableAttributeContentTest {
             getService: { QName name ->
                 [
                     parameterService: [ getParameterValueAsString: { s0,s1,s2 -> null } ] as ParameterService,
+                    kimGroupService: [ getGroupByNamespaceCodeAndName: {a,b -> null } ] as GroupService,
+
                 ][name.getLocalPart()]
             },
             stop: {}

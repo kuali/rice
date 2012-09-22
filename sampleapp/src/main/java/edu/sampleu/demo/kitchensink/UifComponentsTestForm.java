@@ -194,6 +194,10 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list4 = new ArrayList<UITestObject>();
     private List<UITestObject> list5 = new ArrayList<UITestObject>();
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
+    private List<UITestObject> groupedList1 = new ArrayList<UITestObject>();
+    private List<UITestObject> groupedList2 = new ArrayList<UITestObject>();
+    private List<UITestObject> groupedList3 = new ArrayList<UITestObject>();
+    private List<UITestObject> doubleGroupedList = new ArrayList<UITestObject>();
     private List<UITestObject> list1generated = new ArrayList<UITestObject>();
     private List<UITestObject> list2generated = new ArrayList<UITestObject>();
     private List<UITestObject> list3generated = new ArrayList<UITestObject>();
@@ -232,6 +236,8 @@ public class UifComponentsTestForm extends UifFormBase {
         list1.add(new UITestObject("1", "2", "3", "4"));
         list1.add(new UITestObject("9", "10", "11", "12"));
         list1.add(new UITestObject("13", "14", "15", "16"));
+        list1.add(new UITestObject("213", "143", "151", "126"));
+        list1.add(new UITestObject("133", "144", "155", "156"));
 
         list2.add(new UITestObject("A", "B", "C", "D"));
         list2.add(new UITestObject("1", "2", "3", "4"));
@@ -273,6 +279,74 @@ public class UifComponentsTestForm extends UifFormBase {
         list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
         list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
         list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
+        
+        groupedList1.add(new UITestObject("A", "100", "200", "300"));
+        groupedList1.add(new UITestObject("A", "101", "200", "300"));
+        groupedList1.add(new UITestObject("A", "102", "200", "300"));
+        groupedList1.add(new UITestObject("A", "103", "200", "300"));
+        groupedList1.add(new UITestObject("A", "104", "200", "300"));
+
+        groupedList1.add(new UITestObject("B", "100", "200", "300"));
+        groupedList1.add(new UITestObject("B", "101", "200", "300"));
+        groupedList1.add(new UITestObject("B", "102", "200", "300"));
+
+        groupedList1.add(new UITestObject("C", "100", "200", "300"));
+        groupedList1.add(new UITestObject("C", "101", "200", "300"));
+        groupedList1.add(new UITestObject("C", "102", "200", "300"));
+        groupedList1.add(new UITestObject("C", "103", "200", "300"));
+
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        groupedList1.add(new UITestObject("D", "100", "200", "300"));
+        groupedList1.add(new UITestObject("D", "101", "200", "300"));
+        groupedList1.add(new UITestObject("D", "102", "200", "300"));
+        groupedList1.add(new UITestObject("D", "103", "200", "300"));
+        
+        groupedList2.addAll(groupedList1);
+        groupedList3.addAll(groupedList1);
+        
+        doubleGroupedList.add(new UITestObject("Fall", "2001", "AAA123", "2"));
+        doubleGroupedList.add(new UITestObject("Fall", "2001", "BBB123", "3"));
+        doubleGroupedList.add(new UITestObject("Fall", "2001", "CCC123", "4"));
+        doubleGroupedList.add(new UITestObject("Fall", "2001", "DDD123", "3"));
+
+        doubleGroupedList.add(new UITestObject("Fall", "2002", "AAA123", "3"));
+        doubleGroupedList.add(new UITestObject("Fall", "2002", "BBB123", "2"));
+        doubleGroupedList.add(new UITestObject("Fall", "2002", "CCC123", "3"));
+
+        doubleGroupedList.add(new UITestObject("Fall", "2003", "AAA123", "3"));
+        doubleGroupedList.add(new UITestObject("Fall", "2003", "CCC123", "3"));
+
+        doubleGroupedList.add(new UITestObject("Spring", "2001", "AAA123", "3"));
+        doubleGroupedList.add(new UITestObject("Spring", "2001", "BBB123", "3"));
+        doubleGroupedList.add(new UITestObject("Spring", "2001", "CCC123", "3"));
+
+        doubleGroupedList.add(new UITestObject("Spring", "2002", "AAA123", "4"));
+        doubleGroupedList.add(new UITestObject("Spring", "2002", "BBB123", "4"));
+        doubleGroupedList.add(new UITestObject("Spring", "2002", "CCC123", "2"));
+
+        doubleGroupedList.add(new UITestObject("Spring", "2003", "AAA123", "4"));
+        doubleGroupedList.add(new UITestObject("Spring", "2003", "BBB123", "3"));
+        doubleGroupedList.add(new UITestObject("Spring", "2003", "CCC123", "3"));
+        doubleGroupedList.add(new UITestObject("Spring", "2003", "DDD123", "2"));
 
         for (int i = 0; i < 50; i++) {
             list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(1), RandomStringUtils.randomAlphanumeric(1),
@@ -2277,5 +2351,37 @@ public class UifComponentsTestForm extends UifFormBase {
     public String getCurrentTimestamp() {
         DateTimeService dateTimeService = CoreApiServiceLocator.getDateTimeService();
         return dateTimeService.getCurrentTimestamp().toString();
+    }
+
+    public List<UITestObject> getGroupedList1() {
+        return groupedList1;
+    }
+
+    public void setGroupedList1(List<UITestObject> groupedList1) {
+        this.groupedList1 = groupedList1;
+    }
+
+    public List<UITestObject> getGroupedList2() {
+        return groupedList2;
+    }
+
+    public void setGroupedList2(List<UITestObject> groupedList2) {
+        this.groupedList2 = groupedList2;
+    }
+
+    public List<UITestObject> getGroupedList3() {
+        return groupedList3;
+    }
+
+    public void setGroupedList3(List<UITestObject> groupedList3) {
+        this.groupedList3 = groupedList3;
+    }
+
+    public List<UITestObject> getDoubleGroupedList() {
+        return doubleGroupedList;
+    }
+
+    public void setDoubleGroupedList(List<UITestObject> doubleGroupedList) {
+        this.doubleGroupedList = doubleGroupedList;
     }
 }

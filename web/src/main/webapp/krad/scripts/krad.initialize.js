@@ -799,9 +799,9 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function (a, b) {
  * @param iColumn - the column whose values are to be retrieved
  * @return an array of column values - extracted from any surrounding markup
  */
-jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
+jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+    jQuery('td:eq(' + iVisColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
         var input = jQuery(this).find('input:text');
         if (input.length != 0) {
             aData.push(input.val());
@@ -830,9 +830,9 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
  * @param iColumn - the column whose values are to be retrieved
  * @return an array of column values - extracted from any surrounding markup
  */
-jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn) {
+jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+    jQuery('td:eq(' + iVisColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
         var selected = jQuery(this).find('select option:selected:first');
         if (selected.length != 0) {
             aData.push(selected.text());
@@ -859,9 +859,9 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn)
  * @param iColumn - the column whose values are to be retrieved
  * @return an array of column values - extracted from any surrounding markup
  */
-jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn) {
+jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+    jQuery('td:eq(' + iVisColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
         var checkboxes = jQuery(this).find('input:checkbox');
         if (checkboxes.length != 0) {
             var str = "";
@@ -895,9 +895,9 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
  * @param iColumn - the column whose values are to be retrieved
  * @return an array of column values - extracted from any surrounding markup
  */
-jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) {
+jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+    jQuery('td:eq(' + iVisColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
         var radioButtons = jQuery(this).find('input:radio');
         if (radioButtons.length != 0) {
             var value = "";

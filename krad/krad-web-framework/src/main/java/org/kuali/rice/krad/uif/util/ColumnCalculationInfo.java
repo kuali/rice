@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.field.Field;
  */
 public class ColumnCalculationInfo {
     private Integer columnNumber;
+    private String propertyName;
 
     private boolean showTotal;
     private boolean showPageTotal;
@@ -266,5 +267,13 @@ public class ColumnCalculationInfo {
      */
     public void setCalculationFunctionExtraData(String calculationFunctionExtraData) {
         this.calculationFunctionExtraData = calculationFunctionExtraData;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
     }
 }

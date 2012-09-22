@@ -1221,6 +1221,8 @@ function lightboxButtonScript() {
 function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) {
     var dataTable = jQuery(nRow).closest('table.dataTable');
 
+    jQuery(nRow).addClass("uif-totalRow");
+
     if (jQuery(dataTable).hasClass("uif-hasAddLine")) {
         iEnd = iEnd + 1;
     }
@@ -1230,10 +1232,13 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
         jQuery(nRow).find("div[data-role='pageTotal'], label[data-role='pageTotal']").hide();
     }
 
+    var groupTotalRows = dataTable.find("tr[data-groupvalue]");
+
+    var nCells = jQuery(nRow).find("th").has("div[data-role='totalsBlock']");
     // Total each column in the columns list
-    for (var c = 0; c < columns.length; c++) {
-        var nCells = nRow.getElementsByTagName('th');
-        var cell = jQuery(nCells[columns[c]]);
+    for (var c = 0; c < nCells.length; c++) {
+        var cell = jQuery(nCells[c]);
+        var index = cell.index();
 
         //find the totalsBlocks in each column footer cell, and calculate the appropriate totals
         jQuery("div[data-role='totalsBlock']", cell).each(function () {
@@ -1246,10 +1251,108 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
 
             if (!onePage) {
                 var pageTotalDiv = jQuery(this).find("div[data-role='pageTotal']");
-                calculateTotal(totalDiv, iStart, iEnd, columns[c], aaData, aiDisplay);
+                calculateTotal(pageTotalDiv, iStart, iEnd, columns[c], aaData, aiDisplay);
+            }
+
+            if(groupTotalRows.length){
+                var groupTotalDiv = jQuery(this).find("div[data-role='groupTotal']");
+                var rowIndex = 0;
+                groupTotalRows.each(function(){
+                    var groupTotalRow = jQuery(this);
+                    var tds = groupTotalRow.find("td");
+                    var td = jQuery(tds[index]);
+                    var groupValue = jQuery(this).data("groupvalue");
+
+                    //This means if the group has data that goes into another page, do not display
+                    //the group total here - iEnd is the index-1 of the last displayed item (currently displayed)
+                    // in the display order list (aiDisplay)
+                    var lastValue = aaData[aiDisplay[iEnd - 1]][0];
+                    if(lastValue && lastValue.toLowerCase() == groupValue && iEnd < aiDisplay.length &&
+                            aaData[aiDisplay[iEnd]][0] && aaData[aiDisplay[iEnd]][0].toLowerCase() == groupValue){
+                        groupTotalRow.hide();
+                    }
+                    else{
+                        var groupCellsToTotal = new Array();
+
+                        for(var i = 0; i < aaData.length; i++){
+                            var groupingValue = aaData[i][0];
+                            if(groupingValue != undefined &&
+                                    normalizeGroupString(groupingValue).toLowerCase() == groupValue){
+                                groupCellsToTotal.push(aaData[i][columns[c]]);
+                            }
+                        }
+                        groupTotalRow.show();
+                        calculateGroupTotal(groupCellsToTotal, td, groupTotalDiv, rowIndex, columns[c]);
+                    }
+
+                    rowIndex++;
+                });
             }
         });
     }
+
+}
+
+function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, columnIndex){
+
+    var total = 0;
+    var values = new Array();
+    var hasInvalidValues = false;
+    var extraData = groupTotalDiv.data("params");
+    var functionName = groupTotalDiv.data("function");
+
+    for(var i = 0; i < cellsToTotal.length; i++){
+        var currentCell = cellsToTotal[i];
+
+        if (currentCell && jQuery(currentCell).find(":input[name^='newCollectionLines']").length == 0) {
+            var value = coerceTableCellValue(currentCell);
+            //set hasInvalidValues to true if value is undefined
+            if (value == undefined) {
+                hasInvalidValues = true;
+                break;
+            }
+
+            //skip over value when blank
+            if (value != "") {
+                value = parseFloat(value);
+                values.push(value);
+            }
+        }
+    }
+
+    if (!hasInvalidValues) {
+        if(extraData != undefined){
+            total = window[functionName](values, extraData);
+        }
+        else{
+            total = window[functionName](values);
+        }
+    }
+    else {
+        total = "N/A";
+    }
+
+    var groupTotalDisplay = totalTd.find("div[data-role='groupTotal'][data-function='" + functionName + "']");
+    if(groupTotalDisplay.length == 0){
+        groupTotalDisplay = groupTotalDiv.clone();
+        groupTotalDisplay = groupTotalDisplay.attr("id", groupTotalDisplay.attr("id") + "_" + rowIndex + columnIndex);
+        groupTotalDisplay.find("[id]").each(function(){
+            jQuery(this).attr("id", jQuery(this).attr("id") + "_" + rowIndex + columnIndex);
+        });
+        totalTd.append(groupTotalDisplay);
+        groupTotalDisplay.show();
+    }
+
+    var totalValueSpan = groupTotalDisplay.find("span[data-role='totalValue']");
+
+    if (totalValueSpan.length) {
+        totalValueSpan.html(total);
+    }
+    else {
+        var newSpan = jQuery("<span data-role='totalValue'>" + total + "</span>");
+        groupTotalDisplay.append(newSpan);
+    }
+
 }
 
 /**
@@ -1265,6 +1368,7 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
 function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay){
     if (totalDiv.length && totalDiv.is(":visible") && totalDiv.data("function")) {
         var totalType = totalDiv.data("role");
+        var dataIndex = currentColumn;
         var functionName = totalDiv.data("function");
         var extraData = totalDiv.data("params");
         var total = 0;
@@ -1275,10 +1379,10 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay){
         for (var i = start; i < end; i++) {
             var currentCell;
             if(totalType == "total"){
-                currentCell = aaData[i][currentColumn];
+                currentCell = aaData[i][dataIndex];
             }
             else if (totalType = "pageTotal"){
-                currentCell = aaData[aiDisplay[i]][currentColumn];
+                currentCell = aaData[aiDisplay[i]][dataIndex];
             }
             //skip over cells which contain add line content
             if (currentCell && jQuery(currentCell).find(":input[name^='newCollectionLines']").length == 0) {
@@ -1288,6 +1392,7 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay){
                     hasInvalidValues = true;
                     break;
                 }
+
                 //skip over value when blank
                 if (value != "") {
                     value = parseFloat(value);
@@ -1412,7 +1517,7 @@ function refreshDatatableCellRedraw(input) {
     var dataTable = jQuery(table).dataTable();
     var pos = dataTable.fnGetPosition(cell.get(0));
     // Have to update cell otherwise datatables does not read it
-    dataTable.fnUpdate(fieldDiv, pos[0], pos[1], false, false);
+    dataTable.fnUpdate(fieldDiv, pos[0], pos[2], false, false);
     dataTable.fnCallFooterCallback();
 }
 
@@ -1422,8 +1527,9 @@ function refreshDatatableCellRedraw(input) {
  * @param td
  */
 function coerceTableCellValue(td) {
+    var tdObject = jQuery(td);
 
-    var inputField = jQuery(td).find(':input');
+    var inputField = tdObject.find(':input');
     var inputFieldValue;
 
     if (inputField.length > 0) {
@@ -1431,7 +1537,7 @@ function coerceTableCellValue(td) {
         inputFieldValue = inputField.val();
     } else {
         // This might be after sorting or just read only
-        inputField = jQuery(td).find('span');
+        inputField = tdObject.find('span');
         if (inputField.length > 0) {
             // readonly fields
             inputFieldValue = inputField.text().replace(/\s+/g, "");
@@ -1441,7 +1547,8 @@ function coerceTableCellValue(td) {
         }
     }
 
-    if (inputFieldValue === "" || inputField.prop("disabled")) {
+    if (inputFieldValue === "" || inputField.prop("disabled") || tdObject.hasClass("uif-groupRow")) {
+        //skip these situations - blank, disabled, grouping td
         return "";
     }
     else if (jQuery.isNumeric(inputFieldValue)) {
@@ -1449,6 +1556,11 @@ function coerceTableCellValue(td) {
     } else {
         return undefined;
     }
+}
+
+function normalizeGroupString(sGroup) {
+    if (sGroup === "") return "-";
+    return sGroup.toLowerCase().replace(/[^a-zA-Z0-9\u0080-\uFFFF]+/g, "-");
 }
 
 /**

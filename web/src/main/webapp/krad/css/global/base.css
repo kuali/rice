@@ -487,6 +487,39 @@ div.uif-newCollectionItem {
     background-color: #CCCC99;
 }
 
+tr.uif-groupRow.addline, tr.uif-groupTotalRow[data-groupvalue="addline"]{
+    display: none !important;
+}
+
+tr.uif-totalRow{
+    background-color: #F9F9F9;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+tr.uif-totalRow div.uif-boxLayoutVerticalItem{
+    margin: 0;
+}
+
+tr.uif-groupRow{
+    background-color: #F9F9F9;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black !important;
+}
+
+tr.uif-groupRow td{
+    font-weight: bolder;
+}
+
+tr.uif-groupTotalRow{
+    background-color: #F4F4F4;
+    border-bottom: 1px solid black !important;
+}
+
+tr.uif-groupTotalRow td{
+    border: none !important;
+}
+
 /* Document header info *******************************************************************************/
 .uif-viewHeader div.uif-docheader table {
     height: 60px;

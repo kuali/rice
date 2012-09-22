@@ -579,13 +579,18 @@ function collapseDisclosures() {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createTable(tableId, options) {
+function createTable(tableId, options, groupingOptions) {
     jQuery(document).ready(function () {
+        options.bDestroy = true;
         var oTable = jQuery("#" + tableId).dataTable(options);
         // allow table column size recalculation on window resize
         jQuery(window).bind('resize', function () {
             oTable.fnAdjustColumnSizing();
         });
+
+        if(groupingOptions){
+            oTable.rowGrouping(groupingOptions);
+        }
     });
 }
 

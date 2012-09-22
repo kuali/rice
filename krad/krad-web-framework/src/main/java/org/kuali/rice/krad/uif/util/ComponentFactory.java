@@ -117,6 +117,7 @@ public class ComponentFactory {
     protected static final String LABEL = "Uif-Label";
     protected static final String MESSAGE = "Uif-Message";
     protected static final String MESSAGE_FIELD = "Uif-MessageField";
+    protected static final String COLLECTION_GROUPING_FIELD = "Uif-ColGroupingField";
     protected static final String FIELD_GROUP = "Uif-VerticalFieldGroup";
     protected static final String HORIZONTAL_FIELD_GROUP = "Uif-HorizontalFieldGroup";
 
@@ -837,6 +838,15 @@ public class ComponentFactory {
      */
     public static MessageField getMessageField() {
         return (MessageField) getNewComponentInstance(MESSAGE_FIELD);
+    }
+
+    /**
+     * Gets the collection grouping field
+     *
+     * @return MessageField message field
+     */
+    public static MessageField getColGroupingField() {
+        return (MessageField) getNewComponentInstance(COLLECTION_GROUPING_FIELD);
     }
 
     /**

@@ -171,6 +171,7 @@
                 <jsSourceFile>plugins/rice/datatables/jquery.dataTables.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/datatables/ZeroClipboard.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/datatables/TableTools.js</jsSourceFile>
+                <jsSourceFile>plugins/rice/datatables/jquery.dataTables.rowGrouping.js</jsSourceFile>
                 <jsSourceFile>plugins/jstree/jquery.jstree.js</jsSourceFile>
                 <jsSourceFile>plugins/validate/additional_validations.js</jsSourceFile>
                 <jsSourceFile>plugins/jqform/jquery.form.js</jsSourceFile>

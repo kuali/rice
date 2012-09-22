@@ -141,14 +141,16 @@
     </property>
     <property name="suppressLineWrapping" value="true"/>
     <property name="totalLabel">
-      <bean parent="Uif-Label" p:labelText="Total"/>
+      <bean parent="Uif-Label" p:labelText="Total" p:style="margin-bottom: 0px;"/>
     </property>
     <property name="pageTotalLabel">
-      <bean parent="Uif-Label" p:labelText="Page Total"/>
+      <bean parent="Uif-Label" p:labelText="Page Total" p:style="margin-bottom: 0px;"/>
     </property>
     <property name="groupTotalLabelPrototype">
-      <bean parent="Uif-Label" p:labelText="Group Total"/>
+      <bean parent="Uif-Label" p:labelText="Group Total" p:style="margin-bottom: 0px;"/>
     </property>
+    <property name="showPageTotal" value="true"/>
+    <property name="showTotal" value="true"/>
   </bean>
 
   <!--Stacked Collection Layout Managers-->

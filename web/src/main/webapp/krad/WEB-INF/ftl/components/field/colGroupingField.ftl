@@ -15,16 +15,11 @@
     limitations under the License.
 
 -->
-<#macro uif_richTable widget componentId>
+<#--
+    Generates span and label then invoked template for message component
 
-    <#--
-    Invokes JS method to implement a table plug-in
-    -->
+ -->
 
-    <@krad.script value="
-      createTable('${componentId}', ${widget.templateOptionsJSString}, ${widget.groupingOptionsJSString});
-    "/>
-
+<#macro uif_colGroupingField field>
+    <@krad.template component=field.message/>
 </#macro>
-
-

@@ -235,7 +235,10 @@ function validateLineFields(controlsToValidate) {
         haltValidationMessaging = true;
 
         if(!control.prop("disabled")){
-            validValue = control.valid();
+            control.valid();
+            if(control.hasClass("error")){
+                validValue = false;
+            }
         }
 
         haltValidationMessaging = false;

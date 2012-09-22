@@ -24,6 +24,7 @@ import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
+import org.kuali.rice.kew.impl.document.ApplicationDocumentStatusUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
@@ -33,7 +34,11 @@ import org.kuali.rice.krad.util.KRADConstants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class adapts the RemotableAttributeField instances from the various attributes
@@ -45,7 +50,7 @@ import java.util.List;
  * This implementation relies on applicationDocumentStatus, and dateApplicationDocumentStatusChanged conditional fields
  * being defined in the DD for basic display purposes.  These fields are conditionally shown depending on whether
  * a document supporting application document statuses has been specified.  Further, the applicationDocumentStatus field
- * is dynamically switched to a dropdown when the document specifies an explicit enumeration of valid statuses (this
+ * is dynamically switched to a multiselect when the document specifies an explicit enumeration of valid statuses (this
  * control switching is something that is not possible via declarative DD, at the time of this writing).
  * </p>
  * <p>
@@ -260,8 +265,8 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
      * @param documentType the document type
      */
     protected void applyApplicationDocumentStatusCustomizations(Field field, DocumentType documentType) {
-        List<ApplicationDocumentStatus> validStatuses = documentType.getValidApplicationStatuses();
-        if (validStatuses == null || validStatuses.size() == 0){
+
+        if (documentType.getValidApplicationStatuses() == null || documentType.getValidApplicationStatuses().size() == 0){
             // use a text input field
             // StandardSearchCriteriaField(String fieldKey, String propertyName, String fieldType, String datePickerKey, String labelMessageKey, String helpMessageKeyArgument, boolean hidden, String displayOnlyPropertyName, String lookupableImplServiceName, boolean lookupTypeRequired)
             // new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS,"criteria.appDocStatus",StandardSearchCriteriaField.TEXT,null,null,"DocSearchApplicationDocStatus",false,null,null,false));
@@ -272,9 +277,38 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             // String fieldKey DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS + "_VALUES"
             field.setFieldType(Field.MULTISELECT);
             List<KeyValue> validValues = new ArrayList<KeyValue>();
-            for (ApplicationDocumentStatus status: validStatuses) {
-                validValues.add(new ConcreteKeyValue(status.getStatusName(), status.getStatusName()));
+
+            // add to set for quick membership check and removal.  LinkedHashSet to preserve order
+            Set<String> statusesToDisplay = new LinkedHashSet<String>();
+            for (ApplicationDocumentStatus status: documentType.getValidApplicationStatuses()) {
+                statusesToDisplay.add(status.getStatusName());
             }
+
+            // KULRICE-7786: support for groups (categories) of application document statuses
+
+            LinkedHashMap<String, List<String>> appDocStatusCategories =
+                    ApplicationDocumentStatusUtils.getApplicationDocumentStatusCategories(documentType.getName());
+
+            if (!appDocStatusCategories.isEmpty()) {
+                for (Map.Entry<String,List<String>> group : appDocStatusCategories.entrySet()) {
+                    boolean addedCategoryHeading = false; // only add category if it has valid members
+                    for (String member : group.getValue()) {
+                        if (statusesToDisplay.remove(member)) { // remove them from the set as we display them
+                            if (!addedCategoryHeading) {
+                                addedCategoryHeading = true;
+                                validValues.add(new ConcreteKeyValue("category:" + group.getKey(), group.getKey()));
+                            }
+                            validValues.add(new ConcreteKeyValue(member, "- " + member));
+                        }
+                    }
+                }
+            }
+
+            // add remaining statuses, if any.
+            for (String member : statusesToDisplay) {
+                validValues.add(new ConcreteKeyValue(member, member));
+            }
+
             field.setFieldValidValues(validValues);
 
             // size the multiselect as appropriate

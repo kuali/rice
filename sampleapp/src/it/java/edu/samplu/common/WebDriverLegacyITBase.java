@@ -100,6 +100,31 @@ public abstract class WebDriverLegacyITBase {
         WebDriverUtil.checkForIncidentReport(driver, locator, message);
     }
 
+    protected String getAttribute(By by, String attribute) throws InterruptedException {
+        waitFor(by);
+        return driver.findElement(by).getAttribute(attribute);
+    }
+    
+    protected String getBaseUrlString() {
+        return ITUtil.getBaseUrlString();
+    }
+
+    protected String getText(By by)  throws InterruptedException {
+        return driver.findElement(by).getText();
+    }
+
+    protected String getTextByName(String name) throws InterruptedException {
+        return getText(By.name(name));
+    }
+
+    protected String getTextByXpath(String locator) throws InterruptedException {
+        return getText(By.xpath(locator));
+    }
+
+    protected String getTitle() {
+        return driver.getTitle();
+    }
+
     /**
      * Override in test to define a user other than admin
      * @return
@@ -112,6 +137,10 @@ public abstract class WebDriverLegacyITBase {
         return (driver.findElements(by)).size()>0;
     }
     
+    protected void open(String url) {
+        driver.get(url);
+    }
+
     protected void selectFrame(String locator) {
         driver.switchTo().frame(locator);
     }
@@ -266,21 +295,4 @@ public abstract class WebDriverLegacyITBase {
             }
         }
     }
-    
-    protected String getTextByName(String name) throws InterruptedException {
-        return getText(By.name(name));
-    }
-    
-    protected String getTextByXpath(String locator) throws InterruptedException {
-        return getText(By.xpath(locator));
-    }
-    
-    protected String getText(By by)  throws InterruptedException {
-        return driver.findElement(by).getText();        
-    }
-    
-    protected String getBaseUrlString() {
-        return ITUtil.getBaseUrlString();
-    }
-    
 }

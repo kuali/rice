@@ -20,7 +20,12 @@
 --
 
 INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
-  VALUES('100', '9d1189174c6d497e87f3529f9a4eeff8', 1, 'Document Type, Routing Node and Action Event', 'documentTypeAndNodeAndActionEventService', 'Y', 'KR-SYS');
+  VALUES((select KIM_TYP_ID from (select (max(cast(KIM_TYP_ID as decimal)) + 1) as KIM_TYP_ID from KRIM_TYP_T where cast(KIM_TYP_ID as decimal) < 10000) as tmptable),
+           uuid(), 1, 'Document Type, Routing Node and Action Event', 'documentTypeAndNodeAndActionEventService', 'Y', 'KR-SYS')
+/
 
 INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR)
-  VALUES ('Y','100','Administer Routing for Document','KR-NS','c7b97a18581c8a51e040ea0a491a4272','100',1);
+  VALUES ('Y',
+  (SELECT KIM_TYP_ID FROM KRIM_TYP_T where NM = 'Document Type, Routing Node and Action Event' and SRVC_NM = 'documentTypeAndNodeAndActionEventService'), 'Administer Routing for Document', 'KR-NS', uuid(),
+  (select perm_tmpl_id from (select (max(cast(perm_tmpl_id as decimal)) + 1) as perm_tmpl_id from krim_perm_tmpl_t where perm_tmpl_id is not NULL and perm_tmpl_id rlike '^[1-9][0-9]{0,3}$' ) as tmptable), 1)
+/

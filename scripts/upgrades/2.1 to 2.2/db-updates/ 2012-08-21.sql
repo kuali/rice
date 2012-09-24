@@ -19,9 +19,12 @@
 --
 
 INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
-  VALUES('100', '9d1189174c6d497e87f3529f9a4eeff8', 1, 'Document Type, Routing Node and Action Event', 'documentTypeAndNodeAndActionEventService', 'Y', 'KR-SYS')
+  VALUES((SELECT (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and regexp_like(KIM_TYP_ATTR_ID, '^[1-9][0-9]{0,3}$')),
+           sys_guid(), 1, 'Document Type, Routing Node and Action Event', 'documentTypeAndNodeAndActionEventService', 'Y', 'KR-SYS')
 /
 
 INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR)
-  VALUES ('Y','100','Administer Routing for Document','KR-NS','c7b97a18581c8a51e040ea0a491a4272','100',1)
+  VALUES ('Y',
+  (SELECT KIM_TYP_ID FROM KRIM_TYP_T where NM = 'Document Type, Routing Node and Action Event' and SRVC_NM = 'documentTypeAndNodeAndActionEventService'), 'Administer Routing for Document', 'KR-NS', sys_guid(),
+  (SELECT (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and regexp_like(perm_tmpl_id, '^[1-9][0-9]{0,3}$')), 1)
 /

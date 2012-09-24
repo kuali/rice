@@ -319,4 +319,7 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
         final static String ACTIVE = "active";
     }
 
+    public static class Cache {
+        public static final String NAME = CoreConstants.Namespaces.CORE_NAMESPACE_2_0 + "/" + Constants.TYPE_NAME;
+    }
 }

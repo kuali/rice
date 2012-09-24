@@ -27,5 +27,6 @@
   <cache name="http://rice.kuali.org/core/v2_0/ParameterType" maxEntriesLocalHeap="2500" timeToLiveSeconds="3600"/>
   <cache name="http://rice.kuali.org/core/v2_0/NamespaceType" maxEntriesLocalHeap="500" timeToLiveSeconds="3600"/>
   <cache name="http://rice.kuali.org/core/v2_0/ComponentType" maxEntriesLocalHeap="2500" timeToLiveSeconds="3600"/>
+  <cache name="http://rice.kuali.org/core/v2_0/StyleType"     maxEntriesLocalHeap="50" timeToLiveSeconds="3600"/>
 
 </ehcache>

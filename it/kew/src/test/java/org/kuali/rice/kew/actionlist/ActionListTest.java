@@ -158,7 +158,7 @@ public class ActionListTest extends KEWTestCase {
     }
 
     @Test
-    public void testActionListMaxActionItemAndCount() throws Exception {
+    public void testActionListMaxActionItemDateAssignedAndCountForUser() throws Exception {
         setUpOldSchool();
         TransactionTemplate transactionTemplate = getTransactionTemplate();
         transactionTemplate.execute(new TransactionCallback() {
@@ -171,30 +171,30 @@ public class ActionListTest extends KEWTestCase {
                                     "select distinct PRNCPL_ID from krew_actn_itm_t");
                             ResultSet rs = ps.executeQuery();
                             int cnt = 0;
-                            int maxVal = 0;
+                            Date maxDate = null;
                             int loopCnt = 0;
                             //do first 5 for time sake
                             while (rs.next() && ++loopCnt < 6) {
                                 String workflowId = rs.getString(1);
                                 PreparedStatement ps1 = conn.prepareStatement(
-                                        "select cast((max(actn_itm_id))as decimal) as max_id, count(distinct(doc_hdr_id)) as total_records"
+                                        "select max(ASND_DT) as max_date, count(distinct(doc_hdr_id)) as total_records"
                                                 + "  from ("
-                                                + "  select actn_itm_id,doc_hdr_id "
+                                                + "  select ASND_DT,doc_hdr_id "
                                                 + "  from KREW_ACTN_ITM_T   where    prncpl_id=? "
-                                                + "  group by  actn_itm_id,doc_hdr_id "
+                                                + "  group by  ASND_DT,doc_hdr_id "
                                                 + "  ) T");
                                 ps1.setString(1, workflowId);
                                 ResultSet rsWorkflowIdCnt = ps1.executeQuery();
                                 if (rsWorkflowIdCnt.next()) {
-                                    maxVal = rsWorkflowIdCnt.getInt(1);
+                                    maxDate = rsWorkflowIdCnt.getTimestamp(1);
                                     cnt = rsWorkflowIdCnt.getInt(2);
                                 } else {
                                     throw new Exception(
                                             "WorkflowId " + workflowId + " didn't return a result set.  Test SQL invalid.");
                                 }
-                                List<Integer> ls = getActionListService().getMaxActionItemIdAndCountForUser(workflowId);
+                                List<Object> ls = getActionListService().getMaxActionItemDateAssignedAndCountForUser(workflowId);
                                 assertEquals((Integer) cnt, ls.get(1));
-                                assertEquals((Integer) maxVal, ls.get(0));
+                                assertEquals(maxDate, ls.get(0));
                                 ps1.close();
                                 rsWorkflowIdCnt.close();
                             }

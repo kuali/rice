@@ -1327,6 +1327,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
                 if (!field.getFieldType().equals(Field.RADIO)) {
                     field.setPropertyValue(field.getDefaultValue());
+                    if (field.getFieldType().equals(Field.MULTISELECT)) {
+                        field.setPropertyValues(null);
+                    }
                 }
             }
         }

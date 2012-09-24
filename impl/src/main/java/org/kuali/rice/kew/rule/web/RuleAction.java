@@ -19,11 +19,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kns.question.ConfirmationQuestion;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -39,6 +43,7 @@ public class RuleAction extends KewKualiAction {
 
     private static final String RULE_TEMPLATE_ERROR = "rule.template.name.required";
     private static final String DOCUMENT_TYPE_ERROR = "rule.docType.name.required";
+    private ConfigurationService kualiConfigurationService;
 
     public ActionForward createRule(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         RuleForm form = (RuleForm) actionForm;
@@ -56,10 +61,27 @@ public class RuleAction extends KewKualiAction {
 
     public ActionForward cancel(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         RuleForm form = (RuleForm) actionForm;
+        Object question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
+        // this should probably be moved into a private instance variable
+        // logic for cancel question
+        if (question == null) {
+            // ask question if not already asked
+            return this.performQuestionWithoutInput(mapping, form, request, response, KRADConstants.DOCUMENT_CANCEL_QUESTION, getKualiConfigurationService().getPropertyValueAsString(
+                    "document.question.cancel.text"), KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_CANCEL, "");
+        } else {
+            Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
+            if ((KRADConstants.DOCUMENT_CANCEL_QUESTION.equals(question)) && ConfirmationQuestion.NO.equals(buttonClicked)) {
+                // if no button clicked just reload the doc
+                return mapping.findForward(RiceConstants.MAPPING_BASIC);
+            }
+            // else go to cancel logic below
+        }
+
         ActionForward dest = null;
         if (StringUtils.isNotBlank(form.getBackLocation())) {
             dest = new ActionForward(form.getBackLocation(), true);
         } else {
+
             dest = mapping.findForward(KRADConstants.MAPPING_PORTAL);
         }
         return dest;
@@ -93,5 +115,11 @@ public class RuleAction extends KewKualiAction {
         }
 
         return GlobalVariables.getMessageMap().hasNoErrors();
+    }
+    protected ConfigurationService getKualiConfigurationService() {
+        if (kualiConfigurationService == null) {
+            kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+        }
+        return this.kualiConfigurationService;
     }
 }

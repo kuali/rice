@@ -123,7 +123,7 @@ public class AgendaInquiryController  extends InquiryController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
-            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S")
+            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class)
                     .toString());
             if (StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
                 rule.setNamespace("");

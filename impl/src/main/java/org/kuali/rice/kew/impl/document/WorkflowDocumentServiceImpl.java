@@ -384,6 +384,33 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     	}
     	return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId));
     }
+    
+    public List<String> getActiveRouteNodeNames(String documentId) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+    	
+    	final List<String> nodes = KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(documentId);
+    	return nodes != null ? Collections.unmodifiableList(nodes) : Collections.<String>emptyList();
+    }
+    
+    public List<String> getTerminalRouteNodeNames(String documentId) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+    	
+    	final List<String> nodes = KEWServiceLocator.getRouteNodeService().getTerminalRouteNodeNames(documentId);
+    	return nodes != null ? Collections.unmodifiableList(nodes) : Collections.<String>emptyList();
+    }
+
+    public List<String> getCurrentRouteNodeNames(String documentId) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+    	
+    	final List<String> nodes = KEWServiceLocator.getRouteNodeService().getCurrentRouteNodeNames(documentId);
+    	return nodes != null ? Collections.unmodifiableList(nodes) : Collections.<String>emptyList();
+    }
 
 	private List<RouteNodeInstance> convertRouteNodeInstances(List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodeInstanceBos) {
 		List<RouteNodeInstance> routeNodeInstances = new ArrayList<RouteNodeInstance>();

@@ -17,9 +17,14 @@
 package org.kuali.rice.kns.web.servlet.dwr;
 
 import org.directwebremoting.spring.SpringCreator;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.springframework.beans.factory.BeanFactory;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * A {@link SpringCreator} that checks the {@link GlobalResourceLoader} for the
@@ -30,18 +35,35 @@ import org.springframework.beans.factory.BeanFactory;
  * 
  */
 public class GlobalResourceDelegatingSpringCreator extends SpringCreator {
-	
+
+    public static final String KEW_RUN_MODE_PROPERTY = "kew.mode";
+    public static final String DOCUMENT_TYPE_SERVICE = "enDocumentTypeService";
+
 	@Override
 	public Object getInstance() throws InstantiationException {
-		Object bean = GlobalResourceLoader.getService(this.getBeanName());
-		if (bean == null) {
-			//weird DWR passes the scriptName rather than beanName - so trying the script name.
-			bean = GlobalResourceLoader.getService(this.getJavascript());
-			if (bean == null) {
-				throw new InstantiationException("Unable to find bean " + this.getBeanName() + " in Rice Global Resource Loader");
-			}
-		}
-		return bean;
+
+        //KULRICE-7770 enDocumentTypeService isn't supported in remote mode
+        if(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY).equals("REMOTE") &&
+                this.getBeanName().equals(DOCUMENT_TYPE_SERVICE))
+        {   
+            return Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{DocumentTypeService.class},
+                // trivial invocationHandler
+                new InvocationHandler() {
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        return null;
+                    }
+                }
+            );
+        }
+
+        Object bean = GlobalResourceLoader.getService(this.getBeanName());
+    
+        if (bean == null) {
+            throw new InstantiationException("Unable to find bean " + this.getBeanName() + " in Rice Global Resource Loader");
+        }
+
+        return bean;
 	}
 
 }

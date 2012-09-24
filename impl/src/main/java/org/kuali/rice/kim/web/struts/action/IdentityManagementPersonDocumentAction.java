@@ -30,6 +30,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
@@ -130,9 +131,15 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
 		for (PersonDocumentRole role : personDoc.getRoles()) {
 //			try {
-	        KimTypeService kimTypeService = getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
+            KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType(role.getKimTypeId());
+            KimTypeService kimTypeService = null;
+            if (StringUtils.isNotBlank(type.getServiceName()))  {
+                kimTypeService = (KimTypeService) KimImplServiceLocator.getBean(type.getServiceName());
+            } else {
+                kimTypeService = getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
+            }
 	        if ( kimTypeService != null ) {
-	        	role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
+                role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
 	        }
         	// when post again, it will need this during populate
             role.setNewRolePrncpl(new KimDocumentRoleMember());
@@ -144,7 +151,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
             }
 	        role.setAttributeEntry( getUiDocumentService().getAttributeEntries( role.getDefinitions() ) );
 		}
-	}
+    }
 
 	@Override
 	protected void createDocument(KualiDocumentFormBase form)
@@ -424,7 +431,10 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
     public ActionForward deleteRole(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        personDocumentForm.getPersonDocument().getRoles().remove(getLineToDelete(request));
+        PersonDocumentRole personDocumentRole = personDocumentForm.getPersonDocument().getRoles().get(getLineToDelete(request));
+        Calendar cal = Calendar.getInstance();
+        personDocumentRole.getRolePrncpls().get(0).setActiveToDate(new Timestamp(cal.getTimeInMillis()));
+        personDocumentForm.getPersonDocument().getRoles().set(getLineToDelete(request), personDocumentRole);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -462,9 +472,13 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         if (selectedIndexes != null) {
 	        String [] indexes = StringUtils.split(selectedIndexes,":");
 	        PersonDocumentRole role = personDocumentForm.getPersonDocument().getRoles().get(Integer.parseInt(indexes[0]));
-	        role.getRolePrncpls().remove(Integer.parseInt(indexes[1]));
+            KimDocumentRoleMember member = role.getRolePrncpls().get(Integer.parseInt(indexes[1]));
+            Calendar cal = Calendar.getInstance();
+            member.setActiveToDate(new Timestamp(cal.getTimeInMillis()));
+            // role.getRolePrncpls().remove(Integer.parseInt(indexes[1]));
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+
     }
     
     public ActionForward addDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

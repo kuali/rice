@@ -27,11 +27,15 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.mail.Mailer;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.mail.DailyEmailJob;
 import org.kuali.rice.kew.mail.WeeklyEmailJob;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -39,7 +43,9 @@ import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 
 
-public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEmailServiceImpl*/ implements MockEmailNotificationService {
+
+
+public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
     private static final Logger LOG = Logger.getLogger(MockEmailNotificationServiceImpl.class);
 
     private static Map<String,List> immediateReminders = new HashMap<String,List>();
@@ -77,11 +83,16 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
             return;
         }
         List actionItemsSentUser = (List)immediateReminders.get(actionItem.getPrincipalId());
-        if (actionItemsSentUser == null) {
-            actionItemsSentUser = new ArrayList();
-            immediateReminders.put(actionItem.getPrincipalId(), actionItemsSentUser);
+        Preferences preferences = getPreferencesService().getPreferences(actionItem.getPrincipalId());
+
+        boolean shouldNotify = checkEmailNotificationPreferences(actionItem, preferences, KewApiConstants.EMAIL_RMNDR_IMMEDIATE);
+        if(shouldNotify) {
+            if (actionItemsSentUser == null) {
+                actionItemsSentUser = new ArrayList();
+                immediateReminders.put(actionItem.getPrincipalId(), actionItemsSentUser);
+            }
+            actionItemsSentUser.add(actionItem);
         }
-        actionItemsSentUser.add(actionItem);
     }
 
     /**
@@ -238,4 +249,9 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
 	public void setDeploymentEnvironment(String deploymentEnvironment) {
 		this.deploymentEnvironment = deploymentEnvironment;
 	}
+
+     private PreferencesService getPreferencesService() {
+        return KewApiServiceLocator.getPreferencesService();
+    }
+
 }

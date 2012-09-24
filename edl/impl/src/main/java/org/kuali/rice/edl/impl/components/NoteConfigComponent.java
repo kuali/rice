@@ -313,7 +313,7 @@ public class NoteConfigComponent implements EDLModelComponent {
             // Check if edoclite specifies <param name="sendEmailOnNoteSave">
             Document edlDom = EdlServiceLocator.getEDocLiteService()
                     .getDefinitionXml(edlContext.getEdocLiteAssociation());
-            XPath xpath = XPathFactory.newInstance().newXPath();
+            XPath xpath = edlContext.getXpath();
             String xpathExpression = "//config/param[@name='sendEmailOnNoteSave']";
             try {
                 String match = (String) xpath.evaluate(xpathExpression, edlDom, XPathConstants.STRING);

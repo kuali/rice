@@ -115,6 +115,8 @@ public class RouteNodeInstance implements Serializable {
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
+    private List<DocumentRouteHeaderValue> initialDocumentRouteHeaderValues = new ArrayList<DocumentRouteHeaderValue>();
+
     public boolean isActive() {
         return active;
     }
@@ -273,6 +275,14 @@ public class RouteNodeInstance implements Serializable {
         this.state.addAll(state);
      }
 
+    public List<DocumentRouteHeaderValue> getInitialDocumentRouteHeaderValues() {
+        return initialDocumentRouteHeaderValues;
+    }
+
+    public void setInitialDocumentRouteHeaderValues(List<DocumentRouteHeaderValue> initialDocumentRouteHeaderValues) {
+        this.initialDocumentRouteHeaderValues = initialDocumentRouteHeaderValues;
+    }
+    
     public String toString() {
         return new ToStringBuilder(this)
             .append("routeNodeInstanceId", routeNodeInstanceId)

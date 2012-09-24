@@ -87,7 +87,7 @@ public interface ActionListService {
      * (does not include secondary delegations)
      * @param principalId
      */
-    public List<Integer> getMaxActionItemIdAndCountForUser(String principalId);
+    public List<Object> getMaxActionItemDateAssignedAndCountForUser(String principalId);
 
     public Collection<ActionItem> findByActionRequestId(String actionRequestId);
 

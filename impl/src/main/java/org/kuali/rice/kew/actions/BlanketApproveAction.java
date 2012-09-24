@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -185,11 +186,8 @@ public class BlanketApproveAction extends ActionTakenEvent {
         if (getRouteHeader().isInException()) {
             LOG.debug("Moving document back to Enroute from Exception");
 
-            String oldStatus = getRouteHeader().getDocRouteStatus();
-            getRouteHeader().markDocumentEnroute();
+            markDocumentEnroute(getRouteHeader());
 
-            String newStatus = getRouteHeader().getDocRouteStatus();
-            notifyStatusChange(newStatus, oldStatus);
         }
         OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, nodeNames, actionTaken, processingOptions.isSendNotifications(), processingOptions.isRunPostProcessor());
         BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
@@ -199,12 +197,12 @@ public class BlanketApproveAction extends ActionTakenEvent {
    }
 
     protected void markDocumentEnroute(DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException {
-        String oldStatus = getRouteHeader().getDocRouteStatus();
-        getRouteHeader().markDocumentEnroute();
+        String oldStatus = routeHeader.getDocRouteStatus();
+        routeHeader.markDocumentEnroute();
 
-        String newStatus = getRouteHeader().getDocRouteStatus();
+        String newStatus = routeHeader.getDocRouteStatus();
         notifyStatusChange(newStatus, oldStatus);
-        KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+        KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
     }
 
     private RouteNodeService getRouteNodeService() {

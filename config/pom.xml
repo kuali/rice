@@ -28,6 +28,7 @@
   <name>Rice CM</name>
   <description>Rice Configuration Management</description>
   <modules>
+    <module>archetype</module>
     <module>checkstyle</module>
     <module>deploy</module>
   </modules>

@@ -54,7 +54,7 @@ class KimTypeAttributeBo extends PersistableBusinessObjectBase implements KimTyp
         KimTypeAttributeBo bo = new KimTypeAttributeBo()
         bo.id = im.id
         bo.sortCode = im.sortCode
-        bo.kimAttributeId = im.kimAttribute.id
+        bo.kimAttributeId = im.kimAttribute?.id
         bo.kimAttribute = KimAttributeBo.from(im.kimAttribute)
         bo.kimTypeId = im.kimTypeId
         bo.active = im.active

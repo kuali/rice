@@ -38,6 +38,8 @@ import java.util.List;
  * The standard implementation of the DocumentTypeService.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * This class does not support KEW REMOTE mode.
+ * KULRICE-7770 added an expicit check for this class in GlobalResourceDelegatingSpringCreator.java
  */
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 

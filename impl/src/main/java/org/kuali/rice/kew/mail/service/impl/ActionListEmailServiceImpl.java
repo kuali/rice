@@ -170,13 +170,13 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     protected void sendEmail(Person user, EmailSubject subject,
             EmailBody body, DocumentType documentType) {
         try {
-
-            mailer.sendEmail(getEmailFrom(documentType),
-                                getEmailTo(user),
-                                subject,
-                                body,
-                                false);
-
+            if (StringUtils.isNotBlank(user.getEmailAddressUnmasked())) {
+                mailer.sendEmail(getEmailFrom(documentType),
+                    getEmailTo(user),
+                    subject,
+                    body,
+                    false);
+            }
         } catch (Exception e) {
             LOG.error("Error sending Action List email to " + user.getEmailAddressUnmasked(), e);
         }
@@ -197,10 +197,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     protected boolean checkEmailNotificationPreferences(ActionItemContract actionItem, Preferences preferences, String emailSetting) {
         boolean shouldSend = true;
         // Check the user's primary and secondary delegation email preferences
-        if (KimConstants.KimUIConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
-            shouldSend = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-        } else if (KimConstants.KimUIConstants.DELEGATION_SECONDARY.equals(actionItem.getDelegationType())) {
-            shouldSend = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
+        if (actionItem.getDelegationType() != null) {
+            if (KimConstants.KimUIConstants.DELEGATION_PRIMARY.equalsIgnoreCase(actionItem.getDelegationType().getCode())) {
+                shouldSend = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
+            } else if (KimConstants.KimUIConstants.DELEGATION_SECONDARY.equalsIgnoreCase(actionItem.getDelegationType().getCode())) {
+                shouldSend = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
+            }
         }
         if(!shouldSend) {
             // If the action item has a delegation type and the user's
@@ -220,7 +222,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                                                (StringUtils.equals(actionItem.getActionRequestCd(), KewApiConstants.ACTION_REQUEST_FYI_REQ) && 
                                                 StringUtils.equals(preferences.getNotifyFYI(), KewApiConstants.PREFERENCES_YES_VAL)));
 
-        DocumentType documentType = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()).getDocumentType();
+        DocumentRouteHeaderValue document =  KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
+        DocumentType documentType = null;
+        if (document != null) {
+            documentType = document.getDocumentType();
+        }
         
         // If the user has document type notification preferences check them to
         // see if the action item should be included in the email.

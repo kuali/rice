@@ -1448,10 +1448,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : roleIds) {
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
             if (roleTypeService != null) {
-                List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                    copyRoleIds.remove(roleId);
-                    roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                try {
+                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                        copyRoleIds.remove(roleId);
+                        roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+                    }
+                } catch (Exception e) {
+                    LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
                 }
             }
         }
@@ -1483,7 +1487,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public RoleMember assignPrincipalToRole(String principalId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) 
+            String namespaceCode, String roleName, Map<String, String> qualifier)
             throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
@@ -1555,7 +1559,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public RoleMember assignRoleToRole(String roleId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) 
+            String namespaceCode, String roleName, Map<String, String> qualifier)
             throws RiceIllegalStateException {
         incomingParamCheck(roleId, "roleId");
         incomingParamCheck(namespaceCode, "namespaceCode");
@@ -1575,7 +1579,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             return anyMemberMatch;
         }
 
-        
+
         // Check to make sure this doesn't create a circular membership
         if (!checkForCircularRoleMembership(roleId, roleBo)) {
             throw new IllegalArgumentException("Circular roleBo reference.");
@@ -1614,7 +1618,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(roleMember, "roleMember");
 
-        if (StringUtils.isBlank(roleMember.getId()) || getRoleMemberBo(roleMember.getId()) == null) {
+        RoleMemberBo originalRoleMemberBo = null;
+        if (StringUtils.isNotBlank(roleMember.getId())) {
+            originalRoleMemberBo = getRoleMemberBo(roleMember.getId());
+        }
+        if (StringUtils.isBlank(roleMember.getId()) || originalRoleMemberBo == null) {
             throw new RiceIllegalStateException("the roleMember to update does not exists: " + roleMember);
         }
 
@@ -1623,7 +1631,30 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         attrBos = KimAttributeDataBo.createFrom(RoleMemberAttributeDataBo.class, roleMember.getAttributes(), kimTypeId);
 
         RoleMemberBo bo = RoleMemberBo.from(roleMember);
-        bo.setAttributeDetails(attrBos);
+        List<RoleMemberAttributeDataBo> updateAttrBos =   new ArrayList<RoleMemberAttributeDataBo>();
+
+        boolean matched = false;
+        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo :  attrBos) {
+            for (RoleMemberAttributeDataBo oldRoleMemberAttrDataBo :  originalRoleMemberBo.getAttributeDetails()) {
+                if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
+                    newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
+                        newRoleMemberAttrDataBo.setAssignedToId(oldRoleMemberAttrDataBo.getAssignedToId());
+                        newRoleMemberAttrDataBo.setVersionNumber(oldRoleMemberAttrDataBo.getVersionNumber());
+                        newRoleMemberAttrDataBo.setId(oldRoleMemberAttrDataBo.getId());
+                        updateAttrBos.add(newRoleMemberAttrDataBo);
+                        matched = true;
+                        break;
+                }
+            }
+            if (!matched) {
+                updateAttrBos.add(newRoleMemberAttrDataBo);
+            } else  {
+                matched = false;
+            }
+        }
+
+        bo.setAttributeDetails(updateAttrBos);
+
         return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(bo));
     }
 
@@ -1638,6 +1669,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         String delegationId =  delegateMember.getDelegationId();
         incomingParamCheck(delegationId,"delegationId");
         DelegateTypeBo delegate = getKimDelegationImpl(delegationId);
+        DelegateMemberBo  originalDelegateMemberBo = null;
+        String delegationMemberId = delegateMember.getDelegationMemberId();
+        if (StringUtils.isNotEmpty(delegationMemberId)) {
+            originalDelegateMemberBo = getDelegateMemberBo(delegateMember.getDelegationMemberId());
+        }
         if(delegate==null)   {
             throw new RiceIllegalStateException("the delegate does not exist: " + delegationId);
         }
@@ -1647,7 +1683,32 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         List<DelegateMemberAttributeDataBo> attrBos = Collections.emptyList();
         attrBos = KimAttributeDataBo.createFrom(DelegateMemberAttributeDataBo.class, delegateMember.getAttributes(), kimTypeId);
         DelegateMemberBo bo = DelegateMemberBo.from(delegateMember);
-        bo.setAttributeDetails(attrBos);
+
+        List<DelegateMemberAttributeDataBo> updateAttrBos =   new ArrayList<DelegateMemberAttributeDataBo>();
+
+        boolean matched = false;
+        for (DelegateMemberAttributeDataBo newDelegateMemberAttrDataBo :  attrBos) {
+            if (originalDelegateMemberBo !=null ) {
+                for (DelegateMemberAttributeDataBo oldDelegateMemberAttrDataBo :  originalDelegateMemberBo.getAttributeDetails()) {
+                    if (newDelegateMemberAttrDataBo.getKimTypeId().equals(oldDelegateMemberAttrDataBo.getKimTypeId()) &&
+                            newDelegateMemberAttrDataBo.getKimAttributeId().equals(oldDelegateMemberAttrDataBo.getKimAttributeId())) {
+                            newDelegateMemberAttrDataBo.setAssignedToId(oldDelegateMemberAttrDataBo.getAssignedToId());
+                            newDelegateMemberAttrDataBo.setVersionNumber(oldDelegateMemberAttrDataBo.getVersionNumber());
+                            newDelegateMemberAttrDataBo.setId(oldDelegateMemberAttrDataBo.getId());
+                            updateAttrBos.add(newDelegateMemberAttrDataBo);
+                            matched = true;
+                            break;
+                    }
+                }
+                if (!matched) {
+                    updateAttrBos.add(newDelegateMemberAttrDataBo);
+                } else  {
+                    matched = false;
+                }
+            }
+        }
+
+        bo.setAttributeDetails(updateAttrBos);
         return DelegateMemberBo.to(getResponsibilityInternalService().saveDelegateMember(bo));
     }
 

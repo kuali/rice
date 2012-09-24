@@ -150,6 +150,7 @@
       </list>
     </property>
     <property name="documentTypeName" value="PeopleFlowMaintenanceDocument"/>
+    <property name="businessRulesClass" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBusRule"/>
   </bean>
 
 </beans>

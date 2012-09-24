@@ -68,6 +68,7 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -434,13 +435,13 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
             }
         }
         if ("column".equals(type) || "fieldAndColumn".equals(type)) {
-            attributeLookupSettings.setInCriteria(visible);
+            attributeLookupSettings.setInResults(visible);
         }
     }
 
     private RemotableAbstractControl.Builder constructControl(String type, Collection<KeyValue> options) {
         RemotableAbstractControl.Builder control = null;
-        Map<String, String> optionMap = new HashMap<String, String>();
+        Map<String, String> optionMap = new LinkedHashMap<String, String>();
         for (KeyValue option : options) {
             optionMap.put(option.getKey(), option.getValue());
         }

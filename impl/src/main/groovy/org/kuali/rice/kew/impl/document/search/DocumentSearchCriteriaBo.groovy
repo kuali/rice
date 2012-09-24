@@ -44,6 +44,7 @@ class DocumentSearchCriteriaBo implements BusinessObject {
     String applicationDocumentStatus
     String title
     String initiatorPrincipalName
+    String initiatorPrincipalId
     String viewerPrincipalName
     String groupViewerName
     String groupViewerId
@@ -69,20 +70,19 @@ class DocumentSearchCriteriaBo implements BusinessObject {
     }
 
     Person getInitiatorPerson() {
-        if (initiatorPrincipalName == null) {
+        if (initiatorPrincipalId == null) {
             return null
         }
-        return KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalName)
+        return KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId)
     }
-	
-	String getInitiatorDisplayName() {
-		if(!initiatorPrincipalName) {
-			return null
-		}
-		String initiatorPrincipalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(initiatorPrincipalName)?.getPrincipalId()
-		EntityName entityName = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(initiatorPrincipalId)?.getDefaultName()
-		return entityName.getCompositeName()
-	}
+
+    String getInitiatorDisplayName() {
+        if(!initiatorPrincipalId) {
+            return null
+        }
+        EntityName entityName = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(initiatorPrincipalId)?.getDefaultName()
+        return entityName.getCompositeName()
+    }
 
     Person getApproverPerson() {
         if (approverPrincipalName == null) {
@@ -140,6 +140,7 @@ class DocumentSearchCriteriaBo implements BusinessObject {
         applicationDocumentStatus = document.applicationDocumentStatus
         title = document.title
         initiatorPrincipalName = principalIdToName(document.initiatorPrincipalId)
+        initiatorPrincipalId = document.initiatorPrincipalId
         dateCreated = new Timestamp(document.dateCreated.getMillis())
     }
 

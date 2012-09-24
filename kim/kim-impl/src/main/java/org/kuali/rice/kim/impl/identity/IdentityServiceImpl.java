@@ -96,6 +96,8 @@ public class IdentityServiceImpl implements IdentityService {
     private CriteriaLookupService criteriaLookupService;
 	private BusinessObjectService businessObjectService;
 
+    private static final String UNAVAILABLE = "Unavailable";
+
     @Override
 	public Entity getEntity(String entityId) throws RiceIllegalArgumentException {
         incomingParamCheck(entityId, "entityId");
@@ -687,6 +689,9 @@ public class IdentityServiceImpl implements IdentityService {
 		if ( principal == null ) {
 			return null;
 		}
+        if (StringUtils.isBlank(principal.getPrincipalName())) {
+            principal.setPrincipalName(UNAVAILABLE);
+        }
 		return PrincipalBo.to(principal);
 	}
 

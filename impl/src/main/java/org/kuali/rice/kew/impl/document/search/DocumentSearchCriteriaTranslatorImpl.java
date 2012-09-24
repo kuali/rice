@@ -34,6 +34,7 @@ import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
+import org.kuali.rice.kew.impl.document.ApplicationDocumentStatusUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -43,6 +44,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -132,13 +134,25 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
             }
         }
 
+        LinkedHashMap<String, List<String>> applicationDocumentStatusGroupings =
+                ApplicationDocumentStatusUtils.getApplicationDocumentStatusCategories(criteria.getDocumentTypeName());
+
         String applicationDocumentStatusesValue = fieldValues.get(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS);
         if (StringUtils.isNotBlank(applicationDocumentStatusesValue)) {
             String[] applicationDocumentStatuses = applicationDocumentStatusesValue.split(",");
             for (String applicationDocumentStatus : applicationDocumentStatuses) {
-                criteria.getApplicationDocumentStatuses().add(applicationDocumentStatus);
+                // KULRICE-7786: support for groups (categories) of application document statuses
+                if (applicationDocumentStatus.startsWith("category:")) {
+                    String categoryCode = StringUtils.remove(applicationDocumentStatus, "category:");
+                    if (applicationDocumentStatusGroupings.containsKey(categoryCode)) {
+                        criteria.getApplicationDocumentStatuses().addAll(applicationDocumentStatusGroupings.get(categoryCode));
+                    }
+                } else {
+                    criteria.getApplicationDocumentStatuses().add(applicationDocumentStatus);
+                }
             }
         }
+
         // blank the deprecated field out, it's not needed.
         criteria.setApplicationDocumentStatus(null);
 

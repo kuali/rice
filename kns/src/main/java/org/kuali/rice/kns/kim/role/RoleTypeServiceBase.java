@@ -249,4 +249,9 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 			throws RiceIllegalArgumentException {
 		return roleMembers;
 	}
+
+    @Override
+    public boolean shouldValidateQualifiersForMemberType(MemberType memberType) {
+        return false;
+    }
 }

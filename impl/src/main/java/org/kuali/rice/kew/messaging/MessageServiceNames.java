@@ -70,8 +70,8 @@ public class MessageServiceNames {
 	
 	public static DocumentRefreshQueue getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {
 		if (waitTime > 0) {
-			return (DocumentRefreshQueue) getDelayedServiceAsynchronously(DOCUMENT_REFRESH_QUEUE, documentId, waitTime);
-		}
+            return (DocumentRefreshQueue) getDelayedServiceAsynchronously(DOCUMENT_REFRESH_QUEUE, documentId, waitTime, applicationId);
+        }
 		return (DocumentRefreshQueue) getServiceAsynchronously(DOCUMENT_REFRESH_QUEUE, documentId, applicationId);
 	}
 
@@ -93,12 +93,17 @@ public class MessageServiceNames {
 	}
 
 	public static Object getDelayedServiceAsynchronously(QName serviceName, DocumentRouteHeaderValue document, long waitTime) {
-		return getDelayedServiceAsynchronously(serviceName, getDocId(document), waitTime);
-	}
+        return getDelayedServiceAsynchronously(serviceName, getDocId(document), waitTime, null);
+    }
 
-	public static Object getDelayedServiceAsynchronously(QName serviceName, String documentId, long waitTime) {
-		return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, (documentId == null ? null : documentId.toString()), null, waitTime);
-	}
+    public static Object getDelayedServiceAsynchronously(QName serviceName, String documentId, long waitTime, String applicationId) {
+        if (StringUtils.isBlank(applicationId)) {
+            if (StringUtils.isNotBlank(documentId)) {
+                applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(documentId);
+            }
+        }
+        return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, applicationId, null, (documentId == null ? null : documentId.toString()), null, waitTime);
+    }
 
 	private static String getDocId(DocumentRouteHeaderValue document) {
 		return (document == null ? null : document.getDocumentId());

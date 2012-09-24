@@ -1088,9 +1088,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         routeHeader.setDocRouteLevel(routeLevel);
         routeHeader.setDocVersion(new Integer(KewApiConstants.DocumentContentVersions.CURRENT));*/
 
-        //TODO THIS NEEDS TESTING!!!!! IT WAS A GUESS ON HOW THIS WORKS
         RoutingReportCriteria.Builder builder = RoutingReportCriteria.Builder.createByDocumentTypeName(documentType.getName());
-        builder.setTargetNodeName(node.getName());
+        builder.setNodeNames(Collections.singletonList(node.getName()));
         builder.setXmlContent(docContent);
         DocumentDetail docDetail = executeSimulation(builder.build());
         if (docDetail != null) {

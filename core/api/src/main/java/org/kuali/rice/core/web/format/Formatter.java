@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 
 
@@ -210,17 +211,19 @@ public class Formatter implements Serializable {
             return (Class) registry.get(type);
         }
 
-
+        Map<Class<?>, Class<?>> formatsToRegister = new HashMap<Class<?>, Class<?>>();
         Iterator typeIter = registry.keySet().iterator();
         while (typeIter.hasNext()) {
             Class currType = (Class) typeIter.next();
             if (currType.isAssignableFrom(type)) {
                 Class currFormatter = (Class) registry.get(currType);
-                registerFormatter(type, currFormatter);
+                formatsToRegister.put(type, currFormatter);
                 return currFormatter;
             }
         }
-
+        for(Entry<Class<?>, Class<?>> entry : formatsToRegister.entrySet()) {
+            registerFormatter(entry.getKey(), entry.getValue());
+        }
         return null;
         // end Kuali Foundation modification
     }

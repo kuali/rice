@@ -161,7 +161,11 @@ public class NoteAction extends KewKualiAction {
         		attachment.setMimeType(uploadedFile.getContentType());
         		attachment.setNote(noteToSave);
         		noteToSave.getAttachments().add(attachment);
-        	}
+            } else {
+                if(noteToSave.getNoteId() != null) { //note is not new and we need to ensure the attachments are preserved
+                    noteToSave.setAttachments(getNoteService().getNoteByNoteId(noteToSave.getNoteId()).getAttachments());
+                }
+            }
             getNoteService().saveNote(noteToSave);
         }
         if (noteForm.getShowEdit().equals("yes")) {

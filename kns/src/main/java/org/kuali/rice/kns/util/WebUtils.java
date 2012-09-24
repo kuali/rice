@@ -312,7 +312,7 @@ public class WebUtils {
 
 		// set response
 		response.setContentType(contentType);
-		response.setHeader("Content-disposition", "attachment; filename=" + fileName);
+		response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
 		response.setHeader("Expires", "0");
 		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");
@@ -339,7 +339,7 @@ public class WebUtils {
 
 		// set response
 		response.setContentType(contentType);
-		response.setHeader("Content-disposition", "attachment; filename=" + fileName);
+		response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
 		response.setHeader("Expires", "0");
 		response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");

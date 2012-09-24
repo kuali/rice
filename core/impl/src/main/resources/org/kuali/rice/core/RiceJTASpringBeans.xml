@@ -60,7 +60,9 @@
     <property name="defaultTimeout" value="${transaction.timeout}"/>
   </bean>
 
-  <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" lazy-init="true"/>
+  <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" lazy-init="true">
+    <property name="allowMultipleLrc" value="true"/>
+  </bean>
 
   <bean id="transactionManagerBitronix" class="bitronix.tm.TransactionManagerServices"
         factory-method="getTransactionManager" depends-on="btmConfig" destroy-method="shutdown" lazy-init="true"/>

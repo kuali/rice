@@ -279,7 +279,7 @@ public final class KimConstants {
 		public static final String NAMESPACE_CODE = "namespaceCode";
 		public static final String PRINCIPAL_NAME = "principalName";
 		public static final String GROUP_NAME = "name";
-		public static final String ROLE_NAME = "roleName";
+		public static final String ROLE_NAME = "name";
 		public static final String PERMISSION_NAME = "name";
 		public static final String RESPONSIBILITY_NAME = "name";
 		public static final String PERMISSION_TEMPLATE_NAME = "name";

@@ -33,7 +33,6 @@ import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiRuleService;
@@ -50,7 +49,6 @@ public class KualiRuleServiceImpl implements KualiRuleService {
     private static final Logger LOG = Logger.getLogger(KualiRuleServiceImpl.class);
 
     private DocumentDictionaryService documentDictionaryService;
-    private DictionaryValidationService dictionaryValidationService;
     private DataDictionaryService dataDictionaryService;
 
     /**
@@ -228,14 +226,6 @@ public class KualiRuleServiceImpl implements KualiRuleService {
 
     public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
         this.documentDictionaryService = documentDictionaryService;
-    }
-
-    public DictionaryValidationService getDictionaryValidationService() {
-        return dictionaryValidationService;
-    }
-
-    public void setDictionaryValidationService(DictionaryValidationService dictionaryValidationService) {
-        this.dictionaryValidationService = dictionaryValidationService;
     }
 
     public DataDictionaryService getDataDictionaryService() {

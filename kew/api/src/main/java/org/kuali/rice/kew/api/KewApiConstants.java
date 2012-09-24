@@ -793,6 +793,8 @@ public final class KewApiConstants {
 
 	public static final int DEFAULT_TRANSACTION_TIMEOUT_SECONDS = 3600;
 
+    public static final int MAX_RETURNED_ROWS = 500;
+
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
 
     public static final String DAILY_EMAIL_CRON_EXPRESSION = "dailyEmail.cronExpression";

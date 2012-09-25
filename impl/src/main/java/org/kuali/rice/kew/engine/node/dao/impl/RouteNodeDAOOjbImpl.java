@@ -57,7 +57,6 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
     private static final String FINAL_APPROVAL = "finalApprovalInd";
     private static final String KEY = "key";
     private static final String Route_Node_State_ID = "nodeStateId";
-    private static final String ROUTE_HEADER_ID = "routeHeaderId";
 
     public void save(RouteNode node) {
 	getPersistenceBrokerTemplate().store(node);
@@ -243,7 +242,7 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
 
     public List getInitialNodeInstances(String documentId) {
         Criteria criteria = new Criteria();
-        criteria.addEqualTo("initialDocumentRouteHeaderValues." + ROUTE_HEADER_ID, documentId);
+        criteria.addEqualTo("initialDocumentRouteHeaderValues." + DOCUMENT_ID, documentId);
         return (List) getPersistenceBrokerTemplate().getCollectionByQuery(
                 new QueryByCriteria(RouteNodeInstance.class, criteria));
     }

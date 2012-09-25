@@ -19,6 +19,8 @@ import java.text.FieldPosition;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -39,6 +41,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionItemContract;
@@ -227,7 +230,44 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         if (document != null) {
             documentType = document.getDocumentType();
         }
-        
+
+        Boolean policyValue = documentType.getSuppressImmediateEmailsOnSuActionPolicy().getPolicyValue();
+        if (policyValue) {
+            String docId = actionItem.getDocumentId();
+            LOG.warn("checkEmailNotificationPreferences processing document: " + docId + " of type: " + documentType.getName() + " and getSuppressImmediateEmailsOnSuActionPolicy set to true.");
+
+            List<ActionTakenValue> actionsTaken = document.getActionsTaken();
+            if (actionsTaken != null && actionsTaken.size() > 0) {
+                Collections.sort(actionsTaken, new Comparator<ActionTakenValue>() {
+
+                    @Override
+                    // Sort by date in descending order
+                    public int compare(ActionTakenValue o1, ActionTakenValue o2) {
+                        if (o1 == null && o2 == null)
+                            return 0;
+                        if (o1 == null)
+                            return -1;
+                        if (o2 == null)
+                            return 1;
+
+                        if (o1.getActionDate() == null && o2.getActionDate() == null)
+                            return 0;
+                        if (o1.getActionDate() == null)
+                            return -1;
+                        if (o2.getActionDate() == null)
+                            return 1;
+
+                        return o2.getActionDate().compareTo(o1.getActionDate());
+                    }
+                });
+            }
+
+            ActionTakenValue mostRecentActionTaken = (ActionTakenValue) actionsTaken.get(0);
+            if (mostRecentActionTaken !=null && mostRecentActionTaken.isSuperUserAction()) {
+                return false;
+            }
+        }
+
         // If the user has document type notification preferences check them to
         // see if the action item should be included in the email.
         if(preferences.getDocumentTypeNotificationPreferences().size() > 0) {   

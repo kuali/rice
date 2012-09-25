@@ -148,7 +148,13 @@ public enum DocumentTypePolicy implements Coded {
      * @since 2.1
      * @see https://jira.kuali.org/browse/KULRICE-7057
      */
-    @XmlEnumValue(Codes.ALLOW_SU_FINAL_APPROVAL) ALLOW_SU_FINAL_APPROVAL(Codes.ALLOW_SU_FINAL_APPROVAL);
+    @XmlEnumValue(Codes.ALLOW_SU_FINAL_APPROVAL) ALLOW_SU_FINAL_APPROVAL(Codes.ALLOW_SU_FINAL_APPROVAL),
+    /**
+     * Specifies whether immediate emails should be suppressed after a superuser action is taken
+     * @since 2.1.3
+     * @see https://jira.kuali.org/browse/KULRICE-8289
+     */
+    @XmlEnumValue(Codes.SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION) SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION(Codes.SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION);
 
     private final String code;
 
@@ -197,6 +203,7 @@ public enum DocumentTypePolicy implements Coded {
         private static final String RECALL_VALID_ACTIONSTAKEN = "RECALL_VALID_ACTIONSTAKEN";
         private static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE = "SEND_NOTIFICATION_ON_SU_DISAPPROVE";
         private static final String ALLOW_SU_FINAL_APPROVAL = "ALLOW_SU_FINAL_APPROVAL";
+        private static final String SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION = "SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION";
     }
     
 }

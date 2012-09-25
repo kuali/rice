@@ -494,6 +494,8 @@
       <enumeration value="send_notification_on_su_disapprove"/>
       <enumeration value="ALLOW_SU_FINAL_APPROVAL"/>
       <enumeration value="allow_su_final_approval"/>
+      <enumeration value="SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION"/>
+      <enumeration value="suppress_immediate_emails_on_su_action"/>
     </restriction>
   </simpleType>
 

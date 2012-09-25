@@ -344,5 +344,21 @@ public class ActionTakenValue implements Serializable {
     	builder.setDelegatorPrincipalId(actionTakenBo.getDelegatorPrincipalId());
     	return builder.build();
     }
-    
+
+    public boolean isSuperUserAction() {
+        if ( KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_DISAPPROVED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD.equals(actionTaken) ||
+                KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD.equals(actionTaken)
+                ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

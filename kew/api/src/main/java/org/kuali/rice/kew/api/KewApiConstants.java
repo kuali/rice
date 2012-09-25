@@ -146,6 +146,7 @@ public final class KewApiConstants {
     public static final String NOTIFY_COMPLETED_ON_RETURN_POLICY = DocumentTypePolicy.NOTIFY_COMPLETED_ON_RETURN.getCode();
     public static final String RECALL_NOTIFICATION_POLICY = DocumentTypePolicy.RECALL_NOTIFICATION.getCode();
     public static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE_POLICY = DocumentTypePolicy.SEND_NOTIFICATION_ON_SU_DISAPPROVE.getCode();
+    public static final String SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION_POLICY = DocumentTypePolicy.SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION.getCode();
 
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";

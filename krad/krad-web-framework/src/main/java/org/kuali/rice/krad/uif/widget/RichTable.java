@@ -500,10 +500,20 @@ public class RichTable extends WidgetBase {
         this.ajaxSource = ajaxSource;
     }
 
+    /**
+     * Get groupingOption
+     *
+     * @return
+     */
     public String getGroupingOptionsJSString() {
         return groupingOptionsJSString;
     }
 
+    /**
+     * Set the groupingOptions js data.  <b>This should not be set through XML configuration.</b>
+     *
+     * @param groupingOptionsJSString
+     */
     public void setGroupingOptionsJSString(String groupingOptionsJSString) {
         this.groupingOptionsJSString = groupingOptionsJSString;
     }

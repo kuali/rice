@@ -497,7 +497,7 @@ tr.uif-totalRow{
     border-bottom: 1px solid black;
 }
 
-tr.uif-totalRow div.uif-boxLayoutVerticalItem{
+tr.uif-totalRow .uif-boxLayoutVerticalItem, tr.uif-groupTotalRow .uif-boxLayoutVerticalItem{
     margin: 0;
 }
 

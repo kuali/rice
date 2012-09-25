@@ -16,7 +16,8 @@
 
 -->
 <#--
-    Generates span and label then invoked template for message component
+    Used specifically for the column grouping field in collection grouping - generates a message
+    with no wrapping content as a field
 
  -->
 

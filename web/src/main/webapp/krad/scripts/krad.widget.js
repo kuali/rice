@@ -571,18 +571,23 @@ function collapseDisclosures() {
 /**
  * Uses jQuery DataTable plug-in to decorate a table with functionality like
  * sorting and page. The second argument is a Map of options that are available
- * for the plug-in. See <link>http://www.datatables.net/usage/</link> for
+ * for the plug-in. See <a href=http://www.datatables.net/usage/>datatables</a> for
  * documentation on these options
  *
- * @param tableId -
- *          id for the table that should be decorated
- * @param options -
- *          map of option settings (option name/value pairs) for the plugin
+ * @param tableId id for the table that should be decorated
+ * @param options map of option settings (option name/value pairs) for the plugin
+ * @param groupingOptions (optional) if supplied, the collection will use rowGrouping with these options
  */
 function createTable(tableId, options, groupingOptions) {
     jQuery(document).ready(function () {
         options.bDestroy = true;
-        var oTable = jQuery("#" + tableId).dataTable(options);
+        var table = jQuery("#" + tableId);
+
+        if(groupingOptions){
+            table.attr("data-groups", "true");
+        }
+
+        var oTable = table.dataTable(options);
         // allow table column size recalculation on window resize
         jQuery(window).bind('resize', function () {
             oTable.fnAdjustColumnSizing();

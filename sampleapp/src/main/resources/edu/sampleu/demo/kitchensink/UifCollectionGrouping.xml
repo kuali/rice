@@ -37,6 +37,10 @@
             <list>
               <ref bean="Demo-CollectionGrouping-Section1"/>
               <ref bean="Demo-CollectionGrouping-Section5"/>
+              <ref bean="Demo-CollectionGrouping-Section6"/>
+              <ref bean="Demo-CollectionGrouping-Section7"/>
+              <ref bean="Demo-CollectionGrouping-Section8"/>
+              <ref bean="Demo-CollectionGrouping-Section9"/>
               <ref bean="Demo-CollectionGrouping-Section2"/>
               <ref bean="Demo-CollectionGrouping-Section3"/>
               <ref bean="Demo-CollectionGrouping-Section4"/>
@@ -77,6 +81,47 @@
         <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field2"/>
         <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field3"/>
         <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field4"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CollectionGrouping-Section6" parent="Demo-CollectionGrouping-Section1">
+    <property name="headerText" value="Basic Grouping with Totaling - Label left"/>
+    <property name="layoutManager.renderOnlyLeftTotalLabels" value="true"/>
+    <property name="layoutManager.showGroupTotal" value="true"/>
+    <property name="layoutManager.columnCalculations">
+      <list>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field2"/>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field3"/>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field4"/>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Group Value"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Value 1"/>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="Value 2"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="Value 3"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CollectionGrouping-Section7" parent="Demo-CollectionGrouping-Section1">
+    <property name="headerText" value="Basic Grouping with Totaling - Label left, total same column"/>
+    <property name="layoutManager.renderOnlyLeftTotalLabels" value="true"/>
+    <property name="layoutManager.showGroupTotal" value="true"/>
+    <property name="layoutManager.columnCalculations">
+      <list>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field2"/>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field3"/>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:showGroupTotal="true" p:propertyName="field4"/>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Value 1"/>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="Value 2"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="Value 3"/>
       </list>
     </property>
   </bean>
@@ -171,6 +216,19 @@
               p:readOnly="@{!#isAddLine}"/>
       </list>
     </property>
+  </bean>
+
+  <bean id="Demo-CollectionGrouping-Section8" parent="Demo-CollectionGrouping-Section1">
+    <property name="headerText" value="Grouping using Grouping prefix option"/>
+    <property name="layoutManager.groupingPrefix" value="Lines with value "/>
+  </bean>
+
+  <bean id="Demo-CollectionGrouping-Section9" parent="Demo-CollectionGrouping-Section1">
+    <property name="headerText" value="Grouping using custom groupingTitle"/>
+    <property name="instructionalText" value="When a groupingTitle is used groupingPropertyNames and groupingPrefix
+    are ignored.  This option gives full control of the grouping title to the dev but REQUIRES springEL
+    as part of the title."/>
+    <property name="layoutManager.groupingTitle" value="Letter @{#lp.field1} in item"/>
   </bean>
 
 </beans>

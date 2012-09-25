@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.MessageField;
 
 /**
  * ColumnCalculationInfo is used to specify which columns and what types of calculations are performed on those columns
@@ -30,9 +31,9 @@ public class ColumnCalculationInfo {
     private boolean showPageTotal;
     private boolean showGroupTotal;
 
-    private Field totalField;
-    private Field pageTotalField;
-    private Field groupTotalFieldPrototype;
+    private MessageField totalField;
+    private MessageField pageTotalField;
+    private MessageField groupTotalFieldPrototype;
 
     private String calculationFunctionName;
     private String calculationFunctionExtraData;
@@ -41,8 +42,8 @@ public class ColumnCalculationInfo {
     private boolean recalculateTotalClientside;
 
     /**
-     * Gets the column number.  This is the number/index of the column to perform calculations on.
-     * This MUST be specified.
+     * Gets the column number.  This should not be set through configuration as it is overridden by the
+     * propertyName's caclculated column number.  <b>Do not set through xml configuration</b>
      *
      * @return columnNumber to perform calculations on
      */
@@ -51,8 +52,7 @@ public class ColumnCalculationInfo {
     }
 
     /**
-     * Sets the column number.  This is the number/index of the column to perform calculations on.
-     * This MUST be specified.
+     * Sets the column number. <b>Do not set through xml configuration</b>
      *
      * @param columnNumber
      */
@@ -149,7 +149,7 @@ public class ColumnCalculationInfo {
      *
      * @return the totalField
      */
-    public Field getTotalField() {
+    public MessageField getTotalField() {
         return totalField;
     }
 
@@ -159,7 +159,7 @@ public class ColumnCalculationInfo {
      *
      * @param totalField
      */
-    public void setTotalField(Field totalField) {
+    public void setTotalField(MessageField totalField) {
         this.totalField = totalField;
     }
 
@@ -169,7 +169,7 @@ public class ColumnCalculationInfo {
      *
      * @return the pageTotalField
      */
-    public Field getPageTotalField() {
+    public MessageField getPageTotalField() {
         return pageTotalField;
     }
 
@@ -179,7 +179,7 @@ public class ColumnCalculationInfo {
      *
      * @param pageTotalField
      */
-    public void setPageTotalField(Field pageTotalField) {
+    public void setPageTotalField(MessageField pageTotalField) {
         this.pageTotalField = pageTotalField;
     }
 
@@ -189,7 +189,7 @@ public class ColumnCalculationInfo {
      *
      * @return the groupTotalFieldPrototype
      */
-    public Field getGroupTotalFieldPrototype() {
+    public MessageField getGroupTotalFieldPrototype() {
         return groupTotalFieldPrototype;
     }
 
@@ -199,7 +199,7 @@ public class ColumnCalculationInfo {
      *
      * @param groupTotalFieldPrototype
      */
-    public void setGroupTotalFieldPrototype(Field groupTotalFieldPrototype) {
+    public void setGroupTotalFieldPrototype(MessageField groupTotalFieldPrototype) {
         this.groupTotalFieldPrototype = groupTotalFieldPrototype;
     }
 
@@ -269,10 +269,21 @@ public class ColumnCalculationInfo {
         this.calculationFunctionExtraData = calculationFunctionExtraData;
     }
 
+    /**
+     * Get the propertyName of the field to do calculations.  This field MUST exist as one of the fields
+     * of the collection.  <b>This property must be set or an exception will be thrown.</b>
+     *
+     * @return propertyName of the field(the column) to do calculations on
+     */
     public String getPropertyName() {
         return propertyName;
     }
 
+    /**
+     * Set the propertyName of the field to do calculations on
+     *
+     * @param propertyName
+     */
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }

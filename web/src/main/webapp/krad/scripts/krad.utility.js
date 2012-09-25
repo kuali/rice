@@ -1209,19 +1209,21 @@ function lightboxButtonScript() {
 }
 
 /**
- * Initialize/recalculate the totals placed in the footer of a richTable
+ * Initialize/recalculate the totals placed in the footer of a richTable.  Also, calculates and places
+ * the totals related to group totalling, if present.
  *
- * @param nRow "TR" element for the footer
- * @param aaData Full table data (as derived from the original HTML)
- * @param iStart Index for the current display starting point in the display array
- * @param iEnd Index for the current display ending point in the display array
- * @param aiDisplay Index array to translate the visual position to the full data array
- * @param columns to total
+ * @param nRow tr element for the footer
+ * @param aaData full table data (as derived from the original HTML)
+ * @param iStart index for the current display starting point of the current page in the display array
+ * @param iEnd index for the current display ending point of the current page in the display array
+ * @param aiDisplay index array to translate the visual position to the full data array
+ * @param columns columns to total
  */
 function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) {
-    var dataTable = jQuery(nRow).closest('table.dataTable');
+    var footerRow = jQuery(nRow);
+    var dataTable = footerRow.closest('table.dataTable');
 
-    jQuery(nRow).addClass("uif-totalRow");
+    footerRow.addClass("uif-totalRow");
 
     if (jQuery(dataTable).hasClass("uif-hasAddLine")) {
         iEnd = iEnd + 1;
@@ -1229,70 +1231,112 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
     var onePage = iStart == 0 && iEnd == aaData.length;
 
     if (onePage) {
-        jQuery(nRow).find("div[data-role='pageTotal'], label[data-role='pageTotal']").hide();
+        footerRow.find("div[data-role='pageTotal'], label[data-role='pageTotal']").hide();
     }
 
     var groupTotalRows = dataTable.find("tr[data-groupvalue]");
+    var hasGroups = dataTable.data("groups");
 
-    var nCells = jQuery(nRow).find("th").has("div[data-role='totalsBlock']");
-    // Total each column in the columns list
-    for (var c = 0; c < nCells.length; c++) {
-        var cell = jQuery(nCells[c]);
-        var index = cell.index();
+    //Only calculate totals if no grouping or when there is grouping, wait for those rows to become
+    //generated - avoids unnecessary totalling
+    if(!hasGroups || (hasGroups && groupTotalRows.length)){
+        var nCells = footerRow.find("th").has("div[data-role='totalsBlock']");
 
-        //find the totalsBlocks in each column footer cell, and calculate the appropriate totals
-        jQuery("div[data-role='totalsBlock']", cell).each(function () {
-            var totalDiv = jQuery(this).find("div[data-role='total']");
-            var skipTotal = totalDiv.data("skipTotal");
+        var groupLabel = footerRow.find("th:first span[data-role='groupTotalLabel']");
+        var hasTotalsInFooter = false;
 
-            if(!skipTotal){
-                calculateTotal(totalDiv, 0, aaData.length, columns[c], aaData, aiDisplay);
-            }
+        // Total each column in the columns list
+        for (var c = 0; c < nCells.length; c++) {
+            var cell = jQuery(nCells[c]);
+            var index = cell.index();
 
-            if (!onePage) {
+            //find the totalsBlocks in the column footer cell, and calculate the appropriate totals
+            jQuery("div[data-role='totalsBlock']", cell).each(function () {
+                var totalDiv = jQuery(this).find("div[data-role='total']");
+                var skipTotal = totalDiv.data("skipTotal");
+
+                if(!skipTotal && totalDiv.length){
+                    calculateTotal(totalDiv, 0, aaData.length, columns[c], aaData, aiDisplay);
+                    hasTotalsInFooter = true;
+                }
+
                 var pageTotalDiv = jQuery(this).find("div[data-role='pageTotal']");
-                calculateTotal(pageTotalDiv, iStart, iEnd, columns[c], aaData, aiDisplay);
-            }
+                if (!onePage && pageTotalDiv.length) {
+                    calculateTotal(pageTotalDiv, iStart, iEnd, columns[c], aaData, aiDisplay);
+                    hasTotalsInFooter = true;
+                }
 
-            if(groupTotalRows.length){
-                var groupTotalDiv = jQuery(this).find("div[data-role='groupTotal']");
-                var rowIndex = 0;
-                groupTotalRows.each(function(){
-                    var groupTotalRow = jQuery(this);
-                    var tds = groupTotalRow.find("td");
-                    var td = jQuery(tds[index]);
-                    var groupValue = jQuery(this).data("groupvalue");
+                if(groupTotalRows.length){
+                    var groupTotalDiv = jQuery(this).find("div[data-role='groupTotal']");
+                    var rowIndex = 0;
+                    //for each group total row calculate the group total for the column we are totalling
+                    groupTotalRows.each(function(){
+                        var groupTotalRow = jQuery(this);
+                        var tds = groupTotalRow.find("td");
+                        var td = jQuery(tds[index]);
+                        var groupValue = groupTotalRow.data("groupvalue");
 
-                    //This means if the group has data that goes into another page, do not display
-                    //the group total here - iEnd is the index-1 of the last displayed item (currently displayed)
-                    // in the display order list (aiDisplay)
-                    var lastValue = aaData[aiDisplay[iEnd - 1]][0];
-                    if(lastValue && lastValue.toLowerCase() == groupValue && iEnd < aiDisplay.length &&
-                            aaData[aiDisplay[iEnd]][0] && aaData[aiDisplay[iEnd]][0].toLowerCase() == groupValue){
-                        groupTotalRow.hide();
-                    }
-                    else{
-                        var groupCellsToTotal = new Array();
-
-                        for(var i = 0; i < aaData.length; i++){
-                            var groupingValue = aaData[i][0];
-                            if(groupingValue != undefined &&
-                                    normalizeGroupString(groupingValue).toLowerCase() == groupValue){
-                                groupCellsToTotal.push(aaData[i][columns[c]]);
-                            }
+                        //This means if the group has data that goes into another page, do not display
+                        //the group total here - iEnd is the index-1 of the last displayed item (currently displayed)
+                        // in the display order list (aiDisplay)
+                        var lastValue = aaData[aiDisplay[iEnd - 1]][0];
+                        if(lastValue && lastValue.toLowerCase() == groupValue && iEnd < aiDisplay.length &&
+                                aaData[aiDisplay[iEnd]][0] && aaData[aiDisplay[iEnd]][0].toLowerCase() == groupValue){
+                            groupTotalRow.hide();
                         }
-                        groupTotalRow.show();
-                        calculateGroupTotal(groupCellsToTotal, td, groupTotalDiv, rowIndex, columns[c]);
-                    }
+                        else{
+                            var groupCellsToTotal = new Array();
 
-                    rowIndex++;
-                });
-            }
-        });
+                            for(var i = 0; i < aaData.length; i++){
+                                var groupingValue = aaData[i][0];
+                                if(groupingValue != undefined &&
+                                        normalizeGroupString(groupingValue).toLowerCase() == groupValue){
+                                    groupCellsToTotal.push(aaData[i][columns[c]]);
+                                }
+                            }
+                            groupTotalRow.show();
+                            calculateGroupTotal(groupCellsToTotal, td, groupTotalDiv, rowIndex, columns[c]);
+                        }
+
+                        //copy the label to the first column if a group left label exists
+                        if(groupLabel.length && jQuery(tds[0]).is(":empty")){
+                            groupLabel = groupLabel.clone();
+                            //resetting ids to unique ids on the clone
+                            groupLabel = groupLabel.attr("id", groupLabel.attr("id") + "_" + rowIndex + columns[c]);
+                            groupLabel.find("[id]").each(function(){
+                                jQuery(this).attr("id", jQuery(this).attr("id") + "_" + rowIndex + columns[c]);
+                            });
+                            groupLabel.show();
+                            jQuery(tds[0]).append(groupLabel);
+                        }
+
+                        rowIndex++;
+                    });
+                }
+            });
+        }
+
+        //Hide the footer row if no footer totals or page totals exist
+        if(hasTotalsInFooter){
+            footerRow.show();
+        }
+        else{
+            footerRow.hide();
+        }
+
     }
 
 }
 
+/**
+ * Calculates the group total and places it in the totalTd provided using a clone of the
+ *
+ * @param cellsToTotal cell data to evaluate for the total
+ * @param totalTd the td of the group total row to place the total
+ * @param groupTotalDiv the totalDiv to clone and place the total in to be added to the totalTd
+ * @param rowIndex index of the the group total row
+ * @param columnIndex data column index
+ */
 function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, columnIndex){
 
     var total = 0;
@@ -1333,8 +1377,10 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
     }
 
     var groupTotalDisplay = totalTd.find("div[data-role='groupTotal'][data-function='" + functionName + "']");
+    //clone and append, if no place to display the total has been generated yet
     if(groupTotalDisplay.length == 0){
         groupTotalDisplay = groupTotalDiv.clone();
+        //resetting ids to unique ids on the clone
         groupTotalDisplay = groupTotalDisplay.attr("id", groupTotalDisplay.attr("id") + "_" + rowIndex + columnIndex);
         groupTotalDisplay.find("[id]").each(function(){
             jQuery(this).attr("id", jQuery(this).attr("id") + "_" + rowIndex + columnIndex);
@@ -1525,6 +1571,8 @@ function refreshDatatableCellRedraw(input) {
  * Get the value from a table cell
  *
  * @param td
+ * @return value the value if a numeric value, if blank or disabled returns empty string, if an invalid value
+ * returns undefined
  */
 function coerceTableCellValue(td) {
     var tdObject = jQuery(td);

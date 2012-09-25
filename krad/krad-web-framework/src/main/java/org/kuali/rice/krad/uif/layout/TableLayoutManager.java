@@ -96,9 +96,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private boolean rowDetailsUseImage;
     private boolean rowDetailsOpen;
 
-    private List<String> groupingPropertyNames;
+    //grouping properties
+    private String groupingTitle;
+    private String groupingPrefix;
     private int groupingColumnIndex;
+    private List<String> groupingPropertyNames;
 
+    //total properties
     private boolean renderOnlyLeftTotalLabels;
     private boolean showTotal;
     private boolean showPageTotal;
@@ -142,28 +146,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         this.setupDetails(collectionGroup, view);
 
-        //Grouping setup
-        if (this.getGroupingPropertyNames() != null) {
-            String propertyNameExpression = "";
-            for (String propertyName : this.getGroupingPropertyNames()) {
-                propertyNameExpression = propertyNameExpression + ", " + propertyName;
-            }
-
-            propertyNameExpression = propertyNameExpression.replaceFirst(", ", "@{#lp.");
-            propertyNameExpression = propertyNameExpression.replace(", ", "}, @{#lp.");
-            propertyNameExpression = propertyNameExpression.trim() + "}";
-
-            MessageField groupingMessageField = ComponentFactory.getColGroupingField();
-            groupingMessageField.getMessage().getPropertyExpressions().put("messageText", propertyNameExpression);
-            groupingMessageField.setLabel("Group");
-
-            view.assignComponentIds(groupingMessageField);
-
-            List<Component> theItems = new ArrayList<Component>();
-            theItems.add(groupingMessageField);
-            theItems.addAll(collectionGroup.getItems());
-            collectionGroup.setItems(theItems);
-        }
+        this.setupGrouping(collectionGroup, view);
 
         if (collectionGroup.isAddViaLightBox()) {
             setSeparateAddLine(true);
@@ -182,7 +165,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Sets up the final column count for rendering based on whether the
-     * sequence and action fields have been generated
+     * sequence and action fields have been generated, sets up column calculations, and richTable rowGrouping
+     * options
      *
      * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
@@ -226,12 +210,56 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             setupColumnCalculations(view, model, container, totalColumns);
         }
 
-        if (groupingPropertyNames != null && richTable != null) {
+        //set the js properties for rowGrouping on richTables
+        if ((groupingPropertyNames != null || StringUtils.isNotBlank(this.getGroupingTitle())) && richTable != null) {
             richTable.setGroupingOptionsJSString("{iGroupingColumnIndex: "
                     + groupingColumnIndex
                     + ", bGenerateGroupTotalRows:"
                     + this.generateGroupTotalRows
-                    + ", bSetGroupingClassOnTR: true, sGroupingClass: 'uif-groupRow'}");
+                    + ", bSetGroupingClassOnTR: true"
+                    + ", sGroupingClass: 'uif-groupRow'"
+                    + (this.getGroupingPrefix() != null ? ", sGroupLabelPrefix: '" + this.getGroupingPrefix() + "'" :
+                    "")
+                    + "}");
+        }
+    }
+
+    /**
+     * Sets up the grouping MessageField to be used in the first column of the table layout for grouping
+     * collection content into groups based on values of the line's fields
+     *
+     * @param collectionGroup collection group for this layout
+     * @param view the view
+     */
+    private void setupGrouping(CollectionGroup collectionGroup, View view) {
+        //Grouping setup
+        String groupingTitleExpression = "";
+        if (StringUtils.isNotBlank(this.getPropertyExpression("groupingTitle"))) {
+            //Doing this and above IF check because KeepExpression tag is not functioning for this property
+            groupingTitleExpression = this.getPropertyExpression("groupingTitle");
+            this.setGroupingTitle(this.getPropertyExpression("groupingTitle"));
+        } else if (this.getGroupingPropertyNames() != null) {
+
+            for (String propertyName : this.getGroupingPropertyNames()) {
+                groupingTitleExpression = groupingTitleExpression + ", " + propertyName;
+            }
+
+            groupingTitleExpression = groupingTitleExpression.replaceFirst(", ", "@{#lp.");
+            groupingTitleExpression = groupingTitleExpression.replace(", ", "}, @{#lp.");
+            groupingTitleExpression = groupingTitleExpression.trim() + "}";
+        }
+
+        if (StringUtils.isNotBlank(groupingTitleExpression)) {
+            MessageField groupingMessageField = ComponentFactory.getColGroupingField();
+            groupingMessageField.getMessage().getPropertyExpressions().put("messageText", groupingTitleExpression);
+            groupingMessageField.setLabel("Group");
+
+            view.assignComponentIds(groupingMessageField);
+
+            List<Component> theItems = new ArrayList<Component>();
+            theItems.add(groupingMessageField);
+            theItems.addAll(collectionGroup.getItems());
+            collectionGroup.setItems(theItems);
         }
     }
 
@@ -251,8 +279,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             footerCalculationComponents.add(null);
         }
 
-        for (ColumnCalculationInfo cInfo : columnCalculations) {
+        int leftLabelColumnIndex = 0;
+        if (groupingPropertyNames != null || StringUtils.isNotBlank(this.getGroupingTitle())) {
+            leftLabelColumnIndex = 1;
+        }
 
+        //process each column calculation
+        for (ColumnCalculationInfo cInfo : columnCalculations) {
             //propertyName is REQUIRED throws exception if not set
             if (StringUtils.isNotBlank(cInfo.getPropertyName())) {
                 for (int i = 0; i < this.getNumberOfColumns(); i++) {
@@ -277,15 +310,17 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             calculationFieldGroup.addDataAttribute("role", "totalsBlock");
             groupItems = new ArrayList<Component>();
 
+            //setup page total field and add it to footer's group for this column
             if (cInfo.isShowPageTotal()) {
                 Field pageTotalDataField = setupTotalField(cInfo.getPageTotalField(), cInfo, this.isShowPageTotal(),
-                        this.getPageTotalLabel(), "pageTotal");
+                        this.getPageTotalLabel(), "pageTotal", leftLabelColumnIndex);
                 groupItems.add(pageTotalDataField);
             }
 
+           //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
                 Field totalDataField = setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(),
-                        this.getTotalLabel(), "total");
+                        this.getTotalLabel(), "total", leftLabelColumnIndex);
                 if (!cInfo.isRecalculateTotalClientside()) {
                     totalDataField.addDataAttribute("skipTotal", "true");
                 }
@@ -293,9 +328,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 groupItems.add(totalDataField);
             }
 
+            //setup total field and add it to footer's group for this column
+            //do not generate group total rows if group totals are not being shown
             if (cInfo.isShowGroupTotal()) {
                 Field groupTotalDataField = setupTotalField(cInfo.getGroupTotalFieldPrototype(), cInfo,
-                        this.isShowGroupTotal(), this.getGroupTotalLabelPrototype(), "groupTotal");
+                        this.isShowGroupTotal(), this.getGroupTotalLabelPrototype(), "groupTotal",
+                        leftLabelColumnIndex);
                 groupTotalDataField.setId(container.getId() + "_gTotal" + cInfo.getColumnNumber());
                 groupTotalDataField.setStyle("display: none;");
                 groupItems.add(groupTotalDataField);
@@ -309,8 +347,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             calculationFieldGroup.setItems(groupItems);
             view.assignComponentIds(calculationFieldGroup);
+
+            //Determine if there is already a fieldGroup present for this column's footer
+            //if so create a new group and add the new calculation fields to the already existing ones
+            //otherwise just add it
             Component component = footerCalculationComponents.get(cInfo.getColumnNumber());
-            if(component != null && component instanceof FieldGroup){
+            if (component != null && component instanceof FieldGroup) {
                 Group verticalComboCalcGroup = ComponentFactory.getVerticalBoxGroup();
                 view.assignComponentIds(verticalComboCalcGroup);
                 List<Component> comboGroupItems = new ArrayList<Component>();
@@ -318,46 +360,49 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 comboGroupItems.add(calculationFieldGroup);
                 verticalComboCalcGroup.setItems(comboGroupItems);
                 footerCalculationComponents.set(cInfo.getColumnNumber(), verticalComboCalcGroup);
-            }
-            else if(component != null && component instanceof Group){
+            } else if (component != null && component instanceof Group) {
                 List<Component> comboGroupItems = new ArrayList<Component>();
-                comboGroupItems.addAll(((Group)component).getItems());
+                comboGroupItems.addAll(((Group) component).getItems());
                 comboGroupItems.add(calculationFieldGroup);
-                ((Group)component).setItems(comboGroupItems);
+                ((Group) component).setItems(comboGroupItems);
                 footerCalculationComponents.set(cInfo.getColumnNumber(), component);
-            }
-            else{
+            } else {
                 footerCalculationComponents.set(cInfo.getColumnNumber(), calculationFieldGroup);
             }
         }
 
-        if (this.renderOnlyLeftTotalLabels && footerCalculationComponents.get(0) == null) {
+        //special processing for the left labels - when there are no total fields in this column
+        //add the label to the column footer directly
+        if (this.renderOnlyLeftTotalLabels && footerCalculationComponents.get(leftLabelColumnIndex) == null) {
             Group labelGroup = ComponentFactory.getVerticalBoxGroup();
             view.assignComponentIds(labelGroup);
             List<Component> groupItems = new ArrayList<Component>();
 
-            if(this.isShowGroupTotal()){
+            if (this.isShowGroupTotal()) {
+                //display none - this label is copied by the javascript
                 groupTotalLabelPrototype.setStyle("display: none;");
                 groupTotalLabelPrototype.addDataAttribute("role", "groupTotalLabel");
                 view.assignComponentIds(groupTotalLabelPrototype);
                 groupItems.add(groupTotalLabelPrototype);
             }
 
-            if(this.isShowPageTotal()){
+            if (this.isShowPageTotal()) {
                 view.assignComponentIds(pageTotalLabel);
                 groupItems.add(pageTotalLabel);
             }
 
-            if(this.isShowTotal()){
+            if (this.isShowTotal()) {
                 view.assignComponentIds(totalLabel);
                 groupItems.add(totalLabel);
             }
 
             labelGroup.setItems(groupItems);
 
-            footerCalculationComponents.set(0, labelGroup);
+            footerCalculationComponents.set(leftLabelColumnIndex, labelGroup);
         }
 
+        //perform the lifecycle for all the newly generated components as a result of processing the
+        //column calculations
         for (Component component : footerCalculationComponents) {
             if (component != null) {
                 component.performInitialization(view, model);
@@ -368,19 +413,31 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     }
 
+    /**
+     * Setup the totalField with the columnCalculationInfo(cInfo) passed in.  Param show represents the
+     * tableLayoutManager's setting for the type of total being processed.
+     *
+     * @param totalField the field to setup
+     * @param cInfo ColumnCalculation info to use to setup the field
+     * @param show show the field (if renderOnlyLeftTotalLabels is true, otherwise uses value in cInfo)
+     * @param leftLabel the leftLabel, not used if renderOnlyLeftTotalLabels is false
+     * @param type type used to set the dataAttribute role - used by the js for selection
+     * @param leftLabelColumnIndex index of the leftLabelColumn (0 or 1 if grouping enabled - hidden column)
+     * @return the field with cInfo and tableLayoutManager settings applied as appropriate
+     */
     private Field setupTotalField(Field totalField, ColumnCalculationInfo cInfo, boolean show, Label leftLabel,
-            String type) {
+            String type, int leftLabelColumnIndex) {
         //setup the totals field
         Field totalDataField = totalField;
         totalDataField.addDataAttribute("role", type);
         totalDataField.addDataAttribute("function", cInfo.getCalculationFunctionName());
         totalDataField.addDataAttribute("params", cInfo.getCalculationFunctionExtraData());
 
-        if (cInfo.getColumnNumber() != 0) {
+        if (cInfo.getColumnNumber() != leftLabelColumnIndex) {
             //do not render labels for columns which have totals and the renderOnlyLeftTotalLabels
             //flag is set
             totalDataField.getFieldLabel().setRender(!this.isRenderOnlyLeftTotalLabels());
-        } else if (cInfo.getColumnNumber() == 0 && this.isRenderOnlyLeftTotalLabels()) {
+        } else if (cInfo.getColumnNumber() == leftLabelColumnIndex && this.isRenderOnlyLeftTotalLabels()) {
             //renderOnlyLeftTotalLabel is set to true, but the column has a total itself - set the layout
             //manager settings directly into the field
             totalDataField.setFieldLabel(leftLabel);
@@ -533,13 +590,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         int columnNumber = 0;
 
         boolean renderActionsLast = actionColumnIndex == -1 || actionColumnIndex > lineFields.size() + extraColumns;
+        boolean hasGrouping = (groupingPropertyNames != null || StringUtils.isNotBlank(this.getGroupingTitle()));
 
         for (Field lineField : lineFields) {
             cellPosition += lineField.getColSpan();
             columnNumber++;
-            
+
             //special handling for grouping field - this field MUST be first
-            if (lineField instanceof MessageField && groupingPropertyNames != null &&
+            if (hasGrouping && lineField instanceof MessageField &&
                     lineField.getDataAttributes().get("role") != null && lineField.getDataAttributes().get("role")
                     .equals("grouping")) {
                 int groupFieldIndex = dataFields.size() - extraColumns;
@@ -549,12 +607,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     ((MessageField) lineField).getMessage().getPropertyExpressions().remove("messageText");
                     ((MessageField) lineField).getMessage().setMessageText("addLine");
                 }
-            }
-            else{
+            } else {
                 dataFields.add(lineField);
             }
-
-            
 
             // action field
             if (!renderActionsLast && cellPosition == (actionColumnIndex - extraColumns - 1)) {
@@ -583,8 +638,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     }
                 }
             }
-
-            
 
         }
 
@@ -1558,11 +1611,76 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         return footerCalculationComponents;
     }
 
+    /**
+     * Gets the list of property names to use for grouping.
+     *
+     * <p>
+     * When this property is set, grouping for this
+     * collection will be enabled and the lines of the collection will be grouped by the propertyName(s) supplied.
+     * Supplying multiple property names will cause the grouping to be on multiple fields and ordered
+     * alphabetically on "propetyValue1, propertyValue2" (this is also how the group title will display for each group).
+     * The property names supplied must be relative to the line, so #lp
+     * SHOULD NOT be used (it is assumed automatically).
+     * </p>
+     *
+     * @return propertyNames to group on
+     */
     public List<String> getGroupingPropertyNames() {
         return groupingPropertyNames;
     }
 
+    /**
+     * Sets the list of property names to use for grouping.
+     *
+     * @param groupingPropertyNames
+     */
     public void setGroupingPropertyNames(List<String> groupingPropertyNames) {
         this.groupingPropertyNames = groupingPropertyNames;
+    }
+
+    /**
+     * Get the groupingTitle.  The groupingTitle MUST contain a SpringEL expression to uniquely identify a
+     * group's line (ie it cannot be a static string because each group must be identified by some value).
+     * <b>This overrides groupingPropertyNames(if set) because it provides full control of grouping value used by
+     * the collection.  SpringEL defined here must use #lp if referencing values of the line.</b>
+     *
+     * @return groupingTitle to be used
+     */
+    public String getGroupingTitle() {
+        return groupingTitle;
+    }
+
+    /**
+     * Set the groupingTitle.  This will throw an exception if the title does not contain a SpringEL expression.
+     *
+     * @param groupingTitle
+     */
+    public void setGroupingTitle(String groupingTitle) {
+        if (groupingTitle != null && !groupingTitle.contains("@{")) {
+            throw new RuntimeException("groupingTitle MUST contain a springEL expression to uniquely"
+                    + " identify a collection group (often related to some value of the line). "
+                    + "Value provided: "
+                    + this.getGroupingTitle());
+        }
+        this.groupingTitle = groupingTitle;
+    }
+
+    /**
+     * Get the groupingPrefix.  The groupingPrefix is used to prefix the generated title (not used when
+     * groupingTitle is set directly) when using groupingPropertyNames.
+     *
+     * @return
+     */
+    public String getGroupingPrefix() {
+        return groupingPrefix;
+    }
+
+    /**
+     * Set the groupingPrefix.  This is not used when groupingTitle is set directly.
+     *
+     * @param groupingPrefix
+     */
+    public void setGroupingPrefix(String groupingPrefix) {
+        this.groupingPrefix = groupingPrefix;
     }
 }

@@ -35,10 +35,10 @@ public class ConfigNameSpaceBlanketAppIT extends AdminMenuBlanketAppITBase {
     @Override
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
-        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace");
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace " + ITUtil.DTS_TWO);
         assertElementPresent("methodToCall.cancel");
-        waitAndType("//input[@id='document.newMaintainableObject.code']", "VTN" + ITUtil.DTS);
-        waitAndType("//input[@id='document.newMaintainableObject.name']", "Validation Test NameSpace " + ITUtil.DTS);
+        waitAndType("//input[@id='document.newMaintainableObject.code']", "VTN " + ITUtil.DTS_TWO);
+        waitAndType("//input[@id='document.newMaintainableObject.name']", "Validation Test NameSpace " + ITUtil.DTS_TWO);
         waitAndType("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
         waitAndClick("//input[@id='document.newMaintainableObject.active']");
         return docId;

@@ -37,7 +37,7 @@ public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
     public String blanketApprove() throws Exception {
  
         String docId = waitForDocId();
-        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter " + ITUtil.DTS_TWO);
         assertEquals("", getText("methodToCall.cancel"));
         select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=KR-NS - Kuali Nervous System");
         
@@ -46,10 +46,10 @@ public class ConfigParameterBlanketAppIT extends AdminMenuBlanketAppITBase {
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitAndClick("link=return value");
 
-        String parameterName = "Validation Test Parameter"+ITUtil.DTS;
+        String parameterName = "Validation Test Parameter "+ ITUtil.DTS_TWO;
         waitAndType("//input[@id='document.newMaintainableObject.name']", parameterName);
         waitAndType("//textarea[@id='document.newMaintainableObject.description']",
-                "Validation Test Parameter Description" + ITUtil.DTS);
+                "Validation Test Parameter Description " + ITUtil.DTS_TWO);
         select("//select[@id='document.newMaintainableObject.parameterTypeCode']", "label=Document Validation");
         waitAndClick("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
 

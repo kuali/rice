@@ -15,6 +15,7 @@
  */package edu.samplu.common;
 
 import com.thoughtworks.selenium.Selenium;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -46,6 +47,7 @@ public class ITUtil {
     public static final String KUALI_PORTAL_TITLE = "Kuali Portal Index";
     public final static String PORTAL = "/portal.do";
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
+    public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
     public static String WAIT_TO_END_TEST = "5000";
     public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
     public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
@@ -114,7 +116,7 @@ public class ITUtil {
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 errorText = blanketApprovalCleanUpErrorText(errorText);
                 if (selenium.isElementPresent(DIV_EXCOL_LOCATOR)) { // not present if errors are at the bottom of the page (see left-errmsg below)
-                    errorText = blanketApprovalCleanUpErrorText(selenium.getText(DIV_EXCOL_LOCATOR)); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+                    errorText = blanketApprovalCleanUpErrorText(selenium.getText(DIV_EXCOL_LOCATOR) + "\n" + selenium.getHtmlSource()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
                 }
 
                 //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {

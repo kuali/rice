@@ -36,12 +36,13 @@ public class LocationCountryBlanketAppLegacyIT extends AdminMenuBlanketAppLegacy
     @Override
     public String blanketApprove() throws InterruptedException{
         String docId = waitForDocId();
-        String countryName = "Validation Test Country " + ITUtil.DTS;
         assertElementPresentByName("methodToCall.cancel");
+        String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
+        String countryName = "Validation Test Country " + ITUtil.DTS + " " + twoUpperCaseLetters ;
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", countryName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", twoUpperCaseLetters);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoUpperCaseLetters);
         return docId;
     }
 }

@@ -61,7 +61,6 @@
   </bean>
 
   <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" lazy-init="true">
-    <property name="allowMultipleLrc" value="true"/>
   </bean>
 
   <bean id="transactionManagerBitronix" class="bitronix.tm.TransactionManagerServices"

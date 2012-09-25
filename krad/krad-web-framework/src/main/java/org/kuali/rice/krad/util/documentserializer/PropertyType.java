@@ -20,5 +20,5 @@ package org.kuali.rice.krad.util.documentserializer;
  *
  */
 public enum PropertyType {
-    BUSINESS_OBJECT, PRIMITIVE, COLLECTION
+    BUSINESS_OBJECT, PRIMITIVE, COLLECTION, MAP
 }

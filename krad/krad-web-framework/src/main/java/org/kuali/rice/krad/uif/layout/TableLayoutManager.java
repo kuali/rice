@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
@@ -97,6 +98,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private boolean rowDetailsOpen;
 
     //grouping properties
+    @KeepExpression
     private String groupingTitle;
     private String groupingPrefix;
     private int groupingColumnIndex;
@@ -235,7 +237,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         //Grouping setup
         String groupingTitleExpression = "";
         if (StringUtils.isNotBlank(this.getPropertyExpression("groupingTitle"))) {
-            //Doing this and above IF check because KeepExpression tag is not functioning for this property
             groupingTitleExpression = this.getPropertyExpression("groupingTitle");
             this.setGroupingTitle(this.getPropertyExpression("groupingTitle"));
         } else if (this.getGroupingPropertyNames() != null) {
@@ -627,6 +628,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
 
+            //special column calculation handling to identify what type of handler will be attached
+            //and add special styling
             if (lineField instanceof InputField && columnCalculations != null) {
                 for (ColumnCalculationInfo cInfo : columnCalculations) {
                     if (cInfo.getPropertyName().equals(((InputField) lineField).getPropertyName())) {
@@ -635,6 +638,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                         } else {
                             lineField.addDataAttribute("total", "change");
                         }
+                        lineField.addStyleClass("uif-calculationField");
                     }
                 }
             }

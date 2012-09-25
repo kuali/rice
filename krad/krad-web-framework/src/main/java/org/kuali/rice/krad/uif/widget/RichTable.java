@@ -35,10 +35,8 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -66,7 +64,7 @@ public class RichTable extends WidgetBase {
     private String ajaxSource;
 
     private boolean showSearchAndExportOptions = true;
-    
+
     private String groupingOptionsJSString;
 
     public RichTable() {
@@ -108,8 +106,8 @@ public class RichTable extends WidgetBase {
             }
 
             // for add events, disable initial sorting
-            if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())
-                    || UifConstants.ActionEvents.ADD_BLANK_LINE.equals(formBase.getActionEvent())) {
+            if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent()) || UifConstants.ActionEvents
+                    .ADD_BLANK_LINE.equals(formBase.getActionEvent())) {
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
             }
 
@@ -138,7 +136,7 @@ public class RichTable extends WidgetBase {
 
         if (layoutManager instanceof TableLayoutManager) {
 
-            List<String> totalColumns  = ((TableLayoutManager)layoutManager).getColumnsToCalculate();
+            List<String> totalColumns = ((TableLayoutManager) layoutManager).getColumnsToCalculate();
 
             if (totalColumns.size() > 0) {
                 String array = "[";
@@ -148,7 +146,9 @@ public class RichTable extends WidgetBase {
                 array = StringUtils.removeEnd(array, ",");
                 array = array + "]";
                 getTemplateOptions().put(UifConstants.TableToolsKeys.FOOTER_CALLBACK,
-                    "function (nRow, aaData, iStart, iEnd, aiDisplay) {initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, " + array + " )}");
+                        "function (nRow, aaData, iStart, iEnd, aiDisplay) {initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, "
+                                + array
+                                + " )}");
             }
         }
     }
@@ -185,7 +185,7 @@ public class RichTable extends WidgetBase {
             if (layoutManager instanceof TableLayoutManager) {
                 actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
             }
-            
+
             if (actionIndex == 1 && actionFieldVisible) {
                 String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
                 tableToolsColumnOptions.append(actionColOptions + " , ");
@@ -217,19 +217,35 @@ public class RichTable extends WidgetBase {
                 int startBrace = StringUtils.indexOf(jsArray, "[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
+
+                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
+                    String actionColOptions = constructTableColumnOptions(actionIndex, false, null, null);
+                    tableToolsColumnOptions.append(actionColOptions);
+                } else {
+                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                            ", "));
+                }
+
                 tableToolsColumnOptions.append("]");
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
-            } 
-            else if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))){
+            } else if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))) {
                 String jsArray = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
                 int startBrace = StringUtils.indexOf(jsArray, "[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
+
+                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
+                    String actionColOptions = constructTableColumnOptions(actionIndex, false, null, null);
+                    tableToolsColumnOptions.append(actionColOptions);
+                } else {
+                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                            ", "));
+                }
+
                 tableToolsColumnOptions.append("]");
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                         tableToolsColumnOptions.toString());
-            }
-            else{
+            } else {
                 // TODO: does this handle multiple rows correctly?
                 for (Component component : collectionGroup.getItems()) {
                     if (actionFieldVisible && columnIndex + 1 == actionIndex) {
@@ -251,19 +267,27 @@ public class RichTable extends WidgetBase {
                                     + UifConstants.TableToolsKeys.VISIBLE
                                     + ": "
                                     + UifConstants.TableToolsValues.FALSE
-                                    + ", \"" + UifConstants.TableToolsKeys.TARGETS + "\": ["+ columnIndex +"]"
+                                    + ", \""
+                                    + UifConstants.TableToolsKeys.TARGETS
+                                    + "\": ["
+                                    + columnIndex
+                                    + "]"
                                     + "}, ");
                             // if sortableColumns is present and a field is marked as sortable or unspecified
                         } else if (getSortableColumns() != null && !getSortableColumns().isEmpty()) {
                             if (getSortableColumns().contains(field.getPropertyName())) {
-                                tableToolsColumnOptions.append(getDataFieldColumnOptions(columnIndex, collectionGroup, field)
-                                        + ", ");
+                                tableToolsColumnOptions.append(getDataFieldColumnOptions(columnIndex, collectionGroup,
+                                        field) + ", ");
                             } else {
                                 tableToolsColumnOptions.append("{'"
                                         + UifConstants.TableToolsKeys.SORTABLE
                                         + "': "
                                         + UifConstants.TableToolsValues.FALSE
-                                        + ", \"" + UifConstants.TableToolsKeys.TARGETS + "\": ["+ columnIndex +"]"
+                                        + ", \""
+                                        + UifConstants.TableToolsKeys.TARGETS
+                                        + "\": ["
+                                        + columnIndex
+                                        + "]"
                                         + "}, ");
                             }
                         } else {// sortable columns not defined
@@ -271,19 +295,22 @@ public class RichTable extends WidgetBase {
                             tableToolsColumnOptions.append(colOptions + " , ");
                         }
                         columnIndex++;
-                    }
-                    else if(component instanceof MessageField && component.getDataAttributes().get("role") != null
-                            && component.getDataAttributes().get("role").equals("grouping")){
+                    } else if (component instanceof MessageField
+                            && component.getDataAttributes().get("role") != null
+                            && component.getDataAttributes().get("role").equals("grouping")) {
                         //Grouping column is never shown, so skip
                         tableToolsColumnOptions.append("{"
-                            + UifConstants.TableToolsKeys.VISIBLE
-                            + ": "
-                            + UifConstants.TableToolsValues.FALSE
-                            + ", \"" + UifConstants.TableToolsKeys.TARGETS + "\": ["+ columnIndex +"]"
-                            + "}, ");
+                                + UifConstants.TableToolsKeys.VISIBLE
+                                + ": "
+                                + UifConstants.TableToolsValues.FALSE
+                                + ", \""
+                                + UifConstants.TableToolsKeys.TARGETS
+                                + "\": ["
+                                + columnIndex
+                                + "]"
+                                + "}, ");
                         columnIndex++;
-                    }
-                    else {
+                    } else {
                         String colOptions = constructTableColumnOptions(columnIndex, false, null, null);
                         tableToolsColumnOptions.append(colOptions + " , ");
                         columnIndex++;
@@ -291,11 +318,16 @@ public class RichTable extends WidgetBase {
 
                 }
 
-                tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
+                    String actionColOptions = constructTableColumnOptions(actionIndex, false, null, null);
+                    tableToolsColumnOptions.append(actionColOptions);
+                } else {
+                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
                             ", "));
+                }
                 tableToolsColumnOptions.append("]");
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
-                                        tableToolsColumnOptions.toString());
+                        tableToolsColumnOptions.toString());
             }
         }
     }
@@ -344,8 +376,8 @@ public class RichTable extends WidgetBase {
      * from the table
      * @return a formatted string with data table options for one column
      */
-    protected String constructTableColumnOptions(int target,
-            boolean isSortable, Class dataTypeClass, String sortDataType) {
+    protected String constructTableColumnOptions(int target, boolean isSortable, Class dataTypeClass,
+            String sortDataType) {
         String colOptions = "null";
 
         String sortType = "";
@@ -372,10 +404,9 @@ public class RichTable extends WidgetBase {
             colOptions += " , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + sortType + "\"";
         }
 
-        if(!colOptions.equals("null")){
-            colOptions = "{" + colOptions + ", \"" + UifConstants.TableToolsKeys.TARGETS + "\": ["+ target +"]}";
-        }
-        else{
+        if (!colOptions.equals("null")) {
+            colOptions = "{" + colOptions + ", \"" + UifConstants.TableToolsKeys.TARGETS + "\": [" + target + "]}";
+        } else {
             colOptions = "{" + colOptions + "}";
         }
 

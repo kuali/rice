@@ -411,6 +411,15 @@ table.uif-tableCollectionLayout thead th.sorting_desc label {
     cursor: pointer;
 }
 
+table.dataTable thead th{
+    cursor: default;
+}
+
+table.dataTable tfoot th{
+    font-weight: normal;
+    padding: 3px 10px;
+}
+
 .uif-stackedCollectionLayout {
     background-image: url(../../images/pattern_dotted.png);
     padding: 10px;
@@ -518,6 +527,15 @@ tr.uif-groupTotalRow{
 
 tr.uif-groupTotalRow td{
     border: none !important;
+    margin-right: 10px;
+}
+
+tr.uif-groupTotalRow td, tr.uif-totalRow th{
+    text-align: right;
+}
+
+div.uif-calculationField, div.uif-calculationField input{
+    text-align: right;
 }
 
 /* Document header info *******************************************************************************/

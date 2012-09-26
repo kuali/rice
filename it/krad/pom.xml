@@ -130,7 +130,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.kuali.commons</groupId>
+      <groupId>${commons-beanutils.groupId}</groupId>
       <artifactId>commons-beanutils</artifactId>
       <scope>test</scope>
     </dependency>

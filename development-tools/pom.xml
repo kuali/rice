@@ -62,7 +62,7 @@
       <artifactId>db-ojb</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.kuali.commons</groupId>
+      <groupId>${commons-beanutils.groupId}</groupId>
       <artifactId>commons-beanutils</artifactId>
     </dependency>
     <dependency>

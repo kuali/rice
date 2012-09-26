@@ -56,6 +56,7 @@
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
+    <commons-beanutils.groupId>commons-beanutils</commons-beanutils.groupId>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
     <mysql.jdbc.version>5.1.18</mysql.jdbc.version>
@@ -83,7 +84,7 @@
     <cglib.version>2.2.2</cglib.version>
     <aspectj.version>1.6.8</aspectj.version>
     <bitronix.version>2.1.2</bitronix.version>
-    <commons-beanutils.version>1.8.3-kuali-4</commons-beanutils.version>
+    <commons-beanutils.version>1.8.3</commons-beanutils.version>
     <commons-codec.version>1.6</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
@@ -525,8 +526,8 @@
                         http://bugs.sun.com/view_bug.do?bug_id=6528714
                         https://issues.apache.org/jira/browse/BEANUTILS-340
                       -->
-                      <exclude>commons-beanutils:commons-beanutils</exclude>
-                      <exclude>org.apache.commons:commons-beanutils</exclude>
+                      <!-- exclude>commons-beanutils:commons-beanutils</exclude -->
+                      <!-- exclude>org.apache.commons:commons-beanutils</exclude -->
 
                       <!-- exclude eh cache in general - only allow at a specific scope -->
                       <exclude>net.sf.ehcache</exclude>
@@ -1135,7 +1136,7 @@
           </exclusion>
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>commons-beanutils</groupId>
+            <groupId>${commons-beanutils.groupId}</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1157,7 +1158,7 @@
 
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>commons-beanutils</groupId>
+            <groupId>${commons-beanutils}</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1194,7 +1195,7 @@
           </exclusion>
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>commons-beanutils</groupId>
+            <groupId>${commons-beanutils.groupId}</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1454,7 +1455,7 @@
           </exclusion>
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>commons-beanutils</groupId>
+            <groupId>${commons-beanutils.groupId}</groupId>
           </exclusion>
           <exclusion>
             <groupId>commons-digester</groupId>
@@ -1629,9 +1630,8 @@
         <artifactId>kuali-mvn</artifactId>
         <version>${kuali-mvn.version}</version>
       </dependency>
-
       <dependency>
-        <groupId>org.kuali.commons</groupId>
+        <groupId>${commons-beanutils.groupId}</groupId>
         <artifactId>commons-beanutils</artifactId>
         <version>${commons-beanutils.version}</version>
         <exclusions>
@@ -1653,7 +1653,7 @@
           </exclusion>
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>commons-beanutils</groupId>
+            <groupId>${commons-beanutils.groupId}</groupId>
           </exclusion>
           <exclusion>
             <groupId>cglib</groupId>

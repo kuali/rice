@@ -30,13 +30,23 @@ import static org.junit.Assert.*;
  *
  * Since integration tests are generally slow and less stable compared to unit tests, they are only executed upon
  * project build when specifically requested.
+ *
+ * This test requires a server to be running.  Currently maven launches the server.
  */
 public class BasicApplicationIT {
     @Test
     public void testBasicApplicationStartup() throws Exception {
-        URL url = new URL("http://localhost:" + System.getProperty("test.port") + "/${artifactId}");
+        URL url = new URL("http://localhost:" + getPort() + "/${artifactId}");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         assertEquals(200, connection.getResponseCode());
+    }
+
+    private String getPort() {
+        String port = System.getProperty("test.port");
+        if (port == null || port.trim().equals("")) {
+            port = "8080";
+        }
+        return "8080";
     }
 }

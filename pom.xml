@@ -56,7 +56,7 @@
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
-    <commons-beanutils.groupId>commons-beanutils</commons-beanutils.groupId>
+    <commons-beanutils.groupId>org.kuali.commons</commons-beanutils.groupId>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
     <mysql.jdbc.version>5.1.18</mysql.jdbc.version>
@@ -84,7 +84,7 @@
     <cglib.version>2.2.2</cglib.version>
     <aspectj.version>1.6.8</aspectj.version>
     <bitronix.version>2.1.2</bitronix.version>
-    <commons-beanutils.version>1.8.3</commons-beanutils.version>
+    <commons-beanutils.version>1.8.3-kuali-4</commons-beanutils.version>
     <commons-codec.version>1.6</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>

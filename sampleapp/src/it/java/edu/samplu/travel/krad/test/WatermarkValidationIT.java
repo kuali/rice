@@ -48,7 +48,7 @@ public class WatermarkValidationIT extends WebDriverITBase {
 		//Switch to new window.
 		switchWindow();
 		Thread.sleep(3000);
-		assertEquals("It's watermarked ",getAttributeValueByName("field106", "placeholder"));
-		assertEquals("Watermark... ",getAttributeValueByName("field110", "placeholder"));
+		assertEquals("It's watermarked ",getAttributeByName("field106", "placeholder"));
+		assertEquals("Watermark... ",getAttributeByName("field110", "placeholder"));
 	}
 }

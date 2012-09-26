@@ -315,8 +315,8 @@ public abstract class WebDriverITBase {
      *@param name name of an element
      *@param attribute the name of an attribute whose value is to be retrieved
     */
-    protected String getAttributeValueByName(String name,String attribute) throws InterruptedException {
-        return getAttributeValue(By.name(name),attribute);
+    protected String getAttributeByName(String name,String attribute) throws InterruptedException {
+        return getAttribute(By.name(name),attribute);
     }
     
     /**
@@ -325,8 +325,8 @@ public abstract class WebDriverITBase {
      *@param locator locating mechanism of an element
      *@param attribute the name of an attribute whose value is to be retrieved
     */
-    protected String getAttributeValueByXpath(String locator,String attribute) throws InterruptedException {
-        return getAttributeValue(By.xpath(locator),attribute);
+    protected String getAttributeByXpath(String locator,String attribute) throws InterruptedException {
+        return getAttribute(By.xpath(locator),attribute);
     }
     
     /**
@@ -335,7 +335,7 @@ public abstract class WebDriverITBase {
      * @param by method used for finding the element
      *@param attribute the name of an attribute whose value is to be retrieved
     */
-    protected String getAttributeValue(By by,String attribute)  throws InterruptedException {
+    protected String getAttribute(By by,String attribute)  throws InterruptedException {
         return driver.findElement(by).getAttribute(attribute);        
     }
     

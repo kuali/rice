@@ -58,15 +58,15 @@ public class DirtyFieldsCheckIT extends WebDriverITBase {
 		waitForElementPresentByName("field106");
 		// //Asserting text-field style to uppercase. This style would display
 		// input text in uppercase.
-		assertEquals("text-transform: uppercase;",getAttributeValueByName("field112", "style"));
+		assertEquals("text-transform: uppercase;",getAttributeByName("field112", "style"));
 		assertCancelConfirmation(); 
 		waitForElementPresentByName("field101");
-		assertEquals("val", getAttributeValueByName("field101","value")); 
+		assertEquals("val", getAttributeByName("field101","value")); 
 		clearTextByName("field101");
 		waitAndTypeByName("field101", "1");
 		waitAndTypeByName("field104", "");
 
-		assertEquals("1", getAttributeValueByName("field101","value"));
+		assertEquals("1", getAttributeByName("field101","value"));
 		waitAndTypeByName("field104", "2");
 		// 'Progressive Disclosure' navigation link
 		assertCancelConfirmation();

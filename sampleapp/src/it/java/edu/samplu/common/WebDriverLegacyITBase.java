@@ -1,5 +1,7 @@
 package edu.samplu.common;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -105,6 +107,26 @@ public abstract class WebDriverLegacyITBase {
         return driver.findElement(by).getAttribute(attribute);
     }
     
+    /**
+     * Get value of any attribute by using element name
+     *
+     *@param name name of an element
+     *@param attribute the name of an attribute whose value is to be retrieved
+    */
+    protected String getAttributeByName(String name,String attribute) throws InterruptedException {
+        return getAttribute(By.name(name),attribute);
+    }
+    
+    /**
+     * Get value of any attribute by using element xpath
+     *
+     *@param locator locating mechanism of an element
+     *@param attribute the name of an attribute whose value is to be retrieved
+    */
+    protected String getAttributeByXpath(String locator,String attribute) throws InterruptedException {
+        return getAttribute(By.xpath(locator),attribute);
+    }
+           
     protected String getBaseUrlString() {
         return ITUtil.getBaseUrlString();
     }
@@ -135,6 +157,14 @@ public abstract class WebDriverLegacyITBase {
 
     protected boolean isElementPresent(By by) {
         return (driver.findElements(by)).size()>0;
+    }
+    
+    protected boolean isElementPresentByName(String name) {
+        return isElementPresent(By.name(name));
+    }
+    
+    protected boolean isElementPresentByXpath(String locator) {
+        return isElementPresent(By.xpath(locator));
     }
     
     protected void open(String url) {
@@ -294,5 +324,33 @@ public abstract class WebDriverLegacyITBase {
                 break;
             }
         }
+    }
+    
+    protected String[] getSelectOptions(By by) throws InterruptedException {
+        WebElement select1 = driver.findElement(by);
+        List<WebElement> options = select1.findElements(By.tagName("option"));
+        String[] optionValues = new String[options.size()];
+        int counter=0;
+        for(WebElement option : options){
+            optionValues[counter] = option.getAttribute("value");
+            counter++;
+        }
+        return optionValues;
+    }
+    
+    protected String[] getSelectOptionsByName(String name) throws InterruptedException {
+        return getSelectOptions(By.name(name));
+    }
+    
+    protected String[] getSelectOptionsByXpath(String locator) throws InterruptedException {
+        return getSelectOptions(By.xpath(locator));
+    }
+    
+    protected int getCssCount(String selector) {
+        return getCssCount(By.cssSelector(selector));
+    }
+    
+    protected int getCssCount(By by) {
+        return (driver.findElements(by)).size();
     }
 }

@@ -37,6 +37,7 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -161,6 +162,24 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (generateAutoSequence && !(getSequenceFieldPrototype() instanceof Message)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
             view.assignComponentIds(getSequenceFieldPrototype());
+        }
+
+    }
+
+    /**
+     * performApplyModel override.  Takes expressions that may be set in the columnCalculation objects
+     * and populates them correctly into those component's propertyExpressions.
+     *
+     * @param view view instance to which the layout manager belongs
+     * @param model Top level object containing the data (could be the form or a
+     *            top level business object, dto)
+     * @param container
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Container container) {
+        super.performApplyModel(view, model, container);
+        for (ColumnCalculationInfo cInfo : columnCalculations) {
+            ExpressionUtils.populatePropertyExpressionsFromGraph(cInfo, false);
         }
 
     }
@@ -318,10 +337,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 groupItems.add(pageTotalDataField);
             }
 
-           //setup total field and add it to footer's group for this column
+            //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
                 Field totalDataField = setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(),
                         this.getTotalLabel(), "total", leftLabelColumnIndex);
+                /*                if(((MessageField)totalDataField).getMessage().getMessageText().contains("@{")){
+                    ((MessageField)totalDataField).getMessage().getPropertyExpressions().put("messageText",
+                            ((MessageField)totalDataField).getMessage().getMessageText());
+                }*/
                 if (!cInfo.isRecalculateTotalClientside()) {
                     totalDataField.addDataAttribute("skipTotal", "true");
                 }
@@ -847,6 +870,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         components.add(addLineGroup);
         components.addAll(headerLabels);
         components.addAll(dataFields);
+        for (ColumnCalculationInfo cInfo : columnCalculations) {
+            components.add(cInfo.getTotalField());
+            components.add(cInfo.getPageTotalField());
+            components.add(cInfo.getGroupTotalFieldPrototype());
+        }
 
         return components;
     }
@@ -1622,7 +1650,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * When this property is set, grouping for this
      * collection will be enabled and the lines of the collection will be grouped by the propertyName(s) supplied.
      * Supplying multiple property names will cause the grouping to be on multiple fields and ordered
-     * alphabetically on "propetyValue1, propertyValue2" (this is also how the group title will display for each group).
+     * alphabetically on "propetyValue1, propertyValue2" (this is also how the group title will display for each
+     * group).
      * The property names supplied must be relative to the line, so #lp
      * SHOULD NOT be used (it is assumed automatically).
      * </p>

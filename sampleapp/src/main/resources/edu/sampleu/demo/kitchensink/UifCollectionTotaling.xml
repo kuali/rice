@@ -42,6 +42,7 @@
               <ref bean="Demo-CollectionTotaling-Section5"/>
               <ref bean="Demo-CollectionTotaling-Section6"/>
               <ref bean="Demo-CollectionTotaling-Section7"/>
+              <ref bean="Demo-CollectionTotaling-Section8"/>
             </list>
           </property>
         </bean>
@@ -189,5 +190,36 @@
       </list>
     </property>
   </bean>
+  
+  <bean id="Demo-CollectionTotaling-Section8" parent="Uif-TableCollectionSection">
+      <property name="headerText" value="Total from Server, no client-side totalling"/>
+      <property name="instructionalText" value="Server value for total, no client-side calculations, page
+      and group totals turned off (because these are client-side only functionality)"/>
+      <property name="collectionObjectClass"
+                value="edu.sampleu.demo.kitchensink.UITestObject"/>
+      <property name="propertyName" value="groupedList1"/>
+      <property name="layoutManager.renderSequenceField" value="false"/>
+      <property name="layoutManager.columnCalculations">
+        <list>
+          <bean parent="Uif-ColumnCalculationInfo-Sum" p:showPageTotal="false"
+                p:showTotal="true" p:propertyName="field4" p:recalculateTotalClientside="false">
+            <property name="totalField.messageText" value="@{#form.fakeTotal}"/>
+          </bean>
+        </list>
+      </property>
+      <property name="layoutManager.groupingPropertyNames">
+        <list>
+          <value>field1</value>
+        </list>
+      </property>
+      <property name="items">
+        <list>
+          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Value 1"/>
+          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Value 2"/>
+          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Value 3"/>
+          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Group Value"/>
+        </list>
+      </property>
+    </bean>
 
 </beans>

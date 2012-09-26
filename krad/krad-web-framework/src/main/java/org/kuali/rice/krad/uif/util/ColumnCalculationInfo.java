@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.MessageField;
 
@@ -23,7 +24,7 @@ import org.kuali.rice.krad.uif.field.MessageField;
  * of table collection.  This functionality can only be used when the dataTables plugin is being used
  * (richTable.render="true" for TableLayoutManager)
  */
-public class ColumnCalculationInfo {
+public class ColumnCalculationInfo extends UifDictionaryBeanBase{
     private Integer columnNumber;
     private String propertyName;
 

@@ -194,7 +194,16 @@ public class RichTable extends WidgetBase {
 
             if (layoutManager instanceof TableLayoutManager && ((TableLayoutManager) layoutManager)
                     .isRenderSequenceField()) {
-                /*tableToolsColumnOptions.append(" null ,");*/
+                tableToolsColumnOptions.append("{\""
+                        + UifConstants.TableToolsKeys.SORT_TYPE
+                        + "\" : \""
+                        + UifConstants.TableToolsValues.NUMERIC
+                        + "\", "
+                        + "\""
+                        + UifConstants.TableToolsKeys.TARGETS
+                        + "\": ["
+                        + columnIndex
+                        + "]}, ");
                 columnIndex++;
                 if (actionIndex == 2 && actionFieldVisible) {
                     String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);

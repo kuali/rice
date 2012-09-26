@@ -183,6 +183,7 @@ public class UifComponentsTestForm extends UifFormBase {
     private String mField1 = "SecretInfo555";
     private String mField2 = "SecretInfo111";
     private String mField3 = "SecretInfo222";
+    private String fakeTotal = "123(server value)";
 
     private MultipartFile fileUpload;
 
@@ -2383,5 +2384,13 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setDoubleGroupedList(List<UITestObject> doubleGroupedList) {
         this.doubleGroupedList = doubleGroupedList;
+    }
+
+    public String getFakeTotal() {
+        return fakeTotal;
+    }
+
+    public void setFakeTotal(String fakeTotal) {
+        this.fakeTotal = fakeTotal;
     }
 }

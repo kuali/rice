@@ -44,7 +44,7 @@ public class RichTableTest {
 
     //private
     @Before
-    public void setup(){
+    public void setup() {
 
         richTable = new RichTable();
 
@@ -75,12 +75,12 @@ public class RichTableTest {
      * test that without aoColumns being set explicitly, the default behaviour continues
      */
     public void testComponentOptionsDefault() throws Exception {
-        String expected = "[ null ,{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"} , "
-                + "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"} , "
-                + "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"} ]";
-        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
+        String expected =
+                "[{\"sType\" : \"numeric\", \"aTargets\": [0]}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [1]} , "
+                        + "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [2]} , "
+                        + "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [3]} ]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
-
 
     @Test
     /**
@@ -89,23 +89,24 @@ public class RichTableTest {
     public void testComponentOptionsAoColumnsJSOptions() throws Exception {
         String innerColValues = "{bVisible: false}, null, null";
         String options = "[" + innerColValues + "]";
-        String expected = "[ null ," + innerColValues + " ]";
-        assertRichTableComponentOptions(options, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
+        String expected = "[{\"sType\" : \"numeric\", \"aTargets\": [0]}, " + innerColValues + "]";
+        assertRichTableComponentOptions(options, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
     @Test
     /**
      * test whether a hidden column, when marked as sortable is still hidden
      */
-     public void testComponentOptionsHideColumnOnRichTable() {
+    public void testComponentOptionsHideColumnOnRichTable() {
         Set<String> hiddenColumns = new HashSet<String>();
         hiddenColumns.add("employeeId");
         Set<String> sortableColumns = new HashSet<String>();
         sortableColumns.add("positionTitle");
         richTable.setSortableColumns(sortableColumns);
         richTable.setHiddenColumns(hiddenColumns);
-        String expected = "[ null ,{bVisible: false}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable': false}]";
-        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
+        String expected =
+                "[{\"sType\" : \"numeric\", \"aTargets\": [0]}, {bVisible: false, \"aTargets\": [1]}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [2]}, {'bSortable': false, \"aTargets\": [3]}]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
     @Test
@@ -125,11 +126,12 @@ public class RichTableTest {
         lmHiddenColumns.add("contactEmail");
         Set<String> lmSortableColumns = new HashSet<String>();
         lmSortableColumns.add("employeeId");
-        ((TableLayoutManager)group.getLayoutManager()).setSortableColumns(lmSortableColumns);
-        ((TableLayoutManager)group.getLayoutManager()).setHiddenColumns(lmHiddenColumns);
+        ((TableLayoutManager) group.getLayoutManager()).setSortableColumns(lmSortableColumns);
+        ((TableLayoutManager) group.getLayoutManager()).setHiddenColumns(lmHiddenColumns);
 
-        String expected = "[ null ,{bVisible: false}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable': false}]";
-        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
+        String expected =
+                "[{\"sType\" : \"numeric\", \"aTargets\": [0]}, {bVisible: false, \"aTargets\": [1]}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [2]}, {'bSortable': false, \"aTargets\": [3]}]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
     /**
@@ -142,6 +144,6 @@ public class RichTableTest {
     private void assertRichTableComponentOptions(String optionsOnGroup, String optionsOnRichTable, String optionKey) {
         richTable.getTemplateOptions().put(optionKey, optionsOnGroup);
         richTable.performFinalize(new View(), new UifFormBase(), group);
-        assertEquals(optionsOnRichTable,richTable.getTemplateOptions().get(optionKey));
+        assertEquals(optionsOnRichTable, richTable.getTemplateOptions().get(optionKey));
     }
 }

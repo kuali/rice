@@ -2127,6 +2127,19 @@ public class KualiDocumentActionBase extends KualiAction {
         GlobalVariables.getMessageMap().putInfo("document", "general.routing.superuser.disapproved", documentForm.getDocId());
     	return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+
+    public ActionForward superUserApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+        KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
+        if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.annotation.missing", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
+        documentActions.superUserBlanketApprove(parameters, true);
+        GlobalVariables.getMessageMap().putInfo("document", "general.routing.superuser.approved", documentForm.getDocId());
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
     
     private WorkflowDocumentActionsService getWorkflowDocumentActionsService(String documentTypeId) {
         DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(documentTypeId);

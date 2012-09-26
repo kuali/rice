@@ -49,9 +49,25 @@ public abstract class WebDriverLegacyITBase {
     protected void assertElementPresentByName(String name) {
         driver.findElement(By.name(name));
     }
+    
+    protected void assertElementPresentByName(String name,String message) {
+        try{
+                driver.findElement(By.name(name));
+        }catch(Exception e){
+                Assert.fail(name+ " not present "+ message);                
+        }
+    }
 
     protected void assertElementPresentByXpath(String locator) {
         driver.findElement(By.xpath(locator));
+    }
+    
+    protected void assertElementPresentByXpath(String locator,String message) {
+        try{
+                driver.findElement(By.xpath(locator));
+        }catch(Exception e){
+                Assert.fail(locator+ " not present "+ message);                
+        }
     }
     
     protected void assertTextPresent(String text) {
@@ -352,5 +368,21 @@ public abstract class WebDriverLegacyITBase {
     
     protected int getCssCount(By by) {
         return (driver.findElements(by)).size();
+    }
+    
+    protected void checkErrorMessageItem(String message)
+    {
+        final String error_locator = "//li[@class='uif-errorMessageItem']";
+        assertElementPresentByXpath(error_locator);
+        String errorText=null;
+        try {
+            errorText = getTextByXpath(error_locator);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (errorText != null && errorText.contains("errors")) {
+            Assert.fail(errorText + message);
+        }
+               
     }
 }

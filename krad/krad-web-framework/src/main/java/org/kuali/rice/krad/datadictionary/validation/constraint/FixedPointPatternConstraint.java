@@ -133,7 +133,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     @Override
     public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("FixedPointPatternConstraint",getLabelKey());
+        tracer.addBean("FixedPointPatternConstraint", getMessageKey());
 
         if(getPrecision()<=getScale()){
             ErrorReport error = new ErrorReport(ErrorReport.ERROR);

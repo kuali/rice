@@ -370,7 +370,7 @@
                 client-side validation is invoked on that field and any validation errors are shown
                 on the screen. When the user goes back to a field to correct it, validation occurs
                 with any change so the user gets immediate feedback on if they fixed their error. </para>
-      <para>The validation messages shown are determined by the labelKey on the constraint
+      <para>The validation messages shown are determined by the messageKey on the constraint
                 for that field. </para>
       <para>By default, client-side validation is on. Client-side validation can be turned
                 off/on on each individual constraint, but also at the FormView level through the

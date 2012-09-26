@@ -49,8 +49,8 @@ public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintP
 		ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(constraint, attributeValueReader);
 
         if(constraint != null){
-            if(StringUtils.isNotBlank(constraint.getLabelKey())){
-                constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+            if(StringUtils.isNotBlank(constraint.getMessageKey())){
+                constraintValidationResult.setConstraintLabelKey(constraint.getMessageKey());
             }
             else{
                 constraintValidationResult.setConstraintLabelKey(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX +

@@ -125,7 +125,7 @@ public class CaseConstraint extends BaseConstraint {
     @Override
     public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("CaseConstraint",getLabelKey());
+        tracer.addBean("CaseConstraint", getMessageKey());
 
         if(getWhenConstraint()==null){
             ErrorReport error = new ErrorReport(ErrorReport.ERROR);

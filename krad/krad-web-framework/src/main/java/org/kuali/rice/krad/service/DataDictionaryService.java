@@ -41,18 +41,24 @@ import java.util.regex.Pattern;
 public interface DataDictionaryService {
 
     /**
-     * Sequentially adds each package named (as a String) in the given List as a source of unique entries to the
-     * DataDictionary being constructed
+     * Adds additional dictionary files to the data dictionary (files that will not be loaded through one of
+     * the module configurations)
+     *
+     * <p>
+     * Additional files must be associated with a namespace thus a map is specified with the key giving the
+     * namespace the list of files should be associated with
+     * </p>
      *
      * <p>
      * Duplicate entries among any of the XML files in any of these packages will result in exceptions
      * being thrown, hence service-initialization failure
      * </p>
      *
-     * @param baselinePackages
+     * @param additionalDictionaryFiles map where key is namespace and value is list of dictionary files that
+     * should be added to that namespace
      * @throws IOException if any of the given packages can't be located
      */
-    public void setBaselinePackages(List baselinePackages) throws IOException;
+    public void setAdditionalDictionaryFiles(Map<String, List<String>> additionalDictionaryFiles) throws IOException;
 
     /**
      * Sequentially adds each package named (as a String) in the given List as a source of unique entries to the

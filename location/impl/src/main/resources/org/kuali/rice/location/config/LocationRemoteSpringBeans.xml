@@ -59,10 +59,20 @@
   <bean id="locationModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="KR-NS"/>
     <property name="dataSourceName" value="locationDataSource"/>
-    <property name="initializeDataDictionary" value="false"/>
+    <property name="initializeDataDictionary" value="true"/>
     <property name="packagePrefixes">
       <list>
         <value>org.kuali.rice.location.</value>
+      </list>
+    </property>
+    <property name="dataDictionaryPackages">
+      <list>
+        <value>classpath:org/kuali/rice/location/web/campus/Campus.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusType.xml</value>
+        <value>classpath:org/kuali/rice/location/web/country/Country.xml</value>
+        <value>classpath:org/kuali/rice/location/web/county/County.xml</value>
+        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml</value>
+        <value>classpath:org/kuali/rice/location/web/state/State.xml</value>
       </list>
     </property>
     <property name="externalizableBusinessObjectImplementations">

@@ -31,7 +31,7 @@ function handleCheckboxLabelClick(checkboxId, event) {
     var checkbox = jQuery("#" + checkboxId);
     if (!checkbox.prop("disabled")) {
         if (jQuery(event.target).is("input, select, textarea, option")) {
-            if(!checkbox.prop("checked")){
+            if (!checkbox.prop("checked")) {
                 checkbox.prop("checked", true);
                 checkbox.change();
             }
@@ -98,7 +98,7 @@ function convertToHtml(text, removeAnchors) {
         text = text.replace(/&lt;\/a&gt;/gi, "");
     }
 
-    return jQuery("<span />", { html:text }).text();
+    return jQuery("<span />", { html: text }).text();
 }
 
 /**
@@ -111,7 +111,7 @@ function publishHeight() {
         parentUrl = jQuery.cookie('parentUrl');
         var passedUrl = decodeURIComponent(document.location.hash.replace(/^#/, ''));
         if (passedUrl && passedUrl.substring(0, 4) === "http") {
-            jQuery.cookie('parentUrl', passedUrl, {path:'/'});
+            jQuery.cookie('parentUrl', passedUrl, {path: '/'});
             parentUrl = passedUrl;
         }
     }
@@ -126,7 +126,7 @@ function publishHeight() {
     var height = jQuery("body").outerHeight();
     jQuery("body").attr("style", "overflow-x: auto; padding-right: 20px;");
     if (parentUrl && !isNaN(height) && height > 0) {
-        jQuery.postMessage({ if_height:height}, parentUrl, parent);
+        jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;
     }
 }
@@ -321,7 +321,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         runScriptsForId(id);
 
         //reinit dirty fields
-        jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+        jQuery('#kualiForm').dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 
         //reinitialize BubblePopup
         initBubblePopups();
@@ -551,7 +551,9 @@ function checkDirty(event) {
     var dirty = jQuery("." + kradVariables.FIELD_CLASS).find("input." + kradVariables.DIRTY_CLASS);
 
     if (validateDirty == "true" && dirty.length > 0) {
-        var answer = confirm("Form has unsaved data. Do you want to leave anyway?")
+        var dirtyMessage = getMessage(kradVariables.MESSAGE_KEY_DIRTY_FIELDS);
+        var answer = confirm(dirtyMessage);
+
         if (answer == false) {
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -561,10 +563,10 @@ function checkDirty(event) {
             if (ul.length > 0) {
                 var pageId = jQuery("[name='view.currentPageId']").val();
                 if (ul.hasClass(kradVariables.TAB_MENU_CLASS)) {
-                    jQuery("#" + ul.attr("id")).selectTab({selectPage:pageId});
+                    jQuery("#" + ul.attr("id")).selectTab({selectPage: pageId});
                 }
                 else {
-                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage:pageId});
+                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage: pageId});
                 }
             }
 
@@ -668,7 +670,7 @@ function jumpToElementByName(name) {
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
+            top.jQuery.scrollTo(theElement, 0, {offset: {top: headerOffset}});
         }
     }
 }
@@ -682,7 +684,7 @@ function jumpToElementById(id) {
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
+            top.jQuery.scrollTo(theElement, 0, {offset: {top: headerOffset}});
         }
     }
 }
@@ -968,7 +970,7 @@ function showLightboxComponent(componentId, overrideOptions) {
     // set renderedInLightBox indicator and remove it when lightbox is closed
     if (jQuery('#renderedInLightBox').val() != true) {
         jQuery('#renderedInLightBox').val(true);
-        _appendCallbackFunctions(overrideOptions, {afterClose:function () {
+        _appendCallbackFunctions(overrideOptions, {afterClose: function () {
             jQuery('#renderedInLightBox').val(false);
         }});
     }
@@ -998,7 +1000,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
     if (top == self) {
         // ensure that component of KualiForm gets updated after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
+        _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -1007,7 +1009,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         }});
     } else {
         // reattach component to KualiForm after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
+        _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             parent.jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -1037,7 +1039,7 @@ function showLightboxContent(content, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type:'html', content:content}, overrideOptions);
+    _initAndOpenLightbox({type: 'html', content: content}, overrideOptions);
 }
 
 /**
@@ -1056,7 +1058,7 @@ function showLightboxUrl(url, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type:'iframe', href:url}, overrideOptions);
+    _initAndOpenLightbox({type: 'iframe', href: url}, overrideOptions);
 }
 
 /**
@@ -1071,14 +1073,14 @@ function showLightboxUrl(url, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function _initAndOpenLightbox(contentOptions, overrideOptions) {
-    var options = {fitToView:true,
-        openEffect:'fade',
-        closeEffect:'fade',
-        openSpeed:200,
-        closeSpeed:200,
-        minHeight:10,
-        minWidth:10,
-        helpers:{overlay:{css:{cursor:'arrow'}, closeClick:false}}
+    var options = {fitToView: true,
+        openEffect: 'fade',
+        closeEffect: 'fade',
+        openSpeed: 200,
+        closeSpeed: 200,
+        minHeight: 10,
+        minWidth: 10,
+        helpers: {overlay: {css: {cursor: 'arrow'}, closeClick: false}}
     };
 
     // override fancybox content options
@@ -1097,7 +1099,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         // Remove portal css and add lightbox css for the duration of the lightbox's life
         parent.jQuery('link[href="/kr-dev/rice-portal/css/portal.css"]').remove();
         parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/lightbox.css" rel="stylesheet" type="text/css">');
-        _appendCallbackFunctions(options, {afterClose:function () {
+        _appendCallbackFunctions(options, {afterClose: function () {
             parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/portal.css" rel="stylesheet" type="text/css">');
             parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove();
         }});
@@ -1114,7 +1116,7 @@ function setupLightboxForm() {
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);
-    kualiLightboxForm.dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+    kualiLightboxForm.dirty_form({changedClass: kradVariables.DIRTY_CLASS, includeHidden: true});
 }
 
 /**
@@ -1411,7 +1413,7 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
  * @param aaData all the data
  * @param aiDisplay the rows display order
  */
-function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay){
+function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay) {
     if (totalDiv.length && totalDiv.is(":visible") && totalDiv.data("function")) {
         var totalType = totalDiv.data("role");
         var dataIndex = currentColumn;
@@ -1448,10 +1450,10 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay){
         }
 
         if (!hasInvalidValues) {
-            if(extraData != undefined){
+            if (extraData != undefined) {
                 total = window[functionName](values, extraData);
             }
-            else{
+            else {
                 total = window[functionName](values);
             }
         }
@@ -1478,7 +1480,7 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay){
  */
 function sumValues(values) {
     var total = 0;
-    for(var i = 0; i < values.length; i++){
+    for (var i = 0; i < values.length; i++) {
         total += values[i];
     }
     return total;
@@ -1493,13 +1495,13 @@ function sumValues(values) {
 function averageValues(values, decimalPlaces) {
     var total = "N/A";
 
-    if(!decimalPlaces){
+    if (!decimalPlaces) {
         decimalPlaces = 2;
     }
 
     if (values.length) {
         total = 0;
-        for(var i = 0; i < values.length; i++){
+        for (var i = 0; i < values.length; i++) {
             total += values[i];
         }
         total = (total / (values.length)).toFixed(decimalPlaces);
@@ -1520,7 +1522,7 @@ function maxValue(values) {
         max = values[0];
     }
 
-    for(var i = 1; i < values.length; i++){
+    for (var i = 1; i < values.length; i++) {
         if (values[i] > max) {
             max = values[i];
         }
@@ -1541,7 +1543,7 @@ function minValue(values) {
         min = values[0];
     }
 
-    for(var i = 1; i < values.length; i++){
+    for (var i = 1; i < values.length; i++) {
         if (values[i] < min) {
             min = values[i];
         }
@@ -1612,28 +1614,149 @@ function normalizeGroupString(sGroup) {
 }
 
 /**
- * Makes a get request to the server so that the form with the specified formKey will
- * be cleared server side
+ * Retrieves the text for a message from cache or server if necessary
+ *
+ * @param key - key for the message
+ * @param namespace - (optional) namespace code for the message
+ * @param componentCode - (optional) component code for the message
  */
-function clearServerSideForm(formKey) {
-    var queryData = {};
+function getMessage(key, namespace, componentCode) {
+    var cacheKey = key;
+    if (namespace) {
+        cacheKey += "|" + namespace;
+    }
 
-    queryData.methodToCall = 'clearForm';
-    queryData.ajaxReturnType = 'update-none';
-    queryData.formKey = formKey;
+    if (componentCode) {
+        cacheKey += "|" + componentCode;
+    }
+
+    // check session cache first
+    var messageText = retrieveFromSession(cacheKey);
+    if (messageText) {
+        return messageText;
+    }
+
+    // retrieve from server
+    var params = {};
+    params.key = key;
+
+    if (namespace) {
+        params.namespace = namespace;
+    }
+
+    if (componentCode) {
+        params.componentCode = componentCode;
+    }
+
+    var response = invokeServerListener(kradVariables.RETRIEVE_MESSAGE_METHOD_TO_CALL, params);
+    if (response && response.messageText) {
+        messageText = response.messageText;
+    }
+
+    // store back to server for subsequent calls
+    storeToSession(cacheKey, messageText);
+
+    return messageText;
+}
+
+/**
+ * Helper method for invoking the server listenering to make a query and get back
+ * a JSON response that is then evaluated to a JS object and returned
+ *
+ * @param methodToCall - method on the listener to call
+ * @param params - parameter key/value pairs for the request
+ */
+function invokeServerListener(methodToCall, params) {
+    var serverResponse;
+
+    params.methodToCall = methodToCall;
+    params.ajaxReturnType = 'update-none';
 
     var postUrl = getConfigParam("kradUrl") + "/listener";
 
     jQuery.ajax({
-        url:postUrl,
-        dataType:"json",
-        data:queryData,
-        async:false,
-        beforeSend:null,
-        complete:null,
-        error:null,
-        success:null
+        url: postUrl,
+        dataType: "json",
+        data: params,
+        async: false,
+        beforeSend: null,
+        complete: null,
+        error: null,
+        success: function (data) {
+            serverResponse = data;
+        }
     });
+
+    return serverResponse;
+}
+
+/**
+ * Stores a key/value pair to session storage if available (if not an error is thrown)
+ *
+ * @param key - key for the pair to store, which will be used for retrieving the value
+ * @param value - value for the pair to store
+ */
+function storeToSession(key, value) {
+    if (sessionStorage) {
+        sessionStorage[key] = value;
+    }
+    else {
+        throw Error("Session storage not supported");
+    }
+}
+
+/**
+ * Retrieves the value for a key from session storage
+ *
+ * <p>
+ * If session storage is not enabled an error is thrown and if the key is not found a null value is returned
+ * </p>
+ *
+ * @param key - key for the value to return
+ */
+function retrieveFromSession(key) {
+    if (sessionStorage) {
+        if (sessionStorage[key]) {
+            return sessionStorage[key];
+        }
+        return null;
+    }
+    else {
+        throw Error("Session storage not supported");
+    }
+}
+
+/**
+ * Removes a key/value pair from session storage
+ *
+ * <p>
+ * If session storage is not enabled an error is thrown
+ * </p>
+ *
+ * @param key - key for the pair to remove
+ */
+function removeFromSession(key) {
+    if (sessionStorage) {
+        if (sessionStorage[key]) {
+            delete sessionStorage[key];
+        }
+    }
+    else {
+        throw Error("Session storage not supported");
+    }
+}
+
+/**
+ * Makes a get request to the server so that the form with the specified formKey will
+ * be cleared server side
+ *
+ * @param formKey key for the form to clear
+ */
+function clearServerSideForm(formKey) {
+    var params = {};
+    params.formKey = formKey;
+
+    invokeServerListener(kradVariables.CLEAR_FORM_METHOD_TO_CALL, params);
 }
 
 /**

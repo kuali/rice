@@ -135,20 +135,25 @@ public class DataDictionary {
 
         LOG.info("Completed DD XML File Load");
 
-        // post processes UIF beans for pulling out expressions within property values
-        UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
-        factoryPostProcessor.postProcessBeanFactory(ddBeans);
-
-        performDictionaryIndexing(allowConcurrentValidation);
+        performDictionaryPostProcessing(allowConcurrentValidation);
     }
 
     /**
-     * Builds indexes for the beans contained in the dictionary
+     * Invokes post processors and builds indexes for the beans contained in the dictionary
      *
      * @param allowConcurrentValidation - indicates whether the indexing should occur on a different thread
      * or the same thread
      */
-    public void performDictionaryIndexing(boolean allowConcurrentValidation) {
+    public void performDictionaryPostProcessing(boolean allowConcurrentValidation) {
+        // invoke post processing of the dictionary bean definitions
+//        DictionaryBeanFactoryPostProcessor dictionaryBeanPostProcessor = new DictionaryBeanFactoryPostProcessor(this,
+//                ddBeans);
+//        dictionaryBeanPostProcessor.postProcessBeanFactory();
+
+        // post processes UIF beans for pulling out expressions within property values
+        UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
+        factoryPostProcessor.postProcessBeanFactory(ddBeans);
+
         if (allowConcurrentValidation) {
             Thread t = new Thread(ddIndex);
             t.start();
@@ -287,6 +292,15 @@ public class DataDictionary {
      */
     public Map<String, List<String>> getModuleDictionaryFiles() {
         return moduleDictionaryFiles;
+    }
+
+    /**
+     * Setter for the map of module dictionary files
+     *
+     * @param moduleDictionaryFiles
+     */
+    public void setModuleDictionaryFiles(Map<String, List<String>> moduleDictionaryFiles) {
+        this.moduleDictionaryFiles = moduleDictionaryFiles;
     }
 
     /**

@@ -1,23 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+      Copyright 2005-2012 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+      Licensed under the Educational Community License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+      http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
 
--->
+  -->
+
   <bean id="TravelAccount" parent="TravelAccount-parentBean"/>
-
   <bean id="TravelAccount-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="inquiryDefinition">
@@ -56,11 +59,9 @@
     </property>
   </bean>
 
-<!-- Attribute Definitions -->
-
+  <!-- Attribute Definitions -->
 
   <bean id="TravelAccount-number" parent="TravelAccount-number-parentBean"/>
-
   <bean id="TravelAccount-number-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Travel Account Number"/>
@@ -74,14 +75,14 @@
     </property>
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="10"/>
-    </property>    
+    </property>
     <property name="summary" value="Unique identifier for account"/>
     <property name="name" value="number"/>
     <property name="label" value="Travel Account Number"/>
     <property name="description" value="Travel Account Number"/>
     <property name="required" value="true"/>
   </bean>
-  
+
   <bean id="TravelAccount-subAccount" parent="TravelAccount-number-parentBean">
     <property name="name" value="subAccount"/>
     <property name="shortLabel" value="Travel Sub Account Number"/>
@@ -91,7 +92,6 @@
   </bean>
 
   <bean id="TravelAccount-name" parent="TravelAccount-name-parentBean"/>
-  
   <bean id="TravelAccount-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Account Name"/>
@@ -104,27 +104,27 @@
     </property>
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="30"/>
-    </property>     
+    </property>
     <property name="name" value="name"/>
     <property name="label" value="Account Name"/>
     <property name="description" value="Account Name"/>
     <property name="attributeSecurity">
-		<bean parent="AttributeSecurity">
-  			<property name="mask" value="true" /> 
-			<property name="maskFormatter">
-  			<bean parent="MaskFormatterLiteral" p:literal="*********" /> 
-  			</property>
-  		</bean>
-  	</property>
+      <bean parent="AttributeSecurity">
+        <property name="mask" value="true"/>
+        <property name="maskFormatter">
+          <bean parent="MaskFormatterLiteral" p:literal="*********"/>
+        </property>
+      </bean>
+    </property>
   </bean>
-  
+
   <bean id="TravelAccount-subAccountName" parent="TravelAccount-name-parentBean">
     <property name="name" value="subAccountName"/>
     <property name="shortLabel" value="Sub Account Name"/>
     <property name="label" value="Sub Account Name"/>
     <property name="description" value="Sub Account Name"/>
   </bean>
-  
+
   <bean id="TravelAccount-subsidizedPercent" parent="AttributeReferenceDummy-percent">
     <property name="name" value="subsidizedPercent"/>
     <property name="shortLabel" value="Subsidized Percent"/>
@@ -137,7 +137,7 @@
       <bean parent="FixedPointValidationPattern" p:precision="5" p:allowNegative="false" p:scale="2"/>
     </property>
   </bean>
-  
+
   <bean id="TravelAccount-createDate" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="createDate"/>
     <property name="shortLabel" value="Date Created"/>
@@ -145,37 +145,43 @@
     <property name="description" value="Date Created"/>
     <property name="controlField">
       <bean parent="Uif-DateControl"/>
-    </property>     
+    </property>
     <property name="attributeSecurity">
-	            <bean parent="AttributeSecurity">
-		  			<property name="partialMask" value="true"/> 
-	  				<property name="partialMaskFormatter">
-	  					<bean parent="MaskFormatterSubString" p:maskLength="2"/> 
-	  				</property>
-	  			</bean>
-	  		</property>	
+      <bean parent="AttributeSecurity">
+        <property name="partialMask" value="true"/>
+        <property name="partialMaskFormatter">
+          <bean parent="MaskFormatterSubString" p:maskLength="2"/>
+        </property>
+      </bean>
+    </property>
   </bean>
-  
-  <bean id="TravelAccount-extension.accountTypeCode" parent="TravelAccount-extension.accountTypeCode-parentBean"/>
 
-  <bean id="TravelAccount-extension.accountTypeCode-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
+  <bean id="TravelAccount-extension.accountTypeCode" parent="TravelAccount-extension.accountTypeCode-parentBean"/>
+  <bean id="TravelAccount-extension.accountTypeCode-parentBean" abstract="true"
+        parent="TravelAccountType-accountTypeCode">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:includeBlankRow="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType"
+            p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="true" p:includeBlankRow="true" p:keyAttribute="accountTypeCode"
+            p:labelAttribute="name"/>
     </property>
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="2"/>
-    </property>      
+    </property>
     <property name="name" value="extension.accountTypeCode"/>
     <property name="summary" value="Type code grouping for account"/>
   </bean>
-  <bean id="TravelAccount-extension.accountType.codeAndDescription" parent="TravelAccount-extension.accountType.codeAndDescription-parentBean"/>
 
-  <bean id="TravelAccount-extension.accountType.codeAndDescription-parentBean" abstract="true" parent="TravelAccountType-codeAndDescription">
+  <bean id="TravelAccount-extension.accountType.codeAndDescription"
+        parent="TravelAccount-extension.accountType.codeAndDescription-parentBean"/>
+
+  <bean id="TravelAccount-extension.accountType.codeAndDescription-parentBean" abstract="true"
+        parent="TravelAccountType-codeAndDescription">
     <property name="name" value="extension.accountType.codeAndDescription"/>
     <property name="required" value="false"/>
   </bean>
-  <bean id="TravelAccount-foId" parent="TravelAccount-foId-parentBean"/>
 
+  <bean id="TravelAccount-foId" parent="TravelAccount-foId-parentBean"/>
   <bean id="TravelAccount-foId-parentBean" abstract="true" parent="FiscalOfficer-id">
     <property name="name" value="foId"/>
     <property name="additionalDisplayAttributeName" value="fiscalOfficer.userName"/>
@@ -184,15 +190,13 @@
     </property>
     <property name="summary" value="Responsbile for aproving account expenses"/>
   </bean>
-  
-  <bean id="TravelAccount-foName" parent="TravelAccount-foName-parentBean"/>
 
+  <bean id="TravelAccount-foName" parent="TravelAccount-foName-parentBean"/>
   <bean id="TravelAccount-foName-parentBean" abstract="true" parent="FiscalOfficer-userName">
     <property name="name" value="fiscalOfficer.userName"/>
   </bean>
 
-<!-- Business Object Inquiry Definition -->
-
+  <!-- Business Object Inquiry Definition -->
 
   <bean id="TravelAccount-inquiryDefinition" parent="TravelAccount-inquiryDefinition-parentBean"/>
 
@@ -221,13 +225,13 @@
     <property name="title" value="Travel Account Inquiry"/>
   </bean>
 
-<!-- Business Object Lookup Definition -->
+  <!-- Business Object Lookup Definition -->
 
 
   <bean id="TravelAccount-lookupDefinition" parent="TravelAccount-lookupDefinition-parentBean"/>
 
   <bean id="TravelAccount-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    
+
     <property name="defaultSort">
       <bean parent="SortDefinition">
       </bean>
@@ -245,7 +249,8 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="number" p:forceInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="name" p:forceInquiry="true"/>
-        <bean parent="FieldDefinition" p:attributeName="extension.accountType.codeAndDescription" p:forceInquiry="true"/>
+        <bean parent="FieldDefinition" p:attributeName="extension.accountType.codeAndDescription"
+              p:forceInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="foId" p:forceInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="subAccount"/>
         <bean parent="FieldDefinition" p:attributeName="subAccountName"/>

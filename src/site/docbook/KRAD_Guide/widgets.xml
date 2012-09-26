@@ -1444,11 +1444,11 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
     <section>
         <title>Creating a New Widget </title>
         <para>To create a new widget basically takes five steps.  First you have to find the
-            appropriate JjqQuery plugin or JavaScript function that will satisfy your widget
+            appropriate jQuery plugin or JavaScript function that will satisfy your widget
             requirements. Secondly one needs to create a Java widget class that extends the widget
-            base. Thirdly you would create the jsp template .tag file that will render the widget on
+            base. Thirdly you would create the FreeMarker template file that will render the widget on
             the browser. The fourth step is to create a custom JavaScript would only be necessary in
-            some cases when you need to pass the component id to the jJqQuery select. Lastly you
+            some cases when you need to pass the component id to the jQuery select. Lastly you
             need to create the spring beans definitions.</para>
         <para>For our exercise application we will look at adding a spinner widget that will render
             spinner buttons on an input control to make increasing and decreasing numeric values
@@ -1524,25 +1524,20 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
 }    </programlisting>
         </section>
         <section>
-            <title>JSP Template</title>
+            <title>FreeMarker Template</title>
             <para>Because we extended the TextControl to create the SpinnerControl widget class, we
-                will do the same when creating the template. We use the tiles:insertTemplate tag to
-                do that. To render the spinner buttons on the control we use the krad:script tag to
-                call the createSpinner function that will add the spinner plugin on that text field.
-                We pass the specific SpinnerControl id and the component options as
-                paramtersparameters.</para>
-            <programlisting>&lt;%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+                will do the same when creating the template. We will invoke the text control macro
+                to include the standard text control. To render the spinner buttons on the control
+                we use the script macro to call the createSpinner function that will add the spinner
+                plugin on that text field. We pass the specific SpinnerControl id and the component
+                options as parameters.</para>
+            <programlisting>&lt;#macro spinner control field> 
 
-&lt;tiles:useAttribute name="control" classname="org.kuali.rice.krad.uif.control.SpinnerControl "/>   
-&lt;tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.InputField"/>
-
-&lt;%-- Create Standard HTML Text Input then decorates with Spinner plugin --%>       
-&lt;tiles:insertTemplate template="/krad/WEB-INF/jsp/templates/control/text.jsp">     
-  &lt;tiles:putAttribute name="control" value="${field.control}"/>     
-  &lt;tiles:putAttribute name="field" value="${field}"/>   
-&lt;/tiles:insertTemplate>       
-
-&lt;krad:script value="createSpinner('${control.id}', ${control.spinner.componentOptionsJSString});" />    </programlisting>
+  &lt;#-- Create Standard HTML Text Input then decorates with Spinner plugin -->
+  &lt;uif_text control=control field=field/>       
+     
+  &lt;@krad.script value="createSpinner('${control.id}', ${control.spinner.componentOptionsJSString});/>
+&lt;/#macro>   </programlisting>
         </section>
         <section>
             <title>JavaScript Function</title>

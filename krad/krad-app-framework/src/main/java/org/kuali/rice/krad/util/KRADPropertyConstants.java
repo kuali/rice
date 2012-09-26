@@ -74,7 +74,9 @@ public final class KRADPropertyConstants {
 	public static final String GROUPS = "groups";
 	public static final String ID = "id";
 	public static final String INITIATOR_NETWORK_ID = "initiatorNetworkId";
+    public static final String KEY = "key";
 	public static final String LOOKUP_DATE = "lookupDate";
+    public static final String METHOD_TO_CALL = "methodToCall";
 	public static final String NAME = "name";
     public static final String NAMESPACE_CODE = "namespaceCode";
 	public static final String NEW_DOCUMENT_NOTE = "newDocumentNote";
@@ -98,6 +100,7 @@ public final class KRADPropertyConstants {
 	public static final String LAST_UPDATED_DATE = "lastUpdatedDate";	
 	public static final String POSTAL_COUNTRY_RESTRICTED_INDICATOR = "restricted";
 	public static final String POSTAL_COUNTRY_CODE = "code";
+    public static final String PROPERTY_NAME = "propertyName";
 	public static final String ALTERNATE_POSTAL_COUNTRY_CODE = "alternateCode";
 	public static final String STATE_CODE = "stateCode";
     public static final String COUNTY_CODE = "countyCode";

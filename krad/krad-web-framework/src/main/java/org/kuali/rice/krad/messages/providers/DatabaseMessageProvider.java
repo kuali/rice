@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.messages.providers.table;
+package org.kuali.rice.krad.messages.providers;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.krad.messages.Message;
 import org.kuali.rice.krad.messages.MessageProvider;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LookupService;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,14 +33,14 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DatabaseMessageProvider implements MessageProvider {
-    private BusinessObjectService businessObjectService;
+    private LookupService lookupService;
 
     /**
      * @see org.kuali.rice.krad.messages.MessageProvider#getMessage(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String)
      */
-    public Message getMessage(String namespace, String component, String name, String locale) {
-        Collection<Message> results = getMessageByCriteria(namespace, component, name, locale);
+    public Message getMessage(String namespace, String component, String key, String locale) {
+        Collection<Message> results = getMessageByCriteria(namespace, component, key, locale);
 
         if ((results != null) && !results.isEmpty()) {
             return results.iterator().next();
@@ -56,17 +58,17 @@ public class DatabaseMessageProvider implements MessageProvider {
     }
 
     /**
-     * Performs a query using the {@link BusinessObjectService} to retrieve messages that match the given
+     * Performs a query using the {@link LookupService} to retrieve messages that match the given
      * namespace, component, name, and locale. Not parameters maybe empty in which case they will not be added
      * to the criteria
      *
-     * @param namespace - namespace code to search for
-     * @param component - component code to search for
-     * @param name - name of the parameter to find
-     * @param locale - locale code to search for
+     * @param namespace namespace code to search for
+     * @param component component code to search for
+     * @param key key of the parameter to find
+     * @param locale locale code to search for
      * @return Collection<Message> matching messages or empty collection if not are found
      */
-    protected Collection<Message> getMessageByCriteria(String namespace, String component, String name, String locale) {
+    protected Collection<Message> getMessageByCriteria(String namespace, String component, String key, String locale) {
         Collection<Message> results = null;
 
         Map<String, String> criteria = new HashMap<String, String>();
@@ -74,31 +76,40 @@ public class DatabaseMessageProvider implements MessageProvider {
         if (StringUtils.isNotBlank(namespace)) {
             criteria.put("namespaceCode", namespace);
         }
+        
         if (StringUtils.isNotBlank(component)) {
             criteria.put("componentCode", component);
         }
-        if (StringUtils.isNotBlank(name)) {
-            criteria.put("name", name);
-        }
-        if (StringUtils.isNotBlank(locale)) {
-            criteria.put("locale", locale);
+        
+        if (StringUtils.isNotBlank(key)) {
+            criteria.put("key", key);
         }
 
-        results = businessObjectService.findMatching(Message.class, criteria);
+        if (StringUtils.isNotBlank(locale)) {
+            // build or condition that will match just the language as well
+            String[] localeIdentifiers = StringUtils.split(locale, "-");
+            if ((localeIdentifiers == null) || (localeIdentifiers.length != 2)) {
+                throw new RiceRuntimeException("Invalid locale code: " + (locale == null ? "Null" : locale));
+            }
+
+            String localeLanguage = localeIdentifiers[0];
+            criteria.put("locale", locale + SearchOperator.OR.op() + localeLanguage);
+        }
+
+        results = getLookupService().findCollectionBySearch(Message.class, criteria);
 
         return results;
     }
 
-    protected BusinessObjectService getBusinessObjectService() {
-        if (businessObjectService == null) {
-            businessObjectService = KRADServiceLocator.getBusinessObjectService();
+    public LookupService getLookupService() {
+        if (lookupService == null) {
+            lookupService = KRADServiceLocatorWeb.getLookupService();
         }
-
-        return businessObjectService;
+        
+        return lookupService;
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setLookupService(LookupService lookupService) {
+        this.lookupService = lookupService;
     }
-
 }

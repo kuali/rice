@@ -93,7 +93,7 @@ public class MustOccurConstraint extends BaseConstraint {
     @Override
     public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("MustOccurConstraint",getLabelKey());
+        tracer.addBean("MustOccurConstraint", getMessageKey());
 
         if(getMax()<=0){
             ErrorReport error = new ErrorReport(ErrorReport.ERROR);

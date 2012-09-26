@@ -569,14 +569,14 @@
                 formatted that into the standard error.required message in the
                 KR-ApplicationResources.properties file. </para>
             <para>With most of the constraints, the message can be overridden on the constraint, by
-                specifying the "labelKey" property. For instance, a configuration like this: </para>
+                specifying the "messageKey" property. For instance, a configuration like this: </para>
             <para><emphasis role="bold"><emphasis role="underline">Code snippet example
                         follows:</emphasis></emphasis></para>
             <para>
             <programlisting>1.  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
 2.    &lt;property name="min" value="1" />
 3.    &lt;property name="max" value="3" />
-4.    &lt;property name="labelKey" value="error.must.be.able.to.track.down" /> </programlisting>     
+4.    &lt;property name="messageKey" value="error.must.be.able.to.track.down" /> </programlisting>
             </para>    
             <para>Instead of using the standard message, the error message that is shown will be the
                 message associated with the "error.must.be.able.to.track.down" key. This allows for

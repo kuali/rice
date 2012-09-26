@@ -28,10 +28,10 @@ public class Message extends PersistableBusinessObjectBase {
 
     private String namespaceCode;
     private String componentCode;
-    private String name;
-    private String text;
-    private String messageTypeCode;
+    private String key;
     private String locale;
+    private String description;
+    private String text;
 
     public Message() {
         super();
@@ -80,21 +80,69 @@ public class Message extends PersistableBusinessObjectBase {
     }
 
     /**
-     * A name that identifies the message uniquely within a namespace and component
+     * A key that uniquely identifies the message within the namespace and component
      *
-     * @return String message name
+     * <p>
+     * Within the UIF, this is generally used to indicate the property path the message is associated with
+     * (for example: "control.label"). For validation messages this is generally a combination that identifies
+     * the type of validation message and the validation performed (for example: "error.account.missing")
+     * </p>
+     *
+     * @return String message key
      */
-    public String getName() {
-        return name;
+    public String getKey() {
+        return key;
     }
 
     /**
-     * Setter for the message name
+     * Setter for the message key
      *
-     * @param name
+     * @param key
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    /**
+     * Locale code the message is represented for, used for supporting messages in different
+     * languages
+     *
+     * @return message locale code
+     */
+    public String getLocale() {
+        return locale;
+    }
+
+    /**
+     * Setter for the message locale code
+     *
+     * @param locale
+     */
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    /**
+     * A description for the message
+     *
+     * <p>
+     * Not used by the framework, here for purposes of editing of messages and providing a description
+     * of the message to users
+     * </p>
+     *
+     * @return String message description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Setter for the message description
+     *
+     * @param description
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -121,49 +169,6 @@ public class Message extends PersistableBusinessObjectBase {
     }
 
     /**
-     * Code that represents the type of message being represented
-     *
-     * <p>
-     * Within the framework several types of messages are externalized. A few examples of these
-     * include labels, instructions, and validation messages. This code indicates to the framework how the
-     * message is used and impacts processing of the message within the framework
-     * </p>
-     *
-     * @return String message type code
-     */
-    public String getMessageTypeCode() {
-        return messageTypeCode;
-    }
-
-    /**
-     * Setter for the message type code
-     *
-     * @param messageTypeCode
-     */
-    public void setMessageTypeCode(String messageTypeCode) {
-        this.messageTypeCode = messageTypeCode;
-    }
-
-    /**
-     * Locale code the message is represented for, used for supporting messages in different
-     * languages
-     *
-     * @return message locale code
-     */
-    public String getLocale() {
-        return locale;
-    }
-
-    /**
-     * Setter for the message locale code
-     *
-     * @param locale
-     */
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
-    /**
      * Generate toString using message key fields
      *
      * @return String representing the message object
@@ -174,7 +179,8 @@ public class Message extends PersistableBusinessObjectBase {
 
         buffer.append("namespaceCode=" + this.namespaceCode);
         buffer.append(",componentCode=" + this.componentCode);
-        buffer.append(",name=" + this.name);
+        buffer.append(",key=" + this.key);
+        buffer.append(",locale=" + this.locale);
 
         return buffer.toString();
     }

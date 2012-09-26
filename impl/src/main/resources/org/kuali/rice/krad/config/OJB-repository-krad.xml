@@ -197,24 +197,12 @@
   <class-descriptor class="org.kuali.rice.krad.messages.Message" table="KRAD_MSG_T">
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="componentCode" column="CMPNT_CD" jdbc-type="VARCHAR" primarykey="true"/>
-    <field-descriptor name="name" column="MSG_NM" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="key" column="MSG_KEY" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="locale" column="LOC" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
+    <field-descriptor name="description" column="MSG_DESC" jdbc-type="VARCHAR"/>
     <field-descriptor name="text" column="TXT" jdbc-type="VARCHAR"/>
-    <field-descriptor name="messageTypeCode" column="MSG_TYP_CD" jdbc-type="VARCHAR"/>
-    <field-descriptor name="locale" column="LOC" jdbc-type="VARCHAR"/>
-
-    <reference-descriptor name="messageType" class-ref="org.kuali.rice.krad.messages.MessageType" auto-retrieve="true"
-                          auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="messageTypeCode"/>
-    </reference-descriptor>
-  </class-descriptor>
-
-  <class-descriptor class="org.kuali.rice.krad.messages.MessageType" table="KRAD_MSG_TYP_T">
-    <field-descriptor name="code" column="TYP_CD" jdbc-type="VARCHAR" primarykey="true"/>
-    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
-    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
-    <field-descriptor name="name" column="TYP_NM" jdbc-type="VARCHAR"/>
   </class-descriptor>
 
   <!-- old KNS tables, not used in KRAD -->

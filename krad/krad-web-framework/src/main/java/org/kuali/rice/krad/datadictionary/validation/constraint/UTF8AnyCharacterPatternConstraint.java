@@ -61,14 +61,15 @@ public class UTF8AnyCharacterPatternConstraint extends ValidCharactersPatternCon
     }
 
     /**
-     * @see BaseConstraint#getLabelKey()
+     * @see BaseConstraint#getMessageKey()
      */
     @Override
-    public String getLabelKey() {
-        String labelKey = super.getLabelKey();
-        if (StringUtils.isNotEmpty(labelKey)) {
-            return labelKey;
+    public String getMessageKey() {
+        String messageKey = super.getMessageKey();
+        if (StringUtils.isNotEmpty(messageKey)) {
+            return messageKey;
         }
+
         if (!allowWhitespace) {
             return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "noWhitespace";
         } else {

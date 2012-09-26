@@ -52,10 +52,22 @@ public class DataDictionaryIndex implements Runnable {
     // keyed by a class object, and the value is a set of classes that may block the class represented by the key from inactivation
     private Map<Class, Set<InactivationBlockingMetadata>> inactivationBlockersForClass;
 
-    private Map<String, List<String>> dictionaryBeansByNamespace = new HashMap<String, List<String>>();
+    private Map<String, List<String>> dictionaryBeansByNamespace;
 
     public DataDictionaryIndex(KualiDefaultListableBeanFactory ddBeans) {
         this.ddBeans = ddBeans;
+
+        // primary indices
+        businessObjectEntries = new HashMap<String, BusinessObjectEntry>();
+        objectEntries = new HashMap<String, DataObjectEntry>();
+        documentEntries = new HashMap<String, DocumentEntry>();
+
+        // alternate indices
+        documentEntriesByBusinessObjectClass = new HashMap<Class, DocumentEntry>();
+        documentEntriesByMaintainableClass = new HashMap<Class, DocumentEntry>();
+        entriesByJstlKey = new HashMap<String, DataDictionaryEntry>();
+
+        dictionaryBeansByNamespace = new HashMap<String, List<String>>();
     }
 
     private void buildDDIndicies() {

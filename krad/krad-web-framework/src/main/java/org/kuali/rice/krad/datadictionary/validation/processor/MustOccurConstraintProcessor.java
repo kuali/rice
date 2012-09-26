@@ -53,8 +53,8 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 		
 
 		ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
-        if(StringUtils.isNotBlank(constraint.getLabelKey())){
-            constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+        if(StringUtils.isNotBlank(constraint.getMessageKey())){
+            constraintValidationResult.setConstraintLabelKey(constraint.getMessageKey());
         }
         else{
             constraintValidationResult.setConstraintLabelKey(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX +
@@ -106,7 +106,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
         if (prerequisiteConstraints != null) {
 	        for (PrerequisiteConstraint prerequisiteConstraint : prerequisiteConstraints) {
 	        	ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(prerequisiteConstraint, attributeValueReader);
-                constraintValidationResult.setConstraintLabelKey(prerequisiteConstraint.getLabelKey());
+                constraintValidationResult.setConstraintLabelKey(prerequisiteConstraint.getMessageKey());
                 constraintValidationResult.setErrorParameters(prerequisiteConstraint.getValidationMessageParamsArray());
 	        	// Add the result of each prerequisite constraint validation to the top level result object as a child
 	        	topLevelResult.addChild(constraintValidationResult);
@@ -120,7 +120,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 	        	// Create a new constraint validation result for this must occur constraint and make it child of the top-level constraint, 
 	        	// then pass it in to the recursive call so that prerequisite constraints can be placed under it
 	        	ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
-                constraintValidationResult.setConstraintLabelKey(mustOccurConstraint.getLabelKey());
+                constraintValidationResult.setConstraintLabelKey(mustOccurConstraint.getMessageKey());
                 constraintValidationResult.setErrorParameters(mustOccurConstraint.getValidationMessageParamsArray());
 	        	topLevelResult.addChild(constraintValidationResult);
 	            trueCount += (processMustOccurConstraint(constraintValidationResult, mustOccurConstraint, attributeValueReader)) ? 1 : 0;

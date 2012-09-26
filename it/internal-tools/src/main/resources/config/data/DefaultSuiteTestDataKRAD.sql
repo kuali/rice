@@ -323,6 +323,9 @@ INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_C
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
   VALUES('KR-NS', 'All', 'STRING_TO_TIMESTAMP_FORMATS', '664F8ABEC727DBCDE0404F8189D85427', 1, 'CONFG', 'MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss', 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse date and times when DateTimeServiceImpl.convertToDateTime(String) or DateTimeServiceImpl.convertToSqlTimestamp(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.', 'A', 'KUALI')
 /
+INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
+  VALUES ('KR-NS', 'All', 'DEFAULT_LOCALE_CODE', uuid(), 1, 'CONFG', 'en-US', 'The locale code that should be used within the application when otherwise not specified.', 'A', 'KUALI')
+/
 insert into KRLC_CNTRY_T(postal_cntry_cd, obj_id, ver_nbr, postal_cntry_nm, pstl_cntry_rstrc_ind, actv_ind)
 	values('US', 'C20A15A9C0354C108C71CA3AFED063AF', 1, 'UNITED STATES', 'N', 'Y')
 /

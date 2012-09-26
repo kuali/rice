@@ -76,20 +76,20 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
     }
 
 	/**
-	 * 
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
 	 */
 	@Override
-	public String getLabelKey() {
-		String labelKey = super.getLabelKey();
-		if (StringUtils.isNotEmpty(labelKey)) {
-			return labelKey;
+	public String getMessageKey() {
+		String messageKey = super.getMessageKey();
+		if (StringUtils.isNotEmpty(messageKey)) {
+			return messageKey;
 		}
+
 		return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "charsetPattern");
 	}
 
     /**
-     * Parameters to be used in the string retrieved by this constraint's labelKey
+     * Parameters to be used in the string retrieved by this constraint's messageKey
      * @return the validationMessageParams
      */
     public List<String> getValidationMessageParams() {
@@ -113,7 +113,7 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
     @Override
     public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("CharsetPatternConstraint",getLabelKey());
+        tracer.addBean("CharsetPatternConstraint", getMessageKey());
 
         if(getValidChars()==null){
             ErrorReport error = new ErrorReport(ErrorReport.ERROR);

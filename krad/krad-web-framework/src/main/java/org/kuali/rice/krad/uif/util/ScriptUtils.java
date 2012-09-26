@@ -120,18 +120,32 @@ public class ScriptUtils {
         StringBuffer sb = new StringBuffer("{");
 
         for (String key : map.keySet()) {
-            Object optionValue = map.get(key);
+            String optionValue = map.get(key);
             if (sb.length() > 1) {
                 sb.append(",");
             }
             sb.append("\"" + key + "\"");
 
             sb.append(":");
-            sb.append("\"" + optionValue + "\"");
+            sb.append("\"" + escapeJSONString(optionValue) + "\"");
         }
         sb.append("}");
 
         return sb.toString();
+    }
+
+    /**
+     * Escapes double quotes present in the given string
+     *
+     * @param jsonString - string to escape
+     * @return String escaped string
+     */
+    public static String escapeJSONString(String jsonString) {
+        if (jsonString != null) {
+            jsonString = jsonString.replace('"', '\"');
+        }
+
+        return jsonString;
     }
 
     /**

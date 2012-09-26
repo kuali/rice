@@ -448,8 +448,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             setOptionsFinder(attributeDefinition.getOptionsFinder());
         }
 
-        //Copy over simple constraint information because we cannot directly use simpleConstraint from
-        //attributeDefinition because the settings in InputField take precedence
+        // copy over simple constraint information because we cannot directly use simpleConstraint from
+        // attributeDefinition because the settings in InputField take precedence
         if (this.getSimpleConstraint().getConstraintStateOverrides() == null) {
             this.getSimpleConstraint().setConstraintStateOverrides(
                     attributeDefinition.getSimpleConstraint().getConstraintStateOverrides());
@@ -459,8 +459,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             this.getSimpleConstraint().setStates(attributeDefinition.getSimpleConstraint().getStates());
         }
 
-        if (this.getSimpleConstraint().getLabelKey() == null) {
-            this.getSimpleConstraint().setLabelKey(attributeDefinition.getSimpleConstraint().getLabelKey());
+        if (this.getSimpleConstraint().getMessageKey() == null) {
+            this.getSimpleConstraint().setMessageKey(attributeDefinition.getSimpleConstraint().getMessageKey());
         }
 
         if (this.getSimpleConstraint().getApplyClientSide() == null) {

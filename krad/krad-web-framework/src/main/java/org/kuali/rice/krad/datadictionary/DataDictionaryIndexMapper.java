@@ -116,7 +116,10 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 		}
 
 		// look in the JSTL key cache
-		DataDictionaryEntry entry = ddIndex.getEntriesByJstlKey().get(className);
+		DataDictionaryEntry entry = null;
+        if (ddIndex.getEntriesByJstlKey() != null) {
+            entry = ddIndex.getEntriesByJstlKey().get(className);
+        }
 
         // check the Object list
         if (entry == null){

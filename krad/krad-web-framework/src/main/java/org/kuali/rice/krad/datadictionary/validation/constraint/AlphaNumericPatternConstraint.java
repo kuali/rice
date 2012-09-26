@@ -29,34 +29,24 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
 
     /**
      * A label key is auto generated for this bean if none is set. This generated message can be
-     * overridden through setLabelKey, but the generated message should cover most cases.
+     * overridden through setMessageKey, but the generated message should cover most cases.
      * 
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override
-    public String getLabelKey() {
-        if (StringUtils.isEmpty(labelKey)) {
+    public String getMessageKey() {
+        if (StringUtils.isEmpty(messageKey)) {
             StringBuilder key = new StringBuilder("");
             if (lowerCase) {
-               return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPatternLowerCase");
-            }
-            else if(upperCase){
-               return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPatternUpperCase");
+                return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPatternLowerCase");
+            } else if (upperCase) {
+                return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPatternUpperCase");
             } else {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPattern");
             }
         }
-        return labelKey;
-    }
 
-    /**
-     * The labelKey should only be set if the auto generated message by this class needs to be
-     * overridden
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#setLabelKey(java.lang.String)
-     */
-    @Override
-    public void setLabelKey(String labelKey) {
-        super.setLabelKey(labelKey);
+        return messageKey;
     }
 
     /**
@@ -92,6 +82,7 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     /**
      * Only allow lowerCase characters. DO NOT use with upperCase option, no flags set for case
      * means both upper and lower case are allowed.
+     *
      * @param lowerCase the lowerCase to set
      */
     public void setLowerCase(boolean lowerCase) {
@@ -105,7 +96,8 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     /**
      * Only allow upperCase characters.  DO NOT use with lowerCase option, no flags set for case
      * means both upper and lower case are allowed.
-     * @param lowerCase the lowerCase to set
+     *
+     * @param upperCase the lowerCase to set
      */
     public void setUpperCase(boolean upperCase) {
         this.upperCase = upperCase;

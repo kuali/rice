@@ -40,6 +40,9 @@
   <param name="rice.krad.application.jpa.PersistenceUnitName">krad-application-unit</param>
   <param name="rice.krad.application.jpa.GenerateDdl">false</param>
   <param name="rice.krad.application.jpa.PersistenceXmlLocation">classpath:META-INF/krad-test-persistence.xml</param>
+
+  <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,TestApplicationResources</param>
+
   <!-- this is used for the testharness test -->
   <param name="rice.test.case.test">test</param>
 </config>

@@ -175,6 +175,11 @@
             <!--<value>OJB-repository-sampleapp.xml</value>-->
           </list>
         </property>
+        <property name="resourceBundleNames">
+          <list>
+            <value>TestModuleResources</value>
+          </list>
+        </property>
       </bean>
     </property>
   </bean>

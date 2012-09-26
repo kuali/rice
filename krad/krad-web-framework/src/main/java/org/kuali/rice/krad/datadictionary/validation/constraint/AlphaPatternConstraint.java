@@ -49,14 +49,14 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
     }
 
     /**
-     * A label key is auto generated for this bean if none is set. This generated message can be
-     * overridden through setLabelKey, but the generated message should cover most cases.
+     * A message key is auto generated for this bean if none is set. This generated message can be
+     * overridden through setMessageKey, but the generated message should cover most cases.
      * 
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override
-    public String getLabelKey() {
-        if (StringUtils.isEmpty(labelKey)) {
+    public String getMessageKey() {
+        if (StringUtils.isEmpty(messageKey)) {
             StringBuilder key = new StringBuilder("");
             if (lowerCase) {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPatternLowerCase");
@@ -67,7 +67,8 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPattern");
             }
         }
-        return labelKey;
+
+        return messageKey;
     }
 	
     /**
@@ -80,6 +81,7 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
     /**
      * Only allow lowerCase characters. DO NOT use with upperCase option, no flags set for case
      * means both upper and lower case are allowed.
+     *
      * @param lowerCase the lowerCase to set
      */
     public void setLowerCase(boolean lowerCase) {
@@ -93,7 +95,8 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
     /**
      * Only allow upperCase characters.  DO NOT use with lowerCase option, no flags set for case
      * means both upper and lower case are allowed.
-     * @param lowerCase the lowerCase to set
+     *
+     * @param upperCase the lowerCase to set
      */
     public void setUpperCase(boolean upperCase) {
         this.upperCase = upperCase;

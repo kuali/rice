@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.messages;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,23 +44,20 @@ import java.util.List;
  */
 public class MessageServiceImpl implements MessageService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MessageServiceImpl.class);
-    
-    protected static final String DEFAULT_NAMESPACE_CODE = "KUALI";
-    protected static final String DEFAULT_COMPONENT_CODE = "All";
 
     private List<MessageProvider> messageProviders;
 
     /**
      * @see MessageService#getMessage(java.lang.String, java.lang.String, java.lang.String)
      */
-    public Message getMessage(String namespace, String component, String name) {
-        return getMessage(namespace, component, name, null);
+    public Message getMessage(String namespace, String component, String key) {
+        return getMessage(namespace, component, key, getDefaultLocaleCode());
     }
 
     /**
      * @see MessageService#getMessage(java.lang.String, java.lang.String, java.lang.String)
      */
-    public Message getMessage(String namespace, String component, String name, String locale) {
+    public Message getMessage(String namespace, String component, String key, String locale) {
         Message message = null;
 
         // use default namespace and component if not given
@@ -67,11 +66,15 @@ public class MessageServiceImpl implements MessageService {
         }
 
         if (StringUtils.isBlank(component)) {
-            namespace = DEFAULT_COMPONENT_CODE;
+            component = DEFAULT_COMPONENT_CODE;
+        }
+
+        if (StringUtils.isBlank(locale)) {
+            locale = getDefaultLocaleCode();
         }
 
         for (MessageProvider provider : messageProviders) {
-            message = provider.getMessage(namespace, component, name, locale);
+            message = provider.getMessage(namespace, component, key, locale);
 
             if (message != null) {
                 // don't check with any additional providers
@@ -85,15 +88,15 @@ public class MessageServiceImpl implements MessageService {
     /**
      * @see MessageService#getMessageText(java.lang.String, java.lang.String, java.lang.String)
      */
-    public String getMessageText(String namespace, String component, String name) {
-        return getMessageText(namespace, component, name, null);
+    public String getMessageText(String namespace, String component, String key) {
+        return getMessageText(namespace, component, key, getDefaultLocaleCode());
     }
 
     /**
      * @see MessageService#getMessageText(java.lang.String, java.lang.String, java.lang.String)
      */
-    public String getMessageText(String namespace, String component, String name, String locale) {
-        Message message = getMessage(namespace, component, name, locale);
+    public String getMessageText(String namespace, String component, String key, String locale) {
+        Message message = getMessage(namespace, component, key, locale);
         if (message != null) {
             return message.getText();
         }
@@ -104,15 +107,15 @@ public class MessageServiceImpl implements MessageService {
     /**
      * @see MessageService#getMessageText(java.lang.String, java.lang.String, java.lang.String)
      */
-    public String getMessageText(String name) {
-        return getMessageText(name, null);
+    public String getMessageText(String key) {
+        return getMessageText(key, getDefaultLocaleCode());
     }
 
     /**
      * @see MessageService#getMessageText(java.lang.String, java.lang.String, java.lang.String)
      */
-    public String getMessageText(String name, String locale) {
-        Message message = getMessage(null, null, name, locale);
+    public String getMessageText(String key, String locale) {
+        Message message = getMessage(null, null, key, locale);
         if (message != null) {
             return message.getText();
         }
@@ -124,7 +127,7 @@ public class MessageServiceImpl implements MessageService {
      * @see MessageService#getAllMessagesForComponent(java.lang.String, java.lang.String)
      */
     public Collection<Message> getAllMessagesForComponent(String namespace, String component) {
-        return getAllMessagesForComponent(namespace, component, null);
+        return getAllMessagesForComponent(namespace, component, getDefaultLocaleCode());
     }
 
     /**
@@ -132,6 +135,10 @@ public class MessageServiceImpl implements MessageService {
      */
     public Collection<Message> getAllMessagesForComponent(String namespace, String component, String locale) {
         Collection<Message> messages = new ArrayList<Message>();
+
+        if (StringUtils.isBlank(locale)) {
+            locale = getDefaultLocaleCode();
+        }
 
         for (MessageProvider provider : messageProviders) {
             Collection<Message> providerMessages = provider.getAllMessagesForComponent(namespace, component, locale);
@@ -149,8 +156,8 @@ public class MessageServiceImpl implements MessageService {
      * from first collection will remain. That is, the message in the second collection will NOT override
      * </p>
      *
-     * @param messages - collection to be merged into
-     * @param messagesToMerge - collection that will be merged with first
+     * @param messages collection to be merged into
+     * @param messagesToMerge collection that will be merged with first
      */
     protected void mergeMessages(Collection<Message> messages, Collection<Message> messagesToMerge) {
         for (Message message : messagesToMerge) {
@@ -158,6 +165,16 @@ public class MessageServiceImpl implements MessageService {
                 messages.add(message);
             }
         }
+    }
+
+    /**
+     * Retrieves the default locale code configured through a system parameter
+     *
+     * @return String configured default locale
+     */
+    protected String getDefaultLocaleCode() {
+        return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KNS_NAMESPACE,
+                KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.ParameterNames.DEFAULT_LOCALE_CODE);
     }
 
     /**

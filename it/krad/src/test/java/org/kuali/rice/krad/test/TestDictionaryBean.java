@@ -1,4 +1,4 @@
-package org.kuali.rice.krad.uif;
+package org.kuali.rice.krad.test;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifTestBeanObject extends UifDictionaryBeanBase {
+public class TestDictionaryBean extends UifDictionaryBeanBase {
 
     private String property1;
     private String property2;
@@ -20,15 +20,15 @@ public class UifTestBeanObject extends UifDictionaryBeanBase {
     private List<String> list1;
     private Map<String, String> map1;
 
-    private UifTestBeanObject reference1;
-    private UifTestBeanObject reference2;
+    private TestDictionaryBean reference1;
+    private TestDictionaryBean reference2;
 
-    private List<UifTestBeanObject> listReference1;
-    private List<UifTestBeanObject> listReference2;
+    private List<TestDictionaryBean> listReference1;
+    private List<TestDictionaryBean> listReference2;
 
-    private Map<String, UifTestBeanObject> mapReference1;
+    private Map<String, TestDictionaryBean> mapReference1;
 
-    public UifTestBeanObject() {
+    public TestDictionaryBean() {
 
     }
 
@@ -80,43 +80,43 @@ public class UifTestBeanObject extends UifDictionaryBeanBase {
         this.map1 = map1;
     }
 
-    public UifTestBeanObject getReference1() {
+    public TestDictionaryBean getReference1() {
         return reference1;
     }
 
-    public void setReference1(UifTestBeanObject reference1) {
+    public void setReference1(TestDictionaryBean reference1) {
         this.reference1 = reference1;
     }
 
-    public UifTestBeanObject getReference2() {
+    public TestDictionaryBean getReference2() {
         return reference2;
     }
 
-    public void setReference2(UifTestBeanObject reference2) {
+    public void setReference2(TestDictionaryBean reference2) {
         this.reference2 = reference2;
     }
 
-    public List<UifTestBeanObject> getListReference1() {
+    public List<TestDictionaryBean> getListReference1() {
         return listReference1;
     }
 
-    public void setListReference1(List<UifTestBeanObject> listReference1) {
+    public void setListReference1(List<TestDictionaryBean> listReference1) {
         this.listReference1 = listReference1;
     }
 
-    public List<UifTestBeanObject> getListReference2() {
+    public List<TestDictionaryBean> getListReference2() {
         return listReference2;
     }
 
-    public void setListReference2(List<UifTestBeanObject> listReference2) {
+    public void setListReference2(List<TestDictionaryBean> listReference2) {
         this.listReference2 = listReference2;
     }
 
-    public Map<String, UifTestBeanObject> getMapReference1() {
+    public Map<String, TestDictionaryBean> getMapReference1() {
         return mapReference1;
     }
 
-    public void setMapReference1(Map<String, UifTestBeanObject> mapReference1) {
+    public void setMapReference1(Map<String, TestDictionaryBean> mapReference1) {
         this.mapReference1 = mapReference1;
     }
 }

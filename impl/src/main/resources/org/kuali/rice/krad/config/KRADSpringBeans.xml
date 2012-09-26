@@ -146,6 +146,32 @@
     <property name="listItem" value="classpath:org/kuali/rice/krad/dwr-core.xml"/>
   </bean>
 
+  <!-- Add caching support, see KULRICE-8298 -->
+  <!--<bean id="kradCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <property name="cacheManager">
+      <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:configLocation="${krad.ehcache.config.location}"/>
+    </property>
+  </bean>
+
+  <bean id="rice.krad.import.globalCacheManager"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="globalCacheManager" />
+  </bean>
+
+  <cache:annotation-driven cache-manager="rice.krad.import.globalCacheManager" />
+
+  <bean id="kradCacheAdminService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
+        p:cacheManager-ref="kradCacheManager" />
+
+  <bean id="kradDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
+    <property name="cacheManager" ref="kradCacheManager" />
+    <property name="serviceName" value="{http://rice.kuali.org/krad/v2_0}kradCacheAdminService" />
+  </bean>
+
+  <bean id="rice.krad.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="kradDistributedCacheManager" />
+  </bean>-->
+
   <bean id="dataDictionaryService" class="org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl" scope="singleton">
     <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>
@@ -1000,14 +1026,17 @@
     <property name="messageProviders">
       <list>
         <ref bean="databaseMessageProvider"/>
+        <ref bean="resourceMessageProvider"/>
       </list>
     </property>
   </bean>
 
-  <bean id="databaseMessageProvider" class="org.kuali.rice.krad.messages.providers.table.DatabaseMessageProvider">
-    <property name="businessObjectService">
-      <ref bean="businessObjectService"/>
+  <bean id="databaseMessageProvider" class="org.kuali.rice.krad.messages.providers.DatabaseMessageProvider">
+    <property name="lookupService">
+      <ref bean="lookupService"/>
     </property>
   </bean>
+
+  <bean id="resourceMessageProvider" class="org.kuali.rice.krad.messages.providers.ResourceMessageProvider"/>
 
 </beans>

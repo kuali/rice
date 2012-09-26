@@ -60,7 +60,7 @@ public class ValidCharactersConstraint extends BaseConstraint {
     @Override
     public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("ValidCharacterConstraint",getLabelKey());
+        tracer.addBean("ValidCharacterConstraint", getMessageKey());
 
         if(getValue()==null){
             ErrorReport error = new ErrorReport(ErrorReport.WARNING);

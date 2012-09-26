@@ -18,9 +18,6 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
 /**
  * Pattern for matching numeric characters, difference between NumericPatternConstraint and IntegerPatternConstraint
  * is that a numeric pattern constraint is for matching numeric characters and can be mixed with other characters
@@ -42,16 +39,15 @@ public class NumericPatternConstraint extends AllowCharacterConstraint {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override
-    public String getLabelKey() {
-        String labelKey = super.getLabelKey();
-        if (StringUtils.isNotEmpty(labelKey)) {
-            return labelKey;
+    public String getMessageKey() {
+        String messageKey = super.getMessageKey();
+        if (StringUtils.isNotEmpty(messageKey)) {
+            return messageKey;
         }
+
         return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "numericPattern";
     }
 

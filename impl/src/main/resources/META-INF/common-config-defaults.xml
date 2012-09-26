@@ -21,7 +21,7 @@
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
-    <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRAD-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
+    <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
     <param name="http.port" override="false">8080</param>
     <param name="application.host" override="false">localhost</param>
     <param name="application.http.scheme" override="false">http</param>
@@ -413,6 +413,18 @@
   <param name="reload.data.dictionary.interval" override="false">3000</param>
   <param name="maxNumberOfSessionForms" override="false">5</param>
 
+  <!-- list of resource bundle names (full qualified classnames) for application messages (default namespace
+   of KUALI), for messages associated with a namespace use the resourceBundleName configuration on the
+   corresponding ModuleDefinition -->
+  <param name="resourceBundleNames" override="false">org.kuali.rice.krad.KRADApplicationResources</param>
+
+  <!-- indicates whether messages from an external repository should bea loaded for data dictionary beans. Enable if
+  external messages are being used for dictionary text. Disable if external messages are not, or to improve startup
+  time in development -->
+  <param name="load.dictionary.external.messages" override="false">true</param>
+
+  <param name="krad.ehcache.config.location" override="false">classpath:org/kuali/rice/krad/config/krad.ehcache.xml</param>
+
 	<!-- KCB -->
 	<param name="rice.kcb.struts.config.files" override="false">/kcb/WEB-INF/struts-config.xml</param>
 	<param name="kcb.url" override="false">${application.url}/kcb</param>
@@ -579,7 +591,6 @@
   <param name="rice.krad.componentPublishing.enabled" override="false">false</param>
   <param name="rice.krad.componentPublishing.delay" override="false">15000</param>
 
-
   <!-- Valid Date Formats -->
   <param name="STRING_TO_DATE_FORMATS" override="false">MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MM-dd-yyyy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss</param>
   <param name="STRING_TO_TIMESTAMP_FORMATS" override="false">MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss</param>
@@ -587,7 +598,6 @@
   <param name="TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE" override="false">MM/dd/yyyy hh:mm a</param>
   <param name="DATE_TO_STRING_FORMAT_FOR_FILE_NAME" override="false">yyyyMMdd</param>
   <param name="TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME" override="false">yyyyMMdd-HH-mm-ss-S</param>
-
 
   <param name="kew.ehcache.config.location" override="false">classpath:org/kuali/rice/kew/impl/config/kew.ehcache.xml</param>
 

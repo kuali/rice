@@ -16,8 +16,6 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
@@ -178,11 +176,10 @@ public class ValidationMessages extends ContentElementBase {
         List<String> result = new ArrayList<String>();
         for (List<ErrorMessage> errorList : lists) {
             if (errorList != null && StringUtils.isNotBlank(key)) {
-                ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
-
                 for (ErrorMessage e : errorList) {
-                    String message = KRADUtils.getMessage(configService, e, true);
+                    String message = KRADUtils.getMessageText(e, true);
                     message = MessageStructureUtils.translateStringMessage(message);
+
                     result.add(message);
                 }
             }

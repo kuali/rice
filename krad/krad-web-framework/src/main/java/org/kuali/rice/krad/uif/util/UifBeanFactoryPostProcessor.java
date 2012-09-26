@@ -59,6 +59,8 @@ import java.util.Set;
  * therefore this post processor adds them as top level registered beans
  * </p>
  *
+ * TODO: convert to dictionary bean processor
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
@@ -424,10 +426,10 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         boolean isMergeEnabled = false;
         if (array instanceof ManagedArray) {
-            isMergeEnabled = ((ManagedList) array).isMergeEnabled();
-            arrayVal = (Object[]) ((ManagedList) array).getSource();
+            isMergeEnabled = ((ManagedArray) array).isMergeEnabled();
+            arrayVal = (Object[]) ((ManagedArray) array).getSource();
 
-            newArray = new ManagedArray(((ManagedList) array).getElementTypeName(), arrayVal.length);
+            newArray = new ManagedArray(((ManagedArray) array).getElementTypeName(), arrayVal.length);
             ((ManagedArray) newArray).setMergeEnabled(isMergeEnabled);
         } else {
             arrayVal = (Object[]) array;
@@ -480,7 +482,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
         }
 
         if (array instanceof ManagedArray) {
-            ((ManagedList) array).setSource(newArray);
+            ((ManagedArray) array).setSource(newArray);
         } else {
             array = newArray;
         }

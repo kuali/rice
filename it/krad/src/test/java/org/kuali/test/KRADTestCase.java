@@ -16,12 +16,12 @@
 package org.kuali.test;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
-import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -38,7 +38,6 @@ import java.util.List;
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public abstract class KRADTestCase extends BaselineTestCase {
-
     private static final String SQL_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.sql";
     private static final String XML_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.xml";
     private static final String KRAD_MODULE_NAME = "krad";
@@ -77,8 +76,11 @@ public abstract class KRADTestCase extends BaselineTestCase {
 
                     String namespaceCode = testDictionaryConfig.namespaceCode();
                     String dictionaryFileString = testDictionaryConfig.dataDictionaryFiles();
+
                     String[] dictionaryFiles = StringUtils.split(dictionaryFileString, ",");
                     for (String dictionaryFile : dictionaryFiles) {
+                        LOG.info("Adding test data dictionary file: " + dictionaryFile);
+
                         dd.addConfigFileLocation(namespaceCode, dictionaryFile);
                     }
                 }

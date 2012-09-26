@@ -61,14 +61,15 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override
-    public String getLabelKey() {
-        String labelKey = super.getLabelKey();
+    public String getMessageKey() {
+        String labelKey = super.getMessageKey();
         if (StringUtils.isNotEmpty(labelKey)) {
             return labelKey;
         }
+
         if (!allowWhitespace) {
             return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "noWhitespace";
         } else {

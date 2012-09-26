@@ -684,8 +684,11 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
               <para>id – unique identifier for the layout manager</para>
             </listitem>
             <listitem>
-              <para>template – jsp template file for the layout manager that
+              <para>template – FreeMarker template file for the layout manager that
                                         performs the layout logic</para>
+            </listitem>
+            <listitem>
+              <para>templateName – Name of the layout manager macro</para>
             </listitem>
             <listitem>
               <para>style and style classes – CSS treatment for the&#160; layout

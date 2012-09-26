@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +59,33 @@ public class UifClientListener extends UifControllerBase {
         // clear form from session
         GlobalVariables.getUifFormManager().removeFormWithHistoryFormsByKey(formKey);
 
-        return "{status:success}";
+        return "{\"status\":\"success\"}";
+    }
+
+    /**
+     * Invoked from the client to retrieve text for a message
+     *
+     * @param key - key for the message
+     * @return String response in JSON format containing the message text
+     */
+    @RequestMapping(params = "methodToCall=retrieveMessage")
+    public
+    @ResponseBody
+    String retrieveMessage(@RequestParam("key") String key, HttpServletRequest request, HttpServletResponse response) {
+        // namespace and component are not required, therefore may be null
+        String namespace = request.getParameter(KRADPropertyConstants.NAMESPACE_CODE);
+        String componentCode = request.getParameter(KRADPropertyConstants.COMPONENT_CODE);
+
+        String messageText = KRADServiceLocatorWeb.getMessageService().getMessageText(namespace, componentCode, key);
+
+        if (messageText == null) {
+            messageText = "";
+        }
+        else {
+            messageText = ScriptUtils.escapeJSONString(messageText);
+        }
+
+        return "{\"messageText\":\"" + messageText + "\"}";
     }
 
 }

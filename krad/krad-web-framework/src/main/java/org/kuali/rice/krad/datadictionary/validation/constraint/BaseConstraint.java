@@ -26,64 +26,111 @@ import java.util.List;
  * from which other constraints can be derived.
  *
  * Only BaseConstraints can have state validation.
- * 
- * This class is a direct copy of one that was in Kuali Student. 
- * 
+ *
+ * This class is a direct copy of one that was in Kuali Student.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public class BaseConstraint implements Constraint {
-    protected String labelKey;
+    protected String messageNamespaceCode;
+    protected String messageComponentCode;
+    protected String messageKey;
+
     protected Boolean applyClientSide;
-    
+
     protected List<String> validationMessageParams;
     protected List<String> states;
     protected List<? extends BaseConstraint> constraintStateOverrides;
-    
-    public BaseConstraint(){
-    	applyClientSide = Boolean.valueOf(true);
+
+    public BaseConstraint() {
+        applyClientSide = Boolean.valueOf(true);
     }
-    
-	/**
-	 * LabelKey should be a single word key.  This key is used to find a message to use for this
-	 * constraint from available messages.  The key is also used for defining/retrieving validation method
-	 * names when applicable for ValidCharactersContraints.
-	 * 
-	 * If a comma separated list of keys is used, a message will be generated that is a comma separated list of
-	 * the messages retrieved for each key.
-	 * 
-	 * @see ValidCharactersConstraint
-	 * 
-	 * @return
-	 */
-	public String getLabelKey() {
-		return labelKey;
-	}
-
-	public void setLabelKey(String labelKey) {
-		this.labelKey = labelKey;
-	}
-
-	/**
-	 * If this is true, the constraint should be applied on the client side when the user interacts with
-	 * a field - if this constraint can be interpreted for client side use. Default is true.
-     *
-	 * @return the applyClientSide
-	 */
-	public Boolean getApplyClientSide() {
-		return this.applyClientSide;
-	}
-
-	/**
-	 * @param applyClientSide the applyClientSide to set
-	 */
-	public void setApplyClientSide(Boolean applyClientSide) {
-		this.applyClientSide = applyClientSide;
-	}
-	
 
     /**
-     * Parameters to be used in the string retrieved by this constraint's labelKey, ordered by number of
+     * Namespace code (often an application or module code) the constraint failure message is associated with
+     *
+     * <p>
+     * Used with the component code and error key for retrieving the constraint. If null,
+     * the default namespace code will be used
+     * </p>
+     *
+     * @return String constraint message namespace code
+     */
+    public String getMessageNamespaceCode() {
+        return messageNamespaceCode;
+    }
+
+    /**
+     * Setter for the constraint message associated namespace code
+     *
+     * @param messageNamespaceCode
+     */
+    public void setMessageNamespaceCode(String messageNamespaceCode) {
+        this.messageNamespaceCode = messageNamespaceCode;
+    }
+
+    /**
+     * A code within the namespace that identifies a component or group the constraint message is associated with
+     *
+     * <p>
+     * Used with the namespace and error key for retrieving the constraint text. If null,
+     * the default component code will be used
+     * </p>
+     *
+     * @return String message component code
+     */
+    public String getMessageComponentCode() {
+        return messageComponentCode;
+    }
+
+    /**
+     * Setter for the constraint message associated component code
+     *
+     * @param messageComponentCode
+     */
+    public void setMessageComponentCode(String messageComponentCode) {
+        this.messageComponentCode = messageComponentCode;
+    }
+
+    /**
+     * A key that is used to retrieve the constraint message text (used with the namespace and component
+     * code if specified)
+     *
+     * @return String message key
+     */
+    public String getMessageKey() {
+        return messageKey;
+    }
+
+    /**
+     * Setter for the constraint message key
+     *
+     * @param messageKey
+     */
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
+    }
+
+    /**
+     * If this is true, the constraint should be applied on the client side when the user interacts with
+     * a field - if this constraint can be interpreted for client side use. Default is true.
+     *
+     * @return the applyClientSide
+     */
+    public Boolean getApplyClientSide() {
+        return this.applyClientSide;
+    }
+
+    /**
+     * @param applyClientSide the applyClientSide to set
+     */
+    public void setApplyClientSide(Boolean applyClientSide) {
+        this.applyClientSide = applyClientSide;
+    }
+
+    /**
+     * Parameters to be used in the string retrieved by this constraint's messageKey, ordered by number of
      * the param
      *
      * @return the validationMessageParams
@@ -91,18 +138,17 @@ public class BaseConstraint implements Constraint {
     public List<String> getValidationMessageParams() {
         return this.validationMessageParams;
     }
-    
+
     /**
-     * Parameters to be used in the string retrieved by this constraint's labelKey, ordered by number of
+     * Parameters to be used in the string retrieved by this constraint's messageKey, ordered by number of
      * the param
      *
      * @return the validationMessageParams
      */
     public String[] getValidationMessageParamsArray() {
-        if(this.getValidationMessageParams() != null){
+        if (this.getValidationMessageParams() != null) {
             return this.getValidationMessageParams().toArray(new String[this.getValidationMessageParams().size()]);
-        }
-        else{
+        } else {
             return null;
         }
 
@@ -121,22 +167,23 @@ public class BaseConstraint implements Constraint {
      *
      * <p>Each state this constraint is applied for needs to be declared with few additional options:
      * <ul>
-     *     <li>if NO states are defined for this constraint, this constraint is applied for ALL states</li>
-     *     <li>if a state is defined with a + symbol, example "state+", then this constraint will be applied for that state
-     *     and ALL following states</li>
-     *     <li>if a state is defined as a range with ">", example "state1>state6", then this constraint will be applied for all
-     *     states from state1 to state6 </li>
+     * <li>if NO states are defined for this constraint, this constraint is applied for ALL states</li>
+     * <li>if a state is defined with a + symbol, example "state+", then this constraint will be applied for that state
+     * and ALL following states</li>
+     * <li>if a state is defined as a range with ">", example "state1>state6", then this constraint will be applied for
+     * all
+     * states from state1 to state6 </li>
      * </ul>
      * These can be mixed and matched, as appropriate, though states using a + symbol should always be the last
      * item of a list (as they imply this state and everything else after).</p>
      *
-     * <p>Example state list may be: ["state1", "state3>state5", "state6+"].  In this example, note that this constraint is
-     * never applied to "state2" (assuming these example states represent a state order by number)</p>
+     * <p>Example state list may be: ["state1", "state3>state5", "state6+"].  In this example, note that this constraint
+     * is never applied to "state2" (assuming these example states represent a state order by number)</p>
      *
      * @return the states to apply the constraint on, an empty list if the constraint is applied for all states
      */
     public List<String> getStates() {
-        if(states == null){
+        if (states == null) {
             states = new ArrayList<String>();
         }
         return states;
@@ -144,6 +191,7 @@ public class BaseConstraint implements Constraint {
 
     /**
      * Set the states for this contraint to be applied on
+     *
      * @param states
      */
     public void setStates(List<String> states) {
@@ -159,6 +207,7 @@ public class BaseConstraint implements Constraint {
      * constraint if they apply to the state being evaluated during validation.  These settings have no effect if
      * there is no stateMapping represented on the entry/view being evaluated.
      * </p>
+     *
      * @return List of constraint overrides for this constraint
      */
     public List<? extends BaseConstraint> getConstraintStateOverrides() {
@@ -171,7 +220,7 @@ public class BaseConstraint implements Constraint {
      * @param constraintStateOverrides
      */
     public void setConstraintStateOverrides(List<? extends BaseConstraint> constraintStateOverrides) {
-        if(constraintStateOverrides != null){
+        if (constraintStateOverrides != null) {
             for (BaseConstraint bc : constraintStateOverrides) {
                 if (!bc.getClass().equals(this.getClass())) {
                     List<Class<?>> superClasses = new ArrayList<Class<?>>();
@@ -196,8 +245,8 @@ public class BaseConstraint implements Constraint {
                 }
                 if (bc.getStates().isEmpty()) {
                     throw new RuntimeException(
-                            "Constraint State Overrides MUST declare the states they apply to.  No states"
-                                    + "were declared.");
+                            "Constraint State Overrides MUST declare the states they apply to.  No states" +
+                                    "were declared.");
                 }
             }
         }
@@ -211,32 +260,33 @@ public class BaseConstraint implements Constraint {
      * @param tracer Record of component's location
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("BaseConstraint",getLabelKey());
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+        tracer.addBean("BaseConstraint", getMessageKey());
 
-        if(getConstraintStateOverrides()!=null){
-            for(int i=0;i<constraintStateOverrides.size();i++){
-                if(constraintStateOverrides.get(i).getStates()==null){
+        if (getConstraintStateOverrides() != null) {
+            for (int i = 0; i < constraintStateOverrides.size(); i++) {
+                if (constraintStateOverrides.get(i).getStates() == null) {
                     ErrorReport error = new ErrorReport(ErrorReport.ERROR);
                     error.setValidationFailed("Constraints set in State Overrides must have there states property set");
                     error.setBeanLocation(tracer.getBeanLocation());
-                    error.addCurrentValue("constraintStateOverrides("+i+").labelKey ="+constraintStateOverrides.get(i).getLabelKey());
+                    error.addCurrentValue(
+                            "constraintStateOverrides(" + i + ").messageKey =" + constraintStateOverrides.get(i)
+                                    .getMessageKey());
                     reports.add(error);
                 }
                 reports.addAll(constraintStateOverrides.get(i).completeValidation(tracer.getCopy()));
             }
         }
 
-        if(getLabelKey()==null){
+        if (getMessageKey() == null) {
             ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("LabelKey is not set");
+            error.setValidationFailed("Message key is not set");
             error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("labelKey");
+            error.addCurrentValue("messageKey");
+
             reports.add(error);
         }
-
-
 
         return reports;
     }

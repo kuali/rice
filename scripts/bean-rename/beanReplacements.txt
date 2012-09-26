@@ -243,3 +243,4 @@ dialogMode,renderedInLightBox
 fieldInquiry,inquiry
 fieldDirectInquiry.render,inquiry.enableDirectInquiry
 clientSideJs,actionScript
+labelKey,messageKey

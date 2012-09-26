@@ -17,7 +17,6 @@ package org.kuali.rice.krad.service;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krad.messages.MessageService;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -34,7 +33,6 @@ public class KRADServiceLocator {
     public static final String SERIALIZER_SERVICE = "businessObjectSerializerService";
     public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
     public static final String KEY_VALUES_SERVICE = "keyValuesService";
-    public static final String MESSAGE_SERVICE = "mesageService";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -88,7 +86,4 @@ public class KRADServiceLocator {
         return getService(KEY_VALUES_SERVICE);
     }
 
-    public static MessageService getMessageService() {
-        return getService(MESSAGE_SERVICE);
-    }
 }

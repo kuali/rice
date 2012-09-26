@@ -22,6 +22,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
+import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -31,7 +32,6 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
@@ -65,6 +65,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Widget;
+import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -1087,12 +1088,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     protected String buildGrowlScript(View view) {
         String growlScript = "";
 
-        ConfigurationService configService = getConfigurationService();
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
         MessageMap messageMap = GlobalVariables.getMessageMap();
         for (GrowlMessage growl : messageMap.getGrowlMessages()) {
             if (view.isGrowlMessagingEnabled()) {
-                String message = configService.getPropertyValueAsString(growl.getMessageKey());
+                String message = messageService.getMessageText(growl.getNamespaceCode(), growl.getComponentCode(),
+                        growl.getMessageKey());
 
                 if (StringUtils.isNotBlank(message)) {
                     if (growl.getMessageParameters() != null) {
@@ -1104,14 +1106,21 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     message = message.replace("'", "\\'");
 
                     String title = growl.getTitle();
+                    if (StringUtils.isNotBlank(growl.getTitleKey())) {
+                        title = messageService.getMessageText(growl.getNamespaceCode(), growl.getComponentCode(),
+                                growl.getTitleKey());
+                    }
                     title = title.replace("'", "\\'");
 
                     growlScript =
                             growlScript + "showGrowl('" + message + "', '" + title + "', '" + growl.getTheme() + "');";
                 }
             } else {
-                messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, growl.getMessageKey(),
-                        growl.getMessageParameters());
+                ErrorMessage infoMessage = new ErrorMessage(growl.getMessageKey(), growl.getMessageParameters());
+                infoMessage.setNamespaceCode(growl.getNamespaceCode());
+                infoMessage.setComponentCode(growl.getComponentCode());
+
+                messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, infoMessage);
             }
         }
 

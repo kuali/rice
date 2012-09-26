@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
@@ -26,10 +25,10 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteCons
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.control.TextControl;
-import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
@@ -40,11 +39,11 @@ import java.util.EnumSet;
 import java.util.List;
 
 /**
- * This class contains all the methods necessary for generating the js required to perform validation client side.
+ * Contains all the methods necessary for generating the js required to perform validation client side.
  * The processAndApplyConstraints(InputField field, View view) is the key method of this class used by
  * InputField to setup its client side validation mechanisms.
  *
- * These methods now take into account state based validation and states on constraints.
+ * Methods now take into account state based validation and states on constraints.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -69,9 +68,7 @@ public class ClientValidationUtils {
     public static final String AND_MSG_KEY = "general.and";
     public static final String OR_MSG_KEY = "general.or";
 
-    private static ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
-
-    //Enum representing names of rules provided by the jQuery plugin
+    // enum representing names of rules provided by the jQuery plugin
     public static enum ValidationMessageKeys {
         REQUIRED("required"),
         MIN_EXCLUSIVE("minExclusive"),
@@ -101,24 +98,31 @@ public class ClientValidationUtils {
     }
 
     /**
-     * Returns a message using the label key to format the list of parameters
+     * Returns formatted message text for the given message namespace, component, and key
      *
-     * @param params
-     * @param labelKey
-     * @return String message
+     * @param namespace - namespace code the message is associated with, if null the default namespace
+     * will be used
+     * @param componentCode - component code the message is associated with, if null default component
+     * code is used
+     * @param messageKey - key for the message to retrieve
+     * @param params - list of parameters for the message text
+     * @return String formatted message text
      */
-    public static String generateMessageFromLabelKey(List<String> params, String labelKey) {
+    public static String generateMessageText(String namespace, String componentCode, String messageKey,
+            List<String> params) {
         String message = "NO MESSAGE";
-        if (StringUtils.isNotEmpty(labelKey)) {
-            message = configService.getPropertyValueAsString(labelKey);
+        if (StringUtils.isNotEmpty(messageKey)) {
+            message = KRADServiceLocatorWeb.getMessageService().getMessageText(namespace, componentCode, messageKey);
             if (params != null && !params.isEmpty() && StringUtils.isNotEmpty(message)) {
                 message = MessageFormat.format(message, params.toArray());
                 message = MessageStructureUtils.translateStringMessage(message);
             }
         }
+        
         if (StringUtils.isEmpty(message)) {
-            message = labelKey;
+            message = messageKey;
         }
+        
         //replace characters that might cause issues with their equivalent html codes
         if (message.contains("\"")) {
             message = message.replace("\"", "&quot;");
@@ -129,28 +133,31 @@ public class ClientValidationUtils {
         if (message.contains("\\")) {
             message = message.replace("\\", "&#92;");
         }
+        
         return message;
     }
 
     /**
-     * Generates the js object used to override all default messages for validator jquery plugin with custom
-     * messages derived from the configService.
+     * Generates the js object used to override all default messages for validator jquery plugin with
+     * custom messages retrieved from the message service
      *
-     * @return
+     * @return String script for message override
      */
     public static String generateValidatorMessagesOption() {
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
+        
         String mOption = "";
         String keyValuePairs = "";
         for (ValidationMessageKeys element : EnumSet.allOf(ValidationMessageKeys.class)) {
             String key = element.toString();
-            String message = configService.getPropertyValueAsString(
-                    UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + key);
+            String message = messageService.getMessageText(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + key);
+
             if (StringUtils.isNotEmpty(message)) {
                 message = MessageStructureUtils.translateStringMessage(message);
                 keyValuePairs = keyValuePairs + "\n" + key + ": '" + message + "',";
             }
-
         }
+
         keyValuePairs = StringUtils.removeEnd(keyValuePairs, ",");
         if (StringUtils.isNotEmpty(keyValuePairs)) {
             mOption = "{" + keyValuePairs + "}";
@@ -167,12 +174,13 @@ public class ClientValidationUtils {
      * @return js validator.addMethod script
      */
     public static String getRegexMethod(InputField field, ValidCharactersConstraint validCharactersConstraint) {
-        String message = generateMessageFromLabelKey(validCharactersConstraint.getValidationMessageParams(),
-                validCharactersConstraint.getLabelKey());
+        String message = generateMessageText(validCharactersConstraint.getMessageNamespaceCode(),
+                validCharactersConstraint.getMessageComponentCode(), validCharactersConstraint.getMessageKey(),
+                validCharactersConstraint.getValidationMessageParams());
         String key = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
 
+        // replace characters known to cause issues if not escaped
         String regex = validCharactersConstraint.getValue();
-        //replace characters known to cause issues if not escaped
         if (regex.contains("\\\\")) {
             regex = regex.replaceAll("\\\\", "\\\\\\\\");
         }
@@ -201,12 +209,13 @@ public class ClientValidationUtils {
      */
     public static String getRegexMethodWithBooleanCheck(InputField field,
             ValidCharactersConstraint validCharactersConstraint) {
-        String message = generateMessageFromLabelKey(validCharactersConstraint.getValidationMessageParams(),
-                validCharactersConstraint.getLabelKey());
+        String message = generateMessageText(validCharactersConstraint.getMessageNamespaceCode(),
+                validCharactersConstraint.getMessageComponentCode(), validCharactersConstraint.getMessageKey(),
+                validCharactersConstraint.getValidationMessageParams());
         String key = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
 
+        // replace characters known to cause issues if not escaped
         String regex = validCharactersConstraint.getValue();
-        //replace characters known to cause issues if not escaped
         if (regex.contains("\\\\")) {
             regex = regex.replaceAll("\\\\", "\\\\\\\\");
         }
@@ -416,6 +425,7 @@ public class ClientValidationUtils {
 
                     constraintCount++;
                 }
+
                 if (((SimpleConstraint) constraint).getMinLength() != null) {
                     if (constraintCount > 0) {
                         rule = rule + ",\n";
@@ -428,6 +438,7 @@ public class ClientValidationUtils {
                             + ";}]";
                     constraintCount++;
                 }
+
                 if (((SimpleConstraint) constraint).getMaxLength() != null) {
                     if (constraintCount > 0) {
                         rule = rule + ",\n";
@@ -481,10 +492,11 @@ public class ClientValidationUtils {
                     methodName = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
                     methodKey++;
                 } else {
-                    if (StringUtils.isNotEmpty(((ValidCharactersConstraint) constraint).getLabelKey())) {
-                        methodName = ((ValidCharactersConstraint) constraint).getLabelKey();
+                    if (StringUtils.isNotEmpty(((ValidCharactersConstraint) constraint).getMessageKey())) {
+                        methodName = ((ValidCharactersConstraint) constraint).getMessageKey();
                     }
                 }
+
                 if (StringUtils.isNotEmpty(methodName)) {
                     rule = regexMethod
                             + "jQuery('[name=\""
@@ -504,11 +516,12 @@ public class ClientValidationUtils {
                 processMustOccurConstraint(field, view, (MustOccurConstraint) constraint, booleanStatement);
             }
         }
+
         return rule;
     }
 
     /**
-     * This method is a simpler version of processPrerequisiteConstraint
+     * Simpler version of processPrerequisiteConstraint
      *
      * @param constraint
      * @param view
@@ -520,7 +533,7 @@ public class ClientValidationUtils {
     }
 
     /**
-     * This method processes a Prerequisite constraint that should be applied
+     * Processes a Prerequisite constraint that should be applied
      * when the booleanStatement passed in evaluates to true.
      *
      * @param constraint prerequisiteConstraint
@@ -544,20 +557,23 @@ public class ClientValidationUtils {
                     + "dependsOn-"
                     + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath())
                     + "');";
+
             addScriptToPage(view, field, addClass
                     + getPrerequisiteStatement(field, view, constraint, booleanStatement)
                     + getPostrequisiteStatement(field, constraint, booleanStatement));
+
             //special requiredness indicator handling
             String showIndicatorScript = "setupShowReqIndicatorCheck('" + ScriptUtils.escapeName(
                     field.getBindingInfo().getBindingPath()) + "', '" + ScriptUtils.escapeName(
                     constraint.getPropertyName()) + "', " + "function(){\nreturn (coerceValue('" + ScriptUtils
                     .escapeName(field.getBindingInfo().getBindingPath()) + "') && " + booleanStatement + ");});\n";
+
             addScriptToPage(view, field, showIndicatorScript);
         }
     }
 
     /**
-     * This method creates the script necessary for executing a prerequisite
+     * Creates the script necessary for executing a prerequisite
      * rule in which this field occurs after the field specified in the
      * prerequisite rule - since it requires a specific set of UI logic. Builds
      * an if statement containing an addMethod jquery validator call. Adds a
@@ -571,14 +587,19 @@ public class ClientValidationUtils {
     private static String getPrerequisiteStatement(InputField field, View view, PrerequisiteConstraint constraint,
             String booleanStatement) {
         methodKey++;
+        
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
+
         String message = "";
-        if (StringUtils.isEmpty(constraint.getLabelKey())) {
-            message = configService.getPropertyValueAsString(
-                    UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "prerequisite");
+        if (StringUtils.isEmpty(constraint.getMessageKey())) {
+            message = messageService.getMessageText(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "prerequisite");
             message = MessageStructureUtils.translateStringMessage(message);
         } else {
-            message = generateMessageFromLabelKey(constraint.getValidationMessageParams(), constraint.getLabelKey());
+            message = generateMessageText(constraint.getMessageNamespaceCode(),
+                    constraint.getMessageComponentCode(), constraint.getMessageKey(),
+                    constraint.getValidationMessageParams());
         }
+
         if (StringUtils.isEmpty(message)) {
             message = "prerequisite - No message";
         } else {
@@ -587,7 +608,8 @@ public class ClientValidationUtils {
             if (requiredField != null && StringUtils.isNotEmpty(requiredField.getLabel())) {
                 message = MessageFormat.format(message, requiredField.getLabel());
             } else {
-                message = MessageFormat.format(message, configService.getPropertyValueAsString(GENERIC_FIELD_MSG_KEY));
+                String genericFieldLabel = messageService.getMessageText(GENERIC_FIELD_MSG_KEY);
+                message = MessageFormat.format(message, genericFieldLabel);
             }
         }
 
@@ -595,11 +617,13 @@ public class ClientValidationUtils {
         String methodName = "prConstraint-"
                 + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath())
                 + methodKey;
+
         String addClass = "jQuery('[name=\""
                 + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath())
                 + "\"]').addClass('"
                 + methodName
                 + "');\n";
+
         String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" +
                 " if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + ScriptUtils
                 .escapeName(constraint.getPropertyName()) + "')));}else{return true;} " +
@@ -614,6 +638,7 @@ public class ClientValidationUtils {
                 + addClass
                 + method
                 + "}";
+
         return ifStatement;
     }
 
@@ -630,23 +655,25 @@ public class ClientValidationUtils {
      */
     private static String getPostrequisiteStatement(InputField field, PrerequisiteConstraint constraint,
             String booleanStatement) {
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
+        
         // field occurs after case
         String message = "";
-        if (StringUtils.isEmpty(constraint.getLabelKey())) {
-            message = configService.getPropertyValueAsString(
-                    UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "postrequisite");
+        if (StringUtils.isEmpty(constraint.getMessageKey())) {
+            message = messageService.getMessageText(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "postrequisite");
             message = MessageStructureUtils.translateStringMessage(message);
         } else {
-            message = generateMessageFromLabelKey(constraint.getValidationMessageParams(), constraint.getLabelKey());
+            message = generateMessageText(constraint.getMessageNamespaceCode(), constraint.getMessageComponentCode(),
+                    constraint.getMessageKey(), constraint.getValidationMessageParams());
         }
 
-        if (StringUtils.isEmpty(constraint.getLabelKey())) {
+        if (StringUtils.isEmpty(constraint.getMessageKey())) {
             if (StringUtils.isNotEmpty(field.getLabel())) {
                 message = MessageFormat.format(message, field.getLabel());
             } else {
-                message = MessageFormat.format(message, configService.getPropertyValueAsString(GENERIC_FIELD_MSG_KEY));
+                String genericFieldLabel = messageService.getMessageText(GENERIC_FIELD_MSG_KEY);
+                message = MessageFormat.format(message, genericFieldLabel);
             }
-
         }
 
         String function = "function(element){\n" +
@@ -784,19 +811,23 @@ public class ClientValidationUtils {
      * @return
      */
     private static String getMustOccursMessage(View view, MustOccurConstraint constraint) {
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
+
         String message = "";
-        if (StringUtils.isNotEmpty(constraint.getLabelKey())) {
-            message = generateMessageFromLabelKey(constraint.getValidationMessageParams(), constraint.getLabelKey());
+        if (StringUtils.isNotEmpty(constraint.getMessageKey())) {
+            message = generateMessageText(constraint.getMessageNamespaceCode(), constraint.getMessageComponentCode(),
+                    constraint.getMessageKey(), constraint.getValidationMessageParams());
         } else {
-            String and = configService.getPropertyValueAsString(AND_MSG_KEY);
-            String or = configService.getPropertyValueAsString(OR_MSG_KEY);
-            String all = configService.getPropertyValueAsString(ALL_MSG_KEY);
-            String mustOccursMsgEqualMinMax = configService.getPropertyValueAsString(
+            String and = messageService.getMessageText(AND_MSG_KEY);
+            String or = messageService.getMessageText(OR_MSG_KEY);
+            String all = messageService.getMessageText(ALL_MSG_KEY);
+            String mustOccursMsgEqualMinMax = messageService.getMessageText(
                     UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_EQUAL_KEY);
-            String atMost = configService.getPropertyValueAsString(ATMOST_MSG_KEY);
-            String genericLabel = configService.getPropertyValueAsString(GENERIC_FIELD_MSG_KEY);
-            String mustOccursMsg = configService.getPropertyValueAsString(
+            String atMost = messageService.getMessageText(ATMOST_MSG_KEY);
+            String genericLabel = messageService.getMessageText(GENERIC_FIELD_MSG_KEY);
+            String mustOccursMsg = messageService.getMessageText(
                     UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_KEY);
+
             String statement = "";
             for (int i = 0; i < mustOccursPathNames.size(); i++) {
                 String andedString = "";
@@ -932,8 +963,8 @@ public class ClientValidationUtils {
                     methodKey++;
                 } else {
                     //blindly assume that if there is no regex value defined that there must be a method by this name
-                    if (StringUtils.isNotEmpty(validCharactersConstraint.getLabelKey())) {
-                        field.getControl().addStyleClass(validCharactersConstraint.getLabelKey());
+                    if (StringUtils.isNotEmpty(validCharactersConstraint.getMessageKey())) {
+                        field.getControl().addStyleClass(validCharactersConstraint.getMessageKey());
                     }
                 }
             }
@@ -964,4 +995,5 @@ public class ClientValidationUtils {
 
         }
     }
+    
 }

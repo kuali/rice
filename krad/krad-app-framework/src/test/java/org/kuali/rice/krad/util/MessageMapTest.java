@@ -29,6 +29,8 @@ import static org.junit.Assert.*;
 
 /**
  * MessageMapTest tests the MessageMap methods
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageMapTest {
 

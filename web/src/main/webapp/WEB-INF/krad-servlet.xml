@@ -136,7 +136,7 @@
     <property name="basenames">
       <list>
         <value>org/kuali/rice/krad/ApplicationResources</value>
-        <value>org/kuali/rice/krad/KRAD-ApplicationResources</value>
+        <value>org/kuali/rice/krad/KRADApplicationResources</value>
       </list>
     </property>
   </bean>

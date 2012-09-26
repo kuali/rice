@@ -27,23 +27,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="Items">
          <list>
-           <bean parent="Uif-Disclosure-GridSection">
+           <bean id="TravelAccount-InquiryView-General" parent="Uif-Disclosure-GridSection">
              <property name="items">
                <list>
                 <bean parent="Uif-DataField" p:propertyName="number"/>
                 <bean parent="Uif-DataField" p:propertyName="name"/>
                 <bean parent="Uif-DataField" p:propertyName="extension.accountType.codeAndDescription"/>
-                <bean parent="Uif-DataField" p:propertyName="subAccount"/>
+                <bean parent="Uif-DataField" p:propertyName="subAccount" p:label="@msg{subAccountLabel}"/>
                 <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
                 <bean parent="Uif-DataField" p:propertyName="createDate"/>
                 <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
                 <bean parent="Uif-DataField" p:propertyName="foId"/>
                </list>
              </property>
-             <property name="headerText" value="Account Information"/>
+             <property name="headerText" value="@msg{inquirySectionHeader}Account Information"/>
            </bean>
-           <bean parent="Uif-Disclosure-StackedCollectionSection">
-              <property name="headerText" value="Fiscal Officer Accounts"/>
+
+           <bean id="TravelAccount-InquiryView-FO1" parent="Uif-Disclosure-StackedCollectionSection">
+              <property name="headerText" value="@msg{TravelAccount-InquiryView-General:inquirySectionHeader}Fiscal Officer Accounts"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="items">
@@ -60,7 +61,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 </list>
               </property>
            </bean>
-           <bean parent="Uif-Disclosure-TableCollectionSection">
+
+           <bean id="TravelAccount-InquiryView-FO2" parent="Uif-Disclosure-TableCollectionSection">
               <property name="headerText" value="Fiscal Officer Accounts - Default (No Column Options set)"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
@@ -74,22 +76,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                   <bean parent="Uif-DataField" p:propertyName="createDate"/>
                  </list>
               </property>
-             <!-- TODO: appears to interfere with rich table resizing after window resize
-             <property name="layoutManager.richTable.templateOptions">
-               <map>
-                 <entry key="aoColumns">
-                   <value>
-                     [
-                      {'bSortable':true, 'sSortDataType':'numeric'},
-                      {'bVisible':false},
-                      {'bSortable':false},
-                     {'bSortable':true, 'sSortDataType':'numeric'},
-                     {'bSortable':false}]
-                   </value>
-                 </entry>
-               </map>
-             </property>
-                 -->
            </bean>
 
            <bean parent="Uif-Disclosure-TableCollectionSection">
@@ -118,6 +104,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </set>
              </property>
            </bean>
+
            <bean parent="Uif-Disclosure-TableCollectionSection">
               <property name="headerText" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on layout manager"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>

@@ -1,6 +1,7 @@
 package org.kuali.rice.krad.uif;
 
 import org.junit.Test;
+import org.kuali.rice.krad.test.TestDictionaryBean;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.InquiryView;
@@ -18,7 +19,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @TestDictionaryConfig(
-        namespaceCode = "KR-KRAD",
+        namespaceCode = "KR-NS",
         dataDictionaryFiles = "classpath:org/kuali/rice/krad/uif/UifBeanFactoryPostProcessorTestBeans.xml")
 public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
 
@@ -59,7 +60,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
                 "inquiry.render"));
 
         // two levels of nesting
-        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testNestedExpressionOverride5");
+        TestDictionaryBean testBean = (TestDictionaryBean) getTestDictionaryObject("testNestedExpressionOverride5");
         assertNotNull("No bean exists with id: testNestedExpressionOverride5", testBean);
 
         assertEquals("Child property did not override", "old school",
@@ -75,7 +76,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
      */
     @Test
     public void testMergingOfMapExpressions() throws Exception {
-        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testExpressionMapMerging2");
+        TestDictionaryBean testBean = (TestDictionaryBean) getTestDictionaryObject("testExpressionMapMerging2");
         assertNotNull("No bean exists with id: testExpressionMapMerging2", testBean);
 
         assertTrue("Merged map is not correct size (2)", testBean.getMap1().size() == 2);
@@ -96,7 +97,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
      */
     @Test
     public void testNonMergingOfMapExpressions() throws Exception {
-        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testExpressionMapNonMerging");
+        TestDictionaryBean testBean = (TestDictionaryBean) getTestDictionaryObject("testExpressionMapNonMerging");
         assertNotNull("No bean exists with id: testExpressionMapNonMerging", testBean);
 
         assertTrue("Non-Merged map is not correct size (1)", testBean.getMap1().size() == 1);
@@ -114,7 +115,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
      * @throws Exception
      */
     public void testNestedListExpressions() throws Exception {
-        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testListBeanExpressionMerging");
+        TestDictionaryBean testBean = (TestDictionaryBean) getTestDictionaryObject("testListBeanExpressionMerging");
         assertNotNull("No bean exists with id: testListBeanExpressionMerging", testBean);
 
         Map<String, String> mergedMap = testBean.getListReference1().get(0).getReference1().getMap1();
@@ -123,7 +124,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
         assertTrue("Merged map does not contain key2", mergedMap.containsKey("key2"));
         assertTrue("Merged map does not contain key3)", mergedMap.containsKey("key3"));
 
-        UifTestBeanObject rootListBean = testBean.getListReference1().get(0);
+        TestDictionaryBean rootListBean = testBean.getListReference1().get(0);
 
         assertTrue("Expression count not correct for merged map", rootListBean.getExpressionGraph().size() == 2);
         assertEquals("Bean does not contain expression for property key1", "@{expr1}",
@@ -140,7 +141,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
     @Test
     public void testListExpressions() throws Exception {
         // test expressions with no inheritance
-        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testListExpressionMerging");
+        TestDictionaryBean testBean = (TestDictionaryBean) getTestDictionaryObject("testListExpressionMerging");
         assertNotNull("No bean exists with id: testListExpressionMerging", testBean);
 
         List<String> list1 = testBean.getList1();
@@ -165,7 +166,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
      * @throws Exception
      */
     public void testNestedListMerging() throws Exception {
-        UifTestBeanObject testBean = (UifTestBeanObject) getTestDictionaryObject("testListMerging2");
+        TestDictionaryBean testBean = (TestDictionaryBean) getTestDictionaryObject("testListMerging2");
         assertNotNull("No bean exists with id: testListMerging2", testBean);
 
         List<String> list1 = testBean.getReference1().getList1();
@@ -183,8 +184,8 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
      */
     @Test
     public void testPostProcessBeanFactoryWithSimpleInheritanceSucceeds() throws Exception {
-        UifTestBeanObject simpleBean1 = (UifTestBeanObject) getTestDictionaryObject("testSimpleBean1");
-        UifTestBeanObject simpleBean2 = (UifTestBeanObject) getTestDictionaryObject("testSimpleBean2");
+        TestDictionaryBean simpleBean1 = (TestDictionaryBean) getTestDictionaryObject("testSimpleBean1");
+        TestDictionaryBean simpleBean2 = (TestDictionaryBean) getTestDictionaryObject("testSimpleBean2");
 
         assertEquals("Bean does not have the correct property3 value", simpleBean1.getExpressionGraph().get("property3"), "@{1 eq 1}");
         assertNull("Bean should not have a property3 value", simpleBean2.getExpressionGraph().get("property3"));
@@ -197,8 +198,8 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
      */
     @Test
     public void testPostProcessBeanFactoryWithSimpleNestingSucceeds() throws Exception {
-        UifTestBeanObject simpleBean1 = (UifTestBeanObject) getTestDictionaryObject("testSimpleBean1");
-        UifTestBeanObject simpleBean4 = (UifTestBeanObject) getTestDictionaryObject("testSimpleBean4");
+        TestDictionaryBean simpleBean1 = (TestDictionaryBean) getTestDictionaryObject("testSimpleBean1");
+        TestDictionaryBean simpleBean4 = (TestDictionaryBean) getTestDictionaryObject("testSimpleBean4");
 
         assertEquals("Bean does not have the correct property3 value", simpleBean1.getExpressionGraph().get("property3"), "@{1 eq 1}");
         assertNull("Bean should not have a property3 value", simpleBean4.getExpressionGraph().get("property3"));

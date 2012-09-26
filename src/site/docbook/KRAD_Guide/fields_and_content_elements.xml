@@ -558,45 +558,24 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
             previous sections we must specify a propertyName for the data and input fields. In the case of the 
             input field, an input HTML element will be generated within the input field template. However, this 
             is not generated directly but instead uses a helper tag provided by the Spring framework:</para>
-    <programlisting>&lt;form:input id=&quot;${control.id}&quot; path=&quot;${field.bindingInfo.bindingPath}&quot; ... &gt;</programlisting>
+    <programlisting>&lt;@spring.input id=&quot;${control.id}&quot; path=&quot;${field.bindingInfo.bindingPath}&quot; ... &gt;</programlisting>
     <para>Notice the path attribute (disregard the value for now). This is an attribute of the
-            Spring input tag that specifies the path to the property this input should be associated
-            with. Spring will do two things with this information. First, it will retrieve the value
-            for that property from the model and set as the value attribute for the input tag. Next,
-            it will use the path given as the value for the name attribute (if you are wondering the
-            id attribute just gets passed through to the id attribute for the HTML tag). Assuming we
-            had a property path of ‘bookId’ with value ‘3’, the resulting HTML input would be as
-            follows:</para>
+      Spring input macro that specifies the path to the property this input should be associated
+      with. Spring will do two things with this information. First, it will retrieve the value for
+      that property from the model and set as the value attribute for the input macro. Next, it will
+      use the path given as the value for the name attribute (if you are wondering the id attribute
+      just gets passed through to the id attribute for the HTML tag). Assuming we had a property
+      path of ‘bookId’ with value ‘3’, the resulting HTML input would be as follows:</para>
     <programlisting>&lt;input id=”u3” name=”bookId” value=”3” ... &gt;</programlisting>
     <para>The value of ‘3’ will then appear inside the rendered text box. All other controls
             types work in a similar manner.</para>
-    <para>In the case of a data field or when the input field is read only, the Spring bind tag
+    <para>In the case of a data field or when the input field is read only, the Spring bind macro
             is used. This tells Spring to pull the value for the given property and stick the value
-            into a JSP variable (page or request scope). We can then write out that value to stream
+            into a FreeMarker variable (page or request scope). We can then write out that value to stream
             which result in the static text being display.</para>
     <programlisting>
-&lt;s:bind path=&quot;${field.bindingInfo.bindingPath}&quot;&gt;${status.value}&lt;/s:bind&gt;${status.value}    
+&lt;@spring.bind path=&quot;${field.bindingInfo.bindingPath}&quot;&gt;${status.value}&lt;/@spring.bind&gt;${status.value}    
         </programlisting>
-    <tip>
-      <title>Confused by the JSP Syntax?</title>
-      <para>If you didn’t completely follow the previous JSP examples, there are a couple of
-                things that should help. One any tag that starts with &apos;&lt;s&apos; or &apos;&lt;form&apos;: is a Spring tag that was bound to the ‘s’ and ‘form’ 
-                namespaces. At the beginning of each template file an include is to done to a JSP that setups the common tag 
-                libraries for use. This looks like the following:</para>
-      <programlisting>&lt;%@ include file=&quot;/krad/WEB-INF/jsp/tldHeader.jsp&quot;%&gt;</programlisting>
-      <para>Within tldHeader.jsp we then have the following line:</para>
-      <programlisting>&lt;%@ taglib uri=&quot;http://www.springframework.org/tags&quot; prefix=&quot;s&quot; %&gt;</programlisting>
-      <programlisting>&lt;%@ taglib uri=&quot;http://www.springframework.org/tags/form&quot; prefix=&quot;form&quot;%&gt;</programlisting>
-      <para>This allows the Spring tags to be used with the ‘s’ or ‘form’ prefix. A full
-                listing of the Spring tags can be found here: </para>
-      <para><link xlink:href="http://static.springsource.org/spring/docs/2.0.x/reference/spring.tld.html">http://static.springsource.org/spring/docs/2.0.x/reference/spring.tld.html</link></para>
-      <para><link xlink:href="http://static.springsource.org/spring/docs/2.0.x/reference/spring-form.tld.html">http://static.springsource.org/spring/docs/2.0.x/reference/spring-form.tld.html</link></para>
-      <para>The second thing to be aware of are the ‘${ }’ expressions. These are JSTL (Java
-                Standard Tag Library) expression that allow use to evaluate expressions similar to
-                the use of scriptlets. JSTL also includes a set of tags that are bound to the ‘c’
-                namespace. More information on JSTL can be found at the following website:</para>
-      <para><link xlink:href="http://java.sun.com/products/jsp/jstl/reference/docs/index.html">http://java.sun.com/products/jsp/jstl/reference/docs/index.html</link></para>
-    </tip>
     <para>Now let’s look at the incoming direction. This is data contained in the HTML form
             (with the controls) that we wish to populate onto the model. Recall that when we used
             the Spring tag, our property path was used for the name attribute value. When the page
@@ -3683,7 +3662,7 @@ p:methodToCall=”save” p:focusOnIdAfterSubmit=”FIRST”/&gt;
             types.</para>
     <para>The second piece of data we need to give is the property key for the message. In order
             to support customizations and internalization, all messages are externalized from the
-            code through a resource bundle. In the current version of rice these messages are configured in property files, with one being KRAD-ApplicationResources.properties. </para>
+            code through a resource bundle. In the current version of rice these messages are configured in property files, with one being KRADApplicationResources.properties. </para>
     <para>We need to provide the key of the resource and the
             framework will resolve the actual message. The final piece (not always necessary) is any
             arguments that are necessary for the message. With the use of placeholders (‘{0}’,
@@ -3876,11 +3855,11 @@ level up will display that fields full uncollapsed message text, and if display 
   </section>
   <section>
     <title>Generic Field </title>
-    <para>So KRAD will do everything for you and you will never have to write a JSP file again
-            right? In most likelihood, no! Although the UIF is extremely flexible, being about to
-            cover everything a visual designer can come up with is not practical. KRAD is meant to
-            provide those common components that are generally applicable, and allowing Rice
-            applications to extend where needed. </para>
+    <para>So KRAD will do everything for you and you will never have to write a FreeMarker template
+      right? In most likelihood, no! Although the UIF is extremely flexible, being about to cover
+      everything a visual designer can come up with is not practical. KRAD is meant to provide those
+      common components that are generally applicable, and allowing Rice applications to extend
+      where needed. </para>
     <para>When a gap is found, there are two routes that can be taken. One the application can
             fill the gap by creating the component themselves (and possibly contributing back). In
             Chapter 5 we learned the general guidelines for doing so. However, creating a new
@@ -3889,75 +3868,66 @@ level up will display that fields full uncollapsed message text, and if display 
             in the application or other applications will find it useful. In these cases we really
             just want to get the job done and not spend extra time making it ‘generic’. </para>
     <para>KRAD allows this to be done by creating custom templates. These templates are not for
-            rendering a KRAD component, but instead a hook to implement any JSP required. However,
-            we still need to hook these JSP files into the view processing, so that they are invoked
-            and rendered in the correct place. One way we can do this is by using the
-            org.kuali.rice.krad.uif.field.GenericField component. The generic field has no custom
-            properties associated with it nor does it have a default template. It does however
-            contain the inherited component and field base properties such as id, style, label, and
-            so on. This gives you the ability to write a custom JSP that will act as a field.</para>
+      rendering a KRAD component, but instead a hook to implement any logic required. However, we
+      still need to hook these custom files into the view processing, so that they are invoked and
+      rendered in the correct place. One way we can do this is by using the
+      org.kuali.rice.krad.uif.field.GenericField component. The generic field has no custom
+      properties associated with it nor does it have a default template. It does however contain the
+      inherited component and field base properties such as id, style, label, and so on. This gives
+      you the ability to write a custom FreeMarker template that will act as a field.</para>
     <para>Since there is no template provided by default, we must create one before using the
-            generic field. Unlike other component templates, there are really no rules to follow
-            here; this can contain any JSP content we like. Let’s assume we have created a JSP file
-            named ‘bookQuestionnaire’ in one of our application web folders named
-            ‘/myapp/jsp’:</para>
+      generic field. Unlike other component templates, there are really no rules to follow here;
+      this can contain any content we like. Let’s assume we have created a FreeMarker file named
+      ‘bookQuestionnaire’ in one of our application web folders named ‘/myapp/ftl':</para>
+    <programlisting>&lt;#macro bookQuestionaire field>
+  &lt;ul&gt;
+      &lt;li&gt;What is your favorite book? &lt;form:input path=”questionnaire.favoriteBook”/&gt;&lt;/li&gt;
+      &lt;li&gt;What many books do you read a month? &lt;form:input path=”questionnaire.booksPerMonth”/&gt;&lt;/li&gt;
+      &lt;li&gt;Do you wish you could read more? &lt;form:input path=”questionnaire.readMoreIndicator”/&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/#macro>        </programlisting>
+    <para>To create a generic field with this FreeMarker file, we create a new bean with parent of
+      ‘Uif-CustomTemplateField’ and set the template and template name properties:</para>
     <programlisting>
-&lt;%@ include file=&quot;/krad/WEB-INF/jsp/tldHeader.jsp&quot;%&gt; &#160;
-
-&lt;ul&gt;
-    &lt;li&gt;What is your favorite book? &lt;form:input path=”questionnaire.favoriteBook”/&gt;&lt;/li&gt;
-    &lt;li&gt;What many books do you read a month? &lt;form:input path=”questionnaire.booksPerMonth”/&gt;&lt;/li&gt;
-    &lt;li&gt;Do you wish you could read more? &lt;form:input path=”questionnaire.readMoreIndicator”/&gt;&lt;/li&gt;
-&lt;/ul&gt;
-        </programlisting>
-    <para>Note the tldHeader.jsp from the KRAD directory is included to bring in the tag library
-            import for ‘form’.</para>
-    <para>To create a generic field with this JSP file, we create a new bean with parent of
-            ‘Uif-CustomTemplateField’ and set the template property:</para>
-    <programlisting>
-&lt;bean parent=”Uif-CustomTemplateField” p:template=”/myapp/jsp/bookQuestionnaire.jsp”/&gt;
+&lt;bean parent=”Uif-CustomTemplateField” p:template=”/myapp/ftl/bookQuestionnaire.ftl” p:templateName="bookQuestionaire"/&gt;
         </programlisting>
     <para>If needed in multiple places, we can create a top level bean with an id:</para>
     <programlisting>
-&lt;bean id=”BookQuestionnaire” parent=”Uif-CustomTemplateField” p:template=”/myapp/jsp/bookQuestionnaire.jsp”/&gt;</programlisting>
+&lt;bean id=”BookQuestionnaire” parent=”Uif-CustomTemplateField” p:template=”/myapp/ftl/bookQuestionnaire.ftl” p:templateName="bookQuestionaire"/&gt;</programlisting>
     <para>In this way we can add as many custom templates as needed.</para>
     <para>It is also possible to parameterize our custom template using the templateOptions map
             property (recall this is provided by ComponentBase). For example, if we wanted a
             parameter to determine whether or not we ask the third question, we could do so as
             follows:</para>
-    <programlisting>
-&lt;%@ include file=&quot;/krad/WEB-INF/jsp/tldHeader.jsp&quot;%&gt;
-&lt;tiles:useAttribute name=&quot;field&quot; classname=&quot;org.kuali.rice.krad.uif.field.GenericField&quot;/&gt;
-&lt;c:set var=”askReadMore” value=”${field.templateOptions[‘askReadMore’]}”/&gt;
-&lt;ul&gt;
-    &lt;li&gt;What is your favorite book? &lt;form:input path=”questionnaire.favoriteBook”/&gt;&lt;/li&gt;
-    &lt;li&gt;What many books do you read a month? &lt;form:input path=”questionnaire.booksPerMonth”/&gt;&lt;/li&gt;
-        &lt;c:if test=”${askReadMore}”&gt;
-            &lt;li&gt;Do you wish you could read more? &lt;form:input path=”questionnaire.readMoreIndicator”/&gt;&lt;/li&gt;
-        &lt;/c:if&gt;
-&lt;/ul&gt;
-        </programlisting>
-    <para>Note the use of the tiles:useAttribute tag to get a handle on our generic field
-            instance, and use of the JSTL c tags to declare a variable and add a conditional
-            statement with the if tag.</para>
+    <programlisting>&lt;#macro bookQuestionaire field>
+  &lt;#local askReadMore=field.templateOptions['askReadMore']/>
+  &lt;ul&gt;
+      &lt;li&gt;What is your favorite book? &lt;form:input path=”questionnaire.favoriteBook”/&gt;&lt;/li&gt;
+      &lt;li&gt;What many books do you read a month? &lt;form:input path=”questionnaire.booksPerMonth”/&gt;&lt;/li&gt;
+          &lt;#if askReadMore>
+              &lt;li&gt;Do you wish you could read more? &lt;@spring.input path=”questionnaire.readMoreIndicator”/&gt;&lt;/li&gt;
+          &lt;/#if>
+  &lt;/ul&gt;
+&lt;/#macro>        </programlisting>
     <para>Now to specify the variable setting, our bean will be:</para>
+    <para>// TODO: need bean example here</para>
     <tip>
       <title>Disadvantages of Generic Fields</title>
       <para>A couple of things should be noted when&#160;building a generic field. First, since we
-                don’t have actual input field components for any included input tags (or other form
-                tags), we don’t get certain features such as custom property editors, default
-                values, and so on. Another route to take for custom templates is to use a Group
-                (with all the fields configured) and write a custom template. The custom template
-                can then render a custom layout, add additional markup or whatever else is
-                necessary, and invoke the template tag to render the individual fields.</para>
+        don’t have actual input field components for any included input macros (or other form
+        macros), we don’t get certain features such as custom property editors, default values, and
+        so on. Another route to take for custom templates is to use a Group (with all the fields
+        configured) and write a custom template. The custom template can then render a custom
+        layout, add additional markup or whatever else is necessary, and invoke the template tag to
+        render the individual fields.</para>
     </tip>
     <section>
       <title>Recap</title>
       <para>
                 <itemizedlist>
           <listitem>
-            <para>The Generic field component allows a custom jsp template to be created
-                            and act as a field to the framework</para>
+            <para>The Generic field component allows a custom FreeMarker template to be created and
+              act as a field to the framework</para>
           </listitem>
           <listitem>
             <para>The custom template can reside anywhere in the web module and may

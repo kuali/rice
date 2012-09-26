@@ -465,7 +465,7 @@ function setupPage(validate) {
             // prompt does not come through in checkDirty since we are unloaded, so we
             // need to return the question
             if (dirty) {
-                return "Form has unsaved data. Do you want to leave anyway?";
+                return getMessage(kradVariables.MESSAGE_KEY_DIRTY_FIELDS);
             }
         }
     });

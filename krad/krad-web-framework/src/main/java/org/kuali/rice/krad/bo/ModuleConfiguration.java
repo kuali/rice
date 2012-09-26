@@ -57,8 +57,6 @@ import java.util.Map;
  */
 public class ModuleConfiguration implements InitializingBean, ApplicationContextAware {
 
-	//protected static Logger LOG = Logger.getLogger(ModuleConfiguration.class);
-
     /**
      * the module's namespace.
      */
@@ -89,6 +87,8 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	protected List<String> jobNames;
 
 	protected List<String> triggerNames;
+    
+    protected List<String> resourceBundleNames;
 
 	//optional
 	protected String dataSourceName;
@@ -120,6 +120,7 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		scriptConfigurationFilePaths = new ArrayList<String>();
 		jobNames = new ArrayList<String>();
 		triggerNames = new ArrayList<String>();
+        resourceBundleNames = new ArrayList<String>();
 	}
 
     /**
@@ -283,7 +284,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		this.jobNames = jobNames;
 	}
 
-
 	/**
 	 * @return the triggerNames
 	 */
@@ -298,7 +298,32 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		this.triggerNames = triggerNames;
 	}
 
-	/**
+    /**
+     * List of resource bundle names that will provides messages for this module
+     *
+     * <p>
+     * Each bundle will point to a resource property file that contain key/value message pairs. The properties
+     * file should be on the classpath and the name is given by specifying the fully qualified class name
+     * (dot notation).
+     * </p>
+     *
+     * @return List<String> resource bundle names
+     * @see java.util.ResourceBundle
+     */
+    public List<String> getResourceBundleNames() {
+        return resourceBundleNames;
+    }
+
+    /**
+     * Setter for the list of resource bundle names that provides messages for the module
+     *
+     * @param resourceBundleNames
+     */
+    public void setResourceBundleNames(List<String> resourceBundleNames) {
+        this.resourceBundleNames = resourceBundleNames;
+    }
+
+    /**
 	 * @return the initializeDataDictionary
 	 */
 	public boolean isInitializeDataDictionary() {

@@ -84,10 +84,13 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DataDictionaryService#setBaselinePackages(java.util.List)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#setAdditionalDictionaryFiles(
+     * java.util.Map<java.lang.String,java.util.List<java.lang.String>>)
      */
-    public void setBaselinePackages(List baselinePackages) throws IOException {
-      //  this.addDataDictionaryLocations(baselinePackages);
+    public void setAdditionalDictionaryFiles(Map<String, List<String>> additionalDictionaryFiles) throws IOException {
+        for (Map.Entry<String, List<String>> entry : additionalDictionaryFiles.entrySet()) {
+            addDataDictionaryLocations(entry.getKey(), entry.getValue());
+        }
     }
 
     /**

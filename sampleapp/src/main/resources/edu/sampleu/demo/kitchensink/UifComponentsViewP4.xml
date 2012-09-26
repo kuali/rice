@@ -185,7 +185,7 @@
 					p:propertyName="field68">
 					<property name="validCharactersConstraint">
 						<bean parent="ValidCharactersConstraint" p:value="^[a-zA-Z]\.[0-9]$"
-							p:labelKey="validation.aDotNumTest" />
+							p:messageKey="validation.aDotNumTest" />
 					</property>
 				</bean>
 			</list>

@@ -39,6 +39,8 @@ import java.util.List;
 
 /**
  * Test rich message generation and parsing functionality
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RichMessageTest extends KRADTestCase {
 

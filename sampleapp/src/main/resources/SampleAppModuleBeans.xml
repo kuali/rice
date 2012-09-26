@@ -164,6 +164,11 @@
         <value>edu.sampleu.kew.krad</value>
       </list>
     </property>
+    <property name="resourceBundleNames">
+      <list>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP3Resources</value>
+      </list>
+    </property>
   </bean>
 
   <bean id="sampleAppModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">

@@ -19,7 +19,7 @@
 
   <param name="config.location">classpath:org/kuali/rice/standalone/config/standalone-config-defaults.xml</param>
 
-  <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRAD-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources,edu.sampleu.SampleApplicationResources</param>
+  <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources,edu.sampleu.SampleApplicationResources</param>
 
   <param name="module.name">sample-app</param>
   <param name="application.id">TRAVEL</param>
@@ -33,4 +33,6 @@
   <param name="config.location">${alt.config.location}</param>
   <param name="version">${project.name} :: ${project.version} :: ${kuali.build.timestamp}</param>
   <param name="sampleapp.growl.testmsg">{0} was a great year, wasn't it?</param>
+
+  <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,edu.sampleu.SampleModuleResources</param>
 </config>

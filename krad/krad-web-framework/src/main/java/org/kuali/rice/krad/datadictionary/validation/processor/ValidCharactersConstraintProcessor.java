@@ -96,7 +96,7 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
     		return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
     	
     	result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
-        constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+        constraintValidationResult.setConstraintLabelKey(constraint.getMessageKey());
         constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
     	return constraintValidationResult;
 	}
@@ -125,7 +125,7 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 
 				// If this is an error then some non-null validation result will be returned
 				if (constraintValidationResult != null) {
-                    constraintValidationResult.setConstraintLabelKey(validCharsConstraint.getLabelKey());
+                    constraintValidationResult.setConstraintLabelKey(validCharsConstraint.getMessageKey());
                     constraintValidationResult.setErrorParameters(validCharsConstraint.getValidationMessageParamsArray());
 					// Another strange KNS thing -- if the validation fails (not sure why only in that case) then some further error checking is done using the formatter, if one exists
 					if (formatterClass == null) {
@@ -193,14 +193,14 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 //        if ("regex".equalsIgnoreCase(processorType) && !validChars.equals(".*")) {
             if (!fieldValue.toString().matches(validChars)) {
             	ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
-            	if (validCharsConstraint.getLabelKey() != null) {
+            	if (validCharsConstraint.getMessageKey() != null) {
             		// FIXME: This shouldn't surface label key itself to the user - it should look up the label key, but this needs to be implemented in Rice
-            		constraintValidationResult.setError(RiceKeyConstants.ERROR_CUSTOM, validCharsConstraint.getLabelKey());
+            		constraintValidationResult.setError(RiceKeyConstants.ERROR_CUSTOM, validCharsConstraint.getMessageKey());
             		return constraintValidationResult;
             	} 
             	
             	constraintValidationResult.setError(RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
-                constraintValidationResult.setConstraintLabelKey(validCharsConstraint.getLabelKey());
+                constraintValidationResult.setConstraintLabelKey(validCharsConstraint.getMessageKey());
                 constraintValidationResult.setErrorParameters(validCharsConstraint.getValidationMessageParamsArray());
             	return constraintValidationResult;
             }

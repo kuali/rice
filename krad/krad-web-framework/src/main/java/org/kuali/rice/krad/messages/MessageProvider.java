@@ -31,22 +31,22 @@ import java.util.Collection;
 public interface MessageProvider {
 
     /**
-     * Gets the {@link Message} object that has the given namespace, component, name, and locale
+     * Gets the {@link Message} object that has the given namespace, component, key, and locale
      *
-     * @param namespace - namespace code the message belongs to
-     * @param component - component code the namespace is associated with
-     * @param name - name that identifies the message within the namespace and component
-     * @param locale - locale code for the message to return
+     * @param namespace namespace code the message belongs to
+     * @param component component code the namespace is associated with
+     * @param key key that identifies the message within the namespace and component
+     * @param locale locale code for the message to return
      * @return Message matching message object, or null if a message was not found
      */
-    public Message getMessage(String namespace, String component, String name, String locale);
+    public Message getMessage(String namespace, String component, String key, String locale);
 
     /**
      * Gets all message objects for the given namespace, component, and locale
      *
-     * @param namespace - namespace code the message belongs to
-     * @param component - component code the namespace is associated with
-     * @param locale - locale code for the message to return
+     * @param namespace namespace code the message belongs to
+     * @param component component code the namespace is associated with
+     * @param locale locale code for the message to return
      * @return Collection<Message> collection of messages that match, or empty collection if no messages
      *         are found
      */

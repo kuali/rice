@@ -36,12 +36,13 @@ public class LocationCountryBlanketAppIT extends AdminMenuBlanketAppITBase {
     @Override
     public String blanketApprove() throws InterruptedException{
         String docId = getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
-        String countryName = "Validation Test Country " + ITUtil.DTS;
         assertElementPresent("methodToCall.cancel");
+        String twoLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
+        String countryName = "Validation Test Country " + ITUtil.DTS + twoLetters;
         waitAndType("//input[@id='document.documentHeader.documentDescription']", countryName);
-        waitAndType("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
+        waitAndType("//input[@id='document.newMaintainableObject.code']", twoLetters);
         waitAndType("//input[@id='document.newMaintainableObject.name']", countryName);
-        waitAndType("//input[@id='document.newMaintainableObject.alternateCode']", "VTC");
+        waitAndType("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoLetters);
         return docId;
     }
 }

@@ -118,6 +118,9 @@ public class ITUtil {
                 if (selenium.isElementPresent(DIV_EXCOL_LOCATOR)) { // not present if errors are at the bottom of the page (see left-errmsg below)
                     errorText = blanketApprovalCleanUpErrorText(selenium.getText(DIV_EXCOL_LOCATOR) + "\n" + selenium.getHtmlSource()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
                 }
+                if (selenium.isElementPresent("//div[@class='left-errmsg-tab']/div/div")) {
+                    errorText = errorText + blanketApprovalCleanUpErrorText(selenium.getText("//div[@class='left-errmsg-tab']/div/div"));
+                }
 
                 //                if (selenium.isElementPresent("//div[@class='left-errmsg']/div")) {
                 //                    errorText = errorText + " " + selenium.getText("//div[@class='left-errmsg']/div/div[1]");

@@ -1007,6 +1007,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             return !(StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
                      StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()) ||
                      StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode())  ||
+                     StringUtils.equals(status.getCode(), DocumentStatus.CANCELED.getCode())  ||
                      StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()));
          } else {
              return false;

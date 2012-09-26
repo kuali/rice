@@ -56,7 +56,6 @@
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
-    <commons-beanutils.groupId>org.kuali.commons</commons-beanutils.groupId>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
     <mysql.jdbc.version>5.1.18</mysql.jdbc.version>
@@ -526,8 +525,8 @@
                         http://bugs.sun.com/view_bug.do?bug_id=6528714
                         https://issues.apache.org/jira/browse/BEANUTILS-340
                       -->
-                      <!-- exclude>commons-beanutils:commons-beanutils</exclude -->
-                      <!-- exclude>org.apache.commons:commons-beanutils</exclude -->
+                      <exclude>commons-beanutils:commons-beanutils</exclude>
+                      <exclude>org.apache.commons:commons-beanutils</exclude>
 
                       <!-- exclude eh cache in general - only allow at a specific scope -->
                       <exclude>net.sf.ehcache</exclude>
@@ -1136,7 +1135,7 @@
           </exclusion>
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>${commons-beanutils.groupId}</groupId>
+            <groupId>commons-beanutils</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1158,7 +1157,7 @@
 
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>${commons-beanutils}</groupId>
+            <groupId>commons-beanutils</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1195,7 +1194,7 @@
           </exclusion>
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>${commons-beanutils.groupId}</groupId>
+            <groupId>commons-beanutils</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1455,7 +1454,7 @@
           </exclusion>
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>${commons-beanutils.groupId}</groupId>
+            <groupId>commons-beanutils</groupId>
           </exclusion>
           <exclusion>
             <groupId>commons-digester</groupId>
@@ -1630,8 +1629,9 @@
         <artifactId>kuali-mvn</artifactId>
         <version>${kuali-mvn.version}</version>
       </dependency>
+
       <dependency>
-        <groupId>${commons-beanutils.groupId}</groupId>
+        <groupId>org.kuali.commons</groupId>
         <artifactId>commons-beanutils</artifactId>
         <version>${commons-beanutils.version}</version>
         <exclusions>
@@ -1653,7 +1653,7 @@
           </exclusion>
           <exclusion>
             <artifactId>commons-beanutils</artifactId>
-            <groupId>${commons-beanutils.groupId}</groupId>
+            <groupId>commons-beanutils</groupId>
           </exclusion>
           <exclusion>
             <groupId>cglib</groupId>

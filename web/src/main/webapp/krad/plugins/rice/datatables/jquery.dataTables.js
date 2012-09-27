@@ -2430,20 +2430,26 @@
 				$(n[i]).html( sOut );
 			}
 		}
-		
-		
+
 		function _fnInfoMacros ( oSettings, str )
 		{
-			var
-				iStart = oSettings._iDisplayStart+1,
-				sStart = oSettings.fnFormatNumber( iStart ),
+            /* Kuali customization - change the start value for when an add line is in the table - KULRICE-8246*/
+			var iStart = oSettings._iDisplayStart+1,
 				iEnd = oSettings.fnDisplayEnd(),
 				sEnd = oSettings.fnFormatNumber( iEnd ),
 				iTotal = oSettings.fnRecordsDisplay(),
 				sTotal = oSettings.fnFormatNumber( iTotal ),
 				iMax = oSettings.fnRecordsTotal(),
 				sMax = oSettings.fnFormatNumber( iMax );
-		
+
+            var iCurrentPage = Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
+            if ($(oSettings.nTable).hasClass("uif-hasAddLine") && iCurrentPage > 1) {
+                iStart = oSettings._iDisplayStart;
+            }
+            var	sStart = oSettings.fnFormatNumber( iStart )
+
+            /* End Kuali customization */
+
 			// When infinite scrolling, we are always starting at 1. _iDisplayStart is used only
 			// internally
 			if ( oSettings.oScroll.bInfinite )
@@ -11649,6 +11655,11 @@
 				var iPageCount = DataTable.ext.oPagination.iFullNumbersShowPages;
 				var iPageCountHalf = Math.floor(iPageCount / 2);
 				var iPages = Math.ceil((oSettings.fnRecordsDisplay()) / oSettings._iDisplayLength);
+
+                /* Kuali customization - change the total pages when an add line is in the table - KULRICE-8246 */
+                if ($(oSettings.nTable).hasClass("uif-hasAddLine")) {
+                    iPages = Math.ceil(((oSettings.fnRecordsDisplay()) + 1) / oSettings._iDisplayLength);
+                }
 				var iCurrentPage = Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
 				var sList = "";
 				var iStartButton, iEndButton, i, iLen;

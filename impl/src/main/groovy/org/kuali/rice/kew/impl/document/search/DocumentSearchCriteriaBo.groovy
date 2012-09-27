@@ -29,6 +29,8 @@ import org.kuali.rice.kew.api.document.DocumentStatus
 import java.sql.Timestamp
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.impl.group.GroupBo
+import org.kuali.rice.kim.api.identity.principal.Principal
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName
 
 /**
  * Defines the business object that specifies the criteria used on document searches.
@@ -77,11 +79,14 @@ class DocumentSearchCriteriaBo implements BusinessObject {
     }
 
     String getInitiatorDisplayName() {
-        if(!initiatorPrincipalId) {
-            return null
+        if(initiatorPrincipalId != null) {
+            EntityNamePrincipalName entityNamePrincipalName = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(initiatorPrincipalId);
+            if(entityNamePrincipalName != null){
+                EntityName entityName = entityNamePrincipalName.getDefaultName();
+                return entityName == null ? null : entityName.getCompositeName();
+            }
         }
-        EntityName entityName = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(initiatorPrincipalId)?.getDefaultName()
-        return entityName.getCompositeName()
+        return null;
     }
 
     Person getApproverPerson() {
@@ -145,8 +150,11 @@ class DocumentSearchCriteriaBo implements BusinessObject {
     }
 
     private String principalIdToName(String principalId) {
-        if (principalId.trim()) {
-            return KimApiServiceLocator.getIdentityService().getPrincipal(principalId).getPrincipalName()
+        if (principalId != null && principalId.trim() ) {
+            Principal principal =  KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            if(principal != null){
+                return principal.getPrincipalName();
+            }
         }
         return null
     }

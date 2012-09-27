@@ -44,7 +44,10 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -130,6 +133,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         headerLabels = new ArrayList<Label>();
         dataFields = new ArrayList<Component>();
         columnsToCalculate = new ArrayList<String>();
+        columnCalculations = new ArrayList<ColumnCalculationInfo>();
     }
 
     /**

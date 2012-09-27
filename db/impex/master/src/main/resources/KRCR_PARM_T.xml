@@ -39,6 +39,10 @@
         PARM_DESC_TXT="Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected."
         PARM_NM="DEFAULT_COUNTRY" PARM_TYP_CD="CONFG" VAL="US" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
+        NMSPC_CD="KR-NS" OBJ_ID="CAA025BC0FFDC4F9E040F90A05B912C4"
+        PARM_DESC_TXT="The locale code that should be used within the application when otherwise not specified."
+        PARM_NM="DEFAULT_LOCALE_CODE" PARM_TYP_CD="CONFG" VAL="en-US" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-NS" OBJ_ID="53680C68F59BAD9BE0404F8189D80A6C"
         PARM_DESC_TXT="Flag for enabling/disabling direct inquiries on screens that are drawn by the nervous system (i.e. lookups and maintenance documents)"
         PARM_NM="ENABLE_DIRECT_INQUIRIES_IND" PARM_TYP_CD="CONFG"

@@ -96,6 +96,19 @@
             <reference foreign="BOOK_ID" local="BOOK_ID"/>
         </foreign-key>
     </table>
+    <table name="KRAD_MSG_T">
+        <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
+        <column name="CMPNT_CD" primaryKey="true" size="100" type="VARCHAR"/>
+        <column name="MSG_KEY" primaryKey="true" size="100" type="VARCHAR"/>
+        <column name="LOC" primaryKey="true" size="255" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="MSG_DESC" size="255" type="VARCHAR"/>
+        <column name="TXT" size="4000" type="VARCHAR"/>
+        <unique name="KRAD_MSG_TC2">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
     <table name="KRCR_CMPNT_SET_T">
         <column name="CMPNT_SET_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="LAST_UPDT_TS" required="true" type="DATE"/>

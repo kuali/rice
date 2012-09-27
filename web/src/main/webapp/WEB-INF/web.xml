@@ -130,6 +130,26 @@
     <servlet-name>krad</servlet-name>
   </filter-mapping>
 
+  <filter-mapping>
+    <filter-name>BootstrapFilter</filter-name>
+    <servlet-name>kradguest</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>UserLoginFilter</filter-name>
+    <servlet-name>kradguest</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>UserPreferencesFilter</filter-name>
+    <servlet-name>kradguest</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <servlet-name>kradguest</servlet-name>
+  </filter-mapping>
+
   <!-- for KCB Spring Web MVC pages -->
   <filter-mapping>
     <filter-name>BootstrapFilter</filter-name>
@@ -297,6 +317,12 @@
     <load-on-startup>3</load-on-startup>
   </servlet>
 
+  <servlet>
+    <servlet-name>kradguest</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>remoting</servlet-name>
     <url-pattern>/remoting/*</url-pattern>
@@ -345,6 +371,11 @@
   <servlet-mapping>
     <servlet-name>krad</servlet-name>
     <url-pattern>/kr-krad/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>kradguest</servlet-name>
+    <url-pattern>/kr-kradguest/*</url-pattern>
   </servlet-mapping>
 
   <session-config>

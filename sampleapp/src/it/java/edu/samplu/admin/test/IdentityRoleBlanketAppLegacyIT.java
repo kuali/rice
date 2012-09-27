@@ -35,7 +35,7 @@ public class IdentityRoleBlanketAppLegacyIT extends AdminMenuBlanketAppLegacyITB
     public String blanketApprove() throws Exception {
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']", "No search button to click.");
         waitAndClickByLinkText("return value", "No return value link");        
-        selectFrame("iframeportlet");
+       
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Role");
         selectByXpath("//select[@id='document.roleNamespace']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);

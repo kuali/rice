@@ -278,7 +278,7 @@
     <property name="mailer" ref="mailer" />
     <property name="messageTemplate">
       <bean class="org.kuali.rice.core.api.mail.MailMessage">
-        <property name="toAddresses">
+        <property name="fromAddress">
           <value>${kr.feedback.mailing.list}</value>
         </property>
       </bean>

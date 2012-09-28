@@ -30,7 +30,8 @@
         <form-bean name="MultipleValueLookupForm" type="org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm" />
         <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
         <form-bean name="KualiExceptionIncidentForm" type="org.kuali.rice.kns.web.struts.form.KualiExceptionIncidentForm" />
-        <form-bean name="AuthorizationExceptionForm" type="org.kuali.rice.kns.web.struts.form.AuthorizationExceptionForm" />
+      <form-bean name="KualiFeedbackHandlerForm" type="org.kuali.rice.kns.web.struts.form.KualiFeedbackHandlerForm" />
+      <form-bean name="AuthorizationExceptionForm" type="org.kuali.rice.kns.web.struts.form.AuthorizationExceptionForm" />
         <form-bean name="DisplayInactivationBlockersForm" type="org.kuali.rice.kns.web.struts.form.DisplayInactivationBlockersForm" />
     </form-beans>
 
@@ -71,6 +72,11 @@
                 attribute="KualiForm"
                 type="org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction">
             <forward name="basic" path="/WEB-INF/jsp/KualiExceptionIncident.jsp" />
+        </action>
+        <action path="/kualiFeedbackReport" name="KualiFeedbackHandlerForm" scope="request"
+                attribute="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiFeedbackHandlerAction" parameter="methodToCall" validate="true">
+                <set-property property="cancellable" value="true" />
+            <forward name="basic" path="/WEB-INF/jsp/KualiFeedback.jsp" />
         </action>
         <action path="/authorizationExceptionReport"
                 name="AuthorizationExceptionForm"

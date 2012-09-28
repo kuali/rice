@@ -274,6 +274,17 @@
     <property name="incidentMailingList" value="${kr.incident.mailing.list}"/>
   </bean>
 
+  <bean id="kradFeedbackService" class="org.kuali.rice.krad.service.impl.KualiFeedbackServiceImpl">
+    <property name="mailer" ref="mailer" />
+    <property name="messageTemplate">
+      <bean class="org.kuali.rice.core.api.mail.MailMessage">
+        <property name="toAddresses">
+          <value>${kr.feedback.mailing.list}</value>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
   <bean id="xmlObjectSerializerService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerServiceImpl"></bean>
 
   <bean id="documentService" class="org.kuali.rice.krad.service.impl.DocumentServiceImpl">

@@ -51,6 +51,7 @@ public class KRADServiceLocatorWeb {
     public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";
     public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
     public static final String EXCEPTION_INCIDENT_REPORT_SERVICE = "kradExceptionIncidentService";
+    public static final String FEEDBACK_REPORT_SERVICE = "kradFeedbackService";
     public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
     public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
     public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
@@ -95,6 +96,10 @@ public class KRADServiceLocatorWeb {
 
     public static final KualiExceptionIncidentService getKualiExceptionIncidentService() {
         return getService(EXCEPTION_INCIDENT_REPORT_SERVICE);
+    }
+
+    public static final KualiFeedbackService getKualiFeedbackService() {
+        return getService(FEEDBACK_REPORT_SERVICE);
     }
 
     public static DataDictionaryService getDataDictionaryService() {

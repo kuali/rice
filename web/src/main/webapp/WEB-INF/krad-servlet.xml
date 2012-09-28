@@ -31,6 +31,8 @@
                         http://www.springframework.org/schema/tx
                         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+  <import resource="krad-base-servlet.xml"/>
+
   <context:component-scan base-package="org.kuali.rice.krad"/>
   <context:component-scan base-package="edu.sampleu.travel.krad"/>
   <context:component-scan base-package="edu.sampleu.kew.krad"/>
@@ -40,105 +42,5 @@
   <context:component-scan base-package="org.kuali.rice.krms"/>
   <context:component-scan base-package="org.kuali.rice.core.web"/>
   <context:component-scan base-package="org.kuali.rice.kew.impl.peopleflow"/>
-
-  <tx:advice id="txAdvice" transaction-manager="transactionManager">
-    <tx:attributes>
-      <tx:method name="*"/>
-    </tx:attributes>
-  </tx:advice>
-
-  <aop:config>
-    <aop:pointcut id="controllerTransaction"
-                  expression="execution(* org.kuali.rice.krad.web.controller.UifControllerBase+.*(..))"/>
-    <aop:advisor advice-ref="txAdvice" pointcut-ref="controllerTransaction"/>
-  </aop:config>
-
-  <bean id="userTransaction" class="org.kuali.rice.core.framework.persistence.jta.UserTransactionFactoryBean"
-        lazy-init="true"/>
-
-  <bean id="jtaTransactionManager" class="org.kuali.rice.core.framework.persistence.jta.TransactionManagerFactoryBean"
-        lazy-init="true"/>
-
-  <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
-    <property name="userTransaction">
-      <ref local="userTransaction"/>
-    </property>
-    <property name="transactionManager">
-      <ref local="jtaTransactionManager"/>
-    </property>
-  </bean>
-
-  <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-    <property name="preferFileSystemAccess" value="false" />
-    <property name="templateLoaderPath" value="/"/>
-    <property name="freemarkerSettings">
-      <props>
-        <prop key="template_update_delay">1000000</prop>
-        <prop key="cache_storage">freemarker.cache.StrongCacheStorage</prop>
-        <prop key="number_format">computer</prop>
-      </props>
-    </property>
-  </bean>
-
-  <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-    <property name="cache" value="true"/>
-    <property name="prefix" value=""/>
-    <property name="suffix" value=".ftl"/>
-  </bean>
-
-  <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-    <property name="interceptors">
-      <list>
-        <ref bean="uifControllerHandlerInterceptor"/>
-        <ref bean="moduleLockingHandlerInterceptor"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="uifControllerHandlerInterceptor"
-        class="org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor"/>
-
-  <bean id="moduleLockingHandlerInterceptor" class="org.kuali.rice.krad.web.controller.ModuleLockingHandlerInterceptor">
-    <property name="moduleLockedMapping" value="module-locked"/>
-    <property name="kualiModuleService" ref="kualiModuleService"/>
-  </bean>
-
-  <bean id="kualiModuleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="kualiModuleService"/>
-  </bean>
-
-  <bean id="exceptionResolver" class="org.kuali.rice.krad.web.controller.UifHandlerExceptionResolver"/>
-
-  <bean class="org.kuali.rice.krad.web.controller.UifAnnotationMethodHandleAdapter">
-    <property name="webBindingInitializer">
-      <ref bean="kradConfigurableWebBindingInitializer"/>
-    </property>
-    <property name="messageConverters">
-      <list>
-        <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
-        <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
-        <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
-        <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
-        <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
-        <bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="kradConfigurableWebBindingInitializer"
-        class="org.kuali.rice.krad.web.bind.UifConfigurableWebBindingInitializer"/>
-
-  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-    <property name="maxUploadSize" value="500000"/>
-  </bean>
-
-  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-    <property name="basenames">
-      <list>
-        <value>org/kuali/rice/krad/ApplicationResources</value>
-        <value>org/kuali/rice/krad/KRADApplicationResources</value>
-      </list>
-    </property>
-  </bean>
 
 </beans>

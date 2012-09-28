@@ -227,12 +227,13 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
         DocumentRouteHeaderValue document =  KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
         DocumentType documentType = null;
+        Boolean suppressImmediateEmailsOnSuActionPolicy = false;
         if (document != null) {
             documentType = document.getDocumentType();
+            suppressImmediateEmailsOnSuActionPolicy = documentType.getSuppressImmediateEmailsOnSuActionPolicy().getPolicyValue();
         }
 
-        Boolean policyValue = documentType.getSuppressImmediateEmailsOnSuActionPolicy().getPolicyValue();
-        if (policyValue) {
+        if (suppressImmediateEmailsOnSuActionPolicy) {
             String docId = actionItem.getDocumentId();
             LOG.warn("checkEmailNotificationPreferences processing document: " + docId + " of type: " + documentType.getName() + " and getSuppressImmediateEmailsOnSuActionPolicy set to true.");
 

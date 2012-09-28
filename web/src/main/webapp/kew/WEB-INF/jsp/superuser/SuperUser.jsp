@@ -148,16 +148,17 @@
                <html-el:image property="methodToCall.disapprove" src="images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />&nbsp;&nbsp;&nbsp;&nbsp;
        	     </c:if>
              <html-el:image property="methodToCall.cancel" src="images/buttonsmall_canceldoc.gif" style="border-style:none;" align="absmiddle" />
-       	   </c:if>
-           <c:set var="previousNodeNameCol" value="${SuperUserForm.previousNodes}" />
-           <c:if test="${not empty previousNodeNameCol}">
-	           <c:if test="${SuperUserForm.SUDocument}">
 
-		         &nbsp;&nbsp;&nbsp;&nbsp;Select a node name:&nbsp;
-			     <html-el:select property="returnDestNodeName">
-		           <html-el:options collection="previousNodeNameCol" labelProperty="value" property="key"/>
-		         </html-el:select>&nbsp;<html-el:image src="images/buttonsmall_retprevrtlevel.gif" align="absmiddle" property="methodToCall.returnToPreviousNode" style="border-style:none;" />&nbsp;&nbsp;&nbsp;&nbsp;
-	           </c:if>
+             <c:set var="previousNodeNameCol" value="${SuperUserForm.previousNodes}" />
+             <c:if test="${not empty previousNodeNameCol}">
+	             <c:if test="${SuperUserForm.SUDocument}">
+
+		           &nbsp;&nbsp;&nbsp;&nbsp;Select a node name:&nbsp;
+			       <html-el:select property="returnDestNodeName">
+		             <html-el:options collection="previousNodeNameCol" labelProperty="value" property="key"/>
+		           </html-el:select>&nbsp;<html-el:image src="images/buttonsmall_retprevrtlevel.gif" align="absmiddle" property="methodToCall.returnToPreviousNode" style="border-style:none;" />&nbsp;&nbsp;&nbsp;&nbsp;
+	             </c:if>
+              </c:if>
             </c:if>
          </td>
        </tr>

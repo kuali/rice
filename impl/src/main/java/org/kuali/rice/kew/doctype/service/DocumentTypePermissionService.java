@@ -51,14 +51,27 @@ public interface DocumentTypePermissionService {
 	boolean canAdministerRouting(String principalId, DocumentType documentType);
 
     /**
-     * Determines if the given principal can administer routing for the given
-     * DocumentType on the Super User Action tab on the document.  Having this 
-     * permission gives them limited "super user" capabilities.
+     * Determines if the given principal can super user approve a single action
+     * request for a given DocumentType, route node, and routeStatusCode
      */
-    boolean canAdministerRoutingOnSuTab(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType, 
-            List<RouteNodeInstance> routeNodeInstances, String actionEvent);
+    boolean canSuperUserApproveSingleActionRequest(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode);
 
-	/**
+    /**
+     * Determines if the given principal can super user approve a document
+     * for a given DocumentType, route node, and routeStatusCode
+     */
+    boolean canSuperUserApproveDocument(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode);
+
+    /**
+     * Determines if the given principal can super user disapprove a document
+     * for a given DocumentType, route node, and routeStatusCode
+     */
+    boolean canSuperUserDisapproveDocument(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode);
+
+    /**
 	 * Determines if the given principal can initiate documents of the given DocumentType.
 	 */
 	boolean canInitiate(String principalId, DocumentType documentType);

@@ -133,9 +133,63 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     }
 
+    @Override
+    public boolean canSuperUserApproveSingleActionRequest( String principalId, String documentTypeName, List<RouteNodeInstance> routeNodeInstances, String routeStatusCode ) {
+
+        checkSuperUserInput( principalId, documentTypeName );
+
+        org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        List<org.kuali.rice.kew.engine.node.RouteNodeInstance> currentNodeInstances = null;
+        if (!routeNodeInstances.isEmpty()) {
+            currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(routeNodeInstances.get(0).getDocumentId());
+        }
+
+        boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canSuperUserApproveSingleActionRequest( principalId, documentType,
+                currentNodeInstances, routeStatusCode);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Super user approve single action request status is " + isSuperUser + ".");
+        }
+        return isSuperUser;
+    }
 
     @Override
-    public boolean isSuperUserForSuTab( String principalId, String documentTypeName, List<RouteNodeInstance> routeNodeInstances, String actionType ) {
+    public boolean canSuperUserApproveDocument( String principalId, String documentTypeName, List<RouteNodeInstance> routeNodeInstances, String routeStatusCode ) {
+        checkSuperUserInput( principalId, documentTypeName );
+
+        org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        List<org.kuali.rice.kew.engine.node.RouteNodeInstance> currentNodeInstances = null;
+        if (!routeNodeInstances.isEmpty()) {
+            currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(routeNodeInstances.get(0).getDocumentId());
+        }
+
+        boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canSuperUserApproveDocument(
+                principalId, documentType, currentNodeInstances, routeStatusCode);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Super user approve document status is " + isSuperUser + ".");
+        }
+        return isSuperUser;
+    }
+
+    @Override
+    public boolean canSuperUserDisapproveDocument( String principalId, String documentTypeName, List<RouteNodeInstance> routeNodeInstances, String routeStatusCode ) {
+        checkSuperUserInput( principalId, documentTypeName );
+
+        org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+
+        List<org.kuali.rice.kew.engine.node.RouteNodeInstance> currentNodeInstances = null;
+        if (!routeNodeInstances.isEmpty()) {
+            currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(routeNodeInstances.get(0).getDocumentId());
+        }
+
+        boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canSuperUserDisapproveDocument( principalId, documentType,
+                currentNodeInstances, routeStatusCode);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Super user disapprove document status is " + isSuperUser + ".");
+        }
+        return isSuperUser;
+    }
+
+    private void checkSuperUserInput( String principalId, String documentTypeName ) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Determining super user status [principalId=" + principalId + ", documentTypeName="
                     + documentTypeName + "]");
@@ -146,20 +200,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeId was null or blank");
         }
-        org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-        List<org.kuali.rice.kew.engine.node.RouteNodeInstance> currentNodeInstances = null;
-        if (!routeNodeInstances.isEmpty()) {
-            currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(routeNodeInstances.get(0).getDocumentId());
-        }
-
-        boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRoutingOnSuTab( principalId, documentType, 
-                currentNodeInstances, actionType);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Super user status is " + isSuperUser + ".");
-        }
-        return isSuperUser;
     }
-    
+
     @Override
     public boolean hasRouteNodeForDocumentTypeName(String routeNodeName, String documentTypeName)
             throws RiceIllegalArgumentException {

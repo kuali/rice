@@ -121,22 +121,58 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		return result;
 	}
 	
-    public boolean canAdministerRoutingOnSuTab(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType, 
-            List<RouteNodeInstance> routeNodeInstances, String actionEvent) {
+
+    public boolean canSuperUserApproveSingleActionRequest(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode) {
         validatePrincipalId(principalId);
         validateDocumentType(documentType);
 
-        List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetailsForSuTab(documentType, routeNodeInstances, actionEvent);
+        List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetailsForSuperUser(documentType, routeNodeInstances, routeStatusCode);
         // loop over permission details, only one of them needs to be authorized
+        PermissionService permissionService = getPermissionService();
         for (Map<String, String> permissionDetails : permissionDetailList) {
-            if (getPermissionService().isAuthorizedByTemplate(principalId, KRADConstants.KNS_NAMESPACE,
-                 KewApiConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, new HashMap<String, String>())) {
-                 return true;
+            if (permissionService.isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
+                  KewApiConstants.SUPER_USER_APPROVE_SINGLE_ACTION_REQUEST, permissionDetails, new HashMap<String, String>())) {
+                return true;
             }
         }
         return false;
     }
-	
+
+    public boolean canSuperUserApproveDocument(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode) {
+        validatePrincipalId(principalId);
+        validateDocumentType(documentType);
+
+        List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetailsForSuperUser(documentType, routeNodeInstances, routeStatusCode);
+        // loop over permission details, only one of them needs to be authorized
+        PermissionService permissionService = getPermissionService();
+        for (Map<String, String> permissionDetails : permissionDetailList) {
+            if (permissionService.isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
+                    KewApiConstants.SUPER_USER_APPROVE_DOCUMENT, permissionDetails, new HashMap<String, String>())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canSuperUserDisapproveDocument(String principalId, org.kuali.rice.kew.doctype.bo.DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode) {
+        validatePrincipalId(principalId);
+        validateDocumentType(documentType);
+
+        List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetailsForSuperUser(documentType, routeNodeInstances, routeStatusCode);
+        // loop over permission details, only one of them needs to be authorized
+        PermissionService permissionService = getPermissionService();
+        for (Map<String, String> permissionDetails : permissionDetailList) {
+            if (permissionService.isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
+                    KewApiConstants.SUPER_USER_DISAPPROVE_DOCUMENT, permissionDetails, new HashMap<String, String>())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 	public boolean canCancel(String principalId, String documentId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
@@ -406,15 +442,15 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
     /**
      * This method generates the permission details for the given document.  Note that this has to match the required
      * data defined in krim_typ_attr_t for the krim_typ_t with 
-     * srvc_nm='documentTypeAndNodeAndActionEventService'.  
+     * srvc_nm='documentTypeAndNodeAndRouteStatusPermissionTypeService'.
      * 
      * @param documentType
      * @param routeNodeInstances
-     * @param actionEvent
+     * @param routeStatusCode
      * @return
      */
-    protected List<Map<String, String>> buildDocumentTypePermissionDetailsForSuTab(DocumentType documentType,
-            List<RouteNodeInstance> routeNodeInstances, String actionType) {
+    protected List<Map<String, String>> buildDocumentTypePermissionDetailsForSuperUser(DocumentType documentType,
+            List<RouteNodeInstance> routeNodeInstances, String routeStatusCode) {
         List<Map<String, String>> detailList = new ArrayList<Map<String, String>>();
         
         for ( RouteNodeInstance rni : routeNodeInstances ) {
@@ -425,8 +461,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
                 details.put(KewApiConstants.ROUTE_NODE_NAME_DETAIL, routeNodeName);
             } 
             
-            if (!StringUtils.isBlank(actionType)) {
-                details.put(KewApiConstants.ACTION_EVENT, actionType);
+            if (!StringUtils.isBlank(routeStatusCode)) {
+                details.put(KimConstants.AttributeConstants.ROUTE_STATUS_CODE, routeStatusCode);
             }
             detailList.add(details);
         }

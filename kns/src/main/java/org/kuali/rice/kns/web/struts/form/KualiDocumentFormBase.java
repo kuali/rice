@@ -36,6 +36,7 @@ import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.exception.WorkflowException;
@@ -935,37 +936,79 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	public void setSuperUserAnnotation(String superUserAnnotation) {
 		this.superUserAnnotation = superUserAnnotation;
 	}
+
+    public boolean isSuperUserApproveSingleActionRequestAuthorized() {
+        String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        String docId = this.getDocId();
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
+        String docTypeId = null;
+        if (documentType != null) {
+            docTypeId = documentType.getId();
+        }
+        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+        String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+        return (( KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
+                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+                (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
+    }
 	
-	public boolean isSuperUserAuthorized() {
-	    String docId = this.getDocId();
+	public boolean isSuperUserApproveDocumentAuthorized() {
+        String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        String docId = this.getDocId();
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
+        String docTypeId = null;
+        if (documentType != null) {
+            docTypeId = documentType.getId();
+        }
 	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
-	    String actionEvent = "*";
-		return KewApiServiceLocator.getDocumentTypeService().isSuperUserForSuTab(
-		        GlobalVariables.getUserSession().getPrincipalId(), this.getDocTypeName(), routeNodeInstances, actionEvent);
+        String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+        return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
+                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+                (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
 	}
 	
-	public boolean isSuperUserApproveAuthorized() {
-	    String docId = this.getDocId();
+	public boolean isSuperUserDisapproveDocumentAuthorized() {
+        String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        String docId = this.getDocId();
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
+        String docTypeId = null;
+        if (documentType != null) {
+            docTypeId = documentType.getId();
+        }
 	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
-	    String actionEvent = "approve";
-		return KewApiServiceLocator.getDocumentTypeService().isSuperUserForSuTab(
-		        GlobalVariables.getUserSession().getPrincipalId(), this.getDocTypeName(), routeNodeInstances, actionEvent);
+        String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+        return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument(
+                principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+                (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
 	}
-	
-	public boolean isSuperUserDisapproveAuthorized() {
-	    String docId = this.getDocId();
-	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
-	    String actionEvent = "disapprove";
-		return KewApiServiceLocator.getDocumentTypeService().isSuperUserForSuTab(
-		        GlobalVariables.getUserSession().getPrincipalId(), this.getDocTypeName(), routeNodeInstances, actionEvent);
-	}
+
+    public boolean isSuperUserAuthorized() {
+        String docId = this.getDocId();
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
+        String docTypeId = null;
+        if (documentType != null) {
+            docTypeId = documentType.getId();
+        }
+        String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+        String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+        return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
+                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+                (KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
+                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+                (KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument (
+                    principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+                (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
+    }
 	
 	public boolean isStateAllowsSuperUserAction() {
          if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
             DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
             return !(StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
                      StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()) ||
-                     StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode()));
+                     StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode())  ||
+                     StringUtils.equals(status.getCode(), DocumentStatus.CANCELED.getCode())  ||
+                     StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()));
          } else {
              return false;
          }

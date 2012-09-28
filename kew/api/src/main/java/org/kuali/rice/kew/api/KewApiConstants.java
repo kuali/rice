@@ -883,7 +883,6 @@ public final class KewApiConstants {
 	public static final String ROUTE_NODE_NAME_DETAIL = "routeNodeName";
 	public static final String DOCUMENT_STATUS_DETAIL = "routeStatusCode";
     public static final String APP_DOC_STATUS_DETAIL = "appDocStatus";
-    public static final String ACTION_EVENT = "actionEvent";
 
 
 	// Permissions
@@ -891,7 +890,11 @@ public final class KewApiConstants {
 	public static final String BLANKET_APPROVE_PERMISSION = "Blanket Approve Document";
 	public static final String AD_HOC_REVIEW_PERMISSION = "Ad Hoc Review Document";
 	public static final String ADMINISTER_ROUTING_PERMISSION = "Administer Routing for Document";
-	public static final String CANCEL_PERMISSION = "Cancel Document";
+    public static final String SUPER_USER_APPROVE_SINGLE_ACTION_REQUEST = "Super User Approve Single Action Request";
+    public static final String SUPER_USER_APPROVE_DOCUMENT = "Super User Approve Document";
+    public static final String SUPER_USER_DISAPPROVE_DOCUMENT = "Super User Disapprove Document";
+
+    public static final String CANCEL_PERMISSION = "Cancel Document";
     public static final String RECALL_PERMISSION = "Recall Document";
 	public static final String INITIATE_PERMISSION = "Initiate Document";
 	public static final String ROUTE_PERMISSION = "Route Document";

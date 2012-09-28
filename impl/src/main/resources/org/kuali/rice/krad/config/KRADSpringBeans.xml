@@ -851,10 +851,10 @@
   <bean id="documentTypeAndNodeOrStatePermissionTypeService"
         class="org.kuali.rice.krad.kim.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
 
-  <bean id="documentTypeAndNodeAndActionEventService"
-        class="org.kuali.rice.krad.kim.DocumentTypeAndNodeAndActionEventServiceImpl"/>
-
   <bean id="namespacePermissionTypeService" class="org.kuali.rice.krad.kim.NamespacePermissionTypeServiceImpl"/>
+
+  <bean id="documentTypeAndNodeAndRouteStatusPermissionTypeService"
+        class="org.kuali.rice.krad.kim.DocumentTypeAndNodeAndRouteStatusPermissionTypeServiceImpl"/>
 
   <bean id="namespaceOrComponentPermissionTypeService"
         class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">

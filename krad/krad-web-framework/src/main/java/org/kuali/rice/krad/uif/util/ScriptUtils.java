@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 
+import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -86,24 +87,44 @@ public class ScriptUtils {
 
             jsValue += "}";
         } else {
-            boolean quoteValue = true;
-
             Class<?> valueClass = value.getClass();
-            if (TypeUtils.isBooleanClass(valueClass) ||
-                    TypeUtils.isDecimalClass(valueClass) ||
-                    TypeUtils.isIntegralClass(valueClass)) {
-                quoteValue = false;
-            }
+            if (TypeUtils.isSimpleType(valueClass) || TypeUtils.isClassClass(valueClass)) {
+                boolean quoteValue = true;
 
-            if (quoteValue) {
-                jsValue = "\"";
-            }
+                if (TypeUtils.isBooleanClass(valueClass) ||
+                        TypeUtils.isDecimalClass(valueClass) ||
+                        TypeUtils.isIntegralClass(valueClass)) {
+                    quoteValue = false;
+                }
 
-            // TODO: should this go through property editors?
-            jsValue += value.toString();
+                if (quoteValue) {
+                    jsValue = "\"";
+                }
 
-            if (quoteValue) {
-                jsValue += "\"";
+                // TODO: should this go through property editors?
+                jsValue += value.toString();
+
+                if (quoteValue) {
+                    jsValue += "\"";
+                }
+            } else {
+                // treat as data object
+                jsValue = "{";
+
+                PropertyDescriptor[] propertyDescriptors = ObjectPropertyUtils.getPropertyDescriptors(value);
+                for (int i = 0; i < propertyDescriptors.length; i++) {
+                    PropertyDescriptor descriptor = propertyDescriptors[i];
+                    if ((descriptor.getReadMethod() != null) && !"class".equals(descriptor.getName())) {
+                        Object propertyValue = ObjectPropertyUtils.getPropertyValue(value, descriptor.getName());
+
+                        jsValue += descriptor.getName() + ":";
+                        jsValue += translateValue(propertyValue);
+                        jsValue += ",";
+                    }
+                }
+                jsValue = StringUtils.removeEnd(jsValue, ",");
+
+                jsValue += "}";
             }
         }
 
@@ -217,10 +238,12 @@ public class ScriptUtils {
     public static String convertStringListToJsArray(List<String> list) {
         String array = "[";
 
-        for (String s : list) {
-            array = array + "'" + s + "',";
+        if (list != null) {
+            for (String s : list) {
+                array = array + "'" + s + "',";
+            }
+            array = StringUtils.removeEnd(array, ",");
         }
-        array = StringUtils.removeEnd(array, ",");
         array = array + "]";
 
         return array;

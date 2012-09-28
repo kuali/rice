@@ -23,8 +23,8 @@
 
     <@krad.script value="
       createSuggest('${parent.control.id}', ${widget.templateOptionsJSString}, '${parent.id}',
-       ${widget.suggestQuery.queryFieldMappingJsString});
-    "/>
+       ${widget.suggestQuery.queryMethodArgumentFieldsJsString}, ${widget.retrieveAllSuggestions?string},
+       ${widget.suggestOptionsJsString!});"/>
 
 </#macro>
 

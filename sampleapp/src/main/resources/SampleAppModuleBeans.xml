@@ -237,21 +237,23 @@
         p:callbackService-ref="sampleAppPeopleFlowTypeService"
         p:localServiceName="sampleAppPeopleFlowTypeService"
         p:serviceInterface="org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService"/>
-  
+
   <bean id="dataTableRestServiceTest" class="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl"/>
 
   <bean id="DataTableRestServiceTest" class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">
-    <property name="serviceNameSpaceURI" value="KR-SAP" />
-    <property name="service" ref="dataTableRestServiceTest" />
+    <property name="serviceNameSpaceURI" value="KR-SAP"/>
+    <property name="service" ref="dataTableRestServiceTest"/>
     <property name="resourceClass"
-      value="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl" />
-    <property name="localServiceName" value="dataTableRestServiceTest" />
+              value="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl"/>
+    <property name="localServiceName" value="dataTableRestServiceTest"/>
   </bean>
 
   <bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus" />
-    <property name="serviceDefinition" ref="DataTableRestServiceTest" />
-   </bean>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition" ref="DataTableRestServiceTest"/>
+  </bean>
+
+  <bean id="testSuggestService" class="edu.sampleu.demo.kitchensink.TestSuggestServiceImpl"/>
 
 </beans>
 

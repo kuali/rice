@@ -44,6 +44,13 @@
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
     </property>
+    <property name="additionalCssFiles">
+      <list>
+        <value>css/sampleapp.css</value>
+      </list>
+    </property>
+    <property name="viewHelperServiceClass"
+              value="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl"/>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="help">
       <bean parent="Uif-Help">
@@ -73,7 +80,7 @@
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="ConfigurationTestView-Help-Page"
               p:actionLabel="Help"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="ConfigurationTestView-Quickfinder-Page"
-              p:actionLabel="Quickfinders"/>
+              p:actionLabel="Lookup Widgets"/>
       </list>
     </property>
   </bean>

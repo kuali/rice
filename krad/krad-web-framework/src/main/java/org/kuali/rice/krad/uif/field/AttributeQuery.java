@@ -63,11 +63,14 @@ public class AttributeQuery implements Serializable {
 
     public AttributeQuery() {
         renderNotFoundMessage = true;
+
         queryFieldMapping = new HashMap<String, String>();
         returnFieldMapping = new HashMap<String, String>();
         additionalCriteria = new HashMap<String, String>();
         sortPropertyNames = new ArrayList<String>();
+
         queryMethodArgumentFieldList = new ArrayList<String>();
+        queryMethodInvokerConfig = new MethodInvokerConfig();
     }
 
     /**
@@ -167,21 +170,22 @@ public class AttributeQuery implements Serializable {
     }
 
     /**
-     * Builds String for passing the queryMethodArgumentFieldList as a Javascript array
+     * Builds String for passing the queryMethodArgumentFieldList as a Javascript Object
      *
      * @return String js parameter string
      */
     public String getQueryMethodArgumentFieldsJsString() {
-        String queryMethodArgsJs = "[";
+        String queryMethodArgsJs = "{";
 
         for (String methodArg : queryMethodArgumentFieldList) {
-            if (!StringUtils.equals(queryMethodArgsJs, "[")) {
+            if (!StringUtils.equals(queryMethodArgsJs, "{")) {
                 queryMethodArgsJs += ",";
             }
-            queryMethodArgsJs += "\"" + methodArg + "\"";
+
+            queryMethodArgsJs += "\"" + methodArg + "\":\"" + methodArg + "\"";
         }
 
-        queryMethodArgsJs += "]";
+        queryMethodArgsJs += "}";
 
         return queryMethodArgsJs;
     }
@@ -199,7 +203,9 @@ public class AttributeQuery implements Serializable {
 
         if (StringUtils.isNotBlank(getQueryMethodToCall())) {
             configuredMethod = true;
-        } else if (getQueryMethodInvokerConfig() != null) {
+        } else if (getQueryMethodInvokerConfig() != null && (StringUtils.isNotBlank(
+                getQueryMethodInvokerConfig().getTargetMethod()) || StringUtils.isNotBlank(
+                getQueryMethodInvokerConfig().getStaticMethod()))) {
             configuredMethod = true;
         }
 

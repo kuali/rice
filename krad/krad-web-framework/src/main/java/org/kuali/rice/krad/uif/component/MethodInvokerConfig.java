@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.springframework.util.MethodInvoker;
 import org.springframework.util.ReflectionUtils;
 
@@ -34,6 +35,17 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
     private Class[] argumentTypes;
 
     /**
+     * Set a fully qualified static method name to invoke,
+     * e.g. "example.MyExampleClass.myExampleMethod".
+     * Convenient alternative to specifying targetClass and targetMethod.
+     *
+     * @return String static method to invoke
+     */
+    public String getStaticMethod() {
+        return staticMethod;
+    }
+
+    /**
      * Override to catch a set staticMethod since super does
      * not contain a getter
      *
@@ -42,6 +54,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
     @Override
     public void setStaticMethod(String staticMethod) {
         super.setStaticMethod(staticMethod);
+        this.staticMethod = staticMethod;
     }
 
     /**
@@ -99,4 +112,5 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
 
         return null;
     }
+
 }

@@ -15,9 +15,12 @@
  */
 package edu.sampleu.demo.kitchensink;
 
+import edu.sampleu.travel.bo.TravelAccount;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableSelect;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.view.View;
@@ -67,5 +70,32 @@ public class UIfComponentsViewHelperServiceImpl extends ViewHelperServiceImpl {
 
         return remoteFields;
     }
+
+    public List<TravelAccount> retrieveTravelAccounts(String term) {
+        List<TravelAccount> matchingAccounts = new ArrayList<TravelAccount>();
+
+        Map<String, String> lookupCriteria = new HashMap<String, String>();
+        lookupCriteria.put("number", term + SearchOperator.LIKE_MANY.op());
+
+        matchingAccounts = (List<TravelAccount>) KRADServiceLocatorWeb.getLookupService().findCollectionBySearch(
+                TravelAccount.class, lookupCriteria);
+
+        return matchingAccounts;
+    }
+
+    public List<TravelAccount> retrieveTravelAccountsBySubAcct(String subAccount, String term) {
+        List<TravelAccount> matchingAccounts = new ArrayList<TravelAccount>();
+
+        Map<String, String> lookupCriteria = new HashMap<String, String>();
+        lookupCriteria.put("subAccount", subAccount);
+        lookupCriteria.put("number", term + SearchOperator.LIKE_MANY.op());
+
+        matchingAccounts = (List<TravelAccount>) KRADServiceLocatorWeb.getLookupService().findCollectionBySearch(
+                TravelAccount.class, lookupCriteria);
+
+        return matchingAccounts;
+    }
+
+
 
 }

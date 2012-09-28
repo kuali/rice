@@ -1671,6 +1671,7 @@ function invokeServerListener(methodToCall, params) {
     var serverResponse;
 
     params.methodToCall = methodToCall;
+    params.ajaxRequest = true;
     params.ajaxReturnType = 'update-none';
 
     var postUrl = getConfigParam("kradUrl") + "/listener";

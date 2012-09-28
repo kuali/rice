@@ -154,6 +154,7 @@
               <jsSourceFiles>
                 <jsSourceFile>plugins/jquery/jquery-1.8.0.js</jsSourceFile>
                 <jsSourceFile>plugins/jqueryUI/jquery-ui-1.8.23.js</jsSourceFile>
+                <jsSourceFile>plugins/jqueryUI/jquery.ui.autocomplete.html.js</jsSourceFile>
                 <jsSourceFile>plugins/color/jquery.color.js</jsSourceFile>
                 <jsSourceFile>plugins/cookie/jquery.cookie.js</jsSourceFile>
                 <jsSourceFile>plugins/postmsg/jquery.ba-postmessage.js</jsSourceFile>

@@ -78,7 +78,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         // execute suggest query
         Collection<?> results = null;
         if (suggestQuery.hasConfiguredMethod()) {
-            Object queryMethodResult = executeAttributeQueryMethod(view, suggestQuery, queryParameters);
+            Object queryMethodResult = executeAttributeQueryMethod(view, suggestQuery, queryParameters, true,
+                    fieldTerm);
             if ((queryMethodResult != null) && (queryMethodResult instanceof Collection<?>)) {
                 results = (Collection<?>) queryMethodResult;
             }
@@ -88,17 +89,21 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
         // build list of suggest data from result records
         if (results != null) {
-            List<String> suggestData = new ArrayList<String>();
-            for (Object result : results) {
-                Object suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
-                        fieldSuggest.getSourcePropertyName());
-                if (suggestFieldValue != null) {
-                    // TODO: need to apply formatter for field or have method in object property utils
-                    suggestData.add(suggestFieldValue.toString());
+            if (fieldSuggest.isSourceQueryMethodResults()) {
+                queryResult.setResultData((List<Object>) results);
+            } else {
+                List<Object> suggestData = new ArrayList<Object>();
+                for (Object result : results) {
+                    Object suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
+                            fieldSuggest.getSourcePropertyName());
+                    if (suggestFieldValue != null) {
+                        // TODO: need to apply formatter for field or have method in object property utils
+                        suggestData.add(suggestFieldValue.toString());
+                    }
                 }
-            }
 
-            queryResult.setResultData(suggestData);
+                queryResult.setResultData(suggestData);
+            }
         }
 
         return queryResult;
@@ -126,7 +131,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         // execute query and get result
         Object resultObject = null;
         if (fieldQuery.hasConfiguredMethod()) {
-            Object queryMethodResult = executeAttributeQueryMethod(view, fieldQuery, queryParameters);
+            Object queryMethodResult = executeAttributeQueryMethod(view, fieldQuery, queryParameters, false, null);
             if (queryMethodResult != null) {
                 // if method returned the result then no further processing needed
                 if (queryMethodResult instanceof AttributeQueryResult) {
@@ -197,11 +202,13 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @param view - view instance the field is contained within
      * @param attributeQuery - attribute query instance to execute
      * @param queryParameters - map of query parameters that provide values for the method arguments
+     * @param isSuggestQuery - indicates whether the query is for forming suggest options
+     * @param queryTerm - if being called for a suggest, the term for the query field
      * @return Object type depends on method being invoked, could be AttributeQueryResult in which
      *         case the method has prepared the return result, or an Object that needs to be parsed for the result
      */
     protected Object executeAttributeQueryMethod(View view, AttributeQuery attributeQuery,
-            Map<String, String> queryParameters) {
+            Map<String, String> queryParameters, boolean isSuggestQuery, String queryTerm) {
         String queryMethodToCall = attributeQuery.getQueryMethodToCall();
         MethodInvokerConfig queryMethodInvoker = attributeQuery.getQueryMethodInvokerConfig();
 
@@ -221,28 +228,36 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         }
 
         // setup query method arguments
-        Object[] arguments = null;
+        List<Object> arguments = new ArrayList<Object>();
         if ((attributeQuery.getQueryMethodArgumentFieldList() != null) && (!attributeQuery
                 .getQueryMethodArgumentFieldList().isEmpty())) {
-            // retrieve argument types for conversion
-            Class[] argumentTypes = queryMethodInvoker.getArgumentTypes();
-            if ((argumentTypes == null) || (argumentTypes.length != attributeQuery.getQueryMethodArgumentFieldList()
-                    .size())) {
-                throw new RuntimeException(
-                        "Query method argument field list size does not match found method argument list size");
+            // retrieve argument types for conversion and verify method arguments
+            int numQueryMethodArguments = attributeQuery.getQueryMethodArgumentFieldList().size();
+            if (isSuggestQuery) {
+                numQueryMethodArguments += 1;
             }
 
-            arguments = new Object[attributeQuery.getQueryMethodArgumentFieldList().size()];
+            Class[] argumentTypes = queryMethodInvoker.getArgumentTypes();
+            if ((argumentTypes == null) || (argumentTypes.length != numQueryMethodArguments)) {
+                throw new RuntimeException(
+                        "Query method argument field list size does not match found number of method arguments");
+            }
+
             for (int i = 0; i < attributeQuery.getQueryMethodArgumentFieldList().size(); i++) {
                 String methodArgumentFromField = attributeQuery.getQueryMethodArgumentFieldList().get(i);
                 if (queryParameters.containsKey(methodArgumentFromField)) {
-                    arguments[i] = queryParameters.get(methodArgumentFromField);
+                    arguments.add(queryParameters.get(methodArgumentFromField));
                 } else {
-                    arguments[i] = null;
+                    arguments.add(null);
                 }
             }
         }
-        queryMethodInvoker.setArguments(arguments);
+        
+        if (isSuggestQuery) {
+            arguments.add(queryTerm);
+        }
+        
+        queryMethodInvoker.setArguments(arguments.toArray());
 
         try {
             queryMethodInvoker.prepare();

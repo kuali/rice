@@ -50,9 +50,11 @@ public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
         String docId = blanketApprove();
         blanketApproveTest();
         assertDocFinal(docId);
+        passed();
     }
 
-    protected void assertDocFinal(String docId) {
+    protected void assertDocFinal(String docId) throws InterruptedException {
+        waitFor(By.linkText("spreadsheet"));
         if(isElementPresent(By.linkText(docId))){
             assertEquals("FINAL", getDocStatus());
         }else{

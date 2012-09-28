@@ -47,6 +47,7 @@ public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
         gotoCreateNew();
         waitAndClickByName("methodToCall.cancel");
         waitAndClickByName("methodToCall.processAnswer.button0");
+        passed();
     }
 
     @Test
@@ -59,5 +60,6 @@ public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
         waitAndClickByLinkText("edit");
         waitAndClickByName("methodToCall.cancel");
         waitAndClickByName("methodToCall.processAnswer.button0");
+        passed();
     }
 }

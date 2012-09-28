@@ -16,6 +16,7 @@
 
 package edu.samplu.common;
 
+import org.junit.rules.TestName;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 
@@ -32,18 +33,29 @@ public class WebDriverUtil {
     public static int SHORT_IMPLICIT_WAIT_TIME = 1;
 
     /**
+     *
+     * @param username
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    public static WebDriver setUp(String username, String url) throws Exception {
+        return setUp(username, url, null, null);
+    }
+
+    /**
      * Setup the WebDriver test, login and load the tested web page
      *
      * @throws Exception
      */
-    public static WebDriver setUp(String username, String url) throws Exception {
+    public static WebDriver setUp(String username, String url, String className, TestName testName) throws Exception {
         WebDriver driver = null;
         if (System.getProperty("remote.driver.saucelabs") == null) {
             driver = ITUtil.getWebDriver();
-            //        } else {
-            //            WebDriverWithHelperTest saucelabs = new WebDriverWithHelperTest();
-            //            saucelabs.setUp();
-            //            driver = saucelabs.driver;
+        } else {
+//            SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
+//            saucelabs.setUp(className, testName);
+//            driver = saucelabs.getDriver();
         }
         driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         driver.get(url);

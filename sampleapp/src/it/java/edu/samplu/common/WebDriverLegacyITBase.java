@@ -1,19 +1,29 @@
 package edu.samplu.common;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+//import com.saucelabs.common.SauceOnDemandAuthentication;
+//import com.saucelabs.common.SauceOnDemandSessionIdProvider;
+//import com.saucelabs.junit.SauceOnDemandTestWatcher;
+//import com.saucelabs.saucerest.SauceREST;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
-import static com.thoughtworks.selenium.SeleneseTestBase.seleniumEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -21,14 +31,30 @@ import static org.junit.Assert.assertEquals;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverLegacyITBase {
+public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessionIdProvider {
 
     public static final int DEFAULT_WAIT_SEC = 60;
+    public static final String SAUCE_USER = "SAUCE_USER";
+    public static final String SAUCE_KEY = "SAUCE_KEY";
 
     public abstract String getTestUrl();
 
-    public WebDriver driver;
+    protected WebDriver driver;
+    protected String user = "admin";
+    protected boolean passed = false;
     static ChromeDriverService chromeDriverService;
+
+//    public SauceOnDemandAuthentication authentication = new SauceOnDemandAuthentication(SAUCE_USER, SAUCE_KEY);
+//
+//    public @Rule SauceOnDemandTestWatcher resultReportingTestWatcher = new SauceOnDemandTestWatcher(this, authentication);
+
+    public @Rule TestName testName= new TestName();
+
+    String sessionId = null;
+
+    public String getSessionId() {
+        return sessionId;
+    }
 
     @BeforeClass
     public static void createAndStartService() throws Exception {
@@ -43,7 +69,60 @@ public abstract class WebDriverLegacyITBase {
      */
     @Before
     public void setUp() throws Exception {
-        driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl());
+        // {"test":"1","user":"1"}
+//        String userResponse = getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString().trim());
+//        user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
+        driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl(),
+                getClass().getSimpleName(), testName);
+        this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+//        SauceREST client = new SauceREST(SAUCE_USER, SAUCE_KEY);
+//        /* Using a map of udpates:
+//         * (http://saucelabs.com/docs/sauce-ondemand#alternative-annotation-methods)
+//         *
+//         * Map<String, Object> updates = new HashMap<String, Object>();
+//         * updates.put("name", "this job has a name");
+//         * updates.put("passed", true);
+//         * updates.put("build", "c234");
+//         * client.updateJobInfo("<your-job-id>", updates);
+//         */
+//        if (passed) {
+//            client.jobPassed(sessionId);
+//        } else {
+//            client.jobFailed(sessionId);
+//        }
+//
+//        getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString() + "&user=" + user);
+        driver.close();
+        driver.quit();
+    }
+
+   protected String getHTML(String urlToRead) {
+      URL url;
+      HttpURLConnection conn;
+      BufferedReader rd;
+      String line;
+      String result = "";
+      try {
+         url = new URL(urlToRead);
+         conn = (HttpURLConnection) url.openConnection();
+         conn.setRequestMethod("GET");
+         rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+         while ((line = rd.readLine()) != null) {
+            result += line;
+         }
+         rd.close();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+      return result;
+   }
+
+    protected void passed() {
+        passed = true;
     }
 
     protected void assertElementPresentByName(String name) {
@@ -82,7 +161,7 @@ public abstract class WebDriverLegacyITBase {
 
     protected void blanketApproveTest() throws InterruptedException {
         ITUtil.checkForIncidentReport(driver.getPageSource(), "methodToCall.blanketApprove", "");
-        waitAndClickByName("methodToCall.blanketApprove");
+        waitAndClickByName("methodToCall.blanketApprove", "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
 
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size()>0) {
@@ -168,7 +247,7 @@ public abstract class WebDriverLegacyITBase {
      * @return
      */
     public String getUserName() {
-        return "admin";
+        return user;
     }
 
     protected boolean isElementPresent(By by) {
@@ -242,10 +321,13 @@ public abstract class WebDriverLegacyITBase {
     protected void waitFor(By by, String message) throws InterruptedException {
 //        for (int second = 0;; second++) {
             Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
 //            if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
             try { driver.findElement(by);
                 //break;
             } catch (Exception e) {}
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 //        }
     }
 

@@ -45,7 +45,7 @@ public abstract class MainMenuLookupLegacyITBase extends MenuLegacyITBase {
         selectFrame("iframeportlet");
         // Mixed capitalization
         waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
-        waitAndClickByLinkText("edit");
+        waitAndClickByLinkText("edit", "edit button not pressent does user " + user + " have permission?");
         checkForIncidentReport("submit");
         assertTextPresent("ubmit");
         assertTextPresent("ave");
@@ -54,5 +54,6 @@ public abstract class MainMenuLookupLegacyITBase extends MenuLegacyITBase {
         assertTextPresent("ancel");
         lookupAssertions();
         waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        passed();
     }
 }

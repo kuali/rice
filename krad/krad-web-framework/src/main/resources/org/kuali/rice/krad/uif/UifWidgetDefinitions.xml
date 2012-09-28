@@ -65,6 +65,9 @@
     <property name="templateOptions">
       <map>
         <entry key="fitToView"  value="true"/>
+        <entry key="height"  value="95%"/>
+        <entry key="width"  value="75%"/>
+        <entry key="autoSize" value="false"/>
         <entry key="openEffect" value="fade"/>
         <entry key="closeEffect" value="fade"/>
         <entry key="openSpeed" value="200"/>

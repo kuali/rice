@@ -1155,3 +1155,8 @@ li.uif-infoMessageItem:before {
 .jquerybubblepopup-ie {
     filter: none !important;
 }
+
+/***** Lightbox customization ******************************************************************/
+.fancybox-inner form{
+    height: 100%;
+}

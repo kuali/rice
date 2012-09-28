@@ -1058,7 +1058,8 @@ function showLightboxUrl(url, overrideOptions) {
         overrideOptions = {};
     }
 
-    _initAndOpenLightbox({type: 'iframe', href: url}, overrideOptions);
+    _initAndOpenLightbox({type: 'iframe', href: url, height: '95%', width: '75%', autoSize: false},
+            overrideOptions);
 }
 
 /**

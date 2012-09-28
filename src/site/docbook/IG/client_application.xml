@@ -315,7 +315,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           </step>
           <step>
             <para>
-              Navigate to <ulink url="http://localhost:8080/bar">http://localhost:8080/bar</ulink>
+              Navigate to <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>
             </para>
           </step>
         </procedure>
@@ -646,7 +646,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           <step>
             <para>
               Right click on the server under the <guilabel>Servers</guilabel> tab and choose
-              <menuchoice>Start</menuchoice>.
+              <guimenuitem>Start</guimenuitem>.
             </para>
             <figure>
               <title></title>
@@ -660,7 +660,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           <step>
             <para>
               After the application has started navigate to
-              <ulink url="http://localhost:8080/bar">http://localhost:8080/bar</ulink>.
+              <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
               <title></title>
@@ -1033,7 +1033,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           <step>
             <para>
               After the application has started navigate to
-              <ulink url="http://localhost:8080/bar">http://localhost:8080/bar</ulink>.
+              <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
               <title></title>

@@ -29,7 +29,7 @@
 		    <c:choose>
 	            <c:when test="${!empty delegationMember.attributesHelper.definitions and fn:length(delegationMember.attributesHelper.definitions) > 0}" >
 					<c:forEach var="attrDefn" items="${delegationMember.attributesHelper.definitions}" varStatus="status1">
-						<c:set var="attr" value="${attrDefn.value}" />
+						<c:set var="attr" value="${attrDefn.attributeField}" />
 						<c:set var="fieldName" value="${attr.name}" />
 						<c:set var="attrEntry" value="${delegationMember.attributesHelper.attributeEntry[fieldName]}" />
 	         		    <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
@@ -42,7 +42,7 @@
 		    <c:choose>
 	            <c:when test="${!empty delegationMember.attributesHelper.definitions and fn:length(delegationMember.attributesHelper.definitions) > 0}" >
 					<c:forEach var="attrDefn" items="${delegationMember.attributesHelper.definitions}" varStatus="status1">
-						<c:set var="attr" value="${attrDefn.value}" />
+						<c:set var="attr" value="${attrDefn.attributeField}" />
 						<c:set var="fieldName" value="${attr.name}" />
 						<c:set var="attrEntry" value="${delegationMember.attributesHelper.attributeEntry[fieldName]}" />
 				       	<td align="left" valign="middle">

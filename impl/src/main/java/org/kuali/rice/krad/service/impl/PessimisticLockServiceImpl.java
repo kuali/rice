@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.OptimisticLockException;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.KimConstants.PermissionNames;
 import org.kuali.rice.kim.api.identity.Person;
@@ -146,7 +147,15 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
             PessimisticLock lock = (PessimisticLock) iterator.next();
             if (lock.isOwnedByUser(user)) {
-                delete(lock);
+                try {
+                    delete(lock);
+                } catch ( RuntimeException ex ) {
+                    if ( ex.getCause() instanceof OptimisticLockException) {
+                        LOG.warn( "Suppressing Optimistic Lock Exception. Document Num: " +  lock.getDocumentNumber());
+                    } else {
+                        throw ex;
+                    }
+                }
             }
         }
     }
@@ -158,7 +167,15 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
             PessimisticLock lock = (PessimisticLock) iterator.next();
             if ( (lock.isOwnedByUser(user)) && (lockDescriptor.equals(lock.getLockDescriptor())) ) {
-                delete(lock);
+                try {
+                    delete(lock);
+                } catch ( RuntimeException ex ) {
+                    if ( ex.getCause() instanceof OptimisticLockException ) {
+                        LOG.warn( "Suppressing Optimistic Lock Exception. Document Num: " +  lock.getDocumentNumber());
+                    } else {
+                        throw ex;
+                    }
+                }
             }
         }
     }

@@ -1164,3 +1164,7 @@ li.uif-infoMessageItem:before {
 .fancybox-inner form{
     height: 100%;
 }
+
+.overlay-fixed{
+    opacity: 0.4 !important;
+}

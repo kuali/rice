@@ -142,10 +142,10 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
                             request.getParameterMap());
                     view = getViewService().getViewByType(viewType, parameterMap);
                 }
-                if (view.getId().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
-                    form = new InitiatedDocumentInfoForm();
-                    return;
-                }
+//                if (view.getId().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
+//                    form = new InitiatedDocumentInfoForm();
+//                    return;
+//                }
 
                 // if view not found attempt to find one based on the cached form
                 if (view == null) {

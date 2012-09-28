@@ -104,6 +104,8 @@ public class BackdoorAction extends KualiAction {
         UserSession uSession = getUserSession(request);
         BackdoorForm backdoorForm = (BackdoorForm) form;
 
+        uSession.clearObjectMap();
+
         //if backdoor Id is empty or equal to currently logged in user, clear backdoor id
         if (uSession.isBackdoorInUse() &&
                 (StringUtils.isEmpty(backdoorForm.getBackdoorId())

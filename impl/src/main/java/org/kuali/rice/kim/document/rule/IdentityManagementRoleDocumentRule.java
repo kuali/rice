@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
@@ -39,6 +40,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
@@ -70,6 +72,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 
+import javax.xml.namespace.QName;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -344,7 +347,13 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			errorsTemp = Collections.emptyList();
 			mapToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
-			if(!roleMember.isRole()){
+            RoleTypeService roleTypeService = getRoleTypeService(kimType);
+            boolean shouldNotValidate = true;
+            if (roleTypeService != null) {
+                shouldNotValidate = roleTypeService.shouldValidateQualifiersForMemberType( MemberType.fromCode(roleMember.getMemberTypeCode()));
+            }
+
+            if(!shouldNotValidate){
 				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
 				validationErrors.addAll(attributeValidationHelper.convertErrorsForMappedFields(
                         "members[" + memberCounter + "]", errorsTemp));
@@ -808,4 +817,22 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		}
 		return businessObjectService;
 	}
+
+
+    protected RoleTypeService getRoleTypeService(KimType typeInfo) {
+        String serviceName = typeInfo.getServiceName();
+        if (serviceName != null) {
+            try {
+                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
+                if (service != null && service instanceof RoleTypeService) {
+                    return (RoleTypeService) service;
+                }
+                return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+            } catch (Exception ex) {
+                return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+            }
+        }
+        return null;
+    }
+
 }

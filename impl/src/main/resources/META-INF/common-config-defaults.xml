@@ -229,7 +229,7 @@
 
     <!-- KNS -->
     <param name="kr.incident.mailing.list" override="false"></param>
-    <param name="kr.feedback.mailing.list" override="false">mymama@iu.edu</param>
+    <param name="kr.feedback.mailing.list" override="false"></param>
 
   <param name="session.document.cache.size" override="false">100</param>
 

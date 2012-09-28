@@ -75,6 +75,8 @@ public class ITUtil {
         jiraMatches.put("Bean property 'componentSecurity' is not readable or has an invalid getter method: Does the return type of the getter match the parameter type of the setter?",
                 "KULRICE-8182 JDK7 Bean property 'componentSecurity' is not readable...");
 
+        jiraMatches.put("java.sql.SQLSyntaxErrorException: ORA-00904: \"ROUTEHEADERID\": invalid identifier",
+                "KULRICE-8277 Several ITs fail with OJB operation; bad SQL grammar []; nested exception is java.sql.SQLException: ORA-00904: \"ROUTEHEADERID\": invalid identifier");
 //        jiraMatches.put("",
 //                "");
 

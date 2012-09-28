@@ -149,6 +149,10 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
         }
     }
     
+    protected void assertElementPresent(String locator) {
+        driver.findElement(By.cssSelector(locator));
+    }
+    
     protected void assertTextPresent(String text) {
         assertTextPresent(text, "");
     }
@@ -233,6 +237,10 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
     protected String getTextByName(String name) throws InterruptedException {
         return getText(By.name(name));
     }
+    
+    protected String getText(String locator) throws InterruptedException {
+        return getText(By.cssSelector(locator));
+    }
 
     protected String getTextByXpath(String locator) throws InterruptedException {
         return getText(By.xpath(locator));
@@ -268,6 +276,10 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
 
     protected void selectFrame(String locator) {
         driver.switchTo().frame(locator);
+    }
+    
+    protected void selectTopFrame() {
+        driver.switchTo().defaultContent();
     }
     
     protected void selectWindow(String locator) {
@@ -466,5 +478,56 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
             Assert.fail(errorText + message);
         }
                
+    }
+    
+    protected boolean isVisibleByXpath(String locator) {
+        return isVisible(By.xpath(locator));
+    }
+    
+    
+    protected boolean isVisible(By by) {
+        return driver.findElement(by).isDisplayed();
+    }
+    
+    protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= 15) {
+                Assert.fail("timeout");
+            }
+
+            if (!isVisibleByXpath(locator)) {
+                break;
+            }
+
+            Thread.sleep(1000);
+        }
+    }
+
+    protected void waitIsVisibleByXpath(String locator) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= 15) {
+                Assert.fail("timeout");
+            }
+            if (isVisibleByXpath(locator)) {
+                break;
+            }
+            Thread.sleep(1000);
+        }
+    }
+    
+    protected void colapseExpandByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
+        waitAndClickByXpath(clickLocator);
+        waitNotVisibleByXpath(visibleLocator);
+
+        waitAndClickByXpath(clickLocator);
+        waitIsVisibleByXpath(visibleLocator);
+    }
+
+    protected void expandColapseByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
+        waitAndClickByXpath(clickLocator);
+        waitIsVisibleByXpath(visibleLocator);
+
+        waitAndClickByXpath(clickLocator);
+        waitNotVisibleByXpath(visibleLocator);
     }
 }

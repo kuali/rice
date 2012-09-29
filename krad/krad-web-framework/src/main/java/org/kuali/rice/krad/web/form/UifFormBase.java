@@ -539,31 +539,6 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setView(View view) {
         this.view = view;
-        initHomewardPathList();
-    }
-
-    /**
-     * Set the "Home" url of the homewardPathList (ie. breadcrumbs history)
-     */
-    private void initHomewardPathList() {
-        if (getReturnLocation() == null) {
-            LOG.warn("Could not init homewardPathList.  returnLocation is null.");
-            return;
-        }
-
-        List<HistoryEntry> homewardPathList = new ArrayList<HistoryEntry>();
-        if ((view != null) && (view.getBreadcrumbs() != null) && (view.getBreadcrumbs().getHomewardPathList() != null)) {
-            homewardPathList = view.getBreadcrumbs().getHomewardPathList();
-        }
-
-        HistoryEntry historyEntry = new HistoryEntry("","","Home",getReturnLocation(),"");
-        if (homewardPathList.isEmpty()) {
-            homewardPathList.add(historyEntry);
-        } else if (StringUtils.equals(homewardPathList.get(0).getTitle(), "Home")) {
-            homewardPathList.set(0, historyEntry);
-        } else {
-            homewardPathList.add(0, historyEntry);
-        }
     }
 
     /**

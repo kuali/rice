@@ -35,7 +35,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -133,6 +135,9 @@ public class UifControllerHelper {
         History history = form.getFormHistory();
         if (history == null || request.getMethod().equals("GET")) {
             history = new History();
+
+            processReturnLocationOverride(form);
+
             history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
             history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
             history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
@@ -152,6 +157,34 @@ public class UifControllerHelper {
             history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
 
             form.setFormHistory(history);
+        }
+    }
+
+    /**
+     * Checks for the return location parameter and overrides the homeward path if necesssary
+     *
+     * @param form form instance that contains the view and return location
+     */
+    protected static void processReturnLocationOverride(UifFormBase form) {
+        View view = form.getView();
+
+        if (form.getReturnLocation() == null) {
+            return;
+        }
+
+        List<HistoryEntry> homewardPathList = new ArrayList<HistoryEntry>();
+        if ((view != null) && (view.getBreadcrumbs() != null) &&
+                (view.getBreadcrumbs().getHomewardPathList() != null)) {
+            homewardPathList = view.getBreadcrumbs().getHomewardPathList();
+        }
+
+        HistoryEntry historyEntry = new HistoryEntry("", "", "Home", form.getReturnLocation(), "");
+        if (homewardPathList.isEmpty()) {
+            homewardPathList.add(historyEntry);
+        } else if (StringUtils.equals(homewardPathList.get(0).getTitle(), "Home")) {
+            homewardPathList.set(0, historyEntry);
+        } else {
+            homewardPathList.add(0, historyEntry);
         }
     }
 

@@ -29,9 +29,9 @@ public class ReferenceCampusTypeBlanketAppLegacyIT extends AdminMenuBlanketAppLe
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
         assertElementPresentByName("methodToCall.cancel");
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type " + ITUtil.DTS);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "I");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis " + ITUtil.DTS);
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis " + ITUtil.DTS_TWO);
         return docId;
     }
 

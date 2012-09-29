@@ -33,11 +33,11 @@ public class IdentityResponsibilityBlanketAppLegacyIT extends AdminMenuBlanketAp
     @Override
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility");
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + ITUtil.DTS_TWO);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.required']");
         return docId;

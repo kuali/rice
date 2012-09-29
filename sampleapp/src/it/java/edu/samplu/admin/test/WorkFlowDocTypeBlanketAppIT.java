@@ -34,12 +34,12 @@ public class WorkFlowDocTypeBlanketAppIT extends AdminMenuBlanketAppITBase {
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
         assertElementPresent("methodToCall.cancel");
-        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type " + ITUtil.DTS);
+        waitAndType("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type " + ITUtil.DTS_TWO);
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClick(parentDocType);
         waitAndClick("//input[@name='methodToCall.search' and @value='search']");
         waitAndClick("link=return value");
-        String docTypeName = "Validation Test Doc Type " + ITUtil.DTS;
+        String docTypeName = "Validation Test Doc Type " + ITUtil.DTS_TWO;
         waitAndType("//input[@id='document.newMaintainableObject.name']", docTypeName);
         waitAndType("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");
         waitAndType("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");

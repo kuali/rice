@@ -34,11 +34,11 @@ public class IdentityPermissionBlanketAppLegacyIT extends AdminMenuBlanketAppLeg
     @Override
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission");
+        waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "Validation Test Permission " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
         selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
         selectByXpath("//select[@name='document.newMaintainableObject.templateId']", AdminMenuLegacyITBase.LABEL_KUALI_DEFAULT);
-        waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']","Validation Test Responsibility " + ITUtil.DTS);
+        waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']","Validation Test Responsibility " + ITUtil.DTS_TWO);
         return docId;
     }
 }

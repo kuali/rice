@@ -53,6 +53,14 @@ public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
         passed();
     }
 
+    protected void assertBlanketApproveButtonsPresent() {
+        assertElementPresentByName("methodToCall.route");
+        assertElementPresentByName("methodToCall.save");
+        assertElementPresentByName("methodToCall.blanketApprove", "Blanket Approve botton not present does " + user + " have permssion?");
+        assertElementPresentByName("methodToCall.close");
+        assertElementPresentByName("methodToCall.cancel");
+    }
+
     protected void assertDocFinal(String docId) throws InterruptedException {
         waitFor(By.linkText("spreadsheet"));
         if(isElementPresent(By.linkText(docId))){

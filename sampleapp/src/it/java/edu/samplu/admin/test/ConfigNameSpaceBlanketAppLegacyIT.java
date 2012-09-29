@@ -17,21 +17,12 @@ public class ConfigNameSpaceBlanketAppLegacyIT extends AdminMenuBlanketAppLegacy
     @Override
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
-        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace");
+        waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Namespace " + ITUtil.DTS_TWO);
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "VTN" + ITUtil.DTS);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "VTN" + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
-                "Validation Test NameSpace " + ITUtil.DTS);
+                "Validation Test NameSpace " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
         return docId;
     }
-
-    private void assertBlanketApproveButtonsPresent() {
-        assertElementPresentByName("methodToCall.route");
-        assertElementPresentByName("methodToCall.save");
-        assertElementPresentByName("methodToCall.blanketApprove");
-        assertElementPresentByName("methodToCall.close");
-        assertElementPresentByName("methodToCall.cancel");
-    }
-
 }

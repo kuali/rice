@@ -38,6 +38,7 @@ public class ConfigParameterBlanketLegacyAppIT extends AdminMenuBlanketAppLegacy
  
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter ");
+        assertBlanketApproveButtonsPresent();
         assertEquals("", getTextByName("methodToCall.cancel"));
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", "KR-NS - Kuali Nervous System");
         

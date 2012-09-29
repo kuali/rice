@@ -28,7 +28,7 @@ public class ReferenceCampusTypeBlanketAppLegacyIT extends AdminMenuBlanketAppLe
     @Override
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
-        assertElementPresentByName("methodToCall.cancel");
+        assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Campus Type " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis " + ITUtil.DTS_TWO);

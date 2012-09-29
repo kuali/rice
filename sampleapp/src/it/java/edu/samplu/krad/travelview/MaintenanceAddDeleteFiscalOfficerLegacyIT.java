@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 

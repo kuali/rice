@@ -36,6 +36,7 @@ public class LocationCountyBlanketAppLegacyIT extends AdminMenuBlanketAppLegacyI
    public String blanketApprove() throws Exception {
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test County");
+        assertBlanketApproveButtonsPresent();
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString()+ "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(countryLookUp);
         waitAndTypeByName("code", "US");        

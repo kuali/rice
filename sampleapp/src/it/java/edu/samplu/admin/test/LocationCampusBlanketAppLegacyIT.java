@@ -33,6 +33,7 @@ public class LocationCampusBlanketAppLegacyIT extends AdminMenuBlanketAppLegacyI
    public String blanketApprove() throws Exception {
        String docId = waitForDocId();
        waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus");
+       assertBlanketApproveButtonsPresent();
        waitAndTypeByName("document.newMaintainableObject.code", "VTC");
        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus");
        waitAndTypeByName("document.newMaintainableObject.shortName", "VTC");

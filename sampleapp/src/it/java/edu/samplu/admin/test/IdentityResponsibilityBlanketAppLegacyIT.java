@@ -34,6 +34,7 @@ public class IdentityResponsibilityBlanketAppLegacyIT extends AdminMenuBlanketAp
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
+        assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", AdminMenuLegacyITBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Validation Test Responsibility " + ITUtil.DTS_TWO);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + ITUtil.DTS_TWO);

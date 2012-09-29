@@ -35,6 +35,7 @@ public class IdentityPersonBlanketAppLegacyIT extends AdminMenuBlanketAppLegacyI
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Person");
+         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@id='document.principalName']", "principal "+ RandomStringUtils.randomAlphabetic(3).toLowerCase());
         selectByName("newAffln.affiliationTypeCode", "Affiliate");
         selectByName("newAffln.campusCode", "BX - BLGTN OFF CAMPUS");

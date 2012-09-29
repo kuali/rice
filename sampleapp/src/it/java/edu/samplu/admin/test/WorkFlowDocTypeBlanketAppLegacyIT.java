@@ -33,7 +33,7 @@ public class WorkFlowDocTypeBlanketAppLegacyIT extends AdminMenuBlanketAppLegacy
     @Override
     public String blanketApprove() throws Exception {
         String docId = waitForDocId();
-        assertElementPresentByName("methodToCall.cancel");
+        assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Validation Test Document Type " + ITUtil.DTS);
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(parentDocType);

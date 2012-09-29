@@ -112,6 +112,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
      * Tests merging of maps where the child bean is nested within a list
      *
      * TODO: this test is currently failing due to spring support of nested map merging
+     *
      * @throws Exception
      */
     public void testNestedListExpressions() throws Exception {
@@ -150,8 +151,8 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
         assertEquals("Fifth value in list is not correct", "val5", list1.get(4));
 
         assertTrue("Expression graph for inheritance list not correct size", testBean.getExpressionGraph().size() == 4);
-        assertEquals("First expression in expression graph not correct", "@{expr2} before val", testBean.getExpressionGraph().get(
-                "list1[1]"));
+        assertEquals("First expression in expression graph not correct", "@{expr2} before val",
+                testBean.getExpressionGraph().get("list1[1]"));
         assertEquals("Second expression in expression graph not correct", "@{expr3}", testBean.getExpressionGraph().get(
                 "list1[2]"));
         assertEquals("Third expression in expression graph not correct", "@{expr4}", testBean.getExpressionGraph().get(
@@ -187,7 +188,8 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
         TestDictionaryBean simpleBean1 = (TestDictionaryBean) getTestDictionaryObject("testSimpleBean1");
         TestDictionaryBean simpleBean2 = (TestDictionaryBean) getTestDictionaryObject("testSimpleBean2");
 
-        assertEquals("Bean does not have the correct property3 value", simpleBean1.getExpressionGraph().get("property3"), "@{1 eq 1}");
+        assertEquals("Bean does not have the correct property3 value", simpleBean1.getExpressionGraph().get(
+                "property3"), "@{1 eq 1}");
         assertNull("Bean should not have a property3 value", simpleBean2.getExpressionGraph().get("property3"));
     }
 
@@ -201,7 +203,8 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
         TestDictionaryBean simpleBean1 = (TestDictionaryBean) getTestDictionaryObject("testSimpleBean1");
         TestDictionaryBean simpleBean4 = (TestDictionaryBean) getTestDictionaryObject("testSimpleBean4");
 
-        assertEquals("Bean does not have the correct property3 value", simpleBean1.getExpressionGraph().get("property3"), "@{1 eq 1}");
+        assertEquals("Bean does not have the correct property3 value", simpleBean1.getExpressionGraph().get(
+                "property3"), "@{1 eq 1}");
         assertNull("Bean should not have a property3 value", simpleBean4.getExpressionGraph().get("property3"));
     }
 
@@ -214,8 +217,28 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
     public void testPostProcessBeanFactoryWithPeopleFlowSucceeds() throws Exception {
         InquiryView inquiryView = (InquiryView) getTestDictionaryObject("testPeopleFlow-InquiryView");
 
-        assertNotNull("Bean should have an inquiry property value", ((DataField)inquiryView.getItems().get(0).getItems().get(0)).getInquiry());
-        assertFalse("Bean should have an inquiry render value of false", ((DataField)inquiryView.getItems().get(0).getItems().get(0)).getInquiry().isRender());
+        assertNotNull("Bean should have an inquiry property value", ((DataField) inquiryView.getItems().get(0)
+                .getItems().get(0)).getInquiry());
+        assertFalse("Bean should have an inquiry render value of false", ((DataField) inquiryView.getItems().get(0)
+                .getItems().get(0)).getInquiry().isRender());
+    }
+
+    /**
+     * Tests that nested bean definitions are processed ok since the bean name is derived from the class attribute
+     * and bean names that exist in the processed beans map are skipped
+     */
+    @Test
+    public void testBeanDefinitionNaming() {
+        TestDictionaryBean testListBeanDefinitionNaming = (TestDictionaryBean) getTestDictionaryObject(
+                "testListBeanDefinitionNaming");
+
+        TestDictionaryBean uifTestBeanObject = testListBeanDefinitionNaming.getListReference1().get(0);
+        assertTrue("expression graph should have a property1", uifTestBeanObject.getExpressionGraph().containsKey(
+                "property1"));
+
+        TestDictionaryBean uifTestBeanObject1 = testListBeanDefinitionNaming.getListReference1().get(1);
+        assertTrue("expression graph should have a property1", uifTestBeanObject1.getExpressionGraph().containsKey(
+                "property1"));
     }
 
 }

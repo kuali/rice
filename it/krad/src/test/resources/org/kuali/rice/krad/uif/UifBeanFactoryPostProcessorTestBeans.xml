@@ -44,25 +44,25 @@
       <bean class="org.kuali.rice.krad.test.TestDictionaryBean">
         <property name="reference1">
           <bean class="org.kuali.rice.krad.test.TestDictionaryBean">
-              <property name="property1" value="@{1 == 1}"/>    
+            <property name="property1" value="@{1 == 1}"/>
           </bean>
         </property>
       </bean>
     </property>
   </bean>
-  
+
   <bean id="testNestedExpressionOverride5" parent="testNestedExpressionOverride4">
     <property name="reference1.reference1.property1" value="old school"/>
   </bean>
-  
+
   <bean id="testExpressionMapMerging" class="org.kuali.rice.krad.test.TestDictionaryBean">
-     <property name="map1">
-        <map>
-          <entry key="key1" value="@{expr1}"/>
-          <entry key="key2" value="foo"/>
-          <entry key="key3" value="@{expr3}"/>
-        </map>
-     </property>     
+    <property name="map1">
+      <map>
+        <entry key="key1" value="@{expr1}"/>
+        <entry key="key2" value="foo"/>
+        <entry key="key3" value="@{expr3}"/>
+      </map>
+    </property>
   </bean>
 
   <bean id="testExpressionMapMerging2" parent="testExpressionMapMerging">
@@ -192,6 +192,15 @@
             </list>
           </property>
         </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="testListBeanDefinitionNaming" class="org.kuali.rice.krad.test.TestDictionaryBean">
+    <property name="listReference1">
+      <list>
+        <bean class="org.kuali.rice.krad.test.TestDictionaryBean" p:property1="@{one}"/>
+        <bean class="org.kuali.rice.krad.test.TestDictionaryBean" p:property1="@{two}"/>
       </list>
     </property>
   </bean>

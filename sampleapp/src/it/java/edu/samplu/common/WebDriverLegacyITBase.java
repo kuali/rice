@@ -1,16 +1,6 @@
 package edu.samplu.common;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-//import com.saucelabs.common.SauceOnDemandAuthentication;
 //import com.saucelabs.common.SauceOnDemandSessionIdProvider;
-//import com.saucelabs.junit.SauceOnDemandTestWatcher;
-//import com.saucelabs.saucerest.SauceREST;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,6 +13,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static org.junit.Assert.assertEquals;
 
@@ -31,11 +28,9 @@ import static org.junit.Assert.assertEquals;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessionIdProvider {
+public abstract class WebDriverLegacyITBase { //implements SauceOnDemandSessionIdProvider {
 
     public static final int DEFAULT_WAIT_SEC = 60;
-    public static final String SAUCE_USER = "SAUCE_USER";
-    public static final String SAUCE_KEY = "SAUCE_KEY";
 
     public abstract String getTestUrl();
 
@@ -43,10 +38,6 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
     protected String user = "admin";
     protected boolean passed = false;
     static ChromeDriverService chromeDriverService;
-
-//    public SauceOnDemandAuthentication authentication = new SauceOnDemandAuthentication(SAUCE_USER, SAUCE_KEY);
-//
-//    public @Rule SauceOnDemandTestWatcher resultReportingTestWatcher = new SauceOnDemandTestWatcher(this, authentication);
 
     public @Rule TestName testName= new TestName();
 
@@ -70,8 +61,8 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
     @Before
     public void setUp() throws Exception {
         // {"test":"1","user":"1"}
-//        String userResponse = getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString().trim());
-//        user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
+        String userResponse = getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString().trim());
+        user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
         driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl(),
                 getClass().getSimpleName(), testName);
         this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
@@ -79,23 +70,8 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
 
     @After
     public void tearDown() throws Exception {
-//        SauceREST client = new SauceREST(SAUCE_USER, SAUCE_KEY);
-//        /* Using a map of udpates:
-//         * (http://saucelabs.com/docs/sauce-ondemand#alternative-annotation-methods)
-//         *
-//         * Map<String, Object> updates = new HashMap<String, Object>();
-//         * updates.put("name", "this job has a name");
-//         * updates.put("passed", true);
-//         * updates.put("build", "c234");
-//         * client.updateJobInfo("<your-job-id>", updates);
-//         */
-//        if (passed) {
-//            client.jobPassed(sessionId);
-//        } else {
-//            client.jobFailed(sessionId);
-//        }
-//
-//        getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString() + "&user=" + user);
+//        SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+        getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString() + "&user=" + user);
         driver.close();
         driver.quit();
     }

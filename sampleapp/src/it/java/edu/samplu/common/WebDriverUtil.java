@@ -52,7 +52,7 @@ public class WebDriverUtil {
         WebDriver driver = null;
         if (System.getProperty("remote.driver.saucelabs") == null) {
             driver = ITUtil.getWebDriver();
-        } else {
+//        } else {
 //            SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
 //            saucelabs.setUp(className, testName);
 //            driver = saucelabs.getDriver();

@@ -61,8 +61,8 @@ public abstract class WebDriverLegacyITBase { //implements SauceOnDemandSessionI
     @Before
     public void setUp() throws Exception {
         // {"test":"1","user":"1"}
-        String userResponse = getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString().trim());
-        user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
+//        String userResponse = getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString().trim());
+//        user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
         driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl(),
                 getClass().getSimpleName(), testName);
         this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
@@ -71,7 +71,7 @@ public abstract class WebDriverLegacyITBase { //implements SauceOnDemandSessionI
     @After
     public void tearDown() throws Exception {
 //        SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
-        getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString() + "&user=" + user);
+//        getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString() + "&user=" + user);
         driver.close();
         driver.quit();
     }

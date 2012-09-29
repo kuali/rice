@@ -260,19 +260,21 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
  * @return true if called within a lightbox, false otherwise
  */
 function isCalledWithinLightbox() {
-    try {
-        // For security reasons the browsers will not allow cross server scripts and
-        // throw an exception instead.
-        // Note that bad browsers (e.g. google chrome) will not catch the exception
-        if (jQuery("#fancybox-frame", parent.document).length) {
-            return true;
-        }
-    }
-    catch (e) {
-        // ignoring error
-    }
-
-    return false;
+    return jQuery('#renderedInLightBox').val() == 'true'
+    // reverting for KULRICE-8346
+//    try {
+//        // For security reasons the browsers will not allow cross server scripts and
+//        // throw an exception instead.
+//        // Note that bad browsers (e.g. google chrome) will not catch the exception
+//        if (jQuery("#fancybox-frame", parent.document).length) {
+//            return true;
+//        }
+//    }
+//    catch (e) {
+//        // ignoring error
+//    }
+//
+//    return false;
 }
 
 /*

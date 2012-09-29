@@ -16,6 +16,7 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuLegacyITBase;
+import org.junit.Test;
 
 /**
  * tests new and edit Parameter Type maintenance screens
@@ -26,5 +27,15 @@ public class ConfigParameterTypeLegacyIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
         return "Parameter Type";
+    }
+    @Test
+    @Override
+    public void testEditCancel() throws Exception {
+        super.testEditCancel();
+    }
+    @Test
+    @Override
+    public void testCreateNewCancel() throws Exception {
+        super.testCreateNewCancel();
     }
 }

@@ -18,6 +18,7 @@ package edu.samplu.admin.test;
 import edu.samplu.common.AdminMenuLegacyITBase;
 
 import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * tests creating and cancelling the new County maintenance screen
@@ -29,12 +30,9 @@ public class LocationCountyLegacyIT extends AdminMenuLegacyITBase {
     public String getLinkLocator() {
         return "County";
     }
-
-    /**
-     * Noop, there are no results from search for County
-     * @throws Exception
-     */
-    @Ignore // no data to edit
+    @Test
     @Override
-    public void testEditCancel() throws Exception {}
+    public void testCreateNewCancel() throws Exception {
+        super.testCreateNewCancel();
+    }
 }

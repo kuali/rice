@@ -16,6 +16,7 @@
 package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuLegacyITBase;
+import org.junit.Test;
 
 /**
  * tests creating and cancelling new and edit State maintenance screens
@@ -26,5 +27,15 @@ public class LocationStateLegacyIT extends AdminMenuLegacyITBase {
     @Override
     public String getLinkLocator() {
         return "State";
+    }
+    @Test
+    @Override
+    public void testEditCancel() throws Exception {
+        super.testEditCancel();
+    }
+    @Test
+    @Override
+    public void testCreateNewCancel() throws Exception {
+        super.testCreateNewCancel();
     }
 }

@@ -21,7 +21,6 @@ import org.junit.Test;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
 
     public static final String CREATE_NEW_LOCATOR = "a[title='Create a new record']";
@@ -39,7 +38,6 @@ public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
         return ADMIN_LOCATOR;
     }
 
-    @Test
     /**
      * tests that a getLinkLocator maintenance document can be cancelled
      */
@@ -50,7 +48,6 @@ public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
         passed();
     }
 
-    @Test
     /**
      * tests that a getLinkLocator maintenance document is created for an edit operation originating from a lookup screen
      */

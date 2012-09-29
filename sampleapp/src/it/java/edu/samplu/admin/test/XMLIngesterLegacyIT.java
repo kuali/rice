@@ -21,8 +21,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,7 +33,7 @@ import java.io.FileWriter;
 public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
 
     private File loadUsersFile;
-    
+
     @Rule
     public TemporaryFolder folder= new TemporaryFolder();
 
@@ -45,10 +43,9 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
     }
 
     @Override
-    public void testCreateNewCancel() throws Exception  {}
-
-    @Override
-    public void testEditCancel() throws Exception {}
+    public String getUserName() {
+        return "admin"; // xml ingestion requires admin permissions
+    }
 
     @Override
     public void setUp() throws Exception {
@@ -94,6 +91,7 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
         driver.findElement(By.name("file[0]")).sendKeys(path);
         waitAndClickByXpath("//*[@id='imageField']");
         assertTextPresent("Ingested xml doc");
+        passed();
     }
 
 }

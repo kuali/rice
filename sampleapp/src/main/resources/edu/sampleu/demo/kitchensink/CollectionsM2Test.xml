@@ -35,7 +35,6 @@
               <ref bean="CollectionsM2Test-collectionTest2"/>
               <ref bean="CollectionsM2Test-collectionTest4"/>
               <ref bean="toolTipTest"/>
-
             </list>
           </property>
         </bean>

@@ -119,8 +119,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private Label groupTotalLabelPrototype;
 
     private List<String> columnsToCalculate;
-    List<ColumnCalculationInfo> columnCalculations;
-    List<Component> footerCalculationComponents;
+    private List<ColumnCalculationInfo> columnCalculations;
+    private List<Component> footerCalculationComponents;
 
     public TableLayoutManager() {
         useShortLabels = false;
@@ -152,7 +152,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         CollectionGroup collectionGroup = (CollectionGroup) container;
 
         this.setupDetails(collectionGroup, view);
-
         this.setupGrouping(collectionGroup, view);
 
         if (collectionGroup.isAddViaLightBox()) {
@@ -163,11 +162,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         getRowCssClasses().clear();
 
-        if (generateAutoSequence && !(getSequenceFieldPrototype() instanceof Message)) {
+        if (generateAutoSequence && !(getSequenceFieldPrototype() instanceof MessageField)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
             view.assignComponentIds(getSequenceFieldPrototype());
         }
-
     }
 
     /**
@@ -182,10 +180,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     @Override
     public void performApplyModel(View view, Object model, Container container) {
         super.performApplyModel(view, model, container);
+
         for (ColumnCalculationInfo cInfo : columnCalculations) {
             ExpressionUtils.populatePropertyExpressionsFromGraph(cInfo, false);
         }
-
     }
 
     /**

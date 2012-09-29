@@ -500,8 +500,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             InputField inputField = (InputField) field;
             if (inputField.getControl() == null) {
                 Control control = ComponentFactory.getTextControl();
-                control.setId(view.getNextId());
-                control.setBaseId(control.getId());
+                view.assignComponentIds(control);
 
                 inputField.setControl(control);
             }

@@ -33,7 +33,6 @@ public class Tooltip extends WidgetBase {
     private String tooltipContent;
 
     private boolean onFocus;
-
     private boolean onMouseHover;
 
     public Tooltip() {

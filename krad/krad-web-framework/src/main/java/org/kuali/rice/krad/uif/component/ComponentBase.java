@@ -302,6 +302,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = new ArrayList<Component>();
 
+        components.add(toolTip);
+
         return components;
     }
 

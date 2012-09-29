@@ -167,6 +167,7 @@ public class UifComponentsTestForm extends UifFormBase {
     private Integer field131;
     private String field132;
     private String field133;
+    private String field134 = "triggered by focus or and mouse over";
 
     private String richMessageField = "[color=green][b]Message[/b][/color]";
     private String richMessageField2 =
@@ -2219,6 +2220,14 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setField133(String field133) {
         this.field133 = field133;
+    }
+
+    public String getField134() {
+        return field134;
+    }
+
+    public void setField134(String field134) {
+        this.field134 = field134;
     }
 
     public MultipartFile getFileUpload() {

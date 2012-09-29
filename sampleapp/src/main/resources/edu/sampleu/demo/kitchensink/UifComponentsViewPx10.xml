@@ -124,7 +124,7 @@
           <property name="control">
             <bean parent="Uif-TextControl">
               <property name="toolTip">
-                <bean parent="Uif-TooltipFocus" p:onMouseHover = "true" p:tooltipContent="This tooltip is triggered by focus or and mouse over."/>
+                <bean parent="Uif-TooltipFocus" p:onMouseHover = "true" p:tooltipContent="This tooltip is @{field134}."/>
               </property>
             </bean>
           </property>
@@ -172,6 +172,33 @@
                 </bean>
               </property>
             </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
+          <property name="headerText" value="Collection with tooltips"/>
+          <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
+          <property name="propertyName" value="list2"/>
+          <property name="layoutManager.renderSequenceField" value="false"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
+                    p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
+                    p:required="true"/>
+              <bean parent="Uif-MessageField" p:messageText="Hover 1" p:label="Features">
+                <property name="toolTip">
+                  <bean parent="Uif-TooltipFocus" p:onMouseHover="true"
+                        p:tooltipContent="@{#line.field1} and @{#line.field2}"/>
+                </property>
+              </bean>
+              <bean parent="Uif-MessageField" p:messageText="Hover 2" p:label="Features">
+                <property name="toolTip">
+                  <bean parent="Uif-TooltipFocus" p:onMouseHover="true"
+                        p:tooltipContent="@{#line.field3} and @{#line.field4}"/>
+                </property>
+              </bean>
+            </list>
           </property>
         </bean>
 

@@ -162,9 +162,6 @@
           </property>
         </bean>
 
-
-
-
         <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:layoutManager.orientation="VERTICAL">
           <property name="headerText" value="Display only fields"/>
           <property name="help">

@@ -88,8 +88,7 @@
 
   <bean id="Uif-InputField" parent="Uif-InputField-parentBean"/>
   <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField"
-        parent="Uif-DataField"
-        scope="prototype">
+        parent="Uif-DataField" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/field/dataInputField.ftl"/>
     <property name="templateName" value="uif_dataInputField"/>
     <property name="cssClasses">

@@ -165,6 +165,16 @@ public class ITUtil {
         if (baseUrl == null) {
             baseUrl = "http://localhost:8080/kr-dev";
         }
+        baseUrl = prettyHttp(baseUrl);
+        return baseUrl;
+    }
+
+    /**
+     * Append http:// if not present.  Remove trailing /
+     * @param baseUrl
+     * @return
+     */
+    public static String prettyHttp(String baseUrl) {
         if (baseUrl.endsWith("/")) {
             baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
         }
@@ -184,12 +194,7 @@ public class ITUtil {
         if (hubUrl == null) {
             hubUrl = "http://localhost:4444/wd/hub";
         }
-        if (hubUrl.endsWith("/")) {
-            hubUrl = hubUrl.substring(0, hubUrl.length() - 1);
-        }
-        if (!hubUrl.startsWith("http")) {
-            hubUrl = "http://" + hubUrl;
-        }
+        hubUrl = prettyHttp(hubUrl);
         if (!hubUrl.endsWith("/wd/hub")) {
             hubUrl = hubUrl + "/wd/hub";
         }

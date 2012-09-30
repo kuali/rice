@@ -31,6 +31,7 @@ import static org.junit.Assert.assertEquals;
 public abstract class WebDriverLegacyITBase { //implements SauceOnDemandSessionIdProvider {
 
     public static final int DEFAULT_WAIT_SEC = 60;
+    public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
 
     public abstract String getTestUrl();
 
@@ -61,17 +62,29 @@ public abstract class WebDriverLegacyITBase { //implements SauceOnDemandSessionI
     @Before
     public void setUp() throws Exception {
         // {"test":"1","user":"1"}
-//        String userResponse = getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString().trim());
-//        user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
-        driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl(),
-                getClass().getSimpleName(), testName);
-        this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
+        try {
+            if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
+                String userResponse = getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString().trim()));
+                user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
+            }
+            driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl(),
+                    getClass().getSimpleName(), testName);
+            this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
+        } catch (Exception e) {
+            fail("" + e.getMessage());
+        }
     }
 
     @After
     public void tearDown() throws Exception {
-//        SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
-//        getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString() + "&user=" + user);
+        try {
+//            SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+            if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
+                getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString() + "&user=" + user));
+            }
+        } catch (Exception e) {
+            System.out.println("failure in tearDown " + e.getMessage());
+        }
         driver.close();
         driver.quit();
     }

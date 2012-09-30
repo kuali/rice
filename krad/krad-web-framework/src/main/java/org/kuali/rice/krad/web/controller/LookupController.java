@@ -176,18 +176,20 @@ public class LookupController extends UifControllerBase {
         }
 
         // validate search parameters
-        lookupable.validateSearchParameters(lookupForm, lookupForm.getLookupCriteria());
+        boolean searchValid = lookupable.validateSearchParameters(lookupForm, lookupForm.getLookupCriteria());
 
-        Collection<?> displayList = lookupable.performSearch(lookupForm, lookupForm.getLookupCriteria(), true);
+        if (searchValid) {
+            Collection<?> displayList = lookupable.performSearch(lookupForm, lookupForm.getLookupCriteria(), true);
 
-        if (displayList instanceof CollectionIncomplete<?>) {
-            request.setAttribute("reqSearchResultsActualSize",
-                    ((CollectionIncomplete<?>) displayList).getActualSizeIfTruncated());
-        } else {
-            request.setAttribute("reqSearchResultsActualSize", new Integer(displayList.size()));
+            if (displayList instanceof CollectionIncomplete<?>) {
+                request.setAttribute("reqSearchResultsActualSize",
+                        ((CollectionIncomplete<?>) displayList).getActualSizeIfTruncated());
+            } else {
+                request.setAttribute("reqSearchResultsActualSize", new Integer(displayList.size()));
+            }
+
+            lookupForm.setLookupResults(displayList);
         }
-
-        lookupForm.setLookupResults(displayList);
 
         return getUIFModelAndView(lookupForm);
     }

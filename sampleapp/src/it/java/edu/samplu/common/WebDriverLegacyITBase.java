@@ -1,6 +1,5 @@
 package edu.samplu.common;
 
-//import com.saucelabs.common.SauceOnDemandSessionIdProvider;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,7 +27,7 @@ import static org.junit.Assert.assertEquals;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverLegacyITBase { //implements SauceOnDemandSessionIdProvider {
+public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
 
     public static final int DEFAULT_WAIT_SEC = 60;
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";

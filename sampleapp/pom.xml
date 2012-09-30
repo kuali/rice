@@ -106,6 +106,7 @@
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
         <maven.failsafe.includes>**/*IT.java</maven.failsafe.includes>
+        <maven.failsafe.exclues>**/XMLIngesterLegacyIT.java</maven.failsafe.exclues>
       </properties>
       <build>
         <plugins>

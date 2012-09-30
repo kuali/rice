@@ -54,6 +54,7 @@ public class ITUtil {
     public static final int WAIT_DEFAULT_SECONDS = 60;
     public static final String DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT = "30000";
     static Map<String, String> jiraMatches;
+    public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
 
     static {
         jiraMatches = new HashMap<String, String>();
@@ -247,10 +248,14 @@ public class ITUtil {
      * @throws InterruptedException
      */
     public static void login(WebDriver driver, String userName) throws InterruptedException {
-        if (System.getProperty("remote.autologin") == null) {
+        if (System.getProperty(REMOTE_AUTOLOGIN_PROPERTY) == null) {
             driver.findElement(By.name("__login_user")).clear();
             driver.findElement(By.name("__login_user")).sendKeys(userName);
             driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+            Thread.sleep(1000);
+            if (driver.getPageSource().indexOf("<strong>Invalid username</strong>") > -1) {
+                Assert.fail("Invalid username " + userName);
+            }
         }
     }
 
@@ -259,7 +264,7 @@ public class ITUtil {
      * @param selenium to login with
      */
     public static void loginSe(Selenium selenium, String user) {
-        if (System.getProperty("remote.autologin") == null) {
+        if (System.getProperty(REMOTE_AUTOLOGIN_PROPERTY) == null) {
             try {
                 selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
             } catch (Exception e) {
@@ -271,6 +276,9 @@ public class ITUtil {
             selenium.type("__login_user", user);
             selenium.click("//input[@type='submit']"); //using css selector fails
             selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
+            if (selenium.getHtmlSource().indexOf("<strong>Invalid username</strong>") > -1) {
+                Assert.fail("Invalid username " + user);
+            }
         }
     }
 

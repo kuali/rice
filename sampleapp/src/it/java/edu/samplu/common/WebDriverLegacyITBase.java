@@ -77,7 +77,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     @After
     public void tearDown() throws Exception {
         try {
-//            SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+//            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY) != null) {
+//                SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+//            }
             if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
                 getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString() + "&user=" + user));
             }

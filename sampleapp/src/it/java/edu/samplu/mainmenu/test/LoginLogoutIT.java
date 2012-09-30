@@ -31,7 +31,7 @@ public class LoginLogoutIT extends UpgradedSeleniumITBase {
     }
     
     @Test
-    public void testBlah() throws Exception {
+    public void testLogout() throws Exception {
         waitAndClick("link=Main Menu");
         waitForPageToLoad();
         waitAndClick("//input[@name='imageField' and @value='Logout']");

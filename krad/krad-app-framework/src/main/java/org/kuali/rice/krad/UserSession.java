@@ -341,4 +341,11 @@ public class UserSession implements Serializable {
     public Map<String, Object> getObjectMap() {
         return Collections.unmodifiableMap(this.objectMap);
     }
+
+    /**
+     * clear the objectMap
+     */
+    public void clearObjectMap() {
+        this.objectMap = Collections.synchronizedMap(new HashMap<String,Object>());
+    }
 }

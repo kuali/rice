@@ -56,6 +56,16 @@ public interface DocumentService {
     public Document getNewDocument(Class<? extends Document> documentClass) throws WorkflowException;
 
     /**
+     * get a new blank document instance based on the document type name. The principal name
+     * passed in will be used as the document initiator.
+     *
+     * @param documentTypeName
+     * @param initiatorPrincipalNm
+     * @return
+     */
+    public Document getNewDocument(String documentTypeName, String initiatorPrincipalNm) throws WorkflowException;
+
+    /**
      * get a document based on the document header id which is the primary key for all document types
      *
      * @param documentHeaderId

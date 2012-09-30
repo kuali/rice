@@ -533,7 +533,7 @@
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
     <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo"
-        auto-delete="true" auto-retrieve="true" auto-update="true">
+        auto-delete="true" auto-retrieve="true" auto-update="true" proxy="true">
       <inverse-foreignkey field-ref="ruleAttributeId" target-field-ref="id" />
     </collection-descriptor>
   </class-descriptor>
@@ -982,6 +982,5 @@
       <foreignkey field-ref="attributeDefinitionId" />
     </reference-descriptor>
   </class-descriptor>
-
 
 </descriptor-repository>

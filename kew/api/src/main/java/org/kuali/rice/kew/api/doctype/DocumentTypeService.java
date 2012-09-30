@@ -87,16 +87,36 @@ public interface DocumentTypeService {
             @WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
     
-    @WebMethod(operationName = "isSuperUserForSuTab")
+    @WebMethod(operationName = "canSuperUserApproveSingleActionRequest")
     @WebResult(name = "isSuperUser")
     @XmlElement(name = "isSuperUser", required = true)
-    boolean isSuperUserForSuTab(
+    boolean canSuperUserApproveSingleActionRequest(
             @WebParam(name = "principalId") String principalId,
             @WebParam(name = "documentTypeName") String documentTypeName,
             @WebParam(name = "routeNodeInstances") List<RouteNodeInstance> routeNodeInstances,
-            @WebParam(name = "actionEvent") String actionEvent)
+            @WebParam(name = "routeStatusCode") String routeStatusCode)
             throws RiceIllegalArgumentException;
-    
+
+    @WebMethod(operationName = "canSuperUserApproveDocument")
+    @WebResult(name = "isSuperUser")
+    @XmlElement(name = "isSuperUser", required = true)
+    boolean canSuperUserApproveDocument(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "routeNodeInstances") List<RouteNodeInstance> routeNodeInstances,
+            @WebParam(name = "routeStatusCode") String routeStatusCode)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "canSuperUserDisapproveDocument")
+    @WebResult(name = "isSuperUser")
+    @XmlElement(name = "isSuperUser", required = true)
+    boolean canSuperUserDisapproveDocument(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "routeNodeInstances") List<RouteNodeInstance> routeNodeInstances,
+            @WebParam(name = "routeStatusCode") String routeStatusCode)
+            throws RiceIllegalArgumentException;
+
     @WebMethod(operationName = "hasRouteNodeForDocumentTypeName")
     @WebResult(name = "hasRouteNode")
     @XmlElement(name = "hasRouteNode", required = true)

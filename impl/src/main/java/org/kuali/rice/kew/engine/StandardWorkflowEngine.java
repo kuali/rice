@@ -393,8 +393,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	// document state
 	protected DocumentRouteHeaderValue nodePostProcess(RouteContext context) throws InvalidActionTakenException {
 		DocumentRouteHeaderValue document = context.getDocument();
-		Collection<RouteNodeInstance> activeNodes = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
-		boolean moreNodes = false;
+        Collection<RouteNodeInstance> activeNodes = RouteNodeUtils.getActiveNodeInstances(document);
+        boolean moreNodes = false;
 		for (Iterator<RouteNodeInstance> iterator = activeNodes.iterator(); iterator.hasNext();) {
 			RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
 			moreNodes = moreNodes || !nodeInstance.isComplete();

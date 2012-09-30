@@ -53,6 +53,15 @@
   <element name="edl">
     <complexType>
       <sequence>
+
+        <element name="config" type="ed:ConfigType" minOccurs="0">
+          <annotation>
+            <documentation>
+              Defines optional parameters for the EDL document.
+            </documentation>
+          </annotation>
+        </element>
+
         <element name="security" type="c:LongStringType" minOccurs="0">
         	<annotation>
         		<documentation>
@@ -108,6 +117,13 @@
 
     </complexType>
   </element>
+
+  <complexType name="ConfigType">
+    <sequence>
+      <element name="param" type="ed:ParamType" minOccurs="0"
+               maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
 
   <complexType name="AttributeType">
     <sequence>
@@ -233,6 +249,20 @@
       <enumeration value="hidden"/>
     </restriction>
   </simpleType>
+
+  <complexType name="ParamType">
+    <simpleContent>
+      <extension base="c:MayBeEmptyShortStringType">
+        <attribute name="name" type="string">
+          <annotation>
+            <documentation>
+              Name of the Param Type
+            </documentation>
+          </annotation>
+        </attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
 
   <complexType name="MetaType">
     <sequence>

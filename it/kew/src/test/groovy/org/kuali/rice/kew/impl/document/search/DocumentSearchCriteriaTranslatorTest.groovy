@@ -43,6 +43,13 @@ import com.google.common.collect.Maps
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
 import org.kuali.rice.kew.api.KEWPropertyConstants
 import org.kuali.rice.core.api.config.property.ConfigContext
+import org.kuali.rice.coreservice.api.component.Component
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator
+import org.kuali.rice.coreservice.api.parameter.Parameter
+import org.kuali.rice.coreservice.api.parameter.ParameterType
+import org.kuali.rice.kew.impl.document.ApplicationDocumentStatusUtils
+
+import static junit.framework.Assert.assertTrue
 
 /**
  * 
@@ -75,7 +82,7 @@ class DocumentSearchCriteriaTranslatorTest extends DocumentSearchTestBase {
     void testTranslateFieldsToCriteria() {
         // form fields
         def fields = new HashMap<String, String>()
-        fields.put("documentTypeName", "whatever")
+        fields.put("documentTypeName", "SearchDocType")
         fields.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE,
                    [ DocumentStatus.INITIATED.code,
                      DocumentStatus.PROCESSED.code,
@@ -96,7 +103,7 @@ class DocumentSearchCriteriaTranslatorTest extends DocumentSearchTestBase {
         def crit = documentSearchCriteriaTranslator.translateFieldsToCriteria(fields)
         assertNotNull(crit)
 
-        assertEquals("whatever", crit.documentTypeName)
+        assertEquals("SearchDocType", crit.documentTypeName)
         assertEquals([ DocumentStatus.INITIATED, DocumentStatus.PROCESSED, DocumentStatus.FINAL ] as Set, crit.getDocumentStatuses() as Set)
         assertEquals([ DocumentStatusCategory.SUCCESSFUL, DocumentStatusCategory.UNSUCCESSFUL ] as Set, crit.getDocumentStatusCategories() as Set)
         assertEquals(new DateTime(2010, 1, 1, 0, 0), crit.dateCreatedFrom)
@@ -106,6 +113,27 @@ class DocumentSearchCriteriaTranslatorTest extends DocumentSearchTestBase {
         docattrs.each { k, v ->
             assertEquals(v as Set, crit.documentAttributeValues[k] as Set)
         }
+
+
+        // KULRICE-7786: support for groups (categories) of application document statuses
+
+        CoreServiceApiServiceLocator.getComponentService().publishDerivedComponents("foo", Collections.singletonList(
+                Component.Builder.create("KR-WKFLW", "SearchDocType", "SearchDocType").build()
+        ));
+
+        Parameter.Builder parameterBuilder = Parameter.Builder.create("KUALI",
+                ApplicationDocumentStatusUtils.CATEGORIES_COMPONENT_NAMESPACE, "SearchDocType",
+                ApplicationDocumentStatusUtils.CATEGORIES_PARAMETER_NAME,
+                ParameterType.Builder.create("CONFG"));
+        parameterBuilder.setValue("TestCategory=Approval In Progress,Submitted");
+
+        CoreServiceApiServiceLocator.getParameterRepositoryService().createParameter(parameterBuilder.build());
+
+        fields.put("applicationDocumentStatus", "category:TestCategory");
+        crit = documentSearchCriteriaTranslator.translateFieldsToCriteria(fields);
+
+        assertTrue(crit.getApplicationDocumentStatuses().contains("Approval In Progress"));
+        assertTrue(crit.getApplicationDocumentStatuses().contains("Submitted"));
     }
 
     /**

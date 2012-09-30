@@ -20,6 +20,7 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityMetadata.PropertySerializability;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * This abstract implementation provides a default implementation of {@link #determinePropertyType(Object)}, which should suffice for most
@@ -53,6 +54,9 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
         }
         if (propertyValue instanceof Collection) {
             return PropertyType.COLLECTION;
+        }
+        if (propertyValue instanceof Map) {
+            return PropertyType.MAP;
         }
         return PropertyType.PRIMITIVE;
     }

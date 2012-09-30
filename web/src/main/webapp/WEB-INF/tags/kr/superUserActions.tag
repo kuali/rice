@@ -11,12 +11,12 @@
 	     tabErrorKey="superuser.errors"
 	     transparentBackground="${transparentBackground}">
 	<div class="tab-container" align=center id="G4">
-		<c:if test="${not empty KualiForm.actionRequests}">
+		<c:if test="${not empty KualiForm.actionRequests && KualiForm.superUserApproveSingleActionRequestAuthorized}">
 	    	<h3>${tabTitle}</h3>
 	    </c:if>
 	    <table cellpadding="0" cellspacing="0" class="datatable" summary="view/add notes">
 			<tbody>
-				<c:if test="${not empty KualiForm.actionRequests}">
+				<c:if test="${not empty KualiForm.actionRequests && KualiForm.superUserApproveSingleActionRequestAuthorized}">
 					<tr>
 					    <th style="width: 5%; text-align: center;"><input type="checkbox" onclick="jQuery('input.superUserAction').prop('checked', jQuery(this).prop('checked'))" /></th>
 					    <th style="width: 15%;">${actionLabel}</th>
@@ -25,8 +25,9 @@
 				    	<th style="width: 50%;">${annotationLabel}</th>
 					</tr>
 				</c:if>
-				<c:forEach var="actionRequest" items="${KualiForm.actionRequests}" varStatus="status">
-				<tr>
+        <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized}">
+        <c:forEach var="actionRequest" items="${KualiForm.actionRequests}" varStatus="status">
+          <tr>
 				    <td class="datacell" style="text-align: center;"><html:multibox property="selectedActionRequests" value="${actionRequest.id}" styleClass="superUserAction" /></td>
 				    <td class="datacell">${actionRequest.actionRequested}</td>
 				    <td class="datacell">
@@ -45,7 +46,8 @@
 				    <td class="datacell"><joda:format value="${actionRequest.dateCreated}" pattern="MM/dd/yyyy hh:mm a"/>&nbsp;</td>
 				    <td class="datacell">${actionRequest.annotation}</td>
 				</tr>
-				</c:forEach>
+        </c:forEach>
+        </c:if>
 		    </tbody>
         </table>
        	<div style="vertical-align: top;">
@@ -53,12 +55,15 @@
            	<html:textarea property="superUserAnnotation" rows="5" cols="100" styleId="superUserAnnotation" />
        	</div>
         <div>
-        <c:if test="${KualiForm.superUserApproveAuthorized && not empty KualiForm.actionRequests}">
+          <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && not empty KualiForm.actionRequests}">
             <html-el:image property="methodToCall.takeSuperUserActions" src="${ConfigProperties.kew.url}/images/buttonsmall_takeselected.gif" style="border-style:none;" align="absmiddle" />
-        </c:if>
-        <c:if test="${KualiForm.superUserDisapproveAuthorized}">
+          </c:if>
+          <c:if test="${KualiForm.superUserApproveDocumentAuthorized}">
+            <html-el:image property="methodToCall.superUserApprove" src="${ConfigProperties.kew.url}/images/buttonsmall_approvedoc.gif" style="border-style:none;" align="absmiddle" />
+          </c:if>
+          <c:if test="${KualiForm.superUserDisapproveDocumentAuthorized}">
             <html-el:image property="methodToCall.superUserDisapprove" src="${ConfigProperties.kew.url}/images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />
-        </c:if>            
+          </c:if>
         </div>
 	</div>
 </kul:tab>

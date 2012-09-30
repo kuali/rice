@@ -284,12 +284,12 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
               project.
               <itemizedlist>
                 <listitem>
-                  Interactive mode:
+                  <para>Interactive mode:</para>
                   <programlisting>
 C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=2.2.0-M4-SNAPSHOT</programlisting>
                 </listitem>
                 <listitem>
-                  Automated mode:
+                  <para>Automated mode:</para>
                   <programlisting>
 C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=2.2.0-M4-SNAPSHOT
 -DgroupId=org.foo
@@ -305,7 +305,7 @@ C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -Darchetype
             </para>
           </step>
           <step>
-            Enter the project path and build the project.
+            <para>Enter the project path and build the project.</para>
             <para>
               <programlisting>
 C:\project> cd bar
@@ -315,7 +315,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           </step>
           <step>
             <para>
-              Navigate to <ulink url="http://localhost:8080/bar">http://localhost:8080/bar</ulink>
+              Navigate to <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>
             </para>
           </step>
         </procedure>
@@ -327,16 +327,16 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           The following plugins are required:
           <itemizedlist>
             <listitem>
-              m2e - this is the core maven plugin for eclipse.
+              <para>m2e - this is the core maven plugin for eclipse.</para>
             </listitem>
             <listitem>
-              m2e - connector for the buildhelper plugin. It is not necessary to install this plugin ahead of time.
-              m2e will show an error and give the option to install it via the Eclipse Market Place.
+              <para>>m2e - connector for the buildhelper plugin. It is not necessary to install this plugin ahead of time.
+                m2e will show an error and give the option to install it via the Eclipse Market Place.</para>
             </listitem>
             <listitem>
-              Maven Integration for WTP - this allows maven to integrate with WTP (Eclipse Web Tools Platform). To
+              <para>Maven Integration for WTP - this allows maven to integrate with WTP (Eclipse Web Tools Platform). To
               install this plugin search for <emphasis>m2e-wtp</emphasis> on the Eclipse Market Place (<guilabel>help</guilabel>
-              -> <guilabel>Market Place</guilabel>).
+                -> <guilabel>Market Place</guilabel>).</para>
             </listitem>
           </itemizedlist>
         </para>
@@ -348,6 +348,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenu>Maven</guimenu><guisubmenu>Maven Project</guisubmenu></menuchoice> and press the
               <guibutton>Next</guibutton> button twice to get to the <guilabel>Select an Archtype</guilabel> window.
               <figure>
+                 <title></title>
                 <mediaobject>
                   <imageobject>
                     <imagedata fileref="../images/archetype/2_eclipse.png"/>
@@ -358,7 +359,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           </step>
           <step>
             <para>
-              Add Archetype if org.kuali.rice:rice-archetype-quickstart:${project.version} does not exist in the list.
+              Add Archetype if org.kuali.rice:rice-archetype-quickstart:${project.version} does not exist in the list.</para>
               <substeps>
                 <step>
                   <para>
@@ -390,7 +391,6 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </para>
                 </step>
               </substeps>
-            </para>
           </step>
           <step>
             <para>
@@ -403,6 +403,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               the <guibutton>Next</guibutton> button.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/3_eclipse.png"/>
@@ -461,6 +462,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Click the <guibutton>Finish</guibutton> button.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/4_eclipse.png"/>
@@ -470,7 +472,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           </step>
           <step>
             <para>
-              If the project's pom.xml contains an error related to the buildhelper plugin:
+              If the project's pom.xml contains an error related to the buildhelper plugin:</para>
               <substeps>
                 <step>
                   <para>
@@ -489,7 +491,6 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </para>
                 </step>
               </substeps>
-            </para>
           </step>
           <step>
             <para>
@@ -500,7 +501,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           <step>
             <para>
               At this point it is a good idea to rebuild the entire project and make sure there are no errors.  Then
-              run all the unit and integration tests through eclipse.
+              run all the unit and integration tests through eclipse.</para>
               <substeps>
                 <step>
                   <para>
@@ -509,6 +510,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guilabel>bar</guilabel> is selected and click the <guibutton>OK</guibutton> button.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/5_eclipse.png"/>
@@ -524,6 +526,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     from the menu.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/6_eclipse.png"/>
@@ -539,6 +542,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guimenuitem>JUnit Test</guimenuitem></menuchoice> from the menu.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/7_eclipse.png"/>
@@ -547,11 +551,11 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </figure>
                 </step>
               </substeps>
-            </para>
+
           </step>
           <step>
             <para>
-              Setup the Application server through the Eclipse WTP plugin:
+              Setup the Application server through the Eclipse WTP plugin:</para>
               <substeps>
                 <step>
                   <para>
@@ -559,6 +563,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guilabel>new server wizard</guilabel> link.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/8_eclipse.png"/>
@@ -572,6 +577,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     button.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/9_eclipse.png"/>
@@ -584,6 +590,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Point to a local install of tomcat and click the <guibutton>Next</guibutton> button.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/10_eclipse.png"/>
@@ -597,6 +604,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     configured side. Click the <guibutton>Finish</guibutton> button.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/11_eclipse.png"/>
@@ -609,6 +617,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Double click on the newly created serer under the <guilabel>Servers</guilabel> tab.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/12_eclipse.png"/>
@@ -624,6 +633,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Click the <guibutton>OK</guibutton> button.
                   </para>
                   <figure>
+                    <title></title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="../images/archetype/13_eclipse.png"/>
@@ -632,14 +642,14 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </figure>
                 </step>
               </substeps>
-            </para>
           </step>
           <step>
             <para>
               Right click on the server under the <guilabel>Servers</guilabel> tab and choose
-              <menuchoice>Start</menuchoice>.
+              <guimenuitem>Start</guimenuitem>.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/14_eclipse.png"/>
@@ -650,9 +660,10 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           <step>
             <para>
               After the application has started navigate to
-              <ulink url="http://localhost:8080/bar">http://localhost:8080/bar</ulink>.
+              <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/15_eclipse.png"/>
@@ -660,6 +671,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               </mediaobject>
             </figure>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/16_eclipse.png"/>
@@ -678,6 +690,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               menu choices.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/1_intellij.png"/>
@@ -691,6 +704,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               menu choices.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/2_intellij.png"/>
@@ -712,6 +726,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Select <guilabel>Maven Module</guilabel> and click the <guibutton>Next</guibutton> button.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/3_intellij.png"/>
@@ -737,7 +752,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             </para>
             <para>
               Add the org.kuali.rice:rice-archetype-quickstart:${project.version} archetype if it does not exist in the
-              archetype list.
+              archetype list.</para>
               <substeps>
                 <step>
                   <para>
@@ -764,12 +779,12 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <para>Click the <guibutton>OK</guibutton> button.</para>
                 </step>
               </substeps>
-            </para>
             <para>
               Select the <guilabel>org.kuali.rice:rice-archetype-quickstart:${project.version}</guilabel> archetype
               and click the <guibutton>Next</guibutton> button.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/4_intellij.png"/>
@@ -813,6 +828,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Click the <guibutton>Finish</guibutton> button.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/5_intellij.png"/>
@@ -826,6 +842,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenuitem>Reimport</guimenuitem></menuchoice> from the menu.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/6_intellij.png"/>
@@ -835,7 +852,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           </step>
           <step>
             <para>
-              Add the integration test folder as a source folder.
+              Add the integration test folder as a source folder.</para>
               <substeps>
                 <step>
                   <para>
@@ -859,8 +876,8 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </para>
                 </step>
               </substeps>
-            </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/7_intellij.png"/>
@@ -880,6 +897,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </menuchoice> to rebuild the project.
                 </para>
                 <figure>
+                  <title></title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/8_intellij.png"/>
@@ -894,6 +912,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   integration test.
                 </para>
                 <figure>
+                  <title></title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/9_intellij.png"/>
@@ -908,6 +927,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   unit tests.
                 </para>
                 <figure>
+                  <title></title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/10_intellij.png"/>
@@ -928,6 +948,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 </menuchoice> from the menu.
                 </para>
                 <figure>
+                  <title></title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/11_intellij.png"/>
@@ -941,6 +962,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <guimenu>Tomcat Server</guimenu><guimenuitem>Local</guimenuitem></menuchoice> from the menu.
                 </para>
                 <figure>
+                  <title></title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/12_intellij.png"/>
@@ -955,6 +977,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   "-Xms512m -Xmx2g -XX:MaxPermSize=512m" in the <guilabel>VM options</guilabel> field.
                 </para>
                 <figure>
+                  <title></title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/13_intellij.png"/>
@@ -969,6 +992,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <guilabel>bar:war (exploded)</guilabel> and click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>
+                  <title></title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/14_intellij.png"/>
@@ -982,6 +1006,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   Click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>
+                  <title></title>
                   <mediaobject>
                     <imageobject>
                       <imagedata fileref="../images/archetype/15_intellij.png"/>
@@ -997,6 +1022,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               the menu
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/16_intellij.png"/>
@@ -1007,9 +1033,10 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
           <step>
             <para>
               After the application has started navigate to
-              <ulink url="http://localhost:8080/bar">http://localhost:8080/bar</ulink>.
+              <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/17_intellij.png"/>
@@ -1017,6 +1044,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               </mediaobject>
             </figure>
             <figure>
+              <title></title>
               <mediaobject>
                 <imageobject>
                   <imagedata fileref="../images/archetype/18_intellij.png"/>

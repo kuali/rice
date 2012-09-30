@@ -33,13 +33,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This is a basic implementation of the KualiReporterService. Currently, it only has
- * a mail service as reporting mechanism.
+ * Modified this service so that it now extends the KualiFeedbackServiceImpl.
+ * This has been done to allow user feedback and exception incidents to be
+ * reported in the same way, but to potentially different email lists.  Part
+ * of this refactor included moving the mailer and messageTemplate properties
+ * and the emailReport and createMailMessage methods to the new parent class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncidentService {
+public class KualiExceptionIncidentServiceImpl extends KualiFeedbackServiceImpl implements KualiExceptionIncidentService {
     private Logger LOG=Logger.getLogger(KualiExceptionIncidentServiceImpl.class);
     
     /**
@@ -56,126 +59,11 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * </code>
      */
     public static final String REPORT_MAIL_LIST=String.format(
-            "%s.REPORT_MAIL_LIST",KualiExceptionIncidentServiceImpl.class.getSimpleName());
-    /**
-     * A Mailer for sending report.
-     */
-    private Mailer mailer;
-    
-    /**
-     * Sets the Mailer mail service.
-     * @param mailer the mail service the mailService to set
-     */
-    public final void setMailer(Mailer mailer) {
-        this.mailer = mailer;
-    }
-    
-    /**
-     * An email template is used to construct an email to be sent by the mail service.
-     */
-    private MailMessage messageTemplate;
+            "%s.REPORT_MAIL_LIST", KualiExceptionIncidentServiceImpl.class.getSimpleName());
 
-    /**
-     * Mails the report using the mail service from the mail template.
-     *
-     * @param subject the subject text of the email
-     * @param message the body text of the email
-     * @throws IllegalStateException if the Mailer is not set up.
-     * @see org.kuali.rice.krad.service.KualiExceptionIncidentService#emailReport(java.lang.String, java.lang.String)
-     */
     @Override
-	public void emailReport(String subject, String message) throws Exception {
-        if (LOG.isTraceEnabled()) {
-            String lm=String.format("ENTRY %s;%s",
-                    (subject==null)?"null":subject.toString(),
-                    (message==null)?"null":message.toString());
-            LOG.trace(lm);
-        }
-        
-        if (mailer == null) {
-            String errorMessage = "mailer property of KualiExceptionIncidentServiceImpl is null";
-            LOG.fatal(errorMessage);
-            throw new IllegalStateException(errorMessage);
-        }
-        
-        // Send mail
-        MailMessage msg=createMailMessage(subject, message);
-        mailer.sendEmail(msg);
-
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("EXIT");
-        }
-    }
-
-    /**
-     * Creates an instance of MailMessage from the inputs using the given
-     * template.
-     * 
-     * @param subject the subject line text
-     * @param message the body of the email message
-     * @return MailMessage
-     * @throws IllegalStateException if the <codeREPORT_MAIL_LIST</code> is not set
-     * or messageTemplate does not have ToAddresses already set.
-     */
-    @SuppressWarnings("unchecked")
-    private MailMessage createMailMessage(String subject, String message)
-                throws Exception{
-        if (LOG.isTraceEnabled()) {
-            String lm=String.format("ENTRY %s%n%s",
-                    (subject==null)?"null":subject.toString(),
-                    (message==null)?"null":message.toString());
-            LOG.trace(lm);
-        }
-        
-        if (messageTemplate == null) {
-            throw new IllegalStateException(String.format(
-                    "%s.templateMessage is null or not set",
-                    this.getClass().getName()));
-        }
-        
-        // Copy input message reference for creating an instance of mail message
-        MailMessage msg=new MailMessage();
-        
-        Person actualUser = GlobalVariables.getUserSession().getActualPerson();
-        String fromEmail = actualUser.getEmailAddress();
-        if ((fromEmail != null) && (fromEmail != "")) {
-        	msg.setFromAddress(fromEmail);
-    	} else {
-        	msg.setFromAddress(messageTemplate.getFromAddress());
-    	}
-    	
-        msg.setBccAddresses(messageTemplate.getBccAddresses());
-        msg.setCcAddresses(messageTemplate.getCcAddresses());
-        // First check if message template already define mailing list
-        Set emails=messageTemplate.getToAddresses();
-        if (emails == null || emails.isEmpty()) {
-            String mailingList= KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                    REPORT_MAIL_LIST);
-            if (mailingList == null || mailingList.trim().length() == 0) {
-                String em=REPORT_MAIL_LIST+" is not set or messageTemplate does not have ToAddresses already set.";
-                LOG.error(em);
-                throw new IllegalStateException(em);
-            } else {
-                msg.setToAddresses(new HashSet<String>(split(mailingList,
-                        KRADConstants.FIELD_CONVERSIONS_SEPARATOR)));
-            }
-        } else {
-            msg.setToAddresses(emails);
-        }
-
-        // Set mail message subject
-        msg.setSubject((subject==null)?"":subject);
-
-        // Set mail message body
-        msg.setMessage((message==null)?"":message);
-        
-        if (LOG.isTraceEnabled()) {
-            String lm=String.format("EXIT %s",
-                    (msg==null)?"null":msg.toString());
-            LOG.trace(lm);
-        }
-
-        return msg;
+    protected String getToAddressesPropertyName() {
+        return REPORT_MAIL_LIST;
     }
 
     /**
@@ -231,22 +119,6 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         }
         
         return list;
-    }
-
-    /**
-     * Returns the messageTemplate for the report email
-     * @return the messageTemplate
-     */
-    public final MailMessage getMessageTemplate() {
-        return this.messageTemplate;
-    }
-
-    /**
-     * Sets the messageTemplate
-     * @param messageTemplate the messageTemplate to set
-     */
-    public final void setMessageTemplate(MailMessage messageTemplate) {
-        this.messageTemplate = messageTemplate;
     }
 
     /**

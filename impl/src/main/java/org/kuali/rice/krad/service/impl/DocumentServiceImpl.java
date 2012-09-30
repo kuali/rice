@@ -528,12 +528,15 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * Creates a new document by document type name.
+     * Creates a new document by document type name. The principal name
+     * passed in will be used as the document initiator.  If the  initiatorPrincipalNm
+     * is null or blank, the current user will be used.
      *
-     * @see org.kuali.rice.krad.service.DocumentService#getNewDocument(java.lang.String)
+     * @see org.kuali.rice.krad.service.DocumentService#getNewDocument(String, String)
      */
     @Override
-    public Document getNewDocument(String documentTypeName) throws WorkflowException {
+    public Document getNewDocument(String documentTypeName, String initiatorPrincipalNm) throws WorkflowException {
+
         // argument validation
         String watchName = "DocumentServiceImpl.getNewDocument";
         StopWatch watch = new StopWatch();
@@ -552,8 +555,16 @@ public class DocumentServiceImpl implements DocumentService {
         // get the class for this docTypeName
         Class<? extends Document> documentClass = getDocumentClassByTypeName(documentTypeName);
 
-        // get the current user
-        Person currentUser = GlobalVariables.getUserSession().getPerson();
+        // get the initiator
+        Person initiator = null;
+        if (StringUtils.isBlank(initiatorPrincipalNm)) {
+            initiator = GlobalVariables.getUserSession().getPerson();
+        } else {
+            initiator = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalNm);
+            if (ObjectUtils.isNull(initiator)) {
+                initiator = GlobalVariables.getUserSession().getPerson();
+            }
+        }
 
         // get the authorization
         DocumentAuthorizer documentAuthorizer = getDocumentDictionaryService().getDocumentAuthorizer(documentTypeName);
@@ -562,12 +573,12 @@ public class DocumentServiceImpl implements DocumentService {
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
         if (!documentPresentationController.canInitiate(documentTypeName) ||
-                !documentAuthorizer.canInitiate(documentTypeName, currentUser)) {
-            throw new DocumentAuthorizationException(currentUser.getPrincipalName(), "initiate", documentTypeName);
+                !documentAuthorizer.canInitiate(documentTypeName, initiator)) {
+            throw new DocumentAuthorizationException(initiator.getPrincipalName(), "initiate", documentTypeName);
         }
 
         // initiate new workflow entry, get the workflow doc
-        WorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
+        WorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, initiator);
         KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
         // create a new document header object
@@ -627,6 +638,17 @@ public class DocumentServiceImpl implements DocumentService {
 
         return document;
     }
+
+    /**
+     * Creates a new document by document type name.
+     *
+     * @see org.kuali.rice.krad.service.DocumentService#getNewDocument(java.lang.String)
+     */
+    @Override
+    public Document getNewDocument(String documentTypeName) throws WorkflowException {
+        return getNewDocument(documentTypeName, null);
+    }
+
 
     /**
      * This is temporary until workflow 2.0 and reads from a table to get documents whose status has changed to A

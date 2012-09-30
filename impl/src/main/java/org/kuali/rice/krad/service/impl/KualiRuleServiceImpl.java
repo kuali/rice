@@ -84,6 +84,11 @@ public class KualiRuleServiceImpl implements KualiRuleService {
 
             decreaseErrorPath(event.getErrorPathPrefix());
 
+            // KULRICE-7930  Check for field validation errors
+            if(GlobalVariables.getMessageMap().hasErrors()) {
+               success = false;
+            }
+
             // report failures
             if (!success) {
             	if ( LOG.isDebugEnabled() ) { // NO, this is not a type - only log if in debug mode - this is not an error in production

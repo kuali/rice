@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
@@ -54,6 +55,13 @@ public class MessageServiceInvoker implements Runnable {
 
     public void run() {
         LOG.debug("calling service from persisted message " + getMessage().getRouteQueueId());
+        if(ConfigContext.getCurrentContextConfig().getBooleanProperty(Config.MESSAGE_PERSISTENCE)) {
+            PersistedMessagePayload messageFromDB = KSBServiceLocator.getMessageQueueService().findByPersistedMessageByRouteQueueId(getMessage().getRouteQueueId());
+            if(messageFromDB == null) {
+                // If the message is no longer found in the database we should skip this processing
+                return;
+            }
+        }
         Object result = null;
         try {
             result = KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback<Object>() {

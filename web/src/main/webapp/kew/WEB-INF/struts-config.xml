@@ -32,6 +32,7 @@
 	    <form-bean name="ActionListForm" type="org.kuali.rice.kew.actionlist.web.ActionListForm" />
 	    <form-bean name="ActionListFilterForm" type="org.kuali.rice.kew.actionlist.web.ActionListFilterForm" />
 	    <form-bean name="DocumentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentOperationForm" />
+        <form-bean name="DocumentContentOperationForm" type="org.kuali.rice.kew.documentoperation.web.DocumentContentOperationForm" />
         <form-bean name="DocumentConfigurationViewForm" type="org.kuali.rice.kew.rule.web.DocumentConfigurationViewForm" />
 
         <!-- converted from en module -->
@@ -116,6 +117,11 @@
       	  <forward name="confirm" path="/WEB-INF/jsp/documentoperation/DocumentOperationConfirm.jsp"/>
 	      <forward name="requiredStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/documentoperation/DocumentOperationSummary.jsp"/>
+      </action>
+
+      <action path="/DocumentContentOperation" name="DocumentContentOperationForm" scope="request" input="/WEB-INF/jsp/documentoperation/DocumentContentOperation.jsp"
+              validate="false" type="org.kuali.rice.kew.documentoperation.web.DocumentContentOperationAction" parameter="methodToCall">
+        <forward name="basic" path="/WEB-INF/jsp/documentoperation/DocumentContentOperation.jsp"/>
       </action>
 
       <action path="/DelegateRule" name="DelegateRuleForm" input="/WEB-INF/jsp/rule/DelegateRuleInit.jsp" type="org.kuali.rice.kew.rule.web.DelegateRuleAction"

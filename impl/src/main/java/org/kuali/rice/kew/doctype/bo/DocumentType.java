@@ -345,6 +345,16 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     /**
+     * Returns the SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION policy on the document if defined, or
+     * the default value for this policy which is false.
+     * @return the SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION document type policy
+     * @since 2.1.3
+     */
+    public DocumentTypePolicy getSuppressImmediateEmailsOnSuActionPolicy() {
+        return getPolicyByName(SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION.getCode(), Boolean.FALSE);
+    }
+
+    /**
      * This method returns a boolean denoting whether the KEW Route Status is to be displayed.
      * The KEW Route Status is updated by the workflow engine regardless of whether it is to be displayed or not.
      *

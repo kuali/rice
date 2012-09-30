@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.krad.kim;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.krad.kim.DocumentTypePermissionTypeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DocumentTypeAndNodeAndActionEventServiceImpl extends DocumentTypePermissionTypeServiceImpl {
+public class DocumentTypeAndNodeAndRouteStatusPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
     @Override
     protected boolean isCheckRequiredAttributes() {
@@ -52,7 +53,7 @@ public class DocumentTypeAndNodeAndActionEventServiceImpl extends DocumentTypePe
 		for ( Permission kpi : permissionsList ) {
             PermissionBo bo = PermissionBo.from(kpi);
 			if ( (routeNodeMatches(requestedDetails, bo.getDetails())) &&
-				 (actionTypeMatches(requestedDetails, bo.getDetails())) ) {
+				 (routeStatusMatches(requestedDetails, bo.getDetails())) ) {
 				matchingPermissions.add( kpi );
 			}			
 		}
@@ -69,13 +70,12 @@ public class DocumentTypeAndNodeAndActionEventServiceImpl extends DocumentTypePe
                 KimConstants.AttributeConstants.ROUTE_NODE_NAME));
     }
 
-	protected boolean actionTypeMatches(Map<String, String> requestedDetails, Map<String, String> permissionDetails) {
-	    String allActionTypes = "*";
-		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ACTION_EVENT) ) || 
-		     StringUtils.equals(requestedDetails.get(KimConstants.AttributeConstants.ACTION_EVENT), allActionTypes) ){
-			return true;
-		}
-		return StringUtils.equals(requestedDetails.get(KimConstants.AttributeConstants.ACTION_EVENT), permissionDetails.get(
-                KimConstants.AttributeConstants.ACTION_EVENT));
-	}
+    protected boolean routeStatusMatches(Map<String, String> requestedDetails, Map<String, String> permissionDetails) {
+        if ( (StringUtils.isBlank(permissionDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE))) &&
+             (!(StringUtils.equals(KewApiConstants.ROUTE_HEADER_INITIATED_CD, requestedDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE))))) {
+            return true;
+        }
+        return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE), permissionDetails.get(
+                KimConstants.AttributeConstants.ROUTE_STATUS_CODE));
+    }
 }

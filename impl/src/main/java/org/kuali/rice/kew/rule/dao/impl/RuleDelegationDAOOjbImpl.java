@@ -103,6 +103,8 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                principalId, activeInd,
                                                                extensionValues, workflowIdDirective));
 
+        crit.addLessThanField("rownum", ((Integer)KewApiConstants.MAX_RETURNED_ROWS).toString());
+
         return (List<RuleDelegationBo>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegationBo.class, crit, true));
     }
 
@@ -133,7 +135,10 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                ruleDescription, workgroupIds,
                                                                workflowId, activeInd,
                                                                extensionValues, actionRequestCodes));
-       return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegationBo.class, crit, true));
+
+        crit.addLessThanField("rownum", ((Integer)KewApiConstants.MAX_RETURNED_ROWS).toString());
+
+        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegationBo.class, crit, true));
     }
 
     private ReportQueryByCriteria getResponsibilitySubQuery(String ruleResponsibilityName) {
@@ -183,7 +188,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         List<String> workgroupIds = new ArrayList<String>();
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
-        if (workflowIdDirective != null) {/** IU patch EN-1552 */
+        if (workflowIdDirective != null) {
             if ("group".equals(workflowIdDirective)) {
                 searchUserInWorkgroups = Boolean.TRUE;
             } else if ("".equals(workflowIdDirective)) {

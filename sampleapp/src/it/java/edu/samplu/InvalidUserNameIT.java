@@ -45,6 +45,7 @@ public class InvalidUserNameIT extends WebDriverLegacyITBase {
             ITUtil.login(driver, ITUtil.DTS_TWO);
         } catch (Exception e) {
             assertEquals(ITUtil.DTS_TWO, "Invalid username " + ITUtil.DTS_TWO, e.getMessage());
+            passed();
         }
     }
 }

@@ -70,24 +70,31 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                     getClass().getSimpleName(), testName);
             this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
         } catch (Exception e) {
-            fail("" + e.getMessage());
+            fail("Exception in setUp " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     @After
     public void tearDown() throws Exception {
         try {
-//            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY) != null) {
+//            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
 //                SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
 //            }
             if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
                 getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString() + "&user=" + user));
             }
         } catch (Exception e) {
-            System.out.println("failure in tearDown " + e.getMessage());
+            System.out.println("Exception in tearDown " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (driver != null) {
+                driver.close();
+                driver.quit();
+            } else {
+                System.out.println("WebDriver is null, has sauceleabs been uncommented in WebDriverUtil.java?");
+            }
         }
-        driver.close();
-        driver.quit();
     }
 
    protected String getHTML(String urlToRead) {

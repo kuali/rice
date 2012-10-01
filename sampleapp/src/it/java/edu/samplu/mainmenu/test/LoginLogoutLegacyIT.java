@@ -33,5 +33,6 @@ public class LoginLogoutLegacyIT extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Main Menu");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
+        passed();
     }
 }

@@ -81,9 +81,7 @@
         <bean id="mySensitiveDialog" parent="Uif-SensitiveData-DialogGroup"/>
         <bean id="preDefinedDialogOkCancel" parent="Uif-OK-Cancel-DialogGroup"
               p:promptText="Would you like to continue?" />
-        <bean id="preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup"
-              p:progressiveRenderViaAJAX="true" p:progressiveRender="@{#form.renderedInLightBox}" p:hidden="false"
-              p:promptText="Is this a correct statement?" />
+        <bean id="preDefinedDialogTrueFalse" parent="DTV-preDefinedDialogTrueFalse"/>
         <bean id="sampleRadioButtonDialog" parent="Uif-RadioButton-DialogGroup" p:promptText="Select" />
         <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
         <bean id="myRegularGroup" parent="DTV-SampleGroup"/>
@@ -271,10 +269,6 @@
       <list>
         <bean parent="Uif-Label" p:labelText="This is always displayed" />
         <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
-        <bean parent="GenericTextField" p:label="Field2" p:propertyName="field2" />
-
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Refresh Group" p:methodToCall="refresh"
-              p:refreshId="field2"/>
 
         <bean parent="Uif-VerticalBoxSection">
           <property name="items">
@@ -352,5 +346,9 @@
       </list>
     </property>
   </bean>
+
+  <bean id="DTV-preDefinedDialogTrueFalse" parent="Uif-True-False-DialogGroup"
+              p:progressiveRenderViaAJAX="true" p:progressiveRender="@{#form.renderedInLightBox}" p:hidden="true"
+              p:promptText="Is this a correct statement?" />
 
 </beans>

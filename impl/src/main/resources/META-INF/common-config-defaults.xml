@@ -527,6 +527,8 @@
   <param name="rice.kew.peopleFlowService.secure" override="false">true</param>
   <param name="rice.kew.extensionRepositoryService.secure" override="false">true</param>
   <param name="rice.kew.immediateEmailReminderQueue.secure" override="false">true</param>
+  <param name="nonproduction.notification.mailing.list" override="false"></param>
+  <param name="real.notifications.enabled" override="false">true</param>
 
   <param name="rice.resourceloader.servicesToCache" override="false">
       userTransaction,

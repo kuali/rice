@@ -350,11 +350,12 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <figure>
                  <title></title>
                 <mediaobject>
-                  <imageobject>
+                  <imageobject xlink:href="../images/archetype/2_eclipse.png">
                     <imagedata fileref="../images/archetype/2_eclipse_dbk.png"/>
                   </imageobject>
                 </mediaobject>
               </figure>
+              
             </para>
           </step>
           <step>

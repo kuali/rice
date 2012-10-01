@@ -355,7 +355,6 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </imageobject>
                 </mediaobject>
               </figure>
-              
             </para>
           </step>
           <step>
@@ -406,7 +405,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/3_eclipse.png">
                   <imagedata fileref="../images/archetype/3_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -465,7 +464,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/4_eclipse.png">
                   <imagedata fileref="../images/archetype/4_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -513,7 +512,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/5_eclipse.png">
                         <imagedata fileref="../images/archetype/5_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -529,7 +528,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/6_eclipse.png">
                         <imagedata fileref="../images/archetype/6_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -545,7 +544,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/7_eclipse.png">
                         <imagedata fileref="../images/archetype/7_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -566,7 +565,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/8_eclipse.png">
                         <imagedata fileref="../images/archetype/8_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -580,7 +579,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/9_eclipse.png">
                         <imagedata fileref="../images/archetype/9_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -593,7 +592,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/10_eclipse.png">
                         <imagedata fileref="../images/archetype/10_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -607,7 +606,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/11_eclipse.png">
                         <imagedata fileref="../images/archetype/11_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -620,7 +619,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/12_eclipse.png">
                         <imagedata fileref="../images/archetype/12_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -636,7 +635,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <figure>
                     <title></title>
                     <mediaobject>
-                      <imageobject>
+                      <imageobject xlink:href="../images/archetype/13_eclipse.png">
                         <imagedata fileref="../images/archetype/13_eclipse_dbk.png"/>
                       </imageobject>
                     </mediaobject>
@@ -652,7 +651,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/14_eclipse.png">
                   <imagedata fileref="../images/archetype/14_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -666,7 +665,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/15_eclipse.png">
                   <imagedata fileref="../images/archetype/15_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -674,7 +673,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/16_eclipse.png">
                   <imagedata fileref="../images/archetype/16_eclipse_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -693,7 +692,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/1_intellij.png">
                   <imagedata fileref="../images/archetype/1_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -707,7 +706,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/2_intellij.png">
                   <imagedata fileref="../images/archetype/2_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -729,7 +728,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/3_intellij.png">
                   <imagedata fileref="../images/archetype/3_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -787,7 +786,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/4_intellij.png">
                   <imagedata fileref="../images/archetype/4_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -831,7 +830,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/5_intellij.png">
                   <imagedata fileref="../images/archetype/5_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -845,7 +844,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/6_intellij.png">
                   <imagedata fileref="../images/archetype/6_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -880,7 +879,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/7_intellij.png">
                   <imagedata fileref="../images/archetype/7_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -900,7 +899,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <figure>
                   <title></title>
                   <mediaobject>
-                    <imageobject>
+                    <imageobject xlink:href="../images/archetype/8_intellij.png">
                       <imagedata fileref="../images/archetype/8_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
@@ -915,7 +914,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <figure>
                   <title></title>
                   <mediaobject>
-                    <imageobject>
+                    <imageobject xlink:href="../images/archetype/9_intellij.png">
                       <imagedata fileref="../images/archetype/9_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
@@ -930,7 +929,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <figure>
                   <title></title>
                   <mediaobject>
-                    <imageobject>
+                    <imageobject xlink:href="../images/archetype/10_intellij.png">
                       <imagedata fileref="../images/archetype/10_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
@@ -951,7 +950,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <figure>
                   <title></title>
                   <mediaobject>
-                    <imageobject>
+                    <imageobject xlink:href="../images/archetype/11_intellij.png">
                       <imagedata fileref="../images/archetype/11_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
@@ -965,7 +964,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <figure>
                   <title></title>
                   <mediaobject>
-                    <imageobject>
+                    <imageobject xlink:href="../images/archetype/12_intellij.png">
                       <imagedata fileref="../images/archetype/12_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
@@ -980,7 +979,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <figure>
                   <title></title>
                   <mediaobject>
-                    <imageobject>
+                    <imageobject xlink:href="../images/archetype/13_intellij.png">
                       <imagedata fileref="../images/archetype/13_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
@@ -995,7 +994,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <figure>
                   <title></title>
                   <mediaobject>
-                    <imageobject>
+                    <imageobject xlink:href="../images/archetype/14_intellij.png">
                       <imagedata fileref="../images/archetype/14_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
@@ -1009,7 +1008,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 <figure>
                   <title></title>
                   <mediaobject>
-                    <imageobject>
+                    <imageobject xlink:href="../images/archetype/15_intellij.png">
                       <imagedata fileref="../images/archetype/15_intellij_dbk.png"/>
                     </imageobject>
                   </mediaobject>
@@ -1025,7 +1024,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/16_intellij.png">
                   <imagedata fileref="../images/archetype/16_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -1039,7 +1038,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/17_intellij.png">
                   <imagedata fileref="../images/archetype/17_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>
@@ -1047,7 +1046,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
             <figure>
               <title></title>
               <mediaobject>
-                <imageobject>
+                <imageobject xlink:href="../images/archetype/18_intellij.png">
                   <imagedata fileref="../images/archetype/18_intellij_dbk.png"/>
                 </imageobject>
               </mediaobject>

@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,23 +23,23 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
 
-@XmlRootElement(name = AdHocToGroup.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = AdHocToGroup_v2_1_2.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = AdHocToGroup.Constants.TYPE_NAME, propOrder = {
-		AdHocToGroup.Elements.TARGET_GROUP_ID
+@XmlType(name = AdHocToGroup_v2_1_2.Constants.TYPE_NAME, propOrder = {
+		AdHocToGroup_v2_1_2.Elements.TARGET_GROUP_ID
 })
-public final class AdHocToGroup extends AdHocCommand {
+public final class AdHocToGroup_v2_1_2 extends AdHocCommand {
 
 	private static final long serialVersionUID = 1543126020560887187L;
 
 	@XmlElement(name = Elements.TARGET_GROUP_ID, required = true)
 	private final String targetGroupId;
 
-	private AdHocToGroup() {
+	private AdHocToGroup_v2_1_2() {
 		this.targetGroupId = null;
 	}
 	
-	private AdHocToGroup(Builder builder) {
+	private AdHocToGroup_v2_1_2(Builder builder) {
 		super(builder);
 		this.targetGroupId = builder.getTargetGroupId();
 	}
@@ -48,7 +48,7 @@ public final class AdHocToGroup extends AdHocCommand {
 		return targetGroupId;
 	}
 	
-	public static final class Builder extends AdHocCommand.Builder<AdHocToGroup> {
+	public static final class Builder extends AdHocCommand.Builder<AdHocToGroup_v2_1_2> {
 		
 		private static final long serialVersionUID = 3062630774766721773L;
 
@@ -75,8 +75,8 @@ public final class AdHocToGroup extends AdHocCommand {
 		}
 		
 		@Override
-		public AdHocToGroup build() {
-			return new AdHocToGroup(this);
+		public AdHocToGroup_v2_1_2 build() {
+			return new AdHocToGroup_v2_1_2(this);
 		}
 
 	}
@@ -85,8 +85,8 @@ public final class AdHocToGroup extends AdHocCommand {
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "adHocGroup_v2_1_3";
-        final static String TYPE_NAME = "AdHocToGroupType_v2_1_3";
+        final static String ROOT_ELEMENT_NAME = "adHocToGroup";
+        final static String TYPE_NAME = "AdHocToGroupType";
     }
     
     /**
@@ -96,5 +96,7 @@ public final class AdHocToGroup extends AdHocCommand {
         final static String TARGET_GROUP_ID = "targetGroupId";
     }
 
-	
+	public static AdHocToGroup to(AdHocToGroup_v2_1_2 adHocToGroup) {
+		return AdHocToGroup.Builder.create(adHocToGroup.getActionRequested(), adHocToGroup.getNodeName(), adHocToGroup.getTargetGroupId()).build();
+	}
 }

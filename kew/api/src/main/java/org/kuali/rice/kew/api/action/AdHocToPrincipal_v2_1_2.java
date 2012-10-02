@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,23 +23,23 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
 
-@XmlRootElement(name = AdHocToPrincipal.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = AdHocToPrincipal_v2_1_2.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = AdHocToPrincipal.Constants.TYPE_NAME, propOrder = {
-		AdHocToPrincipal.Elements.TARGET_PRINCIPAL_ID
+@XmlType(name = AdHocToPrincipal_v2_1_2.Constants.TYPE_NAME, propOrder = {
+		AdHocToPrincipal_v2_1_2.Elements.TARGET_PRINCIPAL_ID
 })
-public final class AdHocToPrincipal extends AdHocCommand {
+public final class AdHocToPrincipal_v2_1_2 extends AdHocCommand {
 
 	private static final long serialVersionUID = -4512561589558793736L;
 
 	@XmlElement(name = Elements.TARGET_PRINCIPAL_ID, required = true)
 	private final String targetPrincipalId;
 
-	private AdHocToPrincipal() {
+	private AdHocToPrincipal_v2_1_2() {
 		this.targetPrincipalId = null;
 	}
 	
-	private AdHocToPrincipal(Builder builder) {
+	private AdHocToPrincipal_v2_1_2(Builder builder) {
 		super(builder);
 		this.targetPrincipalId = builder.getTargetPrincipalId();
 	}
@@ -48,7 +48,7 @@ public final class AdHocToPrincipal extends AdHocCommand {
 		return targetPrincipalId;
 	}
 	
-	public static final class Builder extends AdHocCommand.Builder<AdHocToPrincipal> {
+	public static final class Builder extends AdHocCommand.Builder<AdHocToPrincipal_v2_1_2> {
 		
 		private static final long serialVersionUID = 5288681963619747957L;
 
@@ -75,8 +75,8 @@ public final class AdHocToPrincipal extends AdHocCommand {
 		}
 		
 		@Override
-		public AdHocToPrincipal build() {
-			return new AdHocToPrincipal(this);
+		public AdHocToPrincipal_v2_1_2 build() {
+			return new AdHocToPrincipal_v2_1_2(this);
 		}
 
 	}
@@ -85,8 +85,8 @@ public final class AdHocToPrincipal extends AdHocCommand {
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "adHocPrincipal_v2_1_3";
-        final static String TYPE_NAME = "AdHocToPrincipalType_v2_1_3";
+        final static String ROOT_ELEMENT_NAME = "adHocToPrincipal";
+        final static String TYPE_NAME = "AdHocToPrincipalType";
     }
     
     /**
@@ -96,5 +96,7 @@ public final class AdHocToPrincipal extends AdHocCommand {
         final static String TARGET_PRINCIPAL_ID = "targetPrincipalId";
     }
 
-	
+	public static AdHocToPrincipal to(AdHocToPrincipal_v2_1_2 adHocToPrincipal) {
+		return AdHocToPrincipal.Builder.create(adHocToPrincipal.getActionRequested(), adHocToPrincipal.getNodeName(), adHocToPrincipal.getTargetPrincipalId()).build();
+	}
 }

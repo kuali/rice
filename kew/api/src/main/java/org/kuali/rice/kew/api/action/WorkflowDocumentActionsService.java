@@ -364,12 +364,63 @@ public interface WorkflowDocumentActionsService {
      * 
      * @see #adHocToGroup(DocumentActionParameters, AdHocToGroup)
      */
-    @WebMethod(operationName = "adHocToPrincipal")
+    @WebMethod(operationName = "adHocToPrincipal_v2_1_3")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult adHocToPrincipal(
             @WebParam(name = "parameters") DocumentActionParameters parameters,
             @WebParam(name = "adHocToPrincipal") AdHocToPrincipal adHocToPrincipal)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
+
+
+    /**
+     * Executes an {@link ActionType#ADHOC_REQUEST} action for the given principal and document
+     * specified in the supplied parameters to create an ad hoc action request to the target
+     * principal specified in the {@code AdHocToPrincipal}.
+     *
+     * <p>
+     * Operates as per {@link #adHocToGroup(DocumentActionParameters, AdHocToGroup)} with the
+     * exception that this method is used to send an adhoc request to principal instead of a group.
+     *
+     * <p>
+     * Besides this difference, the same rules that are in play for sending ad hoc requests to group
+     * apply for sending ad hoc requests to principals.
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param adHocToPrincipal defines various pieces of information that informs what type of ad
+     *        hoc request should be created
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if {@code adHocToPrincipal} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     * @throws InvalidActionTakenException if the target principal is not permitted to receive ad
+     *         hoc requests on documents of this type
+     * @throws InvalidActionTakenException if the specified ad hoc request cannot be generated
+     *         because the current state of the document would result in an illegal request being
+     *         generated
+     *
+     * @see #adHocToGroup(DocumentActionParameters, AdHocToGroup)
+     * @since 2.1.3
+     */
+    @Deprecated
+    @WebMethod(operationName = "adHocToPrincipal")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult adHocToPrincipal(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "adHocToPrincipal") AdHocToPrincipal_v2_1_2 adHocToPrincipal)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
     /**
@@ -435,12 +486,84 @@ public interface WorkflowDocumentActionsService {
      *         because the current state of the document would result in an illegal request being
      *         generated
      */
-    @WebMethod(operationName = "adHocToGroup")
+    @WebMethod(operationName = "adHocToGroup_v2_1_3")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult adHocToGroup(
             @WebParam(name = "parameters") DocumentActionParameters parameters,
             @WebParam(name = "adHocToGroup") AdHocToGroup adHocToGroup)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
+
+    /**
+     * Executes an {@link ActionType#ADHOC_REQUEST} action for the given group and document
+     * specified in the supplied parameters to create an ad hoc action request to the target group
+     * specified in the {@code AdHocToGroup}. The {@code AdHocToGroup} contains additional
+     * information on how the ad hoc action request should be created, including the type of request
+     * to generate, at which node it should generated, etc.
+     *
+     * <p>
+     * The policy for how ad hoc actions handle request generation and interact with the workflow
+     * engine is different depending on the state of the document when the request to generate the
+     * ad hoc is submitted. There are also different scenarios under which certain types of ad hoc
+     * actions are allowed to be executed (throwing {@link InvalidActionTakenException} in
+     * situations where the actions are not permitted). The rules are defined as follows:
+     *
+     * <ol>
+     * <li>If the status of the document is {@link DocumentStatus#INITIATED} then the action request
+     * will be generated with a status of {@link ActionRequestStatus#INITIALIZED} and no processing
+     * directives will be submitted to the workflow engine. When the document is routed, these ad
+     * hoc requests will get activated</li>
+     * <li>If the ad hoc request being created is an {@link ActionRequestType#COMPLETE} or
+     * {@link ActionRequestType#APPROVE} and the document is in a "terminal" state (either
+     * {@link DocumentStatus#CANCELED}, {@link DocumentStatus#DISAPPROVED},
+     * {@link DocumentStatus#PROCESSED}, {@link DocumentStatus#FINAL}) or is in
+     * {@link DocumentStatus#EXCEPTION} status, then an {@link InvalidActionTakenException} will be
+     * thrown. This is because submitting such an action with a document in that state would result
+     * in creation of an illegal action request.</li>
+     * <li>If the document is in a "terminal" state (see above for definition) then the request will
+     * be immediately (and synchronously) activated.</li>
+     * <li>Otherwise, after creating the ad hoc request it will be in the
+     * {@link ActionRequestStatus#INITIALIZED} status, and the document will be immediately
+     * forwarded to the workflow engine for processing at which point the ad hoc request will
+     * activated at the appropriate time.</li>
+     * </ol>
+     *
+     * <p>
+     * Unlink other actions, ad hoc actions don't result in the recording of an {@link ActionTaken}
+     * against the document. Instead, only the requested ad hoc {@link ActionRequest} is created.
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param adHocToGroup defines various pieces of information that informs what type of ad hoc
+     *        request should be created
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if {@code adHocToGroup} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principals i is not allowed to execute
+     *         this action
+     * @throws InvalidActionTakenException if any of the principals in the target group are not
+     *         permitted to receive ad hoc requests on documents of this type
+     * @throws InvalidActionTakenException if the specified ad hoc request cannot be generated
+     *         because the current state of the document would result in an illegal request being
+     *         generated
+     * @since 2.1.3
+     */
+    @Deprecated
+    @WebMethod(operationName = "adHocToGroup")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult adHocToGroup(@WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "adHocToGroup") AdHocToGroup_v2_1_2 adHocToGroup)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
     /**

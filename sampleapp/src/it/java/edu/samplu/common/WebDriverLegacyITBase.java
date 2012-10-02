@@ -1,16 +1,5 @@
 package edu.samplu.common;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-//import com.saucelabs.common.SauceOnDemandAuthentication;
-//import com.saucelabs.common.SauceOnDemandSessionIdProvider;
-//import com.saucelabs.junit.SauceOnDemandTestWatcher;
-//import com.saucelabs.saucerest.SauceREST;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,6 +13,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static org.junit.Assert.assertEquals;
 
@@ -32,11 +28,10 @@ import static org.junit.Assert.assertEquals;
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessionIdProvider {
+public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
 
     public static final int DEFAULT_WAIT_SEC = 60;
-    public static final String SAUCE_USER = "SAUCE_USER";
-    public static final String SAUCE_KEY = "SAUCE_KEY";
+    public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
 
     public abstract String getTestUrl();
 
@@ -44,10 +39,6 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
     protected String user = "admin";
     protected boolean passed = false;
     static ChromeDriverService chromeDriverService;
-
-//    public SauceOnDemandAuthentication authentication = new SauceOnDemandAuthentication(SAUCE_USER, SAUCE_KEY);
-//
-//    public @Rule SauceOnDemandTestWatcher resultReportingTestWatcher = new SauceOnDemandTestWatcher(this, authentication);
 
     public @Rule TestName testName= new TestName();
 
@@ -71,34 +62,40 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
     @Before
     public void setUp() throws Exception {
         // {"test":"1","user":"1"}
-//        String userResponse = getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString().trim());
-//        user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
-        driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl(),
-                getClass().getSimpleName(), testName);
-        this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
+        try {
+            if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
+                String userResponse = getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString().trim()));
+                user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
+            }
+            driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl(),
+                    getClass().getSimpleName(), testName);
+            this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
+        } catch (Exception e) {
+            fail("Exception in setUp " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @After
     public void tearDown() throws Exception {
-//        SauceREST client = new SauceREST(SAUCE_USER, SAUCE_KEY);
-//        /* Using a map of udpates:
-//         * (http://saucelabs.com/docs/sauce-ondemand#alternative-annotation-methods)
-//         *
-//         * Map<String, Object> updates = new HashMap<String, Object>();
-//         * updates.put("name", "this job has a name");
-//         * updates.put("passed", true);
-//         * updates.put("build", "c234");
-//         * client.updateJobInfo("<your-job-id>", updates);
-//         */
-//        if (passed) {
-//            client.jobPassed(sessionId);
-//        } else {
-//            client.jobFailed(sessionId);
-//        }
-//
-//        getHTML("http://testuserpool.appspot.com/userpool?test=" + this.toString() + "&user=" + user);
-        driver.close();
-        driver.quit();
+        try {
+//            if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
+//                SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY), System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+//            }
+            if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
+                getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString() + "&user=" + user));
+            }
+        } catch (Exception e) {
+            System.out.println("Exception in tearDown " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (driver != null) {
+                driver.close();
+                driver.quit();
+            } else {
+                System.out.println("WebDriver is null, has sauceleabs been uncommented in WebDriverUtil.java?");
+            }
+        }
     }
 
    protected String getHTML(String urlToRead) {
@@ -200,6 +197,22 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
 
     protected void checkForIncidentReport(String locator, String message) {
         WebDriverUtil.checkForIncidentReport(driver, locator, message);
+    }
+
+    protected void clearText(By by)  throws InterruptedException {
+        driver.findElement(by).clear();
+    }
+
+    protected void clearTextByName(String name) throws InterruptedException {
+        clearText(By.name(name));
+    }
+
+    protected void clearTextByXpath(String locator) throws InterruptedException {
+        clearText(By.xpath(locator));
+    }
+
+    protected void fireEvent(String name, String event) {
+        ((JavascriptExecutor)driver).executeScript("document.getElementsByName('"+name+"')[0]."+event+"()");
     }
 
     protected String getAttribute(By by, String attribute) throws InterruptedException {
@@ -480,19 +493,19 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
         }
                
     }
-    
-    protected boolean isVisibleByXpath(String locator) {
-        return isVisible(By.xpath(locator));
-    }
-    
+
     protected boolean isVisible(String locator) {
         return driver.findElement(By.cssSelector(locator)).isDisplayed();
     }
-        
+
     protected boolean isVisible(By by) {
         return driver.findElement(by).isDisplayed();
     }
-    
+
+    protected boolean isVisibleByXpath(String locator) {
+        return isVisible(By.xpath(locator));
+    }
+
     protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= 15) {
@@ -528,26 +541,10 @@ public abstract class WebDriverLegacyITBase { //} implements SauceOnDemandSessio
     }
 
     protected void expandColapseByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
-        waitAndClickByXpath(clickLocator); 
+        waitAndClickByXpath(clickLocator);
         waitIsVisibleByXpath(visibleLocator);
 
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
-    }
-    
-    protected void fireEvent(String name, String event) {    
-        ((JavascriptExecutor)driver).executeScript("document.getElementsByName('"+name+"')[0]."+event+"()");
-    }
-    
-    protected void clearTextByName(String name) throws InterruptedException {
-        clearText(By.name(name));
-    }
-    
-    protected void clearTextByXpath(String locator) throws InterruptedException {
-        clearText(By.xpath(locator));
-    }
-    
-    protected void clearText(By by)  throws InterruptedException {
-        driver.findElement(by).clear();        
     }
 }

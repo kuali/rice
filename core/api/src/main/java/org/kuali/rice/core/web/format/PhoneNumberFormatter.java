@@ -85,4 +85,21 @@ public class PhoneNumberFormatter extends Formatter {
 
         return buf.toString();
     }
+
+    /**
+     * Validates a phone number string by passing it into the convertToObject method and determining if conversion succeeded.
+     *
+     * @param phoneNumberString The string to attempt to format.
+     * @return True if no exceptions occurred when parsing and the conversion returned a non-null value; false otherwise.
+     * @see org.kuali.rice.core.web.format.PhoneNumberFormatter#convertToObject(java.lang.String)
+     */
+    public boolean validate(String phoneNumberString) {
+        Object phoneNumberObject = null;
+        try {
+            phoneNumberObject = convertToObject(phoneNumberString);
+        } catch (Exception e) {
+            phoneNumberObject = null;
+        }
+        return (phoneNumberObject != null);
+    }
 }

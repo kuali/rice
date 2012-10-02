@@ -15,8 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
--->
-<chapter xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="groups" version="5.0">
+--><chapter xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="groups" version="5.0">
   <title>Groups </title>
   <section>
     <title>Groups </title>
@@ -1641,17 +1640,17 @@ public class Test1Object {
               This will cause the default add line actions not to be rendered inside the items and instead an Add Line
               action button will be rendered once for the collection.</para>
       <para>The placement of this button can be set using the <emphasis role="bold">addLinePlacement</emphasis>
-              property. Valid values are 'TOP' and 'BOTTOM'. The default will always be 'TOP'. This will also
-              determine where the blank will be added to the collection, 'TOP' will insert the line first and
-              'BOTTOM' will insert the line last.</para>
+              property. Valid values are &apos;TOP&apos; and &apos;BOTTOM&apos;. The default will always be &apos;TOP&apos;. This will also
+              determine where the blank will be added to the collection, &apos;TOP&apos; will insert the line first and
+              &apos;BOTTOM&apos; will insert the line last.</para>
       <para>The newly added line will be highlighted until the collection
               is saved in order to differentiate it from the original items.</para>
-      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if 'TOP')...</para>
+      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if &apos;TOP&apos;)...</para>
       <programlisting>
-        &lt;bean id="Collections-AddBlankLine-TableLayout" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"&gt;
+        &lt;bean id=&quot;Collections-AddBlankLine-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
             ...
-            &lt;property name="renderAddBlankLineButton" value="true" /&gt;
-            &lt;property name="addLinePlacement" value="TOP" /&gt;
+            &lt;property name=&quot;renderAddBlankLineButton&quot; value=&quot;true&quot; /&gt;
+            &lt;property name=&quot;addLinePlacement&quot; value=&quot;TOP&quot; /&gt;
             ...
         &lt;/bean&gt;
       </programlisting>
@@ -1674,17 +1673,17 @@ public class Test1Object {
         This will cause the default add line actions not to be rendered inside the items and instead an Add Line
         action button will be rendered once for the collection.</para>
       <para>The placement of this button can be set using the <emphasis role="bold">addLinePlacement</emphasis>
-        property. Valid values are 'TOP' and 'BOTTOM'. The default will always be 'TOP'. This will also
-        determine where the blank will be added to the collection, 'TOP' will insert the line first and
-        'BOTTOM' will insert the line last.</para>
+        property. Valid values are &apos;TOP&apos; and &apos;BOTTOM&apos;. The default will always be &apos;TOP&apos;. This will also
+        determine where the blank will be added to the collection, &apos;TOP&apos; will insert the line first and
+        &apos;BOTTOM&apos; will insert the line last.</para>
       <para>The newly added line will be highlighted until the collection
         is saved in order to differentiate it from the original items.</para>
-      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if 'TOP') : </para>
+      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if &apos;TOP&apos;) : </para>
       <programlisting>
-        &lt;bean id="Collections-AddViaLightBox-TableLayout" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"&gt;
+        &lt;bean id=&quot;Collections-AddViaLightBox-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
             ...
-            &lt;property name="addViaLightBox" value="true" /&gt;
-            &lt;property name="addLinePlacement" value="TOP" /&gt;
+            &lt;property name=&quot;addViaLightBox&quot; value=&quot;true&quot; /&gt;
+            &lt;property name=&quot;addLinePlacement&quot; value=&quot;TOP&quot; /&gt;
             ...
         &lt;/bean&gt;
       </programlisting>
@@ -1821,9 +1820,9 @@ public class Test1Object {
         <para>The save actions can be rendered by setting the <emphasis role="bold">renderSaveLineActions</emphasis>
           property to true. Example : </para>
         <programlisting>
-          &lt;bean id="Collections-SaveLines-TableLayout" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"&gt;
+          &lt;bean id=&quot;Collections-SaveLines-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
           ...
-          &lt;property name="renderSaveLineActions" value="true" /&gt;
+          &lt;property name=&quot;renderSaveLineActions&quot; value=&quot;true&quot; /&gt;
           ...
           &lt;/bean&gt;
         </programlisting>
@@ -1833,14 +1832,14 @@ public class Test1Object {
       <title>Collection Action Column Sequence</title>
       <para>Collections using TableLayoutManager can be configured to set the action column placement. </para>
       <para>The <emphasis role="bold">layoutManager.actionColumnPlacement</emphasis> property on the CollectionGroup
-          can be set to specify the placement of the action column. The default placement will be 'RIGHT'. Other valid
-          placement values are 'LEFT' or any valid column number. Values higher than the number of columns or a
-          value of -1 will default to 'RIGHT'. </para>
-      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if 'TOP')...</para>
+          can be set to specify the placement of the action column. The default placement will be &apos;RIGHT&apos;. Other valid
+          placement values are &apos;LEFT&apos; or any valid column number. Values higher than the number of columns or a
+          value of -1 will default to &apos;RIGHT&apos;. </para>
+      <para>Example configuration (NOTE : the addLinePlacement does not need to specified if &apos;TOP&apos;)...</para>
       <programlisting>
-        &lt;bean id="Collections-ActionColumnPlacement-TableLayout" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"&gt;
+        &lt;bean id=&quot;Collections-ActionColumnPlacement-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
             ...
-            &lt;property name="layoutManager.actionColumnPlacement" value="3" /&gt;
+            &lt;property name=&quot;layoutManager.actionColumnPlacement&quot; value=&quot;3&quot; /&gt;
             ...
         &lt;/bean&gt;
       </programlisting>
@@ -2169,21 +2168,21 @@ public class Test2Object {
                 starting with one. To use autosequencing we set the property generateAutoSequence to
                 true.</para>
       <section>
-          <title>Row Details Group option</title>
-          <para>Table collections can now display addition details per a row.  When using this functionality an additional column with a “Details” link will be available, and when the user clicks on it the configured group to display for that row will be revealed/disclosed below that row.  The intended uses of this functionality is for the user to be able to discover additional information about that collection item without having to leave the page, or hide content that can become large, such as descriptions.
+        <title>Row Details Group option</title>
+        <para>Table collections can now display addition details per a row.  When using this functionality an additional column with a “Details” link will be available, and when the user clicks on it the configured group to display for that row will be revealed/disclosed below that row.  The intended uses of this functionality is for the user to be able to discover additional information about that collection item without having to leave the page, or hide content that can become large, such as descriptions.
 </para>
-          <para><emphasis role="bold">Note: Currently ONLY readOnly content is officially supported, and any content that relies on javascript functionality is NOT supported in this release. </emphasis></para>
-          <para>To use a row details group with a Uif-TableCollectionSection (or variation of) you setup the following properties on its <emphasis role="bold">layoutManager</emphasis> (It is <emphasis role="bold">REQUIRED</emphasis> that the layoutManager is using richTable functionality - in other words, it is using the dataTables jQuery plugin to render):
+        <para><emphasis role="bold">Note: Currently ONLY readOnly content is officially supported, and any content that relies on javascript functionality is NOT supported in this release. </emphasis></para>
+        <para>To use a row details group with a Uif-TableCollectionSection (or variation of) you setup the following properties on its <emphasis role="bold">layoutManager</emphasis> (It is <emphasis role="bold">REQUIRED</emphasis> that the layoutManager is using richTable functionality - in other words, it is using the dataTables jQuery plugin to render):
 </para>
-          <para><emphasis role="bold">rowDetailsGrou</emphasis>p – this can be ANY group or section content you would like to use for the content of details.  The input and data fields used in this group will automatically inherit the necessary collection binding path just like items of the collection itself.
+        <para><emphasis role="bold">rowDetailsGrou</emphasis>p – this can be ANY group or section content you would like to use for the content of details.  The input and data fields used in this group will automatically inherit the necessary collection binding path just like items of the collection itself.
 layoutManager.</para>
-          <para><emphasis role="bold">rowDetailsLinkName</emphasis> – this is the name of the link if an image is not being used. </para>
-          <para><emphasis role="bold">rowDetailsUseImage</emphasis> – this will use an image instead of text for the link.  This link with be a + sign when closed and an – sign when opened.
+        <para><emphasis role="bold">rowDetailsLinkName</emphasis> – this is the name of the link if an image is not being used. </para>
+        <para><emphasis role="bold">rowDetailsUseImage</emphasis> – this will use an image instead of text for the link.  This link with be a + sign when closed and an – sign when opened.
 If neither a name nor images are set to be used, the link will be called “Details” by default.
 </para>
-          <para>Sample code using the images option, the group defined is a vertical box group with 2 input fields, these are fields of the collection item:
+        <para>Sample code using the images option, the group defined is a vertical box group with 2 input fields, these are fields of the collection item:
 </para>
-          <programlisting>&lt;bean id=&quot;Demo-RowDetails-Section2&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
+        <programlisting>&lt;bean id=&quot;Demo-RowDetails-Section2&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
 ...
    &lt;property name=&quot;layoutManager.rowDetailsUseImage&quot; value=&quot;true&quot;/&gt;
     &lt;property name=&quot;layoutManager.rowDetailsGroup&quot;&gt;
@@ -2198,93 +2197,301 @@ If neither a name nor images are set to be used, the link will be called “Deta
         &lt;/property&gt;
       &lt;/bean&gt;
     &lt;/property&gt;</programlisting>
-          <para><emphasis role="bold">A note on column width: </emphasis> If you would like the details column to take up less space than it does by default, you must manually alter the column width as follows (20px is the width we are manually setting here and 0 is the index of the details column):</para>
-          <programlisting>&lt;property name=&quot;layoutManager.applyDefaultCellWidths&quot; value=&quot;false&quot;/&gt;
+        <para><emphasis role="bold">A note on column width: </emphasis> If you would like the details column to take up less space than it does by default, you must manually alter the column width as follows (20px is the width we are manually setting here and 0 is the index of the details column):</para>
+        <programlisting>&lt;property name=&quot;layoutManager.applyDefaultCellWidths&quot; value=&quot;false&quot;/&gt;
     &lt;property name=&quot;layoutManager.richTable.templateOptions&quot;&gt;
       &lt;map merge=&quot;true&quot;&gt;
         &lt;entry key=&quot;aoColumnDefs&quot; value=&quot;[{&amp;quot;sWidth&amp;quot; : &amp;quot;20px&amp;quot;, &amp;quot;aTargets&amp;quot; : [0]}]&quot;/&gt;
       &lt;/map&gt;
     &lt;/property&gt;</programlisting>
-          <figure>
-            <title>Row Details</title>
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="../images/KRAD_Guide/rowDetails.png"/>
-              </imageobject>
-            </mediaobject>
-          </figure>
-          
-    </section>
-    <section>
-      <title>Stacked Layout</title>
-      <para>Coming Soon!</para>
+        <figure>
+          <title>Row Details</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/rowDetails.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+      <section>
+        <title>Row Grouping</title>
+        <para>Collection row grouping allows for rows of a table collection to be grouped together under a common header when one (or more) of their property values are the same.
+</para>
+        <para>To group lines of a collection, the <emphasis role="bold">groupingPropertyNames</emphasis> property must be set.  In most cases, this will be a single <emphasis role="bold">propertyName</emphasis>, but it can be as many as you want to specify.  When there are multiple propertyNames given, they will be sorted and displayed by value in the order given in the list (concatenated using comma to separate the values).  ALL propertyNames given MUST be a valid property of the collection object for this table collection specified by the collection’s collectionObjectClass property . </para>
+        <para> All propertyNames are relative to the collection line object and do not need accept #lp (or other prefixes).  Important note: grouping currently does not allow/ignores the use of the sequenceField property (renderSequenceField should be set to false).  The <emphasis role="bold">richTable</emphasis> widget of collections must be have render=”true” for grouping to work.
+</para>
+        <para>There are 2 available options to customize the grouping title:
+  </para>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis role="bold">groupingPrefix </emphasis>(string) – this will prefix the default title of the group with the string provided (does not affect sort order, sort order will still be based on actual grouping value)</para>
+          </listitem>
+          <listitem><emphasis role="bold">groupingTitle </emphasis>(string) – <emphasis role="italic">this is a customized title that MUST include SpringEL for values to group by</emphasis>. #lp should be used to reference values of the line in the expression(s) used. The title can be anything as long as it includes some content that is based on line values. Sorting will be based on the full title in alphabetical order. groupingTitle will <emphasis role="bold">always</emphasis> override the settings of groupingPropertyNames and groupingPrefix.</listitem>
+        </itemizedlist>
+        <para>By default, when using grouping, the field you are grouping on is not displayed automatically.  This has to be done in the same way you would display other fields of the line, by adding the field you want to show to items (so displaying the grouping field value or not is up to the developer depending on use case).</para>
+        <para>To enable grouping simple supply some <emphasis role="bold">groupingPropertyNames</emphasis>.  In this example, lines will be grouped by the values that exist for field1 of the collectionObject. The field1 InputField  is also displayed as field of the collection line (but could be omitted if desired).</para>
+        <programlisting><para>
+&lt;bean id=&quot;Demo-CollectionGrouping-Section1&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
+    &lt;property name=&quot;headerText&quot; value=&quot;Basic Grouping&quot;/&gt;
+    &lt;property name=&quot;collectionObjectClass&quot;
+              value=&quot;edu.sampleu.demo.kitchensink.UITestObject&quot;/&gt;
+    &lt;property name=&quot;propertyName&quot; value=&quot;groupedList1&quot;/&gt;
+    &lt;property name=&quot;readOnly&quot; value=&quot;true&quot;/&gt;
+    &lt;property name=&quot;layoutManager.renderSequenceField&quot; value=&quot;false&quot;/&gt;
+<emphasis role="bold"> &lt;property name=&quot;layoutManager.groupingPropertyNames&quot;&gt; &lt;list&gt; &lt;value&gt;field1&lt;/value&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
+    &lt;property name=&quot;items&quot;&gt;
+      &lt;list&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field2&quot; p:label=&quot;Value 1&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field3&quot; p:label=&quot;Value 2&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field4&quot; p:label=&quot;Value 3&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field1&quot; p:label=&quot;Group Value&quot;/&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+
+</para></programlisting>
+        <para>Which results in a table that looks like this:<mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/row_grouping_1.png"/>
+            </imageobject>
+          </mediaobject></para>
+        <para>Alternatively, if we supply multiple property names we can group lines based on multiple properties of the collectionObject instead of one. </para>
+        <programlisting>…
+    <emphasis role="bold">&lt;property name=&quot;layoutManager.groupingPropertyNames&quot;&gt; &lt;list&gt; &lt;value&gt;field2&lt;/value&gt; &lt;value&gt;field1&lt;/value&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
+    &lt;property name=&quot;items&quot;&gt;
+      &lt;list&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field1&quot; p:label=&quot;Semester&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field2&quot; p:label=&quot;Year&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field3&quot; p:label=&quot;Course&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field4&quot; p:label=&quot;Credits&quot;/&gt;
+      &lt;/list&gt;
+…
+</programlisting>
+        <para>Which results in a table that looks like this (this table also has column totaling turned on, this is covered in the next section):<mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/row_grouping_2.png"/>
+            </imageobject>
+          </mediaobject></para>
+        <para>By supplying a groupingPrefix to use for the grouping row title (set on the <emphasis role="bold">layoutManager</emphasis> of the Uif-TableCollectionSection)<programlisting>…
+&lt;property name=&quot;layoutManager.groupingPrefix&quot; value=&quot;Lines with value &quot;/&gt;
+…
+
+</programlisting></para>
+        <para>Which results in a table that looks like this:<mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/row_grouping_3.png"/>
+            </imageobject>
+          </mediaobject></para>
+        <para>And by supplying a <emphasis role="bold">groupingTitle</emphasis> (note that SpringEL is REQUIRED to be used in the groupingTitle property, if used)
+</para>
+        <programlisting>…
+&lt;property name=&quot;layoutManager.groupingTitle&quot; value=&quot;Letter @{#lp.field1} in item&quot;/&gt;
+…
+</programlisting>
+        <para>Which results in a table that looks like this:<mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/row_grouping_4.png"/>
+            </imageobject>
+          </mediaobject></para>
+      </section>
+      <section>
+        <title>Column Calculations</title>
+        <para>Collection totaling allows the calculation of column data and puts this total at the bottom of that column in the table’s footer.  Currently, column calculations only work for numeric data.  To setup calculations for a collection, the only thing that needs to be provided is a list of column calculations(<emphasis role="bold">ColumnCalculationInfo</emphasis>) you want for each column on the collection’s <emphasis role="bold">layoutManager.columnCalculations</emphasis> property.  Columns can even have multiple types of calculations per a column.  </para>
+        <para>The following KRAD base beans are available that provide default ColumnCalculationInfo configurations for the most common column calculation operations:
+</para>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis role="bold">Uif-ColumnCalculationInfo</emphasis> – ALL ColumnCalculationInfo must have this bean as a parent(this is important for any custom calculations)
+</para>
+          </listitem>
+          <listitem>
+            <emphasis role="bold">Uif-ColumnCalculationInfo-Sum </emphasis>
+          </listitem>
+          <listitem><emphasis role="bold">Uif-ColumnCalculationInfo-Average</emphasis> (default 2 decimal places, but allows you to specify decimal places through calculationFunctionExtraData – described below) </listitem>
+          <listitem>
+            <emphasis role="bold">Uif-ColumnCalculationInfo-Max</emphasis>
+           </listitem>
+          <listitem>
+            <emphasis role="bold">Uif-ColumnCalculationInfo-Min</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>By default, KRAD supports sum, average, min, and max, but can easily be expanded with any calculation you want to provide, by creating your own javascript function and ColumnCalculationInfo bean.  Javascript functions referenced by ColumnCalculationInfo must follow this format (“values” must be the first parameter, “yourExtraData” is optional and can be named anything):
+</para>
+        <programlisting><para>
+ function yourCalculationFunctionName(values, yourExtraData){
+  //do a calculation with the array of values passed
+  //return calculation result
+}
+</para></programlisting>
+        <para>The function’s name is used in ColumnCalculationInfo’s <emphasis role="bold">calculationFuctionName</emphasis> property.  This property must be specified by name only; parenthesis and parameters CANNOT be included.  The framework automatically passes the array of column values to calculate to the function as the first parameter and data specified by the <emphasis role="bold">calculationFunctionExtraData </emphasis>property as the second parameter.  This data can be <emphasis role="bold">any</emphasis> valid javascript data: int, String, object, etc. </para>
+        <para>The calculationFunctionExtraData property is meant to provide options to your calculation function, if needed (our average function, for example, uses calculationFunctionExtraData to pass the number of decimal places to be used in the average).
+</para>
+        <para>The settable properties available on <emphasis role="bold">Uif-ColumnCalculationInfo</emphasis> are:
+</para>
+        <itemizedlist>
+          <listitem><emphasis role="bold">propertyName</emphasis> – must be set. This specifies the column of the collection you are totaling. The field for this propertyName must be one of the fields specified by items of the TableCollection. </listitem>
+          <listitem><emphasis role="bold">showTotal</emphasis> (Boolean) – default true. Whether or not to show the calculation total for the column (this is the total of all values of the collection across all pages)(default is true on KRAD base beans). </listitem>
+          <listitem><emphasis role="bold">showPageTotal </emphasis>(Boolean) – if true, this shows the calculation total for the values of the currently shown page for the column(default is true on KRAD base beans). </listitem>
+          <listitem><emphasis role="bold">showGroupTotal </emphasis>(Boolean) – if true, shows the group calculation total for the values of each group. The TableCollection must be using row grouping functionality for this to work (see TableCollection Row Grouping) (default is false on KRAD base beans). </listitem>
+          <listitem><emphasis role="bold">totalField, pageTotalField, and groupTotalFieldPrototype</emphasis> – the MessageField component used to display the column calculation results. Normally not configured, but can be used to force messageText in the skip client-side scenario (described below) and to modify the label of the calculation field at will. These fields should not be overridden, only their properties set. Example of setting the label on pageTotalField: <programlisting>&lt;property name=&quot;pageTotalField.fieldLabel.labelText&quot; value=&quot;Page Average&quot;/&gt;
+</programlisting></listitem>
+          <listitem><emphasis role="bold">c</emphasis><emphasis role="bold">alculationFunctionName</emphasis> – described above, the js calculation function to use by name. </listitem>
+          <listitem><emphasis role="bold">calculationFunctionExtraData </emphasis>– optional. The additional js data to pass to the js calculation function. </listitem>
+          <listitem><emphasis role="bold">recalculateTotalClientside</emphasis> – if false, the calculation for total (not page or group totals – these are ALWAYS client-side calculations if shown) is not done client side. What this means is the total must come from the server by providing the total to the totalField in this way through SpringEL: <programlisting>&lt;property name=&quot;totalField.messageText&quot; value=&quot;@{#form.serverCalculatedTotal}&quot;/&gt;
+</programlisting></listitem>
+          <listitem><emphasis role="bold">calculateOnKeyUp</emphasis> – if true, fields of this column will perform their calculations on key up (there is a small delay to prevent it from calculating before you are done typing). </listitem>
+        </itemizedlist>
+        <para>The following example has a different calculation for each column of the collection.  Since we do not specify the show properties, our beans, by default, show total and page total.  Note that the columnCalculationInfo propertyNames match the propertyNames of the fields in the collection’s items list.
+</para>
+        <programlisting>&lt;bean id=&quot;Demo-CollectionTotaling-Section1&quot; parent=&quot;Uif-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
+    &lt;property name=&quot;headerText&quot; value=&quot;Different Calculations per Column&quot;/&gt;
+    &lt;property name=&quot;instructionalText&quot; value=&quot;Demonstrating sum, average, min, max&quot;/&gt;
+    &lt;property name=&quot;collectionObjectClass&quot; value=&quot;edu.sampleu.demo.kitchensink.UITestObject&quot;/&gt;
+    &lt;property name=&quot;propertyName&quot; value=&quot;list1&quot;/&gt;
+    &lt;property name=&quot;layoutManager.generateAutoSequence&quot; value=&quot;true&quot;/&gt;
+    &lt;property name=&quot;layoutManager.richTable.render&quot; value=&quot;true&quot;/&gt;
+    <emphasis role="bold">&lt;property name=&quot;layoutManager.columnCalculations&quot;&gt; &lt;list&gt; &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Sum&quot; p:propertyName=&quot;field1&quot;/&gt; &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Average&quot; p:propertyName=&quot;field2&quot;/&gt; &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Min&quot; p:propertyName=&quot;field3&quot;/&gt; &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Max&quot; p:propertyName=&quot;field4&quot;/&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
+    &lt;property name=&quot;items&quot;&gt;
+      &lt;list&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:label=&quot;Field 1&quot; p:propertyName=&quot;field1&quot;
+              p:required=&quot;true&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:label=&quot;Field 2&quot; p:propertyName=&quot;field2&quot;
+              p:required=&quot;true&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:label=&quot;Field 3&quot; p:propertyName=&quot;field3&quot;
+              p:required=&quot;true&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:label=&quot;Field 4&quot; p:propertyName=&quot;field4&quot;
+              p:required=&quot;true&quot;&gt;
+        &lt;/bean&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+</programlisting>
+        <para>Which results in a table that looks like this:<mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/column_calc_1.png"/>
+            </imageobject>
+          </mediaobject></para>
+        <para>To enable calculations for a collection that also has row grouping we would do the following (note in this example we are turning off total and page total and only doing sums for each column):<programlisting>&lt;bean id=&quot;Demo-CollectionTotaling-Section7&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
+    &lt;property name=&quot;headerText&quot; value=&quot;Group Totaling&quot;/&gt;
+    &lt;property name=&quot;instructionalText&quot; value=&quot;Group Totaling on for last 3 columns, no totaling for
+      total or page total&quot;/&gt;
+    &lt;property name=&quot;collectionObjectClass&quot;
+              value=&quot;edu.sampleu.demo.kitchensink.UITestObject&quot;/&gt;
+    &lt;property name=&quot;propertyName&quot; value=&quot;groupedList1&quot;/&gt;
+    &lt;property name=&quot;readOnly&quot; value=&quot;true&quot;/&gt;
+    &lt;property name=&quot;layoutManager.renderSequenceField&quot; value=&quot;false&quot;/&gt;
+<emphasis role="bold"> &lt;property name=&quot;layoutManager.columnCalculations&quot;&gt; &lt;list&gt; &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Sum&quot; p:showPageTotal=&quot;false&quot; p:showGroupTotal=&quot;true&quot; p:showTotal=&quot;false&quot; p:propertyName=&quot;field2&quot;/&gt; &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Sum&quot; p:showPageTotal=&quot;false&quot; p:showGroupTotal=&quot;true&quot; p:showTotal=&quot;false&quot; p:propertyName=&quot;field3&quot;/&gt; &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Sum&quot; p:showPageTotal=&quot;false&quot; p:showGroupTotal=&quot;true&quot; p:showTotal=&quot;false&quot; p:propertyName=&quot;field4&quot;/&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
+<emphasis role="bold"> &lt;property name=&quot;layoutManager.groupingPropertyNames&quot;&gt; &lt;list&gt; &lt;value&gt;field1&lt;/value&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
+    &lt;property name=&quot;items&quot;&gt;
+      &lt;list&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field2&quot; p:label=&quot;Value 1&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field3&quot; p:label=&quot;Value 2&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field4&quot; p:label=&quot;Value 3&quot;/&gt;
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field1&quot; p:label=&quot;Group Value&quot;/&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+</programlisting></para>
+        <para>Which results in a table that looks like this:<mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/column_calc_2.png"/>
+            </imageobject>
+          </mediaobject></para>
+        <para>The TableCollection’s TableLayoutManager also has a few options related to calculations (besides the layoutManager.columnCalculations described in detail above).  These relate to if left total labels will be used.  When renderOnlyLeftTotalLabels is true, the label for the total fields will be rendered in the left most column of the footer (if that column also has a total itself, it will be shown alongside it).  When using left labels, columns can ONLY have one calculation type that must be common to all the columns that will be calculated.
+</para>
+        <para>When the renderOnlyLeftTotalLabels flag is true, the tableLayoutManager will also override any of the show flags of the columnCalculations defined with its own showTotal, showPageTotal, and showGroupTotal flags (total and pageTotal are shown by default).  In addition, the labels used in the left most column are defined by totalLabel, pageTotalLabel, and groupTotalLabelPrototype.
+</para>
+        <para>The following settings will render a table with left labels and each column with a sum calculation:
+</para>
+        <programlisting>…
+...
+<emphasis role="bold">&lt;property name=&quot;layoutManager.renderOnlyLeftTotalLabels&quot; value=&quot;true&quot;/&gt;</emphasis>
+    &lt;property name=&quot;layoutManager.columnCalculations&quot;&gt;
+      &lt;list&gt;
+        &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Sum&quot; p:propertyName=&quot;field1&quot;/&gt;
+        &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Sum&quot; p:propertyName=&quot;field2&quot;/&gt;
+        &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Sum&quot; p:propertyName=&quot;field3&quot;/&gt;
+        &lt;bean parent=&quot;Uif-ColumnCalculationInfo-Sum&quot; p:propertyName=&quot;field4&quot;/&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+…
+</programlisting>
+        <para>Which results in a table that looks like this:<mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/column_calc_3.png"/>
+            </imageobject>
+          </mediaobject></para>
+      </section>
+      <section>
+        <title>Stacked Layout</title>
+        <para>Coming Soon!</para>
 <!-- TODO: Add content here.
-          -->      <figure>
-        <title>Stacked Layout Manager</title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="../images/KRAD_Guide/KRAD_Stacked_Layout_Manager.png"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-    </section>
-    <section>
-      <title>The List Template</title>
-      <para>Coming Soon!</para>
+          -->        <figure>
+          <title>Stacked Layout Manager</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/KRAD_Stacked_Layout_Manager.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+      <section>
+        <title>The List Template</title>
+        <para>Coming Soon!</para>
 <!-- TODO: Add content here.
-          -->    </section>
-    <section>
-      <title>Recap</title>
-      <itemizedlist>
-        <listitem>
-          <para>Due to the nature of collection groups special layout mangers are needed.
+          -->      </section>
+      <section>
+        <title>Recap</title>
+        <itemizedlist>
+          <listitem>
+            <para>Due to the nature of collection groups special layout mangers are needed.
                         These must implement the interface
                         org.kuali.rice.krad.uif.layout.CollectionLayoutManager which requires
                         implementing the method <emphasis role="bold">buildLine</emphasis></para>
-        </listitem>
-        <listitem>
-          <para>KRAD provides two collection layout managers: the Table layout
+          </listitem>
+          <listitem>
+            <para>KRAD provides two collection layout managers: the Table layout
                         manager and the Stacked layout manager</para>
-        </listitem>
-        <listitem>
-          <para>The table layout manager creates an HTML table in the form of a
+          </listitem>
+          <listitem>
+            <para>The table layout manager creates an HTML table in the form of a
                         data grid, whose characteristics are the following:</para>
-          <itemizedlist>
-            <listitem>
-              <para>Each collection item is one line in the table (which might
+            <itemizedlist>
+              <listitem>
+                <para>Each collection item is one line in the table (which might
                                 correspond to one or more table rows)</para>
-            </listitem>
-            <listitem>
-              <para>Each item field is a column in the table</para>
-            </listitem>
-          </itemizedlist>
-        </listitem>
-        <listitem>
-          <para>The table layout manager can also add two columns for us. The first
+              </listitem>
+              <listitem>
+                <para>Each item field is a column in the table</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>
+            <para>The table layout manager can also add two columns for us. The first
                         being the action column which will present the configured actions
                         (lineActions or addLineActions) for the associated collection group</para>
-        </listitem>
-        <listitem>
-          <para>The field group that is rendered in the action column is configured
+          </listitem>
+          <listitem>
+            <para>The field group that is rendered in the action column is configured
                         using the <emphasis role="bold">actionFieldPrototype</emphasis> property.
                         The label given for the prototype is used to label the table column</para>
-        </listitem>
-        <listitem>
-          <para>The second column the layout manager can add is called the sequence
+          </listitem>
+          <listitem>
+            <para>The second column the layout manager can add is called the sequence
                         column. This is used to label the row (using a th with scope row)</para>
-        </listitem>
-        <listitem>
-          <para>We can specify a property whose value will be displayed in the
+          </listitem>
+          <listitem>
+            <para>We can specify a property whose value will be displayed in the
                         sequence column by setting the property <emphasis role="bold">sequenceFieldPrototype</emphasis> (Note this property is actually of
                         type Field, meaning we could instead use a message field or other type of
                         field)</para>
-        </listitem>
-        <listitem>
-          <para>We can also have the table layout manager automatically number each
+          </listitem>
+          <listitem>
+            <para>We can also have the table layout manager automatically number each
                         row for us by setting the property <emphasis role="bold">generateAutoSequence</emphasis> to true</para>
-        </listitem>
-        <listitem>
-          <para>By default the add line will be rendered as the first line of the
+          </listitem>
+          <listitem>
+            <para>By default the add line will be rendered as the first line of the
                         table. We can have the add line render before the table by setting property
                             <emphasis role="bold">separateAddLine</emphasis> to true. When doing so
                         the group property <emphasis role="bold">addLineGroup</emphasis> will be
@@ -2292,31 +2499,31 @@ If neither a name nor images are set to be used, the link will be called “Deta
                         layout and other properties necessary (note: the separate add line group is
                         generally needed when our add line fields do not match up with the fields
                         configured for existing lines)</para>
-        </listitem>
-        <listitem>
-          <para>The table layout manager also supports the following options:</para>
-          <itemizedlist>
-            <listitem>
-              <para>useShortLabels – For creating the table header row the labels
+          </listitem>
+          <listitem>
+            <para>The table layout manager also supports the following options:</para>
+            <itemizedlist>
+              <listitem>
+                <para>useShortLabels – For creating the table header row the labels
                                 for each field configured in the items list will be pulled. By
                                 default the label property is used, however if this property is set
                                 to true the shortLabel will be used instead. This is helpful if
                                 there are many table columns</para>
-            </listitem>
-            <listitem>
-              <para>headerLabelPrototype – Prototype label component that will be
+              </listitem>
+              <listitem>
+                <para>headerLabelPrototype – Prototype label component that will be
                                 copied to create the table headers. Styling and other properties can
                                 be set this way</para>
-            </listitem>
-            <listitem>
-              <para>richTable – The nested RichTable widget that adds on client
+              </listitem>
+              <listitem>
+                <para>richTable – The nested RichTable widget that adds on client
                                 side features such as sorting, paging, and export. These options can
                                 be changed on a per table bases by setting the options on the nested
                                 property (If a basic table with no client side features is desired,
                                 simply set richTable.render to false)</para>
-            </listitem>
-            <listitem>
-              <para>numberOfColumns and supressLineWrapping – The table layout
+              </listitem>
+              <listitem>
+                <para>numberOfColumns and supressLineWrapping – The table layout
                                 manager extends the grid layout manager (used for general groups).
                                 Therefore all of the properties available for the grid layout are
                                 also available for the table layout. This includes setting the
@@ -2327,194 +2534,194 @@ If neither a name nor images are set to be used, the link will be called “Deta
                                 configured items. The property supressLineWrapping can be set to
                                 true of force this condition (in which case the numberOfColumns
                                 property does not need to be set).</para>
-            </listitem>
-          </itemizedlist>
-        </listitem>
-        <listitem>
-          <para>The following beans are provided for the table layout:</para>
-          <itemizedlist>
-            <listitem>
-              <para>Uif-TableCollectionLayout – Base bean for the table collection
+              </listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>
+            <para>The following beans are provided for the table layout:</para>
+            <itemizedlist>
+              <listitem>
+                <para>Uif-TableCollectionLayout – Base bean for the table collection
                                 layout. Sets defaults for many of the properties and add the style
                                 class ‘uif-tableCollectionLayout’</para>
-            </listitem>
-            <listitem>
-              <para>Uif-TableCollectionGroup – General group (not associated with
+              </listitem>
+              <listitem>
+                <para>Uif-TableCollectionGroup – General group (not associated with
                                 any level) configured with a table layout. Adds the style class
                                 ‘uif-tableCollectionGroup’</para>
-            </listitem>
-            <listitem>
-              <para>Uif-TableCollectionSection – Section level group configured
+              </listitem>
+              <listitem>
+                <para>Uif-TableCollectionSection – Section level group configured
                                 with a table layout. Adds the style class
                                 ‘uif-tableCollectionSection’</para>
-            </listitem>
-            <listitem>
-              <para>Uif-TableCollectionSubSection – Sub-section level group
+              </listitem>
+              <listitem>
+                <para>Uif-TableCollectionSubSection – Sub-section level group
                                 configured with a table layout. Adds the style class
                                 ‘uif-tableCollectionSubSection’</para>
-            </listitem>
-            <listitem>
-              <para>Uif-TableSubCollection-WithinSection – For a sub-collection
+              </listitem>
+              <listitem>
+                <para>Uif-TableSubCollection-WithinSection – For a sub-collection
                                 group using a table layout where the parent is at the section level
                                 (because sub-collections need to appear nested, it is necessary to
                                 adjust header levels and styling for the collection group)</para>
-            </listitem>
-            <listitem>
-              <para>Uif-TableSubCollection-WithinSubSection – For a sub-collection
+              </listitem>
+              <listitem>
+                <para>Uif-TableSubCollection-WithinSubSection – For a sub-collection
                                 group using a table layout where the parent is at the sub-section
                                 level</para>
-            </listitem>
-          </itemizedlist>
-        </listitem>
-        <listitem>
-          <para>Similar to the difference between the two general group layouts
+              </listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>
+            <para>Similar to the difference between the two general group layouts
                         (the grid table based and the box div based), is the difference between the
                         table and stacked collection layout managers</para>
-        </listitem>
-        <listitem>
-          <para>A stacked layout manager renders each collection line in a div. In
+          </listitem>
+          <listitem>
+            <para>A stacked layout manager renders each collection line in a div. In
                         other words for each collection item a standard Group is created containing
                         the items for that line</para>
-        </listitem>
-        <listitem>
-          <para>The groups generated from the stacked manager by default ‘stack’ on
+          </listitem>
+          <listitem>
+            <para>The groups generated from the stacked manager by default ‘stack’ on
                         each other, that is by default they are positioned using a box layout with
                         vertical orientation</para>
-        </listitem>
-        <listitem>
-          <para>The groups generated from the stacked manager by default ‘stack’ on
+          </listitem>
+          <listitem>
+            <para>The groups generated from the stacked manager by default ‘stack’ on
                         each other, that is by default they are positioned using a box layout with
                         vertical orientation</para>
-        </listitem>
-        <listitem>
-          <para>The group for each line is created from the <emphasis role="bold">lineGroupPrototype</emphasis> property. For the add line, the <emphasis role="bold">addLineGroup</emphasis> group is used (note since only one
+          </listitem>
+          <listitem>
+            <para>The group for each line is created from the <emphasis role="bold">lineGroupPrototype</emphasis> property. For the add line, the <emphasis role="bold">addLineGroup</emphasis> group is used (note since only one
                         add line is needed this group is used directly, not copied)</para>
-        </listitem>
-        <listitem>
-          <para>Since a group is generated for each line, the line fields are
+          </listitem>
+          <listitem>
+            <para>Since a group is generated for each line, the line fields are
                         positioned according to the layout manager of that group. Therefore when
                         using a stacked layout manager we also have a choice of the layout manager
                         to use for each line group (such as grid, horizontal or vertical box)</para>
-        </listitem>
-        <listitem>
-          <para>Similar to the sequence field used by the table layout manager to
+          </listitem>
+          <listitem>
+            <para>Similar to the sequence field used by the table layout manager to
                         label each line, the stacked layout labels each line using the header for
                         the line’s group. </para>
-        </listitem>
-        <listitem>
-          <para>For existing lines, the properties <emphasis role="bold">summaryTitle</emphasis> and <emphasis role="bold">summaryFields</emphasis> are used. The summaryTitle is a string that
+          </listitem>
+          <listitem>
+            <para>For existing lines, the properties <emphasis role="bold">summaryTitle</emphasis> and <emphasis role="bold">summaryFields</emphasis> are used. The summaryTitle is a string that
                         will be set as the group header text (this can contain expressions for
                         adding dynamic content). The summaryFields property is a List of property
                         names whose value should be appended to the title. These properties are
                         assumed to be relative to the collection object class (this property will be
                         renamed to summaryPropertyNames in version 2.2)</para>
-        </listitem>
-        <listitem>
-          <para>The overall layout of the generate groups (along with other
+          </listitem>
+          <listitem>
+            <para>The overall layout of the generate groups (along with other
                         properties such as styling classes) can be controlled by configured the
                             <emphasis role="bold">wrapperGroup</emphasis> property</para>
-        </listitem>
-        <listitem>
-          <para>The following beans are provided for using the stacked layout:</para>
-          <itemizedlist>
-            <listitem>
-              <para>Uif-StackedCollectionLayoutBase – Base bean for the stacked
+          </listitem>
+          <listitem>
+            <para>The following beans are provided for using the stacked layout:</para>
+            <itemizedlist>
+              <listitem>
+                <para>Uif-StackedCollectionLayoutBase – Base bean for the stacked
                                 layout manager. Sets up some prototypes and adds the style class
                                 ‘uif-stackedCollectionLayout’</para>
-            </listitem>
-            <listitem>
-              <para>Uif-StackedCollectionLayout-WithGridItems – Stacked layout
+              </listitem>
+              <listitem>
+                <para>Uif-StackedCollectionLayout-WithGridItems – Stacked layout
                                 manager that has a configured line group prototype to use a grid
                                 layout</para>
-            </listitem>
-            <listitem>
-              <para>Uif-StackedCollectionLayout-WithBoxItems - Stacked layout
+              </listitem>
+              <listitem>
+                <para>Uif-StackedCollectionLayout-WithBoxItems - Stacked layout
                                 manager that has a configured line group prototype to use a box
                                 layout</para>
-            </listitem>
-            <listitem>
-              <para>Uif-StackedCollectionGroup - General group (not associated
+              </listitem>
+              <listitem>
+                <para>Uif-StackedCollectionGroup - General group (not associated
                                 with any level) configured with a stacked layout with line group
                                 grid layout. Adds the style class
                                 ‘uif-stackedCollectionGroup’</para>
-            </listitem>
-            <listitem>
-              <para>Uif-StackedCollectionSection – Section level group configured
+              </listitem>
+              <listitem>
+                <para>Uif-StackedCollectionSection – Section level group configured
                                 with a stacked layout with line group grid layout. Adds the style
                                 class ‘uif-stackedCollectionSection’</para>
-            </listitem>
-            <listitem>
-              <para>Uif-StackedCollectionSubSection – Sub-section level group
+              </listitem>
+              <listitem>
+                <para>Uif-StackedCollectionSubSection – Sub-section level group
                                 configured with a stacked layout with line group grid layout. Adds
                                 the style class ‘uif-stackedCollectionSubSection’</para>
-            </listitem>
-            <listitem>
-              <para>Uif-StackedSubCollection-WithinSection – For a sub-collection
+              </listitem>
+              <listitem>
+                <para>Uif-StackedSubCollection-WithinSection – For a sub-collection
                                 group using a stacked layout where the parent is at the section
                                 level (because sub-collections need to appear nested, it is
                                 necessary to adjust header levels and styling for the collection
                                 group)</para>
-            </listitem>
-            <listitem>
-              <para>Uif-StackedSubCollection-WithinSubSection – For a
+              </listitem>
+              <listitem>
+                <para>Uif-StackedSubCollection-WithinSubSection – For a
                                 sub-collection group using a stacked layout where the parent is at
                                 the sub-section level</para>
-            </listitem>
-          </itemizedlist>
-        </listitem>
-        <listitem>
-          <para>An alternate template for the stacked collection layout is provided
+              </listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>
+            <para>An alternate template for the stacked collection layout is provided
                         that renders each line group in a list item. The following base beans are
                         provided for a collection group that uses the stacked list template:
                         ‘Uif-ListCollectionGroup’, ‘Uif-ListCollectionSection’, and
                         ‘Uif-ListCollectionSubSection’</para>
-        </listitem>
-      </itemizedlist>
+          </listitem>
+        </itemizedlist>
+      </section>
     </section>
-  </section>
-  <section>
-    <title>Disclosure </title>
-    <para>Coming Soon!</para>
+    <section>
+      <title>Disclosure </title>
+      <para>Coming Soon!</para>
 <!-- TODO: Add content here.
-          -->    <section>
-      <title>Recap</title>
-      <itemizedlist>
-        <listitem>
-          <para>The <emphasis role="underline">Disclosure</emphasis> component can be used
+          -->      <section>
+        <title>Recap</title>
+        <itemizedlist>
+          <listitem>
+            <para>The <emphasis role="underline">Disclosure</emphasis> component can be used
                         to allow for showing and hiding of presented content</para>
-        </listitem>
-        <listitem>
-          <para>All groups contains the disclosure component that can be enabled to
+          </listitem>
+          <listitem>
+            <para>All groups contains the disclosure component that can be enabled to
                         provide the ability to collapse a part of the page</para>
-        </listitem>
-        <listitem>
-          <para>The UIF provides beans for all the group beans with disclosure
+          </listitem>
+          <listitem>
+            <para>The UIF provides beans for all the group beans with disclosure
                         enabled</para>
-        </listitem>
-        <listitem>
-          <para>All the disclosure bean names start with ‘Uif-Disclosure’ (for example
+          </listitem>
+          <listitem>
+            <para>All the disclosure bean names start with ‘Uif-Disclosure’ (for example
                         Uif-Disclosure-GridGroup)</para>
-        </listitem>
-        <listitem>
-          <para>The disclosure widget supports the <emphasis role="bold">defaultOpen</emphasis> property, along with options for rendering (such
+          </listitem>
+          <listitem>
+            <para>The disclosure widget supports the <emphasis role="bold">defaultOpen</emphasis> property, along with options for rendering (such
                         as animation properties and collapse image)</para>
-        </listitem>
-      </itemizedlist>
+          </listitem>
+        </itemizedlist>
+      </section>
     </section>
-  </section>
-  <section>
-    <title>Scrollable</title>
-    <para>Adding Scrollable to a group, section or sub-section enables a scroll bar to appear when the content exceeds
+    <section>
+      <title>Scrollable</title>
+      <para>Adding Scrollable to a group, section or sub-section enables a scroll bar to appear when the content exceeds
     height that is specified with Scrollable.</para>
-    <figure>
-      <title>Scrollable Section</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="../images/KRAD_Guide/scrollableSection.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <programlisting>
+      <figure>
+        <title>Scrollable Section</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/scrollableSection.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <programlisting>
 &lt;bean id=”MyScrollableGroup” parent=”Uif-Disclosure-VerticalBoxSection” p:headerText=”Scrollable Groupt” p:width=&quot;30%&quot;&gt;
     &lt;property name=&quot;scrollpane&quot;&gt;
         &lt;bean parent=&quot;Uif-Scrollpane&quot;&gt;
@@ -2522,25 +2729,25 @@ If neither a name nor images are set to be used, the link will be called “Deta
         &lt;/bean&gt;
     &lt;/property&gt;
 ... </programlisting>
-    <para>For section and sub-section only the content is scrolled, not the title or instructional text.</para>
-    <section>
-      <title>Recap</title>
-      <itemizedlist>
-        <listitem>
-          <para>The <emphasis role="underline">Scrollable</emphasis> component can be used
+      <para>For section and sub-section only the content is scrolled, not the title or instructional text.</para>
+      <section>
+        <title>Recap</title>
+        <itemizedlist>
+          <listitem>
+            <para>The <emphasis role="underline">Scrollable</emphasis> component can be used
             to enable scrolling in groups and sections.</para>
-        </listitem>
-        <listitem>
-          <para>The height property on Scrollable needs to be specified. </para>
-        </listitem>
-        <listitem>
-          <para>The height property is given in pixels or percentages (e.g. 100px or 30%). </para>
-        </listitem>
-        <listitem>
-          <para>Only the content of the section and subsection will be scrolled, not the title or instructional text.</para>
-        </listitem>
-      </itemizedlist>
+          </listitem>
+          <listitem>
+            <para>The height property on Scrollable needs to be specified. </para>
+          </listitem>
+          <listitem>
+            <para>The height property is given in pixels or percentages (e.g. 100px or 30%). </para>
+          </listitem>
+          <listitem>
+            <para>Only the content of the section and subsection will be scrolled, not the title or instructional text.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
     </section>
-  </section>
   </section>
 </chapter>

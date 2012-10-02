@@ -15,8 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
--->
-<chapter xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fields_and_content_elements" version="5.0">
+--><chapter xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fields_and_content_elements" version="5.0">
   <title>Fields and Content Elements </title>
   <para>Throughout the next few chapters, we will be taking a detailed look at the component types and the individual components available out of 
         the box with KRAD. We will start small and work our way up to the entire view. By the end of this section, you will be armed with the 
@@ -355,21 +354,20 @@ public class Book {
                     As of Rice 2.0, any custom editor is not used to apply the default value. This 
                     is being looked at for a potential enhancement in 2.2.</para>
             </note>
-            -->
-      <para>A very powerful feature we will be looking at later on in this training manual is
+            -->      <para>A very powerful feature we will be looking at later on in this training manual is
                 the Spring Expression Language (EL). KRAD allows you to use expressions for most
                 component properties, including the defaultValue. There are many things you can do
                 with EL, but to give you a taste here are a couple:</para>
       <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookYear” p:defaultValue=”@{2010 + 2}”/&gt;</programlisting>
       <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookYear” p:defaultValue=”@{bookId &lt; 1000 ? 2011 : 2012}”/&gt;</programlisting>
       <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookTitle” p:defaultValue=”New Book for @{bookYear}”/&gt;</programlisting>
-      <para>The second way to configure default values is by setting the ‘defaultValues’ property (notice the 's' on the end).  This
+      <para>The second way to configure default values is by setting the ‘defaultValues’ property (notice the &apos;s&apos; on the end).  This
         property provides the ability to set multiple default values. For example, if you wanted to default items with values of
         either 2 or 3 you could add the following.</para>
       <programlisting>&lt;property name=”defaultValues” &gt;
         &lt;list&gt;
-        &lt;value>2&lt;/value&gt;
-        &lt;value>3&lt;/value&gt;
+        &lt;value&gt;2&lt;/value&gt;
+        &lt;value&gt;3&lt;/value&gt;
         &lt;/list&gt;
         &lt;/property&gt;
       </programlisting>
@@ -2679,7 +2677,7 @@ public class CustomViewHelperServiceImpl extends ViewHelperServiceImpl {
       <programlisting>
 &lt;bean id=&quot;MyView&quot; parent=&quot;Uif-FormView&quot;&gt;
     ...
-    &lt;property name="viewHelperServiceClass" value="edu.myedu.sample.CustomViewHelperServiceImpl"/&gt;
+    &lt;property name=&quot;viewHelperServiceClass&quot; value=&quot;edu.myedu.sample.CustomViewHelperServiceImpl&quot;/&gt;
 &lt;/bean&gt;
             </programlisting>
       <para>Now
@@ -3567,24 +3565,24 @@ p:methodToCall=”save” p:focusOnIdAfterSubmit=”FIRST”/&gt;
                             property</para>
           </listitem>
           <listitem>
-          <para>Some more properties have been added to the action component which are hooks that
+            <para>Some more properties have been added to the action component which are hooks that
             provide more flexibility to the user <itemizedlist>
-              <listitem>
-                <para>preSubmitCall – This property is a script which needs to be invoked before the form is submitted. The script should
+                <listitem>
+                  <para>preSubmitCall – This property is a script which needs to be invoked before the form is submitted. The script should
                   return a boolean indicating if the form should be submitted or not. </para>
-              </listitem>
-              <listitem>
-                <para>ajaxSubmit – boolean property which indicates if the data is to be submitted via ajax or
+                </listitem>
+                <listitem>
+                  <para>ajaxSubmit – boolean property which indicates if the data is to be submitted via ajax or
                   otherwise </para>
-              </listitem>
-              <listitem>
-                <para>successCallback – This property is a script which will be invoked for successful ajax calls </para>
-              </listitem>
-              <listitem>
-                <para>errorCallback – script which will be invoked on error in ajax calls </para>
-              </listitem>
-            </itemizedlist></para>
-        </listitem>
+                </listitem>
+                <listitem>
+                  <para>successCallback – This property is a script which will be invoked for successful ajax calls </para>
+                </listitem>
+                <listitem>
+                  <para>errorCallback – script which will be invoked on error in ajax calls </para>
+                </listitem>
+              </itemizedlist></para>
+          </listitem>
         </itemizedlist>
             </para>
     </section>
@@ -3762,9 +3760,15 @@ the display flag being turned off at a certain levels:  if display is off for an
 level up will display that fields full uncollapsed message text, and if display is off at a section the
  next section up will display those messages nested in a sublist.</para>
       </listitem>
-      <listitem><para><emphasis role="bold">displayFieldLabelWithMessages (GroupValidationMessage level)</emphasis> – Boolean that indicates whether the field label should be displayed with messages that are associated with a field in the Section level summary. When set to true, the message will be displayed as ‘{Field Label} – {Message}’. For example: ‘Book Title – Must not be longer than 50 characters.’.</para></listitem>
-      <listitem><para><emphasis role="bold">collapseAdditionalFieldLinkMessages (GroupValidationMessage level)</emphasis> <emphasis role="bold">-- </emphasis>When collapseAdditionalFieldLinkMessages is set to true, the messages generated on field links will be summarized to limit the space they take up with an appendage similar to [+n message type] appended for additional messages that are omitted. When this flag is false, all messages will be part of the link separated by a comma.</para></listitem>
-      <listitem><para><emphasis role="bold">useTooltip (FieldValidationMessage level) </emphasis> <emphasis role="bold">--</emphasis> When true, use the tooltip on fields to display their relevant messages. When false, these messages will appear directly below the control. </para></listitem>
+      <listitem>
+        <para><emphasis role="bold">displayFieldLabelWithMessages (GroupValidationMessage level)</emphasis> – Boolean that indicates whether the field label should be displayed with messages that are associated with a field in the Section level summary. When set to true, the message will be displayed as ‘{Field Label} – {Message}’. For example: ‘Book Title – Must not be longer than 50 characters.’.</para>
+      </listitem>
+      <listitem>
+        <para><emphasis role="bold">collapseAdditionalFieldLinkMessages (GroupValidationMessage level)</emphasis> <emphasis role="bold">-- </emphasis>When collapseAdditionalFieldLinkMessages is set to true, the messages generated on field links will be summarized to limit the space they take up with an appendage similar to [+n message type] appended for additional messages that are omitted. When this flag is false, all messages will be part of the link separated by a comma.</para>
+      </listitem>
+      <listitem>
+        <para><emphasis role="bold">useTooltip (FieldValidationMessage level) </emphasis> <emphasis role="bold">--</emphasis> When true, use the tooltip on fields to display their relevant messages. When false, these messages will appear directly below the control. </para>
+      </listitem>
     </itemizedlist>
     <para>Below shows ValidationMessages for various elements of a page which are configured with the default settings and displaying multiple errors:</para>
     <para><figure>
@@ -3807,7 +3811,9 @@ level up will display that fields full uncollapsed message text, and if display 
             <para>The ValidationMessages component displays validation messages and other
                             information as part of a request/response.</para>
           </listitem>
-                  <listitem><para>ValidationMessages only really apply to 3 levels: Page, Section (any group with a header), and InputFields.</para></listitem>
+          <listitem>
+            <para>ValidationMessages only really apply to 3 levels: Page, Section (any group with a header), and InputFields.</para>
+          </listitem>
           <listitem>
             <para>Groups can be nested to form conceptual groupings of the view such as
                             page, section, sub-section, and field groups. thus we might want to
@@ -3846,9 +3852,15 @@ level up will display that fields full uncollapsed message text, and if display 
           <listitem>
             <para>We can configure which areas to display messages at and the framework will automatically determine where the next available area is to display this message - so a message should never be lost unless display is off for all levels.</para>
           </listitem>
-                  <listitem><para>The <emphasis role="bold">displayFieldLabelWithMessages</emphasis> property determines if field label&apos;s should be prepended to messages matched to fields at the section level.</para></listitem>
-                  <listitem><para>The <emphasis role="bold">collapseAdditionalFieldLinkMessages</emphasis> property determines if the additional messages beyond the first message associated with a field should be summarized at the section level.</para></listitem>
-                  <listitem><para>The <emphasis role="bold">useTooltip</emphasis> property determines if the tooltip should be used to display messages at the field level</para></listitem>
+          <listitem>
+            <para>The <emphasis role="bold">displayFieldLabelWithMessages</emphasis> property determines if field label&apos;s should be prepended to messages matched to fields at the section level.</para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis role="bold">collapseAdditionalFieldLinkMessages</emphasis> property determines if the additional messages beyond the first message associated with a field should be summarized at the section level.</para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis role="bold">useTooltip</emphasis> property determines if the tooltip should be used to display messages at the field level</para>
+          </listitem>
         </itemizedlist>
             </para>
     </section>
@@ -3878,37 +3890,37 @@ level up will display that fields full uncollapsed message text, and if display 
     <para>Since there is no template provided by default, we must create one before using the
       generic field. Unlike other component templates, there are really no rules to follow here;
       this can contain any content we like. Let’s assume we have created a FreeMarker file named
-      ‘bookQuestionnaire’ in one of our application web folders named ‘/myapp/ftl':</para>
-    <programlisting>&lt;#macro bookQuestionaire field>
+      ‘bookQuestionnaire’ in one of our application web folders named ‘/myapp/ftl&apos;:</para>
+    <programlisting>&lt;#macro bookQuestionaire field&gt;
   &lt;ul&gt;
       &lt;li&gt;What is your favorite book? &lt;form:input path=”questionnaire.favoriteBook”/&gt;&lt;/li&gt;
       &lt;li&gt;What many books do you read a month? &lt;form:input path=”questionnaire.booksPerMonth”/&gt;&lt;/li&gt;
       &lt;li&gt;Do you wish you could read more? &lt;form:input path=”questionnaire.readMoreIndicator”/&gt;&lt;/li&gt;
   &lt;/ul&gt;
-&lt;/#macro>        </programlisting>
+&lt;/#macro&gt;        </programlisting>
     <para>To create a generic field with this FreeMarker file, we create a new bean with parent of
       ‘Uif-CustomTemplateField’ and set the template and template name properties:</para>
     <programlisting>
-&lt;bean parent=”Uif-CustomTemplateField” p:template=”/myapp/ftl/bookQuestionnaire.ftl” p:templateName="bookQuestionaire"/&gt;
+&lt;bean parent=”Uif-CustomTemplateField” p:template=”/myapp/ftl/bookQuestionnaire.ftl” p:templateName=&quot;bookQuestionaire&quot;/&gt;
         </programlisting>
     <para>If needed in multiple places, we can create a top level bean with an id:</para>
     <programlisting>
-&lt;bean id=”BookQuestionnaire” parent=”Uif-CustomTemplateField” p:template=”/myapp/ftl/bookQuestionnaire.ftl” p:templateName="bookQuestionaire"/&gt;</programlisting>
+&lt;bean id=”BookQuestionnaire” parent=”Uif-CustomTemplateField” p:template=”/myapp/ftl/bookQuestionnaire.ftl” p:templateName=&quot;bookQuestionaire&quot;/&gt;</programlisting>
     <para>In this way we can add as many custom templates as needed.</para>
     <para>It is also possible to parameterize our custom template using the templateOptions map
             property (recall this is provided by ComponentBase). For example, if we wanted a
             parameter to determine whether or not we ask the third question, we could do so as
             follows:</para>
-    <programlisting>&lt;#macro bookQuestionaire field>
-  &lt;#local askReadMore=field.templateOptions['askReadMore']/>
+    <programlisting>&lt;#macro bookQuestionaire field&gt;
+  &lt;#local askReadMore=field.templateOptions[&apos;askReadMore&apos;]/&gt;
   &lt;ul&gt;
       &lt;li&gt;What is your favorite book? &lt;form:input path=”questionnaire.favoriteBook”/&gt;&lt;/li&gt;
       &lt;li&gt;What many books do you read a month? &lt;form:input path=”questionnaire.booksPerMonth”/&gt;&lt;/li&gt;
-          &lt;#if askReadMore>
+          &lt;#if askReadMore&gt;
               &lt;li&gt;Do you wish you could read more? &lt;@spring.input path=”questionnaire.readMoreIndicator”/&gt;&lt;/li&gt;
-          &lt;/#if>
+          &lt;/#if&gt;
   &lt;/ul&gt;
-&lt;/#macro>        </programlisting>
+&lt;/#macro&gt;        </programlisting>
     <para>Now to specify the variable setting, our bean will be:</para>
     <para>// TODO: need bean example here</para>
     <tip>
@@ -4119,7 +4131,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
       <literallayout>    _parent - Opens the linked document in the parent frame</literallayout>
       <literallayout>    _top - Opens the linked document in the full body of the window</literallayout>
     </para>
-    <para>By setting the <emphasis role="bold">lightBox</emphasis> property to "Uif-LightBox", the link will be opened
+    <para>By setting the <emphasis role="bold">lightBox</emphasis> property to &quot;Uif-LightBox&quot;, the link will be opened
       in a lightbox.</para>
     <programlisting>
       &lt;bean parent=”Uif-Link” p:hrefText=”www.kuali.org”&#160; p:linkLabel=”Kuali Website”/&gt;
@@ -4214,6 +4226,141 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
           </listitem>
         </itemizedlist>
             </para>
+    </section>
+  </section>
+  <section>
+    <title>Rich Message Content</title>
+    <para>Rich message content refer to functionality available in various components (above) which accept text.  Rich message functionality allows textual components to be more robust by providing the power to use almost any KRAD component, html, image, link, or css inline with the rest of the text.</para>
+    <para>
+To use rich message functionality, you just have to declare text with the appropriate tag enclosed in brackets “[]”.  This means that text that needs to use brackets in its content MUST use a backslash to escape that character in text properties that expect the use of rich message functionality (example, “\[“ and “\]”). </para>
+    <para> 
+
+Rich message tags can be also be wrapped within other tags allowing for a variety of combinations.</para>
+    <para>
+
+The following areas allow rich message content described by this section:
+</para>
+    <itemizedlist>
+      <listitem>Uif-Message component – messageText property</listitem>
+      <listitem>Uif-Label component – labelText property</listitem>
+      <listitem>Uif-InputField – label, instructionalText, and constraintText properties</listitem>
+      <listitem>Uif-CheckboxControl - checkboxLabel</listitem>
+      <listitem>Uif-KeyLabelPair (used by radio and checkbox groups ‘options’ property) – value property</listitem>
+      <listitem>Uif-HeaderBase (and children) – headerText property (support to be added)</listitem>
+      <listitem>Groups (Views, Pages, Sections) – instructionalText, and headerText (support to be added) properties Any validation messages from the server or set up through message configuration (reduced scope no id or component index tag allowed) </listitem>
+      <listitem>Anywhere the Message component is used</listitem>
+    </itemizedlist>
+    <para>The following KRAD rich message tags are supported (&lt; &gt; represents content to set):</para>
+    <para><itemizedlist>
+        <listitem>[<emphasis role="bold">id</emphasis>=&lt;component id&gt; property1=value property2=value] - insert component with id specified at that location in the message. You can also set/override properties of the component referenced through by specifying those additional properties (must be separated by spaces). Textual properties must be wrapped in single quotes. </listitem>
+        <listitem>[<emphasis role="bold">n</emphasis>] - insert component at index n from the <emphasis role="bold">inlineComponent</emphasis> list.</listitem>
+        <listitem>[&lt;<emphasis role="bold">html tag</emphasis> and properties&gt;][/&lt;html tag&gt;] - insert html content directly into the message content at that location, without the need to escape the &lt;&gt; characters in xml.</listitem>
+        <listitem>[<emphasis role="bold">color</emphasis>=&lt;html color code/name&gt;][/color] - wrap content in color tags to make text that color in the message. This is the same as wrapping the content in a span with color style set.</listitem>
+        <listitem>[<emphasis role="bold">css</emphasis>=&lt;css classes&gt;][/css] - apply css classes specified to the wrapped content . This is the same as wrapping the content in a span with the class property set.</listitem>
+        <listitem>[<emphasis role="bold">link</emphasis>=&lt;href src&gt;][/link] - an easy way to create an anchor that will open in a new page to the href specified. This is the same as wrapping the content in an a tag with the target set as “_blank”.</listitem>
+        <listitem>
+          <para>[<emphasis role="bold">action</emphasis>=&lt;action settings&gt; data=&lt;extra data&gt;][/action] - create an action link inline without having to specify a component by id or index. The options below MUST be in a comma separated list in the order specified.  Specify 1-4 always in this order – for example, options CANNOT be skipped if you would like to only set methodToCall  and ajaxSubmit, you must still set validateClientSide to its default value (note: this is parallel to how javascript functions with optional parameters are passed). </para>
+          <para> The options (in order) are:</para>
+          <itemizedlist>
+            <listitem><emphasis role="bold">methodToCall</emphasis>(String)</listitem>
+            <listitem><emphasis role="bold">validateClientSide</emphasis>(boolean) - true if not set</listitem>
+            <listitem><emphasis role="bold">ajaxSubmit</emphasis>(boolean) - true if not set</listitem>
+            <listitem><emphasis role="bold">successCallback</emphasis>(js function or function declaration) - this only works when ajaxSubmit is true</listitem>
+          </itemizedlist>
+          <para>The tag would look something like this:</para>
+          <para> [action=<emphasis role="bold">methodToCall</emphasis>]Action[/action] </para>
+          <para>in most common cases. And in more complex cases: </para>
+          <para>[action=<emphasis role="bold">methodToCall,true,true,functionName</emphasis>]Action[/action].
+</para>
+          <para>In addition to these settings, you can also specify data to send to the server in this fashion (the space is REQUIRED between settings and data):
+</para>
+          <para>[action=&lt;action settings&gt; <emphasis role="bold">data</emphasis><emphasis role="bold">={key1: &apos;value 1&apos;, key2: value2}</emphasis>]</para>
+        </listitem>
+      </itemizedlist><para>Reminder: If the [] characters are needed in message text, they need to be declared with a backslash escape character: “\[“ and “ \]”</para></para>
+    <section>
+      <title>Component Rich Message Tags</title>
+    </section>
+    <para>Note:  These component options cannot be used for validation messages.</para>
+    <para>Component by id – this example gets the component named Demo-SampleMessageInput, defined elsewhere, by id:</para>
+    <para><programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+          &lt;property name=&quot;messageText&quot;
+                    value=&quot;Message getting component by id <emphasis role="bold">[id=Demo-SampleMessageInput]</emphasis> inside its content&quot;/&gt;
+        &lt;/bean&gt;</programlisting></para>
+    <para>Component by index in the inlineComponents list - Can only be used with components that have an inlineComponents property, these are Message, RadioControl, CheckboxesControl, and Label.  In this example component 0 is the first item in the inlineComponents list (Uif-InputField) and component 1 is the second item (Uif-Link)</para>
+    <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+          &lt;property name=&quot;messageText&quot;
+                    value=&quot;Message with input <emphasis role="bold">[0]</emphasis> and link <emphasis role="bold">[1]</emphasis> inline&quot;/&gt;
+          <emphasis role="bold">&lt;property name=&quot;inlineComponents&quot;&gt; &lt;list&gt; &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field1&quot;/&gt; &lt;bean parent=&quot;Uif-Link&quot; p:href=&quot;http://www.kuali.org&quot; p:linkText=&quot;Kuali&quot;/&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
+        &lt;/bean&gt;
+</programlisting>
+    <section>
+      <title>Html, Color, and css Rich Message Tags</title>
+      <para>Example that uses all 3 in one message (bold html tag, color for #F78C00 web color, and css to add the class &quot;fl-text-underline&apos; around that content)</para>
+      <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+          &lt;property name=&quot;messageText&quot;
+                    value=&quot;<emphasis role="bold">[b]</emphasis>Message<emphasis role="bold">[/b]</emphasis> using a <emphasis role="bold">[color=#F78C00]</emphasis> <emphasis role="bold">[css=&apos;fl-text-underline&apos;]</emphasis>combination<emphasis role="bold">[/css]</emphasis> of different options<emphasis role="bold">[/color]</emphasis>” /&gt;
+</programlisting>
+    </section>
+    <section>
+      <title>Link and Action Rich Message Tags</title>
+      <para>Example of a link inline with message content</para>
+      <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+          &lt;property name=&quot;messageText&quot;
+                    value=&quot;Testing link tag <emphasis role="bold">[link=&apos;http://www.kuali.org&apos;]</emphasis>Link<emphasis role="bold">[/link]</emphasis>&quot;/&gt;
+        &lt;/bean&gt;</programlisting>
+      <para>The main difference between link and action is that action calls a method on the controller – this mimics the KRAD Action component’s functionality.  Example of an action that calls the “addErrors” method on the controller:</para>
+      <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+          &lt;property name=&quot;messageText&quot;
+                    value=&quot;Testing methodToCall action <emphasis role="bold">[action=addErrors]</emphasis>Link Text<emphasis role="bold">[/action]</emphasis>&quot;/&gt;
+        &lt;/bean&gt;</programlisting>
+      <para>Action that calls the “addErrors” method on the controller, turns off client-side validation, and passes an some extra data to the controller (extraInfo with value ‘some data’):</para>
+      <para><programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+          &lt;property name=&quot;messageText&quot;
+                    value=&quot;Testing passing data [<emphasis role="bold">action=addErrors,false data={extraInfo: &apos;some data&apos;}</emphasis>]addErrors[/action]&quot;/&gt;
+        &lt;/bean&gt;
+</programlisting><para>Action using all available options – calling method “addErrors”, turning off client side validation, ajaxSubmit on, and on success calling the function specified (which shows an alert with “Successful Callback” in it):</para><programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+          &lt;property name=&quot;messageText&quot;
+                    value=&quot;Testing custom success callback <emphasis role="bold">[action=addErrors,false,true,function(){alert(&apos;Successful Callback&apos;)}]</emphasis>addErrors<emphasis role="bold">[/action]</emphasis>&quot;/&gt;
+        &lt;/bean&gt;
+</programlisting></para>
+    </section>
+    <section>
+      <title>Checkboxes and Radio Control Rich Message Usage</title>
+    </section>
+    <para>Example showing usage in CheckboxesControl (RadioControl usage would be very similar):</para>
+    <programlisting>…          
+&lt;property name=&quot;control&quot;&gt;
+            &lt;bean parent=&quot;Uif-VerticalCheckboxesControl&quot;&gt;
+<emphasis role="bold"> &lt;property name=&quot;inlineComponents&quot;&gt; &lt;list&gt; &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field19&quot;/&gt; &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field20&quot;/&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
+              &lt;property name=&quot;options&quot;&gt;
+                &lt;list&gt;
+                  &lt;bean parent=&quot;Uif-KeyLabelPair&quot; p:key=&quot;1&quot; p:value=&quot;A website: <emphasis role="bold">[0]</emphasis>&quot;/&gt;
+                  &lt;bean parent=&quot;Uif-KeyLabelPair&quot; p:key=&quot;2&quot; p:value=&quot;A magazine: <emphasis role="bold">[1]</emphasis>&quot;/&gt;
+&lt;bean parent=&quot;Uif-KeyLabelPair&quot; p:key=&quot;3&quot; p:value=&quot;<emphasis role="bold">[color=blue]</emphasis>A Friend<emphasis role="bold">[/color]</emphasis>&quot;/&gt;
+                  &lt;bean parent=&quot;Uif-KeyLabelPair&quot; p:key=&quot;4&quot; p:value=&quot;Other: <emphasis role="bold">[id=Demo-SampleMessageInput2]</emphasis>&quot;/&gt;
+                &lt;/list&gt;
+              &lt;/property&gt;
+            &lt;/bean&gt;
+          &lt;/property&gt;
+</programlisting>
+    <section>
+      <title>Other Rich Message Usages</title>
+      <para>Usage in InputField labels:</para>
+      <programlisting>&lt;bean parent=&quot;Uif-InputField-LabelTop&quot; p:propertyName=&quot;field100&quot; <emphasis role="bold">p:label=&quot;Label With [color=green]Color[/color]”</emphasis>/&gt;</programlisting>
+      <para>Usage in intructionalText (similar in other areas which are backed by the Message component in their Java object):</para>
+      <programlisting>…
+<emphasis role="bold">p:instructionalText=&quot;Testing [css=&apos;fl-text-underline&apos;]checkbox and radio groups[/css] below&quot;</emphasis>
+…
+</programlisting>
+      <para>Usage in CheckboxControl - also demonstrating the ability to override a property of the component referenced by id (overriding propertyName with value &apos;field103&apos;):</para>
+      <programlisting>...
+&lt;bean parent=&quot;Uif-InputField-LabelTop&quot; p:propertyName=&quot;bField1&quot; p:label=&quot;CheckboxControl&quot;&gt;
+                  &lt;property name=&quot;control&quot;&gt;
+                    &lt;bean parent=&quot;Uif-CheckboxControl&quot; <emphasis role="bold">p:checkboxLabel=&quot;I, [id=Demo-SampleMessageInput4 propertyName=&apos;field103&apos;], agree to the terms and conditions of this form&quot;</emphasis>&gt;
+                    &lt;/bean&gt;
+                  &lt;/property&gt;
+        &lt;/bean&gt;
+...</programlisting>
     </section>
   </section>
 </chapter>

@@ -15,8 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
--->
-<chapter xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="client_side_features" version="5.0">
+--><chapter xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="client_side_features" version="5.0">
   <title>Client Side Features </title>
   <section>
     <title>Progressive Disclosure </title>
@@ -161,6 +160,51 @@
     </section>
   </section>
   <section>
+    <title>Disable on User Action </title>
+    <para>Client-side disable on user action refers to the ability to disable controls and/or buttons based on user actions or input.  Client-side disable follows the same rules and limitations that progressive disclosure and refresh conditions do (they operate on a limited set of SpringEl expressions because they must be translated to the client – almost any Boolean expression which does not reference a function is allowed). </para>
+    <para> When a user interacts with a related control, the expression will be evaluated and if true, the corresponding control will be disabled.
+</para>
+    <para><emphasis role="bold">Important note: inputs which are disabled do not send their values to the server when a form is submitted. </emphasis></para>
+    <para>Disabled works with any <emphasis role="bold">Control</emphasis> (technically any control which extends ControlBase).  It also works with any <emphasis role="bold">Action or ActionLink</emphasis>.  The following properties are available for disable functionality:</para>
+    <itemizedlist>
+      <listitem><emphasis role="bold">disabled </emphasis>(Boolean expression) – can be any valid springEl boolean expression (or just true or false) – no custom SpringEL functions allowed</listitem>
+      <listitem><emphasis role="bold">evaluateDisabledOnKeyUp </emphasis>(Boolean) – if true, rather than evaluating the disable condition on the onChange event, the condition will be evaluated on each keystroke allowing immediate feedback to the user. This can only be used on textual inputs.</listitem>
+      <listitem><emphasis role="bold">disabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will disable THIS control. Useful for disallowing input when something else changes.</listitem>
+      <listitem><emphasis role="bold">enabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will enable THIS control. Useful for when the control starts out with disable=”true” and any user interaction with another control causes this one to be enabled.</listitem>
+    </itemizedlist>
+    <para>In this example, field2’s TextControl input will be disabled when field118’s value is “disable”.  This is achieved through this property - p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;.  When field118’s value is not “disable” the control will be enabled.  The action button specified here follows the same rules.</para>
+    <programlisting>&lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field118&quot; p:label=&quot;Choose&quot; p:width=&quot;auto&quot;
+              p:instructionalText=&quot;Click option to disable and enable&quot;&gt;
+          &lt;property name=&quot;control&quot;&gt;
+            &lt;bean parent=&quot;Uif-VerticalRadioControl&quot;&gt;
+              &lt;property name=&quot;options&quot;&gt;
+                &lt;list&gt;
+                  &lt;bean parent=&quot;Uif-KeyLabelPair&quot; p:key=&quot;enable&quot; p:value=&quot;Enable&quot;/&gt;
+                  &lt;bean parent=&quot;Uif-KeyLabelPair&quot; p:key=&quot;disable&quot; p:value=&quot;Disable&quot;/&gt;
+                &lt;/list&gt;
+              &lt;/property&gt;
+            &lt;/bean&gt;
+          &lt;/property&gt;
+        &lt;/bean&gt;
+
+        &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field2&quot;&gt;
+          &lt;property name=&quot;control&quot;&gt;
+            &lt;bean parent=&quot;Uif-TextControl&quot; <emphasis role="bold">p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;</emphasis>/&gt;
+          &lt;/property&gt;
+        &lt;/bean&gt;
+...
+&lt;bean parent=&quot;Uif-PrimaryActionButton&quot; p:actionLabel=&quot;Action Button&quot; <emphasis role="bold">p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;</emphasis>/&gt;
+</programlisting>
+    <para>Example of both the <emphasis role="bold">enableWhenChangedPropertyNames </emphasis>and <emphasis role="bold">evaluateDisabledOnKeyUp</emphasis> in action; when field52 has anything typed in, then enable this control for field54 immediately.</para>
+    <programlisting> &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field54&quot;&gt;
+                &lt;property name=&quot;control&quot;&gt;
+                  &lt;bean parent=&quot;Uif-TextControl&quot; p:disabled=&quot;true&quot; p:enabledWhenChangedPropertyNames=&quot;field52&quot;
+                        p:evaluateDisabledOnKeyUp=&quot;true&quot;/&gt;
+                &lt;/property&gt;
+              &lt;/bean&gt;
+</programlisting>
+  </section>
+  <section>
     <title>AJAX Actions </title>
 <!-- TODO: Add content here -->    <section>
       <title>RECAP</title>
@@ -219,58 +263,63 @@
   <section>
     <title>Lightbox</title>
     <para>The recommended way to use lightboxes is through the <link linkend="linkAndLinkField">Uif-Link</link> or
-      the Uif-Dialog beans. For cases where this isn't possible the following JavaScript functions can be used to
+      the Uif-Dialog beans. For cases where this isn&apos;t possible the following JavaScript functions can be used to
       open lightboxes.</para>
     <variablelist>
       <varlistentry>
         <term>showLightboxUrl(url)</term>
-        <listitem><para>The content for the lightbox is loaded from the specified url.</para></listitem>
+        <listitem>
+          <para>The content for the lightbox is loaded from the specified url.</para>
+        </listitem>
       </varlistentry>
     </variablelist>
     <variablelist>
       <varlistentry>
         <term>showLightboxComponent(componentId)</term>
-        <listitem><para>The content for the lightbox is a Uif component (e.g. a section) and is specified via the component id.</para></listitem>
+        <listitem>
+          <para>The content for the lightbox is a Uif component (e.g. a section) and is specified via the component id.</para>
+        </listitem>
       </varlistentry>
     </variablelist>
     <variablelist>
       <varlistentry>
         <term>showLightboxContent(content)</term>
-        <listitem><para>The content of the lightbox is passed as the parameter which could be either plain or html formatted text.</para></listitem>
+        <listitem>
+          <para>The content of the lightbox is passed as the parameter which could be either plain or html formatted text.</para>
+        </listitem>
       </varlistentry>
     </variablelist>
     <para>Each of the three function can accept a second <emphasis role="bold">overrideOptions</emphasis> parameter
       which allows for additional lightbox styling.  This parameter is optional and should only be used if it is
       unavoidable since its specific to the underlying implementation which could change.  If possible use the
-      "uif-lightbox" CSS class for styling.</para>
+      &quot;uif-lightbox&quot; CSS class for styling.</para>
   </section>
   <section>
     <title>Working in the Client with jQuery </title>
-    <para></para>
-<!-- TODO: Add content here -->
-  </section>
+    <para/>
+<!-- TODO: Add content here -->  </section>
   <section>
     <title>Data Attributes</title>
-      <para>HTML 5 data attributes are a way of adding custom attributes to tags. Data attributes are prefixed with
+    <para>HTML 5 data attributes are a way of adding custom attributes to tags. Data attributes are prefixed with
         a &apos;data-&apos; prefix e.g &apos;data-role&apos;. JQuery makes data attributes available on the jQuery data object for use
         in scripting manipulations.
         Internally, KRAD uses the jQuery data object and data attributes heavily in validation amongst other uses.
         This can be seen in krad.validate.js.</para>
-      <para>Data attributes are available on all form elements except the radio button.
+    <para>Data attributes are available on all form elements except the radio button.
         Page elements like image, iframe and links also support data attributes. There are two ways to add data attributes to
         a control or element. Both these ways involve setting properties in the defining XML configuration files. </para>
-      <para>The first way applies to three data attributes which can be set directly on a component using the property names
+    <para>The first way applies to three data attributes which can be set directly on a component using the property names
         data-role, data-meta and data-type. These attributes are physically present on the tag for the component on
         which they have been configured. This can be seen in lines 13 - 15 of the program listing below.
       </para>
-      <para>The second way is to use the dataAttributes map to set a list of attributes.
+    <para>The second way is to use the dataAttributes map to set a list of attributes.
         The map key is the attribute name and the value is the attribute value.
         Using the map is appropriate when complex attributes need to be set. Complex attributes are those whose values contain
         &apos;{}&apos;. Data attributes set via this map are not physically present on the tag but are set on the components jQuery
       data object via an initialization script that runs on page load. This can be seen in lines 5 - 12 of the program listing below.</para>
-      <para/>
-      <para>A sample configuration is shown below.</para>
-      <programlisting>
+    <para/>
+    <para>A sample configuration is shown below.</para>
+    <programlisting>
 1.    &lt;bean id=&quot;textAreaInputField_attrs&quot; parent=&quot;Uif-InputField&quot; &gt;
 2.      ...
 3       &lt;bean parent=&quot;Uif-TextAreaControl&quot; &gt;
@@ -392,9 +441,27 @@
       <para>Server-side messages are shown for any messages that are added to the MessageMap from one of your controller method calls (as described in 6.13 ValidationMessages content element).</para>
       <para>Each message type will have different icons (and background patterns) associated with the messages when displayed.   By default these icons are:</para>
       <itemizedlist>
-        <listitem><para><inlinemediaobject><imageobject><imagedata fileref="../images/KRAD_Guide/error.png" align="center"></imagedata></imageobject></inlinemediaobject> Error</para></listitem>
-        <listitem><para><inlinemediaobject><imageobject><imagedata fileref="../images/KRAD_Guide/warning.png" align="center"></imagedata></imageobject></inlinemediaobject> Warning</para></listitem>
-        <listitem><para><inlinemediaobject><imageobject><imagedata fileref="../images/KRAD_Guide/info.png" align="center"></imagedata></imageobject></inlinemediaobject> Info</para></listitem>
+        <listitem>
+          <para><inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/KRAD_Guide/error.png" align="center"/>
+              </imageobject>
+            </inlinemediaobject> Error</para>
+        </listitem>
+        <listitem>
+          <para><inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/KRAD_Guide/warning.png" align="center"/>
+              </imageobject>
+            </inlinemediaobject> Warning</para>
+        </listitem>
+        <listitem>
+          <para><inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/KRAD_Guide/info.png" align="center"/>
+              </imageobject>
+            </inlinemediaobject> Info</para>
+        </listitem>
       </itemizedlist>
       <para>When validation messages are received from the server they are always displayed in a summary at the top of the page and at the sections for which they apply. </para>
       <para> At the page level, if sections exist, the summary will include the total number of messages on the screen and links to each section which contains the fields/sections that have validation messages. Messages which apply to the entire page are also displayed at this level.  If the page has no sections, the page level summary will include links directly to the fields which have messages.</para>
@@ -414,37 +481,37 @@
     <para>The ajax calls have been made cleaner.ajaxSubmitForm(), standard submitForm() and methods to do validation before hand have been added.
       writeHiddenToForm() which was earlier used to write the data as hidden params on the form has been replaced by data-attributes</para>
     <itemizedlist>
-        <listitem>
-          <para>actionInvokeHandler() - The actionInvokeHandler method checks based on the data-attributes whether it is an ajax submit or a non ajax one and
+      <listitem>
+        <para>actionInvokeHandler() - The actionInvokeHandler method checks based on the data-attributes whether it is an ajax submit or a non ajax one and
             then calls one of the submit methods.</para>
-        </listitem>
-        <listitem>
-          <para>ajaxSubmitForm() - This in turn calls the ajaxSubmitFormFullOpts method with the validate flag set to false.</para>
-        </listitem>
-        <listitem>
-          <para>validateAndAjaxSubmitForm() -	This in turn calls the ajaxSubmitFormFullOpts method with the validate flag set to true.</para>
-        </listitem>
-        <listitem>
-          <para>ajaxSubmitFormFullOpts() - Submits the form through an ajax submit, the response is the new page html and runs all hidden scripts passed back.
+      </listitem>
+      <listitem>
+        <para>ajaxSubmitForm() - This in turn calls the ajaxSubmitFormFullOpts method with the validate flag set to false.</para>
+      </listitem>
+      <listitem>
+        <para>validateAndAjaxSubmitForm() - This in turn calls the ajaxSubmitFormFullOpts method with the validate flag set to true.</para>
+      </listitem>
+      <listitem>
+        <para>ajaxSubmitFormFullOpts() - Submits the form through an ajax submit, the response is the new page html and runs all hidden scripts passed back.
             It is similar to the old ajaxSubmitForm method but has some additional parameters which allow for providing hooks for successCallback,
             errorCallback and preSubmitCalls. It also takes a validate flag as well as a returnType. A returnType is used to request data from the
             server but the server may override it. If the validate flag is set it validates the form and  proceeds only if the form is valid. If a preSubmitcall
-            is specified then it executes that and proceeds if it returns true. If the returnType is not given then it defaults to "update-page" and
+            is specified then it executes that and proceeds if it returns true. If the returnType is not given then it defaults to &quot;update-page&quot; and
             sets it on the data which is submitted to the server. It then calls the invokeAjaxReturnHandler to determine which handler function to call.
             The successCallback and errorCallback are handled as they were before in ajaxSubmitForm. The elementToBlock and the lightBox processing also remain the same.</para>
-        </listitem>
-        <listitem>
-          <para>submitForm() - This is used for non-ajax calls. This in turn calls the submitFormFullOpts with the validate flag set to false.</para>
-        </listitem>
-        <listitem>
-          <para>validateAndSubmitForm() -	This is used for non-ajax calls. This in turn calls the submitFormFullOpts with the validate flag set to true.</para>
-        </listitem>
-        <listitem>
-          <para>submitFormFullOpts() - Does a non ajax submit. The data-attributes that are passed in as additional data are written as hidden params to the form before it is submitted.</para>
-        </listitem>
-        <listitem>
-          <para>invokeAjaxReturnHandler -	This method iterates over divs in the content that is passed in to determine which handler functions to call. The handler functions are initialized in krad.initialize.js</para>
-        </listitem>
+      </listitem>
+      <listitem>
+        <para>submitForm() - This is used for non-ajax calls. This in turn calls the submitFormFullOpts with the validate flag set to false.</para>
+      </listitem>
+      <listitem>
+        <para>validateAndSubmitForm() - This is used for non-ajax calls. This in turn calls the submitFormFullOpts with the validate flag set to true.</para>
+      </listitem>
+      <listitem>
+        <para>submitFormFullOpts() - Does a non ajax submit. The data-attributes that are passed in as additional data are written as hidden params to the form before it is submitted.</para>
+      </listitem>
+      <listitem>
+        <para>invokeAjaxReturnHandler - This method iterates over divs in the content that is passed in to determine which handler functions to call. The handler functions are initialized in krad.initialize.js</para>
+      </listitem>
     </itemizedlist>
     <para>As part of the improvements ajax returns were made smarter. This essentially means when sending back an ajax response, we need to write data that is used by the ajax call to determine how the response should be handled. The content is wrapped in a handler that indicates how the ajax call should handle the content. Here is an example of how it is done</para>
     <programlisting>
@@ -455,16 +522,16 @@
     <para>The following methods have been added to handle the ajax response based on the returnType</para>
     <itemizedlist>
       <listitem>
-         <para>updatePageHandler - Called if the returnType is "update-page". Finds the page content in the returned content and updates the page, then processes	breadcrumbs and hidden scripts. While processing, the page contents are hidden.</para>
+        <para>updatePageHandler - Called if the returnType is &quot;update-page&quot;. Finds the page content in the returned content and updates the page, then processes breadcrumbs and hidden scripts. While processing, the page contents are hidden.</para>
       </listitem>
       <listitem>
-         <para>updateViewHandler - Replaces the view with the given content and runs the hidden scripts. Called when the returnType is "update-view".</para>
+        <para>updateViewHandler - Replaces the view with the given content and runs the hidden scripts. Called when the returnType is &quot;update-view&quot;.</para>
       </listitem>
       <listitem>
-         <para>redirectHandler - Called when the returnType is "redirect". Replaces the contents of the window with those of the redirected URL.</para>
+        <para>redirectHandler - Called when the returnType is &quot;redirect&quot;. Replaces the contents of the window with those of the redirected URL.</para>
       </listitem>
       <listitem>
-         <para>updateComponentHandler -	Called when the returnType is "update-component". Retrieves the component with the matching id from the server
+        <para>updateComponentHandler - Called when the returnType is &quot;update-component&quot;. Retrieves the component with the matching id from the server
            and replaces a matching _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label and a
            displayWith marker span has a matching id, that span will be replaced with the label content and removed from the component.  This allows
            for label and component content separation on fields</para>

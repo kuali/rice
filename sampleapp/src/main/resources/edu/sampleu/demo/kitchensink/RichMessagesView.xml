@@ -49,7 +49,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-BasicMessagesSection" p:headerText="Basic Functionality" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-BasicMessagesSection" p:headerText="Basic [css='fl-text-underline']Functionality[/css]" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-Message">
@@ -179,7 +179,8 @@
     </property>
   </bean>
 
-  <bean id="Demo-RadioCheckboxMessageSection" p:headerText="Radio and Checkbox groups rich messages"
+  <bean id="Demo-RadioCheckboxMessageSection" p:headerText="[color=red]Radio[/color] and
+  [color=blue]Checkbox[/color] groups rich messages"
         p:instructionalText="Testing [css='fl-text-underline']checkbox and radio groups[/css] below"
         parent="Uif-VerticalBoxSection">
     <property name="items">

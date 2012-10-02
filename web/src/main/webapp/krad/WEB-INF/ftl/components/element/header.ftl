@@ -31,19 +31,29 @@
     </#if>
 
     <@krad.div component=element>
-        <#-- upper group -->
+    <#-- upper group -->
         <@krad.template component=element.upperGroup/>
 
         <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
             <#local group=element.context['parent']/>
-            ${headerOpenTag}<span class="uif-headerText-span">${element.headerText}</span>
-            <@krad.template component=group.help/>${headerCloseTag}
 
-            <#-- right group -->
+            ${headerOpenTag}
+            <span class="uif-headerText-span">
+                <#-- rich message support -->
+                <#if element.richHeaderMessage?has_content>
+                    <@krad.template component=element.richHeaderMessage/>
+                <#else>
+                    ${element.headerText}
+                </#if>
+            </span>
+            <@krad.template component=group.help/>
+        ${headerCloseTag}
+
+        <#-- right group -->
             <@krad.template component=element.rightGroup/>
         </#if>
 
-        <#-- lower group -->
+    <#-- lower group -->
         <@krad.template component=element.lowerGroup/>
 
     </@krad.div>

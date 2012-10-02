@@ -21,7 +21,9 @@ import org.kuali.rice.krad.datadictionary.validator.RDValidator;
 import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,9 @@ public class Header extends ContentElementBase {
     private String headerTagStyle;
     private List<String> headerTagCssClasses;
 
+    private Message richHeaderMessage;
+    private List<Component> inlineComponents;
+
     private Group upperGroup;
     private Group rightGroup;
     private Group lowerGroup;
@@ -54,6 +59,29 @@ public class Header extends ContentElementBase {
         super();
 
         headerTagCssClasses = new ArrayList<String>();
+    }
+
+    /**
+     * Sets up rich message content for the label, if any exists
+     *
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object,
+     *      org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        if (richHeaderMessage == null && headerText != null && headerText.contains(
+                KRADConstants.MessageParsing.LEFT_TOKEN) && headerText.contains(
+                KRADConstants.MessageParsing.RIGHT_TOKEN)) {
+            Message message = ComponentFactory.getMessage();
+            view.assignComponentIds(message);
+            message.setMessageText(headerText);
+            message.setInlineComponents(inlineComponents);
+            message.setGenerateSpan(false);
+            view.getViewHelperService().performComponentInitialization(view, model, message);
+            this.setRichHeaderMessage(message);
+        }
     }
 
     /**
@@ -82,17 +110,17 @@ public class Header extends ContentElementBase {
         if ((getLowerGroup() != null) && (getLowerGroup().getItems().isEmpty())) {
             getLowerGroup().setRender(false);
         }
-        
+
         //add preset styles to header groups
-        if(getUpperGroup() != null){
+        if (getUpperGroup() != null) {
             getUpperGroup().addStyleClass("uif-header-upperGroup");
         }
 
-        if(getRightGroup() != null){
+        if (getRightGroup() != null) {
             getRightGroup().addStyleClass("uif-header-rightGroup");
         }
 
-        if(getLowerGroup() != null){
+        if (getLowerGroup() != null) {
             getLowerGroup().addStyleClass("uif-header-lowerGroup");
         }
     }
@@ -104,6 +132,7 @@ public class Header extends ContentElementBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
+        components.add(richHeaderMessage);
         components.add(upperGroup);
         components.add(rightGroup);
         components.add(lowerGroup);
@@ -317,31 +346,40 @@ public class Header extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that a correct header level is set
         String headerLevel = getHeaderLevel().toUpperCase();
-        boolean correctHeaderLevel=false;
-        if(headerLevel.compareTo("H1")==0) correctHeaderLevel=true;
-        else if(headerLevel.compareTo("H2")==0) correctHeaderLevel=true;
-        else if(headerLevel.compareTo("H3")==0) correctHeaderLevel=true;
-        else if(headerLevel.compareTo("H4")==0) correctHeaderLevel=true;
-        else if(headerLevel.compareTo("H5")==0) correctHeaderLevel=true;
-        else if(headerLevel.compareTo("H6")==0) correctHeaderLevel=true;
-        else if(headerLevel.compareTo("LABEL")==0) correctHeaderLevel=true;
-        if(!correctHeaderLevel){
-            ErrorReport error = ErrorReport.createError("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label",tracer);
-            error.addCurrentValue("headerLevel ="+getHeaderLevel());
+        boolean correctHeaderLevel = false;
+        if (headerLevel.compareTo("H1") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H2") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H3") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H4") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H5") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H6") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("LABEL") == 0) {
+            correctHeaderLevel = true;
+        }
+        if (!correctHeaderLevel) {
+            ErrorReport error = ErrorReport.createError(
+                    "HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label", tracer);
+            error.addCurrentValue("headerLevel =" + getHeaderLevel());
             reports.add(error);
         }
 
         // Checks that header text is set
-        if(getHeaderText()==null){
-            if(!RDValidator.checkExpressions(this,"headerText")){
-                ErrorReport error = ErrorReport.createWarning("HeaderText should be set",tracer);
-                error.addCurrentValue("headertText ="+getHeaderText());
+        if (getHeaderText() == null) {
+            if (!RDValidator.checkExpressions(this, "headerText")) {
+                ErrorReport error = ErrorReport.createWarning("HeaderText should be set", tracer);
+                error.addCurrentValue("headertText =" + getHeaderText());
                 reports.add(error);
             }
         }
@@ -349,5 +387,48 @@ public class Header extends ContentElementBase {
         reports.addAll(super.completeValidation(tracer.getCopy()));
 
         return reports;
+    }
+
+    /**
+     * Gets the Message that represents the rich message content of the header if headerText is using rich message
+     * tags.
+     * <b>DO NOT set this
+     * property directly unless you need full control over the message structure.</b>
+     *
+     * @return Message with rich message structure, null if no rich message structure
+     */
+    public Message getRichHeaderMessage() {
+        return richHeaderMessage;
+    }
+
+    /**
+     * Sets the Message that represents the rich message content of the header if headerText is using rich message
+     * tags.
+     * <b>DO
+     * NOT set this
+     * property directly unless you need full control over the message structure.</b>
+     *
+     * @param richHeaderMessage
+     */
+    public void setRichHeaderMessage(Message richHeaderMessage) {
+        this.richHeaderMessage = richHeaderMessage;
+    }
+
+    /**
+     * Gets the inlineComponents used by index in a Header that has rich message component index tags in its headerText
+     *
+     * @return the Label's inlineComponents
+     */
+    public List<Component> getInlineComponents() {
+        return inlineComponents;
+    }
+
+    /**
+     * Sets the inlineComponents used by index in a Header that has rich message component index tags in its headerText
+     *
+     * @param inlineComponents
+     */
+    public void setInlineComponents(List<Component> inlineComponents) {
+        this.inlineComponents = inlineComponents;
     }
 }

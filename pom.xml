@@ -1991,9 +1991,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.1</connection>
-    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.1</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/branches/rice-2.1</url>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/sandbox/rice-2.1-kfs</connection>
+    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/sandbox/rice-2.1-kfs</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/sandbox/rice-2.1-kfs</url>
   </scm>
 
 </project>

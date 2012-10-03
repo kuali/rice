@@ -843,6 +843,120 @@
             <title>Other KRAD Configuration Parameters?</title>
             <para/>
         </section>
+      <section>
+        <title>Configure guest user access</title>
+
+        <para>Some views might have to be exposed to users that does not have a
+          Rice user. In these cases we can configure certain views to allow guest
+          user access.</para>
+
+        <para/>
+
+        <para>To bypass the normal login mechanism you can change the
+          BootstrapFilter configuration. The BootstrapFilter is a Rice filter
+          which at runtime reads a series of filter configurations, constructs and
+          initializes those filters, and invokes them when it is invoked. This
+          allows runtime user configuration of arbitrary filters in the webapp
+          context. The BootstrapFilter configuration allows for excluding certain
+          requests. In the sample application we excluded the kradguest servlet
+          requests from the DummyLoginFilter and added a the AutoLoginFilter for
+          those requests. The AutoLoginFilter allows automatic login with the user
+          specified via filter init parameter. With this setup any requests to the
+          kradguest servlet will be automatically logged in as guest and it will
+          bypass the DummyLoginFilter.</para>
+
+        <para><filename>sample-app-config.xml</filename></para>
+
+        <programlisting>  &lt;param name="filter.login.class"&gt;org.kuali.rice.kew.web.DummyLoginFilter&lt;/param&gt;
+          &lt;param name="filtermapping.login.1"&gt;/*&lt;/param&gt;
+          &lt;param name="filterexclude.login"&gt;.*/kr-kradguest/.*&lt;/param&gt;
+
+          &lt;param name="filter.guestlogin.class"&gt;org.kuali.rice.krad.web.filter.AutoLoginFilter&lt;/param&gt;
+          &lt;param name="filtermapping.guestlogin.2"&gt;/kr-kradguest/*&lt;/param&gt;
+          &lt;param name="filter.guestlogin.autouser"&gt;guest&lt;/param&gt;</programlisting>
+
+        <para/>
+
+        <para>KRAD has configured a kradguest servlet mapping that can be used
+          for the purpose of allowing guest access. The setup of controllers
+          mapped to the kradguest servlet can be done in the
+          <filename>kradguest-servlet.xml</filename> : <filename/></para>
+
+        <programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:p="http://www.springframework.org/schema/p"
+          xmlns:context="http://www.springframework.org/schema/context"
+          xmlns:tx="http://www.springframework.org/schema/tx"
+          xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+          xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/mvc
+          http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"&gt;
+
+          &lt;import resource="krad-base-servlet.xml"/&gt;
+
+          &lt;!-- Add controller beans for any requests that the krad guest servlet must handle --&gt;
+          &lt;bean id="UifComponentsTestController" class="edu.sampleu.demo.kitchensink.UifGuestController"/&gt;
+
+          &lt;/beans&gt;</programlisting>
+
+        <para><filename/></para>
+
+        <para><filename>You can map any controller to the kradguest servlet but
+          view access is still not restricted. To do this you can extend your
+          controller and add a check for the views that must allow guest access in
+          the controller start method. <replaceable/></filename></para>
+
+        <para><filename><replaceable>Ex : </replaceable></filename></para>
+
+        <programlisting>@Controller
+          @RequestMapping(value = "<emphasis role="bold">/guestviews"</emphasis>)
+          public class UifGuestController extends UifControllerBase {
+
+          /**
+          * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+          */
+          @Override
+          protected UifComponentsTestForm createInitialForm(HttpServletRequest request) {
+          return new UifComponentsTestForm();
+          }
+
+          /**
+          *  Initial method called when requesting new view
+          *
+          *  &lt;p&gt;
+          *  For guest access we check that only certain views can be called through this controller.
+          *  &lt;/p&gt;
+          *
+          * @param form - model
+          * @param result - binding result
+          * @param request - servlet request
+          * @param response - servlet response
+          * @return
+          */
+          @Override
+          @RequestMapping(params = "methodToCall=start")
+          public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+          HttpServletRequest request, HttpServletResponse response) {
+          <emphasis role="bold">if (!form.getViewId().equals("UifGuestUserView")) {
+            throw new RuntimeException("Guest user not allowed to acces this view : " + form.getViewId());
+            }</emphasis>
+          return super.start(form,result,request,response);
+          }
+          }</programlisting>
+
+        <para><filename/></para>
+
+        <para><filename>With the setup as described above only requests to
+          http://localhost:8080/kr-dev/kr-kradguest/guestviews?viewId=UifGuestUserView&amp;methodToCall=start
+          will be logged in automatically as guest.</filename></para>
+
+        <para><filename/></para>
+      </section>
     </section>
     <section>
         <title>Building application pages using KRAD</title>

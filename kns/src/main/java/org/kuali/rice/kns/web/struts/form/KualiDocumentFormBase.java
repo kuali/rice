@@ -36,6 +36,7 @@ import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
@@ -928,6 +929,18 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	public void setSelectedActionRequests(List<String> selectedActionRequests) {
 		this.selectedActionRequests = selectedActionRequests;
 	}
+
+    public List<ActionRequest> getActionRequestsRequiringApproval() {
+        List<ActionRequest> actionRequests = getActionRequests();
+        List<ActionRequest> actionRequestsApprove = new ArrayList<ActionRequest>();;
+
+        for (ActionRequest actionRequest: actionRequests) {
+            if  (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
+                actionRequestsApprove.add(actionRequest);
+            }
+        }
+        return actionRequestsApprove;
+    }
 
 	public String getSuperUserAnnotation() {
 		return superUserAnnotation;

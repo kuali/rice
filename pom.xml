@@ -15,37 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
---><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.kuali.pom</groupId>
-    <artifactId>kuali-common</artifactId>
-    <version>1.7.10</version>
-  </parent>
-  <groupId>org.kuali.rice</groupId>
-  <artifactId>rice</artifactId>
-  <packaging>pom</packaging>
-  <name>Rice</name>
-  <inceptionYear>2005</inceptionYear>
-  <version>2.2.0-rc1-SNAPSHOT</version>
-  <description>
-    The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
-    both Kuali and non-Kuali applications
-    to be built in an agile fashion, such that developers will be able to
-    react to
-    end-user business requirements in an efficient and productive manner, so
-    that they can produce high
-    quality business
-    applications.
-  </description>
-  <url>http://${kuali.site.hostname}/rice/${project.version}</url>
-
-  <ciManagement>
-    <url>http://ci.rice.kuali.org</url>
-  </ciManagement>
-
-  <properties>
-    <!-- These properties modify the release process -->
+-->
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
     <kuali.release.goals>deploy</kuali.release.goals>
     <kuali.release.arguments>-DskipTests</kuali.release.arguments>

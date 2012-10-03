@@ -2136,7 +2136,8 @@ public class KualiDocumentActionBase extends KualiAction {
         DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
         documentActions.superUserDisapprove(parameters, true);
         GlobalVariables.getMessageMap().putInfo("document", "general.routing.superuser.disapproved", documentForm.getDocId());
-    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        documentForm.setSuperUserAnnotation("");
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     public ActionForward superUserApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
@@ -2156,6 +2157,7 @@ public class KualiDocumentActionBase extends KualiAction {
         DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
         documentActions.superUserBlanketApprove(parameters, true);
         GlobalVariables.getMessageMap().putInfo("document", "general.routing.superuser.approved", documentForm.getDocId());
+        documentForm.setSuperUserAnnotation("");
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

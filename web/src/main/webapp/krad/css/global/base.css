@@ -364,6 +364,14 @@ div.clearfix:after {
     text-align: left;
 }
 
+table.uif-gridLayout > tbody > tr > td.uif-inputField{
+    white-space: nowrap;
+}
+
+.uif-gridLayout td.uif-inputField span.uif-instructionalMessage{
+    max-width: none !important;
+}
+
 .uif-gridLayout .uif-group {
     text-align: left;
 }

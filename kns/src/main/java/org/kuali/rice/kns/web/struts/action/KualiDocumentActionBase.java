@@ -2076,7 +2076,11 @@ public class KualiDocumentActionBase extends KualiAction {
         } else if(documentForm.getSelectedActionRequests().isEmpty()) {
             GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.none.selected", "");
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }  else if (!documentForm.isStateAllowsApproveSingleActionRequest()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.not.allowed", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
+
         for(String actionRequestId : documentForm.getSelectedActionRequests()) {
             ActionRequest actionRequest = null;
             for(ActionRequest pendingActionRequest : documentForm.getActionRequests()) {
@@ -2120,7 +2124,14 @@ public class KualiDocumentActionBase extends KualiAction {
     	if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
     		GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.annotation.missing", "");
     		return mapping.findForward(RiceConstants.MAPPING_BASIC);
-    	}
+    	} else if (!documentForm.getSelectedActionRequests().isEmpty()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.when.actions.checked", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        } else if (!documentForm.isStateAllowsDisapprove()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.not.allowed", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+
         WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
         DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
         documentActions.superUserDisapprove(parameters, true);
@@ -2133,14 +2144,21 @@ public class KualiDocumentActionBase extends KualiAction {
         if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
             GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.annotation.missing", "");
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        } else if (!documentForm.getSelectedActionRequests().isEmpty()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.when.actions.checked", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        } else if (!documentForm.isStateAllowsApprove()) {
+            GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.not.allowed", "");
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
+
         WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
         DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
         documentActions.superUserBlanketApprove(parameters, true);
         GlobalVariables.getMessageMap().putInfo("document", "general.routing.superuser.approved", documentForm.getDocId());
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     private WorkflowDocumentActionsService getWorkflowDocumentActionsService(String documentTypeId) {
         DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(documentTypeId);
         String applicationId = documentType.getApplicationId();

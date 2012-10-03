@@ -978,9 +978,9 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	    List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
         return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument(
-                principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
-                (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
-	}
+            principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+            (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
+   	}
 
     public boolean isSuperUserAuthorized() {
         String docId = this.getDocId();
@@ -1001,25 +1001,44 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
                 (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
     }
 	
-	public boolean isStateAllowsSuperUserAction() {
-         if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
-            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
-            return !(StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
-                     StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()) ||
-                     StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode())  ||
-                     StringUtils.equals(status.getCode(), DocumentStatus.CANCELED.getCode())  ||
-                     StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()));
-         } else {
-             return false;
-         }
-	}
-	
-	public boolean isSuperUserDocument() {
+	public boolean isStateAllowsApprove() {
         if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
             DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
-            return !(StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()) || StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
-        } else {
+            return !(isStateProcessedOrDisapproved(status) ||
+                     isStateInitiatedFinalCancelled(status));
+         } else {
             return false;
         }
 	}
+
+    public boolean isStateAllowsDisapprove() {
+        if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
+            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            return !(isStateProcessedOrDisapproved(status) ||
+                     isStateInitiatedFinalCancelled(status) ||
+                     StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isStateAllowsApproveSingleActionRequest() {
+        if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
+            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            return !(isStateInitiatedFinalCancelled(status));
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isStateProcessedOrDisapproved(DocumentStatus status) {
+        return (StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()));
+    }
+
+    public boolean isStateInitiatedFinalCancelled(DocumentStatus status) {
+        return (StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.CANCELED.getCode()));
+    }
 }

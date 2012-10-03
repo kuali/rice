@@ -54,10 +54,10 @@
           <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && KualiForm.stateAllowsApproveSingleActionRequest}">
             <html-el:image property="methodToCall.takeSuperUserActions" src="${ConfigProperties.kew.url}/images/buttonsmall_takeselected.gif" style="border-style:none;" align="absmiddle" />
           </c:if>
-          <c:if test="${KualiForm.superUserApproveDocumentAuthorized && KualiForm.stateAllowsApprove}">
+          <c:if test="${KualiForm.superUserApproveDocumentAuthorized && KualiForm.stateAllowsApproveOrDisapprove}">
             <html-el:image property="methodToCall.superUserApprove" src="${ConfigProperties.kew.url}/images/buttonsmall_approvedoc.gif" style="border-style:none;" align="absmiddle" />
           </c:if>
-          <c:if test="${KualiForm.superUserDisapproveDocumentAuthorized && KualiForm.stateAllowsDisapprove }">
+          <c:if test="${KualiForm.superUserDisapproveDocumentAuthorized && KualiForm.stateAllowsApproveOrDisapprove}">
             <html-el:image property="methodToCall.superUserDisapprove" src="${ConfigProperties.kew.url}/images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />
           </c:if>
         </div>

@@ -2127,7 +2127,7 @@ public class KualiDocumentActionBase extends KualiAction {
     	} else if (!documentForm.getSelectedActionRequests().isEmpty()) {
             GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.when.actions.checked", "");
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        } else if (!documentForm.isStateAllowsDisapprove()) {
+        } else if (!documentForm.isStateAllowsApproveOrDisapprove()) {
             GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.not.allowed", "");
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
@@ -2147,7 +2147,7 @@ public class KualiDocumentActionBase extends KualiAction {
         } else if (!documentForm.getSelectedActionRequests().isEmpty()) {
             GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.when.actions.checked", "");
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        } else if (!documentForm.isStateAllowsApprove()) {
+        } else if (!documentForm.isStateAllowsApproveOrDisapprove()) {
             GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.approve.not.allowed", "");
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }

@@ -1001,17 +1001,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
                 (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId))) ;
     }
 	
-	public boolean isStateAllowsApprove() {
-        if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
-            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
-            return !(isStateProcessedOrDisapproved(status) ||
-                     isStateInitiatedFinalCancelled(status));
-         } else {
-            return false;
-        }
-	}
-
-    public boolean isStateAllowsDisapprove() {
+    public boolean isStateAllowsApproveOrDisapprove() {
         if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
             DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
             return !(isStateProcessedOrDisapproved(status) ||

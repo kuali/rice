@@ -78,7 +78,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        if (richOptions.isEmpty()) {
+        if (richOptions == null || richOptions.isEmpty()) {
             return;
         }
 

@@ -39,6 +39,7 @@
     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=ClientDisableView&methodToCall=start"/>Client-side disable</a></li>
     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-CollectionTotaling&methodToCall=start"/>Collection Totaling</a></li>
     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-CollectionGrouping&methodToCall=start"/>Collection Grouping and Totaling</a></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/collegeapp?viewId=Training-CollegeApplicationView&methodToCall=start"/>Training - Student College Application</a></li>
   </ul>
    <br/>
 

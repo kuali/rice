@@ -34,6 +34,7 @@
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/dialog-configuration-test?viewId=DialogTestView_KNS&methodToCall=start" />Dialog Test View</a></li>
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections_KNS&methodToCall=start"/>Collections Configuration Test View</a></li>
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=RichMessagesView_KNS&methodToCall=start"/>Rich Messages</a></li>
+     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/collegeapp?viewId=Training-CollegeApplicationView_KNS&methodToCall=start"/>Training - Student College Application</a></li>
    </ul>
 
 </div>

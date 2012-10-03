@@ -997,12 +997,11 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
     public boolean isSuperUserAuthorized() {
         String docId = this.getDocId();
-        DocumentType documentType = null;
-        if (docTypeName != null) {
-            documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
-        } else {
+        if (StringUtils.isBlank(docId) || ObjectUtils.isNull(docTypeName)) {
             return false;
         }
+
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
         String docTypeId = null;
         if (documentType != null) {
             docTypeId = documentType.getId();

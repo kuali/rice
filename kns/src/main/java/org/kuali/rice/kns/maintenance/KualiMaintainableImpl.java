@@ -384,7 +384,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 						Object nestedObject = ObjectUtils.getNestedValue(getBusinessObject(),
 								ObjectUtils.getNestedAttributePrefix(reference));
                         if (nestedObject == null) {
-                            LOG.error("Error: unable to refresh ReferenceToRefresh (" + reference + ")  was found to be null");
+                            LOG.warn("Unable to refresh ReferenceToRefresh (" + reference + ")  was found to be null");
                         }
                         else {
                             if (nestedObject instanceof Collection) {

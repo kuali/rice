@@ -15,15 +15,15 @@
  */
 package edu.samplu.common;
 
-import org.junit.Test;
-
 /**
  * @deprecated Use WebDriverITBase for new tests.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
 
-    public static final String CREATE_NEW_LOCATOR = "a[title='Create a new record']";
+    public static final String CREATE_NEW_LOCATOR = "//img[contains(@alt,'create new')]";
+//    public static final String CREATE_NEW_LOCATOR = "//a[contains(@href,'command=initiate')]"; // not with IE8
+//    public static final String CREATE_NEW_LOCATOR = "//a[@title='Create a new record']"; // not with IE8
     public static final String ADMIN_LOCATOR = "Administration";
     public static final String LABEL_KUALI_KUALI_SYSTEMS = "KUALI - Kuali Systems";
     public static final String LABEL_KUALI_DEFAULT = "KUALI : Default";

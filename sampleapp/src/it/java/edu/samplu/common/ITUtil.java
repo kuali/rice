@@ -527,7 +527,7 @@ public class ITUtil {
     protected static void checkForIncidentReport(String contents, String linkLocator, String message) {
         if (contents != null &&
                 contents.contains("Incident Report") &&
-                !contents.contains("portal.do?channelTitle=Incident%20Report&amp;") && // Incident Report link on sampleapp KRAD tab
+                !contents.contains("portal.do?channelTitle=Incident Report&amp;") && // Incident Report link on sampleapp KRAD tab
                 !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             try {
                 if (contents.indexOf("Incident Feedback") > -1) {

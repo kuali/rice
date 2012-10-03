@@ -1,5 +1,7 @@
 package edu.samplu.common;
 
+import org.openqa.selenium.By;
+
 /**
  * @deprecated use WebDriverITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -53,7 +55,7 @@ public abstract class MenuLegacyITBase extends WebDriverLegacyITBase {
      */
     protected void gotoCreateNew() throws Exception {
         gotoMenuLinkLocator();
-        waitAndClick(getCreateNewLinkLocator(), "");
+        waitAndClick(By.xpath(getCreateNewLinkLocator()));
         //        selectFrame("relative=up");
         checkForIncidentReport(getCreateNewLinkLocator());
     }

@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -24,18 +25,32 @@ import org.openqa.selenium.By;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * tests uploads of new users
+ * tests uploads of new users and group
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
 
-    private File loadUsersFile;
+    // values set by default for repeatable testing; left as configurable for load tests
+    private List<File> fileUploadList;
+    private int userCnt = Integer.valueOf(System.getProperty("test.xmlingester.user.cnt", "10"));
+    private String userPrefix = System.getProperty("test.xmlingester.user.prefix", ITUtil.DTS);
 
     @Rule
     public TemporaryFolder folder= new TemporaryFolder();
+
+    @Ignore
+    @Override
+    public void testCreateNewCancel() throws Exception {}
+
+    @Ignore
+    @Override
+    public void testEditCancel() throws Exception {}
+
 
     @Override
     protected String getLinkLocator() {
@@ -50,8 +65,15 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
     @Override
     public void setUp() throws Exception {
        super.setUp();
-        // generated load users resource for repeated testing
-       generateLoadUsersFile(10, ITUtil.DTS);
+        // generated load users and group resources
+       buildFileUploadList();
+
+    }
+
+    private void buildFileUploadList() throws Exception {
+        fileUploadList = new ArrayList<File>();
+        fileUploadList.add(generateLoadUsersFile(userCnt, userPrefix));
+        fileUploadList.add(generateLoadGroupFile(userCnt, userPrefix));
     }
 
     /**
@@ -61,8 +83,9 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
      * @param prefix
      * @throws Exception
      */
-    private void generateLoadUsersFile(int numberOfUsers, String prefix) throws Exception {
-        loadUsersFile = folder.newFile("loadtest-users.xml");
+    private File generateLoadUsersFile(int numberOfUsers, String prefix) throws Exception {
+        File loadUsersFile = folder.newFile("loadtest-users.xml");
+
         java.util.Date date= new java.util.Date();
 
         FileWriter writer = new FileWriter(loadUsersFile);
@@ -82,15 +105,59 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
         }
         writer.write("\t</users>\n</data>\n");
         writer.close();
+        return loadUsersFile;
     }
 
+    /**
+     *  Generates a temporary file for a group given number of users and principal name prefix
+     *
+     *
+     * @param numberOfUsers
+     * @param prefix
+     * @return
+     * @throws Exception
+     */
+    private File generateLoadGroupFile(int numberOfUsers, String prefix) throws Exception {
+        File loadGroupFile = folder.newFile("loadtest-group.xml");
+
+        FileWriter writer = new FileWriter(loadGroupFile);
+        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        writer.write("<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\">\n");
+        writer.write("\t<groups xmlns=\"ns:workflow/Group\" xsi:schemaLocation=\"ns:workflow/Group resource:Group\">\n");
+        writer.write("\t\t<group><id>2203</id><namespace>KUALI</namespace><description>Edoclite Documentation workgroup</description>");
+        writer.write("<name>eDoc.Example1.IUPUI.Workgroup</name>");
+        writer.write("<members>");
+
+        for(int i = 0; i < numberOfUsers; i++) {
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("<principalName>loadtester" + prefix + i + "</principalName>");
+            writer.write(stringBuffer.toString());
+        }
+        writer.write("\t\t</members>\n\t</group>\n</groups>\n</data>\n");
+        writer.close();
+        return loadGroupFile;
+    }
+
+
+    /**
+     * Based on load user and groups manual tests; load a dynamically generated user and group file into the xml ingester screen
+     *
+     */
     @Test
-    public void testXMLIngesterUpload() throws Exception {
+    public void testXMLIngesterSuccessfulFileUpload() throws Exception {
         gotoMenuLinkLocator();
-        String path = loadUsersFile.getAbsolutePath().toString();
-        driver.findElement(By.name("file[0]")).sendKeys(path);
+        int cnt = 0;
+        for(File file : fileUploadList) {
+            String path = file.getAbsolutePath().toString();
+            driver.findElement(By.name("file[" + cnt + "]")).sendKeys(path);
+            cnt++;
+        }
         waitAndClickByXpath("//*[@id='imageField']");
-        assertTextPresent("Ingested xml doc");
+
+        // confirm all files were uploaded successfully
+        for(File file: fileUploadList) {
+            assertTextPresent("Ingested xml doc: " + file.getName());
+        }
         passed();
     }
 

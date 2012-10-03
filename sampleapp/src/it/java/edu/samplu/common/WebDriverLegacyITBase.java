@@ -509,7 +509,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= 15) {
-                Assert.fail("timeout");
+                Assert.fail("timeout waiting for " + locator + " to NOT be visible");
             }
 
             if (!isVisibleByXpath(locator)) {
@@ -523,7 +523,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitIsVisibleByXpath(String locator) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= 15) {
-                Assert.fail("timeout");
+                Assert.fail("timeout waiting for " + locator + " to be visible");
             }
             if (isVisibleByXpath(locator)) {
                 break;

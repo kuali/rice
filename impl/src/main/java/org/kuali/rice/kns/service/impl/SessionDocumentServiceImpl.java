@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.krad.UserSession;
@@ -31,6 +32,7 @@ import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -148,9 +150,14 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
                     documentNumber, ipAddress);
 
             //re-store workFlowDocument into session
-            WorkflowDocument workflowDocument =
-                    documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
-            addDocumentToUserSession(userSession, workflowDocument);
+            if (!(StringUtils.equals((String)userSession.retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY),
+                    KRADConstants.TableRenderConstants.SORT_METHOD) ||
+                  StringUtils.equals((String)userSession.retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY),
+                    KRADConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY))) {
+                        WorkflowDocument workflowDocument =
+                            documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
+                        addDocumentToUserSession(userSession, workflowDocument);
+            }
         } catch (Exception e) {
             LOG.error("getDocumentForm failed for SessId/DocNum/PrinId/IP:" + userSession.getKualiSessionId() + "/" +
                     documentNumber + "/" + userSession.getPrincipalId() + "/" + ipAddress, e);

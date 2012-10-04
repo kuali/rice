@@ -66,6 +66,8 @@ function initAgendaTree(componentId) {
                     var disableButtons = jq('input.disableButtons').val();
                     if (disableButtons == 'false') {
                         enableTreeButtons(); // disableButtons.js
+                    }else{
+                        disableTreeButtons();
                     }
               }
         });

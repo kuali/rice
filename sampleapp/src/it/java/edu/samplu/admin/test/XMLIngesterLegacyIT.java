@@ -39,6 +39,11 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
     private List<File> fileUploadList;
     private int userCnt = Integer.valueOf(System.getProperty("test.xmlingester.user.cnt", "10"));
     private String userPrefix = System.getProperty("test.xmlingester.user.prefix", ITUtil.DTS);
+    // group default values
+    private String groupId = System.getProperty("test.xmlingester.grp.id", "2203");
+    private String groupNamespace = System.getProperty("test.xmlingester.grp.namespace","KUALI");
+    private String groupName = System.getProperty("test.xmlingester.grp.name", "eDoc.Example1.IUPUI.Workgroup");
+    private String groupDesc = System.getProperty("test.xmlingester.grp.desc", "Edoclite Documentation workgroup");
 
     @Rule
     public TemporaryFolder folder= new TemporaryFolder();
@@ -124,10 +129,11 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         writer.write("<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\">\n");
         writer.write("\t<groups xmlns=\"ns:workflow/Group\" xsi:schemaLocation=\"ns:workflow/Group resource:Group\">\n");
-        writer.write("\t\t<group><id>2203</id><namespace>KUALI</namespace><description>Edoclite Documentation workgroup</description>");
-        writer.write("<name>eDoc.Example1.IUPUI.Workgroup</name>");
+        writer.write("\t\t<group><id>" + groupId + "</id><namespace>" + groupNamespace + "</namespace><description>" + groupDesc + "</description>");
+        writer.write("<name>" + groupName + "</name>");
         writer.write("<members>");
-
+        writer.write("<principalName>admin</principalName>");
+        writer.write("<principalName>notsys</principalName>");
         for(int i = 0; i < numberOfUsers; i++) {
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("<principalName>loadtester" + prefix + i + "</principalName>");

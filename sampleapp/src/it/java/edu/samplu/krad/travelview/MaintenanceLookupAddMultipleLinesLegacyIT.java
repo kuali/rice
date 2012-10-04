@@ -34,5 +34,6 @@ public class MaintenanceLookupAddMultipleLinesLegacyIT extends KradMenuLegacyITB
     public void testVerifyLookupAddMultipleLinesLegacy() throws Exception {
         gotoMenuLinkLocator();
         assertElementPresentByXpath("//a[contains(text(),'Lookup/Add Multiple Lines')]");
+        passed();
     }
 }

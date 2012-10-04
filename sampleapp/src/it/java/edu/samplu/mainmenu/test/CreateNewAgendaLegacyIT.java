@@ -51,6 +51,7 @@ public class CreateNewAgendaLegacyIT extends MainMenuLookupLegacyITBase {
         waitForPageToLoad();
         selectTopFrame();
         waitAndClickByXpath("(//input[@name='imageField'])[2]");
+        passed();
     }
 
     /**

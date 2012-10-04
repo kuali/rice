@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -44,6 +42,6 @@ public class MaintenanceAdHocRecipientsLegacyIT extends KradMenuLegacyITBase {
         assertElementPresentByXpath("//select[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].actionRequested\"]");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientNamespaceCode\" and @type='text']");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.adHocRouteWorkgroups'].recipientName\" and @type='text']");
-
+        passed();
     }
 }

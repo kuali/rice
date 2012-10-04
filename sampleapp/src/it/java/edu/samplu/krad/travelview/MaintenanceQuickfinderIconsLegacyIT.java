@@ -38,6 +38,7 @@ public class MaintenanceQuickfinderIconsLegacyIT extends KradMenuLegacyITBase {
         assertElementPresentByXpath("//*[@id='quickfinder2']");
         assertElementPresentByXpath("//*[@id='quickfinder3']");
         assertElementPresentByXpath("//*[@id='quickfinder4_add']");
-        // it would be better to test that the image isn't 404
+        // TODO it would be better to test that the image isn't 404
+        passed();
     }
 }

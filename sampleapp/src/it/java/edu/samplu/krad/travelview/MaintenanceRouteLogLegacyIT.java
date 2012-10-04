@@ -21,6 +21,6 @@ public class MaintenanceRouteLogLegacyIT extends KradMenuLegacyITBase {
         gotoMenuLinkLocator();
         waitAndClickByLinkText("Route Log");
         waitForElementPresent("//iframe[contains(@src,'RouteLog.do')]");
+        passed();
     }
-
 }

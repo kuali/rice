@@ -43,6 +43,6 @@ public class MaintenanceConstraintTextLegacyIT extends KradMenuLegacyITBase {
         assertEquals("Must be 10 digits", getText("div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Sub Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
         
         assertEquals("Must be 10 digits", getText("div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-                
+        passed();
     }
 }

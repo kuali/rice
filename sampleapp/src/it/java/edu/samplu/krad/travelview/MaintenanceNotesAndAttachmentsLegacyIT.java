@@ -39,5 +39,6 @@ public class MaintenanceNotesAndAttachmentsLegacyIT  extends KradMenuLegacyITBas
         assertElementPresentByXpath("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]");
         assertElementPresentByXpath("//input[@name='attachmentFile']");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]");
+        passed();
     }
 }

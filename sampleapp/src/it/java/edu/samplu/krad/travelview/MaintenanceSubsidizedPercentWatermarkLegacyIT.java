@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -38,5 +36,6 @@ public class MaintenanceSubsidizedPercentWatermarkLegacyIT extends KradMenuLegac
         // May be blowing up due to multiple locators
         //assertTrue(isElementPresent("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @type='text' and @placeholder='##.##   ']"));
         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent']");
+        passed();
     }
 }

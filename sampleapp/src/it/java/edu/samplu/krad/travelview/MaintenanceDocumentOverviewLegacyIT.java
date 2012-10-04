@@ -38,5 +38,6 @@ public class MaintenanceDocumentOverviewLegacyIT extends KradMenuLegacyITBase {
         assertElementPresentByXpath("//input[@name='document.documentHeader.documentDescription']");
         assertElementPresentByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']");
         assertElementPresentByXpath("//textarea[@name='document.documentHeader.explanation']");
+        passed();
     }
 }

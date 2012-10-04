@@ -40,5 +40,6 @@ public class MaintenanceFieldsLegacyIT extends KradMenuLegacyITBase {
         assertElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @type='text' and @size=5 and @maxlength=10]");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number\" and @type='text' and @size=10 and @maxlength=10]");
         assertElementPresentByXpath("//input[@name=\"newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId\" and @type='text' and @size=5 and @maxlength=10]");
+        passed();
     }
 }

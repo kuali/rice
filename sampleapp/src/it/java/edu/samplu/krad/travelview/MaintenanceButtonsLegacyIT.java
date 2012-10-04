@@ -18,8 +18,6 @@ package edu.samplu.krad.travelview;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -39,5 +37,6 @@ public class MaintenanceButtonsLegacyIT extends KradMenuLegacyITBase {
         assertElementPresentByXpath("//button[contains(.,'lanket approve')]");
         assertElementPresentByXpath("//button[contains(.,'lose')]");
         assertElementPresentByXpath("//a[contains(.,'ancel')]");
+        passed();
     }
 }

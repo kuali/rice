@@ -49,6 +49,7 @@ public class MaintenanceAddDeleteFiscalOfficerLegacyIT extends KradMenuLegacyITB
         waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
         
         assertElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
+        passed();
     }
 
 }

@@ -19,8 +19,6 @@ import edu.samplu.common.KradMenuLegacyITBase;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -39,6 +37,6 @@ public class MaintenanceExpandCollapseLegacyIT extends KradMenuLegacyITBase {
         gotoMenuLinkLocator();
         assertElementPresentByXpath("//button[contains(@class, 'uif-expandDisclosuresButton')]");
         assertElementPresentByXpath("//button[contains(@class, 'uif-collapseDisclosuresButton')]");
+        passed();
     }
-
 }

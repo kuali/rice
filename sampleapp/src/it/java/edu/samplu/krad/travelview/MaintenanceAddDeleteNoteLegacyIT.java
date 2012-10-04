@@ -49,6 +49,6 @@ public class MaintenanceAddDeleteNoteLegacyIT extends KradMenuLegacyITBase {
         waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
 
         waitForElementPresentByName("document.notes[0].noteText");
-
+        passed();
     }
 }

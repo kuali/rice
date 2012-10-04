@@ -65,5 +65,6 @@ public class MaintenanceDisclosuresLegacyIT extends KradMenuLegacyITBase{
         selectFrame("routeLogIFrame");
 
         waitNotVisibleByXpath("//img[@alt='refresh']");
+        passed();
     }
 }

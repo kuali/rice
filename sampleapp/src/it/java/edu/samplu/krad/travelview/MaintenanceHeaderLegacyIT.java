@@ -37,5 +37,6 @@ public class MaintenanceHeaderLegacyIT extends KradMenuLegacyITBase {
         assertElementPresentByXpath("//div[contains(@class, 'uif-documentInitiatorNetworkId')]");
         assertElementPresentByXpath("//div[contains(@class, 'uif-documentStatus')]");
         assertElementPresentByXpath("//div[contains(@class, 'uif-documentCreateDate')]");
+        passed();
     }
 }

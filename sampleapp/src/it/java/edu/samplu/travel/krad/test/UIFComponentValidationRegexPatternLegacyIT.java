@@ -16,10 +16,8 @@
 package edu.samplu.travel.krad.test;
 
 import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.internal.seleniumemulation.IsVisible;
 
 /**
  * tests that regex validation works as expected on input fields where it is configured
@@ -678,6 +676,7 @@ public class UIFComponentValidationRegexPatternLegacyIT extends WebDriverLegacyI
         fireEvent("field68", "blur");
         validateErrorImage(false);
         clearTextByName("field68");
+        passed();
     }
         
     public void validateErrorImage(boolean validateVisible) throws Exception {

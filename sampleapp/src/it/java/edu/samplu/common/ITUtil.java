@@ -253,9 +253,14 @@ public class ITUtil {
             driver.findElement(By.name("__login_user")).sendKeys(userName);
             driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
             Thread.sleep(1000);
-            if (driver.getPageSource().indexOf("<strong>Invalid username</strong>") > -1) {
-                Assert.fail("Invalid username " + userName);
-            }
+            String contents = driver.getPageSource();
+            checkForInvalidUserName(userName, contents);
+        }
+    }
+
+    private static void checkForInvalidUserName(String userName, String contents) {
+        if (contents.indexOf("Invalid username") > -1) {
+            Assert.fail("Invalid username " + userName);
         }
     }
 
@@ -276,9 +281,8 @@ public class ITUtil {
             selenium.type("__login_user", user);
             selenium.click("//input[@type='submit']"); //using css selector fails
             selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
-            if (selenium.getHtmlSource().indexOf("<strong>Invalid username</strong>") > -1) {
-                Assert.fail("Invalid username " + user);
-            }
+            String contents = selenium.getHtmlSource();
+            checkForInvalidUserName(user, contents);
         }
     }
 

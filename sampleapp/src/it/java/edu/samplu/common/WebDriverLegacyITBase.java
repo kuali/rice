@@ -67,13 +67,13 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
                 String userResponse = getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString().trim()));
                 user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
             }
-            driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl(),
-                    getClass().getSimpleName(), testName);
+            driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + getTestUrl(), getClass().getSimpleName(), testName);
             this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
         } catch (Exception e) {
             fail("Exception in setUp " + e.getMessage());
             e.printStackTrace();
         }
+        ITUtil.login(driver, user);
     }
 
     @After

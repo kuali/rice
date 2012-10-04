@@ -59,7 +59,6 @@ public class WebDriverUtil {
         }
         driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         driver.get(url);
-        ITUtil.login(driver, username);
         driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
         return driver;
     }

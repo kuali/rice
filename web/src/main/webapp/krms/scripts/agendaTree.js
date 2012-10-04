@@ -54,17 +54,20 @@ function initAgendaTree(componentId) {
                 jq(this).removeClass('ruleBlockSelected');
             });
 
-            if (selectedItemTracker.val() == agendaItemId) {
-                // if this item is already selected, deselect it
-                selectedItemTracker.val('');
-                disableTreeButtons(); // disableButtons.js
-                enableAddButton(); // disableButtons.js
-                enableRefreshButton(); // disableButtons.js
-            } else { // select it, both with the custom class and with the selectedItemTracker
-                selectedItemTracker.val(agendaItemId);
-                jq(this.parentNode).addClass('ruleBlockSelected');
-                enableTreeButtons(); // disableButtons.js
-            }
+                if (selectedItemTracker.val() == agendaItemId) {
+                    // if this item is already selected, deselect it
+                    selectedItemTracker.val('');
+                    disableTreeButtons(); // disableButtons.js
+                    enableAddButton(); // disableButtons.js
+                    enableRefreshButton(); // disableButtons.js
+                } else { // select it, both with the custom class and with the selectedItemTracker
+                    selectedItemTracker.val(agendaItemId);
+                    jq(this.parentNode).addClass('ruleBlockSelected');
+                    var disableButtons = jq('input.disableButtons').val();
+                    if (disableButtons == 'false') {
+                        enableTreeButtons(); // disableButtons.js
+                    }
+              }
         });
 
         // set type to 'logic' on logic nodes -- this prevents them from being selected

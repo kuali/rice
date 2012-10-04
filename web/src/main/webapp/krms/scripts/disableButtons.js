@@ -153,7 +153,8 @@ function enabledCheck(command) {
 }
 
 function selectedCheck() {
-    if (getSelectedItemInput() != null) {
+    var disableButtons = jq('input.disableButtons').val();
+    if (getSelectedItemInput() != null &&  disableButtons == 'false') {
         if (getSelectedItemInput().val() != "" && getSelectedItemInput().val() != undefined) {
             enableTreeButtons();
         }

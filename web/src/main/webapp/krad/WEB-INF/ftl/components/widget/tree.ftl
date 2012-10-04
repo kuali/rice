@@ -21,9 +21,7 @@
     Invokes JS method to implement a tree plug-in
     -->
 
-    <@krad.script value="
-      createTree('${componentId}', ${widget.templateOptionsJSString});
-    "/>
+    <@krad.script value="createTree('${componentId}', ${widget.templateOptionsJSString});"/>
 
 </#macro>
 

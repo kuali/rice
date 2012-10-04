@@ -336,6 +336,11 @@
             <bean parent="Uif-HiddenControl" p:cssClasses="selectedAgendaItemId"/>
           </property>
         </bean>
+        <bean parent="Uif-InputField" p:propertyName="disableButtons" p:showLabel="false" p:render="true">
+          <property name="control">
+            <bean parent="Uif-HiddenControl" p:cssClasses="disableButtons"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

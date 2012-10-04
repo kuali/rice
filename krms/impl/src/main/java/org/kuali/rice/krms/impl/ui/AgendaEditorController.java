@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
+import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
@@ -79,6 +80,27 @@ import java.util.UUID;
 public class AgendaEditorController extends MaintenanceDocumentController {
 
     private SequenceAccessorService sequenceAccessorService;
+
+     /**
+     * Override route to set the setSelectedAgendaItemId to empty and disable all the buttons
+     *
+     * @see org.kuali.rice.krad.web.controller.MaintenanceDocumentController.route
+     *      (DocumentFormBase, HttpServletRequest, HttpServletResponse)
+     */
+     @Override
+    @RequestMapping(params = "methodToCall=route")
+    public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        ModelAndView modelAndView;
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+        agendaEditor.setSelectedAgendaItemId("");
+        agendaEditor.setDisableButtons(true);
+        modelAndView = super.route(form, result, request, response);
+
+        return modelAndView;
+    }
 
     /**
      * This overridden method does extra work on refresh to update the namespace when the context has been changed.

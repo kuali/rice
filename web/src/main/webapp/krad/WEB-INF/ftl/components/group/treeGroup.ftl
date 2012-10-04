@@ -28,6 +28,7 @@
         </div>
 
         <#-- invoke tree widget -->
+        <#include "../widget/tree.ftl" parse=true/>
         <@krad.template component=group.tree componentId="${group.id}_tree"/>
 
     </@krad.groupWrap>

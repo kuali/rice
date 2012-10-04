@@ -370,7 +370,7 @@ public class KualiTableRenderFormMetadata {
     	if (PropertyUtils.isReadable(firstItem, columnToSortOn))
     		comparator = new BeanComparator(columnToSortOn, subComparator);
     	else
-    		comparator = new BeanComparator(new StringBuilder().append("qualifierAsMap<String, String>(").append(columnToSortOn).append(")").toString(), subComparator);
+    		comparator = new BeanComparator(new StringBuilder().append("qualifierAsMap(").append(columnToSortOn).append(")").toString(), subComparator);
 
 
         // If the user has decided to resort by the same column that the list is currently sorted by, then assume that s/he wants to reverse the order of the sort

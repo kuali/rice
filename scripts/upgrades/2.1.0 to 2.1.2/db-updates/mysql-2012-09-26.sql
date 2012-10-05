@@ -18,7 +18,7 @@
 --     KULRICE-8300	& KULRICE-7799
 --
 
--- NOTE NOTE -  This is the first time that the master databse will have KRxxx as the IDs on some of it's tables.
+-- NOTE NOTE -  This is the first time that the master database will have KRxxx as the IDs on some of it's tables.
 -- This SQL accounts for that and should be error free.
 
 INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)

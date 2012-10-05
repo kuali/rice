@@ -23,6 +23,7 @@ package edu.sampleu.demo.kitchensink;
  * To change this template use File | Settings | File Templates.
  */
 public class TrainingApplicationReference {
+    private static final long serialVersionUID = -7525378097732916410L;
     private String name;
     private String phone;
     private String address;

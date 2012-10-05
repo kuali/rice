@@ -106,7 +106,8 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 				}
 
 				if (!objectClassFound) {
-                    parameters = new HashMap<String, String>();
+					throw new RuntimeException("Could not determine object class for maintenance document with id: "
+							+ documentNumber);
 				}
 			}
 			catch (WorkflowException e) {

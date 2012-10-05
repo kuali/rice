@@ -40,7 +40,8 @@
     </property>
     <property name="footer.items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Submit" p:methodToCall="submit"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Submit" p:methodToCall="submit"
+              p:performClientSideValidation="true"/>
         <bean parent="Uif-SecondaryActionButton" p:actionLabel="Clear all" p:actionScript="clearAll()"/>
       </list>
     </property>

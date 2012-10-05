@@ -16,12 +16,16 @@
 package edu.sampleu.demo.kitchensink;
 
 import org.kuali.rice.krad.web.controller.UifControllerBase;
-import org.kuali.rice.krad.web.form.TransactionForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,5 +41,12 @@ public class TrainingApplicationController extends UifControllerBase {
     @Override
     protected UifFormBase createInitialForm(HttpServletRequest request) {
         return new TrainingApplicationForm();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=submit")
+    public ModelAndView submit(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        return getUIFModelAndView(uifForm);
     }
 }

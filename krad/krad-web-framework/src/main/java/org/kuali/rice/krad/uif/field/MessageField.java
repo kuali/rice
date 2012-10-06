@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.RDValidator;
 import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +57,33 @@ public class MessageField extends FieldBase {
         components.add(message);
 
         return components;
+    }
+
+    /**
+     * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's content
+     *
+     * @param view the view
+     * @param model the model
+     * @param parent the parent component
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        //determine what id to use for the for attribute of the label, if present
+        if(this.getFieldLabel() != null && this.getMessage() != null
+                && StringUtils.isNotBlank(this.getMessage().getId())){
+
+            if(this.getMessage().getMessageComponentStructure() != null
+                    && !this.getMessage().getMessageComponentStructure().isEmpty()){
+                //wrapper will be a rich message div - no suffix
+                this.getFieldLabel().setLabelForComponentId(this.getMessage().getId());
+            }
+            else{
+                //wrapper will be a normal message span - add suffix
+                this.getFieldLabel().setLabelForComponentId(this.getMessage().getId() + UifConstants.IdSuffixes.SPAN);
+            }
+        }
     }
 
     /**

@@ -61,6 +61,24 @@ public class LinkField extends FieldBase {
     }
 
     /**
+     * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's
+     * content
+     *
+     * @param view the view
+     * @param model the model
+     * @param parent the parent component
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        //determine what id to use for the for attribute of the label, if present
+        if (this.getFieldLabel() != null && this.getLink() != null && StringUtils.isNotBlank(this.getLink().getId())) {
+            this.getFieldLabel().setLabelForComponentId(this.getLink().getId());
+        }
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
     @Override
@@ -73,7 +91,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     *  Returns the <code>Link<code/> field.
+     * Returns the <code>Link<code/> field.
      *
      * @return The Link field
      */
@@ -109,7 +127,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     *  Returns the target of the <code>Link<code/> field that will be used to specify where to open the href.
+     * Returns the target of the <code>Link<code/> field that will be used to specify where to open the href.
      *
      * @return The target
      */
@@ -172,25 +190,25 @@ public class LinkField extends FieldBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
+        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that the link is set
-        if(getLink()==null){
-            if(RDValidator.checkExpressions(this,"link")){
-                ErrorReport error = ErrorReport.createError("Link should be set",tracer);
-                error.addCurrentValue("link = "+getLink());
+        if (getLink() == null) {
+            if (RDValidator.checkExpressions(this, "link")) {
+                ErrorReport error = ErrorReport.createError("Link should be set", tracer);
+                error.addCurrentValue("link = " + getLink());
                 reports.add(error);
             }
         }
 
         // Checks that the label is set
-        if(getLabel()==null){
-            if(RDValidator.checkExpressions(this,"label")){
-                ErrorReport error = ErrorReport.createWarning("Label is null, link should be used instead",tracer);
-                error.addCurrentValue("label ="+getLabel());
-                error.addCurrentValue("link ="+getLink());
+        if (getLabel() == null) {
+            if (RDValidator.checkExpressions(this, "label")) {
+                ErrorReport error = ErrorReport.createWarning("Label is null, link should be used instead", tracer);
+                error.addCurrentValue("label =" + getLabel());
+                error.addCurrentValue("link =" + getLink());
                 reports.add(error);
             }
         }

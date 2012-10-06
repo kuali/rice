@@ -25,6 +25,7 @@ import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.RDValidator;
 import org.kuali.rice.krad.datadictionary.validator.TracerToken;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
@@ -168,6 +169,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
 
         // Additional and Alternate display value
         setAlternateAndAdditionalDisplayValue(view, model);
+
+        if (this.getFieldLabel() != null && StringUtils.isNotBlank(this.getId())) {
+            this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.CONTROL);
+        }
     }
 
     /**

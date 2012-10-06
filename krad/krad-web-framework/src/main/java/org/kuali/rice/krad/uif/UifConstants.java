@@ -135,6 +135,7 @@ public class UifConstants {
         public static final String SUB = "_sub";
         public static final String SUGGEST = "_suggest";
         public static final String QUICK_FINDER = "_quickfinder";
+        public static final String SPAN = "_span";
     }
 
     public static class ViewPhases {

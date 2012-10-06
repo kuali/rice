@@ -353,10 +353,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         setNestedComponentIdAndSuffix(getQuickfinder(), UifConstants.IdSuffixes.QUICK_FINDER);
         setNestedComponentIdAndSuffix(getSuggest(), UifConstants.IdSuffixes.SUGGEST);
 
-        if (this.getFieldLabel() != null) {
-            this.getFieldLabel().setLabelForComponentId(this.getControl().getId());
-        }
-
         if (this.getControl() != null) {
             this.getControl().addDataAttribute(UifConstants.DATA_ATTRIBUTE_CONTROL_FOR, this.getId());
         }

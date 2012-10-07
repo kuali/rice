@@ -289,6 +289,25 @@
             </configuration>
           </execution>
           <execution>
+            <id>copy-minified-jstree-additional-dependencies</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <outputDirectory>${basedir}/src/main/webapp/krad/scripts</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/src/main/webapp/krad/plugins/jstree</directory>
+                  <filtering>true</filtering>
+                  <excludes>
+                    <exclude>**/*.js</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
             <id>copy-minified-rice-datatables-dependencies</id>
             <goals>
               <goal>copy-resources</goal>

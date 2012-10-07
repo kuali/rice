@@ -32,7 +32,7 @@
     <module>client</module>
   </modules>
   <properties>
-    <plugin.impex.version>1.0.26</plugin.impex.version>
+    <plugin.impex.version>1.0.31</plugin.impex.version>
     <oracle.jdbc.groupId>com.oracle</oracle.jdbc.groupId>
     <jdbc.groupId>${oracle.jdbc.groupId}</jdbc.groupId>
     <jdbc.artifactId>${oracle.jdbc.artifactId}</jdbc.artifactId>

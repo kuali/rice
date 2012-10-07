@@ -140,7 +140,6 @@ public class UifControllerHelper {
 
             history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
             history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
-            history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
 
             // passed settings ALWAYS override the defaults
             if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))) {
@@ -148,9 +147,14 @@ public class UifControllerHelper {
                         UifConstants.UrlParams.SHOW_HOME)));
             }
 
-            if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))) {
+            // do not append the history for dialog boxes
+            if (form.getDialogManager().getDialogs().size() > 0) {
+                history.setAppendPassedHistory(false);
+            } else if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))) {
                 history.setAppendPassedHistory(Boolean.parseBoolean(request.getParameter(
                         UifConstants.UrlParams.SHOW_HISTORY)));
+            } else {
+                history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
             }
 
             history.buildCurrentEntryFromRequest(form, request);

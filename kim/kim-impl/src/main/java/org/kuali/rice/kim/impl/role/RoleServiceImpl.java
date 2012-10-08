@@ -244,12 +244,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         if (roleIds.size() == 1) {
             String roleId = roleIds.iterator().next();
             RoleBo bo = getRoleBo(roleId);
+            if (bo == null) {
+                return Collections.<String, RoleBo>emptyMap();
+            }
             result = bo.isActive() ? Collections.singletonMap(roleId, bo) :  Collections.<String, RoleBo>emptyMap();
         } else {
             result = new HashMap<String, RoleBo>(roleIds.size());
             for (String roleId : roleIds) {
                 RoleBo bo = getRoleBo(roleId);
-                if (bo.isActive()) {
+                if (bo !=null && bo.isActive()) {
                     result.put(roleId, bo);
                 }
             }
@@ -263,12 +266,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         if (roleIds.size() == 1) {
             String roleId = roleIds.iterator().next();
             RoleBoLite bo = getRoleBoLite(roleId);
+            if (bo == null) {
+                return Collections.<String, RoleBoLite>emptyMap();
+            }
             result = bo.isActive() ? Collections.singletonMap(roleId, bo) :  Collections.<String, RoleBoLite>emptyMap();
         } else {
             result = new HashMap<String, RoleBoLite>(roleIds.size());
             for (String roleId : roleIds) {
                 RoleBoLite bo = getRoleBoLite(roleId);
-                if (bo.isActive()) {
+                if (bo != null && bo.isActive()) {
                     result.put(roleId, bo);
                 }
             }

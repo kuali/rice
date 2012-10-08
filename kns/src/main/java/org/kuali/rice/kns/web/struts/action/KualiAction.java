@@ -127,9 +127,6 @@ public abstract class KualiAction extends DispatchAction {
         		LOG.debug("methodToCall: '" + methodToCall+"'");
         	}
             returnForward = dispatchMethod(mapping, form, request, response, methodToCall);
-            if (returnForward.getRedirect() && returnForward.getName()!=null && returnForward.getName().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
-                return returnForward;
-            }
         }
         else {
             returnForward = defaultDispatch(mapping, form, request, response);

@@ -124,8 +124,6 @@
         <value>classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifInitiateDocumentInfoDefinitions.xml</value>
       </list>
     </property>
     <property name="packagePrefixes">
@@ -203,6 +201,8 @@
   <bean id="mailService" class="org.kuali.rice.krad.service.impl.MailServiceImpl">
     <property name="mailer" ref="mailer"/>
     <property name="batchMailingList" value="${mailing.list.batch}"/>
+    <property name="nonProductionNotificationMailingList" value="${nonproduction.notification.mailing.list}" />
+    <property name="realNotificationsEnabled" value="${real.notifications.enabled}" />
   </bean>
 
   <bean id="kradExceptionIncidentService" class="org.kuali.rice.krad.service.impl.KualiExceptionIncidentServiceImpl">

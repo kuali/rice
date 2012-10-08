@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.coreservice.api.parameter.Parameter;
 import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
@@ -43,6 +44,7 @@ import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
@@ -91,6 +93,7 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
+import org.kuali.rice.kim.impl.identity.IdentityArchiveService;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
@@ -155,8 +158,10 @@ import java.util.Set;
 public class UiDocumentServiceImpl implements UiDocumentService {
 	private static final Logger LOG = Logger.getLogger(UiDocumentServiceImpl.class);
 	private static final String SHOW_BLANK_QUALIFIERS = "kim.show.blank.qualifiers";
-	
-	private RoleService roleService;
+    private static final String KIM_IDENTITY_ARCHIVE_SERVICE = "kimIdentityArchiveService";
+
+    private IdentityArchiveService identityArchiveService;
+    private RoleService roleService;
 	private BusinessObjectService businessObjectService;
 	private IdentityService identityService;
     private PermissionService permissionService;
@@ -292,6 +297,27 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
 		Principal principal = this.getIdentityService().getPrincipal(principalId);
+        Entity kimEntity = null;
+
+        if(ObjectUtils.isNotNull(principal)) {
+            // If the principal is not null it was found in the identity management service
+            kimEntity = this.getIdentityService().getEntity(principal.getEntityId());
+        }
+
+        if(ObjectUtils.isNull(principal) || ObjectUtils.isNull(kimEntity)) {
+            // If the principal or entity is null look up the entity in the
+            // archive service, and then get the principal from it
+            IdentityArchiveService identityArchive = getIdentityArchiveService();
+            EntityDefault entityInfo = identityArchive.getEntityDefaultFromArchiveByPrincipalId(principalId);
+            principal = entityInfo.getPrincipals().get(0);
+            Entity.Builder eb  = Entity.Builder.create();
+            eb.setId(entityInfo.getEntityId());
+            kimEntity = eb.build();
+
+        }
+        if(kimEntity == null) {
+            throw new RuntimeException("Entity does not exist for principal id: " + principalId);
+        }
         if(principal==null) {
         	throw new RuntimeException("Principal does not exist for principal id:"+principalId);
         }
@@ -300,7 +326,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
         //identityManagementPersonDocument.setPassword(principal.getPassword());
         identityManagementPersonDocument.setActive(principal.isActive());
-        Entity kimEntity = this.getIdentityService().getEntity(principal.getEntityId());
 		identityManagementPersonDocument.setEntityId(kimEntity.getId());
 		if ( ObjectUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
@@ -2929,5 +2954,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     public void setParameterService(ParameterService parameterService) {
     	this.parameterService = parameterService;
+    }
+
+    public static IdentityArchiveService getIdentityArchiveService() {
+        return GlobalResourceLoader.getService(KIM_IDENTITY_ARCHIVE_SERVICE);
     }
 }

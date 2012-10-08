@@ -1,5 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<c:if test="${KualiForm.stateAllowsSuperUserAction && KualiForm.superUserAuthorized}">
+<c:if test="${KualiForm.superUserAuthorized && not empty KualiForm.actionRequests}">
 <c:set var="tabTitle"><bean:message key="superuser.tab.label" /></c:set>
 <c:set var="actionLabel"><bean:message key="superuser.action.column.label" /></c:set>
 <c:set var="requestedLabel"><bean:message key="superuser.requested.column.label" /></c:set>
@@ -11,21 +11,17 @@
 	     tabErrorKey="superuser.errors"
 	     transparentBackground="${transparentBackground}">
 	<div class="tab-container" align=center id="G4">
-		<c:if test="${not empty KualiForm.actionRequests && KualiForm.superUserApproveSingleActionRequestAuthorized}">
+		<c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && KualiForm.stateAllowsApproveSingleActionRequest}">
 	    	<h3>${tabTitle}</h3>
-	    </c:if>
 	    <table cellpadding="0" cellspacing="0" class="datatable" summary="view/add notes">
 			<tbody>
-				<c:if test="${not empty KualiForm.actionRequests && KualiForm.superUserApproveSingleActionRequestAuthorized}">
-					<tr>
-					    <th style="width: 5%; text-align: center;"><input type="checkbox" onclick="jQuery('input.superUserAction').prop('checked', jQuery(this).prop('checked'))" /></th>
+			<tr>
+			  <th style="width: 5%; text-align: center;"><input type="checkbox" onclick="jQuery('input.superUserAction').prop('checked', jQuery(this).prop('checked'))" /></th>
 					    <th style="width: 15%;">${actionLabel}</th>
 					    <th style="width: 15%;">${requestedLabel}</th>
 					    <th style="width: 15%;">${timeLabel}</th>
 				    	<th style="width: 50%;">${annotationLabel}</th>
-					</tr>
-				</c:if>
-        <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized}">
+				</tr>
         <c:forEach var="actionRequest" items="${KualiForm.actionRequests}" varStatus="status">
           <tr>
 				    <td class="datacell" style="text-align: center;"><html:multibox property="selectedActionRequests" value="${actionRequest.id}" styleClass="superUserAction" /></td>
@@ -45,23 +41,23 @@
             </td>
 				    <td class="datacell"><joda:format value="${actionRequest.dateCreated}" pattern="MM/dd/yyyy hh:mm a"/>&nbsp;</td>
 				    <td class="datacell">${actionRequest.annotation}</td>
-				</tr>
+				  </tr>
         </c:forEach>
-        </c:if>
 		    </tbody>
         </table>
-       	<div style="vertical-align: top;">
+    </c:if>
+        <div style="vertical-align: top;">
            	<label for="superUserAnnotation" style="vertical-align: top;">Annotation<span style="color: red; vertical-align: top;">*</span></label>
            	<html:textarea property="superUserAnnotation" rows="5" cols="100" styleId="superUserAnnotation" />
        	</div>
-        <div>
-          <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && not empty KualiForm.actionRequests}">
+    <div>
+          <c:if test="${KualiForm.superUserApproveSingleActionRequestAuthorized && KualiForm.stateAllowsApproveSingleActionRequest}">
             <html-el:image property="methodToCall.takeSuperUserActions" src="${ConfigProperties.kew.url}/images/buttonsmall_takeselected.gif" style="border-style:none;" align="absmiddle" />
           </c:if>
-          <c:if test="${KualiForm.superUserApproveDocumentAuthorized}">
+          <c:if test="${KualiForm.superUserApproveDocumentAuthorized && KualiForm.stateAllowsApproveOrDisapprove && not empty KualiForm.actionRequestsRequiringApproval}">
             <html-el:image property="methodToCall.superUserApprove" src="${ConfigProperties.kew.url}/images/buttonsmall_approvedoc.gif" style="border-style:none;" align="absmiddle" />
           </c:if>
-          <c:if test="${KualiForm.superUserDisapproveDocumentAuthorized}">
+          <c:if test="${KualiForm.superUserDisapproveDocumentAuthorized && KualiForm.stateAllowsApproveOrDisapprove && not empty KualiForm.actionRequestsRequiringApproval}">
             <html-el:image property="methodToCall.superUserDisapprove" src="${ConfigProperties.kew.url}/images/buttonsmall_disapprovedoc.gif" style="border-style:none;" align="absmiddle" />
           </c:if>
         </div>

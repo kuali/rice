@@ -461,22 +461,23 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	int count = 0;
 
     	for (KimDocumentRoleMember membership : role.getRolePrncpls()) {
-    		if (membershipToCheckIndex != count) {
-    			if (sameMembershipQualifications(membershipToCheck, membership, uniqueQualifierAttributes)) {
-    				foundError = true;
+            if (sameMembershipQualifications(membershipToCheck, membership, uniqueQualifierAttributes)) {
+                if (count == 0 ) {
+                    count +=1;
+                } else {
+                    count += 1;
+                    foundError = true;
 
-    				int qualifierCount = 0;
+        		    int qualifierCount = 0;
 
-					for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
-						if (qualifier != null && uniqueQualifierAttributes.contains(qualifier.getKimAttrDefnId())) {
-							validationErrors.add(RemotableAttributeError.Builder.create("document.roles["+roleIndex+"].rolePrncpls["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal()).build());
-						}
-						qualifierCount += 1;
-					}
-    			}
+		    	    for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
+			    	    if (qualifier != null && uniqueQualifierAttributes.contains(qualifier.getKimAttrDefnId())) {
+						    validationErrors.add(RemotableAttributeError.Builder.create("document.roles["+roleIndex+"].rolePrncpls["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal()).build());
+				   	    }
+				        qualifierCount += 1;
+				    }
+                }
     		}
-
-    		count += 1;
     	}
     	return foundError;
     }

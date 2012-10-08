@@ -17,16 +17,22 @@ package org.kuali.rice.kim.web.struts.action;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
+import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -58,5 +64,35 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
             GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
         }
 	}
-	
+
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+
+        ActionForward forward = super.execute(mapping, form, request, response);
+
+        String previouslySortedColumnName = (String)GlobalVariables.getUserSession().retrieveObject(KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_SORT_PREV_COL_NM);
+        Boolean sortDescending = ((Boolean)GlobalVariables.getUserSession().retrieveObject(KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_SORT_DESC_VALUE));
+
+        KualiTableRenderFormMetadata memberTableMetadata =  roleDocumentForm.getMemberTableMetadata();
+        memberTableMetadata.setPreviouslySortedColumnName(previouslySortedColumnName);
+        if (sortDescending != null) {
+            memberTableMetadata.setSortDescending(sortDescending.booleanValue());
+        }
+        if (roleDocumentForm.getMemberRows() != null) {
+            memberTableMetadata.sort(roleDocumentForm.getMemberRows(), roleDocumentForm.getRecordsPerPage());
+            memberTableMetadata.jumpToPage(memberTableMetadata.getSwitchToPageNumber(), roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
+        }
+
+        GlobalVariables.getUserSession().addObject(KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_SORT_PREV_COL_NM, memberTableMetadata.getPreviouslySortedColumnName());
+        GlobalVariables.getUserSession().addObject(KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_SORT_DESC_VALUE, memberTableMetadata.isSortDescending());
+
+        return forward;
+    }
+
+    public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
 }

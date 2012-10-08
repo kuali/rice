@@ -16,21 +16,13 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.mail.MailMessage;
-import org.kuali.rice.core.api.mail.Mailer;
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.ExceptionIncident;
 import org.kuali.rice.krad.exception.KualiExceptionIncident;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Modified this service so that it now extends the KualiFeedbackServiceImpl.
@@ -58,8 +50,7 @@ public class KualiExceptionIncidentServiceImpl extends KualiFeedbackServiceImpl 
      * <param name="KualiReporterServiceImpl.REPORT_MAIL_LIST">a@y,b@z</param>
      * </code>
      */
-    public static final String REPORT_MAIL_LIST=String.format(
-            "%s.REPORT_MAIL_LIST", KualiExceptionIncidentServiceImpl.class.getSimpleName());
+    public static final String REPORT_MAIL_LIST=String.format("%s.REPORT_MAIL_LIST", KualiExceptionIncidentServiceImpl.class.getSimpleName());
 
     @Override
     protected String getToAddressesPropertyName() {

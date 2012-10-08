@@ -30,7 +30,10 @@ public class MailServiceImpl implements MailService {
 
     private String batchMailingList;
     private Mailer mailer;
-    
+
+    private String nonProductionNotificationMailingList;
+    private boolean realNotificationsEnabled = true;
+
     /**
      * The injected Mailer.
      */
@@ -72,7 +75,14 @@ public class MailServiceImpl implements MailService {
 	}
 	
     protected MailMessage composeMessage(MailMessage message){
+
         MailMessage mm = new MailMessage();
+
+        // If realNotificationsEnabled is false, mails will be sent to nonProductionNotificationMailingList
+        if(!isRealNotificationsEnabled()){
+            getNonProductionMessage(message);
+        }
+
         String app = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(CoreConstants.Config.APPLICATION_ID);
         String env = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ENVIRONMENT_KEY);
         
@@ -83,5 +93,48 @@ public class MailServiceImpl implements MailService {
         mm.setMessage(message.getMessage());
         mm.setFromAddress(message.getFromAddress());
         return mm;
+    }
+
+    public String getNonProductionNotificationMailingList() {
+        return this.nonProductionNotificationMailingList;
+    }
+
+    /**
+     * @param nonProductionNotificationMailingList the nonProductionNotificationMailingList to set
+     */
+    public void setNonProductionNotificationMailingList(
+            String nonProductionNotificationMailingList) {
+        this.nonProductionNotificationMailingList = nonProductionNotificationMailingList;
+    }
+
+    /**
+     * @return the realNotificationsEnabled
+     */
+    public boolean isRealNotificationsEnabled() {
+        return this.realNotificationsEnabled;
+    }
+
+    /**
+     * @param realNotificationsEnabled the realNotificationsEnabled to set
+     */
+    public void setRealNotificationsEnabled(boolean realNotificationsEnabled) {
+        this.realNotificationsEnabled = realNotificationsEnabled;
+    }
+
+    protected MailMessage getNonProductionMessage(MailMessage message){
+        StringBuilder buf = new StringBuilder();
+        buf.append("Email To: ").append(message.getToAddresses()).append("\n");
+        buf.append("Email CC: ").append(message.getCcAddresses()).append("\n");
+        buf.append("Email BCC: ").append(message.getBccAddresses()).append("\n\n");
+        buf.append(message.getMessage());
+
+        message.getToAddresses().clear();
+        //Note: If the non production notification mailing list is blank, sending this message will throw an exception
+        message.addToAddress(getNonProductionNotificationMailingList());
+        message.getBccAddresses().clear();
+        message.getCcAddresses().clear();
+        message.setMessage(buf.toString());
+
+        return message;
     }
 }

@@ -74,6 +74,7 @@
     <property name="name" value="documentType.name" />
     <property name="label" value="Type" />
     <property name="shortLabel" value="Type" />
+    <property name="maxLength" value="64" />
     <property name="control" >
     	<bean parent="LookupReadonlyControlDefinition" p:size="20"/>
     </property>

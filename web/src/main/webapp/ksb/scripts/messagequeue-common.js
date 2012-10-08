@@ -36,6 +36,11 @@ function refreshServiceRegistry()
    	document.forms[0].submit();
 }
 
+function refreshServiceBus()
+{
+    document.forms[0].elements['methodToCall'].value = 'refreshServiceBus';
+    document.forms[0].submit();
+}
 
 function deleteLocalhostEntries()
 {

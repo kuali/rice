@@ -36,7 +36,9 @@ import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
+import org.kuali.rice.kew.api.action.AdHocToGroup_v2_1_2;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
+import org.kuali.rice.kew.api.action.AdHocToPrincipal_v2_1_2;
 import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
@@ -436,6 +438,11 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     @Override
+    public DocumentActionResult adHocToPrincipal(DocumentActionParameters parameters, AdHocToPrincipal_v2_1_2 adHocToPrincipal) {
+        return adHocToPrincipal(parameters, AdHocToPrincipal_v2_1_2.to(adHocToPrincipal));
+    }
+
+    @Override
     public DocumentActionResult adHocToGroup(DocumentActionParameters parameters,
             final AdHocToGroup adHocToGroup) {
         incomingParamCheck(parameters, "parameters");
@@ -469,6 +476,11 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
                                     adHocToGroup.getRequestLabel());
                     }
                 });
+    }
+
+    @Override
+    public DocumentActionResult adHocToGroup(DocumentActionParameters parameters, AdHocToGroup_v2_1_2 adHocToGroup) {
+        return adHocToGroup(parameters, AdHocToGroup_v2_1_2.to(adHocToGroup));
     }
 
     @Override

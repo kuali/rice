@@ -63,6 +63,15 @@
         <bean parent="Training-StudentInfo"/>
         <bean parent="Training-StudentAddress"/>
         <bean parent="Training-StudentReferences"/>
+        <bean parent="Uif-Message">
+          <property name="messageText"
+                    value="Click [0] to get a full list of additional documents required."/>
+          <property name="inlineComponents">
+            <list>
+              <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="here"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -201,7 +210,7 @@
           </property>
         </bean>
         <bean parent="Uif-InputField" p:label="Race/Ethnicity" p:propertyName="ethnicity" p:required="true"
-              p:instructionalText="Please select the ethnicity/race(s) you most closely identify yourself as">
+              p:instructionalText="Please select the [link='http://kuali.org']ethnicity/race(s)[/link] you most closely identify yourself as">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl">
               <property name="options">
@@ -255,7 +264,7 @@
           </property>
         </bean>
         <bean parent="Uif-InputField" p:label="Zip" p:propertyName="zip" p:required="true" p:maxLength="10"
-              p:minLength="5">
+              p:minLength="5" p:constraintText="Only [color=red]digits[/color] allowed.">
           <property name="validCharactersConstraint">
             <bean parent="ZipcodePatternConstraint"/>
           </property>

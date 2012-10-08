@@ -20,21 +20,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
-import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
-import org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -42,9 +38,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.net.URL;
-import java.util.Enumeration;
 
 /**
  * Controller for <code>MaintenanceView</code> screens which operate on
@@ -81,15 +74,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 
         // in all of the following cases we want to load the document
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, form.getCommand()) && form.getDocId() != null) {
-            try {
-                loadDocument(form);
-            }
-            catch (UnknownDocumentIdException udie) {
-                ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
-                String url = kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_INITIATED_DOCUMENT_URL_KEY);
-                response.sendRedirect(url);
-                return getUIFModelAndView(new InitiatedDocumentInfoForm());
-            }
+            loadDocument(form);
         } else if (KewApiConstants.INITIATE_COMMAND.equals(form.getCommand())) {
             createDocument(form);
         } else {

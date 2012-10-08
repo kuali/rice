@@ -200,8 +200,13 @@ public final class KimConstants {
 		public static final String KIM_REVIEW_RESPONSIBILITY_DOCUMENT_TYPE_NAME = "IdentityManagementReviewResponsibilityMaintenanceDocument";
 		public static final String KIM_ROLE_DOCUMENT_SHORT_KEY = "IMRD";
 		public static final String KIM_GROUP_DOCUMENT_SHORT_KEY = "IMGD";
-		public static final String KIM_PERSON_DOCUMENT_SHORT_KEY = "IMPD";
-		public static final String KIM_ROLE_DOCUMENT_ACTION = "identityManagementRoleDocument.do";
+        public static final String KIM_PERSON_DOCUMENT_SHORT_KEY = "IMPD";
+        public static final String KIM_GROUP_INQUIRY_SORT_DESC_VALUE = "KIM_GROUP_INQUIRY_SORT_DESC_VALUE";
+        public static final String KIM_GROUP_INQUIRY_SORT_PREV_COL_NM = "KIM_GROUP_INQUIRY_SORT_PREV_COL_NM";
+        public static final String KIM_ROLE_INQUIRY_SORT_DESC_VALUE = "KIM_ROLE_INQUIRY_SORT_DESC_VALUE";
+        public static final String KIM_ROLE_INQUIRY_SORT_PREV_COL_NM = "KIM_ROLE_INQUIRY_SORT_PREV_COL_NM";
+
+        public static final String KIM_ROLE_DOCUMENT_ACTION = "identityManagementRoleDocument.do";
 		public static final String KIM_ROLE_INQUIRY_ACTION = "identityManagementRoleInquiry.do";
 		public static final String KIM_PERSON_DOCUMENT_ACTION = "identityManagementPersonDocument.do";
 		public static final String KIM_PERSON_INQUIRY_ACTION = "identityManagementPersonInquiry.do";

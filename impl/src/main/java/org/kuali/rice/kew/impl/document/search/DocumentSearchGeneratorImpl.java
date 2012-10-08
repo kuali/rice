@@ -407,7 +407,13 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
         StringBuilder whereSQL = new StringBuilder();
         whereSQL.append(getDocumentIdSql(criteria.getDocumentId(), getGeneratedPredicatePrefix(whereSQL.length()), docHeaderTableAlias));
-        whereSQL.append(getInitiatorSql(criteria.getInitiatorPrincipalName(), getGeneratedPredicatePrefix(whereSQL.length())));
+        // if principalId criteria exists ignore deprecated principalName search term
+        String principalInitiatorIdSql = getInitiatorIdSql(criteria.getInitiatorPrincipalId(), getGeneratedPredicatePrefix(whereSQL.length()));
+        if (StringUtils.isNotBlank(principalInitiatorIdSql)) {
+            whereSQL.append(principalInitiatorIdSql);
+        } else {
+            whereSQL.append(getInitiatorSql(criteria.getInitiatorPrincipalName(), getGeneratedPredicatePrefix(whereSQL.length())));
+        }
         whereSQL.append(getAppDocIdSql(criteria.getApplicationDocumentId(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getDateCreatedSql(criteria.getDateCreatedFrom(), criteria.getDateCreatedTo(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getDateLastModifiedSql(criteria.getDateLastModifiedFrom(), criteria.getDateLastModifiedTo(), getGeneratedPredicatePrefix(whereSQL.length())));
@@ -416,15 +422,28 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
         // flags for the table being added to the FROM class of the sql
         String principalViewerSql = getViewerSql(criteria.getViewerPrincipalName(), getGeneratedPredicatePrefix(whereSQL.length()));
+        String principalViewerIdSql = getViewerIdSql(criteria.getViewerPrincipalId(), getGeneratedPredicatePrefix(whereSQL.length()));
+        // if principalId criteria exists ignore deprecated principalName search term
+        if (StringUtils.isNotBlank(principalViewerIdSql)){
+            principalViewerSql = "";
+        }
         String groupViewerSql = getGroupViewerSql(criteria.getGroupViewerId(), getGeneratedPredicatePrefix(whereSQL.length()));
-        if (StringUtils.isNotBlank(principalViewerSql) || StringUtils.isNotBlank(groupViewerSql)) {
+        if (StringUtils.isNotBlank(principalViewerSql) || StringUtils.isNotBlank(groupViewerSql) || StringUtils.isNotBlank(principalViewerIdSql) ) {
             whereSQL.append(principalViewerSql);
+            whereSQL.append(principalViewerIdSql);
             whereSQL.append(groupViewerSql);
             fromSQL.append(", KREW_ACTN_RQST_T ");
         }
 
-        if (!("".equals(getApproverSql(criteria.getApproverPrincipalName(), getGeneratedPredicatePrefix(whereSQL.length()))))) {
-            whereSQL.append(getApproverSql(criteria.getApproverPrincipalName(), getGeneratedPredicatePrefix(whereSQL.length())));
+        String principalApproverSql =  getApproverSql(criteria.getApproverPrincipalName(), getGeneratedPredicatePrefix(whereSQL.length()));
+        String principalApproverIdSql = getApproverIdSql(criteria.getApproverPrincipalId(), getGeneratedPredicatePrefix(whereSQL.length()));
+        // if principalId criteria exists ignore deprecated principalName search term
+        if (StringUtils.isNotBlank(principalApproverIdSql)){
+            principalApproverSql = "";
+        }
+        if (StringUtils.isNotBlank(principalApproverSql) || StringUtils.isNotBlank(principalApproverIdSql)) {
+            whereSQL.append(principalApproverSql);
+            whereSQL.append(principalApproverIdSql);
             fromSQL.append(", KREW_ACTN_TKN_T ");
         }
 
@@ -597,6 +616,32 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         return returnSql.toString();
     }
 
+    public String getViewerIdSql(String viewerId, String whereClausePredicatePrefix) {
+        StringBuilder returnSql = new StringBuilder();
+        if (StringUtils.isNotBlank(viewerId)) {
+            Map<String, String> m = new HashMap<String, String>();
+            m.put("principalId", viewerId);
+
+            // This will search for people with the ability for the valid operands.
+            List<Person> personList = KimApiServiceLocator.getPersonService().findPeople(m, false);
+            List<String> principalList = new ArrayList<String>();
+
+            if(CollectionUtils.isEmpty(personList)) {
+                // they entered something that returned nothing... so we should return nothing
+                return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
+            }
+
+            for (Person person : personList){
+                principalList.add(person.getPrincipalId());
+            }
+
+            Criteria crit = new Criteria("KREW_ACTN_RQST_T", "KREW_ACTN_RQST_T");
+            crit.in("PRNCPL_ID", principalList, String.class);
+            returnSql.append(whereClausePredicatePrefix + "( DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and " + crit.buildWhere() + " )");
+        }
+        return returnSql.toString();
+    }
+
     public String getGroupViewerSql(String groupId, String whereClausePredicatePrefix) {
         String sql = "";
         if (StringUtils.isNotBlank(groupId)) {
@@ -630,6 +675,36 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
                 // they entered something that returned nothing... so we should return nothing
                 return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
         	}
+        }
+
+        for(Person p: pList){
+            principalList.add(p.getPrincipalId());
+        }
+
+        Criteria crit = new Criteria("KREW_DOC_HDR_T", tableAlias);
+        crit.in("INITR_PRNCPL_ID", principalList, String.class);
+
+        return new StringBuilder(whereClausePredicatePrefix + crit.buildWhere()).toString();
+    }
+
+    public String getInitiatorIdSql(String initiatorPrincipalId, String whereClausePredicatePrefix) {
+
+        if (StringUtils.isBlank(initiatorPrincipalId)) {
+            return "";
+        }
+
+        String tableAlias = "DOC_HDR";
+
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("principalId", initiatorPrincipalId);
+
+        // This will search for people with the ability for the valid operands.
+        List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
+        List<String> principalList = new ArrayList<String>();
+
+        if(pList == null || pList.isEmpty() ){
+            // they entered something that returned nothing... so we should return nothing
+            return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
         }
 
         for(Person p: pList){
@@ -676,6 +751,36 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
             " DOC_HDR.DOC_HDR_ID = KREW_ACTN_TKN_T.DOC_HDR_ID and upper(KREW_ACTN_TKN_T.ACTN_CD) in ('" +
             KewApiConstants.ACTION_TAKEN_APPROVED_CD + "','" + KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + "')" +
             " and " + crit.buildWhere();
+        }
+        return returnSql;
+    }
+
+    public String getApproverIdSql(String approverId, String whereClausePredicatePrefix) {
+        String returnSql = "";
+        if (StringUtils.isNotBlank(approverId)) {
+            Map<String, String> m = new HashMap<String, String>();
+            m.put("principalId", approverId);
+
+            // This will search for people with the ability for the valid operands.
+            List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
+            List<String> principalList = new ArrayList<String>();
+
+            if(pList == null || pList.isEmpty() ){
+                 // they entered something that returned nothing... so we should return nothing
+                    return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
+            }
+
+            for(Person p: pList){
+                principalList.add(p.getPrincipalId());
+            }
+
+            Criteria crit = new Criteria("KREW_ACTN_TKN_T", "KREW_ACTN_TKN_T");
+            crit.in("PRNCPL_ID", principalList, String.class);
+
+            returnSql = whereClausePredicatePrefix +
+                    " DOC_HDR.DOC_HDR_ID = KREW_ACTN_TKN_T.DOC_HDR_ID and upper(KREW_ACTN_TKN_T.ACTN_CD) in ('" +
+                    KewApiConstants.ACTION_TAKEN_APPROVED_CD + "','" + KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + "')" +
+                    " and " + crit.buildWhere();
         }
         return returnSql;
     }

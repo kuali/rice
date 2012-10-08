@@ -110,6 +110,14 @@ public interface DocumentSearchCriteriaContract {
     String getInitiatorPrincipalName();
 
     /**
+     * Returns the criteria for the principal id of the document initiator to search against when executing the
+     * document search.
+     *
+     * @return the initiator principal id criteria
+     */
+    String getInitiatorPrincipalId();
+
+    /**
      * Returns the criteria for the principal name of a "viewer" of a document (someone who received an action request
      * related to the document) to search against when executing the document search.  Follows the rules for principal
      * name criteria (see class-level documentation).
@@ -117,6 +125,14 @@ public interface DocumentSearchCriteriaContract {
      * @return the viewer principal name criteria
      */
     String getViewerPrincipalName();
+
+    /**
+     * Returns the criteria for the principal id of a "viewer" of a document (someone who received an action request
+     * related to the document) to search against when executing the document search.
+     *
+     * @return the viewer principal id criteria
+     */
+    String getViewerPrincipalId();
 
     /**
      * Returns the criteria for the id of a group who is a "viewer" of a document (a group who received an action request
@@ -158,6 +174,14 @@ public interface DocumentSearchCriteriaContract {
      * @return the viewer principal name criteria
      */
     String getApproverPrincipalName();
+
+    /**
+     * Returns the criteria for the principal id of an "approver" of a document (someone who took action against
+     * the document) to search against when executing the document search.
+     *
+     * @return the viewer principal id criteria
+     */
+    String getApproverPrincipalId();
 
     /**
      * Returns the route node name criteria to search against when executing the document search.  By default this will

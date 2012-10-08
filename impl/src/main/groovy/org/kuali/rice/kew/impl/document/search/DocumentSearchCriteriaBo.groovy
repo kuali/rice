@@ -48,9 +48,11 @@ class DocumentSearchCriteriaBo implements BusinessObject {
     String initiatorPrincipalName
     String initiatorPrincipalId
     String viewerPrincipalName
+    String viewerPrincipalId
     String groupViewerName
     String groupViewerId
     String approverPrincipalName
+    String approverPrincipalId
     String routeNodeName
     String routeNodeLogic
     Timestamp dateCreated

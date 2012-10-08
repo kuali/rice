@@ -5966,6 +5966,193 @@ document.routeDocument("user inputted annotation");
                     </tgroup>
                 </table>
             </para>
+        <sect3><title>Using NetworkIdRoleAttribute for Dynamic Routing</title>
+          <para>The RoleAttribute component in KEW allows for routing to a dynamically generated list of principals
+            or groups. However, in order to do this a Java class which implements the RoleAttribute interface must be
+            created. This is fairly simple for Java applications, but it can be painful when integrating with non-Java
+            applications.</para>
+          <para>Thankfully, the NetworkIdRoleAttribute class is an implementation of RoleAttribute which is provided
+            out of the box.  This allows users to specify in XML format who the document should be routed to.</para>
+          <sect4>
+            <title>Setting up a Document Type to use NetworkIdRoleAttribute</title>
+            <para>There is some KEW setup involved in order to utilize this functionality.  The following steps assume
+              an existing Document Type is already in place:</para>
+            <orderedlist>
+              <listitem>
+                <para><emphasis role="bold">Create a "Rule Attribute" in KEW which uses the
+                  org.kuali.rice.kew.rule.NetworkIdRoleAttribute class.</emphasis></para>
+                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow
+                  resource:WorkflowData">
+    &lt;ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute
+                  resource:RuleAttribute">
+         &lt;ruleAttribute>
+             &lt;name>Name.Of.My.NetworkIdRoleAttribute&lt;/name>
+             &lt;className>org.kuali.rice.kew.rule.NetworkIdRoleAttribute&lt;/className>
+             &lt;label>My Label&lt;/label>
+             &lt;description>My Description&lt;/description>
+             &lt;type>RuleXmlAttribute&lt;/type>
+             &lt;configuration>
+                 &lt;xmlElementLabel>myNetworkId&lt;/xmlElementLabel>
+                 &lt;roleNameLabel>My Role Name&lt;/roleNameLabel>
+                 &lt;groupTogether>true&lt;/groupTogether>
+             &lt;/configuration>
+         &lt;/ruleAttribute>
+    &lt;/ruleAttributes>
+&lt;/data></programlisting>
+                <para>There are a few areas where the configuration could be changed in this rule attrbute</para>
+                <itemizedlist>
+                  <listitem>
+                    <para><emphasis role="bold">name</emphasis> - The attribute should be named so that it can be
+                      identified as belonging to this particular application.</para>
+                  </listitem>
+                  <listitem>
+                    <para><emphasis role="bold">label and description</emphasis> - This can be anything to better
+                      describe the rule attribute</para>
+                  </listitem>
+                  <listitem>
+                    <para><emphasis role="bold">xmlElementLabel</emphasis> - This will tell the attribute how it can
+                      match XML for the incoming document to determine which xml elements represent the people the
+                      document should be routed to</para>
+                  </listitem>
+                  <listitem>
+                    <para><emphasis role="bold">roleNameLabel</emphasis> - This will show up as a label in the route
+                      log next to the requests that have been generated</para>
+                  </listitem>
+                  <listitem>
+                    <para><emphasis role="bold">groupTogether</emphasis> - Indicates whether or not all people should
+                      be grouped together for the purpose of a "first approve" role.  This defaults to false.</para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold">Create a "Rule Template" in KEW which uses the attribute previously
+                  created.</emphasis>  As with rule attribute, the name and description can be customized
+                  as desired. </para>
+                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow
+                  resource:WorkflowData">
+    &lt;ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate
+                  resource:RuleTemplate">
+        &lt;ruleTemplate>
+            &lt;name>Name.Of.My.NetworkIdRuleTemplate&lt;/name>
+            &lt;description>My Description&lt;/description>
+            &lt;attributes>
+                &lt;attribute>
+                    &lt;name>Name.Of.My.NetworkIdRoleAttribute&lt;/name>
+                    &lt;required>true&lt;/required>
+                &lt;/attribute>
+            &lt;/attributes>
+        &lt;/ruleTemplate>
+    &lt;/ruleTemplates>
+&lt;/data></programlisting>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold">Create a "Routing Rule" in KEW using the Rule Template that was created in
+                  the previous step.</emphasis></para>
+                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow
+                  resource:WorkflowData">
+    &lt;rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+        &lt;rule>
+            &lt;documentType>My.DocumentType.Name&lt;/documentType>
+            &lt;ruleTemplate>Name.Of.My.NetworkIdRuleTemplate&lt;/ruleTemplate>
+            &lt;description>My Network Id routing rule&lt;/description>
+            &lt;responsibilities>
+                &lt;responsibility>
+                    &lt;role>org.kuali.rice.kew.rule.NetworkIdRoleAttribute!networkId&lt;/role>
+                    &lt;approvePolicy>F&lt;/approvePolicy>
+                    &lt;actionRequested>A&lt;/actionRequested>
+                    &lt;priority>1&lt;/priority>
+                &lt;/responsibility>
+            &lt;/responsibilities>
+        &lt;/rule>
+    &lt;/rules>
+&lt;/data></programlisting>
+              <para>There are a few areas where the configuration could be changed in this rule:</para>
+              <itemizedlist>
+                <listitem>
+                  <para><emphasis role="bold">documentType </emphasis> - This is the document type the rule should
+                    apply to.</para>
+                </listitem>
+                <listitem>
+                  <para><emphasis role="bold">ruleTemplate</emphasis> - Use the name of the rule template previously
+                    created</para>
+                </listitem>
+                <listitem>
+                  <para><emphasis role="bold">description </emphasis> - This can be anything to better describe the
+                    rule</para>
+                </listitem>
+                <listitem>
+                  <para><emphasis role="bold">approvePolicy </emphasis> -  'F' if only one member of the role
+                    should approve or 'A' if all members of the role to approve</para>
+                </listitem>
+                <listitem>
+                  <para><emphasis role="bold">actionRequested </emphasis> - 'A' is Approve, 'K' is Acknowledge, and 'F'
+                    is FYI</para>
+                </listitem>
+              </itemizedlist>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold">Update the Document Type definition to add the "Route Node" configured
+                  to point at this node. </emphasis> Here is an example document type:</para>
+                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+   &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow
+                  resource:WorkflowData">
+      &lt;documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType
+                  resource:DocumentType">
+          &lt;documentType>
+              &lt;name>My.DocumentType.Name&lt;/name>
+              ...
+              &lt;routePaths>
+                  &lt;routePath>
+                      &lt;start name="AdHoc" nextNode="My.NetworkId.Node" />
+                      &lt;requests name="My.NetworkId.Node"/>
+                  &lt;/routePath>
+              &lt;/routePaths>
+              &lt;routeNodes>
+                  &lt;start name="AdHoc">
+                      &lt;activationType>P&lt;/activationType>
+                  &lt;/start>
+                  &lt;requests name="My.NetworkId.Node">
+                      &lt;activationType>P&lt;/activationType>
+                      &lt;ruleTemplate>Name.Of.My.NetworkIdRuleTemplate&lt;/ruleTemplate>
+                  &lt;/requests>
+              &lt;/routeNodes>
+          &lt;/documentType>
+      &lt;/documentTypes>
+   &lt;/data></programlisting>
+                <para>There are a few areas where the configuration could be changed in this document type:</para>
+                <itemizedlist>
+                  <listitem>
+                    <para><emphasis role="bold">name</emphasis> - This is the name of the document type</para>
+                  </listitem>
+                  <listitem>
+                    <para><emphasis role="bold">nextNode and requests name</emphasis> - Set this to something that
+                      describes who the document will be routed to (i.e. supervisor, administrator, etc.</para>
+                  </listitem>
+                  <listitem>
+                    <para><emphasis role="bold">ruleTemplate</emphasis> - Use the name of the rule template
+                      previously created </para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+            </orderedlist>
+          </sect4>
+          <sect4>
+          <title>Using the KEW API to Route the Document</title>
+          <para>Once the document type has been set up, the KEW api can be used to set the appropriate XML on the
+            document.  Many of the operations include the ability to pass a DocumentContentUpdate.  In this example,
+            the 'applicationContent' should be set to look like the following.  In this case myNetworkId is the name
+            of the xmlElementLabel that was defined in the first step of creating the rule attribute.</para>
+          <programlisting>&lt;NetworkIdRoleAttribute>
+    &lt;myNetworkId>dev1&lt;/myNetworkId>
+    &lt;myNetworkId>dev2&lt;/myNetworkId>
+    &lt;myNetworkId>dev3&lt;/myNetworkId>
+    ...
+&lt;/NetworkIdRoleAttribute></programlisting>
+          </sect4>
+        </sect3>
         </sect2>
         <sect2>
             <title>UniversityIdRoleAttribute</title>

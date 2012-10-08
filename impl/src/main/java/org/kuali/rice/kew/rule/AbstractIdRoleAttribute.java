@@ -49,6 +49,8 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute
 
 	private static final String XML_ELEMENT_LABEL = "xmlElementLabel";
 	private static final String ROLE_NAME_LABEL = "roleNameLabel";
+    private static final String GROUP_TOGETHER_LABEL = "groupTogether";
+    private static final String STRING_ID_SEPERATOR = ",";
 
 	private String idValue;
 	private Map paramMap = new HashMap();
@@ -77,17 +79,33 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute
 			NodeList idNodes = (NodeList) xPath.evaluate("//"
 					+ getAttributeElementName() + "/" + elementName,
 					documentContent.getDocument(), XPathConstants.NODESET);
-			for (int index = 0; index < idNodes.getLength(); index++) {
+            List<String> qualifiedRoleIds = new ArrayList<String>();  //used only for groupTogether parsing
+            for (int index = 0; index < idNodes.getLength(); index++) {
 				Element idElement = (Element) idNodes.item(index);
 				String id = idElement.getTextContent();
-				qualifiedRoleNames.add(id);
-			}
+                if(isGroupTogetherRole()) {
+                    qualifiedRoleIds.add(id);
+                } else {
+			    	qualifiedRoleNames.add(id);
+			    }
+            }
+            if(isGroupTogetherRole()){
+                qualifiedRoleNames.add(StringUtils.join(qualifiedRoleIds, STRING_ID_SEPERATOR));
+            }
 			return qualifiedRoleNames;
 		} catch (XPathExpressionException e) {
 			throw new WorkflowRuntimeException(
 					"Failed to evaulate XPath expression to find ids.", e);
 		}
 	}
+
+    private boolean isGroupTogetherRole(){
+        String value = (String) getParamMap().get(GROUP_TOGETHER_LABEL);
+        if(StringUtils.isNotBlank(value) && value.equalsIgnoreCase("true")){
+            return true;
+        }
+        return false;
+    }
 
 	/**
 	 * Takes the given qualified role which contains an ID and returns a
@@ -103,10 +121,25 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute
 			readConfiguration();
 			roleNameLabel = (String) getParamMap().get(ROLE_NAME_LABEL);
 		}
-		ResolvedQualifiedRole resolvedRole = new ResolvedQualifiedRole();
+
+        String groupTogetherLabel = (String) getParamMap().get(GROUP_TOGETHER_LABEL);
+        if (groupTogetherLabel == null) {
+            readConfiguration();
+            groupTogetherLabel = (String) getParamMap().get(GROUP_TOGETHER_LABEL);
+        }
+
+        ResolvedQualifiedRole resolvedRole = new ResolvedQualifiedRole();
 		resolvedRole.setQualifiedRoleLabel(roleNameLabel);
-		resolvedRole.getRecipients().add(resolveId(qualifiedRole));
-		return resolvedRole;
+
+        if(isGroupTogetherRole()){
+            String[] qualifiedRoleIds = StringUtils.split(qualifiedRole, STRING_ID_SEPERATOR);
+            for (String qId : qualifiedRoleIds) {
+                resolvedRole.getRecipients().add(resolveId(qId));
+            }
+        }else{
+    		resolvedRole.getRecipients().add(resolveId(qualifiedRole));
+        }
+        return resolvedRole;
 	}
 
 	/**
@@ -150,12 +183,18 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute
 					String roleNameLabel = xPath.evaluate("/configuration/"
 							+ ROLE_NAME_LABEL, new InputSource(
 							new StringReader(xmlConfigData)));
+                    String groupTogetherLabel = xPath.evaluate("/configuration/"
+                            + GROUP_TOGETHER_LABEL, new InputSource(
+                            new StringReader(xmlConfigData)));
 					if (!StringUtils.isBlank(xmlElementLabel)) {
 						getParamMap().put(XML_ELEMENT_LABEL, xmlElementLabel);
 					}
 					if (!StringUtils.isBlank(roleNameLabel)) {
 						getParamMap().put(ROLE_NAME_LABEL, roleNameLabel);
 					}
+                    if (!StringUtils.isBlank(groupTogetherLabel)) {
+                        getParamMap().put(GROUP_TOGETHER_LABEL, groupTogetherLabel);
+                    }
 
 				} catch (XPathExpressionException e) {
 					throw new WorkflowRuntimeException(
@@ -170,6 +209,9 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute
 		if (getParamMap().get(ROLE_NAME_LABEL) == null) {
 			getParamMap().put(ROLE_NAME_LABEL, "");
 		}
+        if (StringUtils.isBlank((String) getParamMap().get(GROUP_TOGETHER_LABEL))) {
+            getParamMap().put(GROUP_TOGETHER_LABEL, "false");
+        }
 	}
 
 	public String getIdValue() {

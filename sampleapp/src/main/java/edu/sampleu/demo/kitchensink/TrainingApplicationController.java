@@ -15,6 +15,7 @@
  */
 package edu.sampleu.demo.kitchensink;
 
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,10 @@ public class TrainingApplicationController extends UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=submit")
     public ModelAndView submit(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
+        //set View to readOnly
+        uifForm.getView().setReadOnly(true);
+        //Put a message in the MessageMap to display on the page
+        GlobalVariables.getMessageMap().putInfo("Training-CollegeApplicationPage", "message.route.successful");
 
         return getUIFModelAndView(uifForm);
     }

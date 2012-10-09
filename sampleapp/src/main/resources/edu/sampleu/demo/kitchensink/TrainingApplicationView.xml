@@ -38,13 +38,6 @@
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
     </property>
-    <property name="footer.items">
-      <list>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Submit" p:methodToCall="submit"
-              p:performClientSideValidation="true"/>
-        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Clear all" p:actionScript="clearAll()"/>
-      </list>
-    </property>
   </bean>
 
   <!-- Alternate version of this view, only changing the theme -->
@@ -74,6 +67,20 @@
           </property>
         </bean>
       </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase">
+        <property name="items">
+          <list>
+            <bean parent="Uif-PrimaryActionButton" p:render="@{!#view.readOnly}"
+                  p:actionLabel="Submit" p:methodToCall="submit"
+                  p:performClientSideValidation="true" p:preSubmitCall="return confirm('Submit?');"
+                  p:successCallback="alert('Submit Successful')"/>
+            <bean parent="Uif-ActionLink" p:render="@{!#view.readOnly}"
+                  p:actionLabel="Clear all" p:actionScript="clearAll()"/>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 
@@ -226,6 +233,7 @@
               </property>
             </bean>
           </property>
+          <property name="readOnlyDisplayReplacement" value="@{ethnicity.toString()}"/>
         </bean>
       </list>
     </property>

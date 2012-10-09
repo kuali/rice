@@ -39,5 +39,5 @@
   <param name="version">${project.name} :: ${project.version} :: ${kuali.build.timestamp}</param>
   <param name="sampleapp.growl.testmsg">{0} was a great year, wasn't it?</param>
 
-  <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,edu.sampleu.SampleModuleResources</param>
+  <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources,edu.sampleu.SampleModuleResources</param>
 </config>

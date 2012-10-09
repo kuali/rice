@@ -416,7 +416,7 @@
   <!-- list of resource bundle names (full qualified classnames) for application messages (default namespace
    of KUALI), for messages associated with a namespace use the resourceBundleName configuration on the
    corresponding ModuleDefinition -->
-  <param name="resourceBundleNames" override="false">org.kuali.rice.krad.KRADApplicationResources</param>
+  <param name="resourceBundleNames" override="false">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources</param>
 
   <!-- indicates whether messages from an external repository should bea loaded for data dictionary beans. Enable if
   external messages are being used for dictionary text. Disable if external messages are not, or to improve startup

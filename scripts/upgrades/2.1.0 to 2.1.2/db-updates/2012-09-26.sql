@@ -23,54 +23,41 @@
 
 
 INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
-  VALUES('KR' || (SELECT (max(to_number(KIM_TYP_ID)) + 1) from KRIM_TYP_T where regexp_like(KIM_TYP_ID, '^[1-9][0-9]{0,3}$')),
-  sys_guid(), 1, 'Document Type, Route Node, and Route Status', 'documentTypeAndNodeAndRouteStatusPermissionTypeService', 'Y', 'KR-SYS')
+  VALUES('KR1000', sys_guid(), 1, 'Document Type, Route Node, and Route Status', 'documentTypeAndNodeAndRouteStatusPermissionTypeService', 'Y', 'KR-SYS')
 /
 
 INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND)
-  VALUES('KR' || (SELECT (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL
-    and regexp_like(KIM_TYP_ATTR_ID, '^[1-9][0-9]{0,3}$')),
-  sys_guid(), 1, 'a',
+  VALUES('KR1000', sys_guid(), 1, 'a',
   (select KIM_TYP_ID from KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and NMSPC_CD = 'KR-SYS'),
   (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NM = 'documentTypeName' and NMSPC_CD = 'KR-WKFLW'), 'Y')
 /
 
 INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND)
-  VALUES('KR' || (SELECT (max(to_number(substr(KIM_TYP_ATTR_ID, 3))) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID
-    is not NULL and regexp_like(KIM_TYP_ATTR_ID, '^[K][R][1-9][0-9]{0,3}$')),
-  sys_guid(), 1, 'b',
+  VALUES('KR1001',  sys_guid(), 1, 'b',
   (select KIM_TYP_ID from KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and NMSPC_CD = 'KR-SYS'),
   (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NM = 'routeNodeName' and NMSPC_CD = 'KR-WKFLW'), 'Y')
 /
 
 INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND)
-  VALUES('KR' || (SELECT (max(to_number(substr(KIM_TYP_ATTR_ID, 3))) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID
-    is not NULL and regexp_like(KIM_TYP_ATTR_ID, '^[K][R][1-9][0-9]{0,3}$')),
-  sys_guid(), 1, 'c',
+  VALUES('KR1002', sys_guid(), 1, 'c',
   (select KIM_TYP_ID from KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and NMSPC_CD = 'KR-SYS'),
   (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NM = 'routeStatusCode' and NMSPC_CD = 'KR-WKFLW'), 'Y')
 /
 
-INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR)
-  VALUES ('Y',
+INSERT INTO KRIM_PERM_TMPL_T (PERM_TMPL_ID,ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,VER_NBR)
+  VALUES ('KR1000', 'Y',
   (SELECT KIM_TYP_ID FROM KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and SRVC_NM = 'documentTypeAndNodeAndRouteStatusPermissionTypeService'),
-  'Super User Approve Single Action Request', 'KR-WKFLW', sys_guid(),
-  'KR' || (SELECT (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id
-    is not NULL and regexp_like(perm_tmpl_id, '^[1-9][0-9]{0,3}$')), 1)
+  'Super User Approve Single Action Request', 'KR-WKFLW', sys_guid(), 1)
 /
 
-INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR)
-  VALUES ('Y',
+INSERT INTO KRIM_PERM_TMPL_T (PERM_TMPL_ID,ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,VER_NBR)
+  VALUES ('KR1001', 'Y',
   (SELECT KIM_TYP_ID FROM KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and SRVC_NM = 'documentTypeAndNodeAndRouteStatusPermissionTypeService'),
-  'Super User Approve Document', 'KR-WKFLW', sys_guid(),
-  'KR' || (SELECT (max(to_number(substr(perm_tmpl_id, 3))) + 1) from krim_perm_tmpl_t where perm_tmpl_id
-    is not NULL and regexp_like(perm_tmpl_id, '^[K][R][1-9][0-9]{0,3}$')), 1)
+  'Super User Approve Document', 'KR-WKFLW', sys_guid(), 1)
 /
 
-INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR)
-  VALUES ('Y',
+INSERT INTO KRIM_PERM_TMPL_T (PERM_TMPL_ID,ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,VER_NBR)
+  VALUES ('KR1002','Y',
   (SELECT KIM_TYP_ID FROM KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and SRVC_NM = 'documentTypeAndNodeAndRouteStatusPermissionTypeService'),
-  'Super User Disapprove Document', 'KR-WKFLW', sys_guid(),
-  'KR' || (SELECT (max(to_number(substr(perm_tmpl_id, 3))) + 1) from krim_perm_tmpl_t where perm_tmpl_id
-    is not NULL and regexp_like(perm_tmpl_id, '^[K][R][1-9][0-9]{0,3}$')), 1)
+  'Super User Disapprove Document', 'KR-WKFLW', sys_guid(), 1)
 /

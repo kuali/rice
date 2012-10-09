@@ -45,6 +45,8 @@ public class TrainingApplicationForm extends UifFormBase {
 
     private List<TrainingApplicationReference> references = new ArrayList<TrainingApplicationReference>();
 
+    private List<TrainingApplicationPreviousEducation> previousEducation = new ArrayList<TrainingApplicationPreviousEducation>();
+
     public String getTerm() {
         return term;
     }
@@ -179,5 +181,13 @@ public class TrainingApplicationForm extends UifFormBase {
 
     public void setReferences(List<TrainingApplicationReference> references) {
         this.references = references;
+    }
+
+    public List<TrainingApplicationPreviousEducation> getPreviousEducation() {
+        return previousEducation;
+    }
+
+    public void setPreviousEducation(List<TrainingApplicationPreviousEducation> previousEducation) {
+        this.previousEducation = previousEducation;
     }
 }

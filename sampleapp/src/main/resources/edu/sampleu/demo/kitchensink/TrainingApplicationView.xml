@@ -63,6 +63,7 @@
         <bean parent="Training-StudentInfo"/>
         <bean parent="Training-StudentAddress"/>
         <bean parent="Training-StudentReferences"/>
+        <bean parent="Training-PreviousEducation"/>
         <bean parent="Uif-Message">
           <property name="messageText"
                     value="Click [0] to get a full list of additional documents required."/>
@@ -279,6 +280,8 @@
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="propertyName" value="references"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.TrainingApplicationReference"/>
+    <property name="layoutManager.separateAddLine" value="true" />
+    <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8" />
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Name" p:propertyName="name" p:required="true"/>
@@ -306,6 +309,29 @@
                 </list>
               </property>
             </bean>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Training-PreviousEducation" parent="Uif-Disclosure-StackedCollectionSection">
+    <property name="headerText" value="Previous Education" />
+    <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.TrainingApplicationPreviousEducation" />
+    <property name="propertyName" value="previousEducation" />
+    <property name="layoutManager.summaryTitle" value="Course" />
+    <property name="layoutManager.summaryFields" value="course,university" />
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:label="University" p:propertyName="university" p:required="true"/>
+        <bean parent="Uif-InputField" p:label="College" p:propertyName="college" p:required="true"/>
+        <bean parent="Uif-InputField" p:label="Course" p:propertyName="course" p:required="true"/>
+        <bean parent="Uif-InputField" p:label="Completion Date" p:propertyName="completionDate" >
+          <property name="control">
+            <bean parent="Uif-DateControl"/>
+          </property>
+          <property name="validCharactersConstraint">
+            <bean parent="BasicDatePatternConstraint"/>
           </property>
         </bean>
       </list>

@@ -278,6 +278,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         return (driver.findElements(by)).size()>0;
     }
     
+    protected boolean isElementPresent(String locator) {
+        return (driver.findElements(By.cssSelector(locator))).size()>0;
+    }
+    
     protected boolean isElementPresentByName(String name) {
         return isElementPresent(By.name(name));
     }

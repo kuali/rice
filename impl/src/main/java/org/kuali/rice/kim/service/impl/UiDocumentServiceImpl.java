@@ -1041,7 +1041,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						if(ObjectUtils.isNotNull(origEmpInfos)){
 							for (EntityEmploymentBo origEmpInfo : origEmpInfos) {
 								if(isSameEmpInfo(origEmpInfo, entityEmpInfo)){
-									entityEmpInfo.setId(entityEmpInfo.getEntityId());
+									entityEmpInfo.setId(origEmpInfo.getId());
 								}
 
 								if (origEmpInfo.getId()!=null && StringUtils.equals(origEmpInfo.getId(), entityEmpInfo.getId())) {

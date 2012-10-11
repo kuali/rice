@@ -768,15 +768,15 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
     var countMessage = "";
     if (errorTotal) {
         if (errorTotal == 1) {
-            countMessage = errorTotal + " error";
+            countMessage = getMessage(kradVariables.MESSAGE_TOTAL_ERROR, null, null, errorTotal);
         }
         else {
-            countMessage = errorTotal + " errors";
+            countMessage = getMessage(kradVariables.MESSAGE_TOTAL_ERRORS, null, null, errorTotal);
         }
     }
 
     if ((errorTotal > 0) + (warningTotal > 0) + (infoTotal > 0) == 3) {
-        countMessage = countMessage + " & " + (warningTotal + infoTotal) + " other messages";
+        countMessage = getMessage(kradVariables.MESSAGE_TOTAL_OTHER_MESSAGES, null, null, countMessage, (warningTotal + infoTotal));
     }
     else {
 
@@ -786,10 +786,10 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
             }
 
             if (warningTotal == 1) {
-                countMessage = countMessage + warningTotal + " warning";
+                countMessage = getMessage(kradVariables.MESSAGE_TOTAL_WARNING, null, null, warningTotal);
             }
             else {
-                countMessage = countMessage + warningTotal + " warnings";
+                countMessage = getMessage(kradVariables.MESSAGE_TOTAL_WARNINGS, null, null, warningTotal);
             }
         }
 
@@ -799,10 +799,10 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
             }
 
             if (infoTotal == 1) {
-                countMessage = countMessage + infoTotal + " message";
+                countMessage = getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null, infoTotal);
             }
             else {
-                countMessage = countMessage + infoTotal + " messages";
+                countMessage = getMessage(kradVariables.MESSAGE_TOTAL_MESSAGES, null, null, infoTotal);
             }
         }
     }
@@ -1080,11 +1080,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
 
                 if (count > 1) {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_ERRORS_CLASS + "'> [+"
-                            + count + " errors]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_ERRORS, null, null, count) + "]</span>";
                 }
                 else {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_ERRORS_CLASS + "'> [+"
-                            + count + " error]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_ERROR, null, null, count) + "]</span>";
                 }
             }
             else if(collapsedErrors.exist && !collapseMessages){
@@ -1112,11 +1112,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
 
                 if (count > 1) {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_WARNINGS_CLASS + "'> [+"
-                            + count + " warnings]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_WARNINGS, null, null, count) + "]</span>";
                 }
                 else {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_WARNINGS_CLASS + "'> [+"
-                            + count + " warning]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_WARNING, null, null, count) + "]</span>";
                 }
             }
             else if(collapsedWarnings.exist && !collapseMessages){
@@ -1145,11 +1145,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
 
                 if (count > 1) {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_INFO_CLASS + "'> [+"
-                            + count + " messages]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGES, null, null, count) + "]</span>";
                 }
                 else {
                     collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_INFO_CLASS + "'> [+"
-                            + count + " message]</span>";
+                            + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null, count) + "]</span>";
                 }
             }
             else if(collapsedInfo.exist && !collapseMessages){
@@ -1272,9 +1272,9 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
         }
     }
     if (errorCount || warningCount || infoCount) {
-        var locationText = "before";
+        var locationText = getMessage(kradVariables.MESSAGE_BEFORE);
         if (!before) {
-            locationText = "after";
+            locationText = getMessage(kradVariables.MESSAGE_AFTER);
         }
 
         if (errorCount) {
@@ -1292,7 +1292,7 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
 
         var countMessage = generateCountString(errorCount, warningCount, infoCount);
 
-        disclosureText = countMessage + " " + locationText + " the \"" + sectionTitle + "\" " + sectionType;
+        disclosureText = countMessage + " " + locationText + " " + getMessage(kradVariables.MESSAGE_THE) + " \"" + sectionTitle + "\" " + sectionType;
 
         if (links.length) {
             var subSummary = jQuery("<ul></ul>");
@@ -1336,7 +1336,7 @@ function generateSummaryLink(sectionId) {
     if (sectionData && sectionData.messageTotal) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
 
-        summaryMessage = "The \"" + sectionTitle + "\" " + sectionType + " has " + countMessage;
+        summaryMessage = getMessage(kradVariables.MESSAGE_THE_SECTION_HAS_COUNT, null, null, sectionTitle, sectionType, countMessage);
     }
 
     if (summaryMessage != "") {

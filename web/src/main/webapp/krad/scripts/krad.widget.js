@@ -343,7 +343,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
         var parameters = parameterPairs[i].split(":");
 
         if (jQuery('[name="' + escapeName(parameters[0]) + '"]').val() == "") {
-            alert("Please enter a value in the appropriate field.");
+            alert(getMessage(kradVariables.MESSAGE_PLEASE_ENTER_VALUE));
             return false;
         } else {
             queryString = queryString + "&" + parameters[1] + "=" + jQuery('[name="' + escapeName(parameters[0]) + '"]').val();
@@ -482,8 +482,8 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         var expandImage = "";
         var collapseImage = "";
         if (renderImage) {
-            var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand' class='uif-disclosure-image'/>";
-            var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='uif-disclosure-image'/>";
+            var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_EXPAND) + "' class='uif-disclosure-image'/>";
+            var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
         }
 
         var groupAccordionSpanId = groupId + "_disclosureContent";

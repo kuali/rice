@@ -96,7 +96,7 @@ function showLoading(loadingMessage, elementToBlock, replaceElement, options) {
     }
 
     if (!loadingMessage) {
-        loadingMessage = "Loading...";
+        loadingMessage = getMessage(kradVariables.MESSAGE_LOADING);
     }
 
     var loadingContent = '<img src="' + blockingOptions.blockingImage + '" alt="'
@@ -145,7 +145,7 @@ function showChangeIcon(fieldId) {
     var fieldIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (fieldMarkerSpan.length > 0 && fieldIcon.length == 0) {
-        fieldMarkerSpan.append("<img id='" + fieldId + "_changeIcon' alt='change' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "asterisk_orange.png'>");
+        fieldMarkerSpan.append("<img id='" + fieldId + "_changeIcon' alt='" + getMessage(kradVariables.MESSAGE_CHANGE) + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "asterisk_orange.png'>");
     }
 }
 
@@ -177,7 +177,7 @@ function showChangeIconOnGroupHeader(fieldId, idSuffix) {
     var headerIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (targetElement.length > 0 && headerIcon.length == 0) {
-        targetElement.append("<img id='" + fieldId + "_changeIcon' class='" + kradVariables.CHANGED_HEADER_ICON_CLASS+"' alt='change' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "asterisk_orange.png'>");
+        targetElement.append("<img id='" + fieldId + "_changeIcon' class='" + kradVariables.CHANGED_HEADER_ICON_CLASS+"' alt='" + getMessage(kradVariables.MESSAGE_CHANGE) + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "asterisk_orange.png'>");
     }
 }
 
@@ -210,7 +210,7 @@ function checkForIncidentReport(content) {
  */
 function showClientSideErrorNotification(message) {
     if (!message) {
-        message = "The form contains errors. Please correct these errors and try again.";
+        message = getMessage(kradVariables.MESSAGE_FORM_CONTAINS_ERRORS);
     }
 
     showLightboxContent(message);

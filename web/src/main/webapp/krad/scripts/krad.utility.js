@@ -1623,6 +1623,8 @@ function normalizeGroupString(sGroup) {
  */
 function getMessage(key, namespace, componentCode) {
     var cacheKey = key;
+    var totalExplicitParameters = 3; // if the number of parameters changes, change this number as well
+
     if (namespace) {
         cacheKey += "|" + namespace;
     }
@@ -1651,7 +1653,13 @@ function getMessage(key, namespace, componentCode) {
 
     var response = invokeServerListener(kradVariables.RETRIEVE_MESSAGE_METHOD_TO_CALL, params);
     if (response && response.messageText) {
-        messageText = response.messageText;
+        var pattern = new RegExp("{(([0-9])*)}", "g");
+        var args = arguments;
+
+        messageText = String(response.messageText).replace(pattern, function(match, index) {
+            var argumentIndex = parseInt(index) + parseInt(totalExplicitParameters);
+            return args[argumentIndex];
+        });
     }
 
     // store back to server for subsequent calls

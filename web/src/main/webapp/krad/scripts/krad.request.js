@@ -86,7 +86,7 @@ KradRequest.prototype = {
     validate: false,
 
     // when blocking is enabled will display this text with the blocking overlay
-    loadingMessage: "Loading...",
+    loadingMessage: getMessage(kradVariables.MESSAGE_LOADING),
 
     // jQuery object that should be blocked while the request is sent, if empty
     // and return type is update-component, the component will be blocked, else the full window

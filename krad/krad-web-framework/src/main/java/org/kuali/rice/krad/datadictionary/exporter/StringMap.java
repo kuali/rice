@@ -24,8 +24,8 @@ import java.util.Map;
 
 /**
  * Adds a litle strong type-checking and validation on top of the generic LinkedHashMap
- * 
- * 
+ *
+ *
  */
 @Deprecated
 public class StringMap extends LinkedHashMap<String, Object> {
@@ -33,7 +33,7 @@ public class StringMap extends LinkedHashMap<String, Object> {
 
     /**
      * Associates the given String with the given Map value.
-     * 
+     *
      * @param key
      * @param value
      */
@@ -43,7 +43,7 @@ public class StringMap extends LinkedHashMap<String, Object> {
 
     /**
      * Associates the given String with the given String value.
-     * 
+     *
      * @param key
      * @param value
      */
@@ -54,7 +54,7 @@ public class StringMap extends LinkedHashMap<String, Object> {
 
     /**
      * Verifies that the key isn't blank, and that the value isn't null, and prevents duplicate keys from being used.
-     * 
+     *
      * @param key
      * @param value
      */

@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validation;
 
 /**
- * Enum inherited from the Kuali Student project to track error levels in validation. 
- * 
+ * Enum inherited from the Kuali Student project to track error levels in validation.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public enum ErrorLevel {
@@ -32,12 +32,12 @@ public enum ErrorLevel {
     public int getLevel() {
         return level;
     }
-    
+
     public static ErrorLevel min(ErrorLevel e1, ErrorLevel e2) {
     	return e1.ordinal() < e2.ordinal() ? e1 : e2;
     }
     public static ErrorLevel max(ErrorLevel e1, ErrorLevel e2) {
     	return e1.ordinal() > e2.ordinal() ? e1 : e2;
     }
-    
+
 }

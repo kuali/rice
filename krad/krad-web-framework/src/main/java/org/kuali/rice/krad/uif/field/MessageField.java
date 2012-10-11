@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class MessageField extends FieldBase {
     private static final long serialVersionUID = -7045208136391722063L;
-    
+
     private Message message;
 
     public MessageField() {
@@ -99,7 +99,7 @@ public class MessageField extends FieldBase {
 
     /**
      * Nested @{link org.kuali.rice.krad.uif.element.Message} component wrapped in the field
-     * 
+     *
      * @return Message instance
      */
     public Message getMessage() {
@@ -108,7 +108,7 @@ public class MessageField extends FieldBase {
 
     /**
      * Setter for the nested message instance
-     * 
+     *
      * @param message
      */
     public void setMessage(Message message) {
@@ -119,31 +119,25 @@ public class MessageField extends FieldBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
         // Checks that the message is set
         if(getMessage()==null){
-            if(RDValidator.checkExpressions(this,"message")){
-                ErrorReport error = ErrorReport.createWarning("Message should not be null",tracer);
-                error.addCurrentValue("message ="+getMessage());
-                reports.add(error);
+            if(Validator.checkExpressions(this, "message")){
+                String currentValues [] = {"message ="+getMessage()};
+                tracer.createWarning("Message should not be null",currentValues);
             }
         }
 
         // Checks that the label is set
         if(getLabel()==null){
-            if(RDValidator.checkExpressions(this,"label")){
-                ErrorReport error = ErrorReport.createWarning("Label is null, message should be used instead",tracer);
-                error.addCurrentValue("label ="+getLabel());
-                error.addCurrentValue("Message ="+getMessage());
-                reports.add(error);
+            if(Validator.checkExpressions(this, "label")){
+                String currentValues [] = {"label ="+getLabel(),"Message ="+getMessage()};
+                tracer.createWarning("Label is null, message should be used instead",currentValues);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

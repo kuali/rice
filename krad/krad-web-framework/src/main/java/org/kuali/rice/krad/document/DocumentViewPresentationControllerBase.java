@@ -219,7 +219,7 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
     public boolean canAcknowledge(Document document) {
         return getDocumentPresentationController().canAcknowledge(document);
     }
-    
+
     public boolean canComplete(Document document) {
         return getDocumentPresentationController().canComplete(document);
     }

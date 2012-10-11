@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 /**
  * Abstraction of the regular expressions used to validate attribute values.
- * 
- * 
+ *
+ *
  */
 @Deprecated
 abstract public class CharacterLevelValidationPattern extends ValidationPattern {
@@ -34,7 +34,7 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
 
     /**
      * Sets maxLength parameter for the associated regex.
-     * 
+     *
      * @param maxLength
      */
     public void setMaxLength(int maxLength) {
@@ -55,7 +55,7 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
 
     /**
      * Sets exactLength parameter for the associated regex.
-     * 
+     *
      * @param exactLength
      */
     public void setExactLength(int exactLength) {
@@ -80,10 +80,10 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
     final public Pattern getRegexPattern() {
         if ( regexPattern == null ) {
             String regexString = getRegexString();
-    
+
             StringBuffer completeRegex = new StringBuffer("^");
             completeRegex.append(getRegexString());
-    
+
             if (maxLength != -1) {
                 completeRegex.append("{0," + maxLength + "}");
             }
@@ -93,9 +93,9 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
             else {
                 completeRegex.append("*");
             }
-    
+
             completeRegex.append("$");
-    
+
             regexPattern = Pattern.compile(completeRegex.toString());
         }
         return regexPattern;
@@ -122,7 +122,7 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
 
     /**
      * Extends the given (parent class) exportMap as needed to represent subclass instances
-     * 
+     *
      * @param exportMap
      */
     abstract public void extendExportMap(ExportMap exportMap);
@@ -140,7 +140,7 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getValidationErrorMessageKey()
 	 */
 	@Override
@@ -152,10 +152,10 @@ abstract public class CharacterLevelValidationPattern extends ValidationPattern 
 		}
 		if (getExactLength() != -1) {
 			buf.append(".exactLength");
-		}	
+		}
 		return buf.toString();
 	}
-	
+
 	protected String getValidationErrorMessageKeyOptions() {
 		return KRADConstants.EMPTY_STRING;
 	}

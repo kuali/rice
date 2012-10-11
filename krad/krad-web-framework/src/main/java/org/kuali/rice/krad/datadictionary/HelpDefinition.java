@@ -33,7 +33,7 @@ import java.io.Serializable;
  */
 public class HelpDefinition extends DataDictionaryDefinitionBase implements Serializable {
     private static final long serialVersionUID = -6869646654597012863L;
-    
+
 	protected String parameterNamespace;
     protected String parameterDetailType;
     protected String parameterName;

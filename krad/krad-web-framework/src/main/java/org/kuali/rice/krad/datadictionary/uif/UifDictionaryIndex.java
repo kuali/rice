@@ -72,7 +72,7 @@ public class UifDictionaryIndex implements Runnable {
 
     /**
      * Retrieves the View instance with the given id
-     * 
+     *
      * <p>
      * First an attempt is made to get a preloaded view (if one exists). If found it is pulled from
      * the pool and a replacement is built on another thread. If a preloaded view does not exist, one is built
@@ -130,7 +130,7 @@ public class UifDictionaryIndex implements Runnable {
             throw new DataDictionaryException("Unable to find View with id: " + viewId);
         }
 
-        return ddBeans.getBean(beanName, View.class);  
+        return ddBeans.getBean(beanName, View.class);
     }
 
     /**

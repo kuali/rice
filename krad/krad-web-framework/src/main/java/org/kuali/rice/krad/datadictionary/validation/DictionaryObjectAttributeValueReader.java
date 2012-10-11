@@ -30,9 +30,9 @@ import org.springframework.beans.InvalidPropertyException;
 
 /**
  * This class allows a dictionary object to expose information about its fields / attributes, including the values of
- * those fields, with some guidance from the DataDictionaryEntry object. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * those fields, with some guidance from the DataDictionaryEntry object.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DictionaryObjectAttributeValueReader extends BaseAttributeValueReader {
 
@@ -40,9 +40,9 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	protected DataDictionaryEntry entry;
 
 	protected BeanWrapper beanWrapper;
-	
+
 	private String attributePath;
-	
+
 	public DictionaryObjectAttributeValueReader(Object object, String entryName, DataDictionaryEntry entry) {
 		this.object = object;
 		this.entry = entry;
@@ -52,17 +52,17 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 			beanWrapper = new BeanWrapperImpl(object);
 		}
 	}
-	
+
 	public DictionaryObjectAttributeValueReader(Object object, String entryName, DataDictionaryEntry entry, String attributePath) {
 		this(object, entryName, entry);
 		this.attributePath = attributePath;
 	}
-	
+
 	@Override
 	public Constrainable getDefinition(String attrName) {
 		return entry != null ? entry.getAttributeDefinition(attrName) : null;
 	}
-	
+
 	@Override
 	public List<Constrainable> getDefinitions() {
 		if (entry instanceof DataDictionaryEntryBase) {
@@ -72,18 +72,18 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 			definitions.addAll(attributeDefinitions);
 			return definitions;
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public Constrainable getEntry() {
 		if (entry instanceof Constrainable)
 			return (Constrainable) entry;
-			
+
 		return null;
 	}
-	
+
 	@Override
 	public String getLabel(String attrName) {
 		AttributeDefinition attributeDefinition = entry != null ? entry.getAttributeDefinition(attrName) : null;
@@ -94,7 +94,7 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	public Object getObject() {
 		return this.object;
 	}
-	
+
 	@Override
 	public String getPath() {
 		String path = ValidationUtils.buildPath(attributePath, attributeName);
@@ -104,7 +104,7 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	@Override
 	public Class<?> getType(String attrName) {
 		PropertyDescriptor propertyDescriptor = beanWrapper.getPropertyDescriptor(attrName);
-		
+
 		return propertyDescriptor.getPropertyType();
 	}
 
@@ -119,12 +119,12 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		Object value = getValue(attributeName);
 		return (X) value;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <X> X getValue(String attrName) throws AttributeValidationException {
 		X attributeValue = null;
-		
+
 		Exception e = null;
 		try {
 			attributeValue = (X) beanWrapper.getPropertyValue(attrName);
@@ -133,11 +133,11 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		} catch (InvalidPropertyException ipe){
 			//just return null
 		}
-		
+
 		if (e != null)
 			throw new AttributeValidationException("Unable to lookup attribute value by name (" + attrName + ") using introspection", e);
-		
-		
+
+
 		//			JLR : KS has code to handle dynamic attributes -- not sure whether this is really needed anymore if we're actually relying on types
 		//            // Extract dynamic attributes
 		//            if(DYNAMIC_ATTRIBUTE.equals(propName)) {
@@ -145,16 +145,16 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		//            } else {
 		//				dataMap.put(propName, value);
 		//            }
-		
+
 		return attributeValue;
 	}
-	
+
 	/**
 	 * @return false if parent attribute exists and is not null, otherwise returns true.
 	 */
 	public boolean isParentAttributeNull(){
 	    boolean isParentNull = true;
-	    
+
 	    if (isNestedAttribute()){
 	        String[] pathTokens = attributeName.split("\\.");
 
@@ -166,22 +166,22 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	            parentPath += ".";
 	        }
 	    }
-	    
+
 	    return isParentNull;
 	}
-	
+
 	public boolean isNestedAttribute(){
 	    return (attributePath != null || attributeName.contains("."));
 	}
 
     @Override
 	public AttributeValueReader clone(){
-	    DictionaryObjectAttributeValueReader readerClone = 
+	    DictionaryObjectAttributeValueReader readerClone =
 	        new DictionaryObjectAttributeValueReader(this.object, this.entryName, this.entry, this.attributePath);
 	    readerClone.setAttributeName(this.attributeName);
-	    
-	    
-	    return readerClone;	    
+
+
+	    return readerClone;
 	}
-	
+
 }

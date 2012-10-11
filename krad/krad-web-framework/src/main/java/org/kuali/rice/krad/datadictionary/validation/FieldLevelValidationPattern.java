@@ -22,17 +22,17 @@ import java.util.regex.Pattern;
 
 /**
  * Abstraction of the regular expressions used to validate attribute values.
- * 
- * 
+ *
+ *
  */
 @Deprecated
 abstract public class FieldLevelValidationPattern extends ValidationPattern {
     protected Pattern regexPattern;
-    
+
     /**
      * Uses the key returned by getConfigurationRegexKey to fetch the validationPattern's regex string from the
      * ConfigurationService
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
@@ -55,9 +55,9 @@ abstract public class FieldLevelValidationPattern extends ValidationPattern {
             StringBuffer completeRegex = new StringBuffer("^");
             completeRegex.append(getRegexString());
             completeRegex.append("$");
-            regexPattern = Pattern.compile(completeRegex.toString()); 
+            regexPattern = Pattern.compile(completeRegex.toString());
         }
-        return regexPattern; 
+        return regexPattern;
     }
 
 
@@ -71,10 +71,10 @@ abstract public class FieldLevelValidationPattern extends ValidationPattern {
 
         return exportMap;
     }
-    
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getValidationErrorMessageKey()
 	 */
 	@Override

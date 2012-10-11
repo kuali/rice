@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
@@ -43,7 +43,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     private String disabledExpression;
     private String disabledReason;
     private boolean evaluateDisabledOnKeyUp;
-    
+
     private String disabledConditionJs;
     private List<String> disabledConditionControlNames;
 
@@ -67,7 +67,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      */
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
-        
+
         disabledExpression = this.getPropertyExpression("disabled");
         if(disabledExpression != null){
             ExpressionEvaluatorService expressionEvaluatorService =
@@ -193,13 +193,10 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 
 

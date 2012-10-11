@@ -19,7 +19,7 @@ package org.kuali.rice.krad.uif;
  * Constants for parameter names that need to be retrieved from general
  * <code>Map</code> implementations (like the request, action parameters map,
  * component template options, component layout options)
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifParameters {

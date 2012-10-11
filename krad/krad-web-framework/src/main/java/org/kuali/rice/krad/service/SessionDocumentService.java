@@ -43,7 +43,7 @@ public interface SessionDocumentService {
      * This method places a document into the user session.
      */
     public void addDocumentToUserSession(UserSession userSession, WorkflowDocument document);
-	
+
      /**
      * Delete DocumentFormBase from session and database.
      *
@@ -53,7 +53,7 @@ public interface SessionDocumentService {
      * @throws
      */
     public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress);
-    
+
 	/**
      * Delete KualiDocumentFormBase from session and database.
      *

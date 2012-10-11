@@ -20,14 +20,14 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 
 /**
- * This is a description of what this class does - wliang don't forget to fill this in. 
- * 
+ * This is a description of what this class does - wliang don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase implements InactivationBlockingMetadata {
 	private static final long serialVersionUID = -8765429636173190984L;
-	
+
 	protected  Class<? extends BusinessObject> blockingReferenceBusinessObjectClass;
     protected  String blockedReferencePropertyName;
     protected  Class<? extends BusinessObject> blockedBusinessObjectClass;
@@ -36,11 +36,11 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
     protected Class<? extends BusinessObject> businessObjectClass;
 
     public InactivationBlockingDefinition() {
-    }    
+    }
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
     @SuppressWarnings("unchecked")
@@ -58,14 +58,14 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
         }
         if (!BusinessObject.class.isAssignableFrom(getBlockedBusinessObjectClass())) {
             throw new AttributeValidationException("InactivationBlockingDefinitions must block a reference of type BusinessObject.  Class name: " +
-                    rootBusinessObjectClass.getClass().getName() + " blockedReferencePropertyName " + blockedReferencePropertyName + 
+                    rootBusinessObjectClass.getClass().getName() + " blockedReferencePropertyName " + blockedReferencePropertyName +
                     " class that should have been a BusinessObject: " + getBlockedBusinessObjectClass());
         }
     }
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockedReferencePropertyName()
      */
     public String getBlockedReferencePropertyName() {
@@ -78,7 +78,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockedBusinessObjectClass()
      */
     public Class<? extends BusinessObject> getBlockedBusinessObjectClass() {
@@ -91,7 +91,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getInactivationBlockingDetectionServiceBeanName()
      */
     public String getInactivationBlockingDetectionServiceBeanName() {
@@ -104,7 +104,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockingReferenceBusinessObjectClass()
      */
     public Class<? extends BusinessObject> getBlockingReferenceBusinessObjectClass() {
@@ -130,10 +130,10 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
 	public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
 		this.businessObjectClass = businessObjectClass;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "InactivationBlockingDefinition: blockedClass=" + blockedBusinessObjectClass.getName() 
+		return "InactivationBlockingDefinition: blockedClass=" + blockedBusinessObjectClass.getName()
 				+ " /blockingReferenceProperty=" + blockedReferencePropertyName
 				+ " /blockingClass=" + blockingReferenceBusinessObjectClass.getName();
 	}

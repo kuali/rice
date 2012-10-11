@@ -18,8 +18,8 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -105,7 +105,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean renderSaveLineActions;
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
-    
+
     private List<String> totalColumns;
 
     public CollectionGroup() {
@@ -1040,21 +1040,17 @@ public class CollectionGroup extends Group implements DataBinding {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
         // Checking if collectionObjectClass is set
         if(getCollectionObjectClass()==null){
-            if(RDValidator.checkExpressions(this,"collectionObjectClass")){
-                ErrorReport error = ErrorReport.createWarning("CollectionObjectClass is not set (disregard if part of an abstract)",tracer);
-                error.addCurrentValue("collectionObjectClass = "+getCollectionObjectClass());
-                reports.add(error);
+            if(Validator.checkExpressions(this, "collectionObjectClass")){
+                String currentValues [] = {"collectionObjectClass = "+getCollectionObjectClass()};
+                tracer.createWarning("CollectionObjectClass is not set (disregard if part of an abstract)",currentValues);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

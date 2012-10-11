@@ -19,8 +19,8 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 
 /**
  * Exception thrown when a class can't be found during class-related validation.
- * 
- * 
+ *
+ *
  */
 public class ClassValidationException extends DataDictionaryException {
 

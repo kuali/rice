@@ -31,7 +31,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BlockUI extends WidgetBase {
-    
+
     private String blockingImageSource;
 
     public BlockUI() {
@@ -60,12 +60,12 @@ public class BlockUI extends WidgetBase {
 
     /**
      * Path to an image that will be rendered in the blocking overlay
-     * 
+     *
      * <p>
-     * If specified, the image will be picked up and rendered before the blocking message in 
+     * If specified, the image will be picked up and rendered before the blocking message in
      * the overlay. If not given just the message will be displayed
      * </p>
-     * 
+     *
      * @return String url to the blocking image
      */
     public String getBlockingImageSource() {
@@ -74,7 +74,7 @@ public class BlockUI extends WidgetBase {
 
     /**
      * Setter for the url (source) of the blocking image to use (if any)
-     * 
+     *
      * @param blockingImageSource
      */
     public void setBlockingImageSource(String blockingImageSource) {

@@ -30,7 +30,7 @@ import java.util.Map;
 
 /**
  * Class for utility methods that pertain to UIF Lookup processing
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LookupInquiryUtils {
@@ -92,7 +92,7 @@ public class LookupInquiryUtils {
     /**
 	 * Helper method for building the title text for an element and a map of
 	 * key/value pairs
-	 * 
+	 *
 	 * @param prependText
 	 *            - text to prepend to the title
 	 * @param element

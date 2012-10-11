@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Layout manager that organizes components in a single row (horizontal) or
  * column (vertical)
- * 
+ *
  * <p>
  * Although a table based template could be used, setup is done to also support
  * a CSS based template. The items in the <code>Container</code> instance are
@@ -38,7 +38,7 @@ import java.util.List;
  * vertical orientation, the span style is set to block. Additional styling can
  * be set for the items by using the itemSpanStyle property.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BoxLayoutManager extends LayoutManagerBase {
@@ -60,11 +60,11 @@ public class BoxLayoutManager extends LayoutManagerBase {
 
 	/**
 	 * The following initialization is performed:
-	 * 
+	 *
 	 * <ul>
 	 * <li>Set the itemSpanStyle</li>
 	 * </ul>
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
      * java.lang.Object,org.kuali.rice.krad.uif.container.Container)
 	 */
@@ -125,7 +125,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	/**
 	 * Indicates whether the components should be rendered in a horizontal or
 	 * vertical column
-	 * 
+	 *
 	 * @return Orientation orientation configured for layout
 	 */
 	public Orientation getOrientation() {
@@ -134,7 +134,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 
 	/**
 	 * Setter for the orientation for layout
-	 * 
+	 *
 	 * @param orientation
 	 */
 	public void setOrientation(Orientation orientation) {
@@ -143,13 +143,13 @@ public class BoxLayoutManager extends LayoutManagerBase {
 
 	/**
 	 * Amount of separation between each item
-	 * 
+	 *
 	 * <p>
 	 * For horizontal orientation, this will be the right padding for each item.
 	 * For vertical, it will be the bottom padding for each item. The value can
 	 * be a fixed length (like px) or percentage
 	 * </p>
-	 * 
+	 *
 	 * @return
 	 */
 	public String getPadding() {
@@ -158,7 +158,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 
 	/**
 	 * Setter for the item padding
-	 * 
+	 *
 	 * @param padding
 	 */
 	public void setPadding(String padding) {
@@ -169,7 +169,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 * Used by the render to set the style on the span element that wraps the
 	 * item. By using a wrapping span the items can be aligned based on the
 	 * orientation and given the correct padding
-	 * 
+	 *
 	 * @return String css style string
 	 */
 	public String getItemStyle() {
@@ -178,7 +178,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 
 	/**
 	 * Setter for the span style
-	 * 
+	 *
 	 * @param itemStyle
 	 */
 	public void setItemStyle(String itemStyle) {

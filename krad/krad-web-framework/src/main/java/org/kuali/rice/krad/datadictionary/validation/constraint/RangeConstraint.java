@@ -21,7 +21,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
  * <p>
  * This range can be numeric or it can be a date.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 2.0
  */
@@ -50,5 +50,5 @@ public interface RangeConstraint extends DataTypeConstraint {
      * @return String specifying the minimum value
      */
 	String getExclusiveMin();
-	
+
 }

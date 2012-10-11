@@ -17,14 +17,14 @@ package org.kuali.rice.krad.datadictionary;
 
 
 /**
- * This is a description of what this class does - mpham don't forget to fill this in. 
- * 
+ * This is a description of what this class does - mpham don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoutingAttribute extends WorkflowAttributeMetadata {
 	private static final long serialVersionUID = -8232868861868863394L;
-	
+
 	private String qualificationAttributeName;
 
 	public String getQualificationAttributeName() {

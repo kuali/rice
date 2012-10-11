@@ -31,7 +31,7 @@ import java.text.ParseException;
  * Class is used to format
  * <code>org.kuali.rice.core.api.util.type.KualiDecimal</code> in the local
  * currency
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifCurrencyEditor extends PropertyEditorSupport implements Serializable {
@@ -40,7 +40,7 @@ public class UifCurrencyEditor extends PropertyEditorSupport implements Serializ
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see java.beans.PropertyEditorSupport#getAsText()
      */
     @Override
@@ -72,7 +72,7 @@ public class UifCurrencyEditor extends PropertyEditorSupport implements Serializ
     /**
      * retrieves a currency formatter instance and sets ParseBigDecimal to true
      * to fix [KULEDOCS-742]
-     * 
+     *
      * @return CurrencyInstance
      */
     private NumberFormat getCurrencyInstanceUsingParseBigDecimal() {
@@ -87,7 +87,7 @@ public class UifCurrencyEditor extends PropertyEditorSupport implements Serializ
      * This overridden method sets the property value by parsing a given String.
      * It uses the <code>convertToObject</code> method to make the code
      * available to sub classes.
-     * 
+     *
      * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
      */
     @Override
@@ -99,7 +99,7 @@ public class UifCurrencyEditor extends PropertyEditorSupport implements Serializ
      * Converts the string to a
      * <code>org.kuali.rice.core.api.util.type.KualiDecimal</code> object using the
      * local currency format.
-     * 
+     *
      * @param text
      *            the text from the UI to convert
      * @return the <code>org.kuali.rice.core.api.util.type.KualiDecimal</code>

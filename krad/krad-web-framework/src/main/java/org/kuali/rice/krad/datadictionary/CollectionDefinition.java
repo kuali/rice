@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.CollectionSizeConstrainable;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 
@@ -230,21 +230,15 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * Directly validate simple fields, call completeValidation on Definition
      * fields.
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass,
-            TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass,
+            ValidationTrace tracer) {
         tracer.addBean(this.getClass().getSimpleName(), "Attribute: " + getName());
-
         if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
-            ErrorReport error = ErrorReport.createError("Property is not collection property of the class", tracer);
-            error.addCurrentValue("property = " + getName());
-            error.addCurrentValue("Class =" + rootBusinessObjectClass);
-            reports.add(error);
+            String currentValues [] = {"property = " + getName(),"Class =" + rootBusinessObjectClass};
+            tracer.createError("Property is not collection property of the class",currentValues);
         }
-
-        return reports;
     }
 
     /**

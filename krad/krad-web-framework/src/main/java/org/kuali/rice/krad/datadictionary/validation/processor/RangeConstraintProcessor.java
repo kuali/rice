@@ -37,8 +37,8 @@ import java.util.Date;
  * <p> An attribute
  * that is {@link RangeConstrainable} will expose a minimum and maximum value, and these will be validated against the passed
  * value in the code below.</p>
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RangeConstraintProcessor extends MandatoryElementConstraintProcessor<RangeConstraint> {
 
@@ -52,12 +52,12 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
-		
+
 		// Since any given definition that is range constrained only expressed a single min and max, it means that there is only a single constraint to impose
 		return new ProcessorResult(processSingleRangeConstraint(result, value, constraint, attributeValueReader));
 	}
-	
-	@Override 
+
+	@Override
 	public String getName() {
 		return CONSTRAINT_NAME;
 	}
@@ -85,9 +85,9 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
                 (constraint.getExclusiveMin() == null && constraint.getInclusiveMax() ==  null)){
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
         }
-		
-	
-		// This is necessary because sometimes we'll be getting a string, for example, that represents a date. 
+
+
+		// This is necessary because sometimes we'll be getting a string, for example, that represents a date.
 		DataType dataType = constraint.getDataType();
 		Object typedValue = value;
 
@@ -110,7 +110,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 			return validateRange(result, (Date)typedValue, constraint, attributeValueReader);
 		else if (typedValue instanceof Number)
 			return validateRange(result, (Number)typedValue, constraint, attributeValueReader);
-		
+
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 	}
 
@@ -124,7 +124,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
      * @return the passed in result, updated with the results of the processing
      * @throws IllegalArgumentException
      */
-	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Date value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {	
+	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Date value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {
 
 		Date date = value != null ? ValidationUtils.getDate(value, dateTimeService) : null;
 
@@ -133,7 +133,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 
         Date inclusiveMax = inclusiveMaxText != null ? ValidationUtils.getDate(inclusiveMaxText, dateTimeService) : null;
         Date exclusiveMin = exclusiveMinText != null ? ValidationUtils.getDate(exclusiveMinText, dateTimeService) : null;
-        
+
 		return isInRange(result, date, inclusiveMax, inclusiveMaxText, exclusiveMin, exclusiveMinText, attributeValueReader);
 	}
 
@@ -156,10 +156,10 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 
         String inclusiveMaxText = constraint.getInclusiveMax();
         String exclusiveMinText = constraint.getExclusiveMin();
-        
+
         BigDecimal inclusiveMax = inclusiveMaxText != null ? new BigDecimal(inclusiveMaxText) : null;
         BigDecimal exclusiveMin = exclusiveMinText != null ? new BigDecimal(exclusiveMinText) : null;
-        
+
 		return isInRange(result, number, inclusiveMax, inclusiveMaxText, exclusiveMin, exclusiveMinText, attributeValueReader);
 	}
 
@@ -177,29 +177,29 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
      */
 	private <T> ConstraintValidationResult isInRange(DictionaryValidationResult result, T value, Comparable<T> inclusiveMax, String inclusiveMaxText, Comparable<T> exclusiveMin, String exclusiveMinText, AttributeValueReader attributeValueReader) {
         // What we want to know is that the maximum value is greater than or equal to the number passed (the number can be equal to the max, i.e. it's 'inclusive')
-        Result lessThanMax = ValidationUtils.isLessThanOrEqual(value, inclusiveMax); 
+        Result lessThanMax = ValidationUtils.isLessThanOrEqual(value, inclusiveMax);
         // On the other hand, since the minimum is exclusive, we just want to make sure it's less than the number (the number can't be equal to the min, i.e. it's 'exclusive')
-        Result greaterThanMin = ValidationUtils.isGreaterThan(value, exclusiveMin); 
-          
+        Result greaterThanMin = ValidationUtils.isGreaterThan(value, exclusiveMin);
+
         // It's okay for one end of the range to be undefined - that's not an error. It's only an error if one of them is actually invalid. 
-        if (lessThanMax != Result.INVALID && greaterThanMin != Result.INVALID) { 
+        if (lessThanMax != Result.INVALID && greaterThanMin != Result.INVALID) {
         	// Of course, if they're both undefined then we didn't actually have a real constraint
         	if (lessThanMax == Result.UNDEFINED && greaterThanMin == Result.UNDEFINED)
         		return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
-        	
+
         	// In this case, we've succeeded
         	return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
         }
-        
+
         // If both comparisons happened then if either comparison failed we can show the end user the expected range on both sides.
-        if (lessThanMax != Result.UNDEFINED && greaterThanMin != Result.UNDEFINED) 
+        if (lessThanMax != Result.UNDEFINED && greaterThanMin != Result.UNDEFINED)
         	return result.addError(RANGE_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_OUT_OF_RANGE, exclusiveMinText, inclusiveMaxText);
         // If it's the max comparison that fails, then just tell the end user what the max can be
         else if (lessThanMax == Result.INVALID)
         	return result.addError(MAX_INCLUSIVE_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INCLUSIVE_MAX, inclusiveMaxText);
         // Otherwise, just tell them what the min can be
-        else 
+        else
         	return result.addError(MIN_EXCLUSIVE_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, exclusiveMinText);
 	}
-	
+
 }

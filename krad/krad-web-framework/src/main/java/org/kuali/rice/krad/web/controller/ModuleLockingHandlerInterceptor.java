@@ -34,18 +34,18 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * TODO jawbenne don't forget to fill this in. 
- * 
+ * TODO jawbenne don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ModuleLockingHandlerInterceptor implements HandlerInterceptor {
 
     private static final Logger LOG = Logger.getLogger(ModuleLockingHandlerInterceptor.class);
-    
-    
+
+
     private KualiModuleService kualiModuleService;
     private String moduleLockedMapping;
-    
+
     /**
      * @return the moduleLockedMapping
      */
@@ -69,7 +69,7 @@ public class ModuleLockingHandlerInterceptor implements HandlerInterceptor {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.springframework.web.servlet.HandlerInterceptor#afterCompletion(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
      */
     @Override
@@ -79,7 +79,7 @@ public class ModuleLockingHandlerInterceptor implements HandlerInterceptor {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.springframework.web.servlet.HandlerInterceptor#postHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.web.servlet.ModelAndView)
      */
     @Override
@@ -90,7 +90,7 @@ public class ModuleLockingHandlerInterceptor implements HandlerInterceptor {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
      */
     @Override
@@ -100,7 +100,7 @@ public class ModuleLockingHandlerInterceptor implements HandlerInterceptor {
         }
         return true;
     }
-    
+
     private ModuleService getModuleService(HttpServletRequest request) {
         String boClass = request.getParameter(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
         if(StringUtils.isBlank(boClass)) {
@@ -133,7 +133,7 @@ public class ModuleLockingHandlerInterceptor implements HandlerInterceptor {
         }
         return false;
     }
-    
+
     protected KualiModuleService getKualiModuleService() {
         if ( kualiModuleService == null ) {
             kualiModuleService = KRADServiceLocatorWeb.getKualiModuleService();

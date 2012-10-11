@@ -87,7 +87,7 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	protected List<String> jobNames;
 
 	protected List<String> triggerNames;
-    
+
     protected List<String> resourceBundleNames;
 
 	//optional
@@ -194,7 +194,7 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	 */
 	public void setDatabaseRepositoryFilePaths(
 			List<String> databaseRepositoryFilePaths) {
-		this.trimList(databaseRepositoryFilePaths);	
+		this.trimList(databaseRepositoryFilePaths);
 		this.databaseRepositoryFilePaths = databaseRepositoryFilePaths;
 	}
 
@@ -223,10 +223,10 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	 * @param dataDictionaryPackages a List of Strings containing the dataDictionaryPackages.
 	 */
 	public void setDataDictionaryPackages(List<String> dataDictionaryPackages) {
-		this.trimList(dataDictionaryPackages);			
-		this.dataDictionaryPackages = dataDictionaryPackages;		
-	}	
-	
+		this.trimList(dataDictionaryPackages);
+		this.dataDictionaryPackages = dataDictionaryPackages;
+	}
+
 	/**
 	 * @return the externalizableBusinessObjectImplementations
 	 */
@@ -400,22 +400,22 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-    
+
     /**
-	 * 
+	 *
 	 * This method passes by reference. It will alter the list passed in.
-	 * 
+	 *
 	 * @param stringList
 	 */
 	protected void trimList(List<String> stringList){
 		if(stringList != null){
-			// we need to trim whitespace from the stringList. Because trim() creates a new string 
+			// we need to trim whitespace from the stringList. Because trim() creates a new string
 			// we have to explicitly put the new string back into the list
 			for(int i=0; i<stringList.size(); i++){
-				String elmt = stringList.get(i);				
+				String elmt = stringList.get(i);
 				elmt = elmt.trim();
 				stringList.set(i, elmt);
-			}			
+			}
 		}
 	}
 

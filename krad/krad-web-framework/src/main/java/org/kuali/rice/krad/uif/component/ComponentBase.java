@@ -18,8 +18,8 @@ package org.kuali.rice.krad.uif.component;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
@@ -143,7 +143,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private transient Map<String, Object> context;
 
     private List<PropertyReplacer> propertyReplacers;
-    
+
     private Map<String,String> dataAttributes;
 
     public ComponentBase() {
@@ -1517,9 +1517,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param value value of the data attribute
      */
     public void addDataAttribute(String key, String value){
-        dataAttributes.put(key,value);    
+        dataAttributes.put(key,value);
     }
-    
+
     /**
      * Add a data attribute to the dataAttributes map if the given value is non null
      * or the empty string
@@ -1606,87 +1606,67 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports =new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
         // Check for invalid characters in the components id
         if(getId()!=null){
             if(getId().contains("'")||getId().contains("\"")||getId().contains("[]")||getId().contains(".")||getId().contains("#")){
-                ErrorReport error = ErrorReport.createError("Id contains invalid characters",tracer);
-                error.addCurrentValue("id = "+getId());
-                reports.add(error);
+                String currentValues [] = {"id = "+getId()};
+                tracer.createError("Id contains invalid characters",currentValues);
             }
         }
 
-        if(tracer.getValidationStage()==TracerToken.BUILD){
+        if(tracer.getValidationStage()== ValidationTrace.BUILD){
             // Check for a render presence if the component is set to render
             if((isProgressiveRenderViaAJAX()||isProgressiveRenderAndRefresh()) && (getProgressiveRender()==null)){
-                ErrorReport error = ErrorReport.createError("ProgressiveRender must be set if progressiveRenderViaAJAX or progressiveRenderAndRefresh are true",tracer);
-                error.addCurrentValue("progressiveRenderViaAJAX = "+isProgressiveRenderViaAJAX());
-                error.addCurrentValue("progressiveRenderAndRefresh = "+isProgressiveRenderAndRefresh());
-                error.addCurrentValue("progressiveRender = "+getProgressiveRender());
-                reports.add(error);
+                String currentValues [] = {"progressiveRenderViaAJAX = "+isProgressiveRenderViaAJAX(),"progressiveRenderAndRefresh = "+isProgressiveRenderAndRefresh(),"progressiveRender = "+getProgressiveRender()};
+                tracer.createError("ProgressiveRender must be set if progressiveRenderViaAJAX or progressiveRenderAndRefresh are true",currentValues);
             }
         }
 
         // Check for rendered html if the component is set to self render
         if(isSelfRendered() && getRenderedHtmlOutput()==null) {
-            ErrorReport error = ErrorReport.createError("RenderedHtmlOutput must be set if selfRendered is true",tracer);
-            error.addCurrentValue("selfRendered = "+isSelfRendered());
-            error.addCurrentValue("renderedHtmlOutput = "+getRenderedHtmlOutput());
-            reports.add(error);
+            String currentValues [] = {"selfRendered = "+isSelfRendered(),"renderedHtmlOutput = "+getRenderedHtmlOutput()};
+            tracer.createError("RenderedHtmlOutput must be set if selfRendered is true",currentValues);
         }
 
         // Check to prevent over writing of session persistence status
         if(isDisableSessionPersistence() && isForceSessionPersistence()){
-            ErrorReport error = ErrorReport.createWarning("DisableSessionPersistence and forceSessionPersistence cannot be both true",tracer);
-            error.addCurrentValue("disableSessionPersistence = "+isDisableSessionPersistence());
-            error.addCurrentValue("forceSessionPersistence = "+isForceSessionPersistence());
-            reports.add(error);
+            String currentValues [] = {"disableSessionPersistence = "+isDisableSessionPersistence(),"forceSessionPersistence = "+isForceSessionPersistence()};
+            tracer.createWarning("DisableSessionPersistence and forceSessionPersistence cannot be both true",currentValues);
         }
 
         // Check for un-executable data resets when no refresh option is set
         if(getMethodToCallOnRefresh()!=null || isResetDataOnRefresh()){
             if(!isProgressiveRenderAndRefresh() && !isRefreshedByAction() && !isProgressiveRenderViaAJAX() && !StringUtils.isNotEmpty(conditionalRefresh) && !(refreshTimer > 0)){
-                ErrorReport error = ErrorReport.createWarning("MethodToCallONRefresh and resetDataONRefresh should only be set when a trigger event is set",tracer);
-                error.addCurrentValue("methodToCallONRefresh = "+getMethodToCallOnRefresh());
-                error.addCurrentValue("resetDataONRefresh = "+isResetDataOnRefresh());
-                error.addCurrentValue("progressiveRenderAndRefresh = "+ isProgressiveRenderAndRefresh());
-                error.addCurrentValue("refreshedByAction = "+ isRefreshedByAction());
-                error.addCurrentValue("progressiveRenderViaAJAX = "+ isProgressiveRenderViaAJAX());
-                error.addCurrentValue("conditionalRefresh = "+ getConditionalRefresh());
-                error.addCurrentValue("refreshTimer = "+ getRefreshTimer());
-                reports.add(error);
+                String currentValues [] = {"methodToCallONRefresh = "+getMethodToCallOnRefresh(),"resetDataONRefresh = "+isResetDataOnRefresh(),
+                        "progressiveRenderAndRefresh = "+ isProgressiveRenderAndRefresh(),"refreshedByAction = "+ isRefreshedByAction(),
+                        "progressiveRenderViaAJAX = "+ isProgressiveRenderViaAJAX(),"conditionalRefresh = "+ getConditionalRefresh(),"refreshTimer = "+ getRefreshTimer()};
+                tracer.createWarning("MethodToCallONRefresh and resetDataONRefresh should only be set when a trigger event is set",currentValues);
             }
         }
 
         // Check to prevent complications with rendering and refreshing a component that is not always shown
         if(StringUtils.isNotEmpty(getProgressiveRender()) && StringUtils.isNotEmpty(conditionalRefresh)){
-            ErrorReport error = ErrorReport.createWarning("DO NOT use progressiveRender and conditionalRefresh on the same component unless "
+            String currentValues [] = {"progressiveRender = "+getProgressiveRender(),"conditionalRefresh = "+getConditionalRefresh()};
+            tracer.createWarning("DO NOT use progressiveRender and conditionalRefresh on the same component unless "
                     + "it is known that the component will always be visible in all cases when a conditionalRefresh "
                     + "happens (ie conditionalRefresh has progressiveRender's condition and with its own condition). "
                     + "If a component should be refreshed every time it is shown, use the progressiveRenderAndRefresh "
-                    + "option with this property instead.",tracer);
-            error.addCurrentValue("progressiveRender = "+getProgressiveRender());
-            error.addCurrentValue("conditionalRefresh = "+getConditionalRefresh());
-            reports.add(error);
+                    + "option with this property instead.",currentValues);
         }
 
         // Check for valid Spring EL format for progressiveRender
-        if(!RDValidator.validateSpringEL(getProgressiveRender())){
-            ErrorReport error = ErrorReport.createError("ProgressiveRender must follow the Spring EL @{} format",tracer);
-            error.addCurrentValue("progressiveRender ="+getProgressiveRender());;
-            reports.add(error);
+        if(!Validator.validateSpringEL(getProgressiveRender())){
+            String currentValues [] = {"progressiveRender ="+getProgressiveRender()};
+            tracer.createError("ProgressiveRender must follow the Spring EL @{} format",currentValues);
         }
 
         // Check for valid Spring EL format for conditionalRefresh
-        if(!RDValidator.validateSpringEL(getConditionalRefresh())){
-            ErrorReport error = ErrorReport.createError("conditionalRefresh must follow the Spring EL @{} format",tracer);
-            error.addCurrentValue("conditionalRefresh ="+getConditionalRefresh());
-            reports.add(error);
+        if(!Validator.validateSpringEL(getConditionalRefresh())){
+            String currentValues [] = {"conditionalRefresh ="+getConditionalRefresh()};
+            tracer.createError("conditionalRefresh must follow the Spring EL @{} format",currentValues);;
         }
-
-        return reports;
     }
 }

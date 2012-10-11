@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,27 +25,27 @@ import java.util.List;
  * Must occur constraints are constraints that indicate some range of acceptable valid results. So a must occur constraint
  * might indicate that between 1 and 3 prequisite constraints must be valid. For example, on a person object, it might be
  * that one of three fields must be filled in:
- * 
+ *
  * 1. username
  * 2. email
  * 3. phone number
- * 
- * By imposing a must occur constraint on the person object iself, and setting three prequisite constraints below it, with a min of 1 
- * and a max of 3, this requirement can be enforced. 
- * 
+ *
+ * By imposing a must occur constraint on the person object iself, and setting three prequisite constraints below it, with a min of 1
+ * and a max of 3, this requirement can be enforced.
+ *
  * A more complicated example might be that a US address is only valid if it provides either:
  * (a) a city and state, or
  * (b) a postal code
- * 
+ *
  * To enforce this, a single must occur constraint would have two children: (1) a prequisite constraint on postal code, and (2) a must occur constraint
- * with two child prequisite constraints, on city and state, respectively. By setting min=1/max=2 at the top must occur constraint, 
+ * with two child prequisite constraints, on city and state, respectively. By setting min=1/max=2 at the top must occur constraint,
  * and min=2/max=2 at the leaf constraint, this requirement can be enforced.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public class MustOccurConstraint extends BaseConstraint {
-	
+
     private List<PrerequisiteConstraint> prerequisiteConstraints;
     private List<MustOccurConstraint> mustOccurConstraints;
 	private Integer min;
@@ -88,59 +88,40 @@ public class MustOccurConstraint extends BaseConstraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean("MustOccurConstraint", getMessageKey());
 
         if(getMax()<=0){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("Max must be greater than 0");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("max ="+getMax());
-            reports.add(error);
+            String currentValues [] = {"max ="+getMax()};
+            tracer.createWarning("Max must be greater than 0",currentValues);
         }
 
         if(getPrerequisiteConstraints()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("PrerequisiteConstraints cannot be null or empty");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("prerequisiteConstraints ="+getPrerequisiteConstraints());
-            reports.add(error);
+            String currentValues [] = {"prerequisiteConstraints ="+getPrerequisiteConstraints()};
+            tracer.createWarning("PrerequisiteConstraints cannot be null or empty",currentValues);
         }else if(getPrerequisiteConstraints().size()==0){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("PrerequisiteConstraints cannot be null or empty");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("prerequisiteConstraints.size ="+getPrerequisiteConstraints().size());
-            reports.add(error);
+            String currentValues [] = {"prerequisiteConstraints.size ="+getPrerequisiteConstraints().size()};
+            tracer.createWarning("PrerequisiteConstraints cannot be null or empty",currentValues);;
         }else{
             for(int i=0;i<getPrerequisiteConstraints().size();i++){
-                reports.addAll(getPrerequisiteConstraints().get(i).completeValidation(tracer.getCopy()));
+                getPrerequisiteConstraints().get(i).completeValidation(tracer.getCopy());
             }
         }
 
         if(getMustOccurConstraints()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("MustOccurConstraints cannot be null or empty");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("mustOccurConstraints ="+getMustOccurConstraints());
-            reports.add(error);
+            String currentValues [] = {"mustOccurConstraints ="+getMustOccurConstraints()};
+            tracer.createWarning("MustOccurConstraints cannot be null or empty",currentValues);
         }else if(getMustOccurConstraints().size()==0){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("MustOccurConstraints cannot be null or empty");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("mustOccurConstraints.size ="+getMustOccurConstraints().size());
-            reports.add(error);
+            String currentValues [] = {"mustOccurConstraints.size ="+getMustOccurConstraints().size()};
+            tracer.createWarning("MustOccurConstraints cannot be null or empty",currentValues);
         }else{
             for(int i=0;i<getMustOccurConstraints().size();i++){
-                reports.addAll(getMustOccurConstraints().get(i).completeValidation(tracer.getCopy()));
+                getMustOccurConstraints().get(i).completeValidation(tracer.getCopy());
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

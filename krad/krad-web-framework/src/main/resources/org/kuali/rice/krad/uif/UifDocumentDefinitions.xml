@@ -140,7 +140,7 @@
                                   <entry key="selectedLineIndex" value="@{#index}"/>
                               </map>
                             </property>
-                     </bean>       
+                     </bean>
 
                     <bean parent="Uif-Message" p:messageText="@{#line.attachment?.attachmentFileName}"/>
                     <bean parent="Uif-Message"

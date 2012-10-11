@@ -32,14 +32,14 @@ import org.kuali.rice.krad.uif.UifConstants;
 import java.util.List;
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProcessor<MustOccurConstraint> {
 
 	private static final String CONSTRAINT_NAME = "must occur constraint";
     private static final String FALLBACK_KEY = "mustoccursFallback";
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
      */
@@ -50,7 +50,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 
 		if (ValidationUtils.isNullOrEmpty(value))
 			return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
-		
+
 
 		ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
         if(StringUtils.isNotBlank(constraint.getMessageKey())){
@@ -73,7 +73,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 		        constraintValidationResult.setAttributePath(attributeValueReader.getPath());
 		    }
 			constraintValidationResult.setError(RiceKeyConstants.ERROR_OCCURS);
-		} 
+		}
 
 		// Store the label key (if one exists) for this constraint on the constraint validation result so it can be shown later
 
@@ -83,8 +83,8 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 		return new ProcessorResult(constraintValidationResult);
 
 	}
-	
-	@Override 
+
+	@Override
 	public String getName() {
 		return CONSTRAINT_NAME;
 	}
@@ -96,12 +96,12 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 	public Class<? extends Constraint> getConstraintType() {
 		return MustOccurConstraint.class;
 	}
-	
+
     protected boolean processMustOccurConstraint(ConstraintValidationResult topLevelResult, MustOccurConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
         boolean isSuccessful = false;
         int trueCount = 0;
-        
+
         List<PrerequisiteConstraint> prerequisiteConstraints = constraint.getPrerequisiteConstraints();
         if (prerequisiteConstraints != null) {
 	        for (PrerequisiteConstraint prerequisiteConstraint : prerequisiteConstraints) {
@@ -117,7 +117,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
         List<MustOccurConstraint> mustOccurConstraints = constraint.getMustOccurConstraints();
         if (mustOccurConstraints != null) {
 	        for (MustOccurConstraint mustOccurConstraint : mustOccurConstraints) {
-	        	// Create a new constraint validation result for this must occur constraint and make it child of the top-level constraint, 
+	        	// Create a new constraint validation result for this must occur constraint and make it child of the top-level constraint,
 	        	// then pass it in to the recursive call so that prerequisite constraints can be placed under it
 	        	ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
                 constraintValidationResult.setConstraintLabelKey(mustOccurConstraint.getMessageKey());
@@ -129,7 +129,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 
         int minimum = constraint.getMin() != null ? constraint.getMin().intValue() : 0;
         int maximum = constraint.getMax() != null ? constraint.getMax().intValue() : 0;
-        
+
         isSuccessful = (trueCount >= minimum && trueCount <= maximum) ? true : false;
 
         return isSuccessful;

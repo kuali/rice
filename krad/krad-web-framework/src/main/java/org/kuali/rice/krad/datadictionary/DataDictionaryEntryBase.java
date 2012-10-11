@@ -26,14 +26,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Contains common properties and methods for data dictionary entries
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract public class DataDictionaryEntryBase extends DictionaryBeanBase implements DataDictionaryEntry, Serializable, InitializingBean {
@@ -47,7 +47,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     protected Map<String, RelationshipDefinition> relationshipMap;
 
     protected StateMapping stateMapping;
-    
+
     public DataDictionaryEntryBase() {
         this.attributes = new ArrayList<AttributeDefinition>();
         this.complexAttributes = new ArrayList<ComplexAttributeDefinition>();
@@ -58,10 +58,10 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
         this.collectionMap = new LinkedHashMap<String, CollectionDefinition>();
         this.relationshipMap = new LinkedHashMap<String, RelationshipDefinition>();
     }
-    
+
     /* Returns the given entry class (bo class or document class) */
     public abstract Class<?> getEntryClass();
-    
+
     /**
      * @param attributeName
      * @return AttributeDefinition with the given name, or null if none with that name exists
@@ -79,7 +79,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     public List<AttributeDefinition> getAttributes() {
         return this.attributes;
     }
-    
+
     /**
 	 * @return the complexAttributes
 	 */
@@ -108,10 +108,10 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
                 throw new DuplicateEntryException("complex attribute '" + complexAttributeName + "' already defined as a Collection for class '" + getEntryClass().getName() + "'");
             } else if (attributeMap.containsKey(complexAttributeName)) {
                 throw new DuplicateEntryException("complex attribute '" + complexAttributeName + "' already defined as an Attribute for class '" + getEntryClass().getName() + "'");
-            } 
+            }
 
             complexAttributeMap.put(complexAttributeName, complexAttribute);
-            
+
         }
 
 	    this.complexAttributes = complexAttributes;
@@ -158,7 +158,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
      * Directly validate simple fields, call completeValidation on Definition fields.
      */
     public void completeValidation() {
-        
+
         for ( AttributeDefinition attributeDefinition : attributes ) {
             attributeDefinition.completeValidation(getEntryClass(), null);
         }
@@ -176,26 +176,22 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
      * Directly validate simple fields, call completeValidation on Definition
      * fields.
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
-
+    public void completeValidation(ValidationTrace tracer){
         for(AttributeDefinition definition : getAttributes()){
-            reports.addAll(definition.completeValidation(getEntryClass(),null,tracer.getCopy()));
+            definition.completeValidation(getEntryClass(),null,tracer.getCopy());
         }
         for(CollectionDefinition definition : getCollections()){
-            reports.addAll(definition.completeValidation(getEntryClass(),null,tracer.getCopy()));
+            definition.completeValidation(getEntryClass(),null,tracer.getCopy());
         }
         for(RelationshipDefinition definition : getRelationships()){
-            reports.addAll(definition.completeValidation(getEntryClass(),null,tracer.getCopy()));
+            definition.completeValidation(getEntryClass(),null,tracer.getCopy());
         }
-
-        return reports;
     }
 
     /**
-            The attributes element contains attribute 
+            The attributes element contains attribute
             elements.  These define the specifications for business object fields.
 
             JSTL: attributes is a Map which is accessed by a key of "attributes".
@@ -261,7 +257,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
             } else if (complexAttributeMap.containsKey(attributeName)){
                 throw new DuplicateEntryException("attribute '" + attributeName + "' already defined as an Complex Attribute for class '" + getEntryClass().getName() + "'");
             }
-            attributeMap.put(attributeName, attribute);            
+            attributeMap.put(attributeName, attribute);
         }
         this.attributes = attributes;
     }
@@ -314,7 +310,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
             }
 
             collectionMap.put(collectionName, collection);
-            
+
         }
         this.collections = collections;
     }
@@ -348,7 +344,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
                 * "targetName"
 
             See RelationshipsMapBuilder.java.
-            
+
      */
     public void setRelationships(List<RelationshipDefinition> relationships) {
         this.relationships = relationships;
@@ -357,7 +353,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     public Set<String> getCollectionNames() {
         return collectionMap.keySet();
     }
-    
+
     public Set<String> getAttributeNames() {
         return attributeMap.keySet();
     }
@@ -365,14 +361,14 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     public Set<String> getRelationshipNames() {
         return relationshipMap.keySet();
     }
-    
+
     /**
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
     public void afterPropertiesSet() throws Exception {
     	if ( relationships != null ) {
             relationshipMap.clear();
-            for ( RelationshipDefinition relationship : relationships ) {            
+            for ( RelationshipDefinition relationship : relationships ) {
                 if (relationship == null) {
                     throw new IllegalArgumentException("invalid (null) relationshipDefinition");
                 }
@@ -384,7 +380,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
                 relationshipMap.put(relationshipName, relationship);
             }
     	}
-    	
+
     	//Populate attributes with nested attribute definitions
     	if (complexAttributes != null){
     		for (ComplexAttributeDefinition complexAttribute:complexAttributes){
@@ -401,19 +397,19 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
      */
     private void addNestedAttributes(ComplexAttributeDefinition complexAttribute, String attrPath){
     	DataDictionaryEntryBase dataDictionaryEntry = (DataDictionaryEntryBase)complexAttribute.getDataObjectEntry();
-    	
+
     	//Add attributes for the complex attibutes
     	for (AttributeDefinition attribute:dataDictionaryEntry.getAttributes()){
     		String nestedAttributeName = attrPath + "." + attribute.getName();
     		AttributeDefinition nestedAttribute = copyAttributeDefinition(attribute);
     		nestedAttribute.setName(nestedAttributeName);
-    		
+
     		if (!attributeMap.containsKey(nestedAttributeName)){
     			this.attributes.add(nestedAttribute);
     			this.attributeMap.put(nestedAttributeName, nestedAttribute);
     		}
-    	}    	
-    	
+    	}
+
     	//Recursively add complex attributes
     	List<ComplexAttributeDefinition> nestedComplexAttributes = dataDictionaryEntry.getComplexAttributes();
     	if (nestedComplexAttributes != null){
@@ -431,22 +427,22 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
      */
     private AttributeDefinition copyAttributeDefinition(AttributeDefinition attrDefToCopy){
     	AttributeDefinition attrDefCopy = new AttributeDefinition();
-    	
-    	try {    		
+
+    	try {
 			BeanUtils.copyProperties(attrDefToCopy, attrDefCopy, new String[] { "formatterClass" });
-			
+
 			//BeanUtils doesn't copy properties w/o "get" read methods, manually copy those here
 			attrDefCopy.setRequired(attrDefToCopy.isRequired());
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return attrDefCopy;
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getStateMapping() 
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getStateMapping()
      */
     public StateMapping getStateMapping() {
         return stateMapping;

@@ -81,7 +81,7 @@ public class AttributeValidationResult implements Serializable {
 	public void setAttributeName(String attributeName) {
 		this.attributeName = attributeName;
 	}
-	
+
 	/*
 	private static final long serialVersionUID = 1L;
 
@@ -93,12 +93,12 @@ public class AttributeValidationResult implements Serializable {
 	private String attributeName;
 	private String errorKey;
 	private String[] errorParameters;
-	
+
 	public AttributeValidationResult(String attributeName) {
 		this.level = ErrorLevel.OK;
 		this.attributeName = attributeName;
 	}
-	
+
 	public AttributeValidationResult(String entryName, String attributeName) {
 		this.level = ErrorLevel.OK;
 		this.entryName = entryName;
@@ -120,7 +120,7 @@ public class AttributeValidationResult implements Serializable {
 	public void setElement(String element) {
 		this.element = element;
 	}
-	
+
 
     public ErrorLevel getErrorLevel() {
         return level;
@@ -180,5 +180,5 @@ public class AttributeValidationResult implements Serializable {
 		this.errorParameters = errorParameters;
 	}
 	*/
-	
+
 }

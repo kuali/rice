@@ -19,7 +19,7 @@ package org.kuali.rice.krad.uif.control;
  * Represents a HTML Hidden control, generally rendered as an input control of
  * type 'hidden'. This is used to hold a value that the user will not see but
  * will be posted back with the form
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HiddenControl extends ControlBase {

@@ -34,12 +34,12 @@ import java.util.Set;
 
 /**
  * Base class for all layout managers
- * 
+ *
  * <p>
  * Provides general properties of all layout managers, such as the unique id,
  * rendering template, and style settings
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements LayoutManager {
@@ -99,7 +99,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * Set of property names for the layout manager base for which on the
 	 * property value reference should be copied. Subclasses can override this
 	 * but should include a call to super
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertiesForReferenceCopy()
 	 */
     @Override
@@ -113,7 +113,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
 	/**
 	 * Default Impl
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getSupportedContainer()
 	 */
 	@Override
@@ -225,7 +225,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	/**
 	 * Builds the HTML class attribute string by combining the styleClasses list
 	 * with a space delimiter
-	 * 
+	 *
 	 * @return String class attribute string
 	 */
 	public String getStyleClassesAsString() {
@@ -241,7 +241,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * delimited by space. This is a convenience for configuration. If a child
 	 * bean needs to inherit the classes from the parent, it should configure as
 	 * a list and use merge="true"
-	 * 
+	 *
 	 * @param styleClasses
 	 */
 	public void setStyleClasses(String styleClasses) {

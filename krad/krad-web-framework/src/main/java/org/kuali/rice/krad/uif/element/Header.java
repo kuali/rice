@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -346,8 +346,7 @@ public class Header extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Checks that a correct header level is set
@@ -369,24 +368,19 @@ public class Header extends ContentElementBase {
             correctHeaderLevel = true;
         }
         if (!correctHeaderLevel) {
-            ErrorReport error = ErrorReport.createError(
-                    "HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label", tracer);
-            error.addCurrentValue("headerLevel =" + getHeaderLevel());
-            reports.add(error);
+            String currentValues [] = {"headerLevel =" + getHeaderLevel()};
+            tracer.createError("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label",currentValues);
         }
 
         // Checks that header text is set
         if (getHeaderText() == null) {
-            if (!RDValidator.checkExpressions(this, "headerText")) {
-                ErrorReport error = ErrorReport.createWarning("HeaderText should be set", tracer);
-                error.addCurrentValue("headertText =" + getHeaderText());
-                reports.add(error);
+            if (!Validator.checkExpressions(this, "headerText")) {
+                String currentValues [] = {"headertText =" + getHeaderText()};
+                tracer.createWarning("HeaderText should be set",currentValues);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 
     /**

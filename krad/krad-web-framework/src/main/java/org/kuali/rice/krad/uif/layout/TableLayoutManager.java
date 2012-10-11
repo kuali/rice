@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -28,7 +28,6 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -44,10 +43,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -1437,8 +1433,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param tracer Record of component's location
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean("TableLayoutManager", getId());
 
         if (getRowDetailsGroup() != null) {
@@ -1449,19 +1444,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
             if (!validTable) {
-                ErrorReport error = ErrorReport.createError(
-                        "If rowDetailsGroup is set richTable must be set and its render true", tracer);
-                error.addCurrentValue("rowDetailsGroup =" + getRowDetailsGroup());
-                error.addCurrentValue("richTable =" + getRichTable());
-                if (getRichTable() != null) {
-                    error.addCurrentValue("richTable.render =" + getRichTable().isRender());
-                }
-                reports.add(error);
+                String currentValues [] = {"rowDetailsGroup =" + getRowDetailsGroup(),"richTable =" + getRichTable()};
+                tracer.createError("If rowDetailsGroup is set richTable must be set and its render true",currentValues);
             }
 
         }
-
-        return reports;
     }
 
     /**

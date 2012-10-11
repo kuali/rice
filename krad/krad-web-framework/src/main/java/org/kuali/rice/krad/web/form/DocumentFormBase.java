@@ -25,12 +25,12 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * Base form for all <code>DocumentView</code> screens
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentFormBase extends UifFormBase {
 	private static final long serialVersionUID = 2190268505427404480L;
-	
+
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentFormBase.class);
 
 	private String annotation = "";
@@ -43,7 +43,7 @@ public class DocumentFormBase extends UifFormBase {
 
 	public DocumentFormBase() {
 	    super();
-	    
+
 	    instantiateDocument();
 	}
 
@@ -86,7 +86,7 @@ public class DocumentFormBase extends UifFormBase {
 	public void setDocId(String docId) {
 		this.docId = docId;
 	}
-	
+
     protected String getDefaultDocumentTypeName() {
         return "";
     }
@@ -108,7 +108,7 @@ public class DocumentFormBase extends UifFormBase {
 
 	/**
 	 * Retrieves the principal name (network id) for the document's initiator
-	 * 
+	 *
 	 * @return String initiator name
 	 */
 	public String getDocumentInitiatorNetworkId() {
@@ -127,7 +127,7 @@ public class DocumentFormBase extends UifFormBase {
 	/**
 	 * Retrieves the create date for the forms document and formats for
 	 * presentation
-	 * 
+	 *
 	 * @return String formatted document create date
 	 */
     public String getDocumentCreateDate() {
@@ -143,7 +143,7 @@ public class DocumentFormBase extends UifFormBase {
 	/**
 	 * Retrieves the <code>WorkflowDocument</code> instance from the forms
 	 * document instance
-	 * 
+	 *
 	 * @return WorkflowDocument for the forms document
 	 */
 	public WorkflowDocument getWorkflowDocument() {

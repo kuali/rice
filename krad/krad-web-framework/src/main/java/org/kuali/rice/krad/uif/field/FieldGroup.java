@@ -28,7 +28,7 @@ import java.util.List;
  * together fields by providing a group without header and footer, or simply to
  * nest full groups. The items getter/setter provided is for convenience and
  * will set the items <code>List</code> in the nested <code>Group</code>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FieldGroup extends FieldBase {
@@ -88,7 +88,7 @@ public class FieldGroup extends FieldBase {
 
 	/**
 	 * <code>Group</code> instance that is contained within in the field
-	 * 
+	 *
 	 * @return Group instance
 	 */
 	public Group getGroup() {
@@ -97,7 +97,7 @@ public class FieldGroup extends FieldBase {
 
 	/**
 	 * Setter for the field's nested group
-	 * 
+	 *
 	 * @param group
 	 */
 	public void setGroup(Group group) {
@@ -106,12 +106,12 @@ public class FieldGroup extends FieldBase {
 
 	/**
 	 * List of <code>Component</code> instances contained in the nested group
-	 * 
+	 *
 	 * <p>
 	 * Convenience method for configuration to get the items List from the
 	 * field's nested group
 	 * </p>
-	 * 
+	 *
 	 * @return List<? extends Component> items
 	 */
 	public List<? extends Component> getItems() {
@@ -124,12 +124,12 @@ public class FieldGroup extends FieldBase {
 
 	/**
 	 * Setter for the field's nested group items
-	 * 
+	 *
 	 * <p>
 	 * Convenience method for configuration to set the items List for the
 	 * field's nested group
 	 * </p>
-	 * 
+	 *
 	 * @param items
 	 */
     public void setItems(List<? extends Component> items) {

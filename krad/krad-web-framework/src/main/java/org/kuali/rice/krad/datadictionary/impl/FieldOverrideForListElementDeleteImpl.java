@@ -20,18 +20,18 @@ import java.util.List;
 import org.kuali.rice.krad.datadictionary.FieldOverride;
 
 /**
- * A Field Override used to delete elements from a Data Dictionary bean. 
- * 
+ * A Field Override used to delete elements from a Data Dictionary bean.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class FieldOverrideForListElementDeleteImpl extends FieldOverrideForListElementBase  implements FieldOverride{
-	
+
 	public Object performFieldOverride(Object bean, Object property) {
         List oldList = (List)property;
 
         int deletePos = getElementPositionInList(this.getElement(), oldList );
-        
+
         if ( deletePos < 0  )
         {
         	throw new RuntimeException("Element to be deleted could not be found:bean=" + bean + ", property=" + property);

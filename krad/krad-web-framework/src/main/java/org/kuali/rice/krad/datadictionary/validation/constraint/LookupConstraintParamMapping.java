@@ -18,8 +18,8 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 import java.util.List;
 
 /**
- * This class is a direct copy of one that was in Kuali Student. Look up constraints are currently not implemented. 
- * 
+ * This class is a direct copy of one that was in Kuali Student. Look up constraints are currently not implemented.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */

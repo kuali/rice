@@ -53,124 +53,124 @@ public abstract class BaseConstraintProcessorTest<P extends ConstraintProcessor>
 	protected BusinessObjectEntry addressEntry;
 	protected DictionaryValidationResult dictionaryValidationResult;
 	protected P processor;
-	
+
 	protected CaseConstraint countryIsUSACaseConstraint;
 	protected MustOccurConstraint topLevelConstraint;
-	
+
 	@SuppressWarnings("boxing")
 	@Before
 	public void setUp() throws Exception {
 
 		processor = newProcessor();
-		
+
 		dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		
+
 		addressEntry = new BusinessObjectEntry();
-		
-		
+
+
 		List<MustOccurConstraint> mustOccurConstraints = new ArrayList<MustOccurConstraint>();
-		
+
 		PrerequisiteConstraint postalCodeConstraint = new PrerequisiteConstraint();
 		postalCodeConstraint.setPropertyName("postalCode");
-			
+
 		PrerequisiteConstraint cityConstraint = new PrerequisiteConstraint();
 		cityConstraint.setPropertyName("city");
-		
+
 		PrerequisiteConstraint stateConstraint = new PrerequisiteConstraint();
 		stateConstraint.setPropertyName("state");
-		
+
 		List<PrerequisiteConstraint> cityStateDependencyConstraints = new ArrayList<PrerequisiteConstraint>();
 		cityStateDependencyConstraints.add(cityConstraint);
 		cityStateDependencyConstraints.add(stateConstraint);
-		
+
 		MustOccurConstraint cityStateConstraint = new MustOccurConstraint();
 		cityStateConstraint.setMin(2);
 		cityStateConstraint.setMax(2);
 		cityStateConstraint.setPrerequisiteConstraints(cityStateDependencyConstraints);
-		
+
 		// This basically means that at least one of the two child constraints must be satisfied... either the postal code must be entered or _both_ the city and state
 		topLevelConstraint = new MustOccurConstraint();
 		topLevelConstraint.setMax(2);
 		topLevelConstraint.setMin(1);
 		topLevelConstraint.setPrerequisiteConstraints(Collections.singletonList(postalCodeConstraint));
 		topLevelConstraint.setMustOccurConstraints(Collections.singletonList(cityStateConstraint));
-		
+
 		mustOccurConstraints.add(topLevelConstraint);
-		
+
 		addressEntry.setMustOccurConstraints(mustOccurConstraints);
-		
+
 		List<WhenConstraint> whenConstraints = new ArrayList<WhenConstraint>();
-		
+
 		PrerequisiteConstraint prerequisiteConstraint = new PrerequisiteConstraint();
 		prerequisiteConstraint.setPropertyName("state");
-		
+
 		WhenConstraint whenConstraint1 = new WhenConstraint();
 		whenConstraint1.setValue("USA");
 		whenConstraint1.setConstraint(prerequisiteConstraint);
-		
+
 		whenConstraints.add(whenConstraint1);
-		
+
 		countryIsUSACaseConstraint = new CaseConstraint();
 		countryIsUSACaseConstraint.setCaseSensitive(false);
 //		countryIsUSACaseConstraint.setFieldPath("country");
 		countryIsUSACaseConstraint.setWhenConstraint(whenConstraints);
-		
-		
+
+
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
-		
+
 		ValidCharactersConstraint street1ValidCharactersConstraint = new ValidCharactersConstraint();
 		street1ValidCharactersConstraint.setValue("regex:\\d{3}\\s+\\w+\\s+Ave");
-		
+
 		street1Definition = new AttributeDefinition();
 		street1Definition.setName("street1");
 		street1Definition.setValidCharactersConstraint(street1ValidCharactersConstraint);
 		attributes.add(street1Definition);
-		
+
 		street2Definition = new AttributeDefinition();
 		street2Definition.setName("street2");
 		attributes.add(street2Definition);
-		
+
 		AttributeDefinition cityDefinition = new AttributeDefinition();
 		cityDefinition.setName("city");
 		attributes.add(cityDefinition);
-		
+
 		ValidCharactersConstraint stateValidCharactersConstraint = new ValidCharactersConstraint();
 		stateValidCharactersConstraint.setValue("ABCD");
-		
+
 		stateDefinition = new AttributeDefinition();
 		stateDefinition.setName("state");
 		stateDefinition.setValidCharactersConstraint(stateValidCharactersConstraint);
 		attributes.add(stateDefinition);
-		
+
 		postalCodeDefinition = new AttributeDefinition();
 		postalCodeDefinition.setName("postalCode");
 		postalCodeDefinition.setExclusiveMin("1000");
 		postalCodeDefinition.setInclusiveMax("99999");
 		postalCodeDefinition.setDataType(DataType.LONG);
 		attributes.add(postalCodeDefinition);
-		
+
 		countryDefinition = new AttributeDefinition();
 		countryDefinition.setName("country");
 		countryDefinition.setCaseConstraint(countryIsUSACaseConstraint);
 		attributes.add(countryDefinition);
-		
-		addressEntry.setAttributes(attributes);	
+
+		addressEntry.setAttributes(attributes);
 	}
-	
-	
+
+
 	protected ConstraintValidationResult process(Object object, String attributeName, Constraint constraint) {
 		return processRaw(object, attributeName, constraint).getFirstConstraintValidationResult();
 	}
-	
+
 	protected ProcessorResult processRaw(Object object, String attributeName, Constraint constraint) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
-		
+
 		Object value = attributeName != null ? attributeValueReader.getValue() : object;
-		
+
 		return processor.process(dictionaryValidationResult, value, constraint, attributeValueReader);
 	}
-	
+
 	protected abstract P newProcessor();
 }

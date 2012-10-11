@@ -28,13 +28,13 @@ import java.util.Map;
  *
  * <p>This provides a convenient base class
  * from which other constraint providers can be derived.</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public abstract class BaseConstraintProvider<T extends Constrainable> implements ConstraintProvider<T> {
-	
-	
+
+
 	protected Map<String, ConstraintResolver<T>> resolverMap;
 
     /**
@@ -47,7 +47,7 @@ public abstract class BaseConstraintProvider<T extends Constrainable> implements
 			resolverMap = new HashMap<String, ConstraintResolver<T>>();
 
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider#getConstraints(org.kuali.rice.krad.datadictionary.validation.capability.Constrainable, java.lang.Class)
 	 */
@@ -55,12 +55,12 @@ public abstract class BaseConstraintProvider<T extends Constrainable> implements
 	public List<Constraint> getConstraints(T definition, Class<? extends Constraint> constraintType) {
 		if (resolverMap == null)
 			init();
-		
+
 		ConstraintResolver<T> resolver = resolverMap.get(constraintType.getName());
 
 		if (resolver == null)
 			return null;
-		
+
 		return resolver.resolve(definition);
 	}
 
@@ -77,5 +77,5 @@ public abstract class BaseConstraintProvider<T extends Constrainable> implements
 	public void setResolverMap(Map<String, ConstraintResolver<T>> resolverMap) {
 		this.resolverMap = resolverMap;
 	}
-	
+
 }

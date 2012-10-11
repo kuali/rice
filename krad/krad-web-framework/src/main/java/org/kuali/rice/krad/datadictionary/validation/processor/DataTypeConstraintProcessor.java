@@ -29,12 +29,12 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 /**
  *  DataTypeConstraintProcessor processes constraints of type {@link DataTypeConstraint}
  *
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataTypeConstraintProcessor extends MandatoryElementConstraintProcessor<DataTypeConstraint> {
 
 	private static final String CONSTRAINT_NAME = "data type constraint";
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
 	 */
@@ -43,11 +43,11 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 			throws AttributeValidationException {
 
 		DataType dataType = constraint.getDataType();
-		
+
 		return new ProcessorResult(processDataTypeConstraint(result, dataType, value, attributeValueReader));
 	}
-	
-	@Override 
+
+	@Override
 	public String getName() {
 		return CONSTRAINT_NAME;
 	}
@@ -72,13 +72,13 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 	protected ConstraintValidationResult processDataTypeConstraint(DictionaryValidationResult result, DataType dataType, Object value, AttributeValueReader attributeValueReader) {
 		if (dataType == null)
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
-		
+
 		if (ValidationUtils.isNullOrEmpty(value))
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
-		
+
 		try {
 			ValidationUtils.convertToDataType(value, dataType, dateTimeService);
-		} catch (Exception e) {		
+		} catch (Exception e) {
 			switch (dataType) {
 			case BOOLEAN:
 				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BOOLEAN);
@@ -96,9 +96,9 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 			case STRING:
 			}
 		}
-		
+
 		// If we get here then it was a success!
 		return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
 	}
-	
+
 }

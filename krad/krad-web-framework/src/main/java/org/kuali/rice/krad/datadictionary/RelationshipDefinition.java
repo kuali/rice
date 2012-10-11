@@ -16,10 +16,9 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * A single Relationship definition in the DataDictionary, which contains information concerning which primitive attributes of this
  * class can be used to retrieve an instance of some related Object instance
- * 
+ *
                 The relationship element defines how primitive attributes of this
                 class can be used to retrieve an instance of some related Object instance
                 DD: See RelationshipDefinition.java.
@@ -44,14 +43,14 @@ import java.util.List;
                 which contains the following keys:
                     * "sourceName"
                     * "targetName"
- * 
+ *
  */
 public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 2946722646095412576L;
-    
+
 	protected String objectAttributeName; //Same as parentAttributeName of DataObjectRelationship
 	protected Class<?> sourceClass; //parentClass
-	
+
     /**
      * For 1:1 relationships, this class represents the type of the reference class.  For 1:n references, this class represents the type of the element
      * of the collection
@@ -81,7 +80,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 	        if (propertyClass == null) {
 	            throw new AttributeValidationException("cannot get valid class for property '" + objectAttributeName + "' as an attribute of '" + sourceClass + "'");
 	        }
-	
+
 	        targetClass = propertyClass;
         }
         return targetClass;
@@ -89,7 +88,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Sets the {@link #targetClass}
-     * 
+     *
      * @param targetClass
      */
     public void setTargetClass(Class<?> targetClass) {
@@ -110,7 +109,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 
     public List<PrimitiveAttributeDefinition> getPrimitiveAttributes() {
         return primitiveAttributes;
-    }    
+    }
 
     public List<SupportAttributeDefinition> getSupportAttributes() {
         return supportAttributes;
@@ -124,7 +123,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         }
         return false;
     }
-    
+
     public SupportAttributeDefinition getIdentifier() {
         for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
             if ( supportAttributeDefinition.isIdentifier() ) {
@@ -133,10 +132,10 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         }
         return null;
     }
-    
+
     /**
      * Directly validate simple fields, call completeValidation on Definition fields.
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
@@ -158,46 +157,36 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     /**
      * Directly validate simple fields
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer){
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationTrace tracer){
         tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getObjectAttributeName());
         try{
             if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getObjectAttributeName())) {
-                ErrorReport error = ErrorReport.createError("Property is not an attribute of the class",tracer);
-                error.addCurrentValue("property = "+getObjectAttributeName());
-                error.addCurrentValue("Class ="+ rootBusinessObjectClass);
-                reports.add(error);
+                String currentValues [] = {"property = "+getObjectAttributeName(),"Class ="+ rootBusinessObjectClass};
+                tracer.createError("Property is not an attribute of the class",currentValues);
             }
         }catch (RuntimeException ex) {
-            ErrorReport error = ErrorReport.createError("Unable to validate attribute",tracer);
-            error.addCurrentValue("attribute = "+getObjectAttributeName());
-            error.addCurrentValue("Exception = "+ex.getMessage());
-            reports.add(error);
+            String currentValues [] = {"attribute = "+getObjectAttributeName(),"Exception = "+ex.getMessage()};
+            tracer.createError("Unable to validate attribute",currentValues);
         }
-
 
         if (targetClass == null) {
             Class propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
             if (propertyClass == null) {
-                ErrorReport error = ErrorReport.createError("Cannot get valid class for property", tracer);
-                error.addCurrentValue("property = "+getObjectAttributeName());
-                error.addCurrentValue("sourceClass = "+getSourceClass());
-                reports.add(error);
+                String currentValues [] = {"property = "+getObjectAttributeName(),"sourceClass = "+getSourceClass()};
+                tracer.createError("Cannot get valid class for property",currentValues);
             }else{
                 targetClass = propertyClass;
             }
         }
 
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
-            reports.addAll(primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass,tracer.getCopy()));
+            primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass,tracer.getCopy());
         }
         for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
-            reports.addAll(supportAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass,tracer.getCopy()));
+            supportAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass,tracer.getCopy());
         }
-
-        return reports;
     }
 
 
@@ -210,7 +199,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * 
+     *
                     The primitiveAttribute element identifies one pair of
                     corresponding fields in the primary business object and
                     the related business object.

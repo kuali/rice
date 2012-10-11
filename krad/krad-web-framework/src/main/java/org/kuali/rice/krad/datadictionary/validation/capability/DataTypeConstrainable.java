@@ -18,13 +18,13 @@ package org.kuali.rice.krad.datadictionary.validation.capability;
 import org.kuali.rice.krad.datadictionary.validation.constraint.DataTypeConstraint;
 
 /**
- * Validation capability to constrain a value to be of a specific data type. 
- * 
+ * Validation capability to constrain a value to be of a specific data type.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DataTypeConstrainable extends Constrainable, DataTypeConstraint {
 
 	// To match up with legacy code for length and range constraints, data type constraints are imposed
 	// on the definition, making the capability a sub-interface of the constraint
-	
+
 }

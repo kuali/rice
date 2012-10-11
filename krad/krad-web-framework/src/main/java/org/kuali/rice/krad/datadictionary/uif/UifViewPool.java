@@ -21,13 +21,13 @@ import java.util.Stack;
 
 /**
  * Holds preloaded view instances up to a configured size
- * 
+ *
  * <p>
  * The initial creation of the view object from Spring can be expensive in certain cases. To help with this, views
  * can be preloaded with this pool class. When a request for a new view instance is made, a check will be done first
  * to see if there is a pool and if so pull the already loaded view
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see UifDictionaryIndex#getViewById(java.lang.String)
  */

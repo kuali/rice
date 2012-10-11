@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
@@ -130,34 +130,30 @@ public class Link extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
+    public void completeValidation(ValidationTrace tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
-        if(tracer.getValidationStage()==TracerToken.BUILD){
+        if(tracer.getValidationStage()== ValidationTrace.BUILD){
 
             // Checks that href is set
             if(getHref()==null){
-                if(!RDValidator.checkExpressions(this,"href")){
-                    ErrorReport error = ErrorReport.createError("Href must be set",tracer);
-                    error.addCurrentValue("href ="+getHref());
-                    reports.add(error);
+                if(!Validator.checkExpressions(this, "href")){
+                    String currentValues [] = {"href ="+getHref()};
+                    tracer.createError("Href must be set",currentValues);
                 }
             }
 
             // Checks that the text is set
             if(getLinkText()==null){
-                if(!RDValidator.checkExpressions(this,"linkText")){
-                    ErrorReport error = ErrorReport.createError("LinkText must be set",tracer);
-                    error.addCurrentValue("linkText = "+getLinkText());
-                    reports.add(error);
+                if(!Validator.checkExpressions(this, "linkText")){
+                    String currentValues [] = {"linkText = "+getLinkText()};
+                    tracer.createError("LinkText must be set",currentValues);
                 }
             }
 
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

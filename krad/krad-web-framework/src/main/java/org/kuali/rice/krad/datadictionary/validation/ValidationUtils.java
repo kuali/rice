@@ -30,7 +30,7 @@ import java.util.Date;
  * ValidationUtils provides static utility methods for validation processing
  *
  * <p>Inherited from Kuali Student and adapted extensively</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValidationUtils {
@@ -44,26 +44,26 @@ public class ValidationUtils {
      */
     public static String buildPath(String attributePath, String attributeName) {
 		if (StringUtils.isNotBlank(attributeName)) {
-			if (StringUtils.isNotBlank(attributePath)) 
+			if (StringUtils.isNotBlank(attributePath))
 				return new StringBuilder(attributePath).append(".").append(attributeName).toString();
-		
+
 			return attributeName;
 		}
 		return attributePath;
 	}
-	
+
 	/**
 	 * Used to get the rightmost index value of an attribute path.
-	 *  
+	 *
 	 * @param attributePath
 	 * @return the right index of value of attribute path, -1 if path has no index
 	 */
 	public static int getLastPathIndex(String attributePath){
 	    int index = -1;
-	    
+
 	    int leftBracket = attributePath.lastIndexOf("[");
 	    int rightBracket = attributePath.lastIndexOf("]");
-	    
+
 	    if (leftBracket > 0 && rightBracket > leftBracket){
 	        String indexString = attributePath.substring(leftBracket +1, rightBracket);
 	        try {
@@ -72,7 +72,7 @@ public class ValidationUtils {
                 // Will just return -1
             }
 	    }
-	    
+
 	    return index;
 	}
 
@@ -104,7 +104,7 @@ public class ValidationUtils {
 				return "false".equals(whenValue.toString().toLowerCase());
 			}
 			return "true".equals(whenValue.toString().toLowerCase());
-		}		
+		}
 		// Convert objects into appropriate data types
 		if (null != dataType) {
 			if (DataType.STRING.equals(dataType)) {
@@ -115,7 +115,7 @@ public class ValidationUtils {
 				    v1 = v1.toUpperCase();
 				    v2 = v2.toUpperCase();
 				}
-				
+
 				compareResult = v1.compareTo(v2);
 			} else if (DataType.INTEGER.equals(dataType)) {
 				Integer v1 = getInteger(fieldValue);
@@ -274,7 +274,7 @@ public class ValidationUtils {
 				result = dateTimeService.convertToDate(s.trim());
 			} catch (ParseException e) {
 				throw new IllegalArgumentException(e);
-			} 
+			}
 		}
 		return result;
 	}
@@ -361,15 +361,15 @@ public class ValidationUtils {
      */
 	public static Object convertToDataType(Object value, DataType dataType, DateTimeService dateTimeService) throws AttributeValidationException {
 		Object returnValue = value;
-		
+
 		if (null == value)
 			return null;
-		
+
 		switch (dataType) {
 		case BOOLEAN:
 			if (! (value instanceof Boolean)) {
 				returnValue = Boolean.valueOf(value.toString());
-				
+
 				// Since the Boolean.valueOf is exceptionally loose - it basically takes any string and makes it false
 				if (!value.toString().equalsIgnoreCase("TRUE") && !value.toString().equalsIgnoreCase("FALSE"))
 					throw new AttributeValidationException("Value " + value.toString() + " is not a boolean!");
@@ -390,7 +390,7 @@ public class ValidationUtils {
 				returnValue = Double.valueOf(value.toString());
 			}
 			if (((Double)returnValue).isNaN())
-				throw new AttributeValidationException("Infinite Double values are not valid!");		
+				throw new AttributeValidationException("Infinite Double values are not valid!");
 			if (((Double)returnValue).isInfinite())
 				throw new AttributeValidationException("Infinite Double values are not valid!");
 			break;
@@ -415,7 +415,7 @@ public class ValidationUtils {
 			break;
 		case STRING:
 		}
-		
+
 		return returnValue;
 	}
 

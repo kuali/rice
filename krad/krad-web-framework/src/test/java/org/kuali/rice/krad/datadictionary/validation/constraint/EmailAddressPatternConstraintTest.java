@@ -38,7 +38,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 
 /**
  * Things this test should check:
- * 
+ *
  * 1. empty value check. (failure) {@link #testValueInvalidEmailAddressEmpty()}
  * 2. value with valid email address. (success) {@link #testValueValidEmailAddress()}
  * 3. value with valid email address. (success) {@link #testValueValidEmailAddress1()}
@@ -54,21 +54,21 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 13. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress5()}
  * 14. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress6()}
  * 15. value with invalid email address. (failure) {@link #testValueInvalidEmailAddress7()}
- * 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmailAddressPatternConstraintTest {
-	
+
 	private final String PATTERN_CONSTRAINT = "validationPatternRegex.emailAddress";
 
 	private AttributeDefinition contactEmailDefinition;
-	
+
 	private BusinessObjectEntry addressEntry;
 	private DictionaryValidationResult dictionaryValidationResult;
-	
+
 	private ValidCharactersConstraintProcessor processor;
-	
+
 	private Employee validEmailEmployee = new Employee();
 	private Employee validEmailEmployee1 = new Employee();
 	private Employee validEmailEmployee2 = new Employee();
@@ -84,23 +84,23 @@ public class EmailAddressPatternConstraintTest {
 	private Employee invalidEmailEmployee5 = new Employee();
 	private Employee invalidEmailEmployee6 = new Employee();
 	private Employee invalidEmailEmployee7 = new Employee();
-	
-	private ConfigurationBasedRegexPatternConstraint contactEmailAddressPatternConstraint;		
-	
+
+	private ConfigurationBasedRegexPatternConstraint contactEmailAddressPatternConstraint;
+
 	@Before
 	public void setUp() throws Exception {
-		
+
 		String regex = getProperty(PATTERN_CONSTRAINT);
-		
+
 		processor = new ValidCharactersConstraintProcessor();
-		
+
 		dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		
+
 		addressEntry = new BusinessObjectEntry();
-		
+
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
-		
+
 		validEmailEmployee.setContactEmail("ww5@a.b.c.org");
 		validEmailEmployee1.setContactEmail("something.else@a2.com");
 		validEmailEmployee2.setContactEmail("something_else@something.else.com");
@@ -116,18 +116,18 @@ public class EmailAddressPatternConstraintTest {
 		invalidEmailEmployee5.setContactEmail(".@a.org");
 		invalidEmailEmployee6.setContactEmail("_@a.org");
 		invalidEmailEmployee7.setContactEmail("something@a.o-rg");
-			
+
 		contactEmailAddressPatternConstraint = new ConfigurationBasedRegexPatternConstraint();
 		contactEmailAddressPatternConstraint.setValue(regex);
 
 		contactEmailDefinition = new AttributeDefinition();
 		contactEmailDefinition.setName("contactEmail");
 		contactEmailDefinition.setValidCharactersConstraint(contactEmailAddressPatternConstraint);
-		attributes.add(contactEmailDefinition);									
-		
-		addressEntry.setAttributes(attributes);	
+		attributes.add(contactEmailDefinition);
+
+		addressEntry.setAttributes(attributes);
 	}
-	
+
 	@Test
 	public void testValueInvalidEmailAddressEmpty() {
 		ConstraintValidationResult result = process(invalidEmailEmployeeEmpty, "contactEmail", contactEmailAddressPatternConstraint);
@@ -136,7 +136,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.INAPPLICABLE, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidEmailAddress() {
 		ConstraintValidationResult result = process(validEmailEmployee, "contactEmail", contactEmailAddressPatternConstraint);
@@ -145,7 +145,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidEmailAddress1() {
 		ConstraintValidationResult result = process(validEmailEmployee1, "contactEmail", contactEmailAddressPatternConstraint);
@@ -154,7 +154,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidEmailAddress2() {
 		ConstraintValidationResult result = process(validEmailEmployee2, "contactEmail", contactEmailAddressPatternConstraint);
@@ -163,7 +163,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidEmailAddress3() {
 		ConstraintValidationResult result = process(validEmailEmployee3, "contactEmail", contactEmailAddressPatternConstraint);
@@ -172,7 +172,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidEmailAddress4() {
 		ConstraintValidationResult result = process(validEmailEmployee4, "contactEmail", contactEmailAddressPatternConstraint);
@@ -181,7 +181,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueValidEmailAddress5() {
 		ConstraintValidationResult result = process(validEmailEmployee5, "contactEmail", contactEmailAddressPatternConstraint);
@@ -189,8 +189,8 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
-	}		
-	
+	}
+
 	@Test
 	public void testValueInvalidEmailAddress() {
 		ConstraintValidationResult result = process(invalidEmailEmployee, "contactEmail", contactEmailAddressPatternConstraint);
@@ -199,7 +199,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidEmailAddress1() {
 		ConstraintValidationResult result = process(invalidEmailEmployee1, "contactEmail", contactEmailAddressPatternConstraint);
@@ -208,7 +208,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidEmailAddress2() {
 		ConstraintValidationResult result = process(invalidEmailEmployee2, "contactEmail", contactEmailAddressPatternConstraint);
@@ -217,7 +217,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidEmailAddress3() {
 		ConstraintValidationResult result = process(invalidEmailEmployee3, "contactEmail", contactEmailAddressPatternConstraint);
@@ -226,7 +226,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidEmailAddress4() {
 		ConstraintValidationResult result = process(invalidEmailEmployee4, "contactEmail", contactEmailAddressPatternConstraint);
@@ -235,7 +235,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidEmailAddress5() {
 		ConstraintValidationResult result = process(invalidEmailEmployee5, "contactEmail", contactEmailAddressPatternConstraint);
@@ -244,7 +244,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidEmailAddress6() {
 		ConstraintValidationResult result = process(invalidEmailEmployee6, "contactEmail", contactEmailAddressPatternConstraint);
@@ -253,7 +253,7 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueInvalidEmailAddress7() {
 		ConstraintValidationResult result = process(invalidEmailEmployee7, "contactEmail", contactEmailAddressPatternConstraint);
@@ -262,25 +262,25 @@ public class EmailAddressPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	private ConstraintValidationResult process(Object object, String attributeName, ValidCharactersConstraint constraint) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
-		
+
 		Object value = attributeValueReader.getValue();
 		return processor.process(dictionaryValidationResult, value, constraint, attributeValueReader).getFirstConstraintValidationResult();
 	}
-	
+
 	private String getProperty(String key) {
 		String value = null;
 		String filePath = "org/kuali/rice/krad/ApplicationResources.properties";
 		Properties properties = new Properties();
-		try {			
+		try {
 			InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
 			properties.load(in);
-			value = properties.getProperty(key);			
-		} catch (IOException e) {		
+			value = properties.getProperty(key);
+		} catch (IOException e) {
 		}
-		return value;	
+		return value;
 	}
 }

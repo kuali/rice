@@ -21,8 +21,8 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 
 /**
- * PK for SessionDocument.  'Cause we love the JPAness. 
- * 
+ * PK for SessionDocument.  'Cause we love the JPAness.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -39,16 +39,16 @@ public class SessionDocumentId extends CompositePrimaryKeyBase {
 	@Id
 	@Column(name="IP_ADDR")
 	protected String ipAddress;
-	
+
 	public SessionDocumentId() {}
-	
+
 	public SessionDocumentId(String documentNumber, String sessionId, String principalId, String ipAddress) {
 		this.documentNumber = documentNumber;
 		this.sessionId = sessionId;
 		this.principalId = principalId;
 		this.ipAddress = ipAddress;
 	}
-	
+
 	/**
 	 * @return the documentNumber
 	 */
@@ -97,5 +97,5 @@ public class SessionDocumentId extends CompositePrimaryKeyBase {
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
-	
+
 }

@@ -24,22 +24,22 @@ import java.util.List;
 
 /**
  * ConstraintValidationResult is a composite class for all the different members that need to be returned when a {@link ConstraintProcessor}
- * processes a {@link Constraint}. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * processes a {@link Constraint}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConstraintValidationResult {
-	
+
 	private String entryName;
 	private String attributeName;
 	private String attributePath;
 	private String constraintName;
 	private ErrorLevel level;
-	
+
 	private String errorKey;
 	private String[] errorParameters = {};
 	private String constraintLabelKey;
-	
+
 	private List<ConstraintValidationResult> children;
 
     /**
@@ -219,5 +219,5 @@ public class ConstraintValidationResult {
 	public void setAttributePath(String attributePath) {
 		this.attributePath = attributePath;
 	}
-	
+
 }

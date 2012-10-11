@@ -27,7 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * This simple controller loads the module locked view when a user accesses a
  * module which has been locked for maintenance.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
@@ -39,7 +39,7 @@ public class ModuleLockedController {
      */
     public static final String MODULE_LOCKED_MESSAGE = "moduleLockedMessage";
     public static final String MODULE_PARAMETER = "moduleNamespace";
-    
+
     @RequestMapping(value = "/module-locked")
     public ModelAndView moduleLocked(@RequestParam(value = MODULE_PARAMETER, required = true) String moduleNamespaceCode) {
         ModelAndView modelAndView = new ModelAndView("moduleLocked");
@@ -47,7 +47,7 @@ public class ModuleLockedController {
         String messageParamComponentCode = KRADConstants.DetailTypes.ALL_DETAIL_TYPE;
         String messageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_MESSAGE_PARM;
         String lockoutMessage = parameterSerivce.getParameterValueAsString(moduleNamespaceCode, messageParamComponentCode, messageParamName);
-        
+
         if(StringUtils.isBlank(lockoutMessage)) {
             String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
             lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KNS_NAMESPACE, messageParamComponentCode, defaultMessageParamName);

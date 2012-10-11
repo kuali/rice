@@ -24,7 +24,7 @@ import java.io.StringWriter;
 
 /**
  * Form class for incident reports
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IncidentReportForm extends UifFormBase {
@@ -54,7 +54,7 @@ public class IncidentReportForm extends UifFormBase {
 
     /**
      * Creates the email message from the exception, form and user data.
-     * 
+     *
      * @return the email message
      */
     public String createEmailMessage() {
@@ -72,7 +72,7 @@ public class IncidentReportForm extends UifFormBase {
 
     /**
      * Creates the email subject containing the mode, view id and the exception message.
-     * 
+     *
      * @return the email subject
      */
     public String createEmailSubject() {
@@ -86,7 +86,7 @@ public class IncidentReportForm extends UifFormBase {
 
     /**
      * Truncate the string to specified length.
-     * 
+     *
      * @param str
      *            the string to truncate
      * @param maxLength
@@ -101,7 +101,7 @@ public class IncidentReportForm extends UifFormBase {
 
     /**
      * Gets the stack trace from an exception.
-     * 
+     *
      * @param t
      *            the throwable to get the stack trace from
      * @return the stack trace

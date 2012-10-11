@@ -16,15 +16,15 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 /**
- * A collection size constraint is one that implements a maximum and minimum number of elements for a collection. 
- * 
+ * A collection size constraint is one that implements a maximum and minimum number of elements for a collection.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public interface CollectionSizeConstraint extends Constraint {
 
 	public Integer getMaximumNumberOfElements();
-	
+
 	public Integer getMinimumNumberOfElements();
-	
+
 }

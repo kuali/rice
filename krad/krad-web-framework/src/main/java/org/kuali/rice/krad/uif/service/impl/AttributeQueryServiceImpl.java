@@ -252,11 +252,11 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 }
             }
         }
-        
+
         if (isSuggestQuery) {
             arguments.add(queryTerm);
         }
-        
+
         queryMethodInvoker.setArguments(arguments.toArray());
 
         try {

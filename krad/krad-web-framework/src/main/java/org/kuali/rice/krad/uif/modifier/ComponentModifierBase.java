@@ -25,13 +25,13 @@ import java.util.List;
 
 /**
  * Base class for <code>ComponentModifier</code> implementations
- * 
+ *
  * <p>
  * Holds run phase property and defaults to the INITIALIZE phase, and the order
  * property for setting the order in which the component modifier will be
  * invoked
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ComponentModifierBase extends UifDictionaryBeanBase implements ComponentModifier {
@@ -76,7 +76,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
 
 	/**
 	 * Setter for the component initializer run phase
-	 * 
+	 *
 	 * @param runPhase
 	 */
 	public void setRunPhase(String runPhase) {
@@ -92,7 +92,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
 
 	/**
 	 * Setter for the component modifiers run condition
-	 * 
+	 *
 	 * @param runCondition
 	 */
 	public void setRunCondition(String runCondition) {

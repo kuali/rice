@@ -33,7 +33,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  * fields, and you may want to constrain the input to a subset of the allowed formats in the system.
  * This can be done by setting the allowed formats to this subset (see BasicDatePatternConstraint
  * bean for example)
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DatePatternConstraint extends ValidDataPatternConstraint {
@@ -43,7 +43,7 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
     /**
      * Returns a regex representing all the allowed formats in the system. If allowedFormats is
      * supplied, returns a regex representing only those formats.
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getRegexString()
      */
     @Override
@@ -77,7 +77,7 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
 
     /**
      * Converts a date format supplied to the appropriate date format regex equivalent
-     * 
+     *
      * @param format
      * @return
      */
@@ -135,9 +135,9 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
     }
 
     /**
-     * 
+     *
      * The dateTime config vars are ';' seperated.
-     * 
+     *
      * @param configValue
      * @return
      */
@@ -167,7 +167,7 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
     @Override

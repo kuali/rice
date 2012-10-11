@@ -31,10 +31,10 @@ public interface PropertySerializabilityMetadata {
          * the child property name is passed in.
          */
         SERIALIZE_OBJECT_AND_ALL_PRIMITIVES,
-        
+
         /**
          * Indicates that the property represented by this metadata object should be serialized (i.e. have an open
-         * and close XML tag rendered).  Child properties (primitive or otherwise) are only serialized if a call to 
+         * and close XML tag rendered).  Child properties (primitive or otherwise) are only serialized if a call to
          * {@link PropertySerializabilityMetadata#getSerializableSubProperty(String)} returns a non-null result when
          * the child property name is passed in.
          */
@@ -43,21 +43,21 @@ public interface PropertySerializabilityMetadata {
 
     /**
      * Returns the serializability of this property.  See {@link PropertySerializability}.
-     * 
+     *
      * @return
      */
     public PropertySerializability getPropertySerializability();
 
     /**
      * Returns the full path string of the property corresponding to this metadata.
-     * 
+     *
      * @return
      */
     public String getPathString();
-    
+
     /**
      * Returns metadata bout a child property, if it exists
-     * 
+     *
      * @param childPropertyName the name of a child property, relative to this property (i.e. no .'s in the name)
      * @return null if there is no child property with the specified name, otherwise, metadata about the child
      */

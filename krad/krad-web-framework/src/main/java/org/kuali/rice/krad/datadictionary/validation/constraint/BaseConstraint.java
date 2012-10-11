@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -258,36 +258,25 @@ public class BaseConstraint implements Constraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean("BaseConstraint", getMessageKey());
 
         if (getConstraintStateOverrides() != null) {
             for (int i = 0; i < constraintStateOverrides.size(); i++) {
                 if (constraintStateOverrides.get(i).getStates() == null) {
-                    ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                    error.setValidationFailed("Constraints set in State Overrides must have there states property set");
-                    error.setBeanLocation(tracer.getBeanLocation());
-                    error.addCurrentValue(
-                            "constraintStateOverrides(" + i + ").messageKey =" + constraintStateOverrides.get(i)
-                                    .getMessageKey());
-                    reports.add(error);
+                    String currentValues [] = { "constraintStateOverrides(" + i + ").messageKey =" + constraintStateOverrides.get(i)
+                            .getMessageKey()};
+                    tracer.createError("Constraints set in State Overrides must have there states property set",currentValues);
                 }
-                reports.addAll(constraintStateOverrides.get(i).completeValidation(tracer.getCopy()));
+                constraintStateOverrides.get(i).completeValidation(tracer.getCopy());
             }
         }
 
         if (getMessageKey() == null) {
+            String currentValues [] = {"messageKey ="+getMessageKey()};
+            tracer.createWarning("Message key is not set",currentValues);
             ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("Message key is not set");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("messageKey");
-
-            reports.add(error);
         }
-
-        return reports;
     }
 }

@@ -23,15 +23,15 @@ import org.kuali.rice.krad.rules.rule.BusinessRule;
 /**
  * This class represents the add note event that is part of an eDoc in Kuali. This is triggered when a user presses the add button
  * for a given note or it could happen when another piece of code calls the create note method in the document service.
- * 
- * 
+ *
+ *
  */
 public final class AddNoteEvent extends KualiDocumentEventBase {
     private Note note;
 
     /**
      * Constructs an AddNoteEvent with the specified errorPathPrefix and document
-     * 
+     *
      * @param document
      * @param errorPathPrefix
      */
@@ -42,7 +42,7 @@ public final class AddNoteEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs an AddNoteEvent with the given document
-     * 
+     *
      * @param document
      */
     public AddNoteEvent(Document document, Note note) {
@@ -51,7 +51,7 @@ public final class AddNoteEvent extends KualiDocumentEventBase {
 
     /**
      * This method retrieves the note associated with this event.
-     * 
+     *
      * @return
      */
     public Note getNote() {

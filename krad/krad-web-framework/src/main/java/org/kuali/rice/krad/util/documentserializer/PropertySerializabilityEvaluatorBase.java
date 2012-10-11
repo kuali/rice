@@ -28,19 +28,19 @@ import java.util.Map;
  *
  */
 public abstract class PropertySerializabilityEvaluatorBase implements PropertySerializabilityEvaluator {
-	
+
     protected PropertySerializerTrie serializableProperties;
-    
+
     @Override
 	public void initializeEvaluatorForDocument(Document document){
-		
+
 	}
-	
+
     @Override
 	public void initializeEvaluatorForDataObject(Object businessObject){
-		
+
 	}
-	
+
     /**
      * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator#determinePropertyType(java.lang.Object)
      */
@@ -60,22 +60,22 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
         }
         return PropertyType.PRIMITIVE;
     }
-    
+
     /**
      * Returns whether a child property of a given containing object should be serialized, based on the metadata provided in the data dictionary.
-     * 
+     *
      * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator#isPropertySerializable(org.kuali.rice.krad.util.documentserializer.DocumentSerializationState, java.lang.Object, java.lang.String, java.lang.Object)
      */
     @Override
     public boolean isPropertySerializable(SerializationState state, Object containingObject, String childPropertyName, Object childPropertyValue) {
         boolean allPropertiesMatched = true;
-        
+
         PropertySerializabilityMetadata metadata = serializableProperties.getRootPropertySerializibilityMetadata();
         int i = 0;
         for (; i < state.numPropertyElements(); i++) {
             String nextPropertyName = state.getElementName(i);
             PropertySerializabilityMetadata nextMetadata = metadata.getSerializableChildProperty(nextPropertyName);
-            
+
             if (nextMetadata == null) {
                 allPropertiesMatched = false;
                 break;
@@ -85,7 +85,7 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
                 metadata = nextMetadata;
             }
         }
-        
+
         if (allPropertiesMatched) {
             // complete match, so we determine if the child property is serializable
             return evaluateCompleteMatch(state, containingObject, metadata, childPropertyName, childPropertyValue);
@@ -99,11 +99,11 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
             return evaluatePartialMatch(state, i, containingObject, metadata, childPropertyName, childPropertyValue);
         }
     }
-    
+
     /**
      * Evaluates whether a property is serializable when all properties in the serialization state have been matched up with the properties
      * defined in the data dictionary.
-     * 
+     *
      * @param state
      * @param containingObject
      * @param metadata
@@ -119,11 +119,11 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
         }
         return metadata.getSerializableChildProperty(childPropertyName) != null;
     }
-    
+
     /**
-     * Evaluates whether a property is serializable when only some of the properties in the serialization state have been matched up with the 
+     * Evaluates whether a property is serializable when only some of the properties in the serialization state have been matched up with the
      * serializable properties specified in the data dictionary.  This often occurs when we determine whether to serialize a primitive of a serialized primitive
-     * 
+     *
      * @param state
      * @param lastMatchedStateIndex the index of the state parameter that represents the last matched property
      * @param containingObject the object containing the child property
@@ -133,16 +133,16 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
      * @return whether the child property is serializable
      */
     protected boolean evaluatePartialMatch(SerializationState state, int lastMatchedStateIndex, Object containingObject, PropertySerializabilityMetadata metadata, String childPropertyName, Object childPropertyValue) {
-        
+
         if (metadata.getPropertySerializability().equals(PropertySerializability.SERIALIZE_OBJECT_AND_ALL_PRIMITIVES)) {
             return isPrimitiveObject(childPropertyValue);
         }
         return false;
     }
-    
+
     /**
      * Whether the object represents a primitive
-     * 
+     *
      * @param object
      * @return
      */

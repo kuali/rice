@@ -38,7 +38,7 @@ import java.util.List;
  *  </p>
  * <p>The goal here is to provide a mechanism that enables implementing institutions to inject new Constraints and ConstraintProcessor
  * classes into the DictionaryValidationService implementation via dependency injection.</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
@@ -60,5 +60,5 @@ public interface ConstraintProvider<T extends Constrainable> {
      * @return true if supported, false otherwise
      */
 	public boolean isSupported(Constrainable definition);
-	
+
 }

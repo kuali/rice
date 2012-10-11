@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 
 /**
- * This class is a direct copy of one that was in Kuali Student. Look up constraints are currently not implemented. 
- * 
+ * This class is a direct copy of one that was in Kuali Student. Look up constraints are currently not implemented.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
@@ -31,16 +31,16 @@ public class CommonLookupParam  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
     private String key;
-    private CommonLookup childLookup;    
-    private WriteAccess writeAccess; 
-    private DataType dataType;    
+    private CommonLookup childLookup;
+    private WriteAccess writeAccess;
+    private DataType dataType;
     private boolean optional;
-    
+
     private ArrayList<String> defaultValueList;
     private String defaultValueString;
-    
-    private String name;      
-    private String desc;    
+
+    private String name;
+    private String desc;
     private boolean caseSensitive;
     private Usage usage;
 	protected String fieldPath;
@@ -54,7 +54,7 @@ public class CommonLookupParam  implements Serializable {
         ON_CREATE, /* must also be required */
         ALWAYS, NEVER, WHEN_NULL, REQUIRED
     }
-    
+
     public enum Usage {
         DEFAULT, ADVANCED, CUSTOM, ADVANCED_CUSTOM
     }

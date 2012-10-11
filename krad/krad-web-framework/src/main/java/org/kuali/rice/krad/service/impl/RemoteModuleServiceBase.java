@@ -587,9 +587,9 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
     protected LookupService getLookupService() {
         return lookupService != null ? lookupService : KRADServiceLocatorWeb.getLookupService();
     }
-    
+
     @Override
-    public boolean goToCentralRiceForInquiry() { 
+    public boolean goToCentralRiceForInquiry() {
         return false;
     }
 }

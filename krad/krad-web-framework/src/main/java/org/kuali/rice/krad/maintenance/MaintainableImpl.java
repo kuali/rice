@@ -422,7 +422,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         super.processAfterAddLine(view, collectionGroup, model, addLine);
-        
+
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients
         if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) && !(addLine instanceof Note) && !(addLine instanceof AdHocRoutePerson) && !(addLine instanceof AdHocRouteWorkgroup)) {
             MaintenanceForm maintenanceForm = (MaintenanceForm) model;
@@ -454,7 +454,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             }
         }
     }
-    
+
     /**
      * In the case of edit maintenance deleted the item on the old side
      *
@@ -465,9 +465,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
         super.processAfterDeleteLine(view, collectionGroup, model, lineIndex);
-        
+
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) 
+        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction())
                 && !collectionGroup.getCollectionObjectClass().getName().equals(Note.class.getName())
                 && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRoutePerson.class.getName())
                 && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRouteWorkgroup.class.getName())) {
@@ -485,7 +485,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
                 throw new RuntimeException("Unable to delete line instance for old maintenance object", e);
             }
         }
-    }    
+    }
 
     /**
      * Retrieves the document number configured on this maintainable

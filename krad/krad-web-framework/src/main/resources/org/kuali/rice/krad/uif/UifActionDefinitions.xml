@@ -20,14 +20,14 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-  
+
   <bean id="Uif-SaveAction" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save"
         p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
         p:loadingMessageText="Saving..." p:id="uif-save"/>
-  
+
   <bean id="Uif-CloseAction" parent="Uif-SecondaryActionButton" p:methodToCall="close"
         p:actionLabel="Close" p:performDirtyValidation="true" p:id="uif-close"/>
-  
+
   <bean id="Uif-CancelAction" parent="Uif-ActionLink" p:methodToCall="cancel"
         p:actionLabel="Cancel" p:performDirtyValidation="true" p:id="uif-cancel"/>
 

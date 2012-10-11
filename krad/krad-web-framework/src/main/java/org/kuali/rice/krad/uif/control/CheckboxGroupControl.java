@@ -24,7 +24,7 @@ import java.util.List;
  * Represents a group of HTML checkbox controls. Provides preset options for the
  * user to choose by a series of checkbox controls. Only or more options can be
  * select
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CheckboxGroupControl extends MultiValueControlBase {
@@ -45,7 +45,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      * <p>
      * defaults to none.
      * </p>
-     * 
+     *
      * @return String delimiter string
      */
     public String getDelimiter() {
@@ -54,7 +54,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
 
     /**
      * Setter for the string delimiter for each checkbox option
-     * 
+     *
      * @param delimiter
      */
     public void setDelimiter(String delimiter) {

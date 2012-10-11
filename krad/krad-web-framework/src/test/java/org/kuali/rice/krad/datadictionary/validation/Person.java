@@ -20,8 +20,8 @@ import java.util.List;
 
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Person {
 	private String firstName;
@@ -102,5 +102,5 @@ public class Person {
 	public void setAddresses(List<Address> addresses) {
 		this.addresses = addresses;
 	}
-	
+
 }

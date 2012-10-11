@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
@@ -52,7 +52,7 @@ public class Image extends ContentElementBase {
 
         altText = "";
     }
-    
+
     /**
      * The following initialization is performed:
      *
@@ -327,30 +327,25 @@ public class Image extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
         // Checks that a source is set
         if(getSource()==null){
-            if(!RDValidator.checkExpressions(this,"source")){
-                ErrorReport error = ErrorReport.createError("Source must be set",tracer);
-                error.addCurrentValue("source ="+getSource());
-                reports.add(error);
+            if(!Validator.checkExpressions(this, "source")){
+                String currentValues [] = {"source ="+getSource()};
+                tracer.createError("Source must be set",currentValues);
             }
         }
 
         // Checks that alt text is set
         if(getAltText().compareTo("")==0){
-            if(RDValidator.checkExpressions(this,"altText")){
-                ErrorReport error = ErrorReport.createWarning("Alt text should be set, violates accessibility standards if not set",tracer);
-                error.addCurrentValue("altText ="+getAltText());
-                reports.add(error);
+            if(Validator.checkExpressions(this, "altText")){
+                String currentValues [] = {"altText ="+getAltText()};
+                tracer.createWarning("Alt text should be set, violates accessibility standards if not set",currentValues);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

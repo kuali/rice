@@ -35,7 +35,7 @@ public class ProcessorResult {
 	private final transient List<Constraint> constraints;
 	private final transient Constrainable definition;
 	private final transient AttributeValueReader attributeValueReader;
-	
+
 	private final List<ConstraintValidationResult> constraintValidationResults;
 
     /**
@@ -136,7 +136,7 @@ public class ProcessorResult {
 	public ConstraintValidationResult getFirstConstraintValidationResult() {
 		return this.constraintValidationResults.isEmpty() ? null : this.constraintValidationResults.get(0);
 	}
-	
+
 	/**
 	 * @return the constraintValidationResults
 	 */
@@ -164,5 +164,5 @@ public class ProcessorResult {
 	public List<Constraint> getConstraints() {
 		return this.constraints;
 	}
-		
+
 }

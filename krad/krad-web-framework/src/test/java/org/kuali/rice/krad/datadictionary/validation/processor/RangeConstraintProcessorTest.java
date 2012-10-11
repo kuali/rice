@@ -35,7 +35,7 @@ import java.util.List;
 
 
 /**
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RangeConstraintProcessorTest {
@@ -46,66 +46,66 @@ public class RangeConstraintProcessorTest {
 	private AttributeDefinition postalCodeDefinition;
 	private BusinessObjectEntry addressEntry;
 	private DictionaryValidationResult dictionaryValidationResult;
-	
+
 	private RangeConstraintProcessor processor;
-	
+
 	private Address washingtonDCAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "20500", "USA", null);
 	private Address newYorkNYAddress = new Address("5 Presidential Street", "Suite 800", "New York", "NY", "10012", "USA", null);
 	private Address timbucktooAddress = new Address("5 Presidential Street", "Suite 800", "Timbucktoo", "ZZ", "100000", "USA", null);
 	private Address sydneyAUSAddress = new Address("5 Presidential Street", "Suite 800", "Sydney", "ZZ", "999", "USA", null);
 	private Address londonUKAddress = new Address("5 Presidential Street", "Suite 800", "Timbucktoo", "ZZ", "99999", "USA", null);
 	private Address torontoONAddress = new Address("5 Presidential Street", "Suite 800", "Sydney", "ZZ", "1000", "USA", null);
-	
+
 	@Before
 	public void setUp() throws Exception {
-		
+
 		processor = new RangeConstraintProcessor();
-		
+
 		dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		
+
 		addressEntry = new BusinessObjectEntry();
-		
+
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
-		
+
 		ValidCharactersConstraint street1ValidCharactersConstraint = new ValidCharactersConstraint();
 		street1ValidCharactersConstraint.setValue("regex:\\d{3}\\s+\\w+\\s+Ave");
-		
+
 		street1Definition = new AttributeDefinition();
 		street1Definition.setName("street1");
 		street1Definition.setValidCharactersConstraint(street1ValidCharactersConstraint);
 		attributes.add(street1Definition);
-		
+
 		street2Definition = new AttributeDefinition();
 		street2Definition.setName("street2");
 		attributes.add(street2Definition);
-		
+
 		AttributeDefinition cityDefinition = new AttributeDefinition();
 		cityDefinition.setName("city");
 		attributes.add(cityDefinition);
-		
+
 		ValidCharactersConstraint stateValidCharactersConstraint = new ValidCharactersConstraint();
 		stateValidCharactersConstraint.setValue("ABCD");
-		
+
 		stateDefinition = new AttributeDefinition();
 		stateDefinition.setName("state");
 		stateDefinition.setValidCharactersConstraint(stateValidCharactersConstraint);
 		attributes.add(stateDefinition);
-		
+
 		postalCodeDefinition = new AttributeDefinition();
 		postalCodeDefinition.setName("postalCode");
 		postalCodeDefinition.setExclusiveMin("1000");
 		postalCodeDefinition.setInclusiveMax("99999");
 		postalCodeDefinition.setDataType(DataType.LONG);
 		attributes.add(postalCodeDefinition);
-		
+
 		AttributeDefinition countryDefinition = new AttributeDefinition();
 		countryDefinition.setName("country");
 		attributes.add(countryDefinition);
-		
-		addressEntry.setAttributes(attributes);	
+
+		addressEntry.setAttributes(attributes);
 	}
-	
+
 	@Test
 	public void testNumberWithinRange1() {
 		ConstraintValidationResult result = process(washingtonDCAddress, "postalCode", postalCodeDefinition);
@@ -114,7 +114,7 @@ public class RangeConstraintProcessorTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new RangeConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testNumberWithinRange2() {
 		ConstraintValidationResult result = process(newYorkNYAddress, "postalCode", postalCodeDefinition);
@@ -123,7 +123,7 @@ public class RangeConstraintProcessorTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new RangeConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testNumberAboveRange() {
 		ConstraintValidationResult result = process(timbucktooAddress, "postalCode", postalCodeDefinition);
@@ -132,7 +132,7 @@ public class RangeConstraintProcessorTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new RangeConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testNumberBelowRange() {
 		ConstraintValidationResult result = process(sydneyAUSAddress, "postalCode", postalCodeDefinition);
@@ -141,7 +141,7 @@ public class RangeConstraintProcessorTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new RangeConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testNumberAtTopOfRange() {
 		ConstraintValidationResult result = process(londonUKAddress, "postalCode", postalCodeDefinition);
@@ -150,7 +150,7 @@ public class RangeConstraintProcessorTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new RangeConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testNumberAtBottomOfRange() {
 		ConstraintValidationResult result = process(torontoONAddress, "postalCode", postalCodeDefinition);
@@ -159,12 +159,12 @@ public class RangeConstraintProcessorTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new RangeConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
-	
+
+
 	private ConstraintValidationResult process(Object object, String attributeName, AttributeDefinition definition) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
-		
+
 		Object value = attributeValueReader.getValue();
 		return processor.process(dictionaryValidationResult, value, definition.getSimpleConstraint(), attributeValueReader).getFirstConstraintValidationResult();
 	}

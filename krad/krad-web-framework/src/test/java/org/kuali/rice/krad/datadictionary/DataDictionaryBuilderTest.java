@@ -25,8 +25,8 @@ import static org.junit.Assert.fail;
 
 /**
  * DataDictionaryBuilderTest tests the DataDictionaryBuilder
- * 
- * 
+ *
+ *
  */
 
 public class DataDictionaryBuilderTest {

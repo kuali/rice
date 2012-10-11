@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 /**
  * Abstraction of the regular expressions used to validate attribute values.
- * 
+ *
                     The validationPattern element defines the allowable character-level
                     or field-level values for an attribute.
 
@@ -120,25 +120,25 @@ abstract public class ValidationPattern implements Serializable {
      * @return ExportMap describing the subclass instance
      */
     abstract public ExportMap buildExportMap(String exportKey);
-    
+
     abstract public String getValidationErrorMessageKey();
-    
+
     public String[] getValidationErrorMessageParameters(String attributeLabel) {
         return new String[] {attributeLabel};
     }
-    
+
     /**
      * This method throws an exception if it is not configured properly
-     * 
+     *
      */
     public void completeValidation() throws ValidationPatternException {
     }
-    
+
     /** exception thrown when a ValidationPattern is in an incorrect state. */
     public static class ValidationPatternException extends RiceRuntimeException {
 
     	private static final long serialVersionUID = 2012770642382150523L;
-        
+
         public ValidationPatternException(String message) {
             super(message);
         }

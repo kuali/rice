@@ -45,7 +45,7 @@ public interface MaintenanceDocument extends Document {
 
     /**
      * Sets the xml contents of the maintenance document
-     * 
+     *
      * @param documentContents String xml
      */
     void setXmlDocumentContents(String documentContents);
@@ -70,7 +70,7 @@ public interface MaintenanceDocument extends Document {
      * @return document data object instance
      */
     Object getDocumentDataObject();
-    
+
     /**
      * Build the xml document string from the contents of the old and new maintainables.
      */
@@ -112,7 +112,7 @@ public interface MaintenanceDocument extends Document {
      * @return true if maintenance document is creating a new Business Object out of an existing Business object, false otherwise
      */
     boolean isNewWithExisting();
-    
+
     /**
      * Check if fields are cleared on copy
      *
@@ -126,9 +126,9 @@ public interface MaintenanceDocument extends Document {
 
     /**
      * Set the keys cleared on copy flag
-     * 
+     *
      * @param keysClearedOnCopy
-     * 
+     *
      */
     void setFieldsClearedOnCopy(boolean keysClearedOnCopy);
 

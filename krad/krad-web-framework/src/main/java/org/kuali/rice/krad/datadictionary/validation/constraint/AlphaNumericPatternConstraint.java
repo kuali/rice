@@ -20,7 +20,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * A ValidCharactersConstraint based on AlphaNumericValidationPattern.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
@@ -30,7 +30,7 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     /**
      * A label key is auto generated for this bean if none is set. This generated message can be
      * overridden through setMessageKey, but the generated message should cover most cases.
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
     @Override

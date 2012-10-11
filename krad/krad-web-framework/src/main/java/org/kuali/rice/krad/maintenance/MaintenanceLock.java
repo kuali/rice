@@ -29,7 +29,7 @@ import javax.persistence.Table;
 
 /**
  * List of business objects that this maintenance document is locking (prevents two documents from being routed trying to update the same object)
- * Most maintenance documents have only one lock, but globals have many 
+ * Most maintenance documents have only one lock, but globals have many
  */
 @Entity
 @Sequence(name="KRNS_MAINT_LOCK_S",property="lockId")
@@ -59,7 +59,7 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
     public void setLockingRepresentation(String lockingRepresentation) {
         this.lockingRepresentation = lockingRepresentation;
     }
-    
+
     public String getDocumentNumber() {
         return documentNumber;
     }
@@ -70,16 +70,16 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
 
 	/**
 	 * Uses OrmUtils to set the sequence
-     * 
+     *
      * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#prePersist()
      */
     @PrePersist
 	protected void customPrePersist() {
 		final EntityManagerFactory factory = KRADServiceLocator.getApplicationEntityManagerFactory();
 		OrmUtils.populateAutoIncValue(this, factory.createEntityManager());
-		
+
 		super.prePersist();
 	}
-    
+
 }
 

@@ -512,10 +512,10 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
                 parentListSize = parentList.size();
             }
         }
-        
+
         for (int i = 0; i < listVal.size(); i++) {
             Object elem = listVal.get(i);
-            
+
             int elementPosition = i + parentListSize;
             String elemPropertyName = nestedPropertyName + "[" + elementPosition + "]";
 

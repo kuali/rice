@@ -76,11 +76,11 @@ public class DatabaseMessageProvider implements MessageProvider {
         if (StringUtils.isNotBlank(namespace)) {
             criteria.put("namespaceCode", namespace);
         }
-        
+
         if (StringUtils.isNotBlank(component)) {
             criteria.put("componentCode", component);
         }
-        
+
         if (StringUtils.isNotBlank(key)) {
             criteria.put("key", key);
         }
@@ -105,7 +105,7 @@ public class DatabaseMessageProvider implements MessageProvider {
         if (lookupService == null) {
             lookupService = KRADServiceLocatorWeb.getLookupService();
         }
-        
+
         return lookupService;
     }
 

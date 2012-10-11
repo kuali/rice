@@ -24,20 +24,20 @@ import java.util.List;
 
 /**
  * This class returns list containg O = Open or C = Closed
- * 
- * 
+ *
+ *
  */
 public class OpenCloseValuesFinder extends KeyValuesBase {
 
 	private static final List<KeyValue> KEY_VALUES;
-	
+
 	static {
 		final List<KeyValue> keyValues = new ArrayList<KeyValue>();
 		keyValues.add(new ConcreteKeyValue("O", "Open"));
 		keyValues.add(new ConcreteKeyValue("C", "Closed"));
 		KEY_VALUES = Collections.unmodifiableList(keyValues);
 	}
-	
+
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */

@@ -18,13 +18,13 @@ package org.kuali.rice.krad.datadictionary.validation.capability;
 import org.kuali.rice.krad.datadictionary.validation.constraint.LookupConstraint;
 
 /**
- * This capability is not yet implemented. It's something that Kuali Student validation has. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * This capability is not yet implemented. It's something that Kuali Student validation has.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface LookupConstrainable extends Constrainable {
 
 	// FIXME: rename to getLookupConstraint()
 	public LookupConstraint getLookupConstraint();
-	
+
 }

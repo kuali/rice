@@ -22,22 +22,22 @@ import java.io.Serializable;
 /**
  * This class represents an serializable property when generating workflow routing XML.  The path contained within this object
  * is relative to the basePath in the {@link WorkflowPropertyGroup} that contains this object.  The semantics of the path are determined
- * by the {@link PropertySerializabilityEvaluator} that evaluates whether a property is serializable. 
+ * by the {@link PropertySerializabilityEvaluator} that evaluates whether a property is serializable.
  */
 public class WorkflowProperty implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected String path = null;
-    
+
     /**
      * Default constructor, sets path to null
-     * 
+     *
      */
     public WorkflowProperty() {}
 
     /**
      * Returns the path to the property that is serializable, relative to the {@link WorkflowPropertyGroup} that contains this object
-     * 
+     *
      * @return
      */
     public String getPath() {
@@ -46,7 +46,7 @@ public class WorkflowProperty implements Serializable {
 
     /**
      * Sets the path to the property that is serializable, relative to the {@link WorkflowPropertyGroup} that contains this object
-     * 
+     *
      * @param path
      */
     public void setPath(String path) {

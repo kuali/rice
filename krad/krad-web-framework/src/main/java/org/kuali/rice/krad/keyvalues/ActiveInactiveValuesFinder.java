@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * This class returns list containg A = Active, I = Inactive and B = Show All
- * 
+ *
  * The labels (values) in the List returned correspond to what is displayed next
  * to the radio buttons for the Active Indicator form field
  */

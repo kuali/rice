@@ -37,14 +37,14 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
  */
 public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 1737968024207302931L;
-    
+
 	protected String attributeName;
     protected String attributeToHighlightOnFail;
     protected String displayFieldName;
     protected String collection;
     protected Class<? extends BusinessObject> collectionBusinessObjectClass;
     protected Class<? extends BusinessObject> businessObjectClass;
-    
+
     public ReferenceDefinition() {}
 
     /**
@@ -59,7 +59,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
                         must exist and not be null.  In the case of a collection,
                         then this is the name of a reference object within the
                         collection element.
-     * 
+     *
      * @throws IllegalArgumentException if the given attributeName is blank
      */
     public void setAttributeName(String attributeName) {
@@ -71,7 +71,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Gets the attributeToHighlightOnFail attribute.
-     * 
+     *
      * @return Returns the attributeToHighlightOnFail.
      */
     public String getAttributeToHighlightOnFail() {
@@ -92,7 +92,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Gets the displayFieldName attribute.
-     * 
+     *
      * @return Returns the displayFieldName.
      */
     public String getDisplayFieldName() {
@@ -110,7 +110,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     /**
      * This method returns true if the displayFieldName is set, otherwise it returns false. Whether the displayFieldName is set is
      * defined by whether it has any non-whitespace content in it.
-     * 
+     *
      * @return
      */
     public boolean isDisplayFieldNameSet() {
@@ -149,7 +149,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Directly validate simple fields.
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
@@ -166,7 +166,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
             if ( collectionBusinessObjectClass == null ) {
                 throw new AttributeValidationException("Unable to determine collectionBusinessObjectClass for collection '" + businessObjectClass.getName() + "." + collection + "'");
             }
-            
+
             if (!DataDictionary.isPropertyOf(collectionBusinessObjectClass, attributeToHighlightOnFail)) {
                 throw new AttributeValidationException("unable to find attribute '" + attributeToHighlightOnFail + "' in collectionBusinessObjectClass '" + collectionBusinessObjectClass.getName() + "' (" + "" + ")");
             }

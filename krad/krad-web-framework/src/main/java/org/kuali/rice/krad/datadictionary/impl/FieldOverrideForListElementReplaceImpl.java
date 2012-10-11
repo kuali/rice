@@ -20,10 +20,10 @@ import java.util.List;
 import org.kuali.rice.krad.datadictionary.FieldOverride;
 
 /**
- * A Field Override used to replace list elements in a Data Dictionary bean. 
- * 
+ * A Field Override used to replace list elements in a Data Dictionary bean.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
  */
 public class FieldOverrideForListElementReplaceImpl extends FieldOverrideForListElementBase implements FieldOverride {
 	private Object replaceWith;

@@ -22,17 +22,17 @@ import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * The super class which implementations of the FieldOverride interface will extend. 
- * 
+ * The super class which implementations of the FieldOverride interface will extend.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class FieldOverrideForListElementBase {
-	
+
     private String propertyName;
     private Object element;
     protected String propertyNameForElementCompare;
-    
+
 
     public String getPropertyNameForElementCompare() {
         return propertyNameForElementCompare;
@@ -45,7 +45,7 @@ public class FieldOverrideForListElementBase {
     protected int getElementPositionInList(Object object, List theList) {
         Comparator comparator = this.getComparator();
         int pos = -1;
-        
+
         if ( object != null && theList != null )
         {
             for ( int i = 0; i < theList.size(); ++i )
@@ -58,7 +58,7 @@ public class FieldOverrideForListElementBase {
                 }
                 else
                 {
-                    equalFlag = item.equals(object);   
+                    equalFlag = item.equals(object);
                 }
                 if ( equalFlag )
                 {

@@ -32,9 +32,9 @@ import java.sql.Timestamp;
 @Entity
 @Table(name="KRNS_SESN_DOC_T")
 public class SessionDocument extends PersistableBusinessObjectBase{
-    
+
 	private static final long serialVersionUID = 2866566562262830639L;
-	
+
 	@Id
 	protected String documentNumber;
 	@Id
@@ -51,8 +51,8 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	protected String principalId;
 	@Id
 	protected String ipAddress;
-	
-	
+
+
 	/**
 	 * @return the serializedDocumentForm
 	 */
@@ -82,7 +82,7 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 		this.sessionId = sessionId;
 	}
 
-	
+
 	/**
 	 * @return the lastUpdatedDate
 	 */
@@ -111,8 +111,8 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 		this.documentNumber = documentNumber;
 	}
 
-	
-	
+
+
 	/**
 	 * @return the principalId
 	 */
@@ -148,5 +148,5 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	public void setEncrypted(boolean encrypted) {
 		this.encrypted = encrypted;
 	}
-		
+
 }

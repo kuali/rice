@@ -23,7 +23,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import static org.junit.Assert.assertTrue;
 
 public class KRADUtilsTest {
-    
+
     @Test
     public void testHydrateAttributeValue() throws Exception {
 

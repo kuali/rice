@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -228,22 +228,18 @@ public class Message extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
         // Checks that text is set
         if(getMessageText()==null){
-            if(RDValidator.checkExpressions(this,"messageText")) {
-                ErrorReport error = ErrorReport.createWarning("MessageText should be set",tracer);
-                error.addCurrentValue("messageText  ="+getMessageText());
-                reports.add(error);
+            if(Validator.checkExpressions(this, "messageText")) {
+                String currentValues [] = {"messageText  ="+getMessageText()};
+                tracer.createWarning("MessageText should be set",currentValues);
             }
         }
 
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

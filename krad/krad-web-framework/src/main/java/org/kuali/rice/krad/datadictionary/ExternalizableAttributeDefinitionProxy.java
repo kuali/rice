@@ -93,7 +93,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 			} catch (ClassNotFoundException e) {
 				LOG.error("Unable to get delegate entry for sourceExternalizableBusinessObjectInterface",e);
 			}
-	
+
 			if (delegateEntry == null) {
 				throw new CompletionException(
 						"no BusinessObjectEntry exists for sourceClassName '"
@@ -115,7 +115,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 
 	/**
 	 * Sets the given AttributeDefinition as the delegate for this instance
-	 * 
+	 *
 	 * @param delegate
 	 */
 	void setDelegate(AttributeDefinition delegate) {

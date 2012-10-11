@@ -180,7 +180,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void performInitialization(View view, Object model) {
         view.assignComponentIds(view);
-        
+
         // increment the id sequence so components added later to the static view components
         // will not conflict with components on the page when navigation happens
         view.setIdSequence(100000);
@@ -1716,7 +1716,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 // Skip nullable non-null non-empty objects when setting default
                 Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
                 Class currentClazz = ObjectPropertyUtils.getPropertyType(object, bindingPath);
-                if(currentValue == null || StringUtils.isBlank(currentValue.toString()) || 
+                if(currentValue == null || StringUtils.isBlank(currentValue.toString()) ||
                         ClassUtils.isPrimitiveOrWrapper(currentClazz)) {
                     ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
                 }

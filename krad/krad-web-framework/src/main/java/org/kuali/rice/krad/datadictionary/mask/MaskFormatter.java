@@ -19,14 +19,14 @@ import java.io.Serializable;
 
 /**
  * Defines interface for a class that mask data values
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MaskFormatter extends Serializable {
 
     /**
      * Takes in the real data value and returns a masked string.
-     * 
+     *
      * @param value - data value
      * @return String - masked value
      */

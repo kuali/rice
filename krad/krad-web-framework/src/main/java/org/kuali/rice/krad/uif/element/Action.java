@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -1020,28 +1020,21 @@ public class Action extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Checks that a label or image ui is presence
         if (getActionLabel() == null && getActionImage() == null) {
-            ErrorReport error = ErrorReport.createError("ActionLabel and/or actionImage must be set",tracer);
-            error.addCurrentValue("actionLabel =" + getActionLabel());
-            error.addCurrentValue("actionImage =" + getActionImage());
-            reports.add(error);
+            String currentValues [] = {"actionLabel =" + getActionLabel(),"actionImage =" + getActionImage()};
+            tracer.createError("ActionLabel and/or actionImage must be set",currentValues);
         }
 
         // Checks that an action is set
         if (getJumpToIdAfterSubmit() != null && getJumpToNameAfterSubmit() != null) {
-            ErrorReport error = ErrorReport.createWarning("Only 1 jumpTo property should be set",tracer);
-            error.addCurrentValue("jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit());
-            error.addCurrentValue("jumpToNameAfterSubmit =" + getJumpToNameAfterSubmit());
-            reports.add(error);
+            String currentValues [] = {"jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit(),"jumpToNameAfterSubmit =" + getJumpToNameAfterSubmit()};
+            tracer.createWarning("Only 1 jumpTo property should be set",currentValues);
         }
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 
     /**

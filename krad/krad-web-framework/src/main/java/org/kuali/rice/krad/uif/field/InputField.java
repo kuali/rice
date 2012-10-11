@@ -32,10 +32,10 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstra
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.Control;
@@ -1059,21 +1059,17 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Checks that the control is set
         if (getControl() == null) {
-            if (RDValidator.checkExpressions(this, "control")) {
-                ErrorReport error = ErrorReport.createWarning("Control should be set",tracer);
-                error.addCurrentValue("control =" + getConstraintText());
-                reports.add(error);
+            if (Validator.checkExpressions(this, "control")) {
+                String currentValues [] = {"control =" + getConstraintText()};
+                tracer.createWarning("Control should be set",currentValues);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

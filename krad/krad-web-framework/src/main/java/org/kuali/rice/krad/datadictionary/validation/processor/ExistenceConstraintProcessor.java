@@ -28,13 +28,13 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExistenceConstraintProcessor extends OptionalElementConstraintProcessor<ExistenceConstraint> {
 
 	private static final String CONSTRAINT_NAME = "existence constraint";
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader) \
 	 */
@@ -47,11 +47,11 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 		return new ProcessorResult(processSingleExistenceConstraint(result, value, constraint, attributeValueReader));
 	}
 
-	@Override 
+	@Override
 	public String getName() {
 		return CONSTRAINT_NAME;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */
@@ -64,10 +64,10 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 		// If it's not set, then there's no constraint
 		if (constraint.isRequired() == null)
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
-		
+
 		if (constraint.isRequired().booleanValue() && !skipConstraint(attributeValueReader)) {
-			// If this attribute is required and the value is null then 
-			if (ValidationUtils.isNullOrEmpty(value)) 
+			// If this attribute is required and the value is null then
+			if (ValidationUtils.isNullOrEmpty(value))
 				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeValueReader.getLabel(attributeValueReader.getAttributeName()));
  			return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
 		}
@@ -78,7 +78,7 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
     /**
      * Checks to see if existence constraint should be skipped.  Required constraint should be skipped if it is an attribute of a complex
      * attribute and the complex attribute is not required.
-     * 
+     *
      * @param attributeValueReader
      * @return
      */
@@ -90,6 +90,6 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
         }
         return skipConstraint;
     }
-	
-	
+
+
 }

@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,14 @@ import java.util.List;
  *
  * <p>It provides a specific additional constraint that should be processed when
  * the condition itself is true.</p>
- * 
+ *
  * <p>So a case constraint on country, might have a when constraint with value='USA', and another with value='Canada'. Each of these
  * {@code WhenConstraint}'s would define a constraint of their own that would only be processed when the country was USA, or when the country
  * was Canada.</p>
  *
  * <p>A {@code WhenConstraint} either specifies an attribute path whose value it then provides or a constraint.
  * The parent @{CaseConstraint} is defined on the field on which the constraints are desired to take effect.</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
@@ -65,7 +65,7 @@ public class WhenConstraint implements Constraint {
      *
      * @param value - a values for which to activate the associated constraint
      */
-    public void setValue(Object value) {	    
+    public void setValue(Object value) {
 	    values = new ArrayList<Object>();
 	    values.add(value);
 	}
@@ -111,29 +111,18 @@ public class WhenConstraint implements Constraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("WhenConstraint",TracerToken.NO_BEAN_ID);
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean("WhenConstraint", ValidationTrace.NO_BEAN_ID);
 
         if(getConstraint()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("Constraint must be set");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("constraint = "+getConstraint());
-            reports.add(error);
+            String currentValues [] = {"constraint = "+getConstraint()};
+            tracer.createWarning("Constraint must be set",currentValues);
         }
 
         if(getValuePath()==null || getValues()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("Value Path or Values must be set");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("valuePath = "+getValuePath());
-            error.addCurrentValue("values = "+getValues());
-            reports.add(error);
+            String currentValues [] = {"valuePath = "+getValuePath(),"values = "+getValues()};
+            tracer.createWarning("Value Path or Values must be set",currentValues);
         }
-
-        return reports;
     }
 }

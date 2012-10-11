@@ -705,11 +705,11 @@ public class CollectionGroupBuilder implements Serializable {
             action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.setRefreshId(collectionGroup.getId());
-            
+
             // if marked for validation, add call to validate the line and set validation flag to false
             // so the entire form will not be validated
             if (action.isPerformClientSideValidation()) {
-                String preSubmitScript = "valid=valid && validateLine('" + 
+                String preSubmitScript = "valid=valid && validateLine('" +
                         collectionGroup.getBindingInfo().getBindingPath() + "'," + Integer.toString(lineIndex) +
                         ");return valid;";
 
@@ -777,7 +777,7 @@ public class CollectionGroupBuilder implements Serializable {
             } else {
                 preSubmitScript = "var valid=true;" + preSubmitScript;
             }
-            
+
             action.setPreSubmitCall(preSubmitScript);
         }
 

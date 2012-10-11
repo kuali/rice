@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Action;
@@ -387,31 +387,26 @@ public class ActionField extends FieldBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
+    public void completeValidation(ValidationTrace tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);
 
         // Checks that the action is set
         if(getAction()==null){
-            if(RDValidator.checkExpressions(this,"action")){
-                ErrorReport error = ErrorReport.createWarning("Action should not be null",tracer);
-                error.addCurrentValue("action ="+getAction());
-                reports.add(error);
+            if(Validator.checkExpressions(this, "action")){
+                String currentValues [] = {"action ="+getAction()};
+                tracer.createWarning("Action should not be null",currentValues);
             }
         }
 
         // checks that the label is set
         if(getLabel()==null){
-            if(RDValidator.checkExpressions(this,"label")){
-                ErrorReport error = ErrorReport.createWarning("Label is null, action should be used instead",tracer);
-                error.addCurrentValue("label ="+getLabel());
-                error.addCurrentValue("action ="+getAction());
-                reports.add(error);
+            if(Validator.checkExpressions(this, "label")){
+                String currentValues [] = {"label ="+getLabel(),"action ="+getAction()};
+                tracer.createWarning("Label is null, action should be used instead",currentValues);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

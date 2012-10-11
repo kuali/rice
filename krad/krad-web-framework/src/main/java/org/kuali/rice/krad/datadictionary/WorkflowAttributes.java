@@ -26,21 +26,21 @@ import java.util.Map;
 /**
  * A container that holds all of the {@link WorkflowAttributeDefinition} for a document for both document searches
  * and routing that depends on the values that exist on the document.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WorkflowAttributes extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 6435015497886060280L;
-    
+
 	private List<SearchingTypeDefinition> searchingTypeDefinitions;
     private Map<String, RoutingTypeDefinition> routingTypeDefinitions;
-    
+
     public WorkflowAttributes() {
     	searchingTypeDefinitions = new ArrayList<SearchingTypeDefinition>();;
     	routingTypeDefinitions = new HashMap<String, RoutingTypeDefinition>();
     }
-    
+
 	/**
 	 * @return the searchingTypeDefinitions
 	 */
@@ -67,12 +67,12 @@ public class WorkflowAttributes extends UifDictionaryBeanBase {
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
 	 */
 	public void completeValidation(Class rootBusinessObjectClass,
 			Class otherBusinessObjectClass) {
-		for (SearchingTypeDefinition definition : searchingTypeDefinitions) { 
+		for (SearchingTypeDefinition definition : searchingTypeDefinitions) {
 			definition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
 		}
 		for (RoutingTypeDefinition definitions : routingTypeDefinitions.values()) {

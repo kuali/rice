@@ -22,11 +22,11 @@ import org.kuali.rice.krad.uif.UifConstants;
  * Pattern for matching numeric characters, difference between NumericPatternConstraint and IntegerPatternConstraint
  * is that a numeric pattern constraint is for matching numeric characters and can be mixed with other characters
  * by setting allow flags on, while integer is for only positive/negative numbers
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NumericPatternConstraint extends AllowCharacterConstraint {
-    
+
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */

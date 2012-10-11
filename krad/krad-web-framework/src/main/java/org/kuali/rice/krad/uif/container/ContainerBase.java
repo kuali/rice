@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.element.Header;
@@ -36,13 +36,13 @@ import java.util.List;
 /**
  * Base <code>Container</code> implementation which container implementations
  * can extend
- * 
+ *
  * <p>
  * Provides properties for the basic <code>Container</code> functionality in
  * addition to default implementation of the lifecycle methods including some
  * setup of the header, items list, and layout manager
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ContainerBase extends ComponentBase implements Container {
@@ -70,13 +70,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	/**
 	 * The following initialization is performed:
-	 * 
+	 *
 	 * <ul>
 	 * <li>Sorts the containers list of components</li>
      * <li>Initializes the instructional field if necessary</li>
 	 * <li>Initializes LayoutManager</li>
 	 * </ul>
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
@@ -120,13 +120,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	/**
 	 * The following finalization is performed:
-	 * 
+	 *
 	 * <ul>
 	 * <li>Sets the headerText of the header Group if it is blank</li>
 	 * <li>Set the messageText of the summary Message if it is blank</li>
 	 * <li>Finalizes LayoutManager</li>
 	 * </ul>
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
@@ -141,7 +141,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		if (layoutManager != null) {
 			layoutManager.performFinalize(view, model, this);
 		}
-        
+
 	}
 
 	/**
@@ -244,7 +244,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	/**
 	 * Setter for the containers list of components
-	 * 
+	 *
 	 * @param items
 	 */
 	public abstract void setItems(List<? extends Component> items);
@@ -255,7 +255,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * this property. The first component found in the list without an order
 	 * will be assigned the configured initial value, and incremented by one for
 	 * each component (without an order) found afterwards
-	 * 
+	 *
 	 * @return int order sequence
 	 */
 	public int getDefaultItemPosition() {
@@ -264,7 +264,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	/**
 	 * Setter for the container's item ordering sequence number (initial value)
-	 * 
+	 *
 	 * @param defaultItemPosition
 	 */
 	public void setDefaultItemPosition(int defaultItemPosition) {
@@ -322,13 +322,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * Convenience setter for configuration to turn rendering of the header
 	 * on/off
-	 * 
+	 *
 	 * <p>
 	 * For nested groups (like Field Groups) it is often necessary to only show
 	 * the container body (the contained components). This method allows the
 	 * header to not be displayed
 	 * </p>
-	 * 
+	 *
 	 * @param renderHeader
 	 */
 	public void setRenderHeader(boolean renderHeader) {
@@ -364,13 +364,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * Convenience setter for configuration to turn rendering of the footer
 	 * on/off
-	 * 
+	 *
 	 * <p>
 	 * For nested groups it is often necessary to only show the container body
 	 * (the contained components). This method allows the footer to not be
 	 * displayed
 	 * </p>
-	 * 
+	 *
 	 * @param renderFooter
 	 */
 	public void setRenderFooter(boolean renderFooter) {
@@ -430,20 +430,15 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
         // Checks for over writing of the instructional text or message
         if(getInstructionalText()!=null && getInstructionalMessage()!=null){
-            ErrorReport error = ErrorReport.createWarning("InstructionalMessage will override instructioanlText",tracer);
-            error.addCurrentValue("instructionalMessage.text = "+getInstructionalMessage().getMessageText());
-            error.addCurrentValue("instructionalText = "+getInstructionalText());
-            reports.add(error);
+            String currentValues [] = {"instructionalMessage.text = "+getInstructionalMessage().getMessageText(),"instructionalText = "+getInstructionalText()};
+            tracer.createWarning("InstructionalMessage will override instructioanlText",currentValues);
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

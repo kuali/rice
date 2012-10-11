@@ -34,16 +34,16 @@ public interface KualiFeedbackService {
      * </code>
      */
     public static final String REPORT_MAIL_LIST = String.format("%s.REPORT_MAIL_LIST", KualiFeedbackService.class.getSimpleName());
-	
+
 	/**
      * This method send email to the defined mailing list with a specified subject and
      * message.
-     * 
+     *
      * @param subject
      * @param message
      * @throws Exception
      */
     public void emailReport(String subject, String message) throws Exception;
-    
+
     public void sendFeedback(String documentId, String componentName, String description) throws Exception;
 }

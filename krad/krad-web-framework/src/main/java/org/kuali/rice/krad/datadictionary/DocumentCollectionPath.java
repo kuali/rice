@@ -18,18 +18,18 @@ package org.kuali.rice.krad.datadictionary;
 import java.util.List;
 
 /**
- * This is a description of what this class does - mpham don't forget to fill this in. 
- * 
+ * This is a description of what this class does - mpham don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentCollectionPath extends DataDictionaryDefinitionBase{
 	private static final long serialVersionUID = -8165456163213868710L;
-	
+
 	private String collectionPath;
-	private List<String> paths; 
+	private List<String> paths;
 	private DocumentCollectionPath nestedCollection;
-	
+
 	/**
 	 * @return the documentValues
 	 */
@@ -57,13 +57,13 @@ public class DocumentCollectionPath extends DataDictionaryDefinitionBase{
 	}
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
 	 */
 	public void completeValidation(Class rootBusinessObjectClass,
 			Class otherBusinessObjectClass) {
 		// TODO mpham - THIS METHOD NEEDS JAVADOCS
-		
+
 	}
 	/**
 	 * @return the collectionPath
@@ -76,5 +76,5 @@ public class DocumentCollectionPath extends DataDictionaryDefinitionBase{
 	 */
 	public void setCollectionPath(String collectionPath) {
 		this.collectionPath = collectionPath;
-	} 
+	}
 }

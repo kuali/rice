@@ -18,8 +18,8 @@ package org.kuali.rice.krad.datadictionary;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
 /**
- * This is a description of what this class does - mpham don't forget to fill this in. 
- * 
+ * This is a description of what this class does - mpham don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -28,7 +28,7 @@ public class WorkflowAttributeMetadata extends UifDictionaryBeanBase {
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
 	 */
 	public void completeValidation(Class rootBusinessObjectClass,

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO Administrator don't forget to fill this in. 
- * 
+ * TODO Administrator don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IntegerPatternConstraint extends ValidDataPatternConstraint{
@@ -57,7 +57,7 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
 
         return regex.toString();
     }
-    
+
     /**
      * @return the allowNegative
      */
@@ -98,7 +98,7 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
     @Override

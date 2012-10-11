@@ -25,14 +25,14 @@ import java.util.List;
 
 /**
  * Complete document event
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class CompleteDocumentEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs a RouteDocumentEvent with the specified errorPathPrefix and document
-     * 
+     *
      * @param errorPathPrefix
      * @param document
      */
@@ -42,7 +42,7 @@ public class CompleteDocumentEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs a RouteDocumentEvent with the given document
-     * 
+     *
      * @param document
      */
     public CompleteDocumentEvent(Document document) {

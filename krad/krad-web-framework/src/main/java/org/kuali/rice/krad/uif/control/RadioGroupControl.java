@@ -23,14 +23,14 @@ import java.util.List;
 /**
  * Represents a group of HTML Radio controls. Provides preset options for the
  * user to choose by a series of radio controls. Only one option can be selected
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RadioGroupControl extends MultiValueControlBase {
 	private static final long serialVersionUID = 8800478332086081970L;
     private List<String> fieldsetClasses;
-    
-    
+
+
 	private String delimiter;
 
 	public RadioGroupControl() {
@@ -41,7 +41,7 @@ public class RadioGroupControl extends MultiValueControlBase {
 	/**
 	 * Delimiter string to be rendered between the radio group options, defaults
 	 * to none
-	 * 
+	 *
 	 * @return String delimiter string
 	 */
 	public String getDelimiter() {
@@ -50,7 +50,7 @@ public class RadioGroupControl extends MultiValueControlBase {
 
 	/**
 	 * Setter for the string delimiter for each radio option
-	 * 
+	 *
 	 * @param delimiter delimeter to render between options
 	 */
 	public void setDelimiter(String delimiter) {

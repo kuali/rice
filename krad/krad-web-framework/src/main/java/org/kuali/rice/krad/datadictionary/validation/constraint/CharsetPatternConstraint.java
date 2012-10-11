@@ -17,7 +17,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 /**
  * Pattern for matching any character in the given list (String)
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
@@ -53,7 +53,7 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
 
     /**
      * Escapes every special character I could think of, to limit potential misuse of this pattern.
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
@@ -98,7 +98,7 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
             if (StringUtils.isNotBlank(validChars)) {
                 validationMessageParams.add(validChars);
             }
-            
+
         }
         return this.validationMessageParams;
     }
@@ -111,20 +111,14 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean("CharsetPatternConstraint", getMessageKey());
 
         if(getValidChars()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("ValidChars must be set");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("validChars ="+getValidChars());
-            reports.add(error);
+            String currentValues [] = {"validChars ="+getValidChars()};
+            tracer.createError("ValidChars must be set",currentValues);
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

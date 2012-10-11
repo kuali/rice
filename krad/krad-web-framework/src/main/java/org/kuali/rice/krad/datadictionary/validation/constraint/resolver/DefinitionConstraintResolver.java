@@ -24,10 +24,10 @@ import java.util.List;
 
 /**
  * An object that returns the constrainable definition itself as a list for a definition implementing the capability {@link Constrainable}.
- * This definition must also implement the interface {@link Constraint}, or a ClassCastException will be thrown. 
- * 
- * An example is {@link LengthConstrainable}, where members of the definition itself need to be made available to the ConstraintProcessor.  
- * 
+ * This definition must also implement the interface {@link Constraint}, or a ClassCastException will be thrown.
+ *
+ * An example is {@link LengthConstrainable}, where members of the definition itself need to be made available to the ConstraintProcessor.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefinitionConstraintResolver<T extends Constrainable> implements ConstraintResolver<T> {
@@ -44,5 +44,5 @@ public class DefinitionConstraintResolver<T extends Constrainable> implements Co
         }*/
 		throw new ClassCastException("DefinitionConstraintResolver can only be used for a definition that implements both Constraint and Constrainable, or derives from a class that does.");
 	}
-	
+
 }

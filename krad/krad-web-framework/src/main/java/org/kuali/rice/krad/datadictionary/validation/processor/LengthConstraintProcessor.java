@@ -28,8 +28,8 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LengthConstraintProcessor extends MandatoryElementConstraintProcessor<LengthConstraint> {
 
@@ -38,7 +38,7 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
     private static final String RANGE_KEY = "validation.lengthRange";
 
 	private static final String CONSTRAINT_NAME = "length constraint";
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
 	 */
@@ -51,11 +51,11 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 		return new ProcessorResult(processSingleLengthConstraint(result, value, constraint, attributeValueReader));
 	}
 
-	@Override 
+	@Override
 	public String getName() {
 		return CONSTRAINT_NAME;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */
@@ -63,7 +63,7 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 	public Class<? extends Constraint> getConstraintType() {
 		return LengthConstraint.class;
 	}
-	
+
 	protected ConstraintValidationResult processSingleLengthConstraint(DictionaryValidationResult result, Object value, LengthConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// Can't process any range constraints on null values
 		if (ValidationUtils.isNullOrEmpty(value))
@@ -74,49 +74,49 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 
 		if (dataType != null) {
 			typedValue = ValidationUtils.convertToDataType(value, dataType, dateTimeService);
-		}	
+		}
 
-		// The only thing that can have a length constraint currently is a string. 
+		// The only thing that can have a length constraint currently is a string.
 		if (typedValue instanceof String) {
 			return validateLength(result, (String)typedValue, constraint, attributeValueReader);
-		} 
-		
+		}
+
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 	}
-	
-	
+
+
 	protected ConstraintValidationResult validateLength(DictionaryValidationResult result, String value, LengthConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {
 		Integer valueLength = Integer.valueOf(value.length());
-		
+
 		Integer maxLength = constraint.getMaxLength();
 		Integer minLength = constraint.getMinLength();
-		
+
 		Result lessThanMax = ValidationUtils.isLessThanOrEqual(valueLength, maxLength);
 		Result greaterThanMin = ValidationUtils.isGreaterThanOrEqual(valueLength, minLength);
-		
+
         // It's okay for one end of the range to be undefined - that's not an error. It's only an error if one of them is invalid 
-        if (lessThanMax != Result.INVALID && greaterThanMin != Result.INVALID) { 
+        if (lessThanMax != Result.INVALID && greaterThanMin != Result.INVALID) {
         	// Of course, if they're both undefined then we didn't actually have a real constraint
         	if (lessThanMax == Result.UNDEFINED && greaterThanMin == Result.UNDEFINED)
         		return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
-        	
+
         	// In this case, we've succeeded
         	return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
         }
-        
+
 		String maxErrorParameter = maxLength != null ? maxLength.toString() : null;
 		String minErrorParameter = minLength != null ? minLength.toString() : null;
-        
+
         // If both comparisons happened then if either comparison failed we can show the end user the expected range on both sides.
-        if (lessThanMax != Result.UNDEFINED && greaterThanMin != Result.UNDEFINED) 
+        if (lessThanMax != Result.UNDEFINED && greaterThanMin != Result.UNDEFINED)
         	return result.addError(RANGE_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_OUT_OF_RANGE, minErrorParameter, maxErrorParameter);
         // If it's the max comparison that fails, then just tell the end user what the max can be
         else if (lessThanMax == Result.INVALID)
         	return result.addError(MAX_LENGTH_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INCLUSIVE_MAX, maxErrorParameter);
         // Otherwise, just tell them what the min can be
-        else 
+        else
         	return result.addError(MIN_LENGTH_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, minErrorParameter);
-        
+
 	}
 
 }

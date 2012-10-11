@@ -18,7 +18,7 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ import java.util.ArrayList;
  */
 public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = -715128943756700821L;
-    
+
 	protected String sourceName;
     protected String targetName;
 
@@ -55,7 +55,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * sourceName is the name of the POJO property of the business object
-     * 
+     *
      * @throws IllegalArgumentException if the given sourceName is blank
      */
     public void setSourceName(String sourceName) {
@@ -76,7 +76,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * targetName is the name of attribute that corresponds to the sourceName in the looked up BO
-     * 
+     *
      * @throws IllegalArgumentException if the given targetName is blank
      */
     public void setTargetName(String targetName) {
@@ -90,7 +90,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Directly validate simple fields.
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
@@ -103,12 +103,12 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
         Class sourceClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, sourceName);
         Class targetClass = DataDictionary.getAttributeClass(otherBusinessObjectClass, targetName);
-        if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils.equals(sourceClass.getName(), targetClass.getName())) {            
+        if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils.equals(sourceClass.getName(), targetClass.getName())) {
         	String sourceClassName = rootBusinessObjectClass.getName();
             String targetClassName = otherBusinessObjectClass.getName();
             String sourcePath = sourceClassName + "." + sourceName;
             String targetPath = targetClassName + "." + targetName;
-            
+
             // Just a temp hack to ignore null Person objects
             if ((sourcePath != null && !StringUtils.contains(sourcePath, ".principalId")) && (targetPath != null && !StringUtils.contains(targetPath, ".principalId"))) {
             	throw new AttributeValidationException("source attribute '" + sourcePath + "' (" + sourceClass + ") and target attribute '" + targetPath + "' (" + targetClass + ") are of differing types (" + "" + ")");
@@ -119,38 +119,28 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     /**
      * Directly validate simple fields
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
-        tracer.addBean(this.getClass().getSimpleName(),TracerToken.NO_BEAN_ID);
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationTrace tracer) {
+        tracer.addBean(this.getClass().getSimpleName(), ValidationTrace.NO_BEAN_ID);
+
         try{
             if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, sourceName)) {
-                ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
-                error.addCurrentValue("attribute = "+getSourceName());
-                error.addCurrentValue("class = "+rootBusinessObjectClass);
-                reports.add(error);
+                String currentValues [] = {"attribute = "+getSourceName(),"class = "+rootBusinessObjectClass};
+                tracer.createError("Unable to find attribute on class",currentValues);
             }
         }catch (RuntimeException ex) {
-            ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
-            error.addCurrentValue("attribute = "+getSourceName());
-            error.addCurrentValue("class = "+rootBusinessObjectClass);
-            error.addCurrentValue("Exception = "+ex.getMessage());
-            reports.add(error);
+            String currentValues [] = {"attribute = "+getSourceName(),"class = "+rootBusinessObjectClass,"Exception = "+ex.getMessage()};
+            tracer.createError("Unable to find attribute on class",currentValues);
         }
         try{
             if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, targetName)) {
-                ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
-                error.addCurrentValue("attribute = "+getTargetName());
-                error.addCurrentValue("class = "+otherBusinessObjectClass);
-                reports.add(error);
+                String currentValues [] = {"attribute = "+getTargetName(),"class = "+otherBusinessObjectClass};
+                tracer.createError("Unable to find attribute on class",currentValues);
             }
         }catch (RuntimeException ex) {
-            ErrorReport error = ErrorReport.createError("Unable to find attribute on class", tracer);
-            error.addCurrentValue("attribute = "+getTargetName());
-            error.addCurrentValue("class = "+otherBusinessObjectClass);
-            error.addCurrentValue("Exception = " + ex.getMessage());
-            reports.add(error);
+            String currentValues [] = {"attribute = "+getTargetName(),"class = "+otherBusinessObjectClass,"Exception = " + ex.getMessage()};
+            tracer.createError("Unable to find attribute on class",currentValues);
         }
         try{
             Class sourceClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, sourceName);
@@ -163,21 +153,14 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
                 // Just a temp hack to ignore null Person objects
                 if ((sourcePath != null && !StringUtils.contains(sourcePath, ".principalId")) && (targetPath != null && !StringUtils.contains(targetPath, ".principalId"))) {
-                    ErrorReport error = ErrorReport.createError("Source and target of different types", tracer);
-                    error.addCurrentValue("source = "+sourcePath + "' (" + sourceClass + ")");
-                    error.addCurrentValue("target = "+targetPath + "' (" + targetClass + ")");
-                    reports.add(error);
+                    String currentValues [] = {"source = "+sourcePath + "' (" + sourceClass + ")","target = "+targetPath + "' (" + targetClass + ")"};
+                    tracer.createError("Source and target of different types",currentValues);
                 }
             }
         }catch (RuntimeException ex) {
-            ErrorReport error = ErrorReport.createError("Unable to validate property",tracer);
-            error.addCurrentValue("Exception = "+ex.getMessage());
-            reports.add(error);
+            String currentValues [] = {"Exception = "+ex.getMessage()};
+            tracer.createError("Unable to validate property",currentValues);
         }
-
-
-
-        return reports;
     }
 
 

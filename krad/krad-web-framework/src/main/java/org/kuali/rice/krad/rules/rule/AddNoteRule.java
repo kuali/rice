@@ -20,13 +20,13 @@ import org.kuali.rice.krad.document.Document;
 
 /**
  * Defines a rule which gets invoked immediately before a document has a note added to it.
- * 
- * 
+ *
+ *
  */
 public interface AddNoteRule extends BusinessRule {
     /**
      * This method is responsible for housing business rules that need to be checked before a note is added to a document.
-     * 
+     *
      * @param document
      * @param note
      * @return false if the rule fails

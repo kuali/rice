@@ -20,12 +20,12 @@ import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 /**
  * Form class for <code>MaintenanceView</code> screens
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceForm extends DocumentFormBase {
 	private static final long serialVersionUID = -5805825500852498048L;
-	
+
 	protected String dataObjectClassName;
 	protected String maintenanceAction;
 
@@ -38,7 +38,7 @@ public class MaintenanceForm extends DocumentFormBase {
 	public MaintenanceDocument getDocument() {
 		return (MaintenanceDocument) super.getDocument();
 	}
-	
+
 	// This is to provide a setter with matching type to
 	// public MaintenanceDocument getDocument() so that no
 	// issues occur with spring 3.1-M2 bean wrappers

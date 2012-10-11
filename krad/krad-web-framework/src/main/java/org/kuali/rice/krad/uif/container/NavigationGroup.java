@@ -30,7 +30,7 @@ import java.util.Set;
  * The navigationType determines how the navigation will be rendered (menu,
  * tabs, dropdown, ...)
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NavigationGroup extends Group {
@@ -56,7 +56,7 @@ public class NavigationGroup extends Group {
 	/**
 	 * Type of navigation that should be rendered. For example a menu or tab
 	 * navigation. Used by the rendering script to choose an appropriate plug-in
-	 * 
+	 *
 	 * @return String navigation type
 	 * @see org.kuali.rice.krad.uif.UifConstants.NavigationType
 	 */
@@ -66,7 +66,7 @@ public class NavigationGroup extends Group {
 
 	/**
 	 * Setter for the navigation type
-	 * 
+	 *
 	 * @param navigationType
 	 */
 	public void setNavigationType(String navigationType) {

@@ -68,7 +68,7 @@ public class FieldBaseTest {
             assertFalse(fieldBase.getFieldLabel().getRequiredMessage().isRender());
         } catch(Exception ex) {
             fail("Unit Test Exception - " + ex.getMessage());
-        }        
+        }
     }
-    
+
 }

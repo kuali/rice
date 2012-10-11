@@ -25,8 +25,8 @@ import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 
 /**
  * This interface defines the contract that must be implemented by the workflow engine.
- * 
- * 
+ *
+ *
  */
 public interface WorkflowDocumentService {
     /**
@@ -38,7 +38,7 @@ public interface WorkflowDocumentService {
     /**
      * Given a documentTypeName and workflowUser, returns a new workflowDocument from the workflow
      * server.
-     * 
+     *
      * @param documentTypeName
      * @param workflowUser
      * @return newly-created workflowDocument instance
@@ -52,7 +52,7 @@ public interface WorkflowDocumentService {
     /**
      * Given a documentHeaderId and workflowUser, retrieves the workflowDocument associated with
      * that documentHeaderId from the workflow server.
-     * 
+     *
      * @param documentHeaderId
      * @param workflowUser
      * @return existing workflowDoc
@@ -68,7 +68,7 @@ public interface WorkflowDocumentService {
      * corresponding to this action taken. If the WorkflowDocument.saveDocument() method is not
      * valid to be called the system will instead call the method
      * {@link WorkflowDocumentService#saveRoutingData(WorkflowDocument)}
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @throws WorkflowException
@@ -77,7 +77,7 @@ public interface WorkflowDocumentService {
 
     /**
      * save the routing data of the document to workflow
-     * 
+     *
      * @param workflowDocument
      * @throws WorkflowException
      */
@@ -87,7 +87,7 @@ public interface WorkflowDocumentService {
      * route this workflowDocument optionally providing an annotation for this action taken which
      * will show up in the route log for this document corresponding to this action taken, and
      * additionally optionally providing a list of ad hoc recipients for the document
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
@@ -99,7 +99,7 @@ public interface WorkflowDocumentService {
      * approve this workflowDocument optionally providing an annotation for this action taken which
      * will show up in the route log for this document corresponding to this action taken, and
      * additionally optionally providing a list of ad hoc recipients for the document
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
@@ -111,7 +111,7 @@ public interface WorkflowDocumentService {
      * super user approve this workflowDocument optionally providing an annotation for this action
      * taken which will show up in the route log for this document corresponding to this action
      * taken
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      */
@@ -121,7 +121,7 @@ public interface WorkflowDocumentService {
      * super user cancel this workflowDocument optionally providing an annotation for this action
      * taken which will show up in the route log for this document corresponding to this action
      * taken
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @throws WorkflowException
@@ -132,7 +132,7 @@ public interface WorkflowDocumentService {
      * super user disapprove this workflowDocument optionally providing an annotation for this
      * action taken which will show up in the route log for this document corresponding to this
      * action taken
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @throws WorkflowException
@@ -142,7 +142,7 @@ public interface WorkflowDocumentService {
     /**
      * disapprove this workflowDocument optionally providing an annotation for this action taken
      * which will show up in the route log for this document corresponding to this action taken
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      */
@@ -151,7 +151,7 @@ public interface WorkflowDocumentService {
     /**
      * cancel this workflowDocument optionally providing an annotation for this action taken which
      * will show up in the route log for this document corresponding to this action taken
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      */
@@ -163,7 +163,7 @@ public interface WorkflowDocumentService {
      * additionally optionally providing a list of ad hoc recipients for this document which should
      * be restricted to actions requested of acknowledge or fyi as all other action request types
      * will be discarded
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
@@ -177,7 +177,7 @@ public interface WorkflowDocumentService {
      * additionally optionally providing a list of ad hoc recipients for this document which should
      * be restricted to actions requested of acknowledge or fyi as all other action request types
      * will be discarded.
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
@@ -189,7 +189,7 @@ public interface WorkflowDocumentService {
      * clear the fyi request for this document, optinoally providing a list of ad hoc recipients for
      * this document which should be restricted to actions requested of fyi as all other action
      * request types will be discarded
-     * 
+     *
      * @param workflowDocument
      * @param adHocRecipients
      */
@@ -199,7 +199,7 @@ public interface WorkflowDocumentService {
     /**
      * Gets the current route level name of the workflow document even if document has no active
      * node names. Allows for getting the node name of a document already in a final status.
-     * 
+     *
      * @param workflowDocument
      * @return node name of the current node if only one or list of node names separated by string
      *         ", " if more than one current node name
@@ -211,7 +211,7 @@ public interface WorkflowDocumentService {
      * Sends workflow notification to the list of ad hoc recipients. This method is usually used to
      * notify users of a note that has been added to a document. The notificationLabel parameter is
      * used to give the request a custom label in the user's Action List
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
@@ -224,7 +224,7 @@ public interface WorkflowDocumentService {
     /**
      * Sends workflow notification to the list of ad hoc recipients. This method is usually used to
      * notify users of a note that has been added to a document
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients
@@ -238,10 +238,10 @@ public interface WorkflowDocumentService {
      * than one.
      */
     public String getCurrentRouteNodeNames(WorkflowDocument workflowDocument);
-    
+
     /**
      * Completes document
-     * 
+     *
      * @param workflowDocument
      * @param annotation
      * @param adHocRecipients

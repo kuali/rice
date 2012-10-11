@@ -17,19 +17,19 @@ package org.kuali.rice.krad.datadictionary;
 
 
 /**
- * This is a description of what this class does - mpham don't forget to fill this in. 
- * 
+ * This is a description of what this class does - mpham don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SearchingAttribute extends WorkflowAttributeMetadata {
 	private static final long serialVersionUID = -612461988789474893L;
-	
-	private String businessObjectClassName; 
+
+	private String businessObjectClassName;
 	private String attributeName;
 	private boolean showAttributeInSearchCriteria = true;
 	private boolean showAttributeInResultSet = false;
-	
+
 	/**
 	 * @return the businessObjectClassName
 	 */

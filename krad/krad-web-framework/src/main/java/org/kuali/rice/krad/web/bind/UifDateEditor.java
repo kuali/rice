@@ -29,7 +29,7 @@ import java.util.Calendar;
 
 /**
  * PropertyEditor converts between date display strings and <code>java.sql.Date</code> objects
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifDateEditor extends PropertyEditorSupport implements Serializable {
@@ -42,7 +42,7 @@ public class UifDateEditor extends PropertyEditorSupport implements Serializable
      * This overridden method uses the
      * <code>org.kuali.rice.core.api.datetime.DateTimeService</code> to convert
      * the date object to the display string.
-     * 
+     *
      * @see java.beans.PropertyEditorSupport#getAsText()
      */
     @Override
@@ -58,7 +58,7 @@ public class UifDateEditor extends PropertyEditorSupport implements Serializable
 
     /**
      * Gets the date time service.
-     * 
+     *
      * @return the date time service
      */
     protected DateTimeService getDateTimeService() {
@@ -72,7 +72,7 @@ public class UifDateEditor extends PropertyEditorSupport implements Serializable
      * This overridden method converts the display string to a
      * <code>java.sql.Date</code> object using the
      * <code>org.kuali.rice.core.api.datetime.DateTimeService</code>.
-     * 
+     *
      * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
      */
     @Override
@@ -83,7 +83,7 @@ public class UifDateEditor extends PropertyEditorSupport implements Serializable
     /**
      * Convert display text to <code>java.sql.Date</code> object using the
      * <code>org.kuali.rice.core.api.datetime.DateTimeService</code>.
-     * 
+     *
      * @param text
      *            the display text
      * @return the <code>java.sql.Date</code> object
@@ -108,7 +108,7 @@ public class UifDateEditor extends PropertyEditorSupport implements Serializable
      * For a given user input date, this method returns the exact string the
      * user entered after the last slash. This allows the formatter to
      * distinguish between ambiguous values such as "/06" "/6" and "/0006"
-     * 
+     *
      * @param date
      * @return
      */

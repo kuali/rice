@@ -18,7 +18,7 @@ package org.kuali.rice.krad.datadictionary.state;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -153,28 +153,21 @@ public class StateMappingBase implements StateMapping {
     }
 
     /**
-     * @see StateMapping#completeValidation(org.kuali.rice.krad.datadictionary.validator.TracerToken)
+     * @see StateMapping#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean("StateMappingBase",getStatePropertyName());
 
         // Checking that propertyName is set
         if(getStatePropertyName()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR,"The State Property Name must be set",tracer);
-            error.addCurrentValue("statePropertyName = null");
-            reports.add(error);
+            String currentValues [] = {"statePropertyName = null"};
+            tracer.createWarning("The State Property Name must be set",currentValues);
         }
 
         // Checking that states are set
         if(getStates()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.setValidationFailed("States should be set");
-            error.addCurrentValue("states = null");
-            reports.add(error);
+            String currentValues [] = {"states = null"};
+            tracer.createWarning("States should be set",currentValues);
         }
-
-        return reports;
     }
 }

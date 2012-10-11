@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.field;
 /**
  * Field whose output is produced by invoking a method or template and has no
  * properties (generic)
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GenericField extends FieldBase {

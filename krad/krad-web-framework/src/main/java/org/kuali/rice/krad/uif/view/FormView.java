@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.view;
 /**
  * Provides configuration for <code>View</code> instances that render an HTML
  * form
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FormView extends View {
@@ -42,7 +42,7 @@ public class FormView extends View {
 	 * necessary for pages that need to submit data back to the server. Note
 	 * that even if a page is read-only, a form element is generally needed for
 	 * the navigation. Defaults to true
-	 * 
+	 *
 	 * @return true if the form element should be rendered, false if it should
 	 *         not be
 	 */
@@ -52,7 +52,7 @@ public class FormView extends View {
 
 	/**
 	 * Setter for the render form indicator
-	 * 
+	 *
 	 * @param renderForm
 	 */
 	public void setRenderForm(boolean renderForm) {
@@ -63,7 +63,7 @@ public class FormView extends View {
 	 * Indicates whether to perform the validate model phase of the view
 	 * lifecycle. This phase will validate the model against configured
 	 * dictionary validations and report errors. Defaults to true
-	 * 
+	 *
 	 * @return boolean true if model data should be validated, false if it
 	 *         should not be
 	 * @see
@@ -74,7 +74,7 @@ public class FormView extends View {
 
 	/**
 	 * Setter for the validate server side indicator
-	 * 
+	 *
 	 * @param validateServerSide
 	 */
 	public void setValidateServerSide(boolean validateServerSide) {
@@ -84,7 +84,7 @@ public class FormView extends View {
 	/**
 	 * Indicates whether to perform on-the-fly validation on the client using js
 	 * during user data entry. Defaults to true
-	 * 
+	 *
 	 * @return the validateClientSide
 	 */
 	public boolean isValidateClientSide() {
@@ -93,7 +93,7 @@ public class FormView extends View {
 
 	/**
 	 * Setter for the validate client side indicator
-	 * 
+	 *
 	 * @param validateClientSide
 	 */
 	public void setValidateClientSide(boolean validateClientSide) {
@@ -102,13 +102,13 @@ public class FormView extends View {
 
 	/**
 	 * Specifies the URL the view's form should post to
-	 * 
+	 *
 	 * <p>
 	 * Any valid form post URL (full or relative) can be specified. If left
 	 * empty, the form will be posted to the same URL of the preceding request
 	 * URL.
 	 * </p>
-	 * 
+	 *
 	 * @return String post URL
 	 */
 	public String getFormPostUrl() {
@@ -117,7 +117,7 @@ public class FormView extends View {
 
 	/**
 	 * Setter for the form post URL
-	 * 
+	 *
 	 * @param formPostUrl
 	 */
 	public void setFormPostUrl(String formPostUrl) {

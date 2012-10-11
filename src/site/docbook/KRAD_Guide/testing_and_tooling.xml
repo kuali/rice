@@ -69,36 +69,12 @@
         <itemizedlist>
           <listitem>
             <para>
-              Folder: images
-            </para>
-            <itemizedlist>
-              <listitem>
-                <para>
-                  File: KRADLogo.jpg (If with the Tooling GUI)
-                </para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-          <listitem>
-            <para>
-              Folder: messagelabels
-            </para>
-            <itemizedlist>
-              <listitem>
-                <para>
-                  File: RDOErrorMsgs.xml
-                </para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-          <listitem>
-            <para>
               Folder: Properties
             </para>
             <itemizedlist>
               <listitem>
                 <para>
-                  File: rdo-config-default.properties
+                  File: rdo-config.properties
                 </para>
               </listitem>
             </itemizedlist>
@@ -114,20 +90,18 @@
         <title>Setting Up File System</title>
         <para>
           The RDO Developer is set up to save the artifacts generated to predetermined locations. This can cause errors
-          in
-          the save process if the folder location that RDO is trying to access to is missing. To prevent this, before
+          in the save process if the folder location that RDO is trying to access to is missing. To prevent this, before
           using RDO the user should configure the File Path Setup section of the properties so that the file paths point
-          to
-          the folder in which they wish to save each artifact. More details can be found in the Configuring Properties
-          section below.
+          to the folder in which they wish to save each artifact. More details can be found in the Configuring
+          Properties section below.
         </para>
       </section>
       <section>
         <title>Configuring Properties</title>
         <para>
           The RDO Developer offers a wide availability of customization and automatization which can be set up through
-          the rdo-config.properties file. This file is broken into a number of different sections based on the area
-          of the RDO affected. It is recommended to make a back up of this file before making changes.
+          the rdo-config.properties file. This file is broken into a number of different sections based on the area of
+          the RDO affected. It is recommended to make a back up of this file before making changes.
         </para>
         <itemizedlist>
           <listitem>
@@ -1241,7 +1215,6 @@
           </para>
         </section>
       </section>
-
     </section>
   </section>
 </chapter>

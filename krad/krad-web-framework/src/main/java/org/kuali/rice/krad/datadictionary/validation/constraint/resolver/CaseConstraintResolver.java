@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * CaseConstraintResolver returns the case constraint as a list for a definition implementing the capability {@link CaseConstrainable}
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CaseConstraintResolver<T extends CaseConstrainable> implements ConstraintResolver<T> {
@@ -34,5 +34,5 @@ public class CaseConstraintResolver<T extends CaseConstrainable> implements Cons
 		C caseConstraint = (C)definition.getCaseConstraint();
 		return (caseConstraint == null) ? null : Collections.<C>singletonList(caseConstraint);
 	}
-	
+
 }

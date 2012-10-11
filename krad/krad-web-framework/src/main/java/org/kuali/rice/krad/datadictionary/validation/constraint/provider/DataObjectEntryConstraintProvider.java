@@ -26,8 +26,8 @@ import java.util.HashMap;
 /**
  * An object that looks up constraints for an object dictionary entry by constraint type. This can either by instantiated by dependency
  * injection, in which case a map of class names to constraint resolvers can be injected, or the default map can be constructed by
- * calling the init() method immediately after instantiation. 
- * 
+ * calling the init() method immediately after instantiation.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataObjectEntryConstraintProvider extends BaseConstraintProvider<DataObjectEntry> {
@@ -38,16 +38,16 @@ public class DataObjectEntryConstraintProvider extends BaseConstraintProvider<Da
 		resolverMap = new HashMap<String, ConstraintResolver<DataObjectEntry>>();
 		resolverMap.put(MustOccurConstraint.class.getName(), new MustOccurConstraintsResolver<DataObjectEntry>());
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider#isSupported(org.kuali.rice.krad.datadictionary.validation.capability.Constrainable)
 	 */
 	@Override
 	public boolean isSupported(Constrainable definition) {
-		
+
 		if (definition instanceof DataObjectEntry)
 			return true;
-		
+
 		return false;
 	}
 

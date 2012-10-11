@@ -19,15 +19,15 @@ import java.util.List;
 
 
 /**
- * This is a description of what this class does - mpham don't forget to fill this in. 
- * 
+ * This is a description of what this class does - mpham don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentValuePathGroup  extends DataDictionaryDefinitionBase{
 	private static final long serialVersionUID = 6285682208264817105L;
-	
-	private List<String> paths; 
+
+	private List<String> paths;
 	private DocumentCollectionPath documentCollectionPath;
 
 	/**
@@ -57,13 +57,13 @@ public class DocumentValuePathGroup  extends DataDictionaryDefinitionBase{
 	}
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
 	 */
 	public void completeValidation(Class rootBusinessObjectClass,
 			Class otherBusinessObjectClass) {
 		// TODO mpham - THIS METHOD NEEDS JAVADOCS
-		
+
 	}
 
 }

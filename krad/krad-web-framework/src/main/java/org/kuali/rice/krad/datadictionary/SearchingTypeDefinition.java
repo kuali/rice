@@ -19,17 +19,17 @@ import java.util.List;
 
 
 /**
- * This is a description of what this class does - mpham don't forget to fill this in. 
- * 
+ * This is a description of what this class does - mpham don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
 	private static final long serialVersionUID = -8779609937539520677L;
-	
+
 	private SearchingAttribute searchingAttribute;
 	private List<String> paths;
-	
+
 	/**
 	 * @return the searchingAttribute
 	 */
@@ -56,11 +56,11 @@ public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
 	}
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
 	 */
 	public void completeValidation(Class rootBusinessObjectClass,
 			Class otherBusinessObjectClass) {
-		
+
 	}
 }

@@ -23,16 +23,16 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * This abstract class can be extended by constraint processor classes that
- * must be processed on every validation.  
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * must be processed on every validation.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class MandatoryElementConstraintProcessor<C extends Constraint> implements ConstraintProcessor<Object, C> {
 
 	protected DataDictionaryService dataDictionaryService;
 	protected DateTimeService dateTimeService;
-	
-	
+
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#isOptional()
 	 */
@@ -56,14 +56,14 @@ public abstract class MandatoryElementConstraintProcessor<C extends Constraint> 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
 		this.dataDictionaryService = dataDictionaryService;
 	}
-	
+
 	/**
 	 * @return the dateTimeService
 	 */
 	public DateTimeService getDateTimeService() {
 		if (dateTimeService == null)
 			dateTimeService = CoreApiServiceLocator.getDateTimeService();
-		
+
 		return this.dateTimeService;
 	}
 
@@ -73,5 +73,5 @@ public abstract class MandatoryElementConstraintProcessor<C extends Constraint> 
 	public void setDateTimeService(DateTimeService dateTimeService) {
 		this.dateTimeService = dateTimeService;
 	}
-	
+
 }

@@ -38,16 +38,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TracerToken {
-    // logger
-    private static final Log LOG = LogFactory.getLog(TracerToken.class);
-
-    private ArrayList<String> beanIds;
-    private ArrayList<String> beanTypes;
-    private Map<String, Document> beanMap;
-    private ArrayList<String> relatedXmls;
-
-    private int validationStage;
+public class ValidationTrace {
+    private static final Log LOG = LogFactory.getLog(ValidationTrace.class);
 
     // Constant identifer for a trace entry where the bean has no identifier itself
     public static final String NO_BEAN_ID = "NOBEANID";
@@ -58,10 +50,15 @@ public class TracerToken {
     // Constant identifier for a trace during render
     public static final int BUILD = 1;
 
+    private ArrayList<String> beanIds;
+    private ArrayList<String> beanTypes;
+    private Map<String, Document> beanMap;
+    private int validationStage;
+
     /**
      * Constructor for an empty token to start a trace
      */
-    public TracerToken() {
+    public ValidationTrace() {
         beanIds = new ArrayList<String>();
         beanTypes = new ArrayList<String>();
         beanMap = new HashMap<String, Document>();
@@ -70,7 +67,7 @@ public class TracerToken {
     /**
      * Constructor for an empty token to start a trace
      */
-    public TracerToken(String[] files, ResourceLoader loader) {
+    public ValidationTrace(String[] files, ResourceLoader loader) {
         beanIds = new ArrayList<String>();
         beanTypes = new ArrayList<String>();
         beanMap = new HashMap<String, Document>();
@@ -141,7 +138,7 @@ public class TracerToken {
     /**
      * Replaces a trace entry's information
      *
-     * @param index
+     * @param index - The location of the bean
      * @param beanId - An identifier for the bean
      * @param beanType - The type of bean
      */
@@ -151,19 +148,18 @@ public class TracerToken {
     }
 
     /**
-     * Creates a copy of the TracerToken
+     * Creates a copy of the ValidationTrace
      *
      * @return A complete copy of the current token
      */
-    public TracerToken getCopy() {
-        TracerToken copy = new TracerToken();
+    public ValidationTrace getCopy() {
+        ValidationTrace copy = new ValidationTrace();
 
         for (int i = 0; i < getTraceSize(); i++) {
             copy.addBean(getBeanType(i), getBeanId(i));
         }
         copy.setValidationStage(getValidationStage());
         copy.setBeanMap(beanMap);
-
         return copy;
     }
 
@@ -266,7 +262,7 @@ public class TracerToken {
     /**
      * Sets the stage of the validation where the trace is taking place
      *
-     * @param stage
+     * @param stage - The stage of the validation
      */
     public void setValidationStage(int stage) {
         validationStage = stage;
@@ -282,9 +278,33 @@ public class TracerToken {
     }
 
     /**
+     * Creates a new error report as an Error and adds it to the global list.
+     *
+     * @param validation - The validation that fails.
+     * @param values - The values involved.
+     */
+    public void createError(String validation, String values[]) {
+        ErrorReport report = new ErrorReport(ErrorReport.ERROR, validation, this, values);
+        Validator.addErrorReport(report);
+
+    }
+
+    /**
+     * Creates a new error report as a Warning and adds it to the global list.
+     *
+     * @param validation - The validation that fails.
+     * @param values - The values involved.
+     */
+    public void createWarning(String validation, String values[]) {
+        ErrorReport report = new ErrorReport(ErrorReport.WARNING, validation, this, values);
+        Validator.addErrorReport(report);
+
+    }
+
+    /**
      * Retrieves a single entry in the BeanId trace list, a collection identifiers for the traced beans
      *
-     * @param index
+     * @param index - The location of the bean
      * @return String Identifier for the bean at the provided index of the trace
      */
     public String getBeanId(int index) {
@@ -295,7 +315,7 @@ public class TracerToken {
      * Retrieves a single entry in the BeanType trace list, a collection of types for the traced beansa collection
      * identifiers for the traced beans
      *
-     * @param index
+     * @param index - The location of the bean type
      * @return String Type for the bean at the provided index of the trace
      */
     public String getBeanType(int index) {
@@ -306,7 +326,7 @@ public class TracerToken {
      * Retrieves the stage when the trace is taking place
      * The stage is the time frame when the validation is taking place in the application
      *
-     * @return
+     * @return Returns the stage of the validation.
      */
     public int getValidationStage() {
         return validationStage;

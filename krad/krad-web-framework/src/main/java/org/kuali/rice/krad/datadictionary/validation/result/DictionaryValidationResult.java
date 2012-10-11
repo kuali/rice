@@ -26,16 +26,16 @@ import java.util.Map;
 /**
  *  DictionaryValidationResult holds dictionary validation results
  *
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DictionaryValidationResult implements Iterable<ConstraintValidationResult> {
-	
+
 	private Map<String, EntryValidationResult> entryValidationResultMap;
 	private ErrorLevel errorLevel;
-	
+
 	private int numberOfErrors;
 	private int numberOfWarnings;
-	
+
 	private Iterator<ConstraintValidationResult> iterator;
 
     /**
@@ -55,11 +55,11 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
      * @param constraintValidationResult - the result of processing a constraint
      */
 	public void addConstraintValidationResult(AttributeValueReader attributeValueReader, ConstraintValidationResult constraintValidationResult) {
-		
+
 		// Don't bother to store this if the error level of the constraint validation result is lower than the level this dictionary validation result is tracking
 		if (constraintValidationResult.getStatus().getLevel() < errorLevel.getLevel())
 			return;
-		
+
 		switch (constraintValidationResult.getStatus()) {
 		case ERROR:
 			numberOfErrors++;
@@ -70,28 +70,28 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
 		default:
 			// Do nothing
 		}
-		
+
 		// Give the constraint a chance to override the entry and attribute name - important if the attribute name is not the same as the one in the attribute value reader!
 		String entryName = constraintValidationResult.getEntryName();
 		String attributeName = constraintValidationResult.getAttributeName();
 		String attributePath = constraintValidationResult.getAttributePath();
-		
+
 		if (entryName == null){
 			entryName = attributeValueReader.getEntryName();
 		}
-		
+
 		if (attributeName == null){
 			attributeName = attributeValueReader.getAttributeName();
 		}
-		
+
 		if (attributePath == null){
 		    attributePath = attributeValueReader.getPath();
 		}
-		
+
 		constraintValidationResult.setEntryName(entryName);
 		constraintValidationResult.setAttributeName(attributeName);
 		constraintValidationResult.setAttributePath(attributePath);
-		
+
 		String entryKey = getEntryValidationResultKey(entryName, attributePath);
 		getEntryValidationResult(entryKey).getAttributeValidationResult(attributeName).addConstraintValidationResult(constraintValidationResult);
 	}
@@ -142,7 +142,7 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
 	public ConstraintValidationResult addWarning(AttributeValueReader attributeValueReader, String constraintName, String errorKey, String... errorParameters) {
 		if (errorLevel.getLevel() > ErrorLevel.WARN.getLevel())
 			return new ConstraintValidationResult(constraintName, ErrorLevel.WARN);
-		
+
 		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 		constraintValidationResult.setWarning(errorKey, errorParameters);
 		numberOfWarnings++;
@@ -159,7 +159,7 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
 	public ConstraintValidationResult addSuccess(AttributeValueReader attributeValueReader, String constraintName) {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
 			return new ConstraintValidationResult(constraintName, ErrorLevel.OK);
-		
+
 		return getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 	}
 
@@ -173,7 +173,7 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
 	public ConstraintValidationResult addSkipped(AttributeValueReader attributeValueReader, String constraintName) {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
 			return new ConstraintValidationResult(constraintName, ErrorLevel.INAPPLICABLE);
-		
+
 		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 		constraintValidationResult.setStatus(ErrorLevel.INAPPLICABLE);
 		return constraintValidationResult;
@@ -189,7 +189,7 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
 	public ConstraintValidationResult addNoConstraint(AttributeValueReader attributeValueReader, String constraintName) {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
 			return new ConstraintValidationResult(constraintName, ErrorLevel.NOCONSTRAINT);
-		
+
 		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 		constraintValidationResult.setStatus(ErrorLevel.NOCONSTRAINT);
 		return constraintValidationResult;
@@ -290,13 +290,13 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
 		constraintValidationResult.setAttributePath(attributePath);
 		return constraintValidationResult;
 	}
-		
+
 	/**
      * gets the key to the {@link EntryValidationResult} entry in the EntryValidationResultMap
      *
      *  <p>Most cases entry key will be the entryName, unless the attribute is part of a collection,
      * in which case entry key will be suffixed with index of attribute's parent item.</p>
-     * 
+     *
      * @param entryName - the name that the data dictionary uses to store metadata about the attribute
      * @param attributePath - a string representation of specifically which attribute (at some depth) is being accessed
      * @return a key used to fetch an associated {@code EntryValidationResult}
@@ -304,7 +304,7 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
     private String getEntryValidationResultKey(String entryName, String attributePath) {
         if (attributePath.contains("[")){
             return entryName + "[" + ValidationUtils.getLastPathIndex(attributePath) + "]";
-        } 
+        }
         return entryName;
     }
 
@@ -335,5 +335,5 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
 	public int getNumberOfWarnings() {
 		return this.numberOfWarnings;
 	}
-	
+
 }

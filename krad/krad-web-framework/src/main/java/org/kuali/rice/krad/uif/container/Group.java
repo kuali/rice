@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.Field;
@@ -35,13 +35,13 @@ import java.util.Set;
 /**
  * Container that holds a list of <code>Field</code> or other <code>Group</code>
  * instances
- * 
+ *
  * <p>
  * Groups can exist at different levels of the <code>View</code>, providing
  * conceptual groupings such as the page, section, and group. In addition, other
  * group types can be created to add behavior like collection support
  * </p>
- * 
+ *
  * <p>
  * <code>Group</code> implementation has properties for defaulting the binding
  * information (such as the parent object path and a binding prefix) for the
@@ -49,7 +49,7 @@ import java.util.Set;
  * the fields contained in the <code>Group</code> that implement
  * <code>DataBinding</code>, unless they have already been set on the field.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Group extends ContainerBase {
@@ -72,12 +72,12 @@ public class Group extends ContainerBase {
 
 	/**
 	 * The following actions are performed:
-	 * 
+	 *
 	 * <ul>
 	 * <li>Sets the bindByNamePrefix if blank on any InputField and
 	 * FieldGroup instances within the items List</li>
 	 * </ul>
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
     @Override
@@ -180,7 +180,7 @@ public class Group extends ContainerBase {
 	 * be set on each attribute field instance if the bindingPrefix is blank and
 	 * not a form field
 	 * </p>
-	 * 
+	 *
 	 * @return String binding prefix to set
 	 */
 	public String getFieldBindByNamePrefix() {
@@ -189,7 +189,7 @@ public class Group extends ContainerBase {
 
 	/**
 	 * Setter for the field binding prefix
-	 * 
+	 *
 	 * @param fieldBindByNamePrefix
 	 */
 	public void setFieldBindByNamePrefix(String fieldBindByNamePrefix) {
@@ -199,7 +199,7 @@ public class Group extends ContainerBase {
 	/**
 	 * Object binding path to set on each of the group's
 	 * <code>InputField</code> instances
-	 * 
+	 *
 	 * <p>
 	 * When the attributes of the group belong to a object whose path is
 	 * different from the default then this property can be given to set each of
@@ -207,7 +207,7 @@ public class Group extends ContainerBase {
 	 * path can be overridden at the attribute level. The object path is set to
 	 * the fieldBindingObjectPath during the initialize phase.
 	 * </p>
-	 * 
+	 *
 	 * @return String model path to set
 	 * @see org.kuali.rice.krad.uif.component.BindingInfo#getBindingObjectPath()
 	 */
@@ -217,7 +217,7 @@ public class Group extends ContainerBase {
 
 	/**
 	 * Setter for the field object binding path
-	 * 
+	 *
 	 * @param fieldBindingObjectPath
 	 */
 	public void setFieldBindingObjectPath(String fieldBindingObjectPath) {
@@ -227,7 +227,7 @@ public class Group extends ContainerBase {
 	/**
 	 * Disclosure widget that provides collapse/expand functionality for the
 	 * group
-	 * 
+	 *
 	 * @return Disclosure instance
 	 */
 	public Disclosure getDisclosure() {
@@ -236,7 +236,7 @@ public class Group extends ContainerBase {
 
 	/**
 	 * Setter for the group's disclosure instance
-	 * 
+	 *
 	 * @param disclosure
 	 */
 	public void setDisclosure(Disclosure disclosure) {
@@ -272,7 +272,7 @@ public class Group extends ContainerBase {
 
 	/**
 	 * Setter for the Group's list of components
-	 * 
+	 *
 	 * @param items
 	 */
 	@Override
@@ -284,30 +284,25 @@ public class Group extends ContainerBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
         // Checks that no invalid items are present
         for(int i=0;i<getItems().size();i++){
             if(getItems().get(i).getClass()==PageGroup.class || getItems().get(i).getClass()==NavigationGroup.class){
-                ErrorReport error = ErrorReport.createError("Items in Group cannot be PageGroup or NaviagtionGroup",tracer);
-                error.addCurrentValue("item("+i+").class ="+getItems().get(i).getClass());
-                reports.add(error);
+                String currentValues [] = {"item("+i+").class ="+getItems().get(i).getClass()};
+                tracer.createError("Items in Group cannot be PageGroup or NaviagtionGroup",currentValues);
             }
         }
 
         // Checks that the layout manager is set
         if(getLayoutManager()==null){
-            if(RDValidator.checkExpressions(this,"layoutManager")){
-                ErrorReport error = ErrorReport.createError("LayoutManager must be set",tracer);
-                error.addCurrentValue("layoutManager = "+getLayoutManager());
-                reports.add(error);
+            if(Validator.checkExpressions(this, "layoutManager")){
+                String currentValues [] = {"layoutManager = "+getLayoutManager()};
+                tracer.createError("LayoutManager must be set",currentValues);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

@@ -35,61 +35,61 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 
 /**
  * Things this test should check:
- * 
+ *
  * 1. value with all valid characters. (success) {@link #testValueAllValidChars()}
  * 2. value with invalid characters. (failure) {@link #testValueNotValidChars()}
  * 3. value with all valid characters. Allowing white space.(success) {@link #testValueAllValidCharsAllowWhitespace()}
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AnyCharacterPatternConstraintTest {
 
 	private AttributeDefinition street1Definition;
-	private AttributeDefinition street2Definition;	
-	
+	private AttributeDefinition street2Definition;
+
 	private BusinessObjectEntry addressEntry;
 	private DictionaryValidationResult dictionaryValidationResult;
-	
+
 	private ValidCharactersConstraintProcessor processor;
-	
+
 	private Address washingtonDCAddress = new Address("893	Presidential Ave", "(A_123) Suite 800.", "Washington", "DC", "NHW123A", "USA", null);
 	private Address newYorkNYAddress = new Address("Presidential Street", "(A-123) Suite 800", "New York", "NY", "ZH 3456", "USA", null);
 	private Address sydneyAUSAddress = new Address("Presidential Street-Ave.", "Suite_800.", "Sydney", "ZZ", "ZH-5656", "USA", null);
-	
+
 	private AnyCharacterPatternConstraint street1AnyCharacterPatternConstraint;
-	private AnyCharacterPatternConstraint street2AnyCharacterPatternConstraint;	
-	
+	private AnyCharacterPatternConstraint street2AnyCharacterPatternConstraint;
+
 	@Before
 	public void setUp() throws Exception {
-		
+
 		processor = new ValidCharactersConstraintProcessor();
-		
+
 		dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		
+
 		addressEntry = new BusinessObjectEntry();
-		
-		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();						
-		
+
+		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
+
 		street1AnyCharacterPatternConstraint = new AnyCharacterPatternConstraint();
 		street1AnyCharacterPatternConstraint.setAllowWhitespace(true);
-		
+
 		street1Definition = new AttributeDefinition();
 		street1Definition.setName("street1");
 		street1Definition.setValidCharactersConstraint(street1AnyCharacterPatternConstraint);
-		attributes.add(street1Definition);	
-		
-		
-		street2AnyCharacterPatternConstraint = new AnyCharacterPatternConstraint();	
-		
+		attributes.add(street1Definition);
+
+
+		street2AnyCharacterPatternConstraint = new AnyCharacterPatternConstraint();
+
 		street2Definition = new AttributeDefinition();
 		street2Definition.setName("street2");
 		street2Definition.setValidCharactersConstraint(street2AnyCharacterPatternConstraint);
 		attributes.add(street2Definition);
-		
-		addressEntry.setAttributes(attributes);	
+
+		addressEntry.setAttributes(attributes);
 	}
-	
+
 	@Test
 	public void testValueAllValidChars() {
 		ConstraintValidationResult result = process(sydneyAUSAddress, "street2", street2AnyCharacterPatternConstraint);
@@ -98,7 +98,7 @@ public class AnyCharacterPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueNotValidChars() {
 		ConstraintValidationResult result = process(newYorkNYAddress, "street2", street2AnyCharacterPatternConstraint);
@@ -107,7 +107,7 @@ public class AnyCharacterPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	@Test
 	public void testValueAllValidCharsAllowWhitespace() {
 		ConstraintValidationResult result = process(washingtonDCAddress, "street1", street1AnyCharacterPatternConstraint);
@@ -115,12 +115,12 @@ public class AnyCharacterPatternConstraintTest {
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
-	}	
-		
+	}
+
 	private ConstraintValidationResult process(Object object, String attributeName, ValidCharactersConstraint constraint) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
-		
+
 		Object value = attributeValueReader.getValue();
 		return processor.process(dictionaryValidationResult, value, constraint, attributeValueReader).getFirstConstraintValidationResult();
 	}

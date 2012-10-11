@@ -19,7 +19,7 @@ import org.kuali.rice.krad.uif.component.ClientSideState;
 
 /**
  * Decorates a group with collapse/expand functionality
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Disclosure extends WidgetBase {
@@ -44,7 +44,7 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Path to the images that should be displayed to collapse the group
-     * 
+     *
      * @return String image path
      */
     public String getCollapseImageSrc() {
@@ -53,7 +53,7 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Setter for the collapse image path
-     * 
+     *
      * @param collapseImageSrc
      */
     public void setCollapseImageSrc(String collapseImageSrc) {
@@ -62,7 +62,7 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Path to the images that should be displayed to expand the group
-     * 
+     *
      * @return String image path
      */
     public String getExpandImageSrc() {
@@ -71,7 +71,7 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Setter for the expand image path
-     * 
+     *
      * @param collapseImageSrc
      */
     public void setExpandImageSrc(String expandImageSrc) {
@@ -81,7 +81,7 @@ public class Disclosure extends WidgetBase {
     /**
      * Gives the speed for the open/close animation, a smaller int will result
      * in a faster animation
-     * 
+     *
      * @return int animation speed
      */
     public int getAnimationSpeed() {
@@ -90,7 +90,7 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Setter for the open/close animation speed
-     * 
+     *
      * @param animationSpeed
      */
     public void setAnimationSpeed(int animationSpeed) {
@@ -99,7 +99,7 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Indicates whether the group should be initially open
-     * 
+     *
      * @return boolean true if group should be initially open, false if it
      *         should be closed
      */
@@ -109,7 +109,7 @@ public class Disclosure extends WidgetBase {
 
     /**
      * Setter for the default open indicator
-     * 
+     *
      * @param defaultOpen
      */
     public void setDefaultOpen(boolean defaultOpen) {

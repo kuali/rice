@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.component;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -1038,7 +1038,6 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
-    ArrayList<ErrorReport> completeValidation(TracerToken tracer);
+    void completeValidation(ValidationTrace tracer);
 }

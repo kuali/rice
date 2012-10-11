@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -262,24 +262,19 @@ public class Label extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
-        if(tracer.getValidationStage()==TracerToken.BUILD){
+        if(tracer.getValidationStage()== ValidationTrace.BUILD){
             // Checks that text is set if the component is rendered
             if(isRender() && getLabelText()==null){
-                if(!RDValidator.checkExpressions(this,"labelText")) {
-                    ErrorReport error = ErrorReport.createError("LabelText should be set if render is true",tracer);
-                    error.addCurrentValue("render = "+isRender());
-                    error.addCurrentValue("labelText ="+getLabelText());
-                    reports.add(error);
+                if(!Validator.checkExpressions(this, "labelText")) {
+                    String currentValues [] = {"render = "+isRender(),"labelText ="+getLabelText()};
+                    tracer.createError("LabelText should be set if render is true",currentValues);
                 }
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

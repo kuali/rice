@@ -86,7 +86,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentFactory {
-    
+
     private static Log LOG = LogFactory.getLog(ComponentFactory.class);
 
     protected static final String TEXT_CONTROL = "Uif-TextControl";

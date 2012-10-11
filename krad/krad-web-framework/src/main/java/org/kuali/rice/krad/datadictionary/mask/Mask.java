@@ -22,16 +22,16 @@ import java.io.Serializable;
     be used to hide the value from un-authorized users.
     There are three types of masking.
  */
-public class Mask implements Serializable {   
+public class Mask implements Serializable {
     private static final long serialVersionUID = 4035984416568235531L;
-    
+
 	protected MaskFormatter maskFormatter;
     protected Class<? extends MaskFormatter> maskFormatterClass;
 
     /**
      * Masks a data value with the configured maskFormatter;
      * @param value of the object
-     * @return string value of the masked object 
+     * @return string value of the masked object
      */
     public String maskValue(Object value) {
         if (maskFormatter == null) {
@@ -52,7 +52,7 @@ public class Mask implements Serializable {
 
     /**
      * Gets the maskFormatter attribute.
-     * 
+     *
      * @return Returns the maskFormatter.
      */
     public MaskFormatter getMaskFormatter() {
@@ -69,7 +69,7 @@ public class Mask implements Serializable {
 
     /**
      * Gets the maskFormatterClass attribute.
-     * 
+     *
      * @return Returns the maskFormatterClass.
      */
     public Class<? extends MaskFormatter> getMaskFormatterClass() {

@@ -21,15 +21,15 @@ import org.kuali.rice.krad.datadictionary.FieldOverride;
 
 /**
  * A Field Override used to insert elements into a Data Dictionary Bean.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class FieldOverrideForListElementInsertImpl extends FieldOverrideForListElementBase  implements FieldOverride{
-	
+
 	private Object insertBefore;
     private Object insertAfter;
-    
+
     public Object getInsertBefore() {
         return insertBefore;
     }
@@ -56,10 +56,10 @@ public class FieldOverrideForListElementInsertImpl extends FieldOverrideForListE
         }
         if ( insertBefore == null && insertAfter == null )
         {
-            throw new RuntimeException("Configuration Error, Either insertBefore or insertAfter should be NOT-NULL");            
+            throw new RuntimeException("Configuration Error, Either insertBefore or insertAfter should be NOT-NULL");
         }
     }
-    
+
     private Object getObjectToInsert()
     {
         Object objToInsert = null;
@@ -77,16 +77,16 @@ public class FieldOverrideForListElementInsertImpl extends FieldOverrideForListE
         }
         if ( objToInsert == null )
         {
-            throw new RuntimeException("Configuration Error, Either insertBefore or insertAfter must be NOT-NULL");                        
+            throw new RuntimeException("Configuration Error, Either insertBefore or insertAfter must be NOT-NULL");
         }
         return objToInsert;
     }
-    
+
     public Object performFieldOverride(Object bean, Object property) {
         Object objToInsert = getObjectToInsert();
-        
+
         List oldList = (List)property;
-        
+
         int insertPos = getElementPositionInList(getElement(), oldList);
 
         if ( insertPos == -1 )

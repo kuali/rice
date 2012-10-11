@@ -118,11 +118,11 @@ public class ClientValidationUtils {
                 message = MessageStructureUtils.translateStringMessage(message);
             }
         }
-        
+
         if (StringUtils.isEmpty(message)) {
             message = messageKey;
         }
-        
+
         //replace characters that might cause issues with their equivalent html codes
         if (message.contains("\"")) {
             message = message.replace("\"", "&quot;");
@@ -133,7 +133,7 @@ public class ClientValidationUtils {
         if (message.contains("\\")) {
             message = message.replace("\\", "&#92;");
         }
-        
+
         return message;
     }
 
@@ -145,7 +145,7 @@ public class ClientValidationUtils {
      */
     public static String generateValidatorMessagesOption() {
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();
-        
+
         String mOption = "";
         String keyValuePairs = "";
         for (ValidationMessageKeys element : EnumSet.allOf(ValidationMessageKeys.class)) {
@@ -587,7 +587,7 @@ public class ClientValidationUtils {
     private static String getPrerequisiteStatement(InputField field, View view, PrerequisiteConstraint constraint,
             String booleanStatement) {
         methodKey++;
-        
+
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
         String message = "";
@@ -656,7 +656,7 @@ public class ClientValidationUtils {
     private static String getPostrequisiteStatement(InputField field, PrerequisiteConstraint constraint,
             String booleanStatement) {
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();
-        
+
         // field occurs after case
         String message = "";
         if (StringUtils.isEmpty(constraint.getMessageKey())) {
@@ -995,5 +995,5 @@ public class ClientValidationUtils {
 
         }
     }
-    
+
 }

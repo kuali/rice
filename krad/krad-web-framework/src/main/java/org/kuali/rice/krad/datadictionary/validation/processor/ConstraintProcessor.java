@@ -34,8 +34,8 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
  * the process() method into the Constraint marker interface and have each Constraint define its own processing, but that would
  * have forced business logic into what are naturally API classes (classes that implement Constraint). This strategy separates
  * the two functions.</p>
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ConstraintProcessor<T, C extends Constraint> {
 
@@ -66,13 +66,13 @@ public interface ConstraintProcessor<T, C extends Constraint> {
      * @return an instance of {@code Constraint}
      */
 	public Class<? extends Constraint> getConstraintType();
-	
+
 	/**
 	 * returns true if the processing of this constraint is something that can be opted out of by some pieces of code.
-	 * The only example of this in the version under development (1.1) is the existence constraint. 
-	 * 
+	 * The only example of this in the version under development (1.1) is the existence constraint.
+	 *
 	 * @return true if this processor can be turned off by some pieces of code, false otherwise
 	 */
 	public boolean isOptional();
-	
+
 }

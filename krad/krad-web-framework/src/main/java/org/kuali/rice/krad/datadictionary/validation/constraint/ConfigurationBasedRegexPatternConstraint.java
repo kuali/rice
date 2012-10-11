@@ -24,10 +24,10 @@ import org.kuali.rice.krad.uif.UifConstants;
  */
 public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternConstraint {
     protected String patternTypeKey;
-    
+
     /**
      * Message key used to identify the validation pattern
-     * 
+     *
      * @return the patternTypeKey
      */
     public String getPatternTypeKey() {
@@ -36,13 +36,13 @@ public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternCo
 
     /**
      * Setter for the pattern message key
-     * 
+     *
      * @param patternTypeKey the patternTypeKey to set
      */
     public void setPatternTypeKey(String patternTypeKey) {
         this.patternTypeKey = patternTypeKey;
     }
-    
+
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
      */
@@ -56,7 +56,7 @@ public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternCo
         buf.append(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX).append(getPatternTypeKey());
         return buf.toString();
     }
-    
+
 	/**
 	 * Uses the key returned by {@link #getPatternTypeKey()} to fetch the
 	 * validationPattern's regex string from the ConfigurationService which should not include

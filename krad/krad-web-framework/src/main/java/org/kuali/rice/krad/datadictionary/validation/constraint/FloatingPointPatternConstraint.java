@@ -24,7 +24,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * Validation pattern for matching floating point numbers, optionally matching negative numbers
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatternConstraint {
@@ -62,7 +62,7 @@ public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatte
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
     @Override

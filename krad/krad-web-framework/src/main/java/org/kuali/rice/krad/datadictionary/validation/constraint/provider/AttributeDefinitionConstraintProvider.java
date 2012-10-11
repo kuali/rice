@@ -43,7 +43,7 @@ import java.util.HashMap;
  * <p> This can either by instantiated by dependency
  * injection, in which case a map of class names to constraint resolvers can be injected, or the default map can be constructed by
  * calling the init() method immediately after instantiation.</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeDefinitionConstraintProvider extends BaseConstraintProvider<AttributeDefinition> {
@@ -65,10 +65,10 @@ public class AttributeDefinitionConstraintProvider extends BaseConstraintProvide
 	 */
 	@Override
 	public boolean isSupported(Constrainable definition) {
-		
+
 		if (definition instanceof AttributeDefinition || definition instanceof InputField)
 			return true;
-		
+
 		return false;
 	}
 

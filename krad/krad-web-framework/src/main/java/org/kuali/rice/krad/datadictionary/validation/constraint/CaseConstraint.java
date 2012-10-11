@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.List;
  *
  * <p>
  * This class is a direct copy of one that was in Kuali Student.</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
@@ -120,35 +120,23 @@ public class CaseConstraint extends BaseConstraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean("CaseConstraint", getMessageKey());
 
         if(getWhenConstraint()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("WhenCaseConstraints should at least have 1 item");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("whenCaseConstraint = "+getWhenConstraint());
-            reports.add(error);
+            String currentValues [] = {"whenCaseConstraint = "+getWhenConstraint()};
+            tracer.createWarning("WhenCaseConstraints should at least have 1 item",currentValues);
         }else{
             if(getWhenConstraint().size()==0){
-                ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-                error.setValidationFailed("WhenCaseConstraints should at least have 1 item");
-                error.setBeanLocation(tracer.getBeanLocation());
-                error.addCurrentValue("whenCaseConstraint.size() = "+getWhenConstraint().size());
-                reports.add(error);
+                String currentValues [] = {"whenCaseConstraint.size() = "+getWhenConstraint().size()};
+                tracer.createError("WhenCaseConstraints should at least have 1 item",currentValues);
             }else{
                 for(int i=0;i<getWhenConstraint().size();i++){
-                    reports.addAll(getWhenConstraint().get(i).completeValidation(tracer.getCopy()));
+                    getWhenConstraint().get(i).completeValidation(tracer.getCopy());
                 }
             }
         }
-
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
     }
 }

@@ -1179,7 +1179,7 @@ public final class ObjectUtils {
     		return isWriteableHelper(object, property, persistenceStructureService);
     	}
     }
-    
+
     /**
      * This method handles the cases where PropertyUtils.isWriteable is not
      * sufficient.  It handles cases where the parameter in question is a
@@ -1219,7 +1219,7 @@ public final class ObjectUtils {
         }
     	return false;
     }
-    
+
     /**
      * Helper method for creating a new instance of the given class
      *

@@ -29,12 +29,12 @@ import java.util.Set;
  * For a given <code>Component</code> instance converts all component properties
  * of a certain type to instances of another configured <code>Component</code>.
  * The conversion is performed recursively down all the component children
- * 
+ *
  * <p>
  * Some example uses of this are converting all checkbox controls to radio group
  * controls within a group and replacement of a widget with another
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentConvertModifier extends ComponentModifierBase {
@@ -67,7 +67,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 	 * configured type to replace. If a match is found, a new instance of the
 	 * replacement component prototype is created and set as the property value.
 	 * The method is then called for each of the component's children
-	 * 
+	 *
 	 * @param component
 	 *            - component instance to inspect properties for
 	 * @param idSuffix
@@ -101,7 +101,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 	/**
 	 * Creates a new instance of the replacement component prototype and sets a
 	 * the property value for the given property name and component instance
-	 * 
+	 *
 	 * @param component
 	 *            - component instance to set property on
 	 * @param componentProperty
@@ -141,7 +141,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 	/**
 	 * Type of component that should be replaced with an instance of the
 	 * component prototype
-	 * 
+	 *
 	 * @return Class<? extends Component> component type to replace
 	 */
 	public Class<? extends Component> getComponentTypeToReplace() {
@@ -150,7 +150,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 
 	/**
 	 * Setter for the component type to replace
-	 * 
+	 *
 	 * @param componentTypeToReplace
 	 */
 	public void setComponentTypeToReplace(Class<? extends Component> componentTypeToReplace) {
@@ -159,12 +159,12 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 
 	/**
 	 * Prototype for the component replacement
-	 * 
+	 *
 	 * <p>
 	 * Each time the type to replace if found a new instance of the component
 	 * prototype will be created and set as the new property value
 	 * </p>
-	 * 
+	 *
 	 * @return
 	 */
 	public Component getComponentReplacementPrototype() {
@@ -173,7 +173,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 
 	/**
 	 * Setter for the replacement component prototype
-	 * 
+	 *
 	 * @param componentReplacementPrototype
 	 */
 	public void setComponentReplacementPrototype(Component componentReplacementPrototype) {

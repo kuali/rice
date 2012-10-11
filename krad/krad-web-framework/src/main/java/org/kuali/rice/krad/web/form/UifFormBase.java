@@ -686,7 +686,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getState() 
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getState()
      */
     public String getState() {
         return state;
@@ -863,9 +863,9 @@ public class UifFormBase implements ViewModel {
 
     /**
      * The {@code List} that contains all newly added items for the collections on the model
-     * 
+     *
      * <p>
-     * This list contains the new items for all the collections on the model.    
+     * This list contains the new items for all the collections on the model.
      * </p>
      *
      * @return List of the newly added item lists
@@ -887,7 +887,7 @@ public class UifFormBase implements ViewModel {
      * Indicates whether an collection item has been newly added
      *
      * <p>
-     * Tests collection items against the list of newly added items on the model. This list gets cleared when the view 
+     * Tests collection items against the list of newly added items on the model. This list gets cleared when the view
      * is submitted and the items are persisted.
      * </p>
      *

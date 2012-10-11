@@ -19,16 +19,16 @@ import java.util.List;
 
 
 /**
- * This is a description of what this class does - mpham don't forget to fill this in. 
- * 
+ * This is a description of what this class does - mpham don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
 	private static final long serialVersionUID = -5455042765223753531L;
-	
-	private List<RoutingAttribute> routingAttributes; 
-	private List<DocumentValuePathGroup> documentValuePathGroups; 
+
+	private List<RoutingAttribute> routingAttributes;
+	private List<DocumentValuePathGroup> documentValuePathGroups;
 
 	/**
 	 * @return the routingAttributes
@@ -57,13 +57,13 @@ public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
 	}
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
 	 */
 	public void completeValidation(Class rootBusinessObjectClass,
 			Class otherBusinessObjectClass) {
 		// TODO wliang - THIS METHOD NEEDS JAVADOCS
-		
+
 	}
 
 }

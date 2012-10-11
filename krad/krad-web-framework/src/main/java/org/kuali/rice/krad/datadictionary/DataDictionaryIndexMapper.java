@@ -33,7 +33,7 @@ import java.util.Set;
 /**
  * A DataDictionaryMapper that simply consults the statically initialized
  * DataDictionaryIndex mappings
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataDictionaryIndexMapper implements DataDictionaryMapper {
@@ -74,7 +74,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("calling getDataObjectEntry '" + className + "'");
         }
-        
+
         String trimmedClassName = className;
         int index = className.indexOf("$$");
         if (index >= 0) {
@@ -144,7 +144,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	@Override
     public DataObjectEntry getDataObjectEntry(DataDictionaryIndex index, String className) {
 	    DataObjectEntry entry = getDataObjectEntryForConcreteClass(index, className);
-	    
+
         if (entry == null) {
             Class<?> boClass = null;
             try{
@@ -157,7 +157,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
                 // swallow so we can return null
             }
         }
-        
+
         return entry;
     }
 
@@ -179,7 +179,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 			return entry;
 		}
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getDocumentEntries(org.kuali.rice.krad.datadictionary.DataDictionaryIndex)
 	 */
@@ -199,8 +199,8 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 		    LOG.debug("calling getDocumentEntry by documentTypeName '" + documentTypeDDKey + "'");
 		}
 
-		DocumentEntry de = index.getDocumentEntries().get(documentTypeDDKey);	
-		
+		DocumentEntry de = index.getDocumentEntries().get(documentTypeDDKey);
+
 		if ( de == null ) {
 		    try {
     		    Class<?> clazz = Class.forName( documentTypeDDKey );
@@ -212,7 +212,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 		        LOG.warn( "Unable to find document entry for key: " + documentTypeDDKey );
 		    }
 		}
-		
+
         return de;
 	}
 
@@ -238,7 +238,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 
 		return (MaintenanceDocumentEntry) index.getDocumentEntriesByBusinessObjectClass().get(businessObjectClass);
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewById(org.kuali.rice.krad.datadictionary.view.ViewDictionaryIndex,
 	 *      java.lang.String)

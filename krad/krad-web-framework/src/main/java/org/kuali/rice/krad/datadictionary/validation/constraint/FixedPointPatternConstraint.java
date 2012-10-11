@@ -20,13 +20,13 @@ import java.util.List;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * TODO delyea don't forget to fill this in.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
@@ -37,7 +37,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
 
     /**
      * Overriding retrieval of
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersPatternConstraint#getRegexString()
      */
     @Override
@@ -101,7 +101,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
     @Override
@@ -116,7 +116,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
                 validationMessageParams.add(configService.getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
                         + "positive"));
             }
-    
+
             validationMessageParams.add(Integer.toString(precision));
             validationMessageParams.add(Integer.toString(scale));
         }
@@ -128,25 +128,17 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean("FixedPointPatternConstraint", getMessageKey());
 
         if(getPrecision()<=getScale()){
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-            error.setValidationFailed("Precision should greater than Scale");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("precision ="+getPrecision());
-            error.addCurrentValue("scale = "+getScale());
-            reports.add(error);
+            String currentValues [] = {"precision ="+getPrecision(),"scale = "+getScale()};
+            tracer.createError("Precision should greater than Scale",currentValues);
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 
 }

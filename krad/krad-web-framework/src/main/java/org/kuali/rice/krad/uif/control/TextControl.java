@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Represents a HTML Text control, generally rendered as a input field of type
  * 'text'. This can display and receive a single value
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TextControl extends ControlBase implements SizedControl {
@@ -39,7 +39,7 @@ public class TextControl extends ControlBase implements SizedControl {
 	private DatePicker datePicker;
 	private String watermarkText = StringUtils.EMPTY;
 	private boolean textExpand;
-	
+
 	public TextControl() {
 		super();
 	}
@@ -140,7 +140,7 @@ public class TextControl extends ControlBase implements SizedControl {
 	 * Renders a calendar that can be used to select a date value for the text
 	 * control. The <code>Calendar</code> instance contains configuration such
 	 * as the date format string
-	 * 
+	 *
 	 * @return Calendar
 	 */
 	public DatePicker getDatePicker() {
@@ -203,6 +203,6 @@ public class TextControl extends ControlBase implements SizedControl {
     public void setTextExpand(boolean textExpand) {
         this.textExpand = textExpand;
     }
-	
-	
+
+
 }

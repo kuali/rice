@@ -19,7 +19,7 @@ import org.kuali.rice.krad.document.Document;
 
 /**
  * This implementation of {@link PropertySerializabilityEvaluator} specifies that all properties of a document are serializable.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */

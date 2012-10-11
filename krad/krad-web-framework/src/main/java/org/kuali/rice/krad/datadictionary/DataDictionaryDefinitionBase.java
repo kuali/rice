@@ -21,12 +21,12 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Common base class for DataDictionaryDefinition types.
- * 
+ *
  *  @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase implements DataDictionaryDefinition, InitializingBean {
     private static final long serialVersionUID = -2003626577498716712L;
-    
+
 	protected String id;
 
     public DataDictionaryDefinitionBase() {
@@ -42,7 +42,7 @@ abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase im
     public void setId(String id) {
         this.id = id;
     }
-    
+
     /**
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */

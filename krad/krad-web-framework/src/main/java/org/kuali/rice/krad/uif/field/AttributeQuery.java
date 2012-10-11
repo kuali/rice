@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 
@@ -458,21 +458,13 @@ public class AttributeQuery implements Serializable {
     /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
-        tracer.addBean("AttributeQuery", TracerToken.NO_BEAN_ID);
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean("AttributeQuery", ValidationTrace.NO_BEAN_ID);
 
         // Checks that at least one aspect is set
         if(getDataObjectClassName()==null && getQueryMethodToCall()==null && getQueryMethodInvokerConfig()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("At least 1 should be set: dataObjectClass, queryMethodToCall or queryMethodInvokerConfig");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("dataObjectClassName = "+getDataObjectClassName());
-            error.addCurrentValue("queryMethodToCall = "+getQueryMethodToCall());
-            error.addCurrentValue("queryMethodInvokerConfig = "+getQueryMethodInvokerConfig());
-            reports.add(error);
+            String currentValues [] = {"dataObjectClassName = "+getDataObjectClassName(),"queryMethodToCall = "+getQueryMethodToCall(),"queryMethodInvokerConfig = "+getQueryMethodInvokerConfig()};
+            tracer.createWarning("At least 1 should be set: dataObjectClass, queryMethodToCall or queryMethodInvokerConfig",currentValues);
         }
-
-        return reports;
     }
 }

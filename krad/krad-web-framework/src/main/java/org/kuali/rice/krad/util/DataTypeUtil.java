@@ -23,7 +23,7 @@ import java.beans.PropertyDescriptor;
 /**
  * Pulled this logic out of the org.kuali.rice.krad.workflow.service.impl.WorkflowAttributePropertyResolutionServiceImpl
  * since it wasn't really service logic at all, just util logic.
- * 
+ *
  * @author James Renfro
  *
  */
@@ -47,7 +47,7 @@ public class DataTypeUtil {
         if (isBooleanable(attributeClass)) return KRADConstants.DATA_TYPE_BOOLEAN;
         return KRADConstants.DATA_TYPE_STRING; // default to String
     }
-	
+
     /**
      * Determines if the given Class is a String
      * @param clazz the class to check for Stringiness
@@ -65,7 +65,7 @@ public class DataTypeUtil {
 	public static boolean isDateLike(Class clazz) {
         return java.util.Date.class.isAssignableFrom(clazz);
     }
-    
+
     /**
      * Determines if the given class is enough like a Float to store values of it as a SearchableAttributeFloatValue
      * @param clazz the class to determine of the type of
@@ -74,7 +74,7 @@ public class DataTypeUtil {
 	public static boolean isDecimaltastic(Class clazz) {
         return java.lang.Double.class.isAssignableFrom(clazz) || java.lang.Float.class.isAssignableFrom(clazz) || clazz.equals(Double.TYPE) || clazz.equals(Float.TYPE) || java.math.BigDecimal.class.isAssignableFrom(clazz) || org.kuali.rice.core.api.util.type.KualiDecimal.class.isAssignableFrom(clazz);
     }
-    
+
     /**
      * Determines if the given class is enough like a "long" to store values of it as a SearchableAttributeLongValue
      * @param clazz the class to determine the type of
@@ -92,7 +92,7 @@ public class DataTypeUtil {
 	public static boolean isBooleanable(Class clazz) {
         return java.lang.Boolean.class.isAssignableFrom(clazz) || clazz.equals(Boolean.TYPE);
     }
-    
+
     /**
      * Given a BusinessObject class and an attribute name, determines the class of that attribute on the BusinessObject class
      * @param boClass a class extending BusinessObject
@@ -107,5 +107,5 @@ public class DataTypeUtil {
         }
         return null;
     }
-	
+
 }

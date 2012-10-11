@@ -16,14 +16,14 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 
 /**
  * This is a constraint that limits attribute values to some subset of valid characters or to match a particular regular expression.
- * 
- * For example: 
+ *
+ * For example:
  * - To limit to both upper and lower-case letters, value can be set to "[A-Za-z]*"
  * - To limit to any character except carriage returns and line feeds, value can be set to "[^\n\r]*"
  *
@@ -54,24 +54,16 @@ public class ValidCharactersConstraint extends BaseConstraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @param parser Set of tools for parsing the xml files which were used to create the component
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean("ValidCharacterConstraint", getMessageKey());
 
         if(getValue()==null){
-            ErrorReport error = new ErrorReport(ErrorReport.WARNING);
-            error.setValidationFailed("GetValue should return something");
-            error.setBeanLocation(tracer.getBeanLocation());
-            error.addCurrentValue("getValue ="+getValue());
-            reports.add(error);
+            String currentValues [] = {"getValue ="+getValue()};
+            tracer.createWarning("GetValue should return something",currentValues);
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

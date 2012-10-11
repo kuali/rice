@@ -15,22 +15,18 @@
  */
 package org.kuali.rice.krad.datadictionary.validator;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
-import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
-import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.context.expression.StandardBeanExpressionResolver;
-import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -43,22 +39,29 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RDValidator {
+public class Validator {
+    private static final Log LOG = LogFactory.getLog(Validator.class);
 
-    // logger
-    private static final Log LOG = LogFactory.getLog(RDValidator.class);
-
-    private ArrayList<ErrorReport> errorReports;
-    private TracerToken tracerTemp;
+    private static ArrayList<ErrorReport> errorReports = new ArrayList<ErrorReport>();
+    ;
+    private ValidationTrace tracerTemp;
     private int numberOfErrors;
     private int numberOfWarnings;
 
     /**
      * Constructor creating an empty validation report
      */
-    public RDValidator() {
+    public Validator() {
+        tracerTemp = new ValidationTrace();
         numberOfErrors = 0;
         numberOfWarnings = 0;
+    }
+
+    public static void addErrorReport(ErrorReport report) {
+        errorReports.add(report);
+    }
+
+    public static void resetErrorReport() {
         errorReports = new ArrayList<ErrorReport>();
     }
 
@@ -71,34 +74,26 @@ public class RDValidator {
      */
     private boolean runValidations(KualiDefaultListableBeanFactory beans, boolean failOnWarning) {
         LOG.info("Starting Dictionary Validation");
-
+        resetErrorReport();
         Map<String, View> uifBeans;
 
         try {
             uifBeans = beans.getBeansOfType(View.class);
             for (View views : uifBeans.values()) {
                 try {
-                    TracerToken tracer = tracerTemp.getCopy();
+                    ValidationTrace tracer = tracerTemp.getCopy();
                     if (doValidationOnUIFBean(views)) {
-                        tracer.setValidationStage(TracerToken.START_UP);
+                        tracer.setValidationStage(ValidationTrace.START_UP);
                         runValidationsOnComponents(views, tracer);
                     }
                 } catch (Exception e) {
                     String value[] = {views.getId(), "Exception = " + e.getMessage()};
-                    ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View",
-                            "During Validation", value);
-                    ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
-                    temp.add(error);
-                    compileReports(temp);
+                    tracerTemp.createError("Error Validating Bean View", value);
                 }
             }
         } catch (Exception e) {
             String value[] = {"Validation set = views", "Exception = " + e.getMessage()};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans", "Before Validation",
-                    value);
-            ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
-            temp.add(error);
-            compileReports(temp);
+            tracerTemp.createError("Error in Loading Spring Beans", value);
         }
 
         Map<String, DataDictionaryEntry> ddBeans;
@@ -108,26 +103,18 @@ public class RDValidator {
             for (DataDictionaryEntry entry : ddBeans.values()) {
                 try {
 
-                    TracerToken tracer = tracerTemp.getCopy();
-                    tracer.setValidationStage(TracerToken.BUILD);
-                    compileReports(entry.completeValidation(tracer));
+                    ValidationTrace tracer = tracerTemp.getCopy();
+                    tracer.setValidationStage(ValidationTrace.BUILD);
+                    entry.completeValidation(tracer);
 
                 } catch (Exception e) {
                     String value[] = {"Validation set = Data Dictionary Entries", "Exception = " + e.getMessage()};
-                    ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans",
-                            "During Validation", value);
-                    ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
-                    temp.add(error);
-                    compileReports(temp);
+                    tracerTemp.createError("Error in Loading Spring Beans", value);
                 }
             }
         } catch (Exception e) {
             String value[] = {"Validation set = Data Dictionary Entries", "Exception = " + e.getMessage()};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error in Loading Spring Beans", "Before Validation",
-                    value);
-            ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
-            temp.add(error);
-            compileReports(temp);
+            tracerTemp.createError("Error in Loading Spring Beans", value);
         }
 
         compileFinalReport();
@@ -157,19 +144,17 @@ public class RDValidator {
         LOG.info("Starting Dictionary Validation");
 
         if (doValidationOnUIFBean(object)) {
-            TracerToken tracer = new TracerToken();
-            ArrayList<ErrorReport> reports;
+            ValidationTrace tracer = tracerTemp.getCopy();
+            resetErrorReport();
 
-            tracer.setValidationStage(TracerToken.BUILD);
+            tracer.setValidationStage(ValidationTrace.BUILD);
 
             LOG.debug("Validating Component: " + object.getId());
-            reports = object.completeValidation(tracer.getCopy());
-            compileReports(reports);
+            object.completeValidation(tracer.getCopy());
 
             runValidationsOnLifecycle(object, tracer.getCopy());
 
             runValidationsOnPrototype(object, tracer.getCopy());
-
         }
 
         compileFinalReport();
@@ -211,7 +196,7 @@ public class RDValidator {
      */
     public boolean validate(String xmlFiles[], ResourceLoader loader, KualiDefaultListableBeanFactory beans,
             boolean failOnWarning) {
-        tracerTemp = new TracerToken(xmlFiles, loader);
+        tracerTemp = new ValidationTrace(xmlFiles, loader);
         return runValidations(beans, failOnWarning);
     }
 
@@ -221,51 +206,38 @@ public class RDValidator {
      * @param component - The component being checked
      * @param tracer - The current bean trace for the validation line
      */
-    private void runValidationsOnComponents(Component component, TracerToken tracer) {
-
-        ArrayList<ErrorReport> reports;
+    private void runValidationsOnComponents(Component component, ValidationTrace tracer) {
 
         try {
             ExpressionUtils.populatePropertyExpressionsFromGraph(component, false);
         } catch (Exception e) {
             String value[] = {"view = " + component.getId()};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View", "Loading Expressions",
-                    value);
-            ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
-            temp.add(error);
+            tracerTemp.createError("Error Validating Bean View while loading expressions", value);
         }
 
         LOG.debug("Validating View: " + component.getId());
 
         try {
-            reports = component.completeValidation(tracer.getCopy());
-            compileReports(reports);
+            component.completeValidation(tracer.getCopy());
         } catch (Exception e) {
             String value[] = {component.getId()};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View",
-                    "During Data Object Validation", value);
-            ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
-            temp.add(error);
+            tracerTemp.createError("Error Validating Bean View", value);
         }
 
         try {
             runValidationsOnLifecycle(component, tracer.getCopy());
         } catch (Exception e) {
-            String value[] = {component.getId(), component.getComponentsForLifecycle().size() + ""};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View",
-                    "During Lifecycle Validations", value);
-            ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
-            temp.add(error);
+            String value[] = {component.getId(), component.getComponentsForLifecycle().size() + "",
+                    "Exception " + e.getMessage()};
+            tracerTemp.createError("Error Validating Bean Lifecycle", value);
         }
 
         try {
             runValidationsOnPrototype(component, tracer.getCopy());
         } catch (Exception e) {
-            String value[] = {component.getId(), component.getComponentPrototypes().size() + ""};
-            ErrorReport error = new ErrorReport(ErrorReport.ERROR, "Error Validating Bean View",
-                    "During Prototype Validations", value);
-            ArrayList<ErrorReport> temp = new ArrayList<ErrorReport>();
-            temp.add(error);
+            String value[] = {component.getId(), component.getComponentPrototypes().size() + "",
+                    "Exceptions : " + e.getLocalizedMessage()};
+            tracerTemp.createError("Error Validating Bean Prototypes", value);
         }
     }
 
@@ -275,23 +247,25 @@ public class RDValidator {
      * @param component - The component whose lifecycle items are being checked
      * @param tracer - The current bean trace for the validation line
      */
-    private void runValidationsOnLifecycle(Component component, TracerToken tracer) {
-        if (component.getComponentsForLifecycle() != null) {
-            if (doValidationOnUIFBean(component)) {
-                tracer.addBean(component);
-                for (int j = 0; j < component.getComponentsForLifecycle().size(); j++) {
-                    ;
-                    Component temp = component.getComponentsForLifecycle().get(j);
-                    if (temp != null) {
-                        if (tracer.getValidationStage() == TracerToken.START_UP) {
-                            ExpressionUtils.populatePropertyExpressionsFromGraph(temp, false);
-                        }
-                        if (temp.isRender()) {
-                            compileReports(temp.completeValidation(tracer.getCopy()));
-                            runValidationsOnLifecycle(temp, tracer.getCopy());
-                        }
-                    }
-                }
+    private void runValidationsOnLifecycle(Component component, ValidationTrace tracer) {
+        if (component.getComponentsForLifecycle() == null) {
+            return;
+        }
+        if (!doValidationOnUIFBean(component)) {
+            return;
+        }
+        tracer.addBean(component);
+        for (int j = 0; j < component.getComponentsForLifecycle().size(); j++) {
+            Component temp = component.getComponentsForLifecycle().get(j);
+            if (temp == null) {
+                continue;
+            }
+            if (tracer.getValidationStage() == ValidationTrace.START_UP) {
+                ExpressionUtils.populatePropertyExpressionsFromGraph(temp, false);
+            }
+            if (temp.isRender()) {
+                temp.completeValidation(tracer.getCopy());
+                runValidationsOnLifecycle(temp, tracer.getCopy());
             }
         }
     }
@@ -302,22 +276,25 @@ public class RDValidator {
      * @param component - The component whose prototypes are being checked
      * @param tracer - The current bean trace for the validation line
      */
-    private void runValidationsOnPrototype(Component component, TracerToken tracer) {
-        if (component.getComponentPrototypes() != null) {
-            if (doValidationOnUIFBean(component)) {
-                tracer.addBean(component);
-                for (int j = 0; j < component.getComponentPrototypes().size(); j++) {
-                    Component temp = component.getComponentPrototypes().get(j);
-                    if (temp != null) {
-                        if (tracer.getValidationStage() == TracerToken.START_UP) {
-                            ExpressionUtils.populatePropertyExpressionsFromGraph(temp, false);
-                        }
-                        if (temp.isRender()) {
-                            compileReports(temp.completeValidation(tracer.getCopy()));
-                            runValidationsOnPrototype(temp, tracer.getCopy());
-                        }
-                    }
-                }
+    private void runValidationsOnPrototype(Component component, ValidationTrace tracer) {
+        if (component.getComponentPrototypes() == null) {
+            return;
+        }
+        if (!doValidationOnUIFBean(component)) {
+            return;
+        }
+        tracer.addBean(component);
+        for (int j = 0; j < component.getComponentPrototypes().size(); j++) {
+            Component temp = component.getComponentPrototypes().get(j);
+            if (temp == null) {
+                continue;
+            }
+            if (tracer.getValidationStage() == ValidationTrace.START_UP) {
+                ExpressionUtils.populatePropertyExpressionsFromGraph(temp, false);
+            }
+            if (temp.isRender()) {
+                temp.completeValidation(tracer.getCopy());
+                runValidationsOnPrototype(temp, tracer.getCopy());
             }
         }
     }
@@ -349,19 +326,88 @@ public class RDValidator {
      * @return Returns true if the expression is of correct SpringEL syntax
      */
     public static boolean validateSpringEL(String expression) {
-        if (expression != null) {
-            if (expression.compareTo("") != 0) {
-                if (expression.length() > 3) {
-                    String atSymbol = expression.substring(0, 1);
-                    String openBracket = expression.substring(1, 2);
-                    String closeBracket = expression.substring(expression.length() - 1, expression.length());
+        if (expression == null) {
+            return true;
+        }
+        if (expression.compareTo("") == 0) {
+            return true;
+        }
+        if (expression.length() <= 3) {
+            return false;
+        }
 
-                    if (!atSymbol.contains("@") || !openBracket.contains("{") || !closeBracket.contains("}")) {
-                        return false;
-                    }
-                }
+        if (!expression.substring(0, 1).contains("@") || !expression.substring(1, 2).contains("{") ||
+                !expression.substring(expression.length() - 1, expression.length()).contains("}")) {
+            return false;
+        }
+
+        expression = expression.substring(2, expression.length() - 2);
+
+        ArrayList<String> values = getExpressionValues(expression);
+
+        for (int i = 0; i < values.size(); i++) {
+            checkPropertyName(values.get(i));
+        }
+
+        return true;
+    }
+
+    /**
+     * Gets the list of properties from an expression
+     *
+     * @param expression - The expression being validated.
+     * @return A list of properties from the expression.
+     */
+    private static ArrayList<String> getExpressionValues(String expression) {
+        expression = StringUtils.replace(expression, "!=", " != ");
+        expression = StringUtils.replace(expression, "==", " == ");
+        expression = StringUtils.replace(expression, ">", " > ");
+        expression = StringUtils.replace(expression, "<", " < ");
+        expression = StringUtils.replace(expression, "<=", " <= ");
+        expression = StringUtils.replace(expression, ">=", " >= ");
+
+        String stack = "";
+        ArrayList<String> controlNames = new ArrayList<String>();
+
+        boolean expectingSingleQuote = false;
+        boolean ignoreNext = false;
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            if (!expectingSingleQuote && !ignoreNext && (c == '(' || c == ' ' || c == ')')) {
+                ExpressionUtils.evaluateCurrentStack(stack.trim(), controlNames);
+                //reset stack
+                stack = "";
+                continue;
+            } else if (!ignoreNext && c == '\'') {
+                stack = stack + c;
+                expectingSingleQuote = !expectingSingleQuote;
+            } else if (c == '\\') {
+                stack = stack + c;
+                ignoreNext = !ignoreNext;
+            } else {
+                stack = stack + c;
+                ignoreNext = false;
             }
         }
+
+        if (StringUtils.isNotEmpty(stack)) {
+            ExpressionUtils.evaluateCurrentStack(stack.trim(), controlNames);
+        }
+
+        return controlNames;
+    }
+
+    /**
+     * Checks the property for a valid name.
+     *
+     * @param name - The property name.
+     * @return True if the validation passes, false if not
+     */
+    private static boolean checkPropertyName(String name) {
+        if (!Character.isLetter(name.charAt(0))) {
+            return false;
+        }
+
         return true;
     }
 
@@ -380,20 +426,14 @@ public class RDValidator {
     }
 
     /**
-     * Compile a new set of reports into the list of reports already generated for the validation
-     */
-    private void compileReports(ArrayList<ErrorReport> newReports) {
-        errorReports.addAll(newReports);
-    }
-
-    /**
      * Compiles general information on the validation from the list of generated error reports
      */
     private void compileFinalReport() {
-        for (int i = 0; i < errorReports.size(); i++) {
-            if (errorReports.get(i).getErrorStatus() == ErrorReport.ERROR) {
+        ArrayList<ErrorReport> reports = Validator.errorReports;
+        for (int i = 0; i < reports.size(); i++) {
+            if (reports.get(i).getErrorStatus() == ErrorReport.ERROR) {
                 numberOfErrors++;
-            } else if (errorReports.get(i).getErrorStatus() == ErrorReport.WARNING) {
+            } else if (reports.get(i).getErrorStatus() == ErrorReport.WARNING) {
                 numberOfWarnings++;
             }
         }
@@ -411,18 +451,7 @@ public class RDValidator {
         KualiDefaultListableBeanFactory beans = new KualiDefaultListableBeanFactory();
         XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(beans);
 
-        try {
-            BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
-            beans.addBeanPostProcessor(idPostProcessor);
-            beans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
-            GenericConversionService conversionService = new GenericConversionService();
-            conversionService.addConverter(new StringMapConverter());
-            conversionService.addConverter(new StringListConverter());
-            beans.setConversionService(conversionService);
-        } catch (Exception e1) {
-            LOG.error("Cannot create component decorator post processor: " + e1.getMessage(), e1);
-            throw new RuntimeException("Cannot create component decorator post processor: " + e1.getMessage(), e1);
-        }
+        DataDictionary.setupProcessor(beans);
 
         ArrayList<String> coreFiles = new ArrayList<String>();
         ArrayList<String> testFiles = new ArrayList<String>();
@@ -457,7 +486,7 @@ public class RDValidator {
         UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
         factoryPostProcessor.postProcessBeanFactory(beans);
 
-        tracerTemp = new TracerToken(xmlFiles, xmlReader.getResourceLoader());
+        tracerTemp = new ValidationTrace(xmlFiles, xmlReader.getResourceLoader());
 
         LOG.info("Completed XML File Load");
 

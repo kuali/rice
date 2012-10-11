@@ -17,12 +17,11 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.Exporter;
-import org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     protected boolean boNotesEnabled = false;
 
     protected List<InactivationBlockingDefinition> inactivationBlockingDefinitions;
-    
+
     @Override
     public void completeValidation() {
         //KFSMI-1340 - Object label should never be blank
@@ -69,22 +68,17 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     /**
      * Directly validate simple fields
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this.getClass().getSimpleName(),dataObjectClass.getSimpleName());
-
         if(StringUtils.isBlank(getObjectLabel())){
-            ErrorReport error = ErrorReport.createError("Object Label is not set",tracer);
-            error.addCurrentValue("objectLabel = "+getObjectLabel());
-            reports.add(error);
+            String currentValues [] = {"objectLabel = "+getObjectLabel()};
+            tracer.createError("Object Label is not set",currentValues);
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 
     /**
@@ -284,8 +278,8 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     public void setGroupByAttributesForEffectiveDating(List<String> groupByAttributesForEffectiveDating) {
         this.groupByAttributesForEffectiveDating = groupByAttributesForEffectiveDating;
     }
-    
-    
+
+
     /**
      * Gets the boNotesEnabled flag for the Data object
      *
@@ -295,29 +289,29 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      * false indicates that notes and attachments are associated
      * with the document used to create or edit the business object.
      * </p>
-     * 
+     *
      * @return the boNotesEnabled flag
-     */    
+     */
     public boolean isBoNotesEnabled() {
         return boNotesEnabled;
     }
 
     /**
      * Setter for the boNotesEnabled flag
-     */    
+     */
     public void setBoNotesEnabled(boolean boNotesEnabled) {
         this.boNotesEnabled = boNotesEnabled;
     }
-    
+
     /**
      * Gets the inactivationBlockingDefinitions for the Data object
      *
      * <p>
-     * 
+     *
      * </p>
-     * 
-     * @return the list of <code>InactivationBlockingDefinition</code> 
-     */ 
+     *
+     * @return the list of <code>InactivationBlockingDefinition</code>
+     */
     public List<InactivationBlockingDefinition> getInactivationBlockingDefinitions() {
         return this.inactivationBlockingDefinitions;
     }
@@ -328,5 +322,5 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     public void setInactivationBlockingDefinitions(
             List<InactivationBlockingDefinition> inactivationBlockingDefinitions) {
         this.inactivationBlockingDefinitions = inactivationBlockingDefinitions;
-    }    
+    }
 }

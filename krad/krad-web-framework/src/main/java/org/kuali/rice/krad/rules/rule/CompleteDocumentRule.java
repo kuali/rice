@@ -19,7 +19,7 @@ import org.kuali.rice.krad.document.Document;
 
 /**
  * Complete document rule interface to be implemented
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface CompleteDocumentRule extends BusinessRule {

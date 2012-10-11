@@ -21,7 +21,7 @@ package org.kuali.rice.krad.datadictionary;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class DictionaryBeanBase implements DictionaryBean {
-    
+
     private String namespaceCode;
     private String componentCode;
 

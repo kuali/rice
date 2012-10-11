@@ -23,20 +23,20 @@ import java.util.List;
 
 /**
  * A class that implements the required accessors and legacy processing for an attribute value reader. This provides a convenient base class
- * from which other attribute value readers can be derived. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * from which other attribute value readers can be derived.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseAttributeValueReader implements AttributeValueReader {
 
 	protected String entryName;
 	protected String attributeName;
-	
+
 	@Override
 	public List<String> getCleanSearchableValues(String attributeKey) throws AttributeValidationException {
-		Class<?> attributeType = getType(attributeKey);		
+		Class<?> attributeType = getType(attributeKey);
 		Object rawValue = getValue(attributeKey);
-		
+
 		String attributeInValue = rawValue != null ? rawValue.toString() : "";
 		String attributeDataType = DataTypeUtil.determineDataType(attributeType);
 		return SQLUtils.getCleanedSearchableValues(attributeInValue, attributeDataType);

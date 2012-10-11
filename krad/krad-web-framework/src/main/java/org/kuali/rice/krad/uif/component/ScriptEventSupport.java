@@ -17,20 +17,20 @@ package org.kuali.rice.krad.uif.component;
 
 /**
  * Declares methods for retrieving the event script code
- * 
+ *
  * <p>
  * The code returned by the get*Script methods will be wrapped in the
  * appropriate event registration code, therefore only the body needs to be
  * returned
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ScriptEventSupport {
 
 	/**
 	 * Script that should be executed when the component's onLoad event is fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnLoadScript();
@@ -44,7 +44,7 @@ public interface ScriptEventSupport {
 
 	/**
 	 * Script to be run when the document ready event is triggered
-	 * 
+	 *
 	 * @return the onDocumentReadyScript
 	 */
 	public String getOnDocumentReadyScript();
@@ -52,7 +52,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onUnload event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnUnloadScript();
@@ -60,14 +60,14 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onClose event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnCloseScript();
 
 	/**
 	 * Script that should be executed when the component's onBlur event is fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnBlurScript();
@@ -82,7 +82,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onChange event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnChangeScript();
@@ -90,7 +90,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onClick event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnClickScript();
@@ -98,7 +98,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onDblClick event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnDblClickScript();
@@ -106,7 +106,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onFocus event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnFocusScript();
@@ -114,7 +114,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onSubmit event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnSubmitScript();
@@ -122,7 +122,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onKeyPress event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnKeyPressScript();
@@ -130,7 +130,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onKeyUp event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnKeyUpScript();
@@ -138,7 +138,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onKeyDown event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnKeyDownScript();
@@ -146,7 +146,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onMouseOver event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnMouseOverScript();
@@ -154,7 +154,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onMouseOut event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnMouseOutScript();
@@ -162,7 +162,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onMouseUp event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnMouseUpScript();
@@ -170,7 +170,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onMouseDown event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnMouseDownScript();
@@ -178,7 +178,7 @@ public interface ScriptEventSupport {
 	/**
 	 * Script that should be executed when the component's onMouseMove event is
 	 * fired
-	 * 
+	 *
 	 * @return String JavaScript code
 	 */
 	public String getOnMouseMoveScript();

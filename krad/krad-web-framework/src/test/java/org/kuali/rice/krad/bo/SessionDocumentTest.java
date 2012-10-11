@@ -28,14 +28,14 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * SessionDocumentTest tests SessionDocument getters and setters
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SessionDocumentTest {
 
 	SessionDocument dummySessionDocument;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		dummySessionDocument = new SessionDocument();
@@ -45,18 +45,18 @@ public class SessionDocumentTest {
 	public void tearDown() throws Exception {
 		dummySessionDocument = null;
 	}
-	
+
 	@Test
     /**
      * tests serializedDocumentForm getter and setter
      */
 	public void testSerializedDocumentForm(){
-		
+
 		byte[] dummyByte = "dummy".getBytes();
 		dummySessionDocument.setSerializedDocumentForm(dummyByte);
 		assertEquals("Testing SerializedDocumentForm in SessionDocumentService","dummy", new String(dummySessionDocument.getSerializedDocumentForm()));
 	}
-	
+
 	@Test
     /**
      * tests sessionId getter and setter
@@ -65,7 +65,7 @@ public class SessionDocumentTest {
 		dummySessionDocument.setSessionId("dummySeesionID");
 		assertEquals("Testing SessionId in SessionDocumentService","dummySeesionID",dummySessionDocument.getSessionId());
 	}
-	
+
 
 	@Test
     /**
@@ -78,7 +78,7 @@ public class SessionDocumentTest {
 		dummySessionDocument.setLastUpdatedDate(currentTimestamp);
 		assertEquals("Testing LastUpdatedDate in SessionDocumentService",currentTimestamp,dummySessionDocument.getLastUpdatedDate());
 	}
-	
+
 	@Test
     /**
      * tests documentNumber getter and setter
@@ -87,7 +87,7 @@ public class SessionDocumentTest {
 		dummySessionDocument.setDocumentNumber("dummyDocumentNumber");
 		assertEquals("Testing DocumentNumber in SessionDocumentService","dummyDocumentNumber",dummySessionDocument.getDocumentNumber());
 	}
-	
+
 
 	@Test
     /**
@@ -97,7 +97,7 @@ public class SessionDocumentTest {
 		dummySessionDocument.setPrincipalId("dummyPrincipalId");
 		assertEquals("Testing PrincipalId in SessionDocumentService","dummyPrincipalId",dummySessionDocument.getPrincipalId());
 	}
-	
+
 	@Test
     /**
      * tests ipAddress getter and setter
@@ -106,7 +106,7 @@ public class SessionDocumentTest {
 		dummySessionDocument.setIpAddress("dummyIpAddress");
 		assertEquals("Testing IpAddress in SessionDocumentService","dummyIpAddress",dummySessionDocument.getIpAddress());
 	}
-	
+
 	@Test
     /**
      * tests encrypted getter and setter

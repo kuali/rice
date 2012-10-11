@@ -23,15 +23,15 @@ import org.kuali.rice.krad.rules.rule.BusinessRule;
 /**
  * This class represents the add AdHocRoutePerson event that is part of an eDoc in Kuali. This is triggered when a user presses the
  * add button for a given adHocRoutePerson.
- * 
- * 
+ *
+ *
  */
 public final class AddAdHocRoutePersonEvent extends KualiDocumentEventBase {
     private AdHocRoutePerson adHocRoutePerson;
 
     /**
      * Constructs an AddAdHocRoutePersonEvent with the specified errorPathPrefix, document, and adHocRoutePerson
-     * 
+     *
      * @param document
      * @param adHocRoutePerson
      * @param errorPathPrefix
@@ -43,7 +43,7 @@ public final class AddAdHocRoutePersonEvent extends KualiDocumentEventBase {
 
     /**
      * Constructs an AddAdHocRoutePersonEvent with the given document
-     * 
+     *
      * @param document
      * @param adHocRoutePerson
      */
@@ -53,7 +53,7 @@ public final class AddAdHocRoutePersonEvent extends KualiDocumentEventBase {
 
     /**
      * This method retrieves the document adHocRoutePerson associated with this event.
-     * 
+     *
      * @return AdHocRoutePerson
      */
     public AdHocRoutePerson getAdHocRoutePerson() {

@@ -20,14 +20,14 @@ import org.kuali.rice.krad.document.Document;
 
 /**
  * Defines a rule which gets invoked immediately before a document has an adHocRouteWorkgroup added to it.
- * 
- * 
+ *
+ *
  */
 public interface AddAdHocRouteWorkgroupRule extends BusinessRule {
     /**
      * This method is responsible for housing business rules that need to be checked before a document adHocRouteWorkgroup is added
      * to a document.
-     * 
+     *
      * @param document
      * @param adHocRouteWorkgroup
      * @return false if the rule fails

@@ -27,13 +27,13 @@ import java.util.List;
 /**
  * This class represents the save event that is part of an eDoc in Kuali. This could be triggered when a user presses the save
  * button for a given document or it could happen when another piece of code calls the save method in the document service.
- * 
- * 
+ *
+ *
  */
 public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEvent {
     /**
      * Constructs a SaveDocumentEvent with the specified errorPathPrefix and document
-     * 
+     *
      * @param document
      * @param errorPathPrefix
      */
@@ -43,20 +43,20 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
 
     /**
      * Constructs a SaveDocumentEvent with the given document
-     * 
+     *
      * @param document
      */
     public SaveDocumentEvent(Document document) {
         this("", document);
     }
-    
+
     /**
      * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase#KualiDocumentEventBase(java.lang.String, java.lang.String, org.kuali.rice.krad.document.Document)
      */
     public SaveDocumentEvent(String description, String errorPathPrefix, Document document) {
 	super(description, errorPathPrefix, document);
     }
-    
+
     /**
      * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
@@ -81,7 +81,7 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
         List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
         events.addAll(ruleService.generateAdHocRoutePersonEvents(getDocument()));
         events.addAll(ruleService.generateAdHocRouteWorkgroupEvents(getDocument()));
-        
+
         events.addAll(getDocument().generateSaveEvents());
 
         /*

@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.ClassUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
@@ -28,20 +27,16 @@ import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.Formatable;
 import org.kuali.rice.krad.datadictionary.validation.capability.HierarchicallyConstrainable;
-import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.PrerequisiteConstrainable;
-import org.kuali.rice.krad.datadictionary.validation.capability.RangeConstrainable;
-import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.LookupConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
-import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -179,37 +174,37 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	/**
 	 * The validationPattern element defines the allowable character-level or
 	 * field-level values for an attribute.
-	 * 
+	 *
 	 * JSTL: validationPattern is a Map which is accessed using a key of
 	 * "validationPattern". Each entry may contain some of the keys listed
 	 * below. The keys that may be present for a given attribute are dependent
 	 * upon the type of validationPattern.
-	 * 
+	 *
 	 * maxLength (String) exactLength type allowWhitespace allowUnderscore
 	 * allowPeriod validChars precision scale allowNegative
-	 * 
+	 *
 	 * The allowable keys (in addition to type) for each type are: Type****
 	 * ***Keys*** alphanumeric exactLength maxLength allowWhitespace
 	 * allowUnderscore allowPeriod
-	 * 
+	 *
 	 * alpha exactLength maxLength allowWhitespace
-	 * 
+	 *
 	 * anyCharacter exactLength maxLength allowWhitespace
-	 * 
+	 *
 	 * charset validChars
-	 * 
+	 *
 	 * numeric exactLength maxLength
-	 * 
+	 *
 	 * fixedPoint allowNegative precision scale
-	 * 
+	 *
 	 * floatingPoint allowNegative
-	 * 
+	 *
 	 * date n/a emailAddress n/a javaClass n/a month n/a phoneNumber n/a
 	 * timestamp n/a year n/a zipcode n/a
-	 * 
+	 *
 	 * Note: maxLength and exactLength are mutually exclusive. If one is
 	 * entered, the other may not be entered.
-	 * 
+	 *
 	 * Note: See ApplicationResources.properties for exact regex patterns. e.g.
 	 * validationPatternRegex.date for regex used in date validation.
 	 */
@@ -437,26 +432,21 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * Directly validate simple fields, call completeValidation on Definition
      * fields.
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(Class rootObjectClass, Class otherObjectClass, TracerToken tracer) {
+    public ArrayList<ErrorReport> completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationTrace tracer) {
         ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
         tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getName());
-
         try {
             if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
-                ErrorReport error = ErrorReport.createError("Property is not found in class",tracer);
-                error.addCurrentValue("property = "+getName());
-                error.addCurrentValue("class = "+rootObjectClass.getName());
-                reports.add(error);
+                String currentValues [] = {"property = "+getName(), "class = "+rootObjectClass.getName()};
+                tracer.createError("Property is not found in class",currentValues);
             }
 
             //TODO currently requiring a control or controlField, but this should not be case (AttrField should probably do the check)
             if (getControl() == null && getControlField() == null) {
-                ErrorReport error = ErrorReport.createError("Property does not have a control defined in the class",tracer);
-                error.addCurrentValue("property = "+getName());
-                error.addCurrentValue("class = "+rootObjectClass.getName());
-                reports.add(error);
+                String currentValues [] = {"property = "+getName(), "class = "+rootObjectClass.getName()};
+                tracer.createError("Property does not have a control defined in the class",currentValues);
             }
 
             if (getControl() != null) {
@@ -476,21 +466,17 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
                     Class formatterClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(),
                             getFormatterClass());
                     if (!Formatter.class.isAssignableFrom(formatterClassObject)) {
-                        ErrorReport error = ErrorReport.createError("FormatterClass is not a valid instance",tracer);
-                        error.addCurrentValue("formatterClassObject = "+formatterClassObject.getName());
-                        reports.add(error);
+                        String currentValues [] = {"formatterClassObject = "+formatterClassObject.getName()};
+                        tracer.createError("FormatterClass is not a valid instance",currentValues);
                     }
                 } catch (ClassNotFoundException e) {
-                    ErrorReport error = ErrorReport.createError("FormatterClass could not be found",tracer);
-                    error.addCurrentValue("class = "+getFormatterClass());
-                    reports.add(error);
+                    String currentValues [] = {"class = "+getFormatterClass()};
+                    tracer.createError("FormatterClass could not be found",currentValues);
                 }
             }
         } catch (RuntimeException ex) {
-            ErrorReport error = ErrorReport.createError("Unable to validate attribute",tracer);
-            error.addCurrentValue("attribute = "+rootObjectClass + "." + getName());
-            error.addCurrentValue("Exception = "+ex.getMessage());
-            reports.add(error);
+            String currentValues [] = {"attribute = "+rootObjectClass + "." + getName(),"Exception = "+ex.getMessage()};
+            tracer.createError("Unable to validate attribute",currentValues);
         }
 
         return reports;

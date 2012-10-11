@@ -27,15 +27,15 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintProcessor<PrerequisiteConstraint> {
-	
+
 	private static final String CONSTRAINT_NAME = "prerequisite constraint";
     private static final String FALLBACK_KEY = "prerequisiteFallback";
 
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.capability.Validatable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
 	 */
@@ -44,8 +44,8 @@ public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintP
 
 		if (ValidationUtils.isNullOrEmpty(value))
 			return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
-		
-        
+
+
 		ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(constraint, attributeValueReader);
 
         if(constraint != null){
@@ -60,15 +60,15 @@ public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintP
         }
 
 		result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
-		
+
 		return new ProcessorResult(constraintValidationResult);
 	}
 
-	@Override 
+	@Override
 	public String getName() {
 		return CONSTRAINT_NAME;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */

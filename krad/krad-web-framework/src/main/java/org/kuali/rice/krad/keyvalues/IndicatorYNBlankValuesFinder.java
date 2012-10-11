@@ -22,8 +22,8 @@ import java.util.List;
 
 /**
  * This class returns list of payment method key value pairs.
- * 
- * 
+ *
+ *
  */
 public class IndicatorYNBlankValuesFinder extends IndicatorYNOnlyValuesFinder {
 

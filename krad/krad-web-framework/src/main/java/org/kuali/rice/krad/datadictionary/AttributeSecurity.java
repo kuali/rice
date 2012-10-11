@@ -19,18 +19,18 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 
 /**
  * Defines a set of restrictions that are possible on an attribute
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeSecurity extends UifDictionaryBeanBase {
 	private static final long serialVersionUID = -7923499408946975318L;
-	
+
 	private boolean readOnly = false;
 	private boolean hide = false;
 	private boolean mask = false;
@@ -131,7 +131,7 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
 	 *      java.lang.Class)
 	 */
@@ -150,26 +150,20 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
     /**
      * Directly validate simple fields
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
-        tracer.addBean(this.getClass().getSimpleName(),TracerToken.NO_BEAN_ID);
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationTrace tracer) {
+        tracer.addBean(this.getClass().getSimpleName(), ValidationTrace.NO_BEAN_ID);
 
         if (mask && maskFormatter == null) {
-            ErrorReport error = ErrorReport.createError("MaskFormatter is required",tracer);
-            error.addCurrentValue("mask = "+mask);
-            error.addCurrentValue("maskFormatter = "+maskFormatter);
-            reports.add(error);
+            String currentValues [] = {"mask = "+mask,"maskFormatter = "+maskFormatter};
+            tracer.createError("MaskFormatter is required",currentValues);
         }
         if (partialMask && partialMaskFormatter == null) {
-            ErrorReport error = ErrorReport.createError("PartialMaskFormatter is required",tracer);
-            error.addCurrentValue("partialMask = "+partialMask);
-            error.addCurrentValue("partialMaskFormatter = "+partialMaskFormatter);
-            reports.add(error);
+            String currentValues [] = {"partialMask = "+partialMask,"partialMaskFormatter = "+partialMaskFormatter};
+            tracer.createError("PartialMaskFormatter is required",currentValues);
         }
 
-        return reports;
     }
 
 
@@ -179,15 +173,15 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
 	public boolean hasAnyRestriction() {
 		return readOnly || mask || partialMask || hide;
 	}
-	
-	
+
+
 	/**
 	 * Returns whether any of the restrictions defined in this class indicate that the attribute value potentially needs
 	 * to be not shown to the user (i.e. masked, partial mask, hide).  Note that readonly does not fall in this category.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean hasRestrictionThatRemovesValueFromUI() {
-		return mask || partialMask || hide;	
+		return mask || partialMask || hide;
 	}
 }

@@ -20,23 +20,23 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EntryValidationResult {
 
 	private String entryName;
 	private Map<String, AttributeValidationResult> attributeValidationResultMap;
-	
+
 	public EntryValidationResult(String entryName) {
 		this.entryName = entryName;
 		this.attributeValidationResultMap = new LinkedHashMap<String, AttributeValidationResult>();
 	}
-	
+
 	public Iterator<AttributeValidationResult> iterator() {
 		return attributeValidationResultMap.values().iterator();
 	}
-	
+
 	protected AttributeValidationResult getAttributeValidationResult(String attributeName) {
 		AttributeValidationResult attributeValidationResult = attributeValidationResultMap.get(attributeName);
 		if (attributeValidationResult == null) {
@@ -45,5 +45,5 @@ public class EntryValidationResult {
 		}
 		return attributeValidationResult;
 	}
-	
+
 }

@@ -28,7 +28,7 @@ import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
-import org.kuali.rice.krad.datadictionary.validator.RDVController;
+import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -78,8 +78,6 @@ public class DataDictionary {
 
     protected Map<String, List<String>> moduleDictionaryFiles = new HashMap<String, List<String>>();
 
-    protected String[] configFileLocationsArray;
-
     protected ArrayList<String> beanValidationFiles = new ArrayList<String>();
 
     /**
@@ -90,42 +88,67 @@ public class DataDictionary {
      * or the same thread
      */
     public void parseDataDictionaryConfigurationFiles(boolean allowConcurrentValidation) {
+        setupProcessor(ddBeans);
+
+        loadDictionaryBeans(ddBeans,moduleDictionaryFiles,ddIndex,beanValidationFiles);
+
+        performDictionaryPostProcessing(allowConcurrentValidation);
+    }
+
+    /**
+     * Sets up the bean post processor and conversion service
+     *
+     * @param beans - The bean factory for the the dictionary beans
+     */
+    public static void setupProcessor(KualiDefaultListableBeanFactory beans){
         try {
             // UIF post processor that sets component ids
             BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
-            ddBeans.addBeanPostProcessor(idPostProcessor);
-            ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
+            beans.addBeanPostProcessor(idPostProcessor);
+            beans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
 
             // special converters for shorthand map and list property syntax
             GenericConversionService conversionService = new GenericConversionService();
             conversionService.addConverter(new StringMapConverter());
             conversionService.addConverter(new StringListConverter());
 
-            ddBeans.setConversionService(conversionService);
+            beans.setConversionService(conversionService);
         } catch (Exception e1) {
             throw new DataDictionaryException("Cannot create component decorator post processor: " + e1.getMessage(),
                     e1);
         }
+    }
 
+    /**
+     * Populates and processes the dictionary bean factory based on the configured files
+     *
+     * @param beans - The bean factory for the dictionary bean
+     * @param moduleDictionaryFiles - List of bean xml files
+     * @param index - Index of the data dictionary beans
+     * @param validationFiles - The List of bean xml files loaded into the bean file
+     */
+    public void loadDictionaryBeans(KualiDefaultListableBeanFactory beans, Map<String,List<String>> moduleDictionaryFiles, DataDictionaryIndex index,ArrayList<String> validationFiles){
         // expand configuration locations into files
         LOG.info("Starting DD XML File Load");
 
         List<String> allBeanNames = new ArrayList<String>();
         for (Map.Entry<String, List<String>> moduleDictionary : moduleDictionaryFiles.entrySet()) {
             String namespaceCode = moduleDictionary.getKey();
-            configFileLocationsArray = new String[moduleDictionary.getValue().size()];
+            XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(beans);
+
+            String configFileLocationsArray[] = new String[moduleDictionary.getValue().size()];
             configFileLocationsArray = moduleDictionary.getValue().toArray(configFileLocationsArray);
-//            for (int i = 0; i < configFileLocationsArray.length; i++) {
-//                beanValidationFiles.add(configFileLocationsArray[i]);
-//            }
+            for (int i = 0; i < configFileLocationsArray.length; i++) {
+                validationFiles.add(configFileLocationsArray[i]);
+            }
             try {
                 xmlReader.loadBeanDefinitions(configFileLocationsArray);
 
                 // get updated bean names from factory and compare to our previous list to get those that
                 // were added by the last namespace
-                List<String> addedBeanNames = Arrays.asList(ddBeans.getBeanDefinitionNames());
+                List<String> addedBeanNames = Arrays.asList(beans.getBeanDefinitionNames());
                 addedBeanNames = ListUtils.removeAll(addedBeanNames, allBeanNames);
-                ddIndex.addBeanNamesToNamespace(namespaceCode, addedBeanNames);
+                index.addBeanNamesToNamespace(namespaceCode, addedBeanNames);
 
                 allBeanNames.addAll(addedBeanNames);
             } catch (Exception e) {
@@ -134,9 +157,9 @@ public class DataDictionary {
         }
 
         LOG.info("Completed DD XML File Load");
-
-        performDictionaryPostProcessing(allowConcurrentValidation);
     }
+
+
 
     /**
      * Invokes post processors and builds indexes for the beans contained in the dictionary
@@ -169,11 +192,11 @@ public class DataDictionary {
     public void validateDD(boolean validateEbos) {
         DataDictionary.validateEBOs = validateEbos;
 
-//        RDVController validator = new RDVController();
-//        String files[] = new String[beanValidationFiles.size()];
-//        files = beanValidationFiles.toArray(files);
-//        validator.validate(files, xmlReader.getResourceLoader(), ddBeans,
-//                "C:\\Users\\johglove\\Desktop\\rdvResults.txt", false);
+       /* ValidationController validator = new ValidationController();
+        String files[] = new String[beanValidationFiles.size()];
+        files = beanValidationFiles.toArray(files);
+        validator.validate(files, xmlReader.getResourceLoader(), ddBeans,
+                LOG, false);*/
 
         Map<String, DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
         for (DataObjectEntry entry : doBeans.values()) {

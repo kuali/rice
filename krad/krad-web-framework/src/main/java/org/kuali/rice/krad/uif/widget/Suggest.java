@@ -45,10 +45,10 @@ public class Suggest extends WidgetBase {
 
     private String sourcePropertyName;
     private boolean sourceQueryMethodResults;
-    
+
     private boolean retrieveAllSuggestions;
     private List<Object> suggestOptions;
-    
+
     private String suggestOptionsJsString;
 
     public Suggest() {
@@ -208,21 +208,21 @@ public class Suggest extends WidgetBase {
     }
 
     /**
-     * Indicates whether all suggest options should be retrieved up front and provide to the suggest 
+     * Indicates whether all suggest options should be retrieved up front and provide to the suggest
      * widget as options locally
-     * 
+     *
      * <p>
      * Use this for a small list of options to improve performance. The query will be performed on the client
      * to filter the provider options based on the users input instead of doing a query each time
      * </p>
-     * 
+     *
      * <p>
      * When a query method is configured and this option set to true the method will be invoked to set the
-     * options. The query method should not take any arguments and should return the suggestion options 
+     * options. The query method should not take any arguments and should return the suggestion options
      * List or the JS String as a result. If a query method is not configured the suggest options can be
      * set through configuration or a view helper method (for example a component finalize method)
      * </p>
-     * 
+     *
      * @return boolean true to provide the suggest options initially, false to use ajax retrieval based on the
      * user's input
      */
@@ -232,7 +232,7 @@ public class Suggest extends WidgetBase {
 
     /**
      * Setter for the retrieve all suggestions indicator
-     * 
+     *
      * @param retrieveAllSuggestions
      */
     public void setRetrieveAllSuggestions(boolean retrieveAllSuggestions) {
@@ -241,18 +241,18 @@ public class Suggest extends WidgetBase {
 
     /**
      * When {@link #isRetrieveAllSuggestions()} is true, this list provides the full list of suggestions
-     * 
+     *
      * <p>
-     * If a query method is configured that method will be invoked to populate this list, otherwise the 
+     * If a query method is configured that method will be invoked to populate this list, otherwise the
      * list should be populated through configuration or the view helper
      * </p>
-     * 
+     *
      * <p>
      * The suggest options can either be a list of Strings, in which case the strings will be the suggested
      * values. Or a list of objects. If the object does not have 'label' and 'value' properties, a custom render
      * and select method must be provided
      * </p>
-     * 
+     *
      * @return List<Object> list of suggest options
      */
     public List<Object> getSuggestOptions() {
@@ -261,7 +261,7 @@ public class Suggest extends WidgetBase {
 
     /**
      * Setter for the list of suggest options
-     * 
+     *
      * @param suggestOptions
      */
     public void setSuggestOptions(List<Object> suggestOptions) {

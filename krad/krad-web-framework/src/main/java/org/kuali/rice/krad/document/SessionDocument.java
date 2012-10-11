@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.document;
 
 /**
- * This is a marker interface for implementing session in document. 
- * 
+ * This is a marker interface for implementing session in document.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */

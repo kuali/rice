@@ -30,7 +30,7 @@ import java.text.ParseException;
 /**
  * PropertyEditor converts between percentage strings and
  * <code>org.kuali.rice.core.api.util.type.KualiPercent</code> objects
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifPercentageEditor extends PropertyEditorSupport implements Serializable {
@@ -46,7 +46,7 @@ public class UifPercentageEditor extends PropertyEditorSupport implements Serial
      * This overridden method converts
      * <code>org.kuali.rice.core.api.util.type.KualiPercent</code> objects to the
      * display string.
-     * 
+     *
      * @see java.beans.PropertyEditorSupport#getAsText()
      */
     @Override
@@ -74,7 +74,7 @@ public class UifPercentageEditor extends PropertyEditorSupport implements Serial
     /**
      * This overridden method converts the display string to a
      * <code>org.kuali.rice.core.api.util.type.KualiPercent</code> object.
-     * 
+     *
      * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
      */
     @Override

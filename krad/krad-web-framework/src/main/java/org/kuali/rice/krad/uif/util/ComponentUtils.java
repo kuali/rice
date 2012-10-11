@@ -41,7 +41,7 @@ import java.util.Set;
 
 /**
  * ComponentUtils is a utility class providing methods to help create and modify <code>Component</code> instances
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtils {
@@ -192,7 +192,7 @@ public class ComponentUtils {
 
         return typeComponents;
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <T extends Component> List<T> getComponentsOfTypeDeep(Component component, Class<T> componentType) {
         List<T> typeComponents = new ArrayList<T>();
@@ -231,7 +231,7 @@ public class ComponentUtils {
 
     /**
      * Finds the child component of the given parent component that has the required id
-     * 
+     *
      * @param parent - parent component for component to find
      * @param nestedId - id of the component to find
      * @return Component instance for child (if found) or null
@@ -305,12 +305,12 @@ public class ComponentUtils {
                 updateIdsWithSuffixNested(nested, idSuffix);
             }
         }
-        
+
         for (Component nested : component.getPropertyReplacerComponents()) {
             if (nested != null) {
                 updateIdsWithSuffixNested(nested, idSuffix);
             }
-        }        
+        }
     }
 
     /**
@@ -435,7 +435,7 @@ public class ComponentUtils {
     public static void updateContextForLine(Component component, Object collectionLine, int lineIndex) {
         pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
         pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
-        
+
         boolean isAddLine = (lineIndex == -1);
         pushObjectToContext(component, UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
     }
@@ -452,7 +452,7 @@ public class ComponentUtils {
      * items share the same order value, all but the last item found in the list
      * will be removed.
      * </p>
-     * 
+     *
      * @param items
      * @param defaultOrderSequence
      * @return List<Ordered> sorted items

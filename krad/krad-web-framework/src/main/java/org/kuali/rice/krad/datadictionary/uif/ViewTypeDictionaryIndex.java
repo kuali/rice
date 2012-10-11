@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Holds view index information for a view type, where the index keys are built
  * from the supported view type parameters
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewTypeDictionaryIndex {

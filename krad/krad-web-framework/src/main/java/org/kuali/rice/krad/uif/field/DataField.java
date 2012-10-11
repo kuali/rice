@@ -22,8 +22,8 @@ import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -896,39 +896,31 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 
         // Checks that the property is connected to the field
         if(getPropertyName()==null){
-            if(!RDValidator.checkExpressions(this,"propertyName")){
-                ErrorReport error = ErrorReport.createError("Property name not set",tracer);
-                error.addCurrentValue("propertyName = "+getPropertyName());
-                reports.add(error);
+            if(!Validator.checkExpressions(this, "propertyName")){
+                String currentValues [] = {"propertyName = "+getPropertyName()};
+                tracer.createError("Property name not set",currentValues);
             }
         }
 
         // Checks that the default values  present
         if(getDefaultValue()!=null && getDefaultValues()!=null){
-            ErrorReport error = ErrorReport.createWarning("Both Default Value and Default Values set",tracer);
-            error.addCurrentValue("defaultValue ="+getDefaultValue());
-            error.addCurrentValue("defaultValues Size ="+getDefaultValues().length);
-            reports.add(error);
+            String currentValues [] = {"defaultValue ="+getDefaultValue(),"defaultValues Size ="+getDefaultValues().length};
+            tracer.createWarning("Both Default Value and Default Values set",currentValues);
         }
 
         // Checks that a mask formatter is set if the data field is to be masked
         if(isApplyMask()){
             if(maskFormatter==null){
-                ErrorReport error = ErrorReport.createWarning("Apply mask is true, but no value is set for maskFormatter",tracer);
-                error.addCurrentValue("applyMask ="+isApplyMask());
-                error.addCurrentValue("maskFormatter ="+maskFormatter);
-                reports.add(error);
+                String currentValues [] = {"applyMask ="+isApplyMask(),"maskFormatter ="+maskFormatter};
+                tracer.createWarning("Apply mask is true, but no value is set for maskFormatter",currentValues);
             }
         }
 
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 }

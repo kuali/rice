@@ -28,7 +28,7 @@ public class WorkflowProperties implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected List<WorkflowPropertyGroup> workflowPropertyGroups;
-    
+
     public WorkflowProperties() {
         workflowPropertyGroups = new ArrayList<WorkflowPropertyGroup>();
     }
@@ -36,7 +36,7 @@ public class WorkflowProperties implements Serializable {
     /**
      * Returns a list of workflow property groups, which are used to determine which properties should be serialized when generating
      * routing XML
-     * 
+     *
      * @return a list of {@link WorkflowPropertyGroup} objects, in the order in which they were added
      */
     public List<WorkflowPropertyGroup> getWorkflowPropertyGroups() {

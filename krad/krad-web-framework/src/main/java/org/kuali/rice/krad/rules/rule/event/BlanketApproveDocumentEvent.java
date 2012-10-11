@@ -21,13 +21,13 @@ import org.kuali.rice.krad.document.Document;
  * This class represents the blanketApprove event that is part of an eDoc in Kuali. This could be triggered when a user presses the
  * blanketApprove button for a given document enroute or it could happen when another piece of code calls the blanketApprove method
  * in the document service.
- * 
- * 
+ *
+ *
  */
 public final class BlanketApproveDocumentEvent extends ApproveDocumentEvent {
     /**
      * Constructs an BlanketApproveDocumentEvent with the specified errorPathPrefix and document
-     * 
+     *
      * @param errorPathPrefix
      * @param document
      */
@@ -37,7 +37,7 @@ public final class BlanketApproveDocumentEvent extends ApproveDocumentEvent {
 
     /**
      * Constructs a BlanketApproveDocumentEvent with the given document
-     * 
+     *
      * @param document
      */
     public BlanketApproveDocumentEvent(Document document) {

@@ -40,10 +40,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * <p>
  * Gets the data needed for the incident report from the request and builds the
- * model and view for the incident report. This resolver intercepts any unhandled 
+ * model and view for the incident report. This resolver intercepts any unhandled
  * exception.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifHandlerExceptionResolver implements org.springframework.web.servlet.HandlerExceptionResolver {
@@ -51,7 +51,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
     /**
      * Builds the incident report model and view from the request that threw the exception
-     * 
+     *
      * @param request -
      *            the request
      * @param response -
@@ -67,7 +67,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
      */
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
-            Exception ex) {    
+            Exception ex) {
         LOG.error("The following error was caught by the UifHandlerExceptionResolver : ", ex);
 
         // log exception
@@ -90,7 +90,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         // Set the post url map to the incident report controller and not 
         // the one the exception occurred on
-        String postUrl = request.getRequestURL().toString();        
+        String postUrl = request.getRequestURL().toString();
         postUrl = postUrl.substring(0, postUrl.lastIndexOf("/")) + "/incidentReport";
         incidentReportForm.setFormPostUrl(postUrl);
 

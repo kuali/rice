@@ -18,13 +18,13 @@ package org.kuali.rice.krad.datadictionary.validation.capability;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
 
 /**
- * Validation capability to constrain a particular value under specific conditions. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * Validation capability to constrain a particular value under specific conditions.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public interface CaseConstrainable extends Constrainable {
 
 	public CaseConstraint getCaseConstraint();
-	
+
 }

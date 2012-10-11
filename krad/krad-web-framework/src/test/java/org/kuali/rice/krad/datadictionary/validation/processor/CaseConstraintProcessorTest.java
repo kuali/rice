@@ -36,8 +36,8 @@ public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest<Cas
 
 	private Address londonAddress = new Address("812 Maiden Lane", "", "London", "", "", "UK", null);
 	private Address noStateAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
-	
-	
+
+
 	@Test
 	public void testCaseConstraintNotInvoked() {
 		ProcessorResult processorResult = processRaw(londonAddress, "country", countryIsUSACaseConstraint);
@@ -46,37 +46,37 @@ public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest<Cas
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.INAPPLICABLE, result.getStatus());
 		Assert.assertEquals(new CaseConstraintProcessor().getName(), result.getConstraintName());
-		
+
 		List<Constraint> constraints = processorResult.getConstraints();
-		
+
 		Assert.assertNotNull(constraints);
 		Assert.assertEquals(0, constraints.size());
 	}
-	
+
 	@Test
 	public void testCaseConstraintInvoked() {
 		ProcessorResult processorResult = processRaw(noStateAddress, "country", countryIsUSACaseConstraint);
-		
+
 		List<Constraint> constraints = processorResult.getConstraints();
-		
+
 		Assert.assertNotNull(constraints);
 		Assert.assertEquals(1, constraints.size());
-		
+
 		Constraint constraint = constraints.get(0);
-		
+
 		Assert.assertTrue(constraint instanceof PrerequisiteConstraint);
-		
+
 		PrerequisiteConstraint prerequisiteConstraint = (PrerequisiteConstraint)constraint;
-		
+
 		Assert.assertEquals("state", prerequisiteConstraint.getPropertyName());
-		
+
 		ConstraintValidationResult result = processorResult.getFirstConstraintValidationResult();
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new CaseConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
 	/**
 	 * @see BaseConstraintProcessorTest#newProcessor()
 	 */

@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * Utility methods to get/set property values and working with objects
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.springframework.beans.BeanWrapper
  */
@@ -91,7 +91,7 @@ public class ObjectPropertyUtils {
 			}
 		}
 	}
-	
+
     public static boolean isReadableProperty(Object object, String propertyPath) {
         return wrapObject(object).isReadableProperty(propertyPath);
     }

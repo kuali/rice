@@ -17,7 +17,7 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 
 import java.util.ArrayList;
@@ -38,15 +38,15 @@ import java.util.ArrayList;
  */
 public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
     private static final long serialVersionUID = -1719022365280776405L;
-    
+
 	protected boolean identifier;
-    
+
     public SupportAttributeDefinition() {}
 
     public boolean isIdentifier() {
         return identifier;
     }
-    
+
     /**
      * identifier when true, only the field marked as an identifier will be passed in as a lookup parameter
                at most one supportAttribute for each relationship should be defined as identifier="true"
@@ -57,7 +57,7 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
 
     /**
      * Directly validate simple fields.
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
@@ -73,36 +73,27 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
     /**
      * Directly validate simple fields
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(TracerToken)
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, TracerToken tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
-        tracer.addBean(this.getClass().getSimpleName(),TracerToken.NO_BEAN_ID);
-
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationTrace tracer) {
+        tracer.addBean(this.getClass().getSimpleName(), ValidationTrace.NO_BEAN_ID);
         try{
             if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getSourceName())) {
-                ErrorReport error = ErrorReport.createError("Unable to find attribute in class", tracer);
-                error.addCurrentValue("attribute = "+getSourceName());
-                error.addCurrentValue("class = "+rootBusinessObjectClass);
-                reports.add(error);
+                String currentValues [] = {"attribute = "+getSourceName(),"class = "+rootBusinessObjectClass};
+                tracer.createError("Unable to find attribute in class",currentValues);
             }
             if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, getTargetName())
                     && !ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface( otherBusinessObjectClass )) {
-                ErrorReport error = ErrorReport.createError("Unable to find attribute in class", tracer);
-                error.addCurrentValue("attribute = "+getTargetName());
-                error.addCurrentValue("class = "+otherBusinessObjectClass);
-                reports.add(error);
+
+                String currentValues [] = {"attribute = "+getTargetName(),"class = "+otherBusinessObjectClass};
+                tracer.createError("Unable to find attribute in class",currentValues);
             }
         }catch (RuntimeException ex) {
-            ErrorReport error = ErrorReport.createError("Unable to validate attribute",tracer);
-            error.addCurrentValue("Exception = "+ex.getMessage());
-            reports.add(error);
+            String currentValues [] = {"Exception = "+ex.getMessage()};
+            tracer.createError("Unable to validate attribute",currentValues);
         }
-
-
-        return reports;
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
@@ -110,6 +101,6 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
     public String toString() {
         return "SupportAttributeDefinition (" + getSourceName()+","+getTargetName()+","+identifier+")";
     }
-    
+
 }
 

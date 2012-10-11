@@ -19,7 +19,7 @@ import java.text.MessageFormat;
 
 /**
  * Constants for CSS style strings
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CssConstants {
@@ -32,7 +32,7 @@ public class CssConstants {
 		public static final String INLINE_BLOCK = DISPLAY + "inline-block;";
 		public static final String NONE = DISPLAY + "none;";
 	}
-	
+
 	public static final String TEXT_ALIGN = "text-align: ";
 
 	public static class TextAligns {
@@ -58,14 +58,14 @@ public class CssConstants {
 		public static final String MARGIN_TOP = "margin-top: {0};";
 		public static final String MARGIN_BOTTOM = "margin-bottom: {0};";
 	}
-	
+
 	public static class Padding {
 		public static final String PADDING_LEFT = "padding-left: {0};";
 		public static final String PADDING_RIGHT = "padding-right: {0};";
 		public static final String PADDING_TOP = "padding-top: {0};";
 		public static final String PADDING_BOTTOM = "padding-bottom: {0};";
 	}
-	
+
 	public static final String WIDTH = "width: ";
     public static final String HEIGHT = "height: ";
     public static final String OVERFLOW = "overflow: ";
@@ -73,7 +73,7 @@ public class CssConstants {
 	/**
 	 * Replaces parameters in the given CSS string with the corresponding
 	 * parameter values given
-	 * 
+	 *
 	 * @param style
 	 *            - String with parameters to replace
 	 * @param parameters

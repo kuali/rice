@@ -17,7 +17,7 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Defines methods common to all DataDictionaryDefinition types.
- * 
+ *
  *     DD: The highest level objects in the data dictionary are of
         the following types:
         * BusinessObjectEntry
@@ -63,7 +63,7 @@ public interface DataDictionaryEntry extends DictionaryBean {
 
     /**
      * Kicks off complete entry-wide validation which couldn't be done earlier.
-     * 
+     *
      * @throws org.kuali.rice.krad.datadictionary.exception.CompletionException if a problem arises during validation-completion
      */
     public void completeValidation();
@@ -72,9 +72,8 @@ public interface DataDictionaryEntry extends DictionaryBean {
      * Validates that the data objects created from the Spring Beans are correct
      *
      * @param tracer - Record of object's location
-     * @return  A list of ErrorReports detailing errors found within the data dictionary and referenced within it
      */
-    ArrayList<ErrorReport> completeValidation(TracerToken tracer);
+    public void completeValidation(ValidationTrace tracer);
 
     /**
      * @param attributeName
@@ -86,7 +85,7 @@ public interface DataDictionaryEntry extends DictionaryBean {
      * Returns the full class name of the underlying object.
      */
     public String getFullClassName();
-    
+
     /**
      * @return a Map containing all RelationshipDefinitions associated with this BusinessObjectEntry, indexed by relationshipName
      */

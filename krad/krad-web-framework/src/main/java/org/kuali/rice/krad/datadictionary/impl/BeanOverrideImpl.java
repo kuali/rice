@@ -25,8 +25,8 @@ import org.kuali.rice.krad.datadictionary.BeanOverride;
 import org.kuali.rice.krad.datadictionary.FieldOverride;
 
 /**
- * The base implementation of the BeanOverride interface. 
- * 
+ * The base implementation of the BeanOverride interface.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -36,7 +36,7 @@ public class BeanOverrideImpl implements BeanOverride {
     private List<FieldOverride> fieldOverrides;
 
     /**
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.BeanOverride#getFieldOverrides()
      */
     public List<FieldOverride> getFieldOverrides() {
@@ -48,7 +48,7 @@ public class BeanOverrideImpl implements BeanOverride {
     }
 
     /**
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.BeanOverride#getBeanName()
      */
     public String getBeanName() {
@@ -60,17 +60,17 @@ public class BeanOverrideImpl implements BeanOverride {
     }
 
     /**
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.BeanOverride#performOverride(java.lang.Object)
      */
-    public void performOverride(Object bean) 
+    public void performOverride(Object bean)
     {
-        try 
+        try
         {
             for (FieldOverride fieldOverride: fieldOverrides)
             {
-                Object property = PropertyUtils.getProperty(bean, fieldOverride.getPropertyName());                
-                Object newProperty = fieldOverride.performFieldOverride(bean, property);                
+                Object property = PropertyUtils.getProperty(bean, fieldOverride.getPropertyName());
+                Object newProperty = fieldOverride.performFieldOverride(bean, property);
                 BeanUtils.setProperty(bean, fieldOverride.getPropertyName(), newProperty);
             }
         }
@@ -81,7 +81,7 @@ public class BeanOverrideImpl implements BeanOverride {
         catch(InvocationTargetException e)
         {
             throw new RuntimeException(e);
-            
+
         }
         catch (NoSuchMethodException e)
         {

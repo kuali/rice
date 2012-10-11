@@ -234,7 +234,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
 
     /**
      * This method determines whether or not the central rice server should be used for lookups.
-     * 
+     *
      * @return
      */
     public boolean goToCentralRiceForInquiry();

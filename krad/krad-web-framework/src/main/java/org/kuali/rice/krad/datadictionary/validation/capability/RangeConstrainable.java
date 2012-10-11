@@ -18,13 +18,13 @@ package org.kuali.rice.krad.datadictionary.validation.capability;
 import org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint;
 
 /**
- * Validation capability to constrain a value to be within some numeric or date range. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * Validation capability to constrain a value to be within some numeric or date range.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RangeConstrainable extends Constrainable, RangeConstraint {
 
 	// To match up with legacy code for AttributeDefinition, range constraint members are fields
 	// on the definition, making the capability a sub-interface of the constraint
-	
+
 }

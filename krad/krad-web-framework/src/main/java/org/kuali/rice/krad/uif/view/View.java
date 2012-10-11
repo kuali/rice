@@ -19,20 +19,20 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.RDValidator;
-import org.kuali.rice.krad.datadictionary.validator.TracerToken;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.NavigationGroup;
 import org.kuali.rice.krad.uif.container.PageGroup;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ReferenceCopy;
-import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
@@ -308,7 +308,7 @@ public class View extends ContainerBase {
         if (component == null) {
             return;
         }
-        
+
         Integer currentSequenceVal = idSequence;
 
         // assign ID if necessary
@@ -934,13 +934,13 @@ public class View extends ContainerBase {
      * the form instance in session allows many things:
      *
      * <ul>
-     *   <li>Data does not need to be rebuilt for each server request (for example a collection)</li>
-     *   <li>Data that does not need to go to the user can remain on the form, reducing the size of the response and
-     *   improving security</li>
-     *   <li>Data can be keep around in a 'pre-save' state. When requested by the user changes can then be persisted to
-     *   the database</li>
-     *   <li>Certain information about the view that was rendered, such as input fields, collection paths, and refresh
-     *   components can be kept on the form to support UI interaction</li>
+     * <li>Data does not need to be rebuilt for each server request (for example a collection)</li>
+     * <li>Data that does not need to go to the user can remain on the form, reducing the size of the response and
+     * improving security</li>
+     * <li>Data can be keep around in a 'pre-save' state. When requested by the user changes can then be persisted to
+     * the database</li>
+     * <li>Certain information about the view that was rendered, such as input fields, collection paths, and refresh
+     * components can be kept on the form to support UI interaction</li>
      * </ul>
      *
      * Setting this flag to false will prevent the form from being kept in session and as a result will limit what can
@@ -1264,8 +1264,8 @@ public class View extends ContainerBase {
      * @return boolean true if the view has been initialized, false if not
      */
     public boolean isInitialized() {
-        return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED) ||
-                StringUtils.equals(viewStatus, ViewStatus.FINAL);
+        return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED) || StringUtils.equals(viewStatus,
+                ViewStatus.FINAL);
     }
 
     /**
@@ -1304,7 +1304,7 @@ public class View extends ContainerBase {
      * </p>
      *
      * @return boolean true if breadcrumbs should be rendered in the view, false if not (are rendered in the
-     * application header)
+     *         application header)
      */
     public boolean isRenderBreadcrumbsInView() {
         return renderBreadcrumbsInView;
@@ -1337,8 +1337,8 @@ public class View extends ContainerBase {
     }
 
     /**
-     *  Set the refresh BlockUI used with single element blocking
-     *  (such as ajax based element loading/updates)
+     * Set the refresh BlockUI used with single element blocking
+     * (such as ajax based element loading/updates)
      *
      * @param refreshBlockUI
      */
@@ -1347,17 +1347,15 @@ public class View extends ContainerBase {
     }
 
     /**
-     *
      * @return BlockUI returns the refresh block object
      */
     public BlockUI getRefreshBlockUI() {
         return refreshBlockUI;
     }
 
-
     /**
-     *  Set the navigation BlockUI used with single page blocking
-     *  (such as full page loading/saving)
+     * Set the navigation BlockUI used with single page blocking
+     * (such as full page loading/saving)
      *
      * @param navigationBlockUI
      */
@@ -1366,7 +1364,6 @@ public class View extends ContainerBase {
     }
 
     /**
-     *
      * @return BlockUI returns the navigation block object
      */
     public BlockUI getNavigationBlockUI() {
@@ -1593,6 +1590,7 @@ public class View extends ContainerBase {
 
     /**
      * The theme which contains stylesheets for this view
+     *
      * @return
      */
     public ViewTheme getTheme() {
@@ -1601,6 +1599,7 @@ public class View extends ContainerBase {
 
     /**
      * Setter for The theme which contains stylesheets for this view
+     *
      * @return
      */
     public void setTheme(ViewTheme theme) {
@@ -1618,7 +1617,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     *  The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
+     * The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
      * determine what field in the model state information is stored in for this view.  Used during View validation.
      *
      * @param stateObjectBindingPath
@@ -1636,9 +1635,10 @@ public class View extends ContainerBase {
      * not included, the view's model is considered stateless and all constraints will apply regardless of their
      * state information or replacements (ie, they will function as they did in version 2.1).</p>
      *
+     * @return StateMapping information needed for state based validation, if null no state based validation
+     *         functionality
+     *         will exist and configured constraints will apply regardless of state
      * @since 2.2
-     * @return StateMapping information needed for state based validation, if null no state based validation functionality
-     * will exist and configured constraints will apply regardless of state
      */
     public StateMapping getStateMapping() {
         return stateMapping;
@@ -1657,98 +1657,82 @@ public class View extends ContainerBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public ArrayList<ErrorReport> completeValidation(TracerToken tracer){
-        ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Check for the presence of a valid item with an not-null EntryPageId
-        boolean validPageId=false;
-        if(getEntryPageId()!=null){
-            for(int i=0;i<getItems().size();i++){
-                if(getEntryPageId().compareTo(getItems().get(i).getId())==0) validPageId=true;
+        boolean validPageId = false;
+        if (getEntryPageId() != null) {
+            for (int i = 0; i < getItems().size(); i++) {
+                if (getEntryPageId().compareTo(getItems().get(i).getId()) == 0) {
+                    validPageId = true;
+                }
             }
         } else {
-            validPageId=true;
+            validPageId = true;
         }
-        if(!validPageId)  {
-            ErrorReport error = ErrorReport.createError("Items must contain an item with a matching id to entryPageId",tracer);
-            error.addCurrentValue("entryPageId = "+getEntryPageId());
-            reports.add(error);
+        if (!validPageId) {
+            String currentValues [] = {"entryPageId = " + getEntryPageId()};
+            tracer.createError("Items must contain an item with a matching id to entryPageId",currentValues);
         }
 
         // Check to insure the view as not already been set
-        if(tracer.getValidationStage()==TracerToken.START_UP){
-            if(getViewStatus().compareTo(UifConstants.ViewStatus.CREATED)!=0){
-                ErrorReport error = ErrorReport.createError("ViewStatus should not be set",tracer);
-                error.addCurrentValue("viewStatus = "+getViewStatus());
-                reports.add(error);
+        if (tracer.getValidationStage() == ValidationTrace.START_UP) {
+            if (getViewStatus().compareTo(UifConstants.ViewStatus.CREATED) != 0) {
+                String currentValues [] = {"viewStatus = " + getViewStatus()};
+                tracer.createError("ViewStatus should not be set",currentValues);
             }
         }
 
         // Check to insure the binding object path is a valid property
-        boolean  validDefaultBindingObjectPath=false;
-        if(getDefaultBindingObjectPath()==null){
-            validDefaultBindingObjectPath=true;
-        }else if(DataDictionary.isPropertyOf(getFormClass(), getDefaultBindingObjectPath())) {
-            validDefaultBindingObjectPath=true;
+        boolean validDefaultBindingObjectPath = false;
+        if (getDefaultBindingObjectPath() == null) {
+            validDefaultBindingObjectPath = true;
+        } else if (DataDictionary.isPropertyOf(getFormClass(), getDefaultBindingObjectPath())) {
+            validDefaultBindingObjectPath = true;
         }
-        if(!validDefaultBindingObjectPath){
-            ErrorReport error = ErrorReport.createError("DefaultBingdingObjectPath must be a valid property of the formClass",tracer);
-            error.addCurrentValue("formClass = "+getFormClass());
-            error.addCurrentValue("defaultBindingPath = "+getDefaultBindingObjectPath());
-            reports.add(error);
+        if (!validDefaultBindingObjectPath) {
+            String currentValues [] = {"formClass = " + getFormClass(),"defaultBindingPath = " + getDefaultBindingObjectPath()};
+            tracer.createError("DefaultBingdingObjectPath must be a valid property of the formClass",currentValues);
         }
 
         // Check to insure the page is set if the view is a single page
-        if(isSinglePageView()){
-            if(getPage()==null){
-                ErrorReport error = ErrorReport.createError("Page must be set if singlePageView is true",tracer);
-                error.addCurrentValue("singlePageView = "+isSinglePageView());
-                error.addCurrentValue("page = "+getPage());
-                reports.add(error);
+        if (isSinglePageView()) {
+            if (getPage() == null) {
+                String currentValues [] = {"singlePageView = " + isSinglePageView(),"page = " + getPage()};
+                tracer.createError("Page must be set if singlePageView is true",currentValues);
             }
-            for(int i=0;i<getItems().size();i++){
-                if(getItems().get(i).getClass()==PageGroup.class){
-                    ErrorReport error = ErrorReport.createError("Items cannot be pageGroups if singlePageView is true",tracer);
-                    error.addCurrentValue("singlePageView = "+isSinglePageView());
-                    error.addCurrentValue("items("+i+") = "+getItems().get(i).getClass());
-                    reports.add(error);
+            for (int i = 0; i < getItems().size(); i++) {
+                if (getItems().get(i).getClass() == PageGroup.class) {
+                    String currentValues [] = {"singlePageView = " + isSinglePageView(),"items(" + i + ") = " + getItems().get(i).getClass()};
+                    tracer.createError("Items cannot be pageGroups if singlePageView is true",currentValues);
                 }
             }
         }
 
         // Checks to insure the Growls are set if growl messaging is enabled
-        if(isGrowlMessagingEnabled()==true && getGrowls()==null){
-            if(RDValidator.checkExpressions(this,"growls")){
-                ErrorReport error = ErrorReport.createError("Growls cannot be null if Growl Messaging is enabled",tracer);
-                error.addCurrentValue("growlMessagingEnabled = "+isGrowlMessagingEnabled());
-                error.addCurrentValue("growls = "+getGrowls());
-                reports.add(error);
+        if (isGrowlMessagingEnabled() == true && getGrowls() == null) {
+            if (Validator.checkExpressions(this, "growls")) {
+                String currentValues [] = {"growlMessagingEnabled = " + isGrowlMessagingEnabled(),"growls = " + getGrowls()};
+                tracer.createError("Growls cannot be null if Growl Messaging is enabled",currentValues);
             }
         }
 
         // Checks that there are items present if the view is not a single page
-        if(!isSinglePageView()){
-            if(getItems().size()==0) {
-                ErrorReport error = ErrorReport.createWarning("Items cannot be empty if singlePageView is false",tracer);
-                error.addCurrentValue("singlePageView = "+isSinglePageView());
-                error.addCurrentValue("items.size = "+getItems().size());
-                reports.add(error);
-            }  else {
-                for(int i=0;i<getItems().size();i++){
-                    if(getItems().get(i).getClass()!=PageGroup.class){
-                        ErrorReport error = ErrorReport.createError("Items must be pageGroups if singlePageView is false",tracer);
-                        error.addCurrentValue("singlePageView = "+isSinglePageView());
-                        error.addCurrentValue("items("+i+") = "+getItems().get(i).getClass());
-                        reports.add(error);
+        if (!isSinglePageView()) {
+            if (getItems().size() == 0) {
+                String currentValues [] = {"singlePageView = " + isSinglePageView(),"items.size = " + getItems().size()};
+                tracer.createWarning("Items cannot be empty if singlePageView is false",currentValues);
+            } else {
+                for (int i = 0; i < getItems().size(); i++) {
+                    if (getItems().get(i).getClass() != PageGroup.class) {
+                        String currentValues [] = {"singlePageView = " + isSinglePageView(),"items(" + i + ") = " + getItems().get(i).getClass()};
+                        tracer.createError("Items must be pageGroups if singlePageView is false",currentValues);
                     }
                 }
             }
         }
-
-        reports.addAll(super.completeValidation(tracer.getCopy()));
-
-        return reports;
+        super.completeValidation(tracer.getCopy());
     }
 
     /**

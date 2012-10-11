@@ -26,12 +26,12 @@ import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * View type for KRAD documents
- * 
+ *
  * <p>
  * Provides commons configuration and default behavior applicable to documents
  * in the KRAD module.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentView extends FormView {

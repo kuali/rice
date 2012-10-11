@@ -26,9 +26,13 @@ import java.util.ArrayList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ErrorReport {
-
-    // logger
     private static final Log LOG = LogFactory.getLog(ErrorReport.class);
+
+    // Constant identifiers of the type of error
+    public static final int ERROR = 1;
+    public static final int WARNING = 2;
+
+    private static final String endl = System.getProperty("line.separator");
 
     // Is type of error detailed in the report
     private int errorStatus;
@@ -36,12 +40,6 @@ public class ErrorReport {
     private String beanLocation;
     private ArrayList<String> currentValues;
     private ArrayList<String> xmlPages;
-
-    // Constant identifiers of the type of error
-    public static final int ERROR = 1;
-    public static final int WARNING = 2;
-
-    private static final String endl = System.getProperty("line.separator");
 
     /**
      * Constructor creating a new report for an error
@@ -81,9 +79,9 @@ public class ErrorReport {
      *
      * @param errorStatus - The type of error being reported
      * @param validationFailed - The validation that was failed
-     * @param trace - TracerToken containing information on xml files and location
+     * @param trace - ValidationTrace containing information on xml files and location
      */
-    public ErrorReport(int errorStatus, String validationFailed, TracerToken trace) {
+    public ErrorReport(int errorStatus, String validationFailed, ValidationTrace trace) {
         this.errorStatus = errorStatus;
         this.validationFailed = validationFailed;
         this.xmlPages = trace.getRelatedXmls();
@@ -96,10 +94,10 @@ public class ErrorReport {
      *
      * @param errorStatus - The type of error being reported
      * @param validationFailed - The validation that was failed
-     * @param trace - TracerToken containing information on xml files and location
+     * @param trace - ValidationTrace containing information on xml files and location
      * @param values - An array of the values effected
      */
-    public ErrorReport(int errorStatus, String validationFailed, TracerToken trace, String values[]) {
+    public ErrorReport(int errorStatus, String validationFailed, ValidationTrace trace, String values[]) {
         this.errorStatus = errorStatus;
         this.validationFailed = validationFailed;
         this.beanLocation = trace.getBeanLocation();
@@ -130,10 +128,10 @@ public class ErrorReport {
      * Creates a new ErrorReport of ERROR status
      *
      * @param validationFailed - The validation that was failed
-     * @param trace - TracerToken containing information on xml files and location
+     * @param trace - ValidationTrace containing information on xml files and location
      * @return Returns a new ErrorReport of ERROR status
      */
-    public static ErrorReport createError(String validationFailed, TracerToken trace) {
+    public static ErrorReport createError(String validationFailed, ValidationTrace trace) {
         return new ErrorReport(ERROR, validationFailed, trace);
     }
 
@@ -141,10 +139,10 @@ public class ErrorReport {
      * Creates a new ErrorReport of WARNING status
      *
      * @param validationFailed - The validation that was failed
-     * @param trace - TracerToken containing information on xml files and location
+     * @param trace - ValidationTrace containing information on xml files and location
      * @return Returns a new ErrorReport of WARNING status
      */
-    public static ErrorReport createWarning(String validationFailed, TracerToken trace) {
+    public static ErrorReport createWarning(String validationFailed, ValidationTrace trace) {
         return new ErrorReport(WARNING, validationFailed, trace);
     }
 
@@ -178,7 +176,7 @@ public class ErrorReport {
     /**
      * Removes a value from the list of those involved
      *
-     * @param index
+     * @param index - The index of the value
      */
     public void removeCurrentValue(int index) {
         currentValues.remove(index);
@@ -187,7 +185,7 @@ public class ErrorReport {
     /**
      * Removes a xml page from the list of those involved
      *
-     * @param index
+     * @param index - The index of the xml page
      */
     public void removeXmlPage(int index) {
         xmlPages.remove(index);
@@ -196,8 +194,8 @@ public class ErrorReport {
     /**
      * Replaces a value in the list of those involved
      *
-     * @param index
-     * @param value
+     * @param index - The index of the value
+     * @param value - The value to replace the value with
      */
     public void modifyCurrentValue(int index, String value) {
         currentValues.set(index, value);
@@ -206,8 +204,8 @@ public class ErrorReport {
     /**
      * Replaces a xml page in the list of those involved
      *
-     * @param index
-     * @param page
+     * @param index - The index of the page
+     * @param page - The page to replace the xml page with
      */
     public void modifyXmlPage(int index, String page) {
         xmlPages.set(index, page);
@@ -254,7 +252,7 @@ public class ErrorReport {
     /**
      * Sets the validation that was failed
      *
-     * @param validation
+     * @param validation - The validation that failed
      */
     public void setValidationFailed(String validation) {
         validationFailed = validation;
@@ -263,7 +261,7 @@ public class ErrorReport {
     /**
      * Sets the location of the bean in the trace
      *
-     * @param location
+     * @param location - The Bean location
      */
     public void setBeanLocation(String location) {
         beanLocation = location;
@@ -299,7 +297,7 @@ public class ErrorReport {
     /**
      * Retrieves a value involved in the error
      *
-     * @param index
+     * @param index - The index of the value
      * @return The value involved at the provided index
      */
     public String getCurrentValue(int index) {
@@ -309,7 +307,7 @@ public class ErrorReport {
     /**
      * Retrieves a xml page file location involved in the error
      *
-     * @param index
+     * @param index - The index of the page
      * @return The xml file involved at the provided index
      */
     public String getXmlPage(int index) {

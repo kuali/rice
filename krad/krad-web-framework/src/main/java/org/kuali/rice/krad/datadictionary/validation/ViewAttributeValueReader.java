@@ -55,7 +55,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     public ViewAttributeValueReader(View view, Object form) {
         this.view = view;
         this.form = form;
-        
+
         List<InputField> containerInputFields = ComponentUtils.getAllInputFieldsWithinContainer(view);
         for (InputField field : containerInputFields) {
             inputFields.add(field);
@@ -206,5 +206,5 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
         clone.setAttributeName(this.attributeName);
         return clone;
     }
-    
+
 }

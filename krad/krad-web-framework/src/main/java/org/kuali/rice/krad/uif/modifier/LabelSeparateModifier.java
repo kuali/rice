@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * Pulls <code>Label</code> instances out of a contained field so they will
  * be placed separately in the <code>LayoutManager</code>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LabelSeparateModifier extends ComponentModifierBase {
@@ -44,7 +44,7 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 	 * not null and should be rendered, adds it to the new field list
 	 * immediately before the <code>Field</code> item the label applies to.
 	 * Finally the new list of components is set on the group
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */

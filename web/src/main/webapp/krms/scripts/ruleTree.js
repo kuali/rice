@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 function getSelectedPropositionInput() {
-    return jq('input[id="proposition_selected_attribute"]');
+    return jq('input[id="proposition_selected_control"]');
 }
 
 function getCutPropositionInput() {
-    return jq('input[id="proposition_cut_attribute"]');
+    return jq('input[id="proposition_cut_control"]');
 }
 
 function getPropositionIdFromParentLi(parentLiNode) {
@@ -30,8 +30,10 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
     var selectedItemInput = getSelectedPropositionInput();
     var selectedItemId = selectedItemInput.val();
     var selectedItemInputName = selectedItemInput.attr('name');
-
-    retrieveComponent(collectionGroupId, controllerMethod, null, {selectedItemInputName: selectedItemId});
+    var actionRevealCallBack = function (htmlContent) {
+        jq('.editModeNode').find(".actionReveal").first().hide();
+    };
+    retrieveComponent(collectionGroupId, controllerMethod, actionRevealCallBack, {selectedItemInputName: selectedItemId});
 }
 
 function ajaxCutPropositionTree(controllerMethod, collectionGroupId) {

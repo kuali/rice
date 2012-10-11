@@ -36,6 +36,7 @@
   
   <bean id="RuleTreeWidget" parent="Uif-Tree">
     <property name="template" value="/krad/WEB-INF/ftl/components/widget/ruleTree.ftl"/>
+    <property name="templateName" value="uif_ruleTree"/>
   </bean>
   
 
@@ -589,7 +590,7 @@
                       <list>
 
                         <!-- category and term -->
-                        <bean parent="Uif-HorizontalFieldGroup" >
+                        <bean parent="Uif-HorizontalFieldGroup">
                           <property name="items">
                             <list>
 
@@ -695,7 +696,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-ActionImage"
-              p:actionScript="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
+              p:actionScript="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup'); ">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="../krms/images/edit.png"
                   p:altText="Edit"/>

@@ -131,23 +131,26 @@ public class RoleServiceImplTest extends KIMTestCase {
         assertNotNull("delegateMember not created",newDelegateMember);
 
         //Update delegate member
-        Long versionNumber = newDelegateMember.getVersionNumber();
+        delegateMemberInfo.setDelegationMemberId(newDelegateMember.getDelegationMemberId());
         DateTime dateTimeFrom   = DateTime.now().minusDays(3);
         delegateMemberInfo.setActiveFromDate(dateTimeFrom);
         DateTime dateTimeTo = DateTime.now().plusDays(3);
         delegateMemberInfo.setActiveToDate(dateTimeTo);
         inDelegateMember = delegateMemberInfo.build();
-        DelegateMember updateDelegateMember = roleService.createDelegateMember(inDelegateMember);
-        assertNotNull("updateDelegateMember not created",newDelegateMember);
-        assertEquals("activeFromDate not updated",dateTimeFrom,updateDelegateMember.getActiveFromDate());
-        assertEquals("activeToDate not updated",dateTimeTo,updateDelegateMember.getActiveToDate());
+        DelegateMember updatedDelegateMember = roleService.updateDelegateMember(inDelegateMember);
+        assertEquals("Delegate member was updated",newDelegateMember.getDelegationMemberId(),updatedDelegateMember.getDelegationMemberId());
+        assertNotNull("updateDelegateMember not created",updatedDelegateMember);
+        assertEquals("activeFromDate not updated",dateTimeFrom,updatedDelegateMember.getActiveFromDate());
+        assertEquals("activeToDate not updated",dateTimeTo,updatedDelegateMember.getActiveToDate());
 
         //remove (inactivate) delegate member
         List<DelegateMember>  removeDelegateMembers = new ArrayList<DelegateMember>();
-        removeDelegateMembers.add(updateDelegateMember);
+        removeDelegateMembers.add(updatedDelegateMember);
         roleService.removeDelegateMembers(removeDelegateMembers);
-        DelegateMember removeDelegate = roleService.getDelegationMemberById(updateDelegateMember.getDelegationMemberId()) ;
-        assertTrue("removeDelegates did not update activeToDate",removeDelegate.getActiveToDate().equals(updateDelegateMember.getActiveToDate()));
+        DelegateMember removedDelegateMember = roleService.getDelegationMemberById(updatedDelegateMember.getDelegationMemberId()) ;
+        assertTrue("removeDelegateMembers did not remove the existing member",removedDelegateMember.getDelegationMemberId().equals(updatedDelegateMember.getDelegationMemberId()));
+        assertTrue("removeDelegateMembers did not remove the existing member",removedDelegateMember.getVersionNumber().equals(updatedDelegateMember.getVersionNumber() + 1));
+        assertTrue("removeDelegateMembers did not update activeToDate",removedDelegateMember.getActiveToDate().isBeforeNow());
     }
 
     @Test
@@ -341,7 +344,6 @@ public class RoleServiceImplTest extends KIMTestCase {
         DelegateMemberBo originalDelegateMemberBo = getDelegateMemberBo(newDelegateMember.getDelegationMemberId());
 
         //Update delegate member
-        delegateMemberInfo.setVersionNumber(newDelegateMember.getVersionNumber());
         DateTime dateTimeFrom   = DateTime.now().minusDays(3);
         delegateMemberInfo.setActiveFromDate(dateTimeFrom);
         DateTime dateTimeTo = DateTime.now().plusDays(3);
@@ -373,8 +375,10 @@ public class RoleServiceImplTest extends KIMTestCase {
         List<DelegateMember>  removeDelegateMembers = new ArrayList<DelegateMember>();
         removeDelegateMembers.add(updateDelegateMember);
         roleService.removeDelegateMembers(removeDelegateMembers);
-        DelegateMember removeDelegate = roleService.getDelegationMemberById(updateDelegateMember.getDelegationMemberId()) ;
-        assertTrue("removeDelegates did not update activeToDate",removeDelegate.getActiveToDate().equals(updateDelegateMember.getActiveToDate()));
+        DelegateMember removedDelegateMember = roleService.getDelegationMemberById(updateDelegateMember.getDelegationMemberId()) ;
+        assertTrue("removeDelegateMembers did not remove the existing member",removedDelegateMember.getDelegationMemberId().equals(updateDelegateMember.getDelegationMemberId()));
+        assertTrue("removeDelegateMembers did not remove the existing member",removedDelegateMember.getVersionNumber().equals(updateDelegateMember.getVersionNumber() + 1));
+        assertTrue("removeDelegateMembers did not update activeToDate",removedDelegateMember.getActiveToDate().isBeforeNow());
     }
 
     protected RoleMemberBo getRoleMemberBo(String roleMemberId) {

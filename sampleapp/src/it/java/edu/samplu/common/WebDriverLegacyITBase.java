@@ -11,6 +11,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.BufferedReader;
@@ -18,6 +19,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.fail;
@@ -212,11 +214,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void clearTextByXpath(String locator) throws InterruptedException {
         clearText(By.xpath(locator));
     }
-
-    protected void fireEvent(String name, String event) {
-        ((JavascriptExecutor)driver).executeScript("document.getElementsByName('"+name+"')[0]."+event+"()");
-    }
-
+    
     protected String getAttribute(By by, String attribute) throws InterruptedException {
         waitFor(by);
         return driver.findElement(by).getAttribute(attribute);
@@ -554,5 +552,78 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
+    }
+    
+    public void switchToWindow(String title) {
+        Set<String> windows = driver.getWindowHandles();
+
+        for (String window : windows) {
+            driver.switchTo().window(window);
+            if (driver.getTitle().contains(title)) {
+                return;
+            }
+        }
+    }
+    
+    protected void check(By by)  throws InterruptedException {
+        WebElement element =driver.findElement(by);
+        if(!element.isSelected()){
+            element.click();
+        }
+    }
+    
+    protected void checkByName(String name) throws InterruptedException {
+        check(By.name(name));
+    }
+    
+    protected void checkByXpath(String locator) throws InterruptedException {
+        check(By.xpath(locator));
+    }
+
+    protected void uncheck(By by)  throws InterruptedException {
+        WebElement element =driver.findElement(by);
+        if(element.isSelected()){
+            element.click();
+        }
+    }
+    
+    protected void uncheckByName(String name) throws InterruptedException {
+        uncheck(By.name(name));
+    }
+    
+    protected void uncheckByXpath(String locator) throws InterruptedException {
+        uncheck(By.xpath(locator));
+    }
+    
+    protected void fireEvent(String name, String event) {
+        ((JavascriptExecutor)driver).executeScript(
+                "var elements=document.getElementsByName(\""+name+"\");"+
+                "for (var i = 0; i < elements.length; i++){"+
+                        "elements[i]."+event+"();}"
+                        );
+    }
+    
+    protected void fireEvent(String name, String value, String event) {
+        ((JavascriptExecutor)driver).executeScript(
+                "var elements=document.getElementsByName(\""+name+"\");"+
+                "for (var i = 0; i < elements.length; i++){"+
+                        "if(elements[i].value=='"+value+"')"+
+                        "elements[i]."+event+"();}"
+                        );
+    }
+    
+    public void fireMouseOverEventByName(String name) {    
+        this.fireMouseOverEvent(By.name(name));
+    }
+    
+    public void fireMouseOverEventByXpath(String locator) {    
+        this.fireMouseOverEvent(By.xpath(locator));
+    }
+    
+    public void fireMouseOverEvent(By by) {    
+        Actions builder = new Actions(driver);
+        Actions hover = builder.moveToElement(driver.findElement(by));
+        hover.perform();
+   
     }
 }

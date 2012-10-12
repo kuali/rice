@@ -71,6 +71,22 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		this.serviceClassLoader = ClassLoaderUtils.getDefaultClassLoader();
 	}
 
+	private boolean basicAuthentication = false;
+
+	/**
+	 * @return the basicAuthentication
+	 */
+	public boolean isBasicAuthentication() {
+		return this.basicAuthentication;
+	}
+
+	/**
+	 * @param basicAuthentication the basicAuthentication to set
+	 */
+	public void setBasicAuthentication(boolean basicAuthentication) {
+		this.basicAuthentication = basicAuthentication;
+	}
+
 	public Object getService() {
 		return this.service;
 	}

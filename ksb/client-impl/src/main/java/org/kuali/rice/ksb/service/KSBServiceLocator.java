@@ -142,4 +142,8 @@ public class KSBServiceLocator {
         return (Scheduler) getService(KSBConstants.ServiceNames.SCHEDULER);
     }
 
+    public static BasicAuthenticationService getBasicAuthenticationService() {
+        return (BasicAuthenticationService) getService(KSBConstants.ServiceNames.BASIC_AUTHENTICATION_SERVICE);
+    }
+
 }

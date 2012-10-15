@@ -47,6 +47,19 @@
               </map>
             </property>
           </bean>
+          <bean parent="GenericTextField" p:label="Direct Inquiry with an alternate view"
+            p:instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
+            p:propertyName="field71" p:defaultValue="a1">
+            <property name="inquiry.dataObjectClassName"
+                      value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="inquiry.viewName"
+                      value="ks_inquiry"/>
+            <property name="inquiry.inquiryParameters">
+              <map>
+                <entry key="field71" value="number" />
+              </map>
+            </property>
+          </bean>
           <bean parent="GenericTextField" p:label="Ajax Field Query"
             p:instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
             p:propertyName="field72" p:defaultValue="a3">

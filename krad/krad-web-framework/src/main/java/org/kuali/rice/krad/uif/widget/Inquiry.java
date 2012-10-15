@@ -203,7 +203,9 @@ public class Inquiry extends WidgetBase {
 
         urlParameters.setProperty(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
         urlParameters.setProperty(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
-
+        if(StringUtils.isNotBlank(this.viewName)){
+          urlParameters.setProperty(UifParameters.VIEW_NAME, this.viewName);
+        }
         // add inquiry specific parms to url
         if (getInquiryLink().getLightBox() != null) {
             getInquiryLink().getLightBox().setAddAppParms(true);

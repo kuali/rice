@@ -336,10 +336,12 @@ public class ActionListAction extends KualiAction {
                     form.getCurrentDir(), pageSize, preferences, form);
             plog.log("done w/ buildCurrentPage");
             request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
-            uSession.addObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.FALSE);
-            uSession.addObject(KewApiConstants.CURRENT_PAGE_ATTR_NAME, form.getCurrentPage());
-            uSession.addObject(KewApiConstants.SORT_CRITERIA_ATTR_NAME, form.getSort());
-            uSession.addObject(KewApiConstants.SORT_ORDER_ATTR_NAME, form.getCurrentDir());
+            synchronized(uSession) {
+                uSession.addObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.FALSE);
+                uSession.addObject(KewApiConstants.CURRENT_PAGE_ATTR_NAME, form.getCurrentPage());
+                uSession.addObject(KewApiConstants.SORT_CRITERIA_ATTR_NAME, form.getSort());
+                uSession.addObject(KewApiConstants.SORT_ORDER_ATTR_NAME, form.getCurrentDir());
+            }
             plog.log("finished setting attributes, finishing action list fetch");
         } catch (Exception e) {
             LOG.error("Error loading action list.", e);

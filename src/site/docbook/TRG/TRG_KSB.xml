@@ -2602,6 +2602,88 @@ testXmlAsyncService.invoke("message content");</programlisting>
           </itemizedlist></para>
       </sect3>
     </sect2>
+    <sect2>
+      <title>BasicAuthenticationService</title>
+
+      <sect3>
+        <para>The <emphasis role="bold">BasicAuthenticationService</emphasis> allows services published on the
+          KSB to be accessed securely with basic authentication.  As an example, here is how the
+          <emphasis role="bold">Workflow Document Actions Service</emphasis> could be exposed as a service
+          with basic authentication.</para>
+
+        <para><itemizedlist>
+          <listitem>
+        <para>Add the following bean to a spring bean file that is loaded as a part of the KEW module.
+        <programlisting>&lt;bean id="rice.kew.workflowDocumentActionServiceBasicAuthentication.exporter"
+              parent="kewServiceExporter" lazy-init="false"&gt;
+    &lt;property name="serviceDefinition"&gt;
+        &lt;bean parent="kewService"&gt;
+            &lt;property name="service"&gt;
+                &lt;ref bean="rice.kew.workflowDocumentActionsService" /&gt;
+            &lt;/property&gt;
+            &lt;property name="localServiceName"
+                 value="workflowDocumentActionsService-basicAuthentication" /&gt;
+            &lt;property name="busSecurity"
+                 value="${rice.kew.workflowDocumentActionsService.secure}" /&gt;
+            &lt;property name="basicAuthentication" value="true" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting></para>
+        </listitem>
+
+        <listitem>
+        <para>Add the following bean to a spring bean file that is loaded as a part of the KSB module.
+        <programlisting>&lt;bean class="org.kuali.rice.ksb.service.BasicAuthenticationCredentials"&gt;
+    &lt;property name="serviceNameSpaceURI"
+          value="http://rice.kuali.org/kew/v2_0" /&gt;
+    &lt;property name="localServiceName"
+          value="workflowDocumentActionsService-basicAuthentication" /&gt;
+    &lt;property name="username"
+          value="${WorkflowDocumentActionsService.username}" /&gt;
+    &lt;property name="password"
+          value="${WorkflowDocumentActionsService.password}" /&gt;
+    &lt;property name="authenticationService" ref="basicAuthenticationService" /&gt;
+&lt;/bean&gt;</programlisting></para>
+        </listitem>
+
+        <listitem>
+        <para>Add the following config parameters to a secure file that is loaded when the application is started.
+
+        <programlisting>&lt;param name="WorkflowDocumentActionsService.username"&gt;username&lt;/param&gt;
+&lt;param name="WorkflowDocumentActionsService.password"&gt;pw&lt;/param&gt;</programlisting></para>
+        </listitem>
+
+        <listitem>
+        <para>To verify the new service can be called, it can be tested using a tool such as soapUI.
+          Here is an example call which will invoke the method <emphasis role="bold">logAnnotation</emphasis> on
+          <emphasis role="bold">WorkflowDocumentActionsServiceImpl</emphasis>.
+        <programlisting>&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:v2="http://rice.kuali.org/kew/v2_0"&gt;
+  &lt;soapenv:Header&gt;
+    &lt;wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+            soapenv:mustUnderstand="1"&gt;
+      &lt;wsse:UsernameToken xmlns:wsu=
+          "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+          wsu:Id="UsernameToken-1815911473"&gt;
+        &lt;wsse:Username&gt;username&lt;/wsse:Username&gt;
+        &lt;wsse:Password Type=
+          "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"&gt;pw&lt;/wsse:Password&gt;
+      &lt;/wsse:UsernameToken&gt;
+    &lt;/wsse:Security&gt;
+  &lt;/soapenv:Header&gt;
+  &lt;soapenv:Body&gt;
+    &lt;v2:logAnnotation&gt;
+      &lt;v2:documentId&gt;123456&lt;/v2:documentId&gt;
+      &lt;v2:principalId&gt;admin&lt;/v2:principalId&gt;
+      &lt;v2:annotation&gt;Add this annotation please.&lt;/v2:annotation&gt;
+    &lt;/v2:logAnnotation&gt;
+  &lt;soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</programlisting></para>
+        </listitem>
+        </itemizedlist>
+        </para>
+      </sect3>
+    </sect2>
   </sect1>
 
   <sect1>

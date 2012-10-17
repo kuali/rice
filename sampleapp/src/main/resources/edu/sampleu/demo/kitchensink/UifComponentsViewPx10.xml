@@ -166,7 +166,7 @@
 
         <bean parent="GenericTextField" p:propertyName="field120" p:label="Multi Select Control" p:width="auto" >
           <property name="control">
-            <bean parent="Uif-DropdownControl" p:multiple="true" p:size="3" p:options-ref="test-options">
+            <bean parent="Uif-MultiSelectControl" p:size="3" p:options-ref="test-options">
               <property name="toolTip">
                 <bean parent="Uif-Tooltip" p:tooltipContent="This is a Multi Select Control tooltip">
                 </bean>

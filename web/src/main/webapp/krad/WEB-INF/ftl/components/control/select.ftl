@@ -34,7 +34,7 @@ Standard HTML Select Input
 
     <#if control.multiple>
         <@spring.formMultiSelect id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
-                                 attributes="${attributes}"/>
+                                  attributes="${attributes}"/>
     <#else>
         <@spring.formSingleSelect id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
                                   attributes="${attributes}"/>

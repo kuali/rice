@@ -177,6 +177,7 @@
         scope="prototype" parent="Uif-ControlBase" p:multiple="true">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/select.ftl"/>
     <property name="templateName" value="uif_select"/>
+    <property name="size" value="4"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-multiSelectControl</value>

@@ -61,7 +61,7 @@ public class SessionDocumentServiceImplTest {
             WorkflowDocument returnedDoc = sessionDocumentServiceImpl.getDocumentFromSession(session,docId);
             Assert.assertEquals("Document should match mock document", doc, returnedDoc);
         } catch(Exception e) {
-            Assert.fail("Exception occurred adding document to user session");
+            Assert.fail("Exception occurred retrieving document to user session");
         }
     }
 
@@ -72,7 +72,7 @@ public class SessionDocumentServiceImplTest {
             WorkflowDocument returnedDoc = sessionDocumentServiceImpl.getDocumentFromSession(session,docId);
             Assert.assertNull("Document should have returned null", returnedDoc);
         } catch(Exception e) {
-            Assert.fail("Exception occurred adding document to user session");
+            Assert.fail("Exception occurred retrieving document to user session");
         }
     }
 

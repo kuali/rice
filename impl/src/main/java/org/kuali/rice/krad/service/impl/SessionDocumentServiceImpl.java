@@ -38,6 +38,7 @@ import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implementation of <code>SessionDocumentService</code> that persists the document form
@@ -109,16 +110,18 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
 
     @Override
     public WorkflowDocument getDocumentFromSession(UserSession userSession, String docId) {
-        @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
+        synchronized (userSession) {
+            @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
                 (Map<String, WorkflowDocument>) userSession
                         .retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
 
-        if (workflowDocMap == null) {
-            workflowDocMap = new HashMap<String, WorkflowDocument>();
-            userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
-            return null;
+            if (workflowDocMap == null) {
+                workflowDocMap = new ConcurrentHashMap<String, WorkflowDocument> ();
+                userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
+                return null;
+            }
+            return workflowDocMap.get(docId);
         }
-        return workflowDocMap.get(docId);
     }
 
     /**
@@ -127,14 +130,19 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
      */
     @Override
     public void addDocumentToUserSession(UserSession userSession, WorkflowDocument document) {
-        @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
+        synchronized (userSession) {
+            @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
                 (Map<String, WorkflowDocument>) userSession
                         .retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
-        if (workflowDocMap == null) {
-            workflowDocMap = new HashMap<String, WorkflowDocument>();
+            if (workflowDocMap == null) {
+                workflowDocMap = new ConcurrentHashMap<String, WorkflowDocument> ();
+            }
+            // verify key and value are not null
+            if(document != null && document.getDocumentId() != null) {
+                workflowDocMap.put(document.getDocumentId(), document);
+            }
+            userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
         }
-        workflowDocMap.put(document.getDocumentId(), document);
-        userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
     }
 
     /**
@@ -144,7 +152,6 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
     @Override
     public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress) {
         synchronized (userSession) {
-
             LOG.debug("purge document form from session");
             userSession.removeObject(docFormKey);
             try {

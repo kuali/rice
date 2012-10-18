@@ -180,11 +180,11 @@
                 <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.message.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.widget.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.utility.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.initialize.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.request.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.response.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.actions.js</jsSourceFile>
-                <jsSourceFile>scripts/krad.utility.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.validate.js</jsSourceFile>
                 <jsSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.js</jsSourceFile>
                 <jsSourceFile>plugins/easing/jquery.easing-1.3.pack.js</jsSourceFile>

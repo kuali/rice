@@ -993,36 +993,36 @@
     </section>
   </section>
   <section>
-    <title>Rice Dictionary Validator (Not Yet Actively Implemented)</title>
+    <title>Rice Dictionary Validator</title>
     <section>
       <title>Introduction</title>
       <section>
         <title>Purpose</title>
         <para>
-          The KRAD Framework works by utilizing a number of interconnected java data objects held together
+          The Rice Framework works by utilizing a number of interconnected java data objects held together
           in the programs data dictionary. These objects are complex and created through the combination
           of a number of Spring Beans; mistakes in these beans can cause breakdowns in the system causing
-          missing pages or incorrect information to be display. The purpose of the Rice Dictionary Validator
-          (RDV) is to limit these mistakes by validating that the beans are being created correctly and
-          warning developers of problems that may occur.
+          missing pages or incorrect information to be display. The purpose of the Rice Dictionary
+          Validator (RDV) is to limit these mistakes by validating that the beans are being created
+          correctly and warning developers of problems that may occur.
         </para>
       </section>
       <section>
         <title>What is RDV</title>
         <para>
-          The Rice Dictionary Validator is a combination of an integrated backbone in the KRAD Framework and
-          a independent tool application within Rice Tools. It looks through the beans that make up the
-          data dictionary and identifies any problems it finds before reporting them to the developer. The
-          tool is setup to do this in several ways. The first is to validate the beans during the start up
-          of the KRAD Framework allowing for the check of the entire dictionary being used. The other is a
-          more limited check for use during development, loading only a core set of beans and any beans the
-          developer has set to check.
+          The Rice Dictionary Validator is a combination of an integrated backbone in the Rice Framework
+          and a independent tool application within Rice Tools. It looks through the beans that make up
+          the data dictionary and identifies any problems it finds before reporting them to the developer.
+          The tool is setup to do this in several ways. The first is to validate the beans during the
+          start up of the Rice Framework allowing for the check of the entire dictionary being used. The
+          other is a more limited check for use during development, loading only a core set of beans and
+          any beans the developer has set to check.
         </para>
         <para>
-          Needless of whether the Validator is being ran during the KRAD startup or with the Tools the RDV
-          runs through the complete list of beans being loaded and creates an individual error report for
-          every validation failed before display the report to he user. The output display can be configured
-          based on what is displayed and how it is displayed.
+          Needless of whether the Validator is being ran during the Rice startup or with the Rice Tools
+          the RDV runs through the complete list of beans being loaded and creates an individual error
+          report for every validation failed before displaying the report to he user. The output display
+          can be configured based on what is displayed and how it is displayed.
         </para>
       </section>
     </section>
@@ -1031,65 +1031,57 @@
       <section>
         <title>Rice Startup Validation</title>
         <para>
-          A default version of the RDV is setup to run during the start of the KRAD Framework with the output
-          being handled by the DataDictionary.class logger as info, warn and errors. This hands responsibility
-          of the display settings over to the log4j properties file. Since it is a developer tool it can be
-          turned on and off in the Framework's properties. The RDV can be toggled on and off by setting the
-          param validate.data.dictionary to true or false in the xml settings file: common-config-defaults of
-          the rice-impl module.
+          A default version of the RDV is setup to run during the start of the Rice Framework with the
+          output being handled by the DataDictionary.class logger as info, warn and errors. This hands
+          responsibility of the display settings over to the log4j properties file. Since it is a
+          developer tool it can be turned on and off in the Framework's properties. The RDV can be toggled
+          on and off by setting the param validate.data.dictionary to true or false in the xml settings
+          file: common-config-defaults of the rice-impl module.
         </para>
       </section>
       <section>
         <title>Rice Tools Validator</title>
         <para>
           To setup the independent RDV all that is required is to configure its settings in the properties
-          file. It can be ran from the Rice Tools application.
+          file (properties/rdv-config.properties). It can be ran from the Rice Tools application.
         </para>
         <itemizedlist>
           <listitem>
-            <para>ricedictionaryvalidator.corefiles - This is a list of default bean files to be loaded during
-              validation (Default parent beans would examples of files contained)
-            </para>
+            ricedictionaryvalidator.corefiles - This is a list of default bean files to be loaded during
+            validation
           </listitem>
           <listitem>
-            <para>ricedictionaryvalidator.display.method - This is the default setting for the method of output
-              when displaying the validations
-            </para>
+            ricedictionaryvalidator.display.method - This is the default setting for the method of
+            output when displaying the validations
           </listitem>
           <listitem>
-            <para>ricedictionaryvalidator.display.method.file - This is the default file to save validation
-              results to if the output type is file
-            </para>
+            ricedictionaryvalidator.display.method.file - This is the default file to save validation
+            results to if the output type is file
           </listitem>
           <listitem>
-            <para>ricedictionaryvalidator.display.errors - Display default for whether to display the number
-              of errors
-            </para>
+            ricedictionaryvalidator.display.errors - Display default for whether to display the number
+            of errors
           </listitem>
           <listitem>
-            <para>ricedictionaryvalidator.display.warnings - Display default for whether to display the number
-              of warnings
-            </para>
+            ricedictionaryvalidator.display.warnings - Display default for whether to display the number
+            of warnings
           </listitem>
           <listitem>
-            <para>ricedictionaryvalidator.display.errors.messages - Display default for whether to display the
-              error messages
-            </para>
+            ricedictionaryvalidator.display.errors.messages - Display default for whether to display the
+            error messages
           </listitem>
           <listitem>
-            <para>ricedictionaryvalidator.display.warnings.messages - Display default for whether to display the
-              warning messages
-            </para>
+            ricedictionaryvalidator.display.warnings.messages - Display default for whether to display
+            the
+            warning messages
           </listitem>
           <listitem>
-            <para>ricedictionaryvalidator.display.xmlfiles - Display default for whether to display the xml
-              files when displaying the error/warning messages
-            </para>
+            ricedictionaryvalidator.display.xmlfiles - Display default for whether to display the xml
+            files when displaying the error/warning messages
           </listitem>
           <listitem>
-            <para>ricedictionaryvalidator.failonwarning - This is the default for whether the validator should
-              fail if warnings are detect instead of just errors
-            </para>
+            ricedictionaryvalidator.failonwarning - This is the default for whether the validator should
+            fail if warnings are detect instead of just errors
           </listitem>
         </itemizedlist>
       </section>
@@ -1098,7 +1090,7 @@
       <title>User Guide</title>
       <para>
         The Rice Dictionary Validator has two different implementations, a integrated validator to be ran
-        during start up of the KRAD Framework and an extension to run with the Rice Tools application. The
+        during start up of the Rice Framework and an extension to run with the Rice Tools application. The
         first is to insure that the dictionary is accurate when running the complete application. The second
         is to aid in the development of the new bean sets.
       </para>
@@ -1107,7 +1099,7 @@
         <section>
           <title>Running Validation</title>
           <para>
-            If the KRAD Framework is set to run validations in its configuration file then the validator
+            If the Rice Framework is set to run validations in its configuration file then the validator
             will be ran automatically when the application is launched. The validation option is set in
             the common-config-defaults of the rice-impl module.
           </para>
@@ -1116,10 +1108,10 @@
           <title>Validations Covered</title>
           <itemizedlist>
             <listitem>
-              <para>Uif Component Beans</para>
+              Uif Component Beans
             </listitem>
             <listitem>
-              Data Dictionary
+              Data Dictionary Beans
             </listitem>
           </itemizedlist>
         </section>
@@ -1136,47 +1128,51 @@
           <para>
             Validation can be added to beans by adding the method:
           </para>
-          <programlisting>public ArrayList &lt;ErrorReport&gt; DataObject.completeValidation(TracerToken,
-            XmlBeanParser)
-          </programlisting>
+          public ArrayList &lt;ErrorReport&gt; DataObject.completeValidation(ValidationTrace)
           <para>
-            Within this method first update the Tracer Token using the line appropriate addBean() method
-            and follow by placing any validations that are needed for the data object. When a validation
-            fails the create an ErrorReport object on it to hold information about the failure. This
-            information should include at lease: its status as an error or warning (ErrorReport.ERROR or
-            ErrorReport.WARNING), the location of the bean (TracerToken.getBeanLocation), and a description
-            of the validation that failed. It can also include a list of values that involved and a list
-            of file paths to the xml files involved found using the XmlBeanParser (not yet implemented).
-            An example of a basic report is below (other ways to make reports can be found in the
-            constructors of ErrorReport).
+            Within this method first update the ValidationTrace using the line appropriate addBean()
+            method and follow by placing any validations that are needed for the data object. When a
+            validation fails create an error report by first making a String array containing any values
+            involved in the validation. Next the report can be created by using the following method on
+            the ValidationTrace Object.
           </para>
-          ErrorReport error = new ErrorReport(ErrorReport.ERROR);
-          error.setValidationFailed("ProgressiveRender must follow the Spring EL @{} format");
-          error.setBeanLocation(tracer.getBeanLocation());
-          error.addCurrentValue("progressiveRender ="+getProgressiveRender());
+          tracer.crateError({The Failed Validation},{The created list of involved values})
           <para>
-            If the data object extends another object that has validation too all upon its completeValidation()
-            method and compile the list of ErrorReports it returns and any ErrorReports generated during
-            the validations into a single ArrayList before returning them.
+            Warning reports can be created the same way using the createWarning(...) method. An example
+            of a basic report is below (other ways to make reports can be found in the constructors of
+            ErrorReport).
+          </para>
+          String currentValues[] = {"a = "+ a, "b = "+ b};
+          tracer.createError("Property a must be greater than b", currentValues);
+          <para>
+            If the data object extends another object that has validation too all upon its
+            completeValidation() method.
           </para>
         </section>
       </section>
       <section>
         <title>Rice Tools Validator</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata format="JPEG" fileref="RDV_MainMenu.jpg" width="500px" depth="500px"/>
+          </imageobject>
+        </mediaobject>
+
         <section>
           <title>Adding Files for Validation</title>
           <para>
-            To add a file to the validation list the user can select "Add File to Validation List" in the
-            main menu. They will then be prompted to enter the path of the file to be validated. The path
-            must be a valid file on the computer.
+            To add a file to the validation list the user can select "Add File to Validation List" in
+            the main menu. They will then be prompted to enter the path of the file to be validated. The
+            path must be a valid file on the computer.
           </para>
         </section>
         <section>
           <title>Removing File for Validation</title>
           <para>
-            To remove a file from the validation list the user can select "Remove File from Validation List"
-            to have the program display a list of all file paths currently set for validation. The user
-            can then select one to remove it from the list.
+            To remove a file from the validation list the user can select "Remove File from Validation
+            List" to have the program display a list of all file paths currently set for validation. The
+            user can then select one to remove it from the list.
           </para>
         </section>
         <section>
@@ -1189,18 +1185,19 @@
         <section>
           <title>Validating Files</title>
           <para>
-            To validate the files the user can simply select "Validate Files" from the main menu. The program
-            will validate the files then display the output based on the options set by the user.
+            To validate the files the user can simply select "Validate Files" from the main menu. The
+            program will validate the files then display the output based on the options set by the
+            user.
           </para>
         </section>
         <section>
           <title>Changing Settings</title>
           <para>
-            The Display settings as well as whether to have validations fail if a warning is detected can
-            be set by selecting "Change Settings" from the main menu. This will take you to a sub menu
-            with options for all the settings that can be changed. All the settings are controlled by
-            toggling them so the user can select the one they want to change then select yes/no to turn
-            it on/off.
+            The Display settings as well as whether to have validations fail if a warning is detected
+            can be set by selecting "Change Settings" from the main menu. This will take you to a sub
+            menu with options for all the settings that can be changed. All the settings are controlled
+            by toggling them so the user can select the one they want to change then select yes/no to
+            turn it on/off.
           </para>
           <para>
             The option for setting the output of the validation is slightly different as it asked for
@@ -1210,8 +1207,8 @@
         <section>
           <title>Exiting</title>
           <para>
-            Once the user has completed running validations they can "Exit" the RDV by selecting exit from
-            the main menu.
+            Once the user has completed running validations they can "Exit" the RDV by selecting exit
+            from the main menu.
           </para>
         </section>
       </section>

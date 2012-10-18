@@ -725,6 +725,12 @@ div.blockPage {
 }
 
 /** Autocomplete customizations ************************************************************************/
+.ui-autocomplete {
+    max-height: 100px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}
 
 .ui-autocomplete-input {
     background: url(../../images/icon_autosuggest.png) right no-repeat;

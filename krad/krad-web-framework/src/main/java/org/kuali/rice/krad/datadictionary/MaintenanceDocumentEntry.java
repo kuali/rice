@@ -17,6 +17,8 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase;
@@ -32,6 +34,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="maintenanceDocumentEntry")
 public class MaintenanceDocumentEntry extends DocumentEntry {
     private static final long serialVersionUID = 4990040987835057251L;
 
@@ -68,6 +71,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         this.dataObjectClass = dataObjectClass;
     }
 
+    @BeanTagAttribute(name="dataObjectClass")
     public Class<?> getDataObjectClass() {
         return dataObjectClass;
     }
@@ -94,6 +98,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         this.maintainableClass = maintainableClass;
     }
 
+    @BeanTagAttribute(name="maintainableClass")
     public Class<? extends Maintainable> getMaintainableClass() {
         return maintainableClass;
     }
@@ -111,6 +116,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      *
      * @return Returns the allowsNewOrCopy.
      */
+    @BeanTagAttribute(name="allowsNewOrCopy")
     public boolean getAllowsNewOrCopy() {
         return allowsNewOrCopy;
     }
@@ -161,6 +167,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         return "MaintenanceDocumentEntry for documentType " + getDocumentTypeName();
     }
 
+    @BeanTagAttribute(name="lockingKeys",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getLockingKeys() {
         return lockingKeys;
     }
@@ -182,6 +189,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     /**
      * @return the preserveLockingKeysOnCopy
      */
+    @BeanTagAttribute(name="preserveLockingKeysOnCopy")
     public boolean getPreserveLockingKeysOnCopy() {
         return this.preserveLockingKeysOnCopy;
     }
@@ -196,6 +204,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     /**
      * @return the allowRecordDeletion
      */
+    @BeanTagAttribute(name="allowsRecordDeletion")
     public boolean getAllowsRecordDeletion() {
         return this.allowsRecordDeletion;
     }

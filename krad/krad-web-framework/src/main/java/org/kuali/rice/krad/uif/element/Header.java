@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
@@ -39,6 +41,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="header")
 public class Header extends ContentElementBase {
     private static final long serialVersionUID = -6950408292923393244L;
 
@@ -145,6 +148,7 @@ public class Header extends ContentElementBase {
      *
      * @return String header text
      */
+    @BeanTagAttribute(name="headerText")
     public String getHeaderText() {
         return this.headerText;
     }
@@ -163,6 +167,7 @@ public class Header extends ContentElementBase {
      *
      * @return String header level
      */
+    @BeanTagAttribute(name="headerLevel")
     public String getHeaderLevel() {
         return this.headerLevel;
     }
@@ -189,6 +194,7 @@ public class Header extends ContentElementBase {
      * @return List<String> list of style classes
      * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
+    @BeanTagAttribute(name="headerTagCssClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getHeaderTagCssClasses() {
         return this.headerTagCssClasses;
     }
@@ -229,6 +235,7 @@ public class Header extends ContentElementBase {
      * @return String header style
      * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
+    @BeanTagAttribute(name="headerTagStyle")
     public String getHeaderTagStyle() {
         return this.headerTagStyle;
     }
@@ -251,6 +258,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
+    @BeanTagAttribute(name="upperGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getUpperGroup() {
         return upperGroup;
     }
@@ -273,6 +281,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
+    @BeanTagAttribute(name="rightGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getRightGroup() {
         return rightGroup;
     }
@@ -295,6 +304,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
+    @BeanTagAttribute(name="lowerGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLowerGroup() {
         return lowerGroup;
     }
@@ -318,6 +328,7 @@ public class Header extends ContentElementBase {
      *
      * @return List<? extends Component> items
      */
+    @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
         if (lowerGroup != null) {
             return lowerGroup.getItems();
@@ -391,6 +402,7 @@ public class Header extends ContentElementBase {
      *
      * @return Message with rich message structure, null if no rich message structure
      */
+    @BeanTagAttribute(name="richHeaderMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getRichHeaderMessage() {
         return richHeaderMessage;
     }
@@ -413,6 +425,7 @@ public class Header extends ContentElementBase {
      *
      * @return the Label's inlineComponents
      */
+    @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

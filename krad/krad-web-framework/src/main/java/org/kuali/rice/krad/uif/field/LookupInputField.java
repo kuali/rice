@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.Control;
@@ -39,6 +41,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="lookupInputField")
 public class LookupInputField extends InputField {
     private static final long serialVersionUID = -8294275596836322699L;
 
@@ -172,6 +175,7 @@ public class LookupInputField extends InputField {
     /**
      * @return the treatWildcardsAndOperatorsAsLiteral
      */
+    @BeanTagAttribute(name="disableWildcardsAndOperators")
     public boolean isDisableWildcardsAndOperators() {
         return this.disableWildcardsAndOperators;
     }
@@ -189,6 +193,7 @@ public class LookupInputField extends InputField {
      *
      * @return boolean true if all option should be added, false if not
      */
+    @BeanTagAttribute(name="addControlSelectAllOption")
     public boolean isAddControlSelectAllOption() {
         return addControlSelectAllOption;
     }

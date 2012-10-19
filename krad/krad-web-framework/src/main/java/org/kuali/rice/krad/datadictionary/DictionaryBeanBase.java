@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 /**
  * Common base for all objects that can be configured in the dictionary
  *
@@ -32,6 +34,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
     /**
      * @see DictionaryBean#getNamespaceCode()
      */
+    @BeanTagAttribute(name="namespaceCode")
     public String getNamespaceCode() {
         return namespaceCode;
     }
@@ -48,6 +51,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
     /**
      * @see DictionaryBean#getComponentCode()
      */
+    @BeanTagAttribute(name="componentCode")
     public String getComponentCode() {
         return componentCode;
     }

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 
 import java.io.Serializable;
@@ -24,6 +26,7 @@ import java.io.Serializable;
  * is relative to the basePath in the {@link WorkflowPropertyGroup} that contains this object.  The semantics of the path are determined
  * by the {@link PropertySerializabilityEvaluator} that evaluates whether a property is serializable.
  */
+@BeanTag(name="workflowProperty")
 public class WorkflowProperty implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -40,6 +43,7 @@ public class WorkflowProperty implements Serializable {
      *
      * @return
      */
+    @BeanTagAttribute(name="path")
     public String getPath() {
         return this.path;
     }

@@ -24,6 +24,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -36,6 +38,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="dataPatternConstraint")
 public class DatePatternConstraint extends ValidDataPatternConstraint {
 
     private List<String> allowedFormats;
@@ -151,6 +154,7 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
     /**
      * @return the allowedFormats
      */
+    @BeanTagAttribute(name="allowedFormats",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAllowedFormats() {
         return this.allowedFormats;
     }

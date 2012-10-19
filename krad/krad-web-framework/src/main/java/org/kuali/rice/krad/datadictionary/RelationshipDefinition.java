@@ -17,6 +17,8 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
@@ -45,6 +47,7 @@ import java.util.List;
                     * "targetName"
  *
  */
+@BeanTag(name="relationshipDefinition")
 public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 2946722646095412576L;
 
@@ -63,10 +66,12 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 
     public RelationshipDefinition() {}
 
+    @BeanTagAttribute(name="objectAttributeName")
     public String getObjectAttributeName() {
         return objectAttributeName;
     }
 
+    @BeanTagAttribute(name="sourceClass")
     public Class<?> getSourceClass() {
         return sourceClass;
     }
@@ -74,6 +79,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     /**
      * Returns the {@link #targetClass}
      */
+    @BeanTagAttribute(name="targetClass")
     public Class<?> getTargetClass() {
         if (targetClass == null) {
 	        Class propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
@@ -107,10 +113,12 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         this.objectAttributeName = objectAttributeName;
     }
 
+    @BeanTagAttribute(name="primitiveAttributes",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PrimitiveAttributeDefinition> getPrimitiveAttributes() {
         return primitiveAttributes;
     }
 
+    @BeanTagAttribute(name="supportAttributes",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<SupportAttributeDefinition> getSupportAttributes() {
         return supportAttributes;
     }

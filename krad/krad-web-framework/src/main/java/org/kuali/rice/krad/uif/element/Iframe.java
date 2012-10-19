@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="iFrame")
 public class Iframe extends ContentElementBase {
 	private static final long serialVersionUID = 5797473302619055088L;
 
@@ -42,6 +45,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return String source
      */
+    @BeanTagAttribute(name="source")
 	public String getSource() {
 		return this.source;
 	}
@@ -60,6 +64,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return String height
      */
+    @BeanTagAttribute(name="height")
 	public String getHeight() {
 		return this.height;
 	}
@@ -78,6 +83,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return String frameborder
      */
+    @BeanTagAttribute(name="frameborder")
 	public String getFrameborder() {
 		return this.frameborder;
 	}

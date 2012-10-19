@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.springframework.beans.factory.InitializingBean;
 
 
@@ -31,7 +32,7 @@ abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase im
 
     public DataDictionaryDefinitionBase() {
     }
-
+    @BeanTagAttribute(name="id")
     public String getId() {
         return this.id;
     }

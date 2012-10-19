@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -29,6 +31,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="textControl")
 public class TextControl extends ControlBase implements SizedControl {
 	private static final long serialVersionUID = -8267606288443759880L;
 
@@ -85,6 +88,7 @@ public class TextControl extends ControlBase implements SizedControl {
     /**
 	 * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
 	 */
+    @BeanTagAttribute(name="size")
 	public int getSize() {
 		return this.size;
 	}
@@ -103,6 +107,7 @@ public class TextControl extends ControlBase implements SizedControl {
      *
      * @return int max number of characters
      */
+    @BeanTagAttribute(name="maxLength")
     public Integer getMaxLength() {
         return maxLength;
     }
@@ -123,6 +128,7 @@ public class TextControl extends ControlBase implements SizedControl {
      *
      * @return int max number of characters
      */
+    @BeanTagAttribute(name="minLength")
     public Integer getMinLength() {
         return minLength;
     }
@@ -143,6 +149,7 @@ public class TextControl extends ControlBase implements SizedControl {
 	 *
 	 * @return Calendar
 	 */
+    @BeanTagAttribute(name="datePicker",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public DatePicker getDatePicker() {
 		return this.datePicker;
 	}
@@ -167,6 +174,7 @@ public class TextControl extends ControlBase implements SizedControl {
 	 *
      * @return the watermarkText
 	 */
+    @BeanTagAttribute(name="watermarkText")
 	public String getWatermarkText() {
 		return this.watermarkText;
 	}
@@ -191,6 +199,7 @@ public class TextControl extends ControlBase implements SizedControl {
      *
      * @return the textExpand
      */
+    @BeanTagAttribute(name="textExpand")
     public boolean isTextExpand() {
         return this.textExpand;
     }

@@ -17,6 +17,8 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="attributeSecurity")
 public class AttributeSecurity extends UifDictionaryBeanBase {
 	private static final long serialVersionUID = -7923499408946975318L;
 
@@ -42,6 +45,7 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
 	/**
 	 * @return the readOnly
 	 */
+    @BeanTagAttribute(name="readOnly")
 	public boolean isReadOnly() {
 		return this.readOnly;
 	}
@@ -57,6 +61,7 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
 	/**
 	 * @return the hide
 	 */
+    @BeanTagAttribute(name="hide")
 	public boolean isHide() {
 		return this.hide;
 	}
@@ -72,6 +77,7 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
 	/**
 	 * @return the mask
 	 */
+    @BeanTagAttribute(name="mask")
 	public boolean isMask() {
 		return this.mask;
 	}
@@ -87,6 +93,7 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
 	/**
 	 * @return the partialMask
 	 */
+    @BeanTagAttribute(name="partialMask")
 	public boolean isPartialMask() {
 		return this.partialMask;
 	}
@@ -102,6 +109,7 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
 	/**
 	 * @return the maskFormatter
 	 */
+    @BeanTagAttribute(name="maskFormatter",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public MaskFormatter getMaskFormatter() {
 		return this.maskFormatter;
 	}
@@ -117,6 +125,7 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
 	/**
 	 * @return the partialMaskFormatter
 	 */
+    @BeanTagAttribute(name="partialMaskFormatter",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public MaskFormatter getPartialMaskFormatter() {
 		return this.partialMaskFormatter;
 	}

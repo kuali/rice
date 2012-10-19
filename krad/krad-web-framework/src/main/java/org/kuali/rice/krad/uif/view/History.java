@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -39,6 +41,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="history")
 public class History implements Serializable {
     private static final long serialVersionUID = -8279297694371557335L;
     private static final Logger LOG = Logger.getLogger(History.class);
@@ -401,6 +404,7 @@ public class History implements Serializable {
      *
      * @return the homewardPath
      */
+    @BeanTagAttribute(name="homewardPath",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<HistoryEntry> getHomewardPath() {
         return this.homewardPath;
     }
@@ -420,6 +424,7 @@ public class History implements Serializable {
      *
      * @return the history
      */
+    @BeanTagAttribute(name="historyEntries",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<HistoryEntry> getHistoryEntries() {
         return this.historyEntries;
     }
@@ -439,6 +444,7 @@ public class History implements Serializable {
      *
      * @return the current
      */
+    @BeanTagAttribute(name="current",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public HistoryEntry getCurrent() {
         return this.current;
     }
@@ -478,6 +484,7 @@ public class History implements Serializable {
     /**
      * @return the appendHomewardPath
      */
+    @BeanTagAttribute(name="appendHomewardPath")
     public boolean isAppendHomewardPath() {
         return appendHomewardPath;
     }
@@ -496,6 +503,7 @@ public class History implements Serializable {
     /**
      * @return the appendPassedHistory
      */
+    @BeanTagAttribute(name="appendPassedHistory")
     public boolean isAppendPassedHistory() {
         return appendPassedHistory;
     }

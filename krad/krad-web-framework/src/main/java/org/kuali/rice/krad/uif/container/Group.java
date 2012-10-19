@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -52,6 +54,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="group")
 public class Group extends ContainerBase {
 	private static final long serialVersionUID = 7953641325356535509L;
 
@@ -183,6 +186,7 @@ public class Group extends ContainerBase {
 	 *
 	 * @return String binding prefix to set
 	 */
+    @BeanTagAttribute(name="fieldBindByNamePrefix")
 	public String getFieldBindByNamePrefix() {
 		return this.fieldBindByNamePrefix;
 	}
@@ -211,6 +215,7 @@ public class Group extends ContainerBase {
 	 * @return String model path to set
 	 * @see org.kuali.rice.krad.uif.component.BindingInfo#getBindingObjectPath()
 	 */
+    @BeanTagAttribute(name="fieldBindingObjectPath")
 	public String getFieldBindingObjectPath() {
 		return this.fieldBindingObjectPath;
 	}
@@ -230,6 +235,7 @@ public class Group extends ContainerBase {
 	 *
 	 * @return Disclosure instance
 	 */
+    @BeanTagAttribute(name="Disclosure",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Disclosure getDisclosure() {
 		return this.disclosure;
 	}
@@ -249,6 +255,7 @@ public class Group extends ContainerBase {
      *
      * @return Scrollpane instance
      */
+    @BeanTagAttribute(name="scrollpane",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Scrollpane getScrollpane() {
         return this.scrollpane;
     }
@@ -266,6 +273,7 @@ public class Group extends ContainerBase {
 	 * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()
 	 */
 	@Override
+    @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public List<? extends Component> getItems() {
 		return this.items;
 	}

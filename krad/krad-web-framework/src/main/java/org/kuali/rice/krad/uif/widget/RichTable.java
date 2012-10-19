@@ -20,6 +20,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -52,6 +54,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="richTable")
 public class RichTable extends WidgetBase {
     private static final long serialVersionUID = 4671589690877390070L;
 
@@ -427,6 +430,7 @@ public class RichTable extends WidgetBase {
      *
      * @return empty table message
      */
+    @BeanTagAttribute(name="emptyTableMessage")
     public String getEmptyTableMessage() {
         return emptyTableMessage;
     }
@@ -445,6 +449,7 @@ public class RichTable extends WidgetBase {
      *
      * @return the disableTableSort
      */
+    @BeanTagAttribute(name="disableTableSort")
     public boolean isDisableTableSort() {
         return this.disableTableSort;
     }
@@ -463,6 +468,7 @@ public class RichTable extends WidgetBase {
      *
      * @return the showSearchAndExportOptions
      */
+    @BeanTagAttribute(name="showSearchAndExportOptions")
     public boolean isShowSearchAndExportOptions() {
         return this.showSearchAndExportOptions;
     }
@@ -483,6 +489,7 @@ public class RichTable extends WidgetBase {
      *
      * @return a set with propertyNames of columns to be hidden
      */
+    @BeanTagAttribute(name="hiddenColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getHiddenColumns() {
         return hiddenColumns;
     }
@@ -503,6 +510,7 @@ public class RichTable extends WidgetBase {
      *
      * @return a set of propertyNames with for columns that will be sorted
      */
+    @BeanTagAttribute(name="sortableColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getSortableColumns() {
         return sortableColumns;
     }
@@ -527,6 +535,7 @@ public class RichTable extends WidgetBase {
      *
      * @return String URL for ajax source
      */
+    @BeanTagAttribute(name="ajaxSource")
     public String getAjaxSource() {
         return ajaxSource;
     }

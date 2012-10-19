@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -42,6 +44,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="attributeQuery")
 public class AttributeQuery implements Serializable {
     private static final long serialVersionUID = -4569905665441735255L;
 
@@ -217,6 +220,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return String data object class name
      */
+    @BeanTagAttribute(name="dataObjectClassName")
     public String getDataObjectClassName() {
         return dataObjectClassName;
     }
@@ -243,6 +247,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return Map<String, String> mapping of query parameters
      */
+    @BeanTagAttribute(name="queryFieldMapping",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getQueryFieldMapping() {
         return queryFieldMapping;
     }
@@ -269,6 +274,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return Map<String, String> return field mapping
      */
+    @BeanTagAttribute(name="returnFieldMapping",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getReturnFieldMapping() {
         return returnFieldMapping;
     }
@@ -290,6 +296,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return Map<String, String> field name/value pairs for query criteria
      */
+    @BeanTagAttribute(name="additionalCriteria",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalCriteria() {
         return additionalCriteria;
     }
@@ -311,6 +318,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return List<String> property names
      */
+    @BeanTagAttribute(name="sortPropertyNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getSortPropertyNames() {
         return sortPropertyNames;
     }
@@ -330,6 +338,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return boolean true if not found message should be added, false otherwise
      */
+    @BeanTagAttribute(name="renderNotFoundMessage")
     public boolean isRenderNotFoundMessage() {
         return renderNotFoundMessage;
     }
@@ -348,6 +357,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return String literal message text
      */
+    @BeanTagAttribute(name="returnMessageText")
     public String getReturnMessageText() {
         return returnMessageText;
     }
@@ -367,6 +377,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return String style classes
      */
+    @BeanTagAttribute(name="returnMessageStyleClasses")
     public String getReturnMessageStyleClasses() {
         return returnMessageStyleClasses;
     }
@@ -392,6 +403,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return String query method name
      */
+    @BeanTagAttribute(name="queryMethodToCall")
     public String getQueryMethodToCall() {
         return queryMethodToCall;
     }
@@ -416,6 +428,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return List<String> query method argument list
      */
+    @BeanTagAttribute(name="queryMethodArgumentFieldList",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getQueryMethodArgumentFieldList() {
         return queryMethodArgumentFieldList;
     }
@@ -442,6 +455,7 @@ public class AttributeQuery implements Serializable {
      *
      * @return MethodInvokerConfig query method config
      */
+    @BeanTagAttribute(name="queryMethodInvokerConfig",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MethodInvokerConfig getQueryMethodInvokerConfig() {
         return queryMethodInvokerConfig;
     }

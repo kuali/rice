@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
 import java.io.Serializable;
@@ -35,6 +37,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="componentSecurity")
 public class ComponentSecurity extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 726347449984853891L;
 
@@ -61,6 +64,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @return boolean true if the component has edit authorization, false if not
      */
+    @BeanTagAttribute(name="editAuthz")
     public boolean isEditAuthz() {
         return editAuthz;
     }
@@ -79,6 +83,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @return boolean true if the component has view authorization, false if not
      */
+    @BeanTagAttribute(name="viewAuthz")
     public boolean isViewAuthz() {
         return viewAuthz;
     }
@@ -102,6 +107,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @return String namespace code
      */
+    @BeanTagAttribute(name="namespaceAttribute")
     public String getNamespaceAttribute() {
         return namespaceAttribute;
     }
@@ -125,6 +131,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @return String component code
      */
+    @BeanTagAttribute(name="componentAttribute")
     public String getComponentAttribute() {
         return componentAttribute;
     }
@@ -148,6 +155,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @return String id
      */
+    @BeanTagAttribute(name="idAttribute")
     public String getIdAttribute() {
         return idAttribute;
     }
@@ -171,6 +179,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @return Map<String, String>
      */
+    @BeanTagAttribute(name="additionalPermissionDetails",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalPermissionDetails() {
         return additionalPermissionDetails;
     }
@@ -194,6 +203,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @return Map<String, String>
      */
+    @BeanTagAttribute(name="additionalRoleQualifiers",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalRoleQualifiers() {
         return additionalRoleQualifiers;
     }

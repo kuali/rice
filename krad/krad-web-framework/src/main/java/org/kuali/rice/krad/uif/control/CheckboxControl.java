@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
@@ -31,6 +33,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="checkboxControl")
 public class CheckboxControl extends ControlBase implements ValueConfiguredControl {
     private static final long serialVersionUID = -1397028958569144230L;
 
@@ -87,6 +90,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      *
      * @return String value for checkbox
      */
+    @BeanTagAttribute(name="value")
     public String getValue() {
         return value;
     }
@@ -105,6 +109,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      *
      * @return String representing the checkbox label text
      */
+    @BeanTagAttribute(name="checkboxLabel")
     public String getCheckboxLabel() {
         return checkboxLabel;
     }
@@ -125,6 +130,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      *
      * @return Message with rich message structure, null if no rich message structure
      */
+    @BeanTagAttribute(name="richLabelMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getRichLabelMessage() {
         return richLabelMessage;
     }
@@ -145,6 +151,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      *
      * @return the Label's inlineComponents
      */
+    @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
@@ -27,6 +29,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="scrollpane")
 public class Scrollpane  extends WidgetBase {
     private static final long serialVersionUID = 3853028195825084261L;
 
@@ -64,6 +67,7 @@ public class Scrollpane  extends WidgetBase {
      *
      * @return Content height of the group
      */
+    @BeanTagAttribute(name="height")
     public String getHeight() {
         return height;
     }

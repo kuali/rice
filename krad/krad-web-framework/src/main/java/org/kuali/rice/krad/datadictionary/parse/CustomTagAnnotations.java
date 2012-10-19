@@ -146,6 +146,11 @@ public class CustomTagAnnotations {
      * @return Returns the property name associated witht he method.
      */
     private static String getFieldName(String methodName) {
+        // Check if function is of the form isPropertyName()
+        if(methodName.substring(0,2).toLowerCase().compareTo("is")==0){
+            String letter = methodName.substring(2, 3);
+            return letter.toLowerCase() + methodName.substring(2, methodName.length());
+        }
         // Since the annotation is attached to the get function the property name starts at the 4th letter and has been upper-cased as assumed by the Spring Beans.
         String letter = methodName.substring(3, 4);
         return letter.toLowerCase() + methodName.substring(4, methodName.length());

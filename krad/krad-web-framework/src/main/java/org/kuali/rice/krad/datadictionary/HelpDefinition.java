@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.io.Serializable;
 
@@ -31,6 +33,7 @@ import java.io.Serializable;
             parameterName: name of the parameter that has the path to the help page
             parameterDetailType: detail type of the parameter that has the path to the help page
  */
+@BeanTag(name="helpDefinition")
 public class HelpDefinition extends DataDictionaryDefinitionBase implements Serializable {
     private static final long serialVersionUID = -6869646654597012863L;
 
@@ -54,6 +57,7 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
     /**
      * @return
      */
+    @BeanTagAttribute(name="parameterName")
     public String getParameterName() {
         return parameterName;
     }
@@ -71,6 +75,7 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
     /**
      * @return
      */
+    @BeanTagAttribute(name="parameterNamespace")
     public String getParameterNamespace() {
         return parameterNamespace;
     }
@@ -82,6 +87,7 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
         this.parameterNamespace = parameterNamespace;
     }
 
+    @BeanTagAttribute(name="parameterDetailType")
 	public String getParameterDetailType() {
 		return this.parameterDetailType;
 	}

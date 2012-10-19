@@ -20,6 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
@@ -29,6 +31,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  * specific attribute of an entry.
  *
  */
+@BeanTag(name="externalizableAttributeDefinitionProxy")
 public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition {
 	private static final long serialVersionUID = -3204870440281417429L;
 
@@ -57,6 +60,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 		this.sourceExternalizableBusinessObjectInterface = sourceClassName;
 	}
 
+    @BeanTagAttribute(name="sourceExternalizableBusinessObjectInterface")
 	public String getSourceExternalizableBusinessObjectInterface() {
 		return this.sourceExternalizableBusinessObjectInterface;
 	}
@@ -70,6 +74,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 		this.sourceAttributeName = sourceAttributeName;
 	}
 
+    @BeanTagAttribute(name="sourceAttributeName")
 	public String getSourceAttributeName() {
 		return this.sourceAttributeName;
 	}
@@ -78,6 +83,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	 * @return AttributeDefinition acting as delegate for this
 	 *         AttributeReferenceDefinition
 	 */
+    @BeanTagAttribute(name="delegate",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	AttributeDefinition getDelegate() {
 		BusinessObjectEntry delegateEntry = null;
 		if ( delegate == null ) {

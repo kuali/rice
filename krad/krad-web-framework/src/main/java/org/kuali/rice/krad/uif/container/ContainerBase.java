@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
@@ -186,6 +187,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
 	 */
 	@Override
+    @BeanTagAttribute(name="validationMessages",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public ValidationMessages getValidationMessages() {
 		return this.validationMessages;
 	}
@@ -202,6 +204,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.widget.Helpable#getHelp()
 	 */
 	@Override
+    @BeanTagAttribute(name="help",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Help getHelp() {
 		return this.help;
 	}
@@ -240,6 +243,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getItems()
 	 */
 	@Override
+    @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public abstract List<? extends Component> getItems();
 
 	/**
@@ -258,6 +262,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 *
 	 * @return int order sequence
 	 */
+    @BeanTagAttribute(name="defaultItemPosition")
 	public int getDefaultItemPosition() {
 		return this.defaultItemPosition;
 	}
@@ -275,6 +280,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getLayoutManager()
 	 */
 	@Override
+    @BeanTagAttribute(name="layoutManager",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public LayoutManager getLayoutManager() {
 		return this.layoutManager;
 	}
@@ -291,6 +297,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getHeader()
 	 */
 	@Override
+    @BeanTagAttribute(name="header",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Header getHeader() {
 		return this.header;
 	}
@@ -307,6 +314,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getFooter()
 	 */
 	@Override
+    @BeanTagAttribute(name="footer",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Group getFooter() {
 		return this.footer;
 	}
@@ -342,6 +350,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return The text that should be displayed on the header
      */
+    @BeanTagAttribute(name="headertext")
     public String getHeaderText () {
         if (header != null && header.getHeaderText() != null) {
             return header.getHeaderText();
@@ -385,6 +394,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return String instructional message
      */
+    @BeanTagAttribute(name="instructionalText")
 	public String getInstructionalText() {
 		return this.instructionalText;
 	}
@@ -408,6 +418,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return Message instructional message field
      */
+    @BeanTagAttribute(name="instructionalMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Message getInstructionalMessage() {
 		return this.instructionalMessage;
 	}

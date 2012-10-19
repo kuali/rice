@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -65,6 +67,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="propertyReplacer")
 public class PropertyReplacer extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -8405429643299461398L;
 
@@ -122,6 +125,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      *
      * @return String property name to set
      */
+    @BeanTagAttribute(name="propertyName")
     public String getPropertyName() {
         return this.propertyName;
     }
@@ -155,6 +159,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService
      * @see org.kuali.rice.krad.uif.UifConstants.ContextVariableNames
      */
+    @BeanTagAttribute(name="condition")
     public String getCondition() {
         return this.condition;
     }
@@ -179,6 +184,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      *
      * @return Object instance to set
      */
+    @BeanTagAttribute(name="replacement",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Object getReplacement() {
         return this.replacement;
     }

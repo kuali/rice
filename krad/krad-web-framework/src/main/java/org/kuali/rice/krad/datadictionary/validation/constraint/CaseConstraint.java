@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
@@ -33,6 +35,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
+@BeanTag(name="caseConstriant")
 public class CaseConstraint extends BaseConstraint {
 
 	protected String propertyName;
@@ -46,6 +49,7 @@ public class CaseConstraint extends BaseConstraint {
      *
      * @return a list of constraints, null if not initialized
      */
+    @BeanTagAttribute(name="whenConstraint",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public List<WhenConstraint> getWhenConstraint() {
 		return whenConstraint;
 	}
@@ -64,6 +68,7 @@ public class CaseConstraint extends BaseConstraint {
      *
      * @return the property name
      */
+    @BeanTagAttribute(name="propertyName")
 	public String getPropertyName() {
 		return propertyName;
 	}
@@ -83,6 +88,7 @@ public class CaseConstraint extends BaseConstraint {
      * @see org.kuali.rice.krad.uif.UifConstants.CaseConstraintOperators
      * @return an operator name
      */
+    @BeanTagAttribute(name="operator")
 	public String getOperator() {
 		return operator;
 	}
@@ -102,6 +108,7 @@ public class CaseConstraint extends BaseConstraint {
      *
      * @return true if string comparison is case sensitive, false if not
      */
+    @BeanTagAttribute(name="caseSensitive")
     public boolean isCaseSensitive() {
         return caseSensitive;
     }

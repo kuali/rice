@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -32,6 +34,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="linkField")
 public class LinkField extends FieldBase {
     private static final long serialVersionUID = -1908504471910271148L;
 
@@ -95,6 +98,7 @@ public class LinkField extends FieldBase {
      *
      * @return The Link field
      */
+    @BeanTagAttribute(name="link",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Link getLink() {
         return link;
     }
@@ -113,6 +117,7 @@ public class LinkField extends FieldBase {
      *
      * @return The link label
      */
+    @BeanTagAttribute(name="linkText")
     public String getLinkText() {
         return link.getLinkText();
     }
@@ -131,6 +136,7 @@ public class LinkField extends FieldBase {
      *
      * @return The target
      */
+    @BeanTagAttribute(name="target")
     public String getTarget() {
         return link.getTarget();
     }
@@ -149,6 +155,7 @@ public class LinkField extends FieldBase {
      *
      * @return The href text
      */
+    @BeanTagAttribute(name="href")
     public String getHref() {
         return link.getHref();
     }
@@ -178,6 +185,7 @@ public class LinkField extends FieldBase {
      *
      * @return The <code>LightBox</code>
      */
+    @BeanTagAttribute(name="lightBox",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public LightBox getLightBox() {
         if (link != null) {
             return link.getLightBox();

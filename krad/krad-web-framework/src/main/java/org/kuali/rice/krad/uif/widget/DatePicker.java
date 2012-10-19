@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+
 /**
  * Used for rendering a calendar in the UI that can be used to selected dates
  * for field values
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="datePicker")
 public class DatePicker extends WidgetBase {
 	private static final long serialVersionUID = -659830874214415990L;
 

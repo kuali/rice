@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -38,6 +40,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="messageField")
 public class MessageField extends FieldBase {
     private static final long serialVersionUID = -7045208136391722063L;
 
@@ -91,6 +94,7 @@ public class MessageField extends FieldBase {
      *
      * @param messageText - text to display for the message
      */
+    @BeanTagAttribute(name="messageText")
     public void setMessageText(String messageText) {
         if (message != null) {
             message.setMessageText(messageText);
@@ -102,6 +106,7 @@ public class MessageField extends FieldBase {
      *
      * @return Message instance
      */
+    @BeanTagAttribute(name="message",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getMessage() {
         return message;
     }

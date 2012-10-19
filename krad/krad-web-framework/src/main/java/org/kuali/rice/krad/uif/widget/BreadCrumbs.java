@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
@@ -32,6 +34,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="breadCrumbs")
 public class BreadCrumbs extends WidgetBase {
     private static final long serialVersionUID = -2864287914665842251L;
 
@@ -78,6 +81,7 @@ public class BreadCrumbs extends WidgetBase {
      *
      * @return the displayHomewardPath
      */
+    @BeanTagAttribute(name="displayHomewardPath")
     public boolean isDisplayHomewardPath() {
         return this.displayHomewardPath;
     }
@@ -96,6 +100,7 @@ public class BreadCrumbs extends WidgetBase {
      *
      * @return the displayPassedHistory
      */
+    @BeanTagAttribute(name="displayPassedHistory")
     public boolean isDisplayPassedHistory() {
         return this.displayPassedHistory;
     }
@@ -114,6 +119,7 @@ public class BreadCrumbs extends WidgetBase {
      *
      * @return the homewardPathList
      */
+    @BeanTagAttribute(name="homewardPathList",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<HistoryEntry> getHomewardPathList() {
         return this.homewardPathList;
     }
@@ -131,6 +137,7 @@ public class BreadCrumbs extends WidgetBase {
      *
      * @return the displayBreadcrumbsWhenOne
      */
+    @BeanTagAttribute(name="displayBreadcrumbsWhenOne")
     public boolean isDisplayBreadcrumbsWhenOne() {
         return this.displayBreadcrumbsWhenOne;
     }

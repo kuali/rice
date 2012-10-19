@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.MessageField;
@@ -24,6 +26,7 @@ import org.kuali.rice.krad.uif.field.MessageField;
  * of table collection.  This functionality can only be used when the dataTables plugin is being used
  * (richTable.render="true" for TableLayoutManager)
  */
+@BeanTag(name="columnCalculationInfo")
 public class ColumnCalculationInfo extends UifDictionaryBeanBase{
     private Integer columnNumber;
     private String propertyName;
@@ -48,6 +51,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return columnNumber to perform calculations on
      */
+    @BeanTagAttribute(name="columnNumber")
     public Integer getColumnNumber() {
         return columnNumber;
     }
@@ -66,6 +70,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return true if showing the total, false otherwise.
      */
+    @BeanTagAttribute(name="showTotal")
     public boolean isShowTotal() {
         return showTotal;
     }
@@ -84,6 +89,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return true if showing the page total, false otherwise.
      */
+    @BeanTagAttribute(name="showPageTotal")
     public boolean isShowPageTotal() {
         return showPageTotal;
     }
@@ -104,6 +110,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return true if showing the group total, false otherwise.
      */
+    @BeanTagAttribute(name="showGroupTotal")
     public boolean isShowGroupTotal() {
         return showGroupTotal;
     }
@@ -131,6 +138,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return calculatinoFunctionName to call for column calculations in js
      */
+    @BeanTagAttribute(name="calculationFunctionName")
     public String getCalculationFunctionName() {
         return calculationFunctionName;
     }
@@ -150,6 +158,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return the totalField
      */
+    @BeanTagAttribute(name="totalField",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MessageField getTotalField() {
         return totalField;
     }
@@ -170,6 +179,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return the pageTotalField
      */
+    @BeanTagAttribute(name="pageTotalField",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MessageField getPageTotalField() {
         return pageTotalField;
     }
@@ -190,6 +200,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return the groupTotalFieldPrototype
      */
+    @BeanTagAttribute(name="groupTotalFieldPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MessageField getGroupTotalFieldPrototype() {
         return groupTotalFieldPrototype;
     }
@@ -210,6 +221,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return true if calculated the column on key up, false if calculating on change (default)
      */
+    @BeanTagAttribute(name="calculationOnKeyUp")
     public boolean isCalculateOnKeyUp() {
         return calculateOnKeyUp;
     }
@@ -236,6 +248,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return true if calculating the totalField client-side, false otherwise
      */
+    @BeanTagAttribute(name="recalculateTotalClientside")
     public boolean isRecalculateTotalClientside() {
         return recalculateTotalClientside;
     }
@@ -257,6 +270,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return the extra data to pass into the function specified by name in calculationFunctionName
      */
+    @BeanTagAttribute(name="calculationFunctionExtraData")
     public String getCalculationFunctionExtraData() {
         return calculationFunctionExtraData;
     }
@@ -276,6 +290,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase{
      *
      * @return propertyName of the field(the column) to do calculations on
      */
+    @BeanTagAttribute(name="propertyName")
     public String getPropertyName() {
         return propertyName;
     }

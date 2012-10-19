@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tabs;
@@ -30,6 +32,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see Group
  */
+@BeanTag(name="tabGroup")
 public class TabGroup extends Group {
     private static final long serialVersionUID = 3L;
 
@@ -76,6 +79,7 @@ public class TabGroup extends Group {
      *
      * @return the tabsWidget
      */
+    @BeanTagAttribute(name="tabsWidget",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Tabs getTabsWidget() {
         return this.tabsWidget;
     }

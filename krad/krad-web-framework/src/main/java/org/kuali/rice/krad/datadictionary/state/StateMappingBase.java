@@ -17,6 +17,8 @@ package org.kuali.rice.krad.datadictionary.state;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -33,6 +35,7 @@ import java.util.Map;
  * @see StateMapping
  * @since 2.2
  */
+@BeanTag(name="stateMappingBase")
 public class StateMappingBase implements StateMapping {
 
     private Map<String, String> stateNameMessageKeyMap;
@@ -91,6 +94,7 @@ public class StateMappingBase implements StateMapping {
      * @see org.kuali.rice.krad.datadictionary.state.StateMapping#getStateNameMessageKeyMap()
      */
     @Override
+    @BeanTagAttribute(name="stateNameMessageKeyMap",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getStateNameMessageKeyMap() {
         return stateNameMessageKeyMap;
     }
@@ -107,6 +111,7 @@ public class StateMappingBase implements StateMapping {
      * @see org.kuali.rice.krad.datadictionary.state.StateMapping#getStates()
      */
     @Override
+    @BeanTagAttribute(name="states",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getStates() {
         if (states == null) {
             states = new ArrayList<String>();
@@ -126,6 +131,7 @@ public class StateMappingBase implements StateMapping {
      * @see org.kuali.rice.krad.datadictionary.state.StateMapping#getStatePropertyName()
      */
     @Override
+    @BeanTagAttribute(name="statePropertyName")
     public String getStatePropertyName() {
         return statePropertyName;
     }
@@ -141,6 +147,7 @@ public class StateMappingBase implements StateMapping {
     /**
      * @see org.kuali.rice.krad.datadictionary.state.StateMapping#getCustomClientSideValidationStates()
      */
+    @BeanTagAttribute(name="customClientSideValidationStates",type= BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getCustomClientSideValidationStates() {
         return customClientSideValidationStates;
     }

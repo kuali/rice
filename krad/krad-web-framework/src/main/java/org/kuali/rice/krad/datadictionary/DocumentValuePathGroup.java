@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BeanTag(name="documentValuePathGroup")
 public class DocumentValuePathGroup  extends DataDictionaryDefinitionBase{
 	private static final long serialVersionUID = 6285682208264817105L;
 
@@ -33,12 +37,14 @@ public class DocumentValuePathGroup  extends DataDictionaryDefinitionBase{
 	/**
 	 * @return the documentValues
 	 */
+    @BeanTagAttribute(name="paths",type= BeanTagAttribute.AttributeType.LISTVALUE)
 	public List<String> getDocumentValues() {
 		return this.paths;
 	}
 	/**
 	 * @return the documentCollectionPath
 	 */
+    @BeanTagAttribute(name="documentCollectionPath",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public DocumentCollectionPath getDocumentCollectionPath() {
 		return this.documentCollectionPath;
 	}

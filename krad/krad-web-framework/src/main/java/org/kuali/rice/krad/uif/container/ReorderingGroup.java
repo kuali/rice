@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.Reorderer;
 
@@ -29,6 +31,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="reorderingGroup")
 public class ReorderingGroup extends Group {
     private static final long serialVersionUID = -9069458348367183223L;
 
@@ -55,6 +58,7 @@ public class ReorderingGroup extends Group {
      *
      * @return Reorderer widget instance
      */
+    @BeanTagAttribute(name="reorderer",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Reorderer getReorderer() {
         return reorderer;
     }

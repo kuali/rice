@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BeanTag(name="searchingTypeDefinition")
 public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
 	private static final long serialVersionUID = -8779609937539520677L;
 
@@ -33,12 +37,14 @@ public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
 	/**
 	 * @return the searchingAttribute
 	 */
+    @BeanTagAttribute(name="searchAttribute",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public SearchingAttribute getSearchingAttribute() {
 		return this.searchingAttribute;
 	}
 	/**
 	 * @return the documentValues
 	 */
+    @BeanTagAttribute(name="documentValues",type= BeanTagAttribute.AttributeType.LISTVALUE)
 	public List<String> getDocumentValues() {
 		return this.paths;
 	}

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -37,6 +39,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="workflowPropertyGroup")
 public class WorkflowPropertyGroup implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -48,6 +51,7 @@ public class WorkflowPropertyGroup implements Serializable {
      *
      * @return List<WorkflowProperty>
      */
+    @BeanTagAttribute(name="workflowProperties",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<WorkflowProperty> getWorkflowProperties() {
         return workflowProperties;
     }
@@ -64,6 +68,7 @@ public class WorkflowPropertyGroup implements Serializable {
      *
      * @return String
      */
+    @BeanTagAttribute(name="basePath")
     public String getBasePath() {
         return this.basePath;
     }

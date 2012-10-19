@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -29,6 +31,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="fixedPointPatternConstraint")
 public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
 
     protected boolean allowNegative;
@@ -60,6 +63,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     /**
      * @return the allowNegative
      */
+    @BeanTagAttribute(name="allowNegative")
     public boolean isAllowNegative() {
         return this.allowNegative;
     }
@@ -74,6 +78,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     /**
      * @return the precision
      */
+    @BeanTagAttribute(name="precision")
     public int getPrecision() {
         return this.precision;
     }
@@ -88,6 +93,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
     /**
      * @return the scale
      */
+    @BeanTagAttribute(name="scale")
     public int getScale() {
         return this.scale;
     }

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * This abstract class extends from ValidCharactersConstraint. Its subclasses contain a regex that
@@ -24,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="validCharactersPatternContraint")
 public abstract class ValidCharactersPatternConstraint extends ValidCharactersConstraint {
     /**
      * Warning: This value should NOT be set on ValidCharactersPatternConstraints as the value is
@@ -42,6 +45,7 @@ public abstract class ValidCharactersPatternConstraint extends ValidCharactersCo
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint#getValue()
      */
     @Override
+    @BeanTagAttribute(name="value")
     public String getValue() {
         if (StringUtils.isEmpty(value)) {
             return "^" + getRegexString() + "*$";

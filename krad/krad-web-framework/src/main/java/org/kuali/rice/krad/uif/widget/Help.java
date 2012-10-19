@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
@@ -38,6 +40,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="help")
 public class Help extends WidgetBase {
 	private static final long serialVersionUID = -1514436681476297241L;
 
@@ -192,6 +195,7 @@ public class Help extends WidgetBase {
      *
      * @return Action for external help
      */
+    @BeanTagAttribute(name="helpAction",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getHelpAction() {
         return helpAction;
     }
@@ -211,6 +215,7 @@ public class Help extends WidgetBase {
      *
      * @return HelpDefinition
      */
+    @BeanTagAttribute(name="helpDefinition",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public HelpDefinition getHelpDefinition() {
         return helpDefinition;
     }
@@ -234,6 +239,7 @@ public class Help extends WidgetBase {
      *
      * * @return Url of the external help
      */
+    @BeanTagAttribute(name="externalHelpUrl")
     public String getExternalHelpUrl() {
         return this.externalHelpUrl;
     }
@@ -252,6 +258,7 @@ public class Help extends WidgetBase {
      *
      * @return TooltipHelpContent
      */
+    @BeanTagAttribute(name="tooltipHelpContent")
     public String getTooltipHelpContent() {
         return this.tooltipHelpContent;
     }

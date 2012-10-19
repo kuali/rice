@@ -21,6 +21,8 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
@@ -77,6 +79,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="inputField")
 public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -3703656713706343840L;
 
@@ -507,6 +510,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Control instance
      */
+    @BeanTagAttribute(name="control",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Control getControl() {
         return this.control;
     }
@@ -527,6 +531,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return ValidationMessages instance
      */
+    @BeanTagAttribute(name="validationMessages",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidationMessages getValidationMessages() {
         return this.validationMessages;
     }
@@ -548,6 +553,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return KeyValuesFinder instance
      */
+    @BeanTagAttribute(name="optionsFinder",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public KeyValuesFinder getOptionsFinder() {
         return this.optionsFinder;
     }
@@ -585,6 +591,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return QuickFinder lookup widget
      */
+    @BeanTagAttribute(name="quickfinder",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public QuickFinder getQuickfinder() {
         return this.quickfinder;
     }
@@ -613,6 +620,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Suggest instance
      */
+    @BeanTagAttribute(name="suggest",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Suggest getSuggest() {
         return suggest;
     }
@@ -636,6 +644,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return String instructional message
      */
+    @BeanTagAttribute(name="instructionalText")
     public String getInstructionalText() {
         return this.instructionalText;
     }
@@ -659,6 +668,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Message instructional message field
      */
+    @BeanTagAttribute(name="instructionalMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getInstructionalMessage() {
         return this.instructionalMessage;
     }
@@ -688,6 +698,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return String text to display for the constraint message
      */
+    @BeanTagAttribute(name="constraintText")
     public String getConstraintText() {
         return this.constraintText;
     }
@@ -711,6 +722,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Message constraint message field
      */
+    @BeanTagAttribute(name="constraintMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getConstraintMessage() {
         return this.constraintMessage;
     }
@@ -735,6 +747,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the valid characters constraint for this input field
      */
     @Override
+    @BeanTagAttribute(name="validCharactersConstraint",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidCharactersConstraint getValidCharactersConstraint() {
         return this.validCharactersConstraint;
     }
@@ -754,6 +767,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the case constraint for this input field
      */
     @Override
+    @BeanTagAttribute(name="caseConstraint",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CaseConstraint getCaseConstraint() {
         return this.caseConstraint;
     }
@@ -772,6 +786,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the dependency constraints for this input field
      */
+    @BeanTagAttribute(name="dependencyConstraint",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PrerequisiteConstraint> getDependencyConstraints() {
         return this.dependencyConstraints;
     }
@@ -791,6 +806,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the must occur constraints for this input field
      */
     @Override
+    @BeanTagAttribute(name="mustOccurConstraints",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
     }
@@ -815,6 +831,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the simple constraint of the input field
      */
     @Override
+    @BeanTagAttribute(name="simpleConstraint",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public SimpleConstraint getSimpleConstraint() {
         return this.simpleConstraint;
     }
@@ -847,6 +864,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the maximum length of the input field
      */
+    @BeanTagAttribute(name="maxLength")
     public Integer getMaxLength() {
         return simpleConstraint.getMaxLength();
     }
@@ -872,6 +890,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the minimum length of the input field
      */
+    @BeanTagAttribute(name="minLength")
     public Integer getMinLength() {
         return simpleConstraint.getMinLength();
     }
@@ -889,6 +908,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getRequired()
      */
     @Override
+    @BeanTagAttribute(name="required")
     public Boolean getRequired() {
         return this.simpleConstraint.getRequired();
     }
@@ -915,6 +935,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the exclusive minimum numeric value of the input field
      */
+    @BeanTagAttribute(name="exclusiveMin")
     public String getExclusiveMin() {
         return simpleConstraint.getExclusiveMin();
     }
@@ -942,6 +963,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the inclusive maximum numeric value of the input field
      */
+    @BeanTagAttribute(name="inclusiveMax")
     public String getInclusiveMax() {
         return simpleConstraint.getInclusiveMax();
     }
@@ -969,6 +991,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return AttributeQuery instance
      */
+    @BeanTagAttribute(name="attributeQuery",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public AttributeQuery getAttributeQuery() {
         return attributeQuery;
     }
@@ -992,6 +1015,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return performUppercase flag
      */
+    @BeanTagAttribute(name="uppercaseValue")
     public boolean isUppercaseValue() {
         return uppercaseValue;
     }
@@ -1042,6 +1066,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return
      */
+    @BeanTagAttribute(name="dataType",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {
         return this.simpleConstraint.getDataType();
     }

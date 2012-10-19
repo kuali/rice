@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
@@ -23,6 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="anyCharacterPatternConstraint")
 public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstraint {
     protected boolean allowWhitespace = false;
     protected boolean omitNewline = false;
@@ -30,6 +33,7 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
     /**
      * @return allowWhitespace
      */
+    @BeanTagAttribute(name="allowWhitespace")
     public boolean getAllowWhitespace() {
         return allowWhitespace;
     }
@@ -77,6 +81,7 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
         }
     }
 
+    @BeanTagAttribute(name="omitNewline")
     public boolean isOmitNewline() {
         return omitNewline;
     }

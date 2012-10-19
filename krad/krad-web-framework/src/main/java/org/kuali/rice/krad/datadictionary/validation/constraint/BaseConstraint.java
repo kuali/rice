@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
@@ -32,6 +34,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
+@BeanTag(name="baseConstraint")
 public class BaseConstraint implements Constraint {
     protected String messageNamespaceCode;
     protected String messageComponentCode;
@@ -57,6 +60,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return String constraint message namespace code
      */
+    @BeanTagAttribute(name="messageNamespaceCode")
     public String getMessageNamespaceCode() {
         return messageNamespaceCode;
     }
@@ -80,6 +84,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return String message component code
      */
+    @BeanTagAttribute(name="messageComponentCode")
     public String getMessageComponentCode() {
         return messageComponentCode;
     }
@@ -99,6 +104,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return String message key
      */
+    @BeanTagAttribute(name="messageKey")
     public String getMessageKey() {
         return messageKey;
     }
@@ -118,6 +124,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return the applyClientSide
      */
+    @BeanTagAttribute(name="applyClientSide")
     public Boolean getApplyClientSide() {
         return this.applyClientSide;
     }
@@ -135,6 +142,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return the validationMessageParams
      */
+    @BeanTagAttribute(name="validationMessageParams",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getValidationMessageParams() {
         return this.validationMessageParams;
     }
@@ -182,6 +190,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return the states to apply the constraint on, an empty list if the constraint is applied for all states
      */
+    @BeanTagAttribute(name="states",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getStates() {
         if (states == null) {
             states = new ArrayList<String>();
@@ -210,6 +219,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return List of constraint overrides for this constraint
      */
+    @BeanTagAttribute(name="constraintStateOverrides",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends BaseConstraint> getConstraintStateOverrides() {
         return constraintStateOverrides;
     }

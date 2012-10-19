@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.capability.ExistenceConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
@@ -52,6 +53,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      *
      * @return the name
      */
+    @BeanTagAttribute(name="name")
     public String getName() {
         return name;
     }
@@ -75,6 +77,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      *
      * @return the label
      */
+    @BeanTagAttribute(name="label")
     public String getLabel() {
         return label;
     }
@@ -94,6 +97,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
     /**
      * @return the shortLabel, or the label if no shortLabel has been set
      */
+    @BeanTagAttribute(name="shortLabel")
     public String getShortLabel() {
         return (shortLabel != null) ? shortLabel : getLabel();
     }
@@ -128,6 +132,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      *
      * @return String text to display for the constraint message
      */
+    @BeanTagAttribute(name="constraintText")
     public String getConstraintText() {
         return this.constraintText;
     }
@@ -147,6 +152,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      *
      * @return the summary
      */
+    @BeanTagAttribute(name="summary")
     public String getSummary() {
         return summary;
     }
@@ -165,6 +171,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      *
      * @return the description
      */
+    @BeanTagAttribute(name="description")
     public String getDescription() {
         return description;
     }
@@ -226,6 +233,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      * "true" indicates that a value must be entered for this business object
      * when creating or editing a new business object.
      */
+    @BeanTagAttribute(name="required")
     public Boolean isRequired() {
         return this.simpleConstraint.isRequired();
     }

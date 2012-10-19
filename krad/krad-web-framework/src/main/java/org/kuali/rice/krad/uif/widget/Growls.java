@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="growls")
 public class Growls extends WidgetBase {
     private static final long serialVersionUID = -8701090110933484411L;
 
@@ -73,6 +76,7 @@ public class Growls extends WidgetBase {
      *
      * @return the sticky
      */
+    @BeanTagAttribute(name="sticky")
     public boolean isSticky() {
         return this.sticky;
     }
@@ -89,6 +93,7 @@ public class Growls extends WidgetBase {
      *
      * @return the timeShown
      */
+    @BeanTagAttribute(name="timeShown")
     public int getTimeShown() {
         return this.timeShown;
     }
@@ -106,6 +111,7 @@ public class Growls extends WidgetBase {
      *
      * @return the position
      */
+    @BeanTagAttribute(name="position")
     public String getPosition() {
         return this.position;
     }

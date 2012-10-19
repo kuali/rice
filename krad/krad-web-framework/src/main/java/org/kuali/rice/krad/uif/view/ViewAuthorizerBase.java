@@ -21,6 +21,8 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DataObjectAuthorizerBase;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
@@ -54,6 +56,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="viewAuthorizerBase")
 public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements ViewAuthorizer {
     private static final long serialVersionUID = -2687378084630965412L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewAuthorizerBase.class);
@@ -585,6 +588,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
                 && !getConfigurationService().getPropertyValueAsBoolean(KRADConstants.ENABLE_NONPRODUCTION_UNMASKING);
     }
 
+    @BeanTagAttribute(name="configurationService",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     protected ConfigurationService getConfigurationService() {
         if (configurationService == null) {
             return KRADServiceLocator.getKualiConfigurationService();

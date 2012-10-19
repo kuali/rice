@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.component.Ordered;
 
@@ -38,6 +40,7 @@ import java.io.Serializable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.modifier.CompareFieldCreateModifier
  */
+@BeanTag(name="comparableInfo")
 public class ComparableInfo extends UifDictionaryBeanBase implements Serializable, Ordered  {
 	private static final long serialVersionUID = -5926058412202550266L;
 
@@ -76,6 +79,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	 *
 	 * @return String path to the compare object
 	 */
+    @BeanTagAttribute(name="bindingObjectPath")
 	public String getBindingObjectPath() {
 		return this.bindingObjectPath;
 	}
@@ -101,6 +105,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	 *
 	 * @return String header text
 	 */
+    @BeanTagAttribute(name="headerText")
 	public String getHeaderText() {
 		return this.headerText;
 	}
@@ -120,6 +125,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	 * @return boolean true if the group should be read-only, false if edits are
 	 *         allowed
 	 */
+    @BeanTagAttribute(name="readOnly")
 	public boolean isReadOnly() {
 		return this.readOnly;
 	}
@@ -145,6 +151,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	 *
 	 * @see org.springframework.core.Ordered#getOrder()
 	 */
+    @BeanTagAttribute(name="order")
 	public int getOrder() {
 		return this.order;
 	}
@@ -169,6 +176,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 	 *
 	 * @return String id suffix for comparison group
 	 */
+    @BeanTagAttribute(name="idSuffix")
 	public String getIdSuffix() {
 		return this.idSuffix;
 	}
@@ -190,6 +198,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
      *         comparison, false if not
      * @see #isHighlightValueChange
      */
+    @BeanTagAttribute(name="compareToForValueChange")
     public boolean isCompareToForValueChange() {
         return this.compareToForValueChange;
     }
@@ -213,6 +222,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
      *         performed)
      * @see #isCompareToForValueChange
      */
+    @BeanTagAttribute(name="highlightValueChange")
     public boolean isHighlightValueChange() {
         return this.highlightValueChange;
     }

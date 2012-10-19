@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -64,6 +66,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowWhitespace
      */
+    @BeanTagAttribute(name="allowWhitespace")
     public boolean isAllowWhitespace() {
         return this.allowWhitespace;
     }
@@ -78,6 +81,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowUnderscore
      */
+    @BeanTagAttribute(name="allowUnderscore")
     public boolean isAllowUnderscore() {
         return this.allowUnderscore;
     }
@@ -92,6 +96,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowPeriod
      */
+    @BeanTagAttribute(name="allowPeriod")
     public boolean isAllowPeriod() {
         return this.allowPeriod;
     }
@@ -106,6 +111,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowParenthesis
      */
+    @BeanTagAttribute(name="allowParenthesis")
     public boolean isAllowParenthesis() {
         return this.allowParenthesis;
     }
@@ -120,6 +126,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowDollar
      */
+    @BeanTagAttribute(name="allowDollar")
     public boolean isAllowDollar() {
         return this.allowDollar;
     }
@@ -134,6 +141,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowForwardSlash
      */
+    @BeanTagAttribute(name="allowForwardSlash")
     public boolean isAllowForwardSlash() {
         return this.allowForwardSlash;
     }
@@ -148,6 +156,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowDoubleQuote
      */
+    @BeanTagAttribute(name="allowDoubleQuote")
     public boolean isAllowDoubleQuote() {
         return this.allowDoubleQuote;
     }
@@ -162,6 +171,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowApostrophe
      */
+    @BeanTagAttribute(name="allowApostrophe")
     public boolean isAllowApostrophe() {
         return this.allowApostrophe;
     }
@@ -176,6 +186,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowComma
      */
+    @BeanTagAttribute(name="allowComma")
     public boolean isAllowComma() {
         return this.allowComma;
     }
@@ -190,6 +201,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowColon
      */
+    @BeanTagAttribute(name="allowColon")
     public boolean isAllowColon() {
         return this.allowColon;
     }
@@ -204,6 +216,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowSemiColon
      */
+    @BeanTagAttribute(name="allowSemiColon")
     public boolean isAllowSemiColon() {
         return this.allowSemiColon;
     }
@@ -218,6 +231,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowQuestionMark
      */
+    @BeanTagAttribute(name="allowQuestionMark")
     public boolean isAllowQuestionMark() {
         return this.allowQuestionMark;
     }
@@ -232,6 +246,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowExclaimation
      */
+    @BeanTagAttribute(name="allowExclaimation")
     public boolean isAllowExclaimation() {
         return this.allowExclaimation;
     }
@@ -246,6 +261,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowDash
      */
+    @BeanTagAttribute(name="allowDash")
     public boolean isAllowDash() {
         return this.allowDash;
     }
@@ -260,6 +276,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowPlus
      */
+    @BeanTagAttribute(name="allowPlus")
     public boolean isAllowPlus() {
         return this.allowPlus;
     }
@@ -274,6 +291,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowEquals
      */
+    @BeanTagAttribute(name="allowEquals")
     public boolean isAllowEquals() {
         return this.allowEquals;
     }
@@ -288,6 +306,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowAsterisk
      */
+    @BeanTagAttribute(name="allowAsterisk")
     public boolean isAllowAsterisk() {
         return this.allowAsterisk;
     }
@@ -302,6 +321,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowAtSign
      */
+    @BeanTagAttribute(name="allowAtSign")
     public boolean isAllowAtSign() {
         return this.allowAtSign;
     }
@@ -316,6 +336,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowPercent
      */
+    @BeanTagAttribute(name="allowPercent")
     public boolean isAllowPercent() {
         return this.allowPercent;
     }
@@ -330,6 +351,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * @return the allowPound
      */
+    @BeanTagAttribute(name="allowPound")
     public boolean isAllowPound() {
         return this.allowPound;
     }
@@ -341,6 +363,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowPound = allowPound;
     }
 
+    @BeanTagAttribute(name="allowGreaterThan")
     public boolean isAllowGreaterThan() {
         return allowGreaterThan;
     }
@@ -349,6 +372,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowGreaterThan = allowGreaterThan;
     }
 
+    @BeanTagAttribute(name="allowLessThan")
     public boolean isAllowLessThan() {
         return allowLessThan;
     }
@@ -357,6 +381,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowLessThan = allowLessThan;
     }
 
+    @BeanTagAttribute(name="allowBrackets")
     public boolean isAllowBrackets() {
         return allowBrackets;
     }
@@ -365,6 +390,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowBrackets = allowBrackets;
     }
 
+    @BeanTagAttribute(name="allowAmpersand")
     public boolean isAllowAmpersand() {
         return allowAmpersand;
     }
@@ -373,6 +399,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowAmpersand = allowAmpersand;
     }
 
+    @BeanTagAttribute(name="allowCurlyBraces")
     public boolean isAllowCurlyBraces() {
         return allowCurlyBraces;
     }
@@ -381,6 +408,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowCurlyBraces = allowCurlyBraces;
     }
 
+    @BeanTagAttribute(name="allowBackslash")
     public boolean isAllowBackslash() {
         return allowBackslash;
     }
@@ -395,6 +423,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
      *
      * @return the allowAll
      */
+    @BeanTagAttribute(name="allowAll")
     public boolean isAllowAll() {
         return this.allowAll;
     }
@@ -406,6 +435,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowAll = allowAll;
     }
 
+    @BeanTagAttribute(name="omitNewline")
     public boolean isOmitNewline() {
         return omitNewline;
     }

@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 /**
  * Provides configuration for <code>View</code> instances that render an HTML
  * form
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="formView")
 public class FormView extends View {
 	private static final long serialVersionUID = -3291164284675273147L;
 
@@ -46,6 +50,7 @@ public class FormView extends View {
 	 * @return true if the form element should be rendered, false if it should
 	 *         not be
 	 */
+    @BeanTagAttribute(name="renderForm")
 	public boolean isRenderForm() {
 		return this.renderForm;
 	}
@@ -68,6 +73,7 @@ public class FormView extends View {
 	 *         should not be
 	 * @see
 	 */
+    @BeanTagAttribute(name="validateServerSide")
 	public boolean isValidateServerSide() {
 		return this.validateServerSide;
 	}
@@ -87,6 +93,7 @@ public class FormView extends View {
 	 *
 	 * @return the validateClientSide
 	 */
+    @BeanTagAttribute(name="validateClientSide")
 	public boolean isValidateClientSide() {
 		return validateClientSide;
 	}
@@ -111,6 +118,7 @@ public class FormView extends View {
 	 *
 	 * @return String post URL
 	 */
+    @BeanTagAttribute(name="formPostUrl")
 	public String getFormPostUrl() {
 		return this.formPostUrl;
 	}

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Container;
@@ -143,6 +144,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getId()
 	 */
     @Override
+    @BeanTagAttribute(name="id")
     public String getId() {
 		return this.id;
 	}
@@ -159,6 +161,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getTemplate()
 	 */
     @Override
+    @BeanTagAttribute(name="template")
     public String getTemplate() {
 		return this.template;
 	}
@@ -177,6 +180,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @return template name
      * @see #getTemplate()
      */
+    @BeanTagAttribute(name="tempateName")
     public String getTemplateName() {
         return templateName;
     }
@@ -194,6 +198,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getStyle()
 	 */
     @Override
+    @BeanTagAttribute(name="Style")
     public String getStyle() {
 		return this.style;
 	}
@@ -210,6 +215,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getCssClasses()
 	 */
     @Override
+    @BeanTagAttribute(name="cssClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getCssClasses() {
 		return this.cssClasses;
 	}
@@ -274,6 +280,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getContext()
 	 */
     @Override
+    @BeanTagAttribute(name="context",type= BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<String, Object> getContext() {
 		return this.context;
 	}
@@ -303,6 +310,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyReplacers()
 	 */
     @Override
+    @BeanTagAttribute(name="propertyReplacers",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PropertyReplacer> getPropertyReplacers() {
 		return this.propertyReplacers;
 	}

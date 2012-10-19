@@ -21,6 +21,8 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
@@ -50,6 +52,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="dataField")
 public class DataField extends FieldBase implements DataBinding, Helpable {
     private static final long serialVersionUID = -4129678891948564724L;
 
@@ -331,6 +334,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     /**
      * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
      */
+    @BeanTagAttribute(name="propertyName")
     public String getPropertyName() {
         return this.propertyName;
     }
@@ -356,6 +360,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return PropertyEditor property editor instance to use for this field
      */
+    @BeanTagAttribute(name="propertyEditor",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PropertyEditor getPropertyEditor() {
         return propertyEditor;
     }
@@ -381,6 +386,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     /**
      * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
      */
+    @BeanTagAttribute(name="bindingInfo",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;
     }
@@ -415,6 +421,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return String attribute name
      */
+    @BeanTagAttribute(name="dictionaryAttributeName")
     public String getDictionaryAttributeName() {
         return this.dictionaryAttributeName;
     }
@@ -448,6 +455,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return
      */
+    @BeanTagAttribute(name="dictionaryObjectEntry")
     public String getDictionaryObjectEntry() {
         return this.dictionaryObjectEntry;
     }
@@ -472,6 +480,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return String default value
      */
+    @BeanTagAttribute(name="defaultValue")
     public String getDefaultValue() {
         return this.defaultValue;
     }
@@ -491,6 +500,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Class<? extends ValueFinder> default value finder class
      */
+    @BeanTagAttribute(name="defaultValueFinderClass")
     public Class<? extends ValueFinder> getDefaultValueFinderClass() {
         return this.defaultValueFinderClass;
     }
@@ -515,6 +525,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return String default value
      */
+    @BeanTagAttribute(name="defaultValues",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public Object[] getDefaultValues() {
         return this.defaultValues;
     }
@@ -533,6 +544,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return String summary help text
      */
+    @BeanTagAttribute(name="helpSummary")
     public String getHelpSummary() {
         return this.help.getTooltipHelpContent();
     }
@@ -552,6 +564,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @return DataFieldSecurity instance
      */
     @Override
+    @BeanTagAttribute(name="componentSecurity",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataFieldSecurity getComponentSecurity() {
         return (DataFieldSecurity) super.getComponentSecurity();
     }
@@ -584,6 +597,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return boolean true if field should be readOnly hidden, false if not
      */
+    @BeanTagAttribute(name="addHiddenWhenReadOnly")
     public boolean isAddHiddenWhenReadOnly() {
         return addHiddenWhenReadOnly;
     }
@@ -610,6 +624,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Inquiry field inquiry
      */
+    @BeanTagAttribute(name="inguiry",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Inquiry getInquiry() {
         return this.inquiry;
     }
@@ -635,6 +650,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @return Help for datafield
      */
     @Override
+    @BeanTagAttribute(name="help",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Help getHelp() {
         return this.help;
     }
@@ -655,6 +671,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip))
      */
     @Override
+    @BeanTagAttribute(name="tooltipOfComponent",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public void setTooltipOfComponent(Tooltip tooltip) {
         getFieldLabel().setToolTip(tooltip);
     }
@@ -685,6 +702,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Additional Display Attribute Name
      */
+    @BeanTagAttribute(name="readOnlyDisplaceSuffixPropertyName")
     public String getReadOnlyDisplaySuffixPropertyName() {
         return this.readOnlyDisplaySuffixPropertyName;
     }
@@ -704,6 +722,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return alternate Display Property Name
      */
+    @BeanTagAttribute(name="readOnlyDisplayReplacementPropertyName")
     public String getReadOnlyDisplayReplacementPropertyName() {
         return this.readOnlyDisplayReplacementPropertyName;
     }
@@ -713,6 +732,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return the alternate display value set for this field
      */
+    @BeanTagAttribute(name="readOnlyDisplayReplacement")
     public String getReadOnlyDisplayReplacement() {
         return readOnlyDisplayReplacement;
     }
@@ -731,6 +751,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return the additional display value set for this field
      */
+    @BeanTagAttribute(name="readOnlyDispalySuffix")
     public String getReadOnlyDisplaySuffix() {
         return readOnlyDisplaySuffix;
     }
@@ -761,6 +782,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return boolean true if the field value should be masked, false if not
      */
+    @BeanTagAttribute(name="applyMask")
     public boolean isApplyMask() {
         return applyMask;
     }
@@ -784,6 +806,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return MaskFormatter instance
      */
+    @BeanTagAttribute(name="maskFormatter",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MaskFormatter getMaskFormatter() {
         return maskFormatter;
     }
@@ -803,6 +826,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return List<String> hidden property names
      */
+    @BeanTagAttribute(name="additionalHiddenPropertyNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalHiddenPropertyNames() {
         return additionalHiddenPropertyNames;
     }
@@ -834,6 +858,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return List<String> informational property names
      */
+    @BeanTagAttribute(name="propertyNamesForAdditionalDisplay",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getPropertyNamesForAdditionalDisplay() {
         return propertyNamesForAdditionalDisplay;
     }
@@ -860,6 +885,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return true if escaping allowed
      */
+    @BeanTagAttribute(name="escapeHtmlInPropertyValue")
     public boolean isEscapeHtmlInPropertyValue() {
         return this.escapeHtmlInPropertyValue;
     }

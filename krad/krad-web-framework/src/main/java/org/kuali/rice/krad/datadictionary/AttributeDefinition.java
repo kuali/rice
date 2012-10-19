@@ -23,6 +23,8 @@ import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.Formatable;
@@ -52,6 +54,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="attributeDefinition")
 public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable,
         Formatable, HierarchicallyConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -2490613377818442742L;
@@ -119,6 +122,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return boolean true if force upper case is set
      */
+    @BeanTagAttribute(name="forceUppercase")
     public Boolean getForceUppercase() {
         return this.forceUppercase;
     }
@@ -126,6 +130,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMaxLength()
      */
+    @BeanTagAttribute(name="maxLength")
     public Integer getMaxLength() {
         return this.getSimpleConstraint().getMaxLength();
     }
@@ -142,6 +147,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getExclusiveMin()
      */
+    @BeanTagAttribute(name="exclusiveMin")
     public String getExclusiveMin() {
         return this.getSimpleConstraint().getExclusiveMin();
     }
@@ -158,6 +164,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getInclusiveMax()
      */
+    @BeanTagAttribute(name="inclusiveMax")
     public String getInclusiveMax() {
         return this.getSimpleConstraint().getInclusiveMax();
     }
@@ -314,6 +321,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     @Override
+    @BeanTagAttribute(name="formatterClass")
     public String getFormatterClass() {
         return formatterClass;
     }
@@ -344,6 +352,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return PropertyEditor property editor instance to use for this field
      */
+    @BeanTagAttribute(name="propertyEditor",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PropertyEditor getPropertyEditor() {
         return propertyEditor;
     }
@@ -434,8 +443,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
-    public ArrayList<ErrorReport> completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationTrace tracer) {
-        ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
+    public void completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationTrace tracer) {
         tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getName());
         try {
             if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
@@ -450,15 +458,15 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
             }
 
             if (getControl() != null) {
-                getControl().completeValidation(rootObjectClass, otherObjectClass);
+                //getControl().completeValidation(rootObjectClass, otherObjectClass, tracer.getCopy());
             }
 
             if (attributeSecurity != null) {
-                attributeSecurity.completeValidation(rootObjectClass, otherObjectClass);
+                attributeSecurity.completeValidation(rootObjectClass, otherObjectClass,tracer.getCopy());
             }
 
             if (validationPattern != null) {
-                validationPattern.completeValidation();
+               // validationPattern.completeValidation(tracer.getCopy());
             }
 
             if (formatterClass != null) {
@@ -478,8 +486,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
             String currentValues [] = {"attribute = "+rootObjectClass + "." + getName(),"Exception = "+ex.getMessage()};
             tracer.createError("Unable to validate attribute",currentValues);
         }
-
-        return reports;
     }
 
     /**
@@ -493,6 +499,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the attributeSecurity
      */
+    @BeanTagAttribute(name="attributeSecurity",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public AttributeSecurity getAttributeSecurity() {
         return this.attributeSecurity;
     }
@@ -525,6 +532,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return Control instance
      */
+    @BeanTagAttribute(name="control",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Control getControlField() {
         return this.controlField;
     }
@@ -541,6 +549,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMinLength()
      */
+    @BeanTagAttribute(name="minLength")
     public Integer getMinLength() {
         return this.getSimpleConstraint().getMinLength();
     }
@@ -557,6 +566,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the dataType
      */
+    @BeanTagAttribute(name="dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {
         return simpleConstraint.getDataType();
     }
@@ -575,6 +585,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the customValidatorClass
      */
+    @BeanTagAttribute(name="customValidatorClass")
     public String getCustomValidatorClass() {
         return this.customValidatorClass;
     }
@@ -590,6 +601,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the validChars
      */
     @Override
+    @BeanTagAttribute(name="validChractersConstraint",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidCharactersConstraint getValidCharactersConstraint() {
         return this.validCharactersConstraint;
     }
@@ -605,6 +617,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the caseConstraint
      */
     @Override
+    @BeanTagAttribute(name="caseConstraint", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CaseConstraint getCaseConstraint() {
         return this.caseConstraint;
     }
@@ -620,6 +633,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the requireConstraint
      */
     @Override
+    @BeanTagAttribute(name="prerequisteConstraint",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
         return this.dependencyConstraints;
     }
@@ -635,6 +649,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the occursConstraint
      */
     @Override
+    @BeanTagAttribute(name="mustOccurConstraints",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
     }
@@ -677,6 +692,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the childEntryName
      */
+    @BeanTagAttribute(name="childEntryName")
     public String getChildEntryName() {
         return this.childEntryName;
     }
@@ -696,6 +712,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return KeyValuesFinder instance
      */
+    @BeanTagAttribute(name="optionFinder",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public KeyValuesFinder getOptionsFinder() {
         return this.optionsFinder;
     }
@@ -723,6 +740,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.additionalDisplayAttributeName = additionalDisplayAttributeName;
     }
 
+    @BeanTagAttribute(name="additionalDisplayAttributeName")
     public String getAdditionalDisplayAttributeName() {
         return this.additionalDisplayAttributeName;
     }
@@ -731,6 +749,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.alternateDisplayAttributeName = alternateDisplayAttributeName;
     }
 
+    @BeanTagAttribute(name="alternateDisplayAttributeName")
     public String getAlternateDisplayAttributeName() {
         return this.alternateDisplayAttributeName;
     }

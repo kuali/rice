@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -37,6 +39,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "componentConvertModifier")
 public class ComponentConvertModifier extends ComponentModifierBase {
 	private static final long serialVersionUID = -7566547737669924605L;
 
@@ -144,6 +147,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 	 *
 	 * @return Class<? extends Component> component type to replace
 	 */
+    @BeanTagAttribute(name="componentTypeToReplace")
 	public Class<? extends Component> getComponentTypeToReplace() {
 		return this.componentTypeToReplace;
 	}
@@ -167,6 +171,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 	 *
 	 * @return
 	 */
+    @BeanTagAttribute(name="componentReplacementPrototype", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Component getComponentReplacementPrototype() {
 		return this.componentReplacementPrototype;
 	}

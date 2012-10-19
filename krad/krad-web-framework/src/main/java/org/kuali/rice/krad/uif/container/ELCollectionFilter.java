@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
@@ -31,6 +33,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="eLCollectionFilter")
 public class ELCollectionFilter implements CollectionFilter {
     private static final long serialVersionUID = 3273495753269940272L;
 
@@ -80,6 +83,7 @@ public class ELCollectionFilter implements CollectionFilter {
      *
      * @return String valid el expression that evaluates to a boolean.
      */
+    @BeanTagAttribute(name="expression")
     public String getExpression() {
         return expression;
     }

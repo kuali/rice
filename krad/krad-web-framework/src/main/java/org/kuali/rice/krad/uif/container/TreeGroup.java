@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -26,6 +28,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="treeGroup")
 public class TreeGroup extends Group implements DataBinding{
     private static final long serialVersionUID = 5841343037089286740L;
 
@@ -245,6 +249,7 @@ public class TreeGroup extends Group implements DataBinding{
         }
     }
 
+    @BeanTagAttribute(name="propertyName")
     public String getPropertyName() {
         return propertyName;
     }
@@ -253,6 +258,7 @@ public class TreeGroup extends Group implements DataBinding{
         this.propertyName = propertyName;
     }
 
+    @BeanTagAttribute(name="bindingInfo",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return bindingInfo;
     }
@@ -264,6 +270,7 @@ public class TreeGroup extends Group implements DataBinding{
     /**
      * @return the defaultNodePrototype
      */
+    @BeanTagAttribute(name="defaultNodePrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public NodePrototype getDefaultNodePrototype() {
         return this.defaultNodePrototype;
     }
@@ -278,6 +285,7 @@ public class TreeGroup extends Group implements DataBinding{
     /**
      * @return the nodePrototypeMap
      */
+    @BeanTagAttribute(name="NodePrototypeMap",type= BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<Class<?>, NodePrototype> getNodePrototypeMap() {
         return this.nodePrototypeMap;
     }
@@ -289,6 +297,7 @@ public class TreeGroup extends Group implements DataBinding{
         this.nodePrototypeMap = nodePrototypeMap;
     }
 
+    @BeanTagAttribute(name="treeGroups",type= BeanTagAttribute.AttributeType.MAP2BEAN)
     public Tree<Group, Message> getTreeGroups() {
         return treeGroups;
     }
@@ -297,6 +306,7 @@ public class TreeGroup extends Group implements DataBinding{
         this.treeGroups = treeGroups;
     }
 
+    @BeanTagAttribute(name="tree",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public org.kuali.rice.krad.uif.widget.Tree getTree() {
         return tree;
     }

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill this in.
@@ -22,11 +24,13 @@ package org.kuali.rice.krad.datadictionary;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BeanTag(name="routingAttribute")
 public class RoutingAttribute extends WorkflowAttributeMetadata {
 	private static final long serialVersionUID = -8232868861868863394L;
 
 	private String qualificationAttributeName;
 
+    @BeanTagAttribute(name="qualificationAttributeName")
 	public String getQualificationAttributeName() {
 		return this.qualificationAttributeName;
 	}

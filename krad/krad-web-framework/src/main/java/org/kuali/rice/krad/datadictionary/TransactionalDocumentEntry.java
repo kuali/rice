@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 
 /**
  * TransactionalDocumentEntry
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="transactionalDocumentEntry")
 public class TransactionalDocumentEntry extends DocumentEntry {
     private static final long serialVersionUID = 5746921563371805425L;
 

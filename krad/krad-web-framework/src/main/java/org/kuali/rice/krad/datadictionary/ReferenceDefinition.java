@@ -18,6 +18,8 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  *                     The reference element specifies the name of a reference
@@ -35,6 +37,7 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 
  *
  */
+@BeanTag(name="referenceDefinition")
 public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 1737968024207302931L;
 
@@ -50,6 +53,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     /**
      * @return attributeName
      */
+    @BeanTagAttribute(name="attributeName")
     public String getAttributeName() {
         return attributeName;
     }
@@ -74,6 +78,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      *
      * @return Returns the attributeToHighlightOnFail.
      */
+    @BeanTagAttribute(name="attributeToHighlightOnFail")
     public String getAttributeToHighlightOnFail() {
         return attributeToHighlightOnFail;
     }
@@ -95,6 +100,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      *
      * @return Returns the displayFieldName.
      */
+    @BeanTagAttribute(name="displayFieldName")
     public String getDisplayFieldName() {
         return displayFieldName;
     }
@@ -117,6 +123,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         return StringUtils.isNotBlank(displayFieldName);
     }
 
+    @BeanTagAttribute(name="collection")
     public String getCollection() {
         return collection;
     }
@@ -132,6 +139,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         return StringUtils.isNotBlank(getCollection());
     }
 
+    @BeanTagAttribute(name="collectionBusinessObjectClass")
     public Class<? extends BusinessObject> getCollectionBusinessObjectClass() {
         if( collectionBusinessObjectClass == null && isCollectionReference() ){
             collectionBusinessObjectClass=DataDictionary.getCollectionElementClass(businessObjectClass, collection);
@@ -187,6 +195,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         return "ReferenceDefinition for attribute " + getAttributeName();
     }
 
+    @BeanTagAttribute(name="businessObjectClass")
     public Class<? extends BusinessObject> getBusinessObjectClass() {
         return businessObjectClass;
     }

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -29,12 +31,14 @@ import java.util.regex.Pattern;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="charsetPatternConstraint")
 public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
     protected String validChars;
 
     /**
      * @return String containing all valid chars for this charset
      */
+    @BeanTagAttribute(name="validChars")
     public String getValidChars() {
         return validChars;
     }

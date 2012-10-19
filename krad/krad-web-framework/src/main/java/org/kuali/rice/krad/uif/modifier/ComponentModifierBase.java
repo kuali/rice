@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
@@ -70,6 +71,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     /**
 	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunPhase()
 	 */
+    @BeanTagAttribute(name="runPhase")
 	public String getRunPhase() {
 		return this.runPhase;
 	}
@@ -86,6 +88,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
 	/**
 	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunCondition()
 	 */
+    @BeanTagAttribute(name="runCondition")
 	public String getRunCondition() {
 		return this.runCondition;
 	}
@@ -102,6 +105,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
 	/**
 	 * @see org.springframework.core.Ordered#getOrder()
 	 */
+    @BeanTagAttribute(name="order")
 	public int getOrder() {
 		return this.order;
 	}

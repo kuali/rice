@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+
 /**
  * ValidationMessages for logic and options specific to pages
  * TODO this class is currently a placeholder for possible future functionality (ex. flatValidationMessages)
  */
+@BeanTag(name="pageValidationMessages")
 public class PageValidationMessages extends GroupValidationMessages {
 
 }

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill this in.
@@ -22,6 +24,7 @@ package org.kuali.rice.krad.datadictionary;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BeanTag(name="searchingAttribute")
 public class SearchingAttribute extends WorkflowAttributeMetadata {
 	private static final long serialVersionUID = -612461988789474893L;
 
@@ -33,12 +36,14 @@ public class SearchingAttribute extends WorkflowAttributeMetadata {
 	/**
 	 * @return the businessObjectClassName
 	 */
+    @BeanTagAttribute(name="businessObjectClassName")
 	public String getBusinessObjectClassName() {
 		return this.businessObjectClassName;
 	}
 	/**
 	 * @return the attributeName
 	 */
+    @BeanTagAttribute(name="attributeName")
 	public String getAttributeName() {
 		return this.attributeName;
 	}
@@ -58,6 +63,7 @@ public class SearchingAttribute extends WorkflowAttributeMetadata {
 	 * Returns whether this attribute should appear in the search criteria
 	 * @return the showAttributeInSearchCriteria
 	 */
+    @BeanTagAttribute(name="showAttriubteInSearchCriteria")
 	public boolean isShowAttributeInSearchCriteria() {
 		return this.showAttributeInSearchCriteria;
 	}
@@ -73,6 +79,7 @@ public class SearchingAttribute extends WorkflowAttributeMetadata {
 	 * Returns whether this attribute should appear in the result set
 	 * @return the showAttributeInResultSet
 	 */
+    @BeanTagAttribute(name="ShowAttributeInResultSet")
 	public boolean isShowAttributeInResultSet() {
 		return this.showAttributeInResultSet;
 	}

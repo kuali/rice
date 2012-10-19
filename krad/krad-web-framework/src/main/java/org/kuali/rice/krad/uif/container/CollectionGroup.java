@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
@@ -57,6 +59,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="collectionGroup")
 public class CollectionGroup extends Group implements DataBinding {
     private static final long serialVersionUID = -6496712566071542452L;
 
@@ -332,6 +335,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return Class<?> collection object class
      */
+    @BeanTagAttribute(name="collectionObjectClass")
     public Class<?> getCollectionObjectClass() {
         return this.collectionObjectClass;
     }
@@ -348,6 +352,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
      */
+    @BeanTagAttribute(name="propertyName")
     public String getPropertyName() {
         return this.propertyName;
     }
@@ -368,6 +373,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
      */
+    @BeanTagAttribute(name="bindingInfo",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;
     }
@@ -387,6 +393,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<Action> line action fields
      */
+    @BeanTagAttribute(name="lineActions",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Action> getLineActions() {
         return this.lineActions;
     }
@@ -406,6 +413,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return boolean true if the actions should be rendered, false if not
      * @see #getLineActions()
      */
+    @BeanTagAttribute(name="renderLineActions")
     public boolean isRenderLineActions() {
         return this.renderLineActions;
     }
@@ -425,6 +433,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return boolean true if add line should be rendered, false if it should
      *         not be
      */
+    @BeanTagAttribute(name="renderAddLine")
     public boolean isRenderAddLine() {
         return this.renderAddLine;
     }
@@ -477,6 +486,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return Label add line label field
      * @see #getAddLabel
      */
+    @BeanTagAttribute(name="addLineLabel",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getAddLineLabel() {
         return this.addLineLabel;
     }
@@ -499,6 +509,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String add line property name
      */
+    @BeanTagAttribute(name="addLinePropertyName")
     public String getAddLinePropertyName() {
         return this.addLinePropertyName;
     }
@@ -522,6 +533,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return BindingInfo add line binding info
      */
+    @BeanTagAttribute(name="addLineBindingInfo",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getAddLineBindingInfo() {
         return this.addLineBindingInfo;
     }
@@ -543,6 +555,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return List<? extends Component> add line field list
      * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
+    @BeanTagAttribute(name="addLineItems",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineItems() {
         return this.addLineItems;
     }
@@ -563,6 +576,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<Action> add line action fields
      */
+    @BeanTagAttribute(name="addLineActions",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Action> getAddLineActions() {
         return this.addLineActions;
     }
@@ -587,6 +601,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true if select field should be rendered, false if not
      */
+    @BeanTagAttribute(name="includeLineSelectionField")
     public boolean isIncludeLineSelectionField() {
         return includeLineSelectionField;
     }
@@ -618,6 +633,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String property name for select field
      */
+    @BeanTagAttribute(name="lineSelectPropertyName")
     public String getLineSelectPropertyName() {
         return lineSelectPropertyName;
     }
@@ -642,6 +658,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return QuickFinder instance configured for the collection lookup
      */
+    @BeanTagAttribute(name="collectionLookup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public QuickFinder getCollectionLookup() {
         return collectionLookup;
     }
@@ -667,6 +684,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true to show inactive records, false to not render inactive records
      */
+    @BeanTagAttribute(name="showInactiveLines")
     public boolean isShowInactiveLines() {
         return showInactiveLines;
     }
@@ -686,6 +704,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return CollectionFilter
      */
+    @BeanTagAttribute(name="activeCollectionFilter",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionFilter getActiveCollectionFilter() {
         return activeCollectionFilter;
     }
@@ -706,6 +725,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<CollectionFilter>
      */
+    @BeanTagAttribute(name="filters",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionFilter> getFilters() {
         return filters;
     }
@@ -725,6 +745,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<CollectionGroup> sub collections
      */
+    @BeanTagAttribute(name="subCollection",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionGroup> getSubCollections() {
         return this.subCollections;
     }
@@ -767,6 +788,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return CollectionGroupSecurity instance
      */
     @Override
+    @BeanTagAttribute(name="componentSecurity",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionGroupSecurity getComponentSecurity() {
         return (CollectionGroupSecurity) super.getComponentSecurity();
     }
@@ -797,6 +819,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return CollectionGroupBuilder instance
      */
+    @BeanTagAttribute(name="collectionGroupBuilder",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionGroupBuilder getCollectionGroupBuilder() {
         if (this.collectionGroupBuilder == null) {
             this.collectionGroupBuilder = new CollectionGroupBuilder();
@@ -823,6 +846,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * @return the showHideInactiveButton
      */
+    @BeanTagAttribute(name="renderInactiveToggleButton")
     public boolean isRenderInactiveToggleButton() {
         return renderInactiveToggleButton;
     }
@@ -832,6 +856,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return int
      */
+    @BeanTagAttribute(name="displayCollectionSize")
     public int getDisplayCollectionSize() {
         return this.displayCollectionSize;
     }
@@ -850,6 +875,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true if new items must be highlighted
      */
+    @BeanTagAttribute(name="highlightNewItems")
     public boolean isHighlightNewItems() {
         return highlightNewItems;
     }
@@ -868,6 +894,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String - the new items css style class
      */
+    @BeanTagAttribute(name="newItemsCssClass")
     public String getNewItemsCssClass() {
         return newItemsCssClass;
     }
@@ -886,6 +913,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String - the add item group or row css style class
      */
+    @BeanTagAttribute(name="addItemCssClass")
     public String getAddItemCssClass() {
         return addItemCssClass;
     }
@@ -904,6 +932,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean true if add item group or row must be highlighted
      */
+    @BeanTagAttribute(name="highlightAddItem")
     public boolean isHighlightAddItem() {
         return highlightAddItem;
     }
@@ -927,6 +956,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name="renderAddBlankLineButton")
     public boolean isRenderAddBlankLineButton() {
         return renderAddBlankLineButton;
     }
@@ -945,6 +975,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name="addBlankLineAction",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getAddBlankLineAction() {
         return addBlankLineAction;
     }
@@ -969,6 +1000,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String - the add blank line action placement
      */
+    @BeanTagAttribute(name="addLinePlacement")
     public String getAddLinePlacement() {
         return addLinePlacement;
     }
@@ -987,6 +1019,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name="renderSaveLineActions")
     public boolean isRenderSaveLineActions() {
         return renderSaveLineActions;
     }
@@ -1005,6 +1038,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name="addViaLightBox")
     public boolean isAddViaLightBox() {
         return addViaLightBox;
     }
@@ -1023,6 +1057,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return Action
      */
+    @BeanTagAttribute(name="addViaLightBoxAction",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getAddViaLightBoxAction() {
         return addViaLightBoxAction;
     }

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -27,6 +29,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="integerPatternConstraint")
 public class IntegerPatternConstraint extends ValidDataPatternConstraint{
     protected boolean allowNegative;
     protected boolean onlyNegative;
@@ -61,6 +64,7 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
     /**
      * @return the allowNegative
      */
+    @BeanTagAttribute(name="allowNegative")
     public boolean isAllowNegative() {
         return this.allowNegative;
     }
@@ -72,6 +76,7 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
         this.allowNegative = allowNegative;
     }
 
+    @BeanTagAttribute(name="onlyNegative")
     public boolean isOnlyNegative() {
         return onlyNegative;
     }
@@ -84,6 +89,7 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
         this.onlyNegative = onlyNegative;
     }
 
+    @BeanTagAttribute(name="omitZero")
     public boolean isOmitZero() {
         return omitZero;
     }

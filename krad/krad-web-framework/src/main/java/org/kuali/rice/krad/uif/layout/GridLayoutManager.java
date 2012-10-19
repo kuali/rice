@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
@@ -37,6 +39,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="gridLayoutManager")
 public class GridLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = 1890011900375071128L;
 
@@ -102,6 +105,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return
      */
+    @BeanTagAttribute(name="numberOfColumns")
     public int getNumberOfColumns() {
         return this.numberOfColumns;
     }
@@ -130,6 +134,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * @return boolean true if the column count should match the container's
      *         field count, false to use the configured number of columns
      */
+    @BeanTagAttribute(name="suppressLineWrapping")
     public boolean isSuppressLineWrapping() {
         return this.suppressLineWrapping;
     }
@@ -154,6 +159,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * @return boolean true if alternating styles should be applied, false if
      *         all rows should have the same style
      */
+    @BeanTagAttribute(name="applyAlternatingRowStyles")
     public boolean isApplyAlternatingRowStyles() {
         return this.applyAlternatingRowStyles;
     }
@@ -178,6 +184,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * @return boolean true if default cell widths should be applied, false if
      *         no defaults should be applied
      */
+    @BeanTagAttribute(name="applyDefaultCellWidths")
     public boolean isApplyDefaultCellWidths() {
         return this.applyDefaultCellWidths;
     }
@@ -202,6 +209,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return boolean true if first cell of each row should be rendered as a header cell
      */
+    @BeanTagAttribute(name="renderRowFirstCellHeader")
     public boolean isRenderRowFirstCellHeader() {
         return renderRowFirstCellHeader;
     }
@@ -227,6 +235,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return boolean true if first row should be rendered as header cells
      */
+    @BeanTagAttribute(name="renderFirstRowHeader")
     public boolean isRenderFirstRowHeader() {
         return renderFirstRowHeader;
     }
@@ -252,6 +261,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * @return boolean true if alternating headers should be rendered, false if
      *         not
      */
+    @BeanTagAttribute(name="renderAlternatingHeaderColumns")
     public boolean isRenderAlternatingHeaderColumns() {
         return this.renderAlternatingHeaderColumns;
     }
@@ -277,6 +287,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return List<String> list of styles for the rows
      */
+    @BeanTagAttribute(name="rowCssClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getRowCssClasses() {
         return rowCssClasses;
     }

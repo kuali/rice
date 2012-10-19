@@ -17,6 +17,8 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
@@ -37,6 +39,7 @@ import java.util.ArrayList;
                     The value corresponding to the targetName key is the attribute name for
                     the object being referenced by objectAttributeName.
  */
+@BeanTag(name="primitiveAttributeDefinition")
 public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = -715128943756700821L;
 
@@ -49,6 +52,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     /**
      * @return sourceName
      */
+    @BeanTagAttribute(name="sourceName")
     public String getSourceName() {
         return sourceName;
     }
@@ -70,6 +74,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     /**
      * @return targetName
      */
+    @BeanTagAttribute(name="targetName")
     public String getTargetName() {
         return targetName;
     }

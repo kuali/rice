@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
@@ -52,6 +54,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="validationMessages")
 public class ValidationMessages extends ContentElementBase {
     private static final long serialVersionUID = 780940788435330077L;
 
@@ -245,6 +248,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the additionalKeysToMatch
      */
+    @BeanTagAttribute(name="additionalKeysToMatch",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalKeysToMatch() {
         return this.additionalKeysToMatch;
     }
@@ -281,6 +285,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the displayMessages
      */
+    @BeanTagAttribute(name="displayMessages")
     public boolean isDisplayMessages() {
         return this.displayMessages;
     }
@@ -298,6 +303,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the errors
      */
+    @BeanTagAttribute(name="errors",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getErrors() {
         return this.errors;
     }
@@ -308,6 +314,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the warnings
      */
+    @BeanTagAttribute(name="warnings",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getWarnings() {
         return this.warnings;
     }
@@ -318,6 +325,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the infos
      */
+    @BeanTagAttribute(name="infos",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getInfos() {
         return this.infos;
     }

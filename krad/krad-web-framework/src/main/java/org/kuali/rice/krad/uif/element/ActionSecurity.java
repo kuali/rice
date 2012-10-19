@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.field.FieldSecurity;
 
 /**
@@ -22,6 +24,7 @@ import org.kuali.rice.krad.uif.field.FieldSecurity;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="actionSecurity")
 public class ActionSecurity extends FieldSecurity {
     private static final long serialVersionUID = 585138507596582667L;
 
@@ -40,6 +43,7 @@ public class ActionSecurity extends FieldSecurity {
      *
      * @return boolean true if the action field has perform action authorization, false if not
      */
+    @BeanTagAttribute(name="performActionAuthz")
     public boolean isPerformActionAuthz() {
         return performActionAuthz;
     }
@@ -58,6 +62,7 @@ public class ActionSecurity extends FieldSecurity {
      *
      * @return boolean true if the line action field has perform action authorization, false if not
      */
+    @BeanTagAttribute(name="performLineActionAuthz")
     public boolean isPerformLineActionAuthz() {
         return performLineActionAuthz;
     }

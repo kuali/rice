@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+
 /**
  * Field whose output is produced by invoking a method or template and has no
  * properties (generic)
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="genericField")
 public class GenericField extends FieldBase {
     private static final long serialVersionUID = -7756170771822430903L;
 

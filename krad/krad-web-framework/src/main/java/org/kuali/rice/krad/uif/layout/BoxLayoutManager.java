@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
@@ -41,6 +43,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="boxLayoutManager")
 public class BoxLayoutManager extends LayoutManagerBase {
 	private static final long serialVersionUID = 4467342272983290044L;
 
@@ -128,6 +131,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 *
 	 * @return Orientation orientation configured for layout
 	 */
+    @BeanTagAttribute(name="orientation", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Orientation getOrientation() {
 		return this.orientation;
 	}
@@ -152,6 +156,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 *
 	 * @return
 	 */
+    @BeanTagAttribute(name="padding")
 	public String getPadding() {
 		return this.padding;
 	}
@@ -172,6 +177,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 *
 	 * @return String css style string
 	 */
+    @BeanTagAttribute(name="itemStyle")
 	public String getItemStyle() {
 		return this.itemStyle;
 	}
@@ -190,6 +196,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      *
      * @return List<String>
      */
+    @BeanTagAttribute(name="itemStyleClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getItemStyleClasses() {
         return itemStyleClasses;
     }

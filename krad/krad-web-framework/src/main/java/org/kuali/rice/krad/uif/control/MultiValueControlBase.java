@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Message;
@@ -116,6 +118,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     /**
      * @see org.kuali.rice.krad.uif.control.MultiValueControl#getOptions()
      */
+    @BeanTagAttribute(name="options",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<KeyValue> getOptions() {
         return this.options;
     }
@@ -133,6 +136,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      *
      * @return the components that can be used in rich values of options
      */
+    @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

@@ -18,6 +18,8 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in.
@@ -25,6 +27,7 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BeanTag(name="inactivationBlockingDefinition")
 public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase implements InactivationBlockingMetadata {
 	private static final long serialVersionUID = -8765429636173190984L;
 
@@ -68,6 +71,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
      *
      * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockedReferencePropertyName()
      */
+    @BeanTagAttribute(name="blockedReferencePropertyName")
     public String getBlockedReferencePropertyName() {
         return this.blockedReferencePropertyName;
     }
@@ -81,6 +85,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
      *
      * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockedBusinessObjectClass()
      */
+    @BeanTagAttribute(name="blockedBusinessObjectClass")
     public Class<? extends BusinessObject> getBlockedBusinessObjectClass() {
         return this.blockedBusinessObjectClass;
     }
@@ -94,6 +99,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
      *
      * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getInactivationBlockingDetectionServiceBeanName()
      */
+    @BeanTagAttribute(name="inactivationBlockingDetectionServiceBeanName")
     public String getInactivationBlockingDetectionServiceBeanName() {
         return this.inactivationBlockingDetectionServiceBeanName;
     }
@@ -107,6 +113,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
      *
      * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockingReferenceBusinessObjectClass()
      */
+    @BeanTagAttribute(name="blockingReferenceBusinessObjectClass")
     public Class<? extends BusinessObject> getBlockingReferenceBusinessObjectClass() {
         return this.blockingReferenceBusinessObjectClass;
     }
@@ -115,6 +122,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
         this.blockingReferenceBusinessObjectClass = blockingReferenceBusinessObjectClass;
     }
 
+    @BeanTagAttribute(name="relationshipLabel")
 	public String getRelationshipLabel() {
 		return this.relationshipLabel;
 	}
@@ -123,6 +131,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
 		this.relationshipLabel = relationshipLabel;
 	}
 
+    @BeanTagAttribute(name="businessObjectClass")
 	public Class<? extends BusinessObject> getBusinessObjectClass() {
 		return this.businessObjectClass;
 	}

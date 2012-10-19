@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary.mask;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 import java.io.Serializable;
 
 /**
@@ -22,6 +25,7 @@ import java.io.Serializable;
     be used to hide the value from un-authorized users.
     There are three types of masking.
  */
+@BeanTag(name="mask")
 public class Mask implements Serializable {
     private static final long serialVersionUID = 4035984416568235531L;
 
@@ -55,6 +59,7 @@ public class Mask implements Serializable {
      *
      * @return Returns the maskFormatter.
      */
+    @BeanTagAttribute(name="maskFormater",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MaskFormatter getMaskFormatter() {
         return maskFormatter;
     }
@@ -72,6 +77,7 @@ public class Mask implements Serializable {
      *
      * @return Returns the maskFormatterClass.
      */
+    @BeanTagAttribute(name="maskFormatterClass",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Class<? extends MaskFormatter> getMaskFormatterClass() {
         return maskFormatterClass;
     }

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -30,6 +31,7 @@ public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternCo
      *
      * @return the patternTypeKey
      */
+    @BeanTagAttribute(name="patternTypeKey")
     public String getPatternTypeKey() {
         return this.patternTypeKey;
     }

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -28,6 +30,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="tooltip")
 public class Tooltip extends WidgetBase {
 
     private String tooltipContent;
@@ -53,6 +56,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return String
      */
+    @BeanTagAttribute(name="tooltipContent")
     public String getTooltipContent() {
         return tooltipContent;
     }
@@ -71,6 +75,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name="onFocus")
     public boolean isOnFocus() {
         return onFocus;
     }
@@ -89,6 +94,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return boolean
      */
+    @BeanTagAttribute(name="onMouseHover")
     public boolean isOnMouseHover() {
         return onMouseHover;
     }

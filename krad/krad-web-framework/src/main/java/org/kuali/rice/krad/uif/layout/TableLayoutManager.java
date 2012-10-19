@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -62,6 +64,7 @@ import java.util.TreeMap;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="tableLayoutManager")
 public class TableLayoutManager extends GridLayoutManager implements CollectionLayoutManager {
     private static final long serialVersionUID = 3622267585541524208L;
 
@@ -900,6 +903,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @return boolean true if short label should be used, false if long label
      *         should be used
      */
+    @BeanTagAttribute(name="useShortLabels")
     public boolean isUseShortLabels() {
         return this.useShortLabels;
     }
@@ -920,6 +924,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @return boolean true if header should be repeated, false if it should
      *         only be rendered once
      */
+    @BeanTagAttribute(name="repeatHeader")
     public boolean isRepeatHeader() {
         return this.repeatHeader;
     }
@@ -940,6 +945,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return Label instance to serve as prototype
      */
+    @BeanTagAttribute(name="headerLabelPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getHeaderLabelPrototype() {
         return this.headerLabelPrototype;
     }
@@ -969,6 +975,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return boolean true if sequence field should be rendered, false if not
      */
+    @BeanTagAttribute(name="renderSequenceField")
     public boolean isRenderSequenceField() {
         return this.renderSequenceField;
     }
@@ -989,6 +996,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return String sequence property name
      */
+    @BeanTagAttribute(name="sequencePropertyName")
     public String getSequencePropertyName() {
         if ((getSequenceFieldPrototype() != null) && (getSequenceFieldPrototype() instanceof DataField)) {
             return ((DataField) getSequenceFieldPrototype()).getPropertyName();
@@ -1021,6 +1029,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @return boolean true if the sequence field should be generated from the
      *         line number, false if not
      */
+    @BeanTagAttribute(name="generateAutoSequence")
     public boolean isGenerateAutoSequence() {
         return this.generateAutoSequence;
     }
@@ -1041,6 +1050,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return Attribute field instance
      */
+    @BeanTagAttribute(name="sequenceFieldPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSequenceFieldPrototype() {
         return this.sequenceFieldPrototype;
     }
@@ -1066,6 +1076,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return GroupField instance
      */
+    @BeanTagAttribute(name="actionFieldPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getActionFieldPrototype() {
         return this.actionFieldPrototype;
     }
@@ -1082,6 +1093,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
      */
+    @BeanTagAttribute(name="subCollectionFieldGroupPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
         return this.subCollectionFieldGroupPrototype;
     }
@@ -1109,6 +1121,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return Field select field prototype instance
      */
+    @BeanTagAttribute(name="selectFieldPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
         return selectFieldPrototype;
     }
@@ -1135,6 +1148,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return boolean true if add line should be separated, false if it should be placed into the table
      */
+    @BeanTagAttribute(name="separateAddLine")
     public boolean isSeparateAddLine() {
         return separateAddLine;
     }
@@ -1162,6 +1176,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return Group instance for the collection add line
      */
+    @BeanTagAttribute(name="addLineGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getAddLineGroup() {
         return addLineGroup;
     }
@@ -1191,6 +1206,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return RichTable instance
      */
+    @BeanTagAttribute(name="richTable",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public RichTable getRichTable() {
         return this.richTable;
     }
@@ -1207,6 +1223,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * @return the numberOfDataColumns
      */
+    @BeanTagAttribute(name="numberOfDataColumns")
     public int getNumberOfDataColumns() {
         return this.numberOfDataColumns;
     }
@@ -1221,6 +1238,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * @see org.kuali.rice.krad.uif.widget.RichTable#getHiddenColumns()
      */
+    @BeanTagAttribute(name="hiddenColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getHiddenColumns() {
         if (richTable != null) {
             return richTable.getHiddenColumns();
@@ -1241,6 +1259,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * @see org.kuali.rice.krad.uif.widget.RichTable#getSortableColumns()
      */
+    @BeanTagAttribute(name="sortableColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getSortableColumns() {
         if (richTable != null) {
             return richTable.getSortableColumns();
@@ -1263,6 +1282,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return int = the action column index
      */
+    @BeanTagAttribute(name="actionColumnIndex")
     public int getActionColumnIndex() {
         return actionColumnIndex;
     }
@@ -1277,6 +1297,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return String - the action column placement
      */
+    @BeanTagAttribute(name="actionColumnPlacement")
     public String getActionColumnPlacement() {
         return actionColumnPlacement;
     }
@@ -1309,6 +1330,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return rowDetailsGroup component
      */
+    @BeanTagAttribute(name="rowDetailsGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getRowDetailsGroup() {
         return rowDetailsGroup;
     }
@@ -1327,6 +1349,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return name of the link
      */
+    @BeanTagAttribute(name="rowDetailsLinkName")
     public String getRowDetailsLinkName() {
         return rowDetailsLinkName;
     }
@@ -1346,6 +1369,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return true if displaying an image instead of a link for row details
      */
+    @BeanTagAttribute(name="rowDetailsUseImage")
     public boolean isRowDetailsUseImage() {
         return rowDetailsUseImage;
     }
@@ -1459,6 +1483,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return true if showing the total, false otherwise.
      */
+    @BeanTagAttribute(name="showTotal")
     public boolean isShowTotal() {
         return showTotal;
     }
@@ -1483,6 +1508,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return true if showing the page total, false otherwise.
      */
+    @BeanTagAttribute(name="showPageTotal")
     public boolean isShowPageTotal() {
         return showPageTotal;
     }
@@ -1509,6 +1535,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return true if showing the group total, false otherwise.
      */
+    @BeanTagAttribute(name="showGroupTotal")
     public boolean isShowGroupTotal() {
         return showGroupTotal;
     }
@@ -1532,6 +1559,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return the totalLabel
      */
+    @BeanTagAttribute(name="totalLabel",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getTotalLabel() {
         return totalLabel;
     }
@@ -1551,6 +1579,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return the totalLabel
      */
+    @BeanTagAttribute(name="pageTotalLabel",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getPageTotalLabel() {
         return pageTotalLabel;
     }
@@ -1570,6 +1599,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return the totalLabel
      */
+    @BeanTagAttribute(name="groupTotalLabelPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getGroupTotalLabelPrototype() {
         return groupTotalLabelPrototype;
     }
@@ -1590,6 +1620,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return the columnCalculations to use
      */
+    @BeanTagAttribute(name="columnCalculations",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ColumnCalculationInfo> getColumnCalculations() {
         return columnCalculations;
     }
@@ -1609,6 +1640,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return true when rendering totals footer labels in the left-most column, false otherwise
      */
+    @BeanTagAttribute(name="renderOnlyLeftTotalLabels")
     public boolean isRenderOnlyLeftTotalLabels() {
         return renderOnlyLeftTotalLabels;
     }
@@ -1647,6 +1679,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return propertyNames to group on
      */
+    @BeanTagAttribute(name="groupingPropertyNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getGroupingPropertyNames() {
         return groupingPropertyNames;
     }
@@ -1668,6 +1701,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return groupingTitle to be used
      */
+    @BeanTagAttribute(name="groupingTitle")
     public String getGroupingTitle() {
         return groupingTitle;
     }
@@ -1693,6 +1727,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return
      */
+    @BeanTagAttribute(name="groupingPrefix")
     public String getGroupingPrefix() {
         return groupingPrefix;
     }

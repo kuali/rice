@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="uifKeyValuesFinderBase")
 public abstract class UifKeyValuesFinderBase extends KeyValuesBase implements UifKeyValuesFinder {
 
     private boolean addBlankOption;
@@ -41,6 +44,7 @@ public abstract class UifKeyValuesFinderBase extends KeyValuesBase implements Ui
     /**
      * @see org.kuali.rice.krad.uif.control.UifKeyValuesFinder#isAddBlankOption()
      */
+    @BeanTagAttribute(name="addBlankOption")
     public boolean isAddBlankOption() {
         return addBlankOption;
     }

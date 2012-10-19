@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+
 /**
  * Represents a HTML File control, generally rendered as an input control with
  * type 'file'. Allows user to upload a file to the application
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="fileControl")
 public class FileControl extends ControlBase implements SizedControl {
     private static final long serialVersionUID = -5919326390841646189L;
 

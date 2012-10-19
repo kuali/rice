@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -27,6 +29,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="floatingPointPatternConstraint")
 public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatternConstraint {
 
     protected boolean allowNegative;
@@ -49,6 +52,7 @@ public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatte
     /**
      * @return the allowNegative
      */
+    @BeanTagAttribute(name="allowNegative")
     public boolean isAllowNegative() {
         return this.allowNegative;
     }

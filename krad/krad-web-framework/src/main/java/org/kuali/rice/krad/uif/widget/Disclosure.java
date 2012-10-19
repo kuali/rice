@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 
 /**
@@ -22,6 +24,7 @@ import org.kuali.rice.krad.uif.component.ClientSideState;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="disclosure")
 public class Disclosure extends WidgetBase {
     private static final long serialVersionUID = 1238789480161901850L;
 
@@ -47,6 +50,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return String image path
      */
+    @BeanTagAttribute(name="CollapseImageSrc")
     public String getCollapseImageSrc() {
         return this.collapseImageSrc;
     }
@@ -65,6 +69,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return String image path
      */
+    @BeanTagAttribute(name="expandImageSrc")
     public String getExpandImageSrc() {
         return this.expandImageSrc;
     }
@@ -84,6 +89,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return int animation speed
      */
+    @BeanTagAttribute(name="animationSpeed")
     public int getAnimationSpeed() {
         return this.animationSpeed;
     }
@@ -103,6 +109,7 @@ public class Disclosure extends WidgetBase {
      * @return boolean true if group should be initially open, false if it
      *         should be closed
      */
+    @BeanTagAttribute(name="defaultOpen")
     public boolean isDefaultOpen() {
         return this.defaultOpen;
     }
@@ -122,6 +129,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return boolean true to render the expand/colapse image false to not
      */
+    @BeanTagAttribute(name="renderImage")
     public boolean isRenderImage() {
         return renderImage;
     }

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -125,6 +126,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     /**
      * @see Control#getTabIndex()
      */
+    @BeanTagAttribute(name="tabIndex")
     public int getTabIndex() {
         return this.tabIndex;
     }
@@ -139,6 +141,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     /**
      * @see Control#isDisabled()
      */
+    @BeanTagAttribute(name="disabled")
     public boolean isDisabled() {
         return disabled;
     }
@@ -153,6 +156,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     /**
      * @see Control#getDisabledReason()
      */
+    @BeanTagAttribute(name="disabledReason")
     public String getDisabledReason() {
         return disabledReason;
     }
@@ -205,6 +209,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      *
      * @return true if evaluate on key up, false otherwise
      */
+    @BeanTagAttribute(name="evaluateDisabledOnKeyUp")
     public boolean isEvaluateDisabledOnKeyUp() {
         return evaluateDisabledOnKeyUp;
     }
@@ -241,6 +246,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      *
      * @return the property names to monitor for change to disable this component
      */
+    @BeanTagAttribute(name="disabledWhenChangedPropertyNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getDisabledWhenChangedPropertyNames() {
         return disabledWhenChangedPropertyNames;
     }
@@ -259,6 +265,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      *
      * @return the property names to monitor for change to enable this component
      */
+    @BeanTagAttribute(name="ensabledConditionControlNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getEnabledWhenChangedPropertyNames() {
         return enabledWhenChangedPropertyNames;
     }

@@ -18,6 +18,8 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="businessObjectEntry")
 public class BusinessObjectEntry extends DataObjectEntry {
 
     protected Class<? extends BusinessObject> baseBusinessObjectClass;
@@ -61,6 +64,7 @@ public class BusinessObjectEntry extends DataObjectEntry {
         this.baseBusinessObjectClass = baseBusinessObjectClass;
     }
 
+    @BeanTagAttribute(name="baseBusinessObjectClass")
     public Class<? extends BusinessObject> getBaseBusinessObjectClass() {
         return baseBusinessObjectClass;
     }

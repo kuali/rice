@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.RichTable;
 
@@ -39,6 +41,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="dataTable")
 public class DataTable extends ContentElementBase {
     private static final long serialVersionUID = 6201998559169962349L;
 
@@ -65,6 +68,7 @@ public class DataTable extends ContentElementBase {
      *
      * @return RichTable instance
      */
+    @BeanTagAttribute(name="richTable",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public RichTable getRichTable() {
         return richTable;
     }
@@ -81,6 +85,7 @@ public class DataTable extends ContentElementBase {
     /**
      * @see org.kuali.rice.krad.uif.widget.RichTable#getAjaxSource()
      */
+    @BeanTagAttribute(name="ajaxSource")
     public String getAjaxSource() {
         if (richTable != null) {
             return richTable.getAjaxSource();
@@ -101,6 +106,7 @@ public class DataTable extends ContentElementBase {
     /**
      * @see org.kuali.rice.krad.uif.widget.RichTable#getHiddenColumns()
      */
+    @BeanTagAttribute(name="hiddenColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getHiddenColumns() {
         if (richTable != null) {
             return richTable.getHiddenColumns();
@@ -121,6 +127,7 @@ public class DataTable extends ContentElementBase {
     /**
      * @see org.kuali.rice.krad.uif.widget.RichTable#getSortableColumns()
      */
+    @BeanTagAttribute(name="sortableColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getSortableColumns() {
         if (richTable != null) {
             return richTable.getSortableColumns();

@@ -192,11 +192,11 @@ public class DataDictionary {
     public void validateDD(boolean validateEbos) {
         DataDictionary.validateEBOs = validateEbos;
 
-       /* ValidationController validator = new ValidationController();
-        String files[] = new String[beanValidationFiles.size()];
-        files = beanValidationFiles.toArray(files);
-        validator.validate(files, xmlReader.getResourceLoader(), ddBeans,
-                LOG, false);*/
+//        ValidationController validator = new ValidationController();
+//        String files[] = new String[beanValidationFiles.size()];
+//        files = beanValidationFiles.toArray(files);
+//        validator.validate(files, xmlReader.getResourceLoader(), ddBeans,
+//                LOG, false);
 
         Map<String, DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
         for (DataObjectEntry entry : doBeans.values()) {

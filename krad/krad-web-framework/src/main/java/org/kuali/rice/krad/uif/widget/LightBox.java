@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="lightBox")
 public class LightBox extends WidgetBase {
     private static final long serialVersionUID = -4004284762546700975L;
 
@@ -66,6 +69,7 @@ public class LightBox extends WidgetBase {
     /**
      * @return height of light box
      */
+    @BeanTagAttribute(name="height")
     public String getHeight() {
         return height;
     }
@@ -83,6 +87,7 @@ public class LightBox extends WidgetBase {
     /**
      * @return width of light box
      */
+    @BeanTagAttribute(name="width")
     public String getWidth() {
         return width;
     }
@@ -102,6 +107,7 @@ public class LightBox extends WidgetBase {
      *
      * @return true if the link should have application parameters added, false otherwise
      */
+    @BeanTagAttribute(name="addAppParms")
     public boolean isAddAppParms() {
         return addAppParms;
     }
@@ -118,6 +124,7 @@ public class LightBox extends WidgetBase {
     /**
      * @return the lookupReturnByScript flag
      */
+    @BeanTagAttribute(name="lookupReturnByScript")
     public boolean isLookupReturnByScript() {
         return lookupReturnByScript;
     }

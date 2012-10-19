@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.RequestParameter;
@@ -46,6 +48,7 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="maintenanceView")
 public class MaintenanceView extends DocumentView {
     private static final long serialVersionUID = -3382802967703882341L;
 
@@ -117,6 +120,7 @@ public class MaintenanceView extends DocumentView {
      *
      * @return Class<?> maintenance object class
      */
+    @BeanTagAttribute(name="dataObjectClassName")
     public Class<?> getDataObjectClassName() {
         return this.dataObjectClassName;
     }
@@ -136,6 +140,7 @@ public class MaintenanceView extends DocumentView {
      *
      * @return String old object binding path
      */
+    @BeanTagAttribute(name="oldObjectBindingPath")
     public String getOldObjectBindingPath() {
         return this.oldObjectBindingPath;
     }
@@ -155,6 +160,7 @@ public class MaintenanceView extends DocumentView {
      *
      * @return String maintenance action
      */
+    @BeanTagAttribute(name="maintenanceAction")
     public String getMaintenanceAction() {
         return maintenanceAction;
     }

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.view.View;
 import org.springframework.util.MethodInvoker;
 import org.springframework.util.ReflectionUtils;
@@ -29,6 +31,7 @@ import java.lang.reflect.Method;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="methodInvokerConfig")
 public class MethodInvokerConfig extends MethodInvoker implements Serializable {
 
     private String staticMethod;
@@ -41,6 +44,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
      *
      * @return String static method to invoke
      */
+    @BeanTagAttribute(name="staticMethod")
     public String getStaticMethod() {
         return staticMethod;
     }
@@ -63,6 +67,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
      *
      * @return Class[] method argument types
      */
+    @BeanTagAttribute(name="argumentTypes",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public Class[] getArgumentTypes() {
         if (argumentTypes == null) {
             return getMethodArgumentTypes();

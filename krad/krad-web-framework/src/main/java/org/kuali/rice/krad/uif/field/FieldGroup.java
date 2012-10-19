@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
@@ -31,6 +33,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="fieldGroup")
 public class FieldGroup extends FieldBase {
 	private static final long serialVersionUID = -505654043702442196L;
 
@@ -91,6 +94,7 @@ public class FieldGroup extends FieldBase {
 	 *
 	 * @return Group instance
 	 */
+    @BeanTagAttribute(name="group",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
 	public Group getGroup() {
 		return this.group;
 	}
@@ -114,6 +118,7 @@ public class FieldGroup extends FieldBase {
 	 *
 	 * @return List<? extends Component> items
 	 */
+    @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public List<? extends Component> getItems() {
 		if (group != null) {
 			return group.getItems();

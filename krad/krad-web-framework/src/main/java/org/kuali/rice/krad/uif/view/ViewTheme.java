@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
 import java.io.Serializable;
@@ -26,6 +28,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="viewTheme")
 public class ViewTheme extends UifDictionaryBeanBase implements Serializable{
     private static final long serialVersionUID = 7063256242857896580L;
 
@@ -38,6 +41,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable{
      *
      * @return List<String>
      */
+    @BeanTagAttribute(name="cssFiles",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getCssFiles() {
         return cssFiles;
     }
@@ -57,6 +61,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable{
      *
      * @return List<String>
      */
+    @BeanTagAttribute(name="scriptFiles",type= BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getScriptFiles() {
         return scriptFiles;
     }

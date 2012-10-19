@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="pageGroup")
 public class PageGroup extends Group {
     private static final long serialVersionUID = 7571981300587270274L;
 
@@ -65,6 +68,7 @@ public class PageGroup extends Group {
      *
      * @return the autoFocus
      */
+    @BeanTagAttribute(name="autoFocus")
     public boolean isAutoFocus() {
         return this.autoFocus;
     }

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +32,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="blockUI")
 public class BlockUI extends WidgetBase {
 
     private String blockingImageSource;
@@ -68,6 +71,7 @@ public class BlockUI extends WidgetBase {
      *
      * @return String url to the blocking image
      */
+    @BeanTagAttribute(name="blockingImageSource")
     public String getBlockingImageSource() {
         return blockingImageSource;
     }

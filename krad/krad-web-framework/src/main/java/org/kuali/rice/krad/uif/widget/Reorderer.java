@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
@@ -27,6 +29,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="reorderer")
 public class Reorderer extends WidgetBase {
     private static final long serialVersionUID = 6142957061046219120L;
 
@@ -76,6 +79,7 @@ public class Reorderer extends WidgetBase {
      *
      * @return String style class
      */
+    @BeanTagAttribute(name="movableStyleClass")
     public String getMovableStyleClass() {
         return movableStyleClass;
     }

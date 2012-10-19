@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -76,6 +77,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     /**
      * @return a Map containing all AttributeDefinitions associated with this BusinessObjectEntry, indexed by attributeName
      */
+    @BeanTagAttribute(name="attributes",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<AttributeDefinition> getAttributes() {
         return this.attributes;
     }
@@ -131,6 +133,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     /**
      * @return a Map containing all CollectionDefinitions associated with this BusinessObjectEntry, indexed by collectionName
      */
+    @BeanTagAttribute(name="collections",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionDefinition> getCollections() {
         return this.collections;
     }
@@ -149,6 +152,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     /**
      * @return a Map containing all RelationshipDefinitions associated with this BusinessObjectEntry, indexed by relationshipName
      */
+    @BeanTagAttribute(name="relationships",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<RelationshipDefinition> getRelationships() {
         return this.relationships;
     }
@@ -444,6 +448,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getStateMapping()
      */
+    @BeanTagAttribute(name="stateMapping",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public StateMapping getStateMapping() {
         return stateMapping;
     }

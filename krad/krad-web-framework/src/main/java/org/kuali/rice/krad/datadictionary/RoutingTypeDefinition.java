@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BeanTag(name="routingTypeDefinition")
 public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
 	private static final long serialVersionUID = -5455042765223753531L;
 
@@ -33,12 +37,14 @@ public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
 	/**
 	 * @return the routingAttributes
 	 */
+    @BeanTagAttribute(name="routingAttributes",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public List<RoutingAttribute> getRoutingAttributes() {
 		return this.routingAttributes;
 	}
 	/**
 	 * @return the documentValuePathGroups
 	 */
+    @BeanTagAttribute(name="documentValuePathGroups",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public List<DocumentValuePathGroup> getDocumentValuePathGroups() {
 		return this.documentValuePathGroups;
 	}

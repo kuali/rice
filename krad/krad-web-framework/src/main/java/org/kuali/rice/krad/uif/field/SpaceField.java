@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 
 /**
  * Field that produces only a space
@@ -27,6 +28,7 @@ package org.kuali.rice.krad.uif.field;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="spaceField")
 public class SpaceField extends FieldBase {
     private static final long serialVersionUID = -4740343801872334348L;
 

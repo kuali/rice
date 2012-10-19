@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+
 /**
  * Content element that renders a non-breaking space HTML <code>&amp;nbsp;</code> tag
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="space")
 public class Space extends ContentElementBase {
     private static final long serialVersionUID = 4655642965438419569L;
 

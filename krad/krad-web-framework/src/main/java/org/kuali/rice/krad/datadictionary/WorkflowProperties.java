@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.List;
             specify which document properties should be serialized during the document serialization
             process.
  */
+@BeanTag(name="workflowProperties")
 public class WorkflowProperties implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +43,7 @@ public class WorkflowProperties implements Serializable {
      *
      * @return a list of {@link WorkflowPropertyGroup} objects, in the order in which they were added
      */
+    @BeanTagAttribute(name="workflowPropertyGroups",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<WorkflowPropertyGroup> getWorkflowPropertyGroups() {
         return this.workflowPropertyGroups;
     }

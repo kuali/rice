@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
@@ -35,6 +37,7 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="bindingInfo")
 public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -7389398061672136091L;
 
@@ -96,6 +99,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return String binding path
      */
+    @BeanTagAttribute(name="bindingPath")
     public String getBindingPath() {
         if (StringUtils.isNotBlank(bindingPath)) {
             return bindingPath;
@@ -224,6 +228,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * @return boolean true if component binds directly to form, false if it
      *         binds to a nested object
      */
+    @BeanTagAttribute(name="bindToForm")
     public boolean isBindToForm() {
         return this.bindToForm;
     }
@@ -248,6 +253,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return String name of the bind property
      */
+    @BeanTagAttribute(name="bindingName")
     public String getBindingName() {
         return this.bindingName;
     }
@@ -267,6 +273,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return String binding prefix
      */
+    @BeanTagAttribute(name="bindByNamePrefix")
     public String getBindByNamePrefix() {
         return this.bindByNamePrefix;
     }
@@ -323,6 +330,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return String path to object from form
      */
+    @BeanTagAttribute(name="bindingObjectPath")
     public String getBindingObjectPath() {
         return this.bindingObjectPath;
     }
@@ -343,6 +351,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return boolean true if the property binds to a map, false if it does not
      */
+    @BeanTagAttribute(name="bindToMap")
     public boolean isBindToMap() {
         return this.bindToMap;
     }

@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -33,6 +35,7 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="userControl")
 public class UserControl extends TextControl {
     private static final long serialVersionUID = 7468340793076585869L;
 
@@ -130,6 +133,7 @@ public class UserControl extends TextControl {
      *
      * @return String principalIdPropertyName
      */
+    @BeanTagAttribute(name="principalIdPropertyName")
     public String getPrincipalIdPropertyName() {
         return principalIdPropertyName;
     }
@@ -148,6 +152,7 @@ public class UserControl extends TextControl {
      *
      * @return String personNamePropertyName
      */
+    @BeanTagAttribute(name="personNamePropertyName")
     public String getPersonNamePropertyName() {
         return personNamePropertyName;
     }
@@ -166,6 +171,7 @@ public class UserControl extends TextControl {
      *
      * @return String personObjectPropertyName
      */
+    @BeanTagAttribute(name="personObjectPropertyName")
     public String getPersonObjectPropertyName() {
         return personObjectPropertyName;
     }

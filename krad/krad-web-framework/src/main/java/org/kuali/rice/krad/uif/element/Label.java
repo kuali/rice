@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -37,6 +39,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="label")
 public class Label extends ContentElementBase {
     private static final long serialVersionUID = -6491546893195180114L;
 
@@ -122,6 +125,7 @@ public class Label extends ContentElementBase {
      *
      * @return String component id
      */
+    @BeanTagAttribute(name="labelForComponentId")
     public String getLabelForComponentId() {
         return this.labelForComponentId;
     }
@@ -140,6 +144,7 @@ public class Label extends ContentElementBase {
      *
      * @return String label text
      */
+    @BeanTagAttribute(name="labelText")
     public String getLabelText() {
         return this.labelText;
     }
@@ -161,6 +166,7 @@ public class Label extends ContentElementBase {
      * @return boolean true if a colon should be rendered, false if it should
      *         not be
      */
+    @BeanTagAttribute(name="renderColon")
     public boolean isRenderColon() {
         return this.renderColon;
     }
@@ -186,6 +192,7 @@ public class Label extends ContentElementBase {
      *
      * @return Message instance
      */
+    @BeanTagAttribute(name="requiredMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getRequiredMessage() {
         return this.requiredMessage;
     }
@@ -205,6 +212,7 @@ public class Label extends ContentElementBase {
      *
      * @return Position the requiredMessage placement
      */
+    @BeanTagAttribute(name="requiredMessagePlacement",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Position getRequiredMessagePlacement() {
         return this.requiredMessagePlacement;
     }
@@ -225,6 +233,7 @@ public class Label extends ContentElementBase {
      *
      * @return Message with rich message structure, null if no rich message structure
      */
+    @BeanTagAttribute(name="richLabelMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getRichLabelMessage() {
         return richLabelMessage;
     }
@@ -245,6 +254,7 @@ public class Label extends ContentElementBase {
      *
      * @return the Label's inlineComponents
      */
+    @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

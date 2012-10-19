@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
@@ -44,6 +46,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
+@BeanTag(name="mustOccurConstraint")
 public class MustOccurConstraint extends BaseConstraint {
 
     private List<PrerequisiteConstraint> prerequisiteConstraints;
@@ -51,6 +54,7 @@ public class MustOccurConstraint extends BaseConstraint {
 	private Integer min;
 	private Integer max;
 
+    @BeanTagAttribute(name="prerequisiteConstraints",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
 		return prerequisiteConstraints;
 	}
@@ -59,6 +63,7 @@ public class MustOccurConstraint extends BaseConstraint {
 		this.prerequisiteConstraints = prerequisiteConstraints;
 	}
 
+    @BeanTagAttribute(name="mustOccurConstraints",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public List<MustOccurConstraint> getMustOccurConstraints() {
 		return mustOccurConstraints;
 	}
@@ -67,6 +72,7 @@ public class MustOccurConstraint extends BaseConstraint {
 		this.mustOccurConstraints = occurs;
 	}
 
+    @BeanTagAttribute(name="min")
 	public Integer getMin() {
 		return min;
 	}
@@ -75,6 +81,7 @@ public class MustOccurConstraint extends BaseConstraint {
 		this.min = min;
 	}
 
+    @BeanTagAttribute(name="max")
 	public Integer getMax() {
 		return max;
 	}

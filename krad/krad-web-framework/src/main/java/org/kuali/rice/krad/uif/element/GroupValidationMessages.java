@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -35,6 +37,7 @@ import java.util.List;
 /**
  * ValidationMessages for logic and options specific to groups
  */
+@BeanTag(name="groupValidationMessage")
 public class GroupValidationMessages extends ValidationMessages {
     private static final long serialVersionUID = -5389990220206079052L;
 
@@ -195,6 +198,7 @@ public class GroupValidationMessages extends ValidationMessages {
      *
      * @return the displayFieldLabelWithMessages
      */
+    @BeanTagAttribute(name="displayFieldLabelWithMessages")
     public boolean isDisplayFieldLabelWithMessages() {
         return this.displayFieldLabelWithMessages;
     }
@@ -220,6 +224,7 @@ public class GroupValidationMessages extends ValidationMessages {
      *
      * @return if field link messages are being collapsed
      */
+    @BeanTagAttribute(name="collapseAdditionalFieldLinkMessages")
     public boolean isCollapseAdditionalFieldLinkMessages() {
         return collapseAdditionalFieldLinkMessages;
     }

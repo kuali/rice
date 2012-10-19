@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BeanTag(name="workflowAttributes")
 public class WorkflowAttributes extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 6435015497886060280L;
 
@@ -44,6 +47,7 @@ public class WorkflowAttributes extends UifDictionaryBeanBase {
 	/**
 	 * @return the searchingTypeDefinitions
 	 */
+    @BeanTagAttribute(name="searchingTypeDefinitions",type= BeanTagAttribute.AttributeType.LISTBEAN)
 	public List<SearchingTypeDefinition> getSearchingTypeDefinitions() {
 		return this.searchingTypeDefinitions;
 	}
@@ -56,6 +60,7 @@ public class WorkflowAttributes extends UifDictionaryBeanBase {
 		this.searchingTypeDefinitions = searchingTypeDefinitions;
 	}
 
+    @BeanTagAttribute(name="routingTypeDefinitions",type= BeanTagAttribute.AttributeType.MAPBEAN)
 	public Map<String, RoutingTypeDefinition> getRoutingTypeDefinitions() {
 		return this.routingTypeDefinitions;
 	}

@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.modifier;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -53,6 +55,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="compareFieldCreateModifier")
 public class CompareFieldCreateModifier extends ComponentModifierBase {
     private static final Logger LOG = Logger.getLogger(CompareFieldCreateModifier.class);
 
@@ -321,6 +324,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return int default sequence starting value
      */
+    @BeanTagAttribute(name="defaultOrderSequence")
     public int getDefaultOrderSequence() {
         return this.defaultOrderSequence;
     }
@@ -347,6 +351,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * @return boolean true if the headers should be created, false if no
      *         headers should be created
      */
+    @BeanTagAttribute(name="generateCompareHeaders")
     public boolean isGenerateCompareHeaders() {
         return this.generateCompareHeaders;
     }
@@ -366,6 +371,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return HeaderField header field prototype
      */
+    @BeanTagAttribute(name="headerFieldPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Header getHeaderFieldPrototype() {
         return this.headerFieldPrototype;
     }
@@ -390,6 +396,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return List<ComparableInfo> comparables to generate fields for
      */
+    @BeanTagAttribute(name="comparables",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ComparableInfo> getComparables() {
         return this.comparables;
     }

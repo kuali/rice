@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
     identifier when true, only the field marked as an identifier will be passed in as a lookup parameter
                at most one supportAttribute for each relationship should be defined as identifier="true"
  */
+@BeanTag(name="supportAttributeDefinition")
 public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
     private static final long serialVersionUID = -1719022365280776405L;
 
@@ -43,6 +46,7 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
 
     public SupportAttributeDefinition() {}
 
+    @BeanTagAttribute(name="identifier")
     public boolean isIdentifier() {
         return identifier;
     }

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
@@ -29,6 +31,7 @@ import java.util.ArrayList;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="validCharactersConstraint")
 public class ValidCharactersConstraint extends BaseConstraint {
 
     protected String value;
@@ -38,6 +41,7 @@ public class ValidCharactersConstraint extends BaseConstraint {
      * This value should include the ^ and $ symbols if needed
      * @return the value
      */
+    @BeanTagAttribute(name="value")
     public String getValue() {
         return value;
     }

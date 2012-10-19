@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -26,6 +28,7 @@ import org.kuali.rice.krad.uif.field.InputField;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name="groupControl")
 public class GroupControl extends TextControl {
     private static final long serialVersionUID = 5598459655735440981L;
 
@@ -78,6 +81,7 @@ public class GroupControl extends TextControl {
      *
      * @return String namespaceCodePropertyName
      */
+    @BeanTagAttribute(name="namespaceCodePropertyName")
     public String getNamespaceCodePropertyName() {
         return namespaceCodePropertyName;
     }
@@ -96,6 +100,7 @@ public class GroupControl extends TextControl {
      *
      * @return String groupIdPropertyName
      */
+    @BeanTagAttribute(name="groupIdPropertyName")
     public String getGroupIdPropertyName() {
         return groupIdPropertyName;
     }

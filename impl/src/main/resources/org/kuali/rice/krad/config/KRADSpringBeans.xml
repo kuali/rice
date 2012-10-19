@@ -129,6 +129,7 @@
         <value>classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifInitiateDocumentInfoDefinitions.xml</value>
       </list>
     </property>
     <property name="packagePrefixes">
@@ -226,6 +227,7 @@
         <value>classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifInitiateDocumentInfoDefinitions.xml</value>
       </list>
     </property>
   </bean>

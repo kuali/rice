@@ -623,7 +623,11 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	 */
 	@Override
 	public ActionForward docHandler(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		super.docHandler(mapping, form, request, response);
+		ActionForward af = super.docHandler(mapping, form, request, response);
+        if (af.getName().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME))
+        {
+            return af;
+        }
 		KualiMaintenanceForm kualiMaintenanceForm = (KualiMaintenanceForm) form;
 
 		if (KewApiConstants.ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KewApiConstants.DOCSEARCH_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KewApiConstants.SUPERUSER_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KewApiConstants.HELPDESK_ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) && kualiMaintenanceForm.getDocId() != null) {

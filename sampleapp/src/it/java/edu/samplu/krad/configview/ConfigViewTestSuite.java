@@ -24,7 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    CollectionsIT.class,
+    CollectionsLegacyIT.class,
     HelpIT.class,
     HelpIT2.class})
 public class ConfigViewTestSuite {

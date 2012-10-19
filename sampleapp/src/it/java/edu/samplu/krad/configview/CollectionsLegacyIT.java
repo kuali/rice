@@ -161,7 +161,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
 	public void testAddViaLightbox() throws Exception {
 		
 		waitAndClickByLinkText("Add Via Lightbox");
-		Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+		Assert.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
 	    waitAndClickByXpath("//button[contains(.,'Add Line')]");
         Thread.sleep(3000);
         waitAndTypeByXpath("//form/div/table/tbody/tr/td/div/input", "1");
@@ -170,7 +170,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
         waitAndTypeByXpath("//form/div/table/tbody/tr[4]/td/div/input", "1");
         waitAndClickByXpath("//button[@id='uif-addLine_add']");
         Thread.sleep(3000);
-		Assert.assertEquals("Total: 421", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+		Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
 
 	}
 	

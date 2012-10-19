@@ -53,7 +53,6 @@
         <value>krad/plugins/jquery/jquery-1.6.3.js</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.9.js</value>
         <value>krad/plugins/cookie/jquery.cookie.js</value>
-        <value>krad/plugins/postmsg/jquery.ba-postmessage.js</value>
         <value>krad/plugins/jgrowl/jquery.jgrowl.js</value>
         <value>krad/plugins/blockUI/jquery.blockUI.js</value>
         <value>krad/plugins/watermark/jquery.watermark.js</value>

@@ -39,7 +39,8 @@
 
   new easyXDM.Socket(/** The configuration */{                         //v- needs to be the application.namespace of the remote server !!!!!! argh!!!!!
     remote: remote,
-    swf: channelLocation.protocol + '//' + channelLocation.host + channelLocation.host + "rice-portal/scripts/easyXDM/easyxdm.swf",
+                                                                                    // ToDo: v- (kr-dev) needs to be the application.namespace of the remote server
+    swf: channelLocation.protocol + '//' + channelLocation.host + channelLocation.host + "/kr-dev/rice-portal/scripts/easyXDM/easyxdm.swf",
     container: "embedded",
     props: {
       style: {

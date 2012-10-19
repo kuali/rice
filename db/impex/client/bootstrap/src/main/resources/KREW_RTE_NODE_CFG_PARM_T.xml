@@ -207,9 +207,9 @@
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
         RTE_NODE_CFG_PARM_ID="2431" RTE_NODE_ID="2898" VAL="Template"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2432" RTE_NODE_ID="2899" VAL="&lt;role name=&quot;RoleType&quot;>&lt;qualifierResolverClass>org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver&lt;/qualifierResolverClass>&lt;activationType>P&lt;/activationType>&lt;/role>"/>
+        RTE_NODE_CFG_PARM_ID="2432" RTE_NODE_ID="2899" VAL="&lt;role name=&quot;RoleType&quot;>&lt;qualifierResolverClass>org.kuali.rice.kim.impl.type.KimTypeQualifierResolver&lt;/qualifierResolverClass>&lt;activationType>P&lt;/activationType>&lt;/role>"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="qualifierResolverClass"
-        RTE_NODE_CFG_PARM_ID="2433" RTE_NODE_ID="2899" VAL="org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver"/>
+        RTE_NODE_CFG_PARM_ID="2433" RTE_NODE_ID="2899" VAL="org.kuali.rice.kim.impl.type.KimTypeQualifierResolver"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
         RTE_NODE_CFG_PARM_ID="2434" RTE_NODE_ID="2899" VAL="P"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
@@ -219,9 +219,9 @@
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
         RTE_NODE_CFG_PARM_ID="2437" RTE_NODE_ID="2901" VAL="Template"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2438" RTE_NODE_ID="2902" VAL="&lt;role name=&quot;GroupType&quot;>&lt;qualifierResolverClass>org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver&lt;/qualifierResolverClass>&lt;activationType>P&lt;/activationType>&lt;/role>"/>
+        RTE_NODE_CFG_PARM_ID="2438" RTE_NODE_ID="2902" VAL="&lt;role name=&quot;GroupType&quot;>&lt;qualifierResolverClass>org.kuali.rice.kim.impl.type.KimTypeQualifierResolver&lt;/qualifierResolverClass>&lt;activationType>P&lt;/activationType>&lt;/role>"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="qualifierResolverClass"
-        RTE_NODE_CFG_PARM_ID="2439" RTE_NODE_ID="2902" VAL="org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver"/>
+        RTE_NODE_CFG_PARM_ID="2439" RTE_NODE_ID="2902" VAL="org.kuali.rice.kim.impl.type.KimTypeQualifierResolver"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
         RTE_NODE_CFG_PARM_ID="2440" RTE_NODE_ID="2902" VAL="P"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
@@ -231,17 +231,17 @@
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
         RTE_NODE_CFG_PARM_ID="2443" RTE_NODE_ID="2904" VAL="Template"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2444" RTE_NODE_ID="2905" VAL="&lt;role name=&quot;GroupType&quot;>&lt;qualifierResolverClass>org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver&lt;/qualifierResolverClass>&lt;activationType>P&lt;/activationType>&lt;/role>"/>
+        RTE_NODE_CFG_PARM_ID="2444" RTE_NODE_ID="2905" VAL="&lt;role name=&quot;GroupType&quot;>&lt;qualifierResolverClass>org.kuali.rice.kim.impl.type.KimTypeQualifierResolver&lt;/qualifierResolverClass>&lt;activationType>P&lt;/activationType>&lt;/role>"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="qualifierResolverClass"
-        RTE_NODE_CFG_PARM_ID="2445" RTE_NODE_ID="2905" VAL="org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver"/>
+        RTE_NODE_CFG_PARM_ID="2445" RTE_NODE_ID="2905" VAL="org.kuali.rice.kim.impl.type.KimTypeQualifierResolver"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
         RTE_NODE_CFG_PARM_ID="2446" RTE_NODE_ID="2905" VAL="P"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
         RTE_NODE_CFG_PARM_ID="2447" RTE_NODE_ID="2905" VAL="Template"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2448" RTE_NODE_ID="2906" VAL="&lt;role name=&quot;RoleType&quot;>&lt;qualifierResolverClass>org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver&lt;/qualifierResolverClass>&lt;activationType>P&lt;/activationType>&lt;/role>"/>
+        RTE_NODE_CFG_PARM_ID="2448" RTE_NODE_ID="2906" VAL="&lt;role name=&quot;RoleType&quot;>&lt;qualifierResolverClass>org.kuali.rice.kim.impl.type.KimTypeQualifierResolver&lt;/qualifierResolverClass>&lt;activationType>P&lt;/activationType>&lt;/role>"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="qualifierResolverClass"
-        RTE_NODE_CFG_PARM_ID="2449" RTE_NODE_ID="2906" VAL="org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver"/>
+        RTE_NODE_CFG_PARM_ID="2449" RTE_NODE_ID="2906" VAL="org.kuali.rice.kim.impl.type.KimTypeQualifierResolver"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
         RTE_NODE_CFG_PARM_ID="2450" RTE_NODE_ID="2906" VAL="P"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"

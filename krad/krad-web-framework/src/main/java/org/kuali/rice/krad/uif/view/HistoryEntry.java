@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 
 import java.io.Serializable;
 
@@ -59,6 +60,8 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
      * @return String containing the entries values
      */
     public String toParam() {
+        viewId = (StringUtils.isNotBlank(viewId)) ? viewId : "null";
+        pageId = (StringUtils.isNotBlank(pageId)) ? pageId : "null";
         return viewId
                 + History.VAR_TOKEN
                 + pageId

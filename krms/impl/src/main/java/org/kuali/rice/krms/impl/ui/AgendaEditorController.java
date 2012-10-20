@@ -23,6 +23,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
@@ -136,6 +137,16 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
         return modelAndView;
+    }
+
+
+    @Override
+    public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceForm form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // Reset the page Id so that bread crumbs can come back to the default page on EditAgenda
+        form.setPageId(null);
+        return super.maintenanceEdit(form,result,request,response);
     }
 
     /**

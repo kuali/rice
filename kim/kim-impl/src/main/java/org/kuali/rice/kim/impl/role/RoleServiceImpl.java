@@ -1693,8 +1693,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         List<DelegateMemberAttributeDataBo> updateAttrBos =   new ArrayList<DelegateMemberAttributeDataBo>();
 
         boolean matched = false;
-        for (DelegateMemberAttributeDataBo newDelegateMemberAttrDataBo :  attrBos) {
-            if (originalDelegateMemberBo !=null ) {
+        if (originalDelegateMemberBo !=null ) {
+            bo.setVersionNumber(originalDelegateMemberBo.getVersionNumber());
+            for (DelegateMemberAttributeDataBo newDelegateMemberAttrDataBo :  attrBos) {
                 for (DelegateMemberAttributeDataBo oldDelegateMemberAttrDataBo :  originalDelegateMemberBo.getAttributeDetails()) {
                     if (newDelegateMemberAttrDataBo.getKimTypeId().equals(oldDelegateMemberAttrDataBo.getKimTypeId()) &&
                             newDelegateMemberAttrDataBo.getKimAttributeId().equals(oldDelegateMemberAttrDataBo.getKimAttributeId())) {
@@ -1760,6 +1761,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(delegateMembers, "delegateMembers");
         for (DelegateMember delegateMember : delegateMembers) {
             DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();
+            delegateMemberInfo.setDelegationMemberId(delegateMember.getDelegationMemberId());
             delegateMemberInfo.setAttributes(delegateMember.getAttributes());
             delegateMemberInfo.setDelegationId(delegateMember.getDelegationId());
             delegateMemberInfo.setMemberId(delegateMember.getMemberId());

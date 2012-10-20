@@ -417,7 +417,7 @@ BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE KRMS_CNTXT_TERM_SPEC_PREREQ_S'; EXCEPTION
 /
 UPDATE krim_perm_t SET nm = REPLACE( nm, 'Apprive', 'Approve' ) WHERE nm LIKE '%Apprive%'
 /
-DELETE FROM krcr_nmspc_t WHERE nm IN ( 'KR-RULE-TEST', 'KR-SAP' )
+DELETE FROM krcr_nmspc_t WHERE NMSPC_CD IN ( 'KR-RULE-TEST', 'KR-SAP' )
 /
 DELETE FROM krcr_cmpnt_set_t
 /

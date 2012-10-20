@@ -21,9 +21,9 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 
-import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.apache.commons.lang.StringUtils;
@@ -40,11 +40,11 @@ import java.util.Map;
 public class ParameterRule extends MaintenanceDocumentRuleBase {
 
     /**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.krad.maintenance.MaintenanceDocument)
-	 */
-	@Override
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.kns.document.MaintenanceDocument)
+     */
+    @Override
 	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
 		boolean result = super.processCustomRouteDocumentBusinessRules( document );
 

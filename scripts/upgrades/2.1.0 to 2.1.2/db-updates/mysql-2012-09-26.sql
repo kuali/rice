@@ -22,48 +22,35 @@
 -- This SQL accounts for that and should be error free.
 
 INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD)
-  VALUES(CONCAT('KR',(select KIM_TYP_ID from (select (max(cast(KIM_TYP_ID as decimal)) + 1) as KIM_TYP_ID
-  from KRIM_TYP_T where cast(KIM_TYP_ID as decimal) < 10000) as tmptable)),
-  uuid(), 1, 'Document Type, Route Node, and Route Status', 'documentTypeAndNodeAndRouteStatusPermissionTypeService', 'Y', 'KR-SYS');
+  VALUES('KR1000', uuid(), 1, 'Document Type, Route Node, and Route Status',
+    'documentTypeAndNodeAndRouteStatusPermissionTypeService', 'Y', 'KR-SYS');
 
 INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND)
-  VALUES(CONCAT('KR',(select KIM_TYP_ATTR_ID from (select (max(cast(KIM_TYP_ATTR_ID as decimal)) + 1) as KIM_TYP_ATTR_ID
-    from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and KIM_TYP_ATTR_ID rlike '^[1-9][0-9]{0,3}$' ) as tmptable)),
-  uuid(), 1, 'a',
+  VALUES('KR1000',  uuid(), 1, 'a',
   (select KIM_TYP_ID from KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and NMSPC_CD = 'KR-SYS'),
   (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NM = 'documentTypeName' and NMSPC_CD = 'KR-WKFLW'), 'Y');
 
 INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND)
-  VALUES(CONCAT('KR',(select KIM_TYP_ATTR_ID from (select (max(cast(SUBSTRING(KIM_TYP_ATTR_ID, 3) as decimal)) + 1) as KIM_TYP_ATTR_ID
-    from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and KIM_TYP_ATTR_ID rlike '^[K][R][1-9][0-9]{0,3}$' ) as tmptable)),
-  uuid(), 1, 'b',
+  VALUES('KR1001', uuid(), 1, 'b',
   (select KIM_TYP_ID from KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and NMSPC_CD = 'KR-SYS'),
   (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NM = 'routeNodeName' and NMSPC_CD = 'KR-WKFLW'), 'Y');
 
 INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND)
-  VALUES(CONCAT('KR',(select KIM_TYP_ATTR_ID from (select (max(cast(SUBSTRING(KIM_TYP_ATTR_ID, 3) as decimal)) + 1) as KIM_TYP_ATTR_ID
-    from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and KIM_TYP_ATTR_ID rlike '^[K][R][1-9][0-9]{0,3}$' ) as tmptable)),
-  uuid(), 1, 'c',
+  VALUES('KR1002', uuid(), 1, 'c',
   (select KIM_TYP_ID from KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and NMSPC_CD = 'KR-SYS'),
   (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NM = 'routeStatusCode' and NMSPC_CD = 'KR-WKFLW'), 'Y');
 
-INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR)
-  VALUES ('Y',
+INSERT INTO KRIM_PERM_TMPL_T (PERM_TMPL_ID,ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,VER_NBR)
+  VALUES ('KR1000', 'Y',
   (SELECT KIM_TYP_ID FROM KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and SRVC_NM = 'documentTypeAndNodeAndRouteStatusPermissionTypeService'),
-  'Super User Approve Single Action Request', 'KR-WKFLW', uuid(),
-  CONCAT('KR',(select perm_tmpl_id from (select (max(cast(perm_tmpl_id as decimal)) + 1) as perm_tmpl_id
-    from krim_perm_tmpl_t where perm_tmpl_id is not NULL and perm_tmpl_id rlike '^[1-9][0-9]{0,3}$' ) as tmptable)), 1);
+  'Super User Approve Single Action Request', 'KR-WKFLW', uuid(), 1);
 
-INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR)
-  VALUES ('Y',
+INSERT INTO KRIM_PERM_TMPL_T (PERM_TMPL_ID,ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,VER_NBR)
+  VALUES ('KR1001', 'Y',
   (SELECT KIM_TYP_ID FROM KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and SRVC_NM = 'documentTypeAndNodeAndRouteStatusPermissionTypeService'),
-  'Super User Approve Document', 'KR-WKFLW', uuid(),
-  CONCAT('KR',(select perm_tmpl_id from (select (max(cast(SUBSTRING(perm_tmpl_id, 3) as decimal)) + 1) as perm_tmpl_id
-    from krim_perm_tmpl_t where perm_tmpl_id is not NULL and perm_tmpl_id rlike '^[K][R][1-9][0-9]{0,3}$' ) as tmptable)), 1);
+  'Super User Approve Document', 'KR-WKFLW', uuid(), 1);
 
-INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR)
-  VALUES ('Y',
+INSERT INTO KRIM_PERM_TMPL_T (PERM_TMPL_ID,ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,VER_NBR)
+  VALUES ('KR1002', 'Y',
   (SELECT KIM_TYP_ID FROM KRIM_TYP_T where NM = 'Document Type, Route Node, and Route Status' and SRVC_NM = 'documentTypeAndNodeAndRouteStatusPermissionTypeService'),
-  'Super User Disapprove Document', 'KR-WKFLW', uuid(),
-  CONCAT('KR',(select perm_tmpl_id from (select (max(cast(SUBSTRING(perm_tmpl_id, 3) as decimal)) + 1) as perm_tmpl_id
-    from krim_perm_tmpl_t where perm_tmpl_id is not NULL and perm_tmpl_id rlike '^[K][R][1-9][0-9]{0,3}$' ) as tmptable)), 1);
+  'Super User Disapprove Document', 'KR-WKFLW', uuid(), 1);

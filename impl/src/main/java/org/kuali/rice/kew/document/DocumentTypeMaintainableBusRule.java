@@ -19,8 +19,8 @@ package org.kuali.rice.kew.document;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 
 public class DocumentTypeMaintainableBusRule extends MaintenanceDocumentRuleBase {
 
@@ -61,7 +61,6 @@ public class DocumentTypeMaintainableBusRule extends MaintenanceDocumentRuleBase
             }
         } else {
             result = false;
-            putFieldError("name", "documenttype.name.empty");
         }
         return result;
     }
@@ -77,10 +76,6 @@ public class DocumentTypeMaintainableBusRule extends MaintenanceDocumentRuleBase
         DocumentType bo = (DocumentType) document.getNewMaintainableObject().getDataObject();
 
         isValid = !StringUtils.isBlank(bo.getLabel());
-
-        if (!isValid) {
-                putFieldError("label", "documenttype.label.empty");
-        }
 
         return isValid;
     }

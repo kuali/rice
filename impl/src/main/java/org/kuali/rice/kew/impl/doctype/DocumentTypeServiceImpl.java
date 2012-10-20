@@ -140,7 +140,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
         org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         List<org.kuali.rice.kew.engine.node.RouteNodeInstance> currentNodeInstances = null;
-        if (!routeNodeInstances.isEmpty()) {
+        if (routeNodeInstances != null && !routeNodeInstances.isEmpty()) {
             currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(routeNodeInstances.get(0).getDocumentId());
         }
 
@@ -158,7 +158,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
         org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         List<org.kuali.rice.kew.engine.node.RouteNodeInstance> currentNodeInstances = null;
-        if (!routeNodeInstances.isEmpty()) {
+        if (routeNodeInstances != null && !routeNodeInstances.isEmpty()) {
             currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(routeNodeInstances.get(0).getDocumentId());
         }
 
@@ -177,7 +177,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
 
         List<org.kuali.rice.kew.engine.node.RouteNodeInstance> currentNodeInstances = null;
-        if (!routeNodeInstances.isEmpty()) {
+        if (routeNodeInstances != null && !routeNodeInstances.isEmpty()) {
             currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(routeNodeInstances.get(0).getDocumentId());
         }
 

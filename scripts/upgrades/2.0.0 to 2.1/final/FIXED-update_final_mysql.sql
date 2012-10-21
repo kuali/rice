@@ -153,6 +153,7 @@ INSERT INTO KRIM_ROLE_T (ROLE_ID, OBJ_ID, VER_NBR, ROLE_NM, NMSPC_CD, DESC_TXT, 
 
 update KRCR_PARM_T set val='rice.test@kuali.org'
 where nmspc_cd='KR-WKFLW' and cmpnt_cd='Mailer' and parm_nm='FROM_ADDRESS' and appl_id='KUALI'
+  and val = 'quickstart@localhost'
 ;
 
 

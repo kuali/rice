@@ -348,7 +348,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenu>Maven</guimenu><guisubmenu>Maven Project</guisubmenu></menuchoice> and press the
               <guibutton>Next</guibutton> button twice to get to the <guilabel>Select an Archtype</guilabel> window.
               <figure>
-                 <title></title>
+                <title><link xlink:href="../images/archetype/2_eclipse.png">Click to enlarge</link></title>
                 <mediaobject>
                   <imageobject xlink:href="../images/archetype/2_eclipse.png">
                     <imagedata fileref="../images/archetype/2_eclipse_dbk.png"/>
@@ -403,7 +403,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/3_eclipse.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/3_eclipse.png">
                   <imagedata fileref="../images/archetype/3_eclipse_dbk.png"/>
@@ -462,7 +462,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Click the <guibutton>Finish</guibutton> button.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/4_eclipse.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/4_eclipse.png">
                   <imagedata fileref="../images/archetype/4_eclipse_dbk.png"/>
@@ -510,7 +510,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guilabel>bar</guilabel> is selected and click the <guibutton>OK</guibutton> button.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/5_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/5_eclipse.png">
                         <imagedata fileref="../images/archetype/5_eclipse_dbk.png"/>
@@ -526,7 +526,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     from the menu.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/6_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/6_eclipse.png">
                         <imagedata fileref="../images/archetype/6_eclipse_dbk.png"/>
@@ -542,7 +542,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guimenuitem>JUnit Test</guimenuitem></menuchoice> from the menu.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/7_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/7_eclipse.png">
                         <imagedata fileref="../images/archetype/7_eclipse_dbk.png"/>
@@ -563,7 +563,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     <guilabel>new server wizard</guilabel> link.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/8_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/8_eclipse.png">
                         <imagedata fileref="../images/archetype/8_eclipse_dbk.png"/>
@@ -577,7 +577,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     button.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/9_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/9_eclipse.png">
                         <imagedata fileref="../images/archetype/9_eclipse_dbk.png"/>
@@ -590,7 +590,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Point to a local install of tomcat and click the <guibutton>Next</guibutton> button.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/10_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/10_eclipse.png">
                         <imagedata fileref="../images/archetype/10_eclipse_dbk.png"/>
@@ -604,7 +604,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     configured side. Click the <guibutton>Finish</guibutton> button.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/11_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/11_eclipse.png">
                         <imagedata fileref="../images/archetype/11_eclipse_dbk.png"/>
@@ -617,7 +617,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Double click on the newly created serer under the <guilabel>Servers</guilabel> tab.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/12_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/12_eclipse.png">
                         <imagedata fileref="../images/archetype/12_eclipse_dbk.png"/>
@@ -633,7 +633,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                     Click the <guibutton>OK</guibutton> button.
                   </para>
                   <figure>
-                    <title></title>
+                    <title><link xlink:href="../images/archetype/13_eclipse.png">Click to enlarge</link></title>
                     <mediaobject>
                       <imageobject xlink:href="../images/archetype/13_eclipse.png">
                         <imagedata fileref="../images/archetype/13_eclipse_dbk.png"/>
@@ -649,7 +649,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenuitem>Start</guimenuitem>.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/14_eclipse.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/14_eclipse.png">
                   <imagedata fileref="../images/archetype/14_eclipse_dbk.png"/>
@@ -663,7 +663,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/15_eclipse.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/15_eclipse.png">
                   <imagedata fileref="../images/archetype/15_eclipse_dbk.png"/>
@@ -671,7 +671,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               </mediaobject>
             </figure>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/16_eclipse.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/16_eclipse.png">
                   <imagedata fileref="../images/archetype/16_eclipse_dbk.png"/>
@@ -690,7 +690,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               menu choices.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/1_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/1_intellij.png">
                   <imagedata fileref="../images/archetype/1_intellij_dbk.png"/>
@@ -704,7 +704,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               menu choices.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/2_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/2_intellij.png">
                   <imagedata fileref="../images/archetype/2_intellij_dbk.png"/>
@@ -726,7 +726,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Select <guilabel>Maven Module</guilabel> and click the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/3_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/3_intellij.png">
                   <imagedata fileref="../images/archetype/3_intellij_dbk.png"/>
@@ -784,7 +784,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               and click the <guibutton>Next</guibutton> button.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/4_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/4_intellij.png">
                   <imagedata fileref="../images/archetype/4_intellij_dbk.png"/>
@@ -828,7 +828,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               Click the <guibutton>Finish</guibutton> button.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/5_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/5_intellij.png">
                   <imagedata fileref="../images/archetype/5_intellij_dbk.png"/>
@@ -842,7 +842,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <guimenuitem>Reimport</guimenuitem></menuchoice> from the menu.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/6_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/6_intellij.png">
                   <imagedata fileref="../images/archetype/6_intellij_dbk.png"/>
@@ -877,7 +877,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 </step>
               </substeps>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/7_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/7_intellij.png">
                   <imagedata fileref="../images/archetype/7_intellij_dbk.png"/>
@@ -897,7 +897,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   </menuchoice> to rebuild the project.
                 </para>
                 <figure>
-                  <title></title>
+                  <title><link xlink:href="../images/archetype/8_intellij.png">Click to enlarge</link></title>
                   <mediaobject>
                     <imageobject xlink:href="../images/archetype/8_intellij.png">
                       <imagedata fileref="../images/archetype/8_intellij_dbk.png"/>
@@ -912,7 +912,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   integration test.
                 </para>
                 <figure>
-                  <title></title>
+                  <title><link xlink:href="../images/archetype/9_intellij.png">Click to enlarge</link></title>
                   <mediaobject>
                     <imageobject xlink:href="../images/archetype/9_intellij.png">
                       <imagedata fileref="../images/archetype/9_intellij_dbk.png"/>
@@ -927,7 +927,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   unit tests.
                 </para>
                 <figure>
-                  <title></title>
+                  <title><link xlink:href="../images/archetype/10_intellij.png">Click to enlarge</link></title>
                   <mediaobject>
                     <imageobject xlink:href="../images/archetype/10_intellij.png">
                       <imagedata fileref="../images/archetype/10_intellij_dbk.png"/>
@@ -948,7 +948,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                 </menuchoice> from the menu.
                 </para>
                 <figure>
-                  <title></title>
+                  <title><link xlink:href="../images/archetype/11_intellij.png">Click to enlarge</link></title>
                   <mediaobject>
                     <imageobject xlink:href="../images/archetype/11_intellij.png">
                       <imagedata fileref="../images/archetype/11_intellij_dbk.png"/>
@@ -962,7 +962,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <guimenu>Tomcat Server</guimenu><guimenuitem>Local</guimenuitem></menuchoice> from the menu.
                 </para>
                 <figure>
-                  <title></title>
+                  <title><link xlink:href="../images/archetype/12_intellij.png">Click to enlarge</link></title>
                   <mediaobject>
                     <imageobject xlink:href="../images/archetype/12_intellij.png">
                       <imagedata fileref="../images/archetype/12_intellij_dbk.png"/>
@@ -977,7 +977,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   "-Xms512m -Xmx2g -XX:MaxPermSize=512m" in the <guilabel>VM options</guilabel> field.
                 </para>
                 <figure>
-                  <title></title>
+                  <title><link xlink:href="../images/archetype/13_intellij.png">Click to enlarge</link></title>
                   <mediaobject>
                     <imageobject xlink:href="../images/archetype/13_intellij.png">
                       <imagedata fileref="../images/archetype/13_intellij_dbk.png"/>
@@ -992,7 +992,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <guilabel>bar:war (exploded)</guilabel> and click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>
-                  <title></title>
+                  <title><link xlink:href="../images/archetype/14_intellij.png">Click to enlarge</link></title>
                   <mediaobject>
                     <imageobject xlink:href="../images/archetype/14_intellij.png">
                       <imagedata fileref="../images/archetype/14_intellij_dbk.png"/>
@@ -1006,7 +1006,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   Click the <guibutton>OK</guibutton> button.
                 </para>
                 <figure>
-                  <title></title>
+                  <title><link xlink:href="../images/archetype/15_intellij.png">Click to enlarge</link></title>
                   <mediaobject>
                     <imageobject xlink:href="../images/archetype/15_intellij.png">
                       <imagedata fileref="../images/archetype/15_intellij_dbk.png"/>
@@ -1022,7 +1022,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               the menu
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/16_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/16_intellij.png">
                   <imagedata fileref="../images/archetype/16_intellij_dbk.png"/>
@@ -1036,7 +1036,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               <link xlink:href="http://localhost:8080/bar">http://localhost:8080/bar</link>.
             </para>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/17_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/17_intellij.png">
                   <imagedata fileref="../images/archetype/17_intellij_dbk.png"/>
@@ -1044,7 +1044,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
               </mediaobject>
             </figure>
             <figure>
-              <title></title>
+              <title><link xlink:href="../images/archetype/18_intellij.png">Click to enlarge</link></title>
               <mediaobject>
                 <imageobject xlink:href="../images/archetype/18_intellij.png">
                   <imagedata fileref="../images/archetype/18_intellij_dbk.png"/>

@@ -22,10 +22,13 @@ import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentation
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.rules.MaintenanceDocumentRule;
+import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -160,6 +163,11 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      * @see org.kuali.rice.krad.datadictionary.DocumentEntry#completeValidation()
      */
     public void completeValidation() {
+        if ( !MaintenanceDocumentRule.class.isAssignableFrom( getBusinessRulesClass() ) ) {
+           throw new DataDictionaryException( "ERROR: Business rules class for KNS Maintenance document entry " +
+                   getBusinessRulesClass().getName() + " does not implement the expected " +
+                   MaintenanceDocumentRule.class.getName() + " interface.");
+        }
         super.completeValidation();
 
         for (MaintainableSectionDefinition maintainableSectionDefinition : maintainableSections) {
@@ -351,5 +359,12 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      */
     public void setDerivedValuesSetterClass(Class<? extends DerivedValuesSetter> derivedValuesSetter) {
         this.derivedValuesSetterClass = derivedValuesSetter;
+    }
+
+    public void afterPropertiesSet() throws Exception {
+        if ( getBusinessRulesClass() == null || getBusinessRulesClass().equals(MaintenanceDocumentRuleBase.class) ) {
+            setBusinessRulesClass(org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase.class);
+        }
+        super.afterPropertiesSet();
     }
 }

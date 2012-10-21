@@ -18,19 +18,26 @@ package org.kuali.rice.ksb.messaging.serviceexporters;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
+import org.apache.cxf.binding.soap.saaj.SAAJInInterceptor;
 import org.apache.cxf.endpoint.ServerRegistry;
 import org.apache.cxf.frontend.ServerFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
+import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.log4j.Logger;
+import org.apache.ws.security.WSConstants;
+import org.apache.ws.security.handler.WSHandlerConstants;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition;
 import org.kuali.rice.ksb.impl.cxf.interceptors.ImmutableCollectionsInInterceptor;
+import org.kuali.rice.ksb.messaging.servicehandlers.BasicAuthenticationHandler;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
 
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -80,15 +87,26 @@ public class SOAPServiceExporter extends AbstractWebServiceExporter implements S
 		}
 		
 		//Set logging and security interceptors
-		svrFactory.getInInterceptors().add(new LoggingInInterceptor());
-		svrFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(soapServiceDefinition.getBusSecurity()));
-        svrFactory.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
-		
-		svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());
-		svrFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(soapServiceDefinition.getBusSecurity()));
+		if (soapServiceDefinition.isBasicAuthentication()) {
+			Map<String, Object> properties = new HashMap<String, Object>();
+			properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+			properties.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
+			BasicAuthenticationHandler authenticationHandler = new BasicAuthenticationHandler(
+				soapServiceDefinition.getServiceNameSpaceURI(), serviceDefinition.getServiceName());
+			properties.put(WSHandlerConstants.PW_CALLBACK_REF, authenticationHandler);
+			svrFactory.getInInterceptors().add(new WSS4JInInterceptor(properties));
+			svrFactory.getInInterceptors().add(new SAAJInInterceptor());
+		} else {
+			svrFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(soapServiceDefinition.getBusSecurity()));
+			svrFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(soapServiceDefinition.getBusSecurity()));
+			svrFactory.getInFaultInterceptors().add(new CXFWSS4JInInterceptor(soapServiceDefinition.getBusSecurity()));
+			svrFactory.getOutFaultInterceptors().add(new CXFWSS4JOutInterceptor(soapServiceDefinition.getBusSecurity()));
+		}
 
-		svrFactory.getInFaultInterceptors().add(new CXFWSS4JInInterceptor(soapServiceDefinition.getBusSecurity()));
-		svrFactory.getOutFaultInterceptors().add(new CXFWSS4JOutInterceptor(soapServiceDefinition.getBusSecurity()));
+		svrFactory.getInInterceptors().add(new LoggingInInterceptor());
+		svrFactory.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
+
+		svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());
 		
 		svrFactory.create();
 	}

@@ -452,22 +452,35 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
     protected List<Map<String, String>> buildDocumentTypePermissionDetailsForSuperUser(DocumentType documentType,
             List<RouteNodeInstance> routeNodeInstances, String routeStatusCode) {
         List<Map<String, String>> detailList = new ArrayList<Map<String, String>>();
-        
-        for ( RouteNodeInstance rni : routeNodeInstances ) {
-            Map<String, String> details = buildDocumentTypePermissionDetails(documentType);
-            
-            String routeNodeName = rni.getName();
-            if (!StringUtils.isBlank(routeNodeName)) {
-                details.put(KewApiConstants.ROUTE_NODE_NAME_DETAIL, routeNodeName);
-            } 
-            
-            if (!StringUtils.isBlank(routeStatusCode)) {
-                details.put(KimConstants.AttributeConstants.ROUTE_STATUS_CODE, routeStatusCode);
+
+        if (routeNodeInstances != null) {
+            for ( RouteNodeInstance rni : routeNodeInstances ) {
+                Map<String, String> details = buildDocumentTypeRouteStatusPermissionDetails(documentType, routeStatusCode);
+
+                String routeNodeName = rni.getName();
+                if (!StringUtils.isBlank(routeNodeName)) {
+                    details.put(KewApiConstants.ROUTE_NODE_NAME_DETAIL, routeNodeName);
+                }
+                detailList.add(details);
             }
+        } else {
+            Map<String, String> details = buildDocumentTypeRouteStatusPermissionDetails(documentType, routeStatusCode);
             detailList.add(details);
         }
         return detailList;
-    }	
+    }
+
+    protected Map<String, String> buildDocumentTypeRouteStatusPermissionDetails(DocumentType documentType, String routeStatusCode) {
+        Map<String, String> details = new HashMap<String, String>();
+        if (documentType != null) {
+            details = buildDocumentTypePermissionDetails(documentType);
+        }
+        if (!StringUtils.isBlank(routeStatusCode)) {
+            details.put(KimConstants.AttributeConstants.ROUTE_STATUS_CODE, routeStatusCode);
+        }
+        return details;
+    }
+
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, Map<String, String> permissionDetails) {
 		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (b == null || b) {

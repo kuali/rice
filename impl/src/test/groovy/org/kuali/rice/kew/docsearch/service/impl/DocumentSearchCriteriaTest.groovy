@@ -124,12 +124,13 @@ class DocumentSearchCriteriaTest {
         builder.applicationDocumentId = RandomStringUtils.randomAlphanumeric(5)
         builder.applicationDocumentStatus = RandomStringUtils.randomAlphanumeric(5)
         builder.approverPrincipalName = RandomStringUtils.randomAlphanumeric(5)
-
+        builder.approverPrincipalId = RandomStringUtils.randomAlphanumeric(5)
         builder.documentId = RandomStringUtils.randomAlphanumeric(5)
         builder.documentTypeName = RandomStringUtils.randomAlphanumeric(5)
         builder.documentStatusCategories = Arrays.asList([ DocumentStatusCategory.PENDING, DocumentStatusCategory.SUCCESSFUL ] as DocumentStatusCategory[])
         builder.documentStatuses = Arrays.asList([ DocumentStatus.ENROUTE, DocumentStatus.INITIATED, DocumentStatus.SAVED ] as DocumentStatus[])
         builder.initiatorPrincipalName = RandomStringUtils.randomAlphanumeric(10)
+        builder.initiatorPrincipalId = RandomStringUtils.randomAlphanumeric(10)
         builder.maxResults = 500
         builder.routeNodeName = RandomStringUtils.randomAlphanumeric(5)
         builder.saveName = saveName
@@ -137,6 +138,7 @@ class DocumentSearchCriteriaTest {
         builder.title = RandomStringUtils.randomAlphanumeric(10)
         builder.groupViewerId = RandomStringUtils.randomAlphanumeric(5)
         builder.viewerPrincipalName = RandomStringUtils.randomAlphanumeric(10)
+        builder.viewerPrincipalId = RandomStringUtils.randomAlphanumeric(10)
         builder.routeNodeLookupLogic = RouteNodeLookupLogic.EXACTLY
         return builder
     }

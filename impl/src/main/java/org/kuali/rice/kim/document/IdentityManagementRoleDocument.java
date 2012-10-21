@@ -535,11 +535,22 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			for(RoleDocumentDelegation delegation: getDelegations()){
 				delegation.setDocumentNumber(getDocumentNumber());
 				delegation.setKimTypeId(getKimType().getId());
-				for(RoleDocumentDelegationMember member: delegation.getMembers()){
-					for(RoleDocumentDelegationMemberQualifier qualifier: member.getQualifiers()){
-						qualifier.setKimTypId(getKimType().getId());
-					}
+                List<RoleDocumentDelegationMember> membersToRemove = new AutoPopulatingList(RoleDocumentDelegationMember.class);
+                for(RoleDocumentDelegationMember member: delegation.getMembers()){
+                    if (delegation.getDelegationId().equals(member.getDelegationId()) &&
+                        delegation.getDelegationTypeCode().equals(member.getDelegationTypeCode())) {
+                            for(RoleDocumentDelegationMemberQualifier qualifier: member.getQualifiers()){
+						        qualifier.setKimTypId(getKimType().getId());
+                            }
+					} else {
+                        membersToRemove.add(member);
+                    }
 				}
+                if (!membersToRemove.isEmpty()) {
+                    for(RoleDocumentDelegationMember member: membersToRemove) {
+                        delegation.getMembers().remove(member);
+                    }
+                }
 				delegation.setRoleId(roleId);
 			}
 		}

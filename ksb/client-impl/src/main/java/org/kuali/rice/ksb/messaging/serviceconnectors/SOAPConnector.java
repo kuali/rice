@@ -20,17 +20,23 @@ import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.log4j.Logger;
+import org.apache.ws.security.WSConstants;
+import org.apache.ws.security.handler.WSHandlerConstants;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration;
 import org.kuali.rice.ksb.impl.cxf.interceptors.ImmutableCollectionsInInterceptor;
+import org.kuali.rice.ksb.messaging.servicehandlers.BasicAuthenticationPasswordHandler;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
 import org.kuali.rice.ksb.security.soap.CredentialsOutHandler;
+import org.kuali.rice.ksb.service.BasicAuthenticationCredentials;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import java.net.URL;
-
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -83,6 +89,31 @@ public class SOAPConnector extends AbstractServiceConnector {
         clientFactory.getOutFaultInterceptors().add(outSecurityInterceptor);
         if (getCredentialsSource() != null) {
 			clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), getServiceConfiguration()));
+		}
+
+		/**
+		 * Check the basic authentication service for credentials when connecting to a service which requires basic
+		 * authentication.  If credentials are found in the service then this populates the WSSecurity header with
+		 * the correct information.
+		 */
+		SoapServiceConfiguration soapServiceConfiguration = this.getServiceConfiguration();
+
+		if (soapServiceConfiguration.isBasicAuthentication()) {
+			BasicAuthenticationCredentials credentials =
+					KSBServiceLocator.getBasicAuthenticationService().getConnectionCredentials(
+							soapServiceConfiguration.getServiceName().getNamespaceURI(),
+							soapServiceConfiguration.getServiceName().getLocalPart());
+			if (credentials != null) {
+				Map<String, Object> outProps = new HashMap<String, Object>();
+				outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+				outProps.put(WSHandlerConstants.USER, credentials.getUsername());
+				outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
+				outProps.put(WSHandlerConstants.PW_CALLBACK_REF, new BasicAuthenticationPasswordHandler(
+						credentials.getPassword()));
+				WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+				clientFactory.getOutInterceptors().add(wssOut);
+				clientFactory.getOutFaultInterceptors().add(wssOut);
+			}
 		}
 
 	    clientFactory.getInInterceptors().add(new LoggingInInterceptor());

@@ -1041,7 +1041,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						if(ObjectUtils.isNotNull(origEmpInfos)){
 							for (EntityEmploymentBo origEmpInfo : origEmpInfos) {
 								if(isSameEmpInfo(origEmpInfo, entityEmpInfo)){
-									entityEmpInfo.setId(entityEmpInfo.getEntityId());
+									entityEmpInfo.setId(origEmpInfo.getId());
 								}
 
 								if (origEmpInfo.getId()!=null && StringUtils.equals(origEmpInfo.getId(), entityEmpInfo.getId())) {
@@ -1467,7 +1467,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 				origMembers = (origDelegationImplTemp==null || origDelegationImplTemp.getMembers()==null)?
 									new ArrayList<DelegateMemberBo>():origDelegationImplTemp.getMembers();
-				newKimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers, activatingInactive, newDelegationIdAssigned));
+				newKimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers, null, activatingInactive, newDelegationIdAssigned));
 				kimDelegations.add(newKimDelegation);
 				activatingInactive = false;
 			}
@@ -2459,9 +2459,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		DelegateTypeBo newKimDelegation;
 		DelegateTypeBo origDelegationImplTemp = null;
 		List<DelegateMemberBo> origMembers;
-		boolean activatingInactive = false;
+        List<DelegateMemberBo> allOrigMembers = new ArrayList<DelegateMemberBo>();;
+        boolean activatingInactive = false;
 		String newDelegationIdAssigned = "";
-		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
+            if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
 			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementRoleDocument.getDelegations()){
 				newKimDelegation = new DelegateTypeBo();
 				KimCommonUtilsInternal.copyProperties(newKimDelegation, roleDocumentDelegation);
@@ -2477,13 +2478,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						}
 						if(origDelegationImpl.getDelegationId()!=null && StringUtils.equals(origDelegationImpl.getDelegationId(), newKimDelegation.getDelegationId())){
 							newKimDelegation.setVersionNumber(origDelegationImpl.getVersionNumber());
+                            newKimDelegation.setObjectId(origDelegationImpl.getObjectId());
 							origDelegationImplTemp = origDelegationImpl;
 						}
-					}
+                        for (DelegateMemberBo delegateMemberBo:origDelegationImpl.getMembers() ) {
+                            allOrigMembers.add(delegateMemberBo);
+                        }
+                    }
 				}
 				origMembers = (origDelegationImplTemp == null || origDelegationImplTemp.getMembers()==null)?
 									new ArrayList<DelegateMemberBo>():origDelegationImplTemp.getMembers();
-				newKimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers, activatingInactive, newDelegationIdAssigned));
+				newKimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers, allOrigMembers, activatingInactive, newDelegationIdAssigned));
                 kimDelegations.add(newKimDelegation);
 				activatingInactive = false;
 			}
@@ -2492,7 +2497,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected List<DelegateMemberBo> getDelegationMembers(List<RoleDocumentDelegationMember> delegationMembers,
-			List<DelegateMemberBo> origDelegationMembers, boolean activatingInactive, String newDelegationIdAssigned){
+			List<DelegateMemberBo> origDelegationMembers, List<DelegateMemberBo> allOrigMembers, boolean activatingInactive, String newDelegationIdAssigned){
 		List<DelegateMemberBo> delegationsMembersList = new ArrayList<DelegateMemberBo>();
 		DelegateMemberBo newDelegationMemberImpl;
 		DelegateMemberBo origDelegationMemberImplTemp = null;
@@ -2514,10 +2519,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						}
 						if(origDelegationMember.getDelegationMemberId()!=null && StringUtils.equals(origDelegationMember.getDelegationMemberId(), newDelegationMemberImpl.getDelegationMemberId())){
 							newDelegationMemberImpl.setVersionNumber(origDelegationMember.getVersionNumber());
-							origDelegationMemberImplTemp = origDelegationMember;
+                            newDelegationMemberImpl.setObjectId(origDelegationMember.getObjectId());
+                            origDelegationMemberImplTemp = origDelegationMember;
 						}
 					}
 				}
+                for (DelegateMemberBo origMember : allOrigMembers) {
+                    if ((origMember.getDelegationMemberId() != null) &&
+                        (origMember.getDelegationMemberId().equals(delegationMember.getDelegationMemberId())) &&
+                        (origMember.getRoleMemberId() != null) &&
+                        (origMember.getRoleMemberId().equals(delegationMember.getRoleMemberId()))) {
+                            newDelegationMemberImpl.setVersionNumber(origMember.getVersionNumber());
+                            newDelegationMemberImpl.setObjectId(origMember.getObjectId());
+                            origDelegationMemberImplTemp = origMember;
+                    }
+                }
 				origAttributes = (origDelegationMemberImplTemp==null || origDelegationMemberImplTemp.getAttributeDetails()==null)?
 						new ArrayList<DelegateMemberAttributeDataBo>():origDelegationMemberImplTemp.getAttributeDetails();
 				newDelegationMemberImpl.setAttributeDetails(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));

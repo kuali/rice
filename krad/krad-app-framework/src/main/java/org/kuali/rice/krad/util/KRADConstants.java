@@ -42,6 +42,8 @@ public final class KRADConstants {
     public static final String KRAD_INQUIRY_URL_KEY = "krad.inquiry.url";
     public static final String KRAD_LOOKUP_URL_KEY = "krad.lookup.url";
     public static final String KRAD_SERVER_LOOKUP_URL_KEY = "rice.server.krad.lookup.url";
+    public static final String KRAD_INITIATED_DOCUMENT_URL_KEY="initiated.document.url";
+    public static final String KRAD_INITIATED_DOCUMENT_VIEW_NAME="InitiatedDocumentView";
 
     public static final String PARAM_MAINTENANCE_VIEW_MODE = "maintenanceViewMode";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";

@@ -184,4 +184,10 @@ public interface ServiceDefinition {
 	 */
 	CredentialsType getCredentialsType();
 
+	/**
+	 * Returns whether the service is secured with basic authentication
+	 *
+	 * @return true if this service is secured with basic authentication
+	 */
+	boolean isBasicAuthentication();
 }

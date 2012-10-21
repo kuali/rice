@@ -54,7 +54,7 @@ public final class KSBConstants {
         public static final String REGISTRY_SERVICE_URL = "rice.ksb.registry.serviceUrl";
         public static final String WEB_FORCE_ENABLE = "rice.ksb.web.forceEnable";
 
-        
+
     	private Config() {
     		throw new UnsupportedOperationException("do not call");
     	}
@@ -101,7 +101,8 @@ public final class KSBConstants {
         public static final String THREAD_POOL_SERVICE = "rice.ksb.threadPool";
         public static final String TRANSACTION_MANAGER = "transactionManager";
         public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
-        
+        public static final String BASIC_AUTHENTICATION_SERVICE = "basicAuthenticationService";
+
     	private ServiceNames() {
     		throw new UnsupportedOperationException("do not call");
     	}

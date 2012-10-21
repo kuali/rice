@@ -143,4 +143,8 @@
 		</property>
 	</bean>
 
+	<bean id="basicAuthenticationService" parent="basicAuthenticationService-parentBean" />
+
+	<bean id="basicAuthenticationService-parentBean" class="org.kuali.rice.ksb.service.impl.BasicAuthenticationServiceImpl" abstract="true" />
+
 </beans>

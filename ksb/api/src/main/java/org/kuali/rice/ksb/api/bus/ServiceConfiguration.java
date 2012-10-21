@@ -135,4 +135,10 @@ public interface ServiceConfiguration extends Serializable {
 	 */
 	CredentialsType getCredentialsType();
 
+	/**
+	 * Returns whether the service is secured with basic authentication
+	 *
+	 * @since 2.1.3
+	 */
+	Boolean isBasicAuthentication();
 }

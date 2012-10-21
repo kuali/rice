@@ -168,8 +168,9 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 								+ " should not be encrypted.");
 				}
 				else if (fieldValue != null && !"".equals(fieldValue)
-						&& shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths, methodToCall))
-					throw new RuntimeException("The field value for field name " + fieldName + " should be encrypted.");
+				    && auths.hasRestriction(fieldName)
+				    && shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths, methodToCall))
+					    throw new RuntimeException("The field value for field name " + fieldName + " should be encrypted.");
 			}
 		}
 		catch (GeneralSecurityException e) {

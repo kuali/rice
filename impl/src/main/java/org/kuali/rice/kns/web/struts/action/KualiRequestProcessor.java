@@ -29,6 +29,9 @@ import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.util.RequestUtils;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
@@ -47,6 +50,7 @@ import org.kuali.rice.kns.web.struts.form.pojo.PojoForm;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -63,6 +67,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class handles setup of user session and restoring of action form.
@@ -215,6 +221,10 @@ public class KualiRequestProcessor extends RequestProcessor {
 		    ActionForward forward = processActionPerform(request, response, action, form, mapping);
 
             if (forward != null) {
+                if (forward.getRedirect() && forward.getName()!= null && forward.getName().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
+                    LOG.info("Attempt to open a document with a status of \"Initiated\" detected");
+                    return;
+                }
                 // ProcessDefinition the returned ActionForward instance
 			    processForwardConfig(request, response, forward);
             }
@@ -485,6 +495,13 @@ public class KualiRequestProcessor extends RequestProcessor {
 						try {
 							actionForward = action.execute(mapping, form, request, response);
 						} catch (Exception e) {
+                            if (e.getMessage()!= null && e.getMessage().equals(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME)) {
+                                ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+                                StringBuffer sb = new StringBuffer();
+                                sb.append(kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_URL_KEY));
+                                sb.append(kualiConfigurationService.getPropertyValueAsString(KRADConstants.KRAD_INITIATED_DOCUMENT_URL_KEY));
+                                return new ActionForward(KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME, sb.toString() ,true);
+                            }
 							// the doInTransaction method has no means for
 							// throwing exceptions, so we will wrap the
 							// exception in

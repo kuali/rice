@@ -886,7 +886,7 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
  * @param highlightItemClass - the class to add to the group that should be highlighted
  */
 function addLineMouseOver(addButton, highlightItemClass) {
-    var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
+    var innerLayout = jQuery(addButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
             + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
     if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         jQuery(addButton).parent().find('table').addClass(highlightItemClass);
@@ -902,7 +902,7 @@ function addLineMouseOver(addButton, highlightItemClass) {
  * @param highlightItemClass - the class remove from the collection group
  */
 function addLineMouseOut(addButton, highlightItemClass) {
-    var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
+    var innerLayout = jQuery(addButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
             + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
     if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         jQuery(addButton).parent().find('table').removeClass(highlightItemClass);
@@ -1784,4 +1784,81 @@ function voidAction() {
  */
 function nonEmpty(jqObject) {
     return jqObject && jqObject.length;
+}
+
+
+function getTableIdFromChild(component) {
+    return jQuery(component).closest('.dataTables_wrapper').attr('id');
+}
+
+/**
+ * Returns the current active page on a table with the Datatables plugin
+ *
+ * <p>
+ * Returns 1 if it is a table without the Datatables plugin
+ * </p>
+ *
+ * @param id - the id of the table
+ */
+function getCurrentPageForRichTable(id) {
+    var activePage = jQuery('#' + id).find('.paginate_active').text();
+    return activePage;
+
+}
+
+/**
+ * Writes the paging state to hidden fields for the given actions parent table
+ *
+ * <p>
+ *     TODO - create constants for these keys
+ * Writes the following fields :
+ * currentPageRichTable, fromRecordRichTable, toRecordRichTable, totalRecordsRichTable
+ * </p>
+ *
+ * @param collectionAction
+ */
+function writeRichTableInfoToHidden(collectionAction) {
+    var tableId = getTableIdFromChild(collectionAction);
+    writeHiddenToForm('currentPageRichTable', getCurrentPageForRichTable(tableId));
+    var dataTableInfo = parseDataTablesInfo(tableId);
+    writeHiddenToForm('fromRecordRichTable', dataTableInfo[1]);
+    writeHiddenToForm('toRecordRichTable', dataTableInfo[3]);
+    writeHiddenToForm('totalRecordsRichTable', dataTableInfo[5]);
+}
+
+/**
+ * Returns the data tables info message in an array
+ *
+ * @param id - the Table id
+ */
+function parseDataTablesInfo (id) {
+    var dataTableInfo = jQuery('#' + id).parent().find('.dataTables_info').text();
+    return dataTableInfo.split(" ");
+}
+
+/**
+ * Returns the from record of the current page
+ *
+ * @param id - the Table id
+ */
+function getFromRecordRichTable(id) {
+    return parseDataTablesInfo (id)[1];
+}
+
+/**
+ * Returns the to record of the current page
+ *
+ * @param id - the Table id
+ */
+function getToRecordRichTable(id) {
+    return parseDataTablesInfo (id)[3];
+}
+
+/**
+ * Returns the totals records of the table
+ *
+ * @param id - the Table id
+ */
+function getTotalRecordsRichTable(id) {
+    return parseDataTablesInfo (id)[5];
 }

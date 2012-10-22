@@ -511,31 +511,55 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected boolean isVisibleByXpath(String locator) {
         return isVisible(By.xpath(locator));
     }
-
-    protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
+    
+    protected void waitNotVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
-            if (second >= 15) {
-                Assert.fail("timeout waiting for " + locator + " to NOT be visible");
+            if (second >= 60) {
+                Assert.fail("timeout");
             }
 
-            if (!isVisibleByXpath(locator)) {
+            if (!isVisible(by)) {
                 break;
             }
 
+            Thread.sleep(1000);
+        }
+    }   
+
+    protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
+        waitNotVisible(By.xpath(locator));
+    }   
+    
+    protected void waitIsVisible(By by) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= 60) {
+                Assert.fail("timeout");
+            }
+            if (isVisible(by)) {
+                break;
+            }
             Thread.sleep(1000);
         }
     }
-
-    protected void waitIsVisibleByXpath(String locator) throws InterruptedException {
+    
+    protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
+        boolean failed = false;
         for (int second = 0;; second++) {
-            if (second >= 15) {
-                Assert.fail("timeout waiting for " + locator + " to be visible");
-            }
-            if (isVisibleByXpath(locator)) {
-                break;
-            }
+            if (second >= 60) failed = true;     
+            System.out.println("##Status "+failed);
+            try { if (failed || (driver.findElements(By.cssSelector(elementLocator))).size()>0) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
+        checkForIncidentReport(elementLocator); // after timeout to be sure page is loaded
+        if (failed) fail("timeout of 60 seconds waiting for " + elementLocator + " " + message);
+    }
+    
+    protected void waitIsVisible(String locator) throws InterruptedException {
+       waitIsVisible(By.cssSelector(locator));
+    }
+    
+    protected void waitIsVisibleByXpath(String locator) throws InterruptedException {
+        waitIsVisible(By.xpath(locator));
     }
     
     protected void colapseExpandByXpath(String clickLocator, String visibleLocator) throws InterruptedException {

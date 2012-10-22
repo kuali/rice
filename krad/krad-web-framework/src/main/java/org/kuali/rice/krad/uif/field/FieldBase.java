@@ -314,6 +314,15 @@ public class FieldBase extends ComponentBase implements Field {
     public void setLabelRendered(boolean labelRendered) {
         this.labelRendered = labelRendered;
     }
+    
+    /**
+     * Field Security object that indicates what authorization (permissions) exist for the field
+     *
+     * @return FieldSecurity instance
+     */
+    public FieldSecurity getFieldSecurity() {
+        return (FieldSecurity) super.getComponentSecurity();
+    }
 
     /**
      * Override to assert a {@link FieldSecurity} instance is set
@@ -329,6 +338,9 @@ public class FieldBase extends ComponentBase implements Field {
         super.setComponentSecurity(componentSecurity);
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentSecurityClass()
+     */
     @Override
     protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
         return FieldSecurity.class;

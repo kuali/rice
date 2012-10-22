@@ -19,13 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.view.View;
@@ -148,13 +144,12 @@ public class ViewServiceImpl implements ViewService {
         ViewHelperService helperService = view.getViewHelperService();
 
         // invoke initialize phase on the views helper service
-        // Heavily called method showed up on profile as a hotspot.  Putting log statements in checks cuts execution time by ~75%
         if (LOG.isEnabledFor(Priority.INFO)) {
             LOG.info("performing initialize phase for view: " + view.getId());
         }
         helperService.performInitialization(view, model);
 
-        // do indexing
+        // do indexing                               
         if (LOG.isDebugEnabled()) {
             LOG.debug("processing indexing for view: " + view.getId());
         }

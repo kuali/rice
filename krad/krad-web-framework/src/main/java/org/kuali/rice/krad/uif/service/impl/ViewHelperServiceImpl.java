@@ -864,7 +864,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                         user);
                 if (!canUnmaskValue) {
                     dataField.setApplyMask(true);
-                    dataField.setMaskFormatter(dataField.getComponentSecurity().getAttributeSecurity().
+                    dataField.setMaskFormatter(dataField.getDataFieldSecurity().getAttributeSecurity().
                             getMaskFormatter());
                 } else {
                     // check partial mask authorization
@@ -873,7 +873,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     if (!canPartiallyUnmaskValue) {
                         dataField.setApplyMask(true);
                         dataField.setMaskFormatter(
-                                dataField.getComponentSecurity().getAttributeSecurity().getPartialMaskFormatter());
+                                dataField.getDataFieldSecurity().getAttributeSecurity().getPartialMaskFormatter());
                     }
                 }
             }

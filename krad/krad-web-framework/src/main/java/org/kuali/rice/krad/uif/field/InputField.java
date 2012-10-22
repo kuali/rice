@@ -36,7 +36,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;

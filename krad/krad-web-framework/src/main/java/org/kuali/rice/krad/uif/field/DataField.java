@@ -286,8 +286,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         }
 
         // security
-        if (getComponentSecurity().getAttributeSecurity() == null) {
-            getComponentSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
+        if (getDataFieldSecurity().getAttributeSecurity() == null) {
+            getDataFieldSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 
         // alternate property name
@@ -563,12 +563,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return DataFieldSecurity instance
      */
-    @Override
-    @BeanTagAttribute(name="componentSecurity",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public DataFieldSecurity getComponentSecurity() {
+    public DataFieldSecurity getDataFieldSecurity() {
         return (DataFieldSecurity) super.getComponentSecurity();
     }
-
+    
     /**
      * Override to assert a {@link DataFieldSecurity} instance is set
      *
@@ -583,6 +581,9 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         super.setComponentSecurity(componentSecurity);
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentSecurityClass()
+     */
     @Override
     protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
         return DataFieldSecurity.class;
@@ -902,8 +903,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public boolean hasSecureValue() {
         return isApplyMask() || ((getComponentSecurity().isViewAuthz()
-                || getComponentSecurity().isViewInLineAuthz()
-                || ((getComponentSecurity().getAttributeSecurity() != null) && getComponentSecurity()
+                || getDataFieldSecurity().isViewInLineAuthz()
+                || ((getDataFieldSecurity().getAttributeSecurity() != null) && getDataFieldSecurity()
                 .getAttributeSecurity().isHide())) && isHidden());
     }
 

@@ -147,7 +147,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canUnmaskField(View view, ViewModel model, DataField field, String propertyName, Person user) {
         // check mask authz flag is set
-        AttributeSecurity attributeSecurity = field.getComponentSecurity().getAttributeSecurity();
+        AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
         if (attributeSecurity == null || !attributeSecurity.isMask()) {
             return true;
         }
@@ -185,7 +185,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canPartialUnmaskField(View view, ViewModel model, DataField field, String propertyName,
             Person user) {
         // check partial mask authz flag is set
-        AttributeSecurity attributeSecurity = field.getComponentSecurity().getAttributeSecurity();
+        AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
         if (attributeSecurity == null || !attributeSecurity.isPartialMask()) {
             return true;
         }
@@ -323,7 +323,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Person user) {
         // check edit line authz flag is set
-        if (!collectionGroup.getComponentSecurity().isEditLineAuthz()) {
+        if (!collectionGroup.getCollectionGroupSecurity().isEditLineAuthz()) {
             return true;
         }
 
@@ -334,7 +334,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canViewLine(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Person user) {
         // check view line authz flag is set
-        if (!collectionGroup.getComponentSecurity().isViewLineAuthz()) {
+        if (!collectionGroup.getCollectionGroupSecurity().isViewLineAuthz()) {
             return true;
         }
 

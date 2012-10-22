@@ -102,8 +102,8 @@ public class LookupInputField extends InputField {
         }
 
         // security
-        if (getComponentSecurity().getAttributeSecurity() == null) {
-            getComponentSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
+        if (getDataFieldSecurity().getAttributeSecurity() == null) {
+            getDataFieldSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 
         // options

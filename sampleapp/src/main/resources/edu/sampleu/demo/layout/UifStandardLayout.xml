@@ -83,7 +83,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-StandardLayout-Section1" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-StandardLayout-Section1" parent="Uif-VerticalBoxSection" p:disclosure.render="true">
     <property name="headerText" value="Section 1 Title"/>
     <property name="instructionalText" value="Fields are direct children of this section"/>
     <property name="items">
@@ -102,7 +102,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-StandardLayout-Section2" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-StandardLayout-Section2" parent="Uif-VerticalBoxSection" p:disclosure.render="true">
     <property name="headerText" value="Section 2 Title"/>
     <property name="instructionalText" value="SubSections are direct children of this Section"/>
     <property name="items">

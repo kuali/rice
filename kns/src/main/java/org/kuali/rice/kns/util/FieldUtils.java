@@ -1556,7 +1556,7 @@ public final class FieldUtils {
             if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
                 tempField.setFieldDataType(remotableAttributeField.getDataType().name().toLowerCase());
             } else {
-                tempField.setFieldDataType(DataType.FLOAT.getType().getName().toLowerCase());
+                tempField.setFieldDataType(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT);
             }
 
             tempField.setMainFieldLabel(remotableAttributeField.getLongLabel());
@@ -1848,8 +1848,8 @@ public final class FieldUtils {
         } else {
             column.setEscapeXMLValue(true);
         }
-        column.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(dataType.getClass()));
-        column.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(dataType.getClass()));
+        column.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(dataType.getType()));
+        column.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(dataType.getType()));
 
         if(StringUtils.isNotEmpty(attributeField.getFormatterName())) {
             try  {

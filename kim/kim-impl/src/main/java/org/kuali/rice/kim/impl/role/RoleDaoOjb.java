@@ -77,13 +77,33 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         }
     }
 
+    public List<RoleMemberBo> getRoleMembersForGroupIds(String roleId, List<String> groupIds) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo(KIMPropertyConstants.RoleMember.ROLE_ID, roleId);
+        crit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode());
+        crit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
+        Query query = QueryFactory.newQuery(RoleMemberBo.class, crit);
+        Collection<RoleMemberBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+        List<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
+        for (RoleMemberBo rm : coll) {
+            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
+                results.add(rm);
+            }
+        }
+        return results;
+    }
+
     @SuppressWarnings("unchecked")
     public List<RoleMemberBo> getRolePrincipalsForPrincipalIdAndRoleIds(Collection<String> roleIds, String principalId, Map<String, String> qualification) {
 
         Criteria c = new Criteria();
 
         if (CollectionUtils.isNotEmpty(roleIds)) {
-            c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+            if (roleIds.size() == 1) {
+                c.addEqualTo(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds.iterator().next());
+            } else {
+            	c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+            }
         }
         if (principalId != null) {
             c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);

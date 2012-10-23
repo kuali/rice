@@ -545,8 +545,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
         boolean failed = false;
         for (int second = 0;; second++) {
-            if (second >= 60) failed = true;     
-            System.out.println("##Status "+failed);
+            if (second >= 60) failed = true;                 
             try { if (failed || (driver.findElements(By.cssSelector(elementLocator))).size()>0) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }

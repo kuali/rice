@@ -541,7 +541,7 @@ public class Formatter implements Serializable {
         if (obj == null)
             return true;
         // begin Kuali Foundation modification
-        if ((obj instanceof String) && StringUtils.isEmpty((String) obj))
+        if ((obj instanceof String) && StringUtils.isBlank((String) obj))
             return true;
         // end Kuali Foundation modification
         Class type = obj.getClass();

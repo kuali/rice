@@ -33,3 +33,5 @@ insert into krad_msg_t values ('TEST', 'TestComponent', 'validation.test2.error'
 insert into krad_msg_t values ('TEST', 'TestLocales', 'message.key', 'en-US', '33333347', 1, null, 'English US Message');
 insert into krad_msg_t values ('TEST', 'TestLocales', 'message.key', 'fr-CA', '33333348', 1, null, 'French CA Message');
 insert into krad_msg_t values ('TEST', 'TestLocales', 'message.key', 'de', '33333349', 1, null, 'German Message');
+insert into krad_msg_t values ('TEST', 'TestExpressionMessages', 'testMessageKey1', 'en-US', '33333350', 1, null, 'ext key p1 value');
+insert into krad_msg_t values ('TEST', 'TestExpressionMessages', 'testMessageKey2', 'en-US', '33333351', 1, null, 'ext key p2 value');

@@ -132,6 +132,18 @@ public class MessageBeanProcessorTest extends KRADTestCase {
                 messageText);
     }
 
+    /**
+     * Verifies a message keys within an expression get replaced with the text
+     */
+    @Test
+    public void testExpressionMessages() throws Exception {
+        TestDictionaryBean tObject = (TestDictionaryBean) getTestDictionaryObject("TestExpressionMessages");
+
+        assertEquals("Messages in expression for property 1 not replaced",
+                "@{foo eq '1' ? 'ext key p1 value' : 'ext key p2 value'}", tObject.getExpressionGraph().get(
+                "property1"));
+    }
+
     public MessageService getMessageService() {
         return KRADServiceLocatorWeb.getMessageService();
 

@@ -59,7 +59,7 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
 
     /**
      * @see DictionaryBeanProcessor#processRootBeanDefinition(java.lang.String,
-     * org.springframework.beans.factory.config.BeanDefinition)
+     *      org.springframework.beans.factory.config.BeanDefinition)
      */
     public void processRootBeanDefinition(String beanName, BeanDefinition beanDefinition) {
         processBeanMessages(beanName, beanDefinition, null);
@@ -67,8 +67,8 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
 
     /**
      * @see DictionaryBeanProcessor#processNestedBeanDefinition(java.lang.String,
-     * org.springframework.beans.factory.config.BeanDefinition, java.lang.String,
-     * java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     *      org.springframework.beans.factory.config.BeanDefinition, java.lang.String,
+     *      java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
      */
     public void processNestedBeanDefinition(String beanName, BeanDefinition beanDefinition, String propertyName,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
@@ -77,7 +77,7 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
 
     /**
      * @see DictionaryBeanProcessor#processStringPropertyValue(java.lang.String, java.lang.String,
-     * java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     *      java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
      */
     public String processStringPropertyValue(String propertyName, String propertyValue,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
@@ -86,8 +86,8 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
 
     /**
      * @see DictionaryBeanProcessor#processCollectionBeanDefinition(java.lang.String,
-     * org.springframework.beans.factory.config.BeanDefinition, java.lang.String,
-     * java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     *      org.springframework.beans.factory.config.BeanDefinition, java.lang.String,
+     *      java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
      */
     public void processCollectionBeanDefinition(String beanName, BeanDefinition beanDefinition, String propertyName,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
@@ -96,7 +96,7 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
 
     /**
      * @see DictionaryBeanProcessor#processArrayStringPropertyValue(java.lang.String, java.lang.Object[],
-     * java.lang.String, int, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     *      java.lang.String, int, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
      */
     public String processArrayStringPropertyValue(String propertyName, Object[] propertyValue, String elementValue,
             int elementIndex, Stack<BeanDefinitionHolder> nestedBeanStack) {
@@ -105,7 +105,7 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
 
     /**
      * @see DictionaryBeanProcessor#processListStringPropertyValue(java.lang.String, java.util.List<?>,
-     * java.lang.String, int, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     *      java.lang.String, int, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
      */
     public String processListStringPropertyValue(String propertyName, List<?> propertyValue, String elementValue,
             int elementIndex, Stack<BeanDefinitionHolder> nestedBeanStack) {
@@ -114,7 +114,7 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
 
     /**
      * @see DictionaryBeanProcessor#processSetStringPropertyValue(java.lang.String, java.util.Set<?>, java.lang.String,
-     * java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     *      java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
      */
     public String processSetStringPropertyValue(String propertyName, Set<?> propertyValue, String elementValue,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
@@ -123,7 +123,7 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
 
     /**
      * @see DictionaryBeanProcessor#processMapStringPropertyValue(java.lang.String, java.util.Map<?,?>,
-     * java.lang.String, java.lang.Object, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     *      java.lang.String, java.lang.Object, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
      */
     public String processMapStringPropertyValue(String propertyName, Map<?, ?> propertyValue, String elementValue,
             Object elementKey, Stack<BeanDefinitionHolder> nestedBeanStack) {
@@ -171,6 +171,13 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
         }
     }
 
+    /**
+     * Applies the text for a given message to the associated bean definition property
+     *
+     * @param message message instance to apply
+     * @param beanDefinition bean definition the message should be applied to
+     * @param beanClass class for the bean definition
+     */
     protected void applyMessageToBean(Message message, BeanDefinition beanDefinition, Class<?> beanClass) {
         String key = message.getKey().trim();
 
@@ -372,16 +379,56 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
      */
     protected String processMessagePlaceholders(String propertyValue, Stack<BeanDefinitionHolder> nestedBeanStack) {
         String trimmedPropertyValue = StringUtils.stripStart(propertyValue, " ");
-        if (StringUtils.isBlank(trimmedPropertyValue) || !(trimmedPropertyValue.startsWith(
-                KRADConstants.MESSAGE_KEY_PLACEHOLDER_PREFIX) && StringUtils.contains(trimmedPropertyValue,
-                KRADConstants.MESSAGE_KEY_PLACEHOLDER_SUFFIX))) {
+        if (StringUtils.isBlank(trimmedPropertyValue)) {
             return propertyValue;
         }
 
-        // determine if a message key has been specified
-        String messageKeyStr = StringUtils.substringBetween(trimmedPropertyValue,
-                KRADConstants.MESSAGE_KEY_PLACEHOLDER_PREFIX, KRADConstants.MESSAGE_KEY_PLACEHOLDER_SUFFIX);
+        String newPropertyValue = propertyValue;
 
+        // first check for a replacement message key
+        if (trimmedPropertyValue.startsWith(KRADConstants.MESSAGE_KEY_PLACEHOLDER_PREFIX) && StringUtils.contains(
+                trimmedPropertyValue, KRADConstants.MESSAGE_KEY_PLACEHOLDER_SUFFIX)) {
+            String messageKeyStr = StringUtils.substringBetween(trimmedPropertyValue,
+                    KRADConstants.MESSAGE_KEY_PLACEHOLDER_PREFIX, KRADConstants.MESSAGE_KEY_PLACEHOLDER_SUFFIX);
+
+            // get any default specified value (given after the message key)
+            String messageKeyWithPlaceholder = KRADConstants.MESSAGE_KEY_PLACEHOLDER_PREFIX + messageKeyStr +
+                    KRADConstants.MESSAGE_KEY_PLACEHOLDER_SUFFIX;
+
+            String defaultPropertyValue = StringUtils.substringAfter(trimmedPropertyValue, messageKeyWithPlaceholder);
+
+            // set the new property value to the message text (if found), or the default value if a message was not found
+            // note the message text could be an empty string, in which case it will override the default
+            String messageText = getMessageTextForKey(messageKeyStr, nestedBeanStack);
+            if (messageText != null) {
+                // if default value set then we need to merge any expressions
+                if (StringUtils.isNotBlank(defaultPropertyValue)) {
+                    newPropertyValue = getMergedMessageText(messageText, defaultPropertyValue);
+                } else {
+                    newPropertyValue = messageText;
+                }
+            } else {
+                newPropertyValue = defaultPropertyValue;
+            }
+        }
+        // now check for message keys within an expression
+        else if (StringUtils.contains(trimmedPropertyValue, KRADConstants.EXPRESSION_MESSAGE_PLACEHOLDER_PREFIX)) {
+            String[] expressionMessageKeys = StringUtils.substringsBetween(newPropertyValue,
+                    KRADConstants.EXPRESSION_MESSAGE_PLACEHOLDER_PREFIX,
+                    KRADConstants.EXPRESSION_MESSAGE_PLACEHOLDER_SUFFIX);
+
+            for (String expressionMessageKey : expressionMessageKeys) {
+                String expressionMessageText = getMessageTextForKey(expressionMessageKey, nestedBeanStack);
+                newPropertyValue = StringUtils.replace(newPropertyValue,
+                        KRADConstants.EXPRESSION_MESSAGE_PLACEHOLDER_PREFIX + expressionMessageKey +
+                        KRADConstants.EXPRESSION_MESSAGE_PLACEHOLDER_SUFFIX, expressionMessageText);
+            }
+        }
+
+        return newPropertyValue;
+    }
+
+    protected String getMessageTextForKey(String messageKeyStr, Stack<BeanDefinitionHolder> nestedBeanStack) {
         String namespace = null;
         String componentCode = null;
         String key = null;
@@ -424,27 +471,7 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
             messageText = getMessageService().getMessageText(namespace, componentCode, key);
         }
 
-        // get any default specified value (given after the message key)
-        String messageKeyWithPlaceholder = KRADConstants.MESSAGE_KEY_PLACEHOLDER_PREFIX + messageKeyStr +
-                KRADConstants.MESSAGE_KEY_PLACEHOLDER_SUFFIX;
-
-        String defaultPropertyValue = StringUtils.substringAfter(trimmedPropertyValue, messageKeyWithPlaceholder);
-
-        // set the new property value to the message text (if found), or the default value if a message was not found
-        // note the message text could be an empty string, in which case it will override the default
-        String newPropertyValue;
-        if (messageText != null) {
-            // if default value set then we need to merge any expressions
-            if (StringUtils.isNotBlank(defaultPropertyValue)) {
-                newPropertyValue = getMergedMessageText(messageText, defaultPropertyValue);
-            } else {
-                newPropertyValue = messageText;
-            }
-        } else {
-            newPropertyValue = defaultPropertyValue;
-        }
-
-        return newPropertyValue;
+        return messageText;
     }
 
     /**

@@ -80,4 +80,8 @@
     <property name="property2" value="@msg{explicit.message.test.key}p2 value"/>
   </bean>
 
+  <bean id="TestExpressionMessages" class="org.kuali.rice.krad.test.TestDictionaryBean">
+    <property name="property1" value="@{foo eq '1' ? '#msg(testMessageKey1)' : '#msg(testMessageKey2)'}"/>
+  </bean>
+
 </beans>

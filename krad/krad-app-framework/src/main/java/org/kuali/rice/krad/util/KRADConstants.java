@@ -670,6 +670,8 @@ public final class KRADConstants {
     }
 
     public static final String DICTIONARY_BEAN_PARENT_SUFFIX = "-parentBean";
+    public static final String EXPRESSION_MESSAGE_PLACEHOLDER_PREFIX = "#msg(";
+    public static final String EXPRESSION_MESSAGE_PLACEHOLDER_SUFFIX = ")";
     public static final String MESSAGE_KEY_PLACEHOLDER_PREFIX = "@msg{";
     public static final String MESSAGE_KEY_PLACEHOLDER_SUFFIX = "}";
     public static final String MESSAGE_KEY_PATH_INDICATOR = "#";

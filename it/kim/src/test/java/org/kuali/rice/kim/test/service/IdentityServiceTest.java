@@ -24,6 +24,7 @@ import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
+import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
@@ -191,7 +192,17 @@ public class IdentityServiceTest extends KIMTestCase {
 		}
 	}
 
-	protected IdentityService findIdSvc() throws Exception {
+    @Test
+    public void testGetEntityWithNameChangeDate() {
+        String principalName = "testuser7";
+        Entity info = identityService.getEntityByPrincipalName(principalName);
+        List<EntityName> names = info.getNames();
+        for (EntityName name : names) {
+            assertNotNull("nameChangeDate should have been set for PrincipalName " + principalName,name.getNameChangedDate());
+        }
+    }
+
+    protected IdentityService findIdSvc() throws Exception {
 		return (IdentityService) GlobalResourceLoader.getService(
                 new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.IDENTITY_SERVICE_SOAP));
 	}

@@ -26,31 +26,46 @@
     return location;
   };
 
-  var channelLocation = getLocation("${channelUrl}");
+  function loadChannelViaEasyXDM(channelLocation, easyXDMLocation) {
+    var remote;
+    if (jQuery.browser.msie){
+      remote = easyXDMLocation + "resize_intermediate.html?url=/" + encodeURIComponent(channelLocation.pathname + channelLocation.search);
+    } else {
+      remote = easyXDMLocation + "resize_intermediate.html?url=" + encodeURIComponent(channelLocation.pathname + channelLocation.search);
+    }
 
-  var remote;
-  if (jQuery.browser.msie){
-                                                                   // ToDo: v- (kr-dev) needs to be the application.namespace of the remote server
-    remote = channelLocation.protocol + '//' + channelLocation.host + "/kr-dev/rice-portal/scripts/easyXDM/resize_intermediate.html?url=/" + encodeURIComponent(channelLocation.pathname + channelLocation.search);
-  } else {
-                                                                  // ToDo: v- (kr-dev) needs to be the application.namespace of the remote server
-    remote = channelLocation.protocol + '//' + channelLocation.host + "/kr-dev/rice-portal/scripts/easyXDM/resize_intermediate.html?url=" + encodeURIComponent(channelLocation.pathname + channelLocation.search);
+    new easyXDM.Socket(/** The configuration */{
+      remote: remote,
+      swf: easyXDMLocation + "easyxdm.swf",
+      container: "embedded",
+      props: {
+        style: {
+          width: "100%"
+        }
+      },
+      onMessage: function(message, origin){
+        this.container.getElementsByTagName("iframe")[0].style.height = message + "px";
+      }
+    });
   }
 
-  new easyXDM.Socket(/** The configuration */{                         //v- needs to be the application.namespace of the remote server !!!!!! argh!!!!!
-    remote: remote,
-                                                                                    // ToDo: v- (kr-dev) needs to be the application.namespace of the remote server
-    swf: channelLocation.protocol + '//' + channelLocation.host + channelLocation.host + "/kr-dev/rice-portal/scripts/easyXDM/easyxdm.swf",
-    container: "embedded",
-    props: {
-      style: {
-        width: "100%"
-      }
+  var channelLocation = getLocation("${channelUrl}");
+  var channelProtocolHost = channelLocation.protocol + '//' + channelLocation.host;
+
+  // Because the remote app.context.name is unknown, brute force is used to guess the location of easyXDM.
+  var easyXDMLocation = channelProtocolHost + channelLocation.pathname.match("^/.*?/") + "rice-portal/scripts/easyXDM/";
+  jQuery.ajax({
+    type: "HEAD",
+    url: easyXDMLocation + "resize_intermediate.html",
+    success: function() {
+      loadChannelViaEasyXDM(channelLocation, easyXDMLocation);
     },
-    onMessage: function(message, origin){
-      this.container.getElementsByTagName("iframe")[0].style.height = message + "px";
+    error: function () {
+      easyXDMLocation = channelProtocolHost + "/rice-portal/scripts/easyXDM/";
+      loadChannelViaEasyXDM(channelLocation, easyXDMLocation);
     }
   });
+
 </script>
 
 <div id="embedded">

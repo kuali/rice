@@ -1458,6 +1458,9 @@
 					_fnInitComplete( oSettings );
 				}
 			}
+            /* Kuali customization */
+            $(oSettings.oInstance).trigger('dataTables.tableDraw', oSettings);
+            /* end Kuali customization */
 		}
 		
 		
@@ -5827,6 +5830,7 @@
             var nNewCell = document.createElement("td");
             nNewRow.appendChild( nNewCell );
             nNewCell.className = sClass;
+            nNewRow.className = "detailsRow";
             nNewCell.colSpan = _fnVisbleColumns( oSettings );
 
             jQuery(nNewCell).append(jqObject.detach());

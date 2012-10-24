@@ -551,9 +551,9 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
  * Expands all the disclosure divs on the page
  */
 function expandDisclosures() {
-    jQuery("a[data-role='disclosureLink']").each(function(){
+    jQuery("a[data-role='disclosureLink']").each(function () {
         var contentId = jQuery(this).attr("data-linkfor");
-        if(!jQuery("#" + contentId).data("open")){
+        if (!jQuery("#" + contentId).data("open")) {
             jQuery(this).click();
         }
     });
@@ -563,9 +563,9 @@ function expandDisclosures() {
  * Collapses all the disclosure divs on the page
  */
 function collapseDisclosures() {
-    jQuery("a[data-role='disclosureLink']").each(function(){
+    jQuery("a[data-role='disclosureLink']").each(function () {
         var contentId = jQuery(this).attr("data-linkfor");
-        if(jQuery("#" + contentId).data("open")){
+        if (jQuery("#" + contentId).data("open")) {
             jQuery(this).click();
         }
     });
@@ -585,18 +585,37 @@ function createTable(tableId, options, groupingOptions) {
     jQuery(document).ready(function () {
         options.bDestroy = true;
         var table = jQuery("#" + tableId);
+        var detailsOpen = table.parent().data("detailsdefaultopen");
+        table.data("open", detailsOpen);
 
-        if(groupingOptions){
+        if (groupingOptions) {
             table.attr("data-groups", "true");
         }
 
         var oTable = table.dataTable(options);
+
+        //handle row details related functionality setup
+        if(detailsOpen != undefined){
+            jQuery(oTable).on("dataTables.tableDraw", function(){
+                if(table.data("open")){
+                    openAllDetails(tableId);
+                }
+                else{
+                    closeAllDetails(tableId);
+                }
+            });
+
+            if(detailsOpen){
+                openAllDetails(tableId, false);
+            }
+        }
+
         // allow table column size recalculation on window resize
         jQuery(window).bind('resize', function () {
             oTable.fnAdjustColumnSizing();
         });
 
-        if(groupingOptions){
+        if (groupingOptions) {
             oTable.rowGrouping(groupingOptions);
         }
     });
@@ -643,6 +662,132 @@ function expandDataTableDetail(actionComponent, tableId, useImages) {
             var detailsGroup = jQuery(newRow).find("[data-role='details']").filter(":first");
             detailsGroup.slideDown();
         }
+        jQuery(nTr).data("det-interact", true);
+    }
+}
+
+/**
+ * Open all row details in the table specified by id
+ *
+ * @param tableId id of the table to open all details for
+ * @param animate [optional] if true, animate during opening the rows
+ * @param forceOpen [optional] if true, force the each row details to open and reset interaction flag, otherwise if the
+ * row has been interacted with skip (used to retain state)
+ */
+function openAllDetails(tableId, animate, forceOpen) {
+    var oTable = null;
+    var tables = jQuery.fn.dataTable.fnTables();
+    jQuery(tables).each(function () {
+        var dataTable = jQuery(this).dataTable();
+        //ensure the dataTable is the one that contains the action that was clicked
+        if (dataTable.attr("id") == tableId) {
+            oTable = dataTable;
+        }
+    });
+
+    if (oTable != null) {
+        var rows = jQuery(oTable).find('tr').not(".detailsRow");
+        rows.each(function () {
+            var row = jQuery(this);
+            //Means the row is not open and the user has not interacted with it (or force if forceOpen is true)
+            //This is done to retain row details "state" between table draws for rows the user may have interacted with
+            if(!oTable.fnIsOpen(this) && (!row.data("det-interact") || forceOpen)){
+                var actionComponent = row.find("a[data-role='detailsLink']");
+                var detailsGroup = row.find("div[data-role='details']").filter(":first");
+
+                if (actionComponent.length && jQuery(actionComponent).find("img").length) {
+                    jQuery(actionComponent).find("img").replaceWith(detailsCloseImage.clone());
+                }
+
+                var newRow = oTable.fnOpenCustom(this, detailsGroup, "uif-rowDetails");
+                detailsGroup = jQuery(newRow).find("[data-role='details']").filter(":first");
+
+                if(animate){
+                    detailsGroup.slideDown();
+                }
+                else{
+                    detailsGroup.show();
+                }
+
+                //reset user interaction flag
+                row.data("det-interact", false);
+            }
+        });
+    }
+}
+
+/**
+ * Close all row details in the table specified by id
+ *
+ * @param tableId id of the table to close all details for
+ * @param animate [optional] if true, animate during closing the rows
+ * @param forceOpen [optional] if true, force the each row details to close and reset interaction flag, otherwise if the
+ * row has been interacted with skip (used to retain state)
+ */
+function closeAllDetails(tableId, animate, forceClose) {
+    var oTable = null;
+    var tables = jQuery.fn.dataTable.fnTables();
+    jQuery(tables).each(function () {
+        var dataTable = jQuery(this).dataTable();
+        //ensure the dataTable is the one that contains the action that was clicked
+        if (dataTable.attr("id") == tableId) {
+            oTable = dataTable;
+        }
+    });
+
+    if (oTable != null) {
+        var rows = jQuery(oTable).find('tr').not(".detailsRow");
+        rows.each(function () {
+            var row = jQuery(this);
+            //Means the row is open and the user has not interacted with it (or force if forceClose is true)
+            //This is done to retain row details "state" between table draws for rows the user may have interacted with
+            if (oTable.fnIsOpen(this) && (!row.data("det-interact") || forceClose)) {
+                var oRow = this;
+                var actionComponent = row.find("a[data-role='detailsLink']");
+                var fieldGroupWrapper = row.find("div[data-role='detailsFieldGroup'] fieldset div.uif-verticalBoxLayout");
+                var detailsContent = row.next().first().find("[data-role='details']").filter(":first");
+
+                if (jQuery(actionComponent).find("img").length) {
+                    jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
+                }
+
+                if(animate){
+                    detailsContent.slideUp(function () {
+                        fieldGroupWrapper.append(detailsContent.detach());
+                        oTable.fnClose(oRow);
+                    });
+                }
+                else{
+                    detailsContent.hide();
+                    fieldGroupWrapper.append(detailsContent.detach());
+                    oTable.fnClose(oRow);
+                }
+
+                //reset user interaction flag
+                row.data("det-interact", false);
+            }
+        });
+    }
+}
+
+/**
+ * Open or close all rows for the table specified by the actionComponent's "tableid" data attribute
+ *
+ * @param actionComponent the calling action component
+ */
+function toggleRowDetails(actionComponent){
+    var action = jQuery(actionComponent);
+    var tableId = action.data("tableid");
+    var open = action.data("open");
+    if(open){
+        closeAllDetails(tableId, true, true);
+        action.data("open", false);
+        jQuery("#" + tableId).data("open", false);
+    }
+    else{
+        openAllDetails(tableId, true, true);
+        action.data("open", true);
+        jQuery("#" + tableId).data("open", true);
     }
 }
 
@@ -726,13 +871,13 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
             }
 
             jQuery.ajax({
-                url: jQuery("form#kualiForm").attr("action"),
-                dataType: "json",
-                beforeSend: null,
-                complete: null,
-                error: null,
-                data: queryData,
-                success: function (data) {
+                url:jQuery("form#kualiForm").attr("action"),
+                dataType:"json",
+                beforeSend:null,
+                complete:null,
+                error:null,
+                data:queryData,
+                success:function (data) {
                     response(data.resultData);
                 }
             });

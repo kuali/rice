@@ -95,10 +95,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private int actionColumnIndex = -1;
     private String actionColumnPlacement;
 
+    //row details properties
     private Group rowDetailsGroup;
     private String rowDetailsLinkName = "Details";
     private boolean rowDetailsUseImage;
     private boolean rowDetailsOpen;
+    private boolean showToggleAllDetails;
+    private Action toggleAllDetailsAction;
 
     //grouping properties
     @KeepExpression
@@ -871,10 +874,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         components.add(addLineGroup);
         components.addAll(headerLabels);
         components.addAll(dataFields);
+
         for (ColumnCalculationInfo cInfo : columnCalculations) {
             components.add(cInfo.getTotalField());
             components.add(cInfo.getPageTotalField());
             components.add(cInfo.getGroupTotalFieldPrototype());
+        }
+
+        if(isShowToggleAllDetails()){
+            components.add(toggleAllDetailsAction);
         }
 
         return components;
@@ -1392,6 +1400,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     public void setupDetails(CollectionGroup collectionGroup, View view) {
         if (getRowDetailsGroup() != null && this.getRichTable() != null && this.getRichTable().isRender()) {
+            //data attribute to mark this group to open itself when rendered
+            collectionGroup.addDataAttribute("detailsDefaultOpen", Boolean.toString(this.rowDetailsOpen));
+
+            toggleAllDetailsAction.addDataAttribute("open", Boolean.toString(this.rowDetailsOpen));
+            toggleAllDetailsAction.addDataAttribute("tableid", this.getId());
+
             this.getRowDetailsGroup().setHidden(true);
             FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
             TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
@@ -1416,9 +1430,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //build js for link
             /*rowDetailsAction.setActionScript(
                     "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");*/
-            if (rowDetailsOpen) {
 
-            }
 
             List<Component> detailsItems = new ArrayList<Component>();
 
@@ -1739,5 +1751,63 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     public void setGroupingPrefix(String groupingPrefix) {
         this.groupingPrefix = groupingPrefix;
+    }
+
+    /**
+     * If true, all details will be opened by default when the table loads.  Can only be used on tables that have
+     * row details setup.
+     *
+     * @return true if row details
+     */
+    public boolean isRowDetailsOpen() {
+        return rowDetailsOpen;
+    }
+
+    /**
+     * Set if row details should be open on table load
+     *
+     * @param rowDetailsOpen
+     */
+    public void setRowDetailsOpen(boolean rowDetailsOpen) {
+        this.rowDetailsOpen = rowDetailsOpen;
+    }
+
+    /**
+     * If true, the toggleAllDetailsAction will be shown.  This button allows all details to
+     * be open/closed simultaneously.
+     *
+     * @return true if the action button to toggle all row details opened/closed
+     */
+    public boolean isShowToggleAllDetails() {
+        return showToggleAllDetails;
+    }
+
+    /**
+     * Set if the toggleAllDetailsAction should be shown
+     *
+     * @param showToggleAllDetails
+     */
+    public void setShowToggleAllDetails(boolean showToggleAllDetails) {
+        this.showToggleAllDetails = showToggleAllDetails;
+    }
+
+    /**
+     * The toggleAllDetailsAction action component used to toggle all row details open/closed.  This property is set
+     * by the default configuration and should not be reset in most cases.
+     *
+     * @return Action component to use for the toggle action button
+     */
+    public Action getToggleAllDetailsAction() {
+        return toggleAllDetailsAction;
+    }
+
+    /**
+     * Set the toggleAllDetailsAction action component used to toggle all row details open/closed.  This property is set
+     * by the default configuration and should not be reset in most cases.
+     *
+     * @param toggleAllDetailsAction
+     */
+    public void setToggleAllDetailsAction(Action toggleAllDetailsAction) {
+        this.toggleAllDetailsAction = toggleAllDetailsAction;
     }
 }

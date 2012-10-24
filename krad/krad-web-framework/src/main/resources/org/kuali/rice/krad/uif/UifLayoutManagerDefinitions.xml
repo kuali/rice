@@ -140,6 +140,10 @@
       <bean parent="Uif-PagedRichTable"/>
     </property>
     <property name="suppressLineWrapping" value="true"/>
+    <property name="toggleAllDetailsAction">
+      <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Open/Close Row Details"
+            p:actionScript="toggleRowDetails(this);"/>
+    </property>
     <property name="totalLabel">
       <bean parent="Uif-Label" p:labelText="Total"/>
     </property>

@@ -37,6 +37,11 @@
 
     <#if manager.dataFields?? && (manager.dataFields?size gt 0)>
 
+    <#--action button for opening and closing all details-->
+    <#if manager.showToggleAllDetails>
+        <@krad.template component=manager.toggleAllDetailsAction/>
+    </#if>
+
     <table id="${manager.id}" ${style!} ${styleClass!}>
 
         <#if manager.headerLabels?? && (manager.headerLabels?size gt 0)>
@@ -71,7 +76,7 @@
     </table>
 
     <#-- invoke table tools widget -->
-        <@krad.template component=manager.richTable componentId="${manager.id}"/>
+    <@krad.template component=manager.richTable componentId="${manager.id}"/>
 
     </#if>
 

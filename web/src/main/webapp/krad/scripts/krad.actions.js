@@ -337,7 +337,7 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
     var theControl = jQuery("[name='" + escapeName(controlName) + "']");
     var eventType = 'change';
 
-    if(onKeyUp && (theControl.is("textarea") || theControl.is("input[type='text']"))){
+    if(onKeyUp && (theControl.is("textarea") || theControl.is("input[type='text'], input[type='password']"))){
         eventType = 'keyup';
     }
 

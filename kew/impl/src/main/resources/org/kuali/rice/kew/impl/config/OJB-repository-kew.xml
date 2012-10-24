@@ -407,6 +407,12 @@
       <inverse-foreignkey field-ref="documentTypeId"/>
     </collection-descriptor>
     <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
+      element-class-ref="org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory"
+      name="applicationStatusCategories"
+      proxy="false">
+      <inverse-foreignkey field-ref="documentTypeId"  />
+    </collection-descriptor>
+    <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
       element-class-ref="org.kuali.rice.kew.doctype.ApplicationDocumentStatus"
       name="validApplicationStatuses"
       proxy="false">
@@ -432,13 +438,17 @@
   <class-descriptor class="org.kuali.rice.kew.doctype.ApplicationDocumentStatus" table="KREW_DOC_TYP_APP_DOC_STAT_T">
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="DOC_STAT_NM" name="statusName" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor column="CAT_NM" name="categoryName" jdbc-type="VARCHAR"/>
+    <field-descriptor column="SEQ_NO" name="sequenceNumber" jdbc-type="INTEGER"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
-<!--
-    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType" auto-retrieve="true" auto-update="false" auto-delete="false">
-      <foreignkey field-ref="documentTypeId" />
-    </reference-descriptor>
--->
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory" table="KREW_DOC_TYP_APP_STAT_CAT_T">
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor column="CAT_NM" name="categoryName" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
+    <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentStatusTransition" table="KREW_APP_DOC_STAT_TRAN_T">

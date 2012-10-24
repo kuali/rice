@@ -169,9 +169,9 @@ public class DataDictionary {
      */
     public void performDictionaryPostProcessing(boolean allowConcurrentValidation) {
         // invoke post processing of the dictionary bean definitions
-//        DictionaryBeanFactoryPostProcessor dictionaryBeanPostProcessor = new DictionaryBeanFactoryPostProcessor(this,
-//                ddBeans);
-//        dictionaryBeanPostProcessor.postProcessBeanFactory();
+        DictionaryBeanFactoryPostProcessor dictionaryBeanPostProcessor = new DictionaryBeanFactoryPostProcessor(this,
+                ddBeans);
+        dictionaryBeanPostProcessor.postProcessBeanFactory();
 
         // post processes UIF beans for pulling out expressions within property values
         UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();

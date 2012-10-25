@@ -23,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @RunWith(Suite.class)
-@SuiteClasses({ClientErrorsIT.class, ServerErrorsIT.class, ServerInfoIT.class, ServerWarningsIT.class})
+@SuiteClasses({ClientErrorsIT.class, ServerErrorsIT.class, ServerInfoIT.class})
 public class ValidateErrorsWarningsTestSuite {
 
 }

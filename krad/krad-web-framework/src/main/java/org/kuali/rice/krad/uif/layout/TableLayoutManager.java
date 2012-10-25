@@ -624,7 +624,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             cellPosition += lineField.getColSpan();
             columnNumber++;
 
-            //special handling for grouping field - this field MUST be first
+            // special handling for grouping field - this field MUST be first
             if (hasGrouping && lineField instanceof MessageField &&
                     lineField.getDataAttributes().get("role") != null && lineField.getDataAttributes().get("role")
                     .equals("grouping")) {
@@ -644,7 +644,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
             }
 
-            //details action
+            // details action
             if (lineField instanceof FieldGroup && ((FieldGroup) lineField).getItems() != null) {
                 for (Component component : ((FieldGroup) lineField).getItems()) {
                     if (component != null && component instanceof Action && component.getDataAttributes().get("role")
@@ -655,8 +655,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
 
-            //special column calculation handling to identify what type of handler will be attached
-            //and add special styling
+            // special column calculation handling to identify what type of handler will be attached
+            // and add special styling
             if (lineField instanceof InputField && columnCalculations != null) {
                 for (ColumnCalculationInfo cInfo : columnCalculations) {
                     if (cInfo.getPropertyName().equals(((InputField) lineField).getPropertyName())) {
@@ -1399,54 +1399,56 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param view the current view
      */
     public void setupDetails(CollectionGroup collectionGroup, View view) {
-        if (getRowDetailsGroup() != null && this.getRichTable() != null && this.getRichTable().isRender()) {
-            //data attribute to mark this group to open itself when rendered
-            collectionGroup.addDataAttribute("detailsDefaultOpen", Boolean.toString(this.rowDetailsOpen));
-
-            toggleAllDetailsAction.addDataAttribute("open", Boolean.toString(this.rowDetailsOpen));
-            toggleAllDetailsAction.addDataAttribute("tableid", this.getId());
-
-            this.getRowDetailsGroup().setHidden(true);
-            FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
-            TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
-            dataAttributes.put("role", "detailsFieldGroup");
-            detailsFieldGroup.setDataAttributes(dataAttributes);
-            Action rowDetailsAction = ComponentFactory.getActionLink();
-            rowDetailsAction.addStyleClass("uif-detailsAction");
-            rowDetailsAction.addDataAttribute("role", "detailsLink");
-            view.assignComponentIds(rowDetailsAction);
-
-            if (rowDetailsUseImage) {
-                Image rowDetailsImage = ComponentFactory.getImage();
-                view.assignComponentIds(rowDetailsImage);
-                rowDetailsImage.setAltText(rowDetailsLinkName);
-                rowDetailsImage.getPropertyExpressions().put("source",
-                        KRADConstants.IMAGE_URL_EXPRESSION + KRADConstants.DETAILS_IMAGE);
-                rowDetailsAction.setActionImage(rowDetailsImage);
-            } else if (StringUtils.isNotBlank(rowDetailsLinkName)) {
-                rowDetailsAction.setActionLabel(rowDetailsLinkName);
-            }
-
-            //build js for link
-            /*rowDetailsAction.setActionScript(
-                    "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");*/
-
-
-            List<Component> detailsItems = new ArrayList<Component>();
-
-            detailsItems.add(rowDetailsAction);
-            dataAttributes = new TreeMap<String, String>();
-            dataAttributes.put("role", "details");
-            this.getRowDetailsGroup().setDataAttributes(dataAttributes);
-            detailsItems.add(getRowDetailsGroup());
-            detailsFieldGroup.setItems(detailsItems);
-            view.assignComponentIds(detailsFieldGroup);
-
-            List<Component> theItems = new ArrayList<Component>();
-            theItems.add(detailsFieldGroup);
-            theItems.addAll(collectionGroup.getItems());
-            collectionGroup.setItems(theItems);
+        if (getRowDetailsGroup() == null || this.getRichTable() == null || !this.getRichTable().isRender()) {
+            return;
         }
+
+        // data attribute to mark this group to open itself when rendered
+        collectionGroup.addDataAttribute("detailsDefaultOpen", Boolean.toString(this.rowDetailsOpen));
+
+        toggleAllDetailsAction.addDataAttribute("open", Boolean.toString(this.rowDetailsOpen));
+        toggleAllDetailsAction.addDataAttribute("tableid", this.getId());
+
+        this.getRowDetailsGroup().setHidden(true);
+
+        FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
+
+        TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
+        dataAttributes.put("role", "detailsFieldGroup");
+        detailsFieldGroup.setDataAttributes(dataAttributes);
+
+        Action rowDetailsAction = ComponentFactory.getActionLink();
+        rowDetailsAction.addStyleClass("uif-detailsAction");
+        rowDetailsAction.addDataAttribute("role", "detailsLink");
+        view.assignComponentIds(rowDetailsAction);
+
+        if (rowDetailsUseImage) {
+            Image rowDetailsImage = ComponentFactory.getImage();
+            view.assignComponentIds(rowDetailsImage);
+
+            rowDetailsImage.setAltText(rowDetailsLinkName);
+            rowDetailsImage.getPropertyExpressions().put("source",
+                    KRADConstants.IMAGE_URL_EXPRESSION + KRADConstants.DETAILS_IMAGE);
+            rowDetailsAction.setActionImage(rowDetailsImage);
+        } else if (StringUtils.isNotBlank(rowDetailsLinkName)) {
+            rowDetailsAction.setActionLabel(rowDetailsLinkName);
+        }
+
+        List<Component> detailsItems = new ArrayList<Component>();
+        detailsItems.add(rowDetailsAction);
+
+        dataAttributes = new TreeMap<String, String>();
+        dataAttributes.put("role", "details");
+        this.getRowDetailsGroup().setDataAttributes(dataAttributes);
+
+        detailsItems.add(getRowDetailsGroup());
+        detailsFieldGroup.setItems(detailsItems);
+        view.assignComponentIds(detailsFieldGroup);
+
+        List<Component> theItems = new ArrayList<Component>();
+        theItems.add(detailsFieldGroup);
+        theItems.addAll(collectionGroup.getItems());
+        collectionGroup.setItems(theItems);
     }
 
     /**

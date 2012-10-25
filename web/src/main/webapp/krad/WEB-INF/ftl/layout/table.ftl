@@ -37,7 +37,7 @@
 
     <#if manager.dataFields?? && (manager.dataFields?size gt 0)>
 
-    <#--action button for opening and closing all details-->
+    <#-- action button for opening and closing all details -->
     <#if manager.showToggleAllDetails>
         <@krad.template component=manager.toggleAllDetailsAction/>
     </#if>

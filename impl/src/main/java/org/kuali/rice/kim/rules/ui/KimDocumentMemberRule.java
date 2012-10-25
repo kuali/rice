@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -106,11 +107,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(document.getKimType().getServiceName()));
         String endpointVersion = endpoint.getServiceConfiguration().getServiceVersion();
         boolean versionOk = false;
-        try {
-             versionOk = !VersionHelper.compareVersions(endpointVersion, "2.1.2");
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
+        versionOk = VersionHelper.compareVersion(endpointVersion, CoreConstants.Versions.VERSION_2_1_2)!=-1? true:false;
         RoleTypeService rts = (RoleTypeService)endpoint.getService();
         boolean shouldNotValidate = true;
         if (rts != null) {

@@ -16,7 +16,7 @@
 
 package org.kuali.rice.kew.docsearch;
 
-import org.apache.cxf.common.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -227,7 +227,7 @@ public class DocumentSearchCustomizerTest extends KEWTestCase {
                 resultValueBuilder.getDocumentAttributes().add(DocumentAttributeFactory.loadContractIntoBuilder(DocumentAttributeFactory.createStringAttribute("myMultiValuedAttribute", "value0")));
 
                 // Return if principal id was foudn in criteria
-                if(!StringUtils.isEmpty(documentSearchCriteria.getDocSearchUserId())) {
+                if(StringUtils.isNotBlank(documentSearchCriteria.getDocSearchUserId())) {
                      resultValueBuilder.getDocumentAttributes().add(DocumentAttributeFactory.loadContractIntoBuilder(DocumentAttributeFactory.createStringAttribute("criteriaUserId", documentSearchCriteria.getDocSearchUserId())));
                 }
 

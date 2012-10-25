@@ -28,6 +28,6 @@ import org.junit.runners.Suite.SuiteClasses;
     DeleteSubCollectionLineIT.class,
     ParentLineIT.class,
     RichMessagesValidationIT.class,
-    UifTooltipIT.class,
+    UifTooltipLegacyIT.class,
     ValidCharsConstraintIT.class})
 public class CompViewTestSuite {}

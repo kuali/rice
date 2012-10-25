@@ -31,7 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
         TravelAccountMaintenanceDocumentTest.class,
         UIFComponentValidationRegexPatternIT.class,
         UIFComponentValidationRegexPatternLegacyIT.class,
-        UifDataAttributesIT.class,
+        UifDataAttributesLegacyIT.class,
         WatermarkValidationIT.class})
 public class KradTestingTestSuite {
 

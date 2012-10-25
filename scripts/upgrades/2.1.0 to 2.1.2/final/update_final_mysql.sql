@@ -250,3 +250,17 @@ ALTER TABLE KREW_OUT_BOX_ITM_T MODIFY RSP_ID VARCHAR(40) NOT NULL;
 ALTER TABLE KREW_RTE_NODE_CFG_PARM_T MODIFY RTE_NODE_ID VARCHAR(40) NOT NULL;
 
 ALTER TABLE KREW_RULE_EXT_VAL_T MODIFY RULE_EXT_ID VARCHAR(40) NOT NULL;
+
+
+-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-- mysql-2012-10-25.sql
+--
+
+
+--
+-- KULRICE-7509: Rice KIM documents stay editable after submission
+--
+
+delete from krim_role_perm_t where role_id = (select role_id from krim_role_t where role_nm = 'Initiator or Reviewer' and nmspc_cd = 'KR-WKFLW') AND
+perm_id = (select perm_id from krim_perm_t where nm = 'Edit Kuali ENROUTE Document Route Status Code R' and nmspc_cd = 'KUALI')
+;

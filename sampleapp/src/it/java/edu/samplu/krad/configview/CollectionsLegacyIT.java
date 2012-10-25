@@ -16,14 +16,10 @@
 
 package edu.samplu.krad.configview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-
-import com.thoughtworks.selenium.Selenium;
 
 /**
  * Selenium test that tests collections
@@ -87,6 +83,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
     public void testAddBlankLine() throws Exception {
         waitAndClickByLinkText("Add Blank Line");
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
+        Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible woudl be better
         assertElementPresentByName("list1[0].field1");
      
         assertTableLayout();

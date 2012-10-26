@@ -147,10 +147,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             view.assignComponentIds(instructionalMessage);
         }
 
-        // set multiLineReadOnlyDisplay to true to preserve text formatting
-        if(control instanceof TextAreaControl)  {
-            setMultiLineReadOnlyDisplay(true);
-        }
     }
 
     /**
@@ -182,6 +178,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             }
         }
 
+        // set multiLineReadOnlyDisplay to true to preserve text formatting
+        if(control instanceof TextAreaControl)  {
+            setMultiLineReadOnlyDisplay(true);
+        }
         // if options not configured on the control, invoke configured options finder
         if (fieldOptions.isEmpty() && (optionsFinder != null)) {
             if (optionsFinder instanceof UifKeyValuesFinder) {

@@ -146,8 +146,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             instructionalMessage = ComponentFactory.getInstructionalMessage();
             view.assignComponentIds(instructionalMessage);
         }
+
+        // set multiLineReadOnlyDisplay to true to preserve text formatting
         if(control instanceof TextAreaControl)  {
-            setTextAreaControl(true);
+            setMultiLineReadOnlyDisplay(true);
         }
     }
 

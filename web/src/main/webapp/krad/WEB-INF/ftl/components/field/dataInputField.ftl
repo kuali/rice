@@ -32,7 +32,7 @@
 
                 <#local readOnlyDisplay>
                     <#-- if it is a textarea add a pre tag to preserve formatting-->
-                    <#if field.textAreaControl>
+                    <#if field.multiLineReadOnlyDisplay>
                         <pre>
                             <#-- display replacement display value if set -->
                             <#if field.readOnlyDisplayReplacement?has_content>

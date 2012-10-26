@@ -86,7 +86,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     private List<String> propertyNamesForAdditionalDisplay;
 
     private boolean escapeHtmlInPropertyValue = true;
-    private boolean textAreaControl;
+    private boolean multiLineReadOnlyDisplay;
     // widgets
     private Inquiry inquiry;
     private Help help;
@@ -891,13 +891,28 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         return this.escapeHtmlInPropertyValue;
     }
 
-    public boolean isTextAreaControl() {
-               return textAreaControl;
-           }
+    /**
+     * Returns true if this field is of type {@code TextAreaControl}.
+     *
+     * <p>
+     * Used to preserve text formatting in a textarea when the view
+     * is readOnly by enclosing the text in a </pre> tag.
+     * </p>
+     *
+     * @return true if the field is of type {@code TextAreaControl}
+     */
+    public boolean isMultiLineReadOnlyDisplay() {
+       return multiLineReadOnlyDisplay;
+   }
 
-        public void setTextAreaControl(boolean textAreaControl) {
-               this.textAreaControl = textAreaControl;
-           }
+    /**
+     * Setter for multiLineReadOnlyDisplay
+     *
+     * @param multiLineReadOnlyDisplay
+     */
+    public void setMultiLineReadOnlyDisplay(boolean multiLineReadOnlyDisplay) {
+       this.multiLineReadOnlyDisplay = multiLineReadOnlyDisplay;
+   }
 
     /**
      * Indicates whether the value for the field is secure

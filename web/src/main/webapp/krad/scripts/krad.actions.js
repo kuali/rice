@@ -189,7 +189,9 @@ function validateAddLine(collectionGroupId, addViaLightbox) {
 
     var valid = validateLineFields(controlsToValidate);
     if (!valid) {
-        showClientSideErrorNotification();
+        if(!addViaLightbox){
+            showClientSideErrorNotification();
+        }
 
         return false;
     }

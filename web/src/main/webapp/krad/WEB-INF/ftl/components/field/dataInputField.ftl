@@ -31,18 +31,39 @@
             <#if readOnly>
 
                 <#local readOnlyDisplay>
-                    <#-- display replacement display value if set -->
-                    <#if field.readOnlyDisplayReplacement?has_content>
-                        ${field.readOnlyDisplayReplacement}
-                    <#else>
-                        <#-- display actual field value -->
-                        <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
-                        htmlEscape=field.escapeHtmlInPropertyValue/>
-                        ${spring.status.value?default("")}
+                    <#-- if it is a textarea add a pre tag to preserve formatting-->
+                    <#if field.textAreaControl>
+                        <pre>
+                            <#-- display replacement display value if set -->
+                            <#if field.readOnlyDisplayReplacement?has_content>
+                               ${field.readOnlyDisplayReplacement?replace(" ","&nbsp;")}
+                            <#else>
+                                <#-- display actual field value -->
+                                <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
+                                htmlEscape=field.escapeHtmlInPropertyValue/>
+                                ${(spring.status.value?default(""))?replace(" ","&nbsp;")}
 
-                        <#-- add display suffix value if set -->
-                        <#if field.readOnlyDisplaySuffix?has_content>
-                            *-* ${field.readOnlyDisplaySuffix}
+                                <#-- add display suffix value if set -->
+                                <#if field.readOnlyDisplaySuffix?has_content>
+                                   *-* ${field.readOnlyDisplaySuffix?replace(" ","&nbsp;")}
+
+                                </#if>
+                            </#if>
+                        </pre>
+                      <#else>
+                        <#-- display replacement display value if set -->
+                        <#if field.readOnlyDisplayReplacement?has_content>
+                            ${field.readOnlyDisplayReplacement}
+                        <#else>
+                            <#-- display actual field value -->
+                            <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
+                            htmlEscape=field.escapeHtmlInPropertyValue/>
+                            ${spring.status.value?default("")}
+
+                            <#-- add display suffix value if set -->
+                            <#if field.readOnlyDisplaySuffix?has_content>
+                                *-* ${field.readOnlyDisplaySuffix}
+                            </#if>
                         </#if>
                     </#if>
                 </#local>

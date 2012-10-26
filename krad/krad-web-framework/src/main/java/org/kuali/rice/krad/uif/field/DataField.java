@@ -86,7 +86,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     private List<String> propertyNamesForAdditionalDisplay;
 
     private boolean escapeHtmlInPropertyValue = true;
-
+    private boolean textAreaControl;
     // widgets
     private Inquiry inquiry;
     private Help help;
@@ -890,6 +890,14 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     public boolean isEscapeHtmlInPropertyValue() {
         return this.escapeHtmlInPropertyValue;
     }
+
+    public boolean isTextAreaControl() {
+               return textAreaControl;
+           }
+
+        public void setTextAreaControl(boolean textAreaControl) {
+               this.textAreaControl = textAreaControl;
+           }
 
     /**
      * Indicates whether the value for the field is secure

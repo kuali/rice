@@ -162,6 +162,8 @@ public class View extends ContainerBase {
 
     private int preloadPoolSize;
 
+    private List<String> viewTemplates;
+
     private Class<? extends ViewHelperService> viewHelperServiceClass;
 
     @ReferenceCopy
@@ -191,6 +193,7 @@ public class View extends ContainerBase {
         visitedIds = new HashMap<String, Integer>();
 
         dialogs = new ArrayList<Group>();
+        viewTemplates = new ArrayList<String>();
     }
 
     /**
@@ -830,6 +833,37 @@ public class View extends ContainerBase {
      */
     public void setPreloadPoolSize(int preloadPoolSize) {
         this.preloadPoolSize = preloadPoolSize;
+    }
+
+    /**
+     * List of templates that are used to render the view
+     *
+     * <p>
+     * This list will be populated by unique template names as the components of the view are being processed.
+     * Additional templates can be added in the view configuration if desired. At the beginning of the the view
+     * rendering, each template in the list will then be included or processed by the template language
+     * </p>
+     *
+     * <p>
+     * Note the user of this depends on the template language being used for rendering. Some languages might require
+     * including the template for each component instance (for example JSP templates). While others might simply
+     * include markup that is then available for rendering each component instance (for example FreeMarker which has
+     * a macro for each component that the template defines)
+     * </p>
+     *
+     * @return List<String> list of template names that should be included for rendering the view
+     */
+    public List<String> getViewTemplates() {
+        return viewTemplates;
+    }
+
+    /**
+     * Setter for the the list of template names that should be included to render the view
+     *
+     * @param viewTemplates
+     */
+    public void setViewTemplates(List<String> viewTemplates) {
+        this.viewTemplates = viewTemplates;
     }
 
     /**

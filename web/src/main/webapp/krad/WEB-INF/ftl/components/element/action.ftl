@@ -51,12 +51,12 @@
            src="${element.actionImage.source}"
            alt="${element.actionImage.altText!}"
            title="${element.actionImage.title!}" ${height!} ${width!}
-    ${attrBuild(element)} ${tabindex!}
+    ${krad.attrBuild(element)} ${tabindex!}
     ${element.simpleDataAttributes!}/>
     <#else>
 
     <#-- build a button with or without an image -->
-    <button id="${element.id}" ${attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+    <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
 
         <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
             <#if imagePlacement == 'TOP'>

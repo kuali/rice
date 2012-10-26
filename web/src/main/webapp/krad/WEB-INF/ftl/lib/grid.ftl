@@ -97,12 +97,12 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
             </#if>
 
             <th scope="${headerScope}" ${cellWidth!} colspan="${item.colSpan}"
-                rowspan="${item.rowSpan}" ${attrBuild(item)}>
+                rowspan="${item.rowSpan}" ${krad.attrBuild(item)}>
                 <@template component=item/>
             </th>
         <#else>
             <td role="presentation" ${cellWidth!} colspan="${item.colSpan}"
-                rowspan="${item.rowSpan}" ${attrBuild(item)}>
+                rowspan="${item.rowSpan}" ${krad.attrBuild(item)}>
                 <@template component=item/>
             </td>
         </#if>

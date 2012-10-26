@@ -33,7 +33,7 @@
     </#if>
 
     <img id="${element.id}" src="${element.source!}" alt="${element.altText!}"
-         ${height!} ${attrBuild(element)} ${element.simpleDataAttributes!}/>
+         ${height!} ${krad.attrBuild(element)} ${element.simpleDataAttributes!}/>
 
     <#-- render caption header above -->
     <#if element.captionHeader?? && element.captionHeader.headerText?has_content

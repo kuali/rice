@@ -17,7 +17,7 @@
 -->
 <#macro span component>
 
-    <span id="${component.id!}_span" ${attrBuild(component)} ${component.simpleDataAttributes}>
+    <span id="${component.id!}_span" ${krad.attrBuild(component)} ${component.simpleDataAttributes}>
         <#nested/>
     </span>
 

@@ -122,7 +122,7 @@
         <span id="${field.id}_info_message"></span>
 
         <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
-            <span id="${field.id}_info_${cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
+            <span id="${field.id}_info_${krad.cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
                 <@spring.bind path="KualiForm.${infoPropertyPath}"/>
                  ${spring.status.value?default("")}
             </span>

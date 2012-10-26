@@ -16,7 +16,6 @@
 
 -->
 <#macro template component=[] body='' componentUpdate=false tmplParms...>
-
     <#if !(component!?size > 0)>
         <#return>
     </#if>
@@ -29,9 +28,7 @@
         <#if component.selfRendered>
             ${component.renderedHtmlOutput}
         <#else>
-            <#include "${component.template}" parse=true/>
-
-            <#local macroInvokeSrc="<" + "@${component.templateName} ${component.componentTypeName}=component "/>
+            <#local macroInvokeSrc="<" + "@.main.${component.templateName} ${component.componentTypeName}=component "/>
             <#list tmplParms?keys as parm>
                 <#local macroInvokeSrc="${macroInvokeSrc} ${parm}=tmplParms['${parm}']!"/>
             </#list>

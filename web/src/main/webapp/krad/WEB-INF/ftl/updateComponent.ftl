@@ -17,8 +17,6 @@
 -->
 
 <html>
-    <#assign view=KualiForm.postedView/>
-
     <#-- need to render the pages errors since the component could have added errors for the page -->
     <@krad.template component=view.currentPage.validationMessages/>
 

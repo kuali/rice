@@ -17,7 +17,7 @@
 -->
 <#macro div component>
 
-  <div id="${component.id!}" ${attrBuild(component)} ${component.simpleDataAttributes}>
+  <div id="${component.id!}" ${krad.attrBuild(component)} ${component.simpleDataAttributes}>
     <#nested/>
   </div>
 

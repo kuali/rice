@@ -31,7 +31,7 @@
     </#if>
 
     <a id="${element.id}" href="${element.href!}" target="${element.target!}"
-       ${attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}>${body!}</a>
+       ${krad.attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}>${body!}</a>
 
     <@krad.template component=element.lightBox componentId="${element.id}"/>
 

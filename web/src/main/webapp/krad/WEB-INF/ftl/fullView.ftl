@@ -16,8 +16,6 @@
 
 -->
 
-<#assign view=KualiForm.view/>
-
 <@krad.html view=view>
 
     <@krad.script value="${KualiForm.growlScript!}"/>

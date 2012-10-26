@@ -1166,6 +1166,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // invoke component modifiers setup to run in the finalize phase
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
+        
+        // add the components template to the views list of components
+        if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate()) &&
+                !view.getViewTemplates().contains(component.getTemplate())) {
+            view.getViewTemplates().add(component.getTemplate());
+        }
 
         // get components children and recursively update state
         for (Component nestedComponent : component.getComponentsForLifecycle()) {

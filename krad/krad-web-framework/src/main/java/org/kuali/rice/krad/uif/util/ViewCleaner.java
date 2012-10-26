@@ -56,6 +56,7 @@ public class ViewCleaner {
         view.setPage(null);
         view.setViewMenuLink(null);
         view.setClientSideState(new HashMap<String, Object>());
+        view.setViewTemplates(new ArrayList<String>());
 
         // clear all view pages exception the current page
         PageGroup currentPage = view.getCurrentPage();

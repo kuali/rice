@@ -428,6 +428,14 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
         return newPropertyValue;
     }
 
+    /**
+     * Retrieves the test associated with the message give by the message key string
+     *
+     * @param messageKeyStr key string for the message, can contain just the key, or also the component and/or
+     * namespace. If component or namespace not given it is determined from the bean stack
+     * @param nestedBeanStack bean stack that contains the property for which the message applies
+     * @return String test associated with the message
+     */
     protected String getMessageTextForKey(String messageKeyStr, Stack<BeanDefinitionHolder> nestedBeanStack) {
         String namespace = null;
         String componentCode = null;

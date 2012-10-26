@@ -98,7 +98,24 @@ public class DatabaseMessageProvider implements MessageProvider {
 
         results = getLookupService().findCollectionBySearch(Message.class, criteria);
 
-        return results;
+        // filter out duplicate message results due to locale wildcard search (for example could have a match 
+        // for en and en-US, in which case we want to take the record for the more specific locale
+        Map<String, Message> uniqueMessages = new HashMap<String, Message>();
+        for (Message message : results) {
+            String messageKey = message.getNamespaceCode() + "|" + message.getComponentCode() + "|" + message.getKey();
+            if (uniqueMessages.containsKey(messageKey)) {
+                Message duplicateMessage = uniqueMessages.get(messageKey);
+                // attempt to find the one that matches the locale exactly
+                if (message.getLocale().equals(locale)) {
+                    // use current message, otherwise leave the previous message
+                    uniqueMessages.put(messageKey, message);
+                }
+            } else {
+                uniqueMessages.put(messageKey, message);
+            }
+        }
+
+        return uniqueMessages.values();
     }
 
     public LookupService getLookupService() {

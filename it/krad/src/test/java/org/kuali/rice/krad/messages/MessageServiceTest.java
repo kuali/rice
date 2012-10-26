@@ -106,5 +106,9 @@ public class MessageServiceTest extends KRADTestCase {
 
         messageText = messageService.getMessageText("TEST", "TestLocales", "message.key", "de-DE");
         assertEquals("Message text not correct for German locale", "German Message", messageText);
+
+        messageText = messageService.getMessageText("TEST", "TestLocales", "message.key2", "en-US");
+        assertEquals("Message text not correct for message with language only and language/country locale",
+                "English US Message", messageText);
     }
 }

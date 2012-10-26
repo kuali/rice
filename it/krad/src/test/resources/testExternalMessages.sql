@@ -35,3 +35,5 @@ insert into krad_msg_t values ('TEST', 'TestLocales', 'message.key', 'fr-CA', '3
 insert into krad_msg_t values ('TEST', 'TestLocales', 'message.key', 'de', '33333349', 1, null, 'German Message');
 insert into krad_msg_t values ('TEST', 'TestExpressionMessages', 'testMessageKey1', 'en-US', '33333350', 1, null, 'ext key p1 value');
 insert into krad_msg_t values ('TEST', 'TestExpressionMessages', 'testMessageKey2', 'en-US', '33333351', 1, null, 'ext key p2 value');
+insert into krad_msg_t values ('TEST', 'TestLocales', 'message.key2', 'en', '33333352', 1, null, 'English Message');
+insert into krad_msg_t values ('TEST', 'TestLocales', 'message.key2', 'en-US', '33333353', 1, null, 'English US Message');

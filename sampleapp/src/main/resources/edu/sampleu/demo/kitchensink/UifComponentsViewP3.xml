@@ -37,43 +37,21 @@
 
   <bean id="requiredSection" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false"/>
-    <property name="headerText" value="Required constraint"/>
-    <property name="instructionalText"
-              value="An input field can be defined as required by setting its required property to true.  Note required fields are marked with an asterisk."/>
-
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:required="true" p:control.disabled="true"
-              p:propertyName="field2"/>
-        <bean parent="GenericTextArea" p:required="true" p:fieldLabel.requiredMessage.messageText="Required"
-              p:instructionalText="different text for required indicator"
-              p:propertyName="field3"/>
-        <bean parent="GenericRadio" p:required="true" p:propertyName="field4"
-              p:instructionalText="Interesting note is that radios and checkboxes will not check requiredness until a submit event, other constraints dealing with non-null values will still apply as normal"/>
-        <bean parent="GenericSelection" p:required="true" p:instructionalText="different required indicator location"
-              p:fieldLabel.requiredMessagePlacement="RIGHT"
-              p:propertyName="field5"/>
+        <bean parent="GenericTextField" p:required="true" p:control.disabled="true" p:propertyName="field2"/>
+        <bean parent="GenericTextArea" p:required="true" p:propertyName="field3"/>
+        <bean parent="GenericRadio" p:required="true" p:propertyName="field4" />
+        <bean parent="GenericSelection" p:required="true" p:fieldLabel.requiredMessagePlacement="RIGHT" p:propertyName="field5"/>
       </list>
     </property>
   </bean>
 
   <bean id="preReqSection" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false"/>
-    <property name="headerText" value="PreRequisite constraint"/>
-    <property name="instructionalText"
-              value="When a field is filled out, it can require another field to be filled out as a result.  This is called a PrerequisiteConstraint.
-		Whether that field comes after or before that field is irrelevant, as the ui will only notify the user when appropriate.  For example, if you havent yet
-		visited a field that is now required, the user will only be notified of an error after they have first visited this now required field
-		and have not filled it out.  Alternatively, if the field that is now required comes before the field that requires it, the user will be notified
-		immediately.  These mechanisms are set up to prevent the ui from showing errors before the user had a chance to interact with the corresponding
-		field within the overall page flow.  A useful and common technique is to put a prerequisite constraint on both fields requiring eachother
-		(example case: a measurement requires both a value and a unit, neither make sense without the other).
-		A field can have any number of PrerequisiteConstraints in their dependencyConstraints property."/>
-
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field A"
-              p:propertyName="field6" p:constraintText="Field A requires Field B and Field C">
+        <bean parent="GenericTextField" p:label="Field A" p:propertyName="field6">
           <property name="dependencyConstraints">
             <list>
               <bean parent="PrerequisiteConstraint" p:propertyName="field7"/>
@@ -81,12 +59,8 @@
             </list>
           </property>
         </bean>
-        <bean parent="GenericTextField" p:label="Field B"
-              p:propertyName="field7" p:constraintText="Required when Field A has a value"/>
-        <bean parent="GenericTextField" p:label="Field C"
-              p:instructionalText="try filling out this field first, and see differences in interaction"
-              p:propertyName="field8"
-              p:constraintText="Required when Field A has a value, BUT also requires Field A to be filled out">
+        <bean parent="GenericTextField" p:label="Field B" p:propertyName="field7" />
+        <bean parent="GenericTextField" p:label="Field C" p:propertyName="field8">
           <property name="dependencyConstraints">
             <list>
               <bean parent="PrerequisiteConstraint" p:propertyName="field6"/>
@@ -100,12 +74,6 @@
 
   <bean id="mustOccursSection" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false"/>
-    <property name="headerText" value="MustOccursConstraint"/>
-    <property name="instructionalText"
-              value="Must Occurs constraint is used to identify fields that are required before this field can be filled out.
-        This is different from prerequisite constraints because the number of fields required from a set of fields can be set, as
-        well as alternative groups of fields that will satisfy the must occurs constraint.  See examples below:"/>
-
     <property name="items">
       <list>
         <ref bean="moGroup1"/>
@@ -120,15 +88,10 @@
 
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field 1A"
-              p:propertyName="field11"/>
-        <bean parent="GenericTextField" p:label="Field 2A"
-              p:propertyName="field12"/>
-        <bean parent="GenericTextField" p:label="Field 2B"
-              p:propertyName="field13"/>
-        <bean parent="GenericTextField" p:label="Field With MustOccurs"
-              p:propertyName="field14"
-              p:constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
+        <bean parent="GenericTextField" p:propertyName="field11"/>
+        <bean parent="GenericTextField" p:propertyName="field12"/>
+        <bean parent="GenericTextField" p:propertyName="field13"/>
+        <bean parent="GenericTextField" p:propertyName="field14">
           <property name="mustOccurConstraints">
             <list>
               <bean parent="MustOccurConstraint">
@@ -172,15 +135,10 @@
 
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field 3A"
-              p:propertyName="field15"/>
-        <bean parent="GenericTextField" p:label="Field 4A"
-              p:propertyName="field16"/>
-        <bean parent="GenericTextField" p:label="Field 4B"
-              p:propertyName="field17"/>
-        <bean parent="GenericTextField" p:label="Field With MustOccurs"
-              p:propertyName="field18"
-              p:constraintText="Field 3A; OR Field 4A with Field 4B BUT NOT BOTH (ie all 3 fields filled in) must occur when this field has a value">
+        <bean parent="GenericTextField" p:propertyName="field15"/>
+        <bean parent="GenericTextField" p:propertyName="field16"/>
+        <bean parent="GenericTextField" p:propertyName="field17"/>
+        <bean parent="GenericTextField" p:propertyName="field18">
           <property name="mustOccurConstraints">
             <list>
               <bean parent="MustOccurConstraint">
@@ -218,17 +176,11 @@
 
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field 5A"
-              p:propertyName="field19"/>
-        <bean parent="GenericTextField" p:label="Field 5B"
-              p:propertyName="field20"/>
-        <bean parent="GenericTextField" p:label="Field 6A"
-              p:propertyName="field21"/>
-        <bean parent="GenericTextField" p:label="Field 6B"
-              p:propertyName="field22"/>
-        <bean parent="GenericTextField" p:label="Field With MustOccurs"
-              p:propertyName="field23"
-              p:constraintText="More complexity:(5A OR 5B) OR (6A AND 6B) is required by this field">
+        <bean parent="GenericTextField" p:propertyName="field19"/>
+        <bean parent="GenericTextField" p:propertyName="field20"/>
+        <bean parent="GenericTextField" p:propertyName="field21"/>
+        <bean parent="GenericTextField" p:propertyName="field22"/>
+        <bean parent="GenericTextField" p:propertyName="field23">
           <property name="mustOccurConstraints">
             <list>
               <bean parent="MustOccurConstraint">
@@ -269,26 +221,17 @@
   <bean id="caseConstraintSection" parent="Uif-VerticalBoxSection"
         p:layoutManager.orientation="VERTICAL">
     <property name="disclosure.render" value="false"/>
-    <property name="headerText" value="CaseConstraint"/>
-    <property name="instructionalText"
-              value="A case constraint can make a constraint applicable only when a certain case is satisfied."/>
-
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Case Radio"
-              p:instructionalText="Chose an option to apply that constraint to the field, this is controlled by that field's CaseConstraint"
-              p:width="auto" p:propertyName="field24">
+        <bean parent="Uif-InputField" p:width="auto" p:propertyName="field24">
           <property name="control">
             <bean parent="Uif-VerticalRadioControl">
               <property name="options">
                 <list>
                   <bean parent="Uif-KeyLabelPair" p:key="case1" p:value="Make Field X Required"/>
-                  <bean parent="Uif-KeyLabelPair" p:key="case2"
-                        p:value="Make Field X Required and Allow only AlphaNumeric characters"/>
-                  <bean parent="Uif-KeyLabelPair" p:key="case3"
-                        p:value="Make Field Y allow values no greater than 500 and no more than 3 characters"/>
-                  <bean parent="Uif-KeyLabelPair" p:key="case4"
-                        p:value="Make Field Z1 require Field Z2"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="case2" p:value="Make Field X Required and Allow only AlphaNumeric characters"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="case3" p:value="Make Field Y allow values no greater than 500 and no more than 3 characters"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="case4" p:value="Make Field Z1 require Field Z2"/>
                 </list>
               </property>
             </bean>
@@ -307,8 +250,7 @@
 
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field X"
-              p:propertyName="field25">
+        <bean parent="GenericTextField" p:propertyName="field25">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">
               <property name="propertyName" value="field24"/>
@@ -346,8 +288,7 @@
 
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field Y"
-              p:propertyName="field26">
+        <bean parent="GenericTextField" p:propertyName="field26">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">
               <property name="propertyName" value="field24"/>
@@ -377,8 +318,7 @@
 
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field Z1"
-              p:propertyName="field27">
+        <bean parent="GenericTextField" p:propertyName="field27">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">
               <property name="propertyName" value="field24"/>
@@ -395,9 +335,7 @@
             </bean>
           </property>
         </bean>
-        <bean parent="GenericTextField" p:label="Field Z2"
-              p:propertyName="field28">
-        </bean>
+        <bean parent="GenericTextField" p:propertyName="field28"/>
       </list>
     </property>
   </bean>
@@ -407,15 +345,11 @@
 
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field 1"
-              p:propertyName="field31">
+        <bean parent="GenericTextField" p:propertyName="field31">
         </bean>
-        <bean parent="GenericTextField" p:label="Field 2"
-              p:propertyName="field32">
+        <bean parent="GenericTextField" p:propertyName="field32">
         </bean>
-        <bean parent="GenericTextField" p:label="Field 3"
-              p:instructionalText="When Field 1 has a value AND when Field 2 does not have the value A, this field is required"
-              p:propertyName="field33">
+        <bean parent="GenericTextField" p:propertyName="field33">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">
               <property name="propertyName" value="field31"/>

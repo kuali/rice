@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -32,7 +33,13 @@ import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddMemberRule;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.impl.KRADModuleService;
+import org.kuali.rice.core.api.util.VersionHelper;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -95,11 +102,20 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	}
 	    	i++;
 	    }
-	    
-        RoleTypeService roleTypeService = getRoleTypeService(document.getKimType());
+
+        ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+        Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(document.getKimType().getServiceName()));
+        String endpointVersion = endpoint.getServiceConfiguration().getServiceVersion();
+        boolean versionOk = false;
+        versionOk = VersionHelper.compareVersion(endpointVersion, CoreConstants.Versions.VERSION_2_1_2)!=-1? true:false;
+        RoleTypeService rts = (RoleTypeService)endpoint.getService();
         boolean shouldNotValidate = true;
-        if (roleTypeService != null) {
-            shouldNotValidate = roleTypeService.shouldValidateQualifiersForMemberType( MemberType.fromCode(newMember.getMemberTypeCode()));
+        if (rts != null) {
+            if(versionOk) {
+                shouldNotValidate = rts.shouldValidateQualifiersForMemberType( MemberType.fromCode(newMember.getMemberTypeCode()));
+            } else {
+                shouldNotValidate = newMember.isRole();
+            }
         }
         if (kimTypeService !=null && !shouldNotValidate) {
             KimType kt =  document.getKimType();
@@ -134,22 +150,5 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 		}
 		return rulePassed;
 	}
-
-
-    protected RoleTypeService getRoleTypeService(KimType typeInfo) {
-        String serviceName = typeInfo.getServiceName();
-        if (serviceName != null) {
-            try {
-                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
-                if (service != null && service instanceof RoleTypeService) {
-                    return (RoleTypeService) service;
-                }
-                return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
-            } catch (Exception ex) {
-                return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
-            }
-        }
-        return null;
-    }
 
 }

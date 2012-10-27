@@ -225,7 +225,7 @@
       	</annotation>
       </element>
 
-	  <element name="applicationId" type="c:ShortStringType" minOccurs="0">
+	    <element name="applicationId" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
         	 Sets the id of the application which contains the workflow engine instance used to process documents of this type.
@@ -263,7 +263,8 @@
       <element name="validApplicationStatuses" type="dt:DocStatusesType" minOccurs="0">
       	<annotation>
       		<documentation>
-      		 Contains a set of application document statuses associated with this document type. 
+      		 Contains a set of application document statuses, optionally grouped in categories, that are associated with
+            this document type.
       		</documentation>
       	</annotation>
       </element>
@@ -353,14 +354,38 @@
 
   <complexType name="DocStatusesType">
     <sequence>
-      <element name="status" type="c:ShortStringType" minOccurs="0" maxOccurs="unbounded">
-      	<annotation>
-      		<documentation>
-      		 An application status for a document type.
-      		</documentation>
-      	</annotation>
+      <choice maxOccurs="unbounded">
+        <element ref="dt:status" /> <!-- see documentation in global element -->
+        <element name="category" type="dt:DocStatusCategoryType">
+          <annotation>
+            <documentation>
+              A grouping of application statuses for a document type.
+            </documentation>
+          </annotation>
+        </element>
+      </choice>
+    </sequence>
+  </complexType>
+
+  <element name="status" type="c:ShortStringType">
+    <annotation>
+      <documentation>
+        An application status for a document type.
+      </documentation>
+    </annotation>
+  </element>
+
+  <complexType name="DocStatusCategoryType">
+    <sequence>
+      <element ref="dt:status" minOccurs="1" maxOccurs="unbounded">
+        <annotation>
+          <documentation>
+            An application status, belonging to the parent category, for a document type.
+          </documentation>
+        </annotation>
       </element>
     </sequence>
+    <attribute name="name" type="c:ShortStringType" use="required"/>
   </complexType>
 
 

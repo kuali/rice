@@ -41,6 +41,7 @@ import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory;
 import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
@@ -190,6 +191,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
     @Fetch(value = FetchMode.SELECT)
     private List<ApplicationDocumentStatus> validApplicationStatuses;
+
+    // TODO: map this for JPA
+    private List<ApplicationDocumentStatusCategory> applicationStatusCategories;
 
     @Transient
     private List routeLevels;
@@ -612,6 +616,24 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     public void setValidApplicationStatuses(
             List<ApplicationDocumentStatus> validApplicationStatuses) {
         this.validApplicationStatuses = validApplicationStatuses;
+    }
+
+    /**
+     * Get the application document status categories for this document type
+     *
+     * @see ApplicationDocumentStatusCategory
+     * @return the application document status categories for this document type
+     */
+    public List<ApplicationDocumentStatusCategory> getApplicationStatusCategories() {
+        return applicationStatusCategories;
+    }
+
+    /**
+     * Set the application document status categories for this document type
+     * @param applicationStatusCategories
+     */
+    public void setApplicationStatusCategories(List<ApplicationDocumentStatusCategory> applicationStatusCategories) {
+        this.applicationStatusCategories = applicationStatusCategories;
     }
 
     public String getDocumentTypeSecurityXml() {

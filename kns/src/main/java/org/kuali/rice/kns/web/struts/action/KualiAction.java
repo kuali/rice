@@ -451,14 +451,17 @@ public abstract class KualiAction extends DispatchAction {
         }
         Class boClass = null;
 
-        //no point in even trying if the lookup is for a class on a remote application
-		if ((StringUtils.isNotEmpty(baseLookupUrl)
-                  && baseLookupUrl.startsWith(getApplicationBaseUrl() + "/kr/"))
-                || StringUtils.isEmpty(baseLookupUrl)) {
-            try{
-                boClass = Class.forName(boClassName);
-            } catch(ClassNotFoundException cnfex){
-                throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class which this application understands.");
+        try{
+            boClass = Class.forName(boClassName);
+        } catch(ClassNotFoundException cnfex){
+            if ((StringUtils.isNotEmpty(baseLookupUrl) && baseLookupUrl.startsWith(getApplicationBaseUrl() + "/kr/"))
+                    || StringUtils.isEmpty(baseLookupUrl)) {
+                throw new IllegalArgumentException("The class (" + boClassName + ") cannot be found by this particular "
+                    + "application. " + "ApplicationBaseUrl: " + getApplicationBaseUrl()
+                    + " ; baseLookupUrl: " + baseLookupUrl);
+            }  else {
+                LOG.info("The class (" + boClassName + ") cannot be found by this particular application. "
+                   + "ApplicationBaseUrl: " + getApplicationBaseUrl() + " ; baseLookupUrl: " + baseLookupUrl);
             }
         }
 		

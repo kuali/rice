@@ -46,6 +46,10 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
 
 	@EmbeddedId
 	private ApplicationDocumentStatusId applicationDocumentStatusId;
+
+    // TODO: JPA map ordering field
+    private Integer sequenceNumber;
+
 	@MapsId("documentTypeId")
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DOC_TYP_ID")
@@ -55,7 +59,10 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
 	private String documentTypeId;
 	@Transient
 	private String statusName;
-	
+
+    // TODO: JPA map
+    private String categoryName;
+
     public ApplicationDocumentStatusId getApplicationDocumentStatusId() {
     	if (this.applicationDocumentStatusId == null) {
     		this.applicationDocumentStatusId = new ApplicationDocumentStatusId();
@@ -85,7 +92,23 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
 		this.getApplicationDocumentStatusId().setStatusName(statusName);
 	}
 
-	public DocumentType getDocumentType() {
+    public Integer getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(Integer sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public DocumentType getDocumentType() {
 		return this.documentType;
 	}
 

@@ -15,15 +15,18 @@
  */
 package org.kuali.rice.kew.xml;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.xml.utils.DefaultErrorHandler;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.xml.XmlException;
-import org.kuali.rice.core.impl.impex.xml.*;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory;
 import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -31,7 +34,6 @@ import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.exception.GroupNotFoundException;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -40,6 +42,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +50,15 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
+
+    private static String applicationStatusDocumentTypeTemplate;
+
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        applicationStatusDocumentTypeTemplate =
+                IOUtils.toString(DocumentTypeXmlParserTest.class.getResourceAsStream("BadKEWAppDocStatusTemplate.xml"));
+    }
+
 
     private boolean validate(String docName) throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -423,8 +435,109 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	assertEquals("There should be 10 document types.", 10, docTypeList.size());
     }
 
+    private void tryLoadingBadDocument(String docTypeFileName, String failToFailMessage) {
+        try {
+            loadXmlFile(docTypeFileName);
+            fail(failToFailMessage);
+        } catch (WorkflowRuntimeException e) {
+            // Good, that is what we expect
+        }
+    }
+
+    /**
+     * Tests a number of forms of invalid application document status XML to ensure that ingestion fails
+     * @throws Exception
+     */
+    @Test public void testLoadBadDocWithAppDocStatus() throws Exception {
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <status>bogus1</status>\n"
+                + "        <category name=\"bogus1\">\n"
+                + "          <status>Completed</status>\n"
+                + "        </category>\n"
+                + "      </validApplicationStatuses>",
+                "duplicate category and status name should cause failure to ingest");
+
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <category name=\"bogus1\">\n"
+                + "          <status>Approved</status>\n"
+                + "        </category>\n"
+                + "        <category name=\"bogus1\">\n"
+                + "          <status>Completed</status>\n"
+                + "        </category>\n"
+                + "      </validApplicationStatuses>",
+                "duplicate category name should cause failure to ingest");
+
+
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <category name=\"\">\n"
+                + "          <status>Approved</status>\n"
+                + "        </category>\n"
+                + "      </validApplicationStatuses>",
+                "empty category name should cause failure to ingest");
+
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <category>\n"
+                + "          <status>Approved</status>\n"
+                + "        </category>\n"
+                + "      </validApplicationStatuses>",
+                "no category name should cause failure to ingest");
+
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <status>bogus1</status>\n"
+                + "        <category name=\"IN PROGRESS\">\n"
+                + "        </category>\n"
+                + "      </validApplicationStatuses>",
+                "empty category should cause failure to ingest");
+
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <status>bogus1</status>\n"
+                + "        <status>bogus1</status>\n"
+                + "      </validApplicationStatuses>",
+                "duplicate status name should cause failure to ingest");
+
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <status></status>\n"
+                + "      </validApplicationStatuses>",
+                "empty status content should cause failure to ingest");
+
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <status/>\n"
+                + "      </validApplicationStatuses>",
+                "no status content should cause failure to ingest");
+
+        loadDocWithBadAppDocStatus(
+                "      <validApplicationStatuses>\n"
+                + "        <status/>\n"
+                + "      </validApplicationStatuses>",
+                "no status content should cause failure to ingest");
+
+    }
+
+    /**
+     * Helper method to test bad validAppStatuses content
+     * @param validAppStatusesContent xml content for the validAppStatuses section
+     * @param failureMessage the message to call junit's fail with
+     */
+    private void loadDocWithBadAppDocStatus(String validAppStatusesContent, String failureMessage) {
+        try {
+            String docTypeContent = applicationStatusDocumentTypeTemplate.replace("VALIDAPPSTATUSES", validAppStatusesContent);
+            loadXmlStream(new ByteArrayInputStream(docTypeContent.getBytes()));
+            fail(failureMessage);
+        } catch (WorkflowRuntimeException e) {
+            // good, this is what we want.
+        }
+    }
+
     @Test public void testLoadDocWithAppDocStatus() throws Exception {
-    	loadXmlFile("TestKEWAppDocStatus.xml");    	
+        loadXmlFile("TestKEWAppDocStatus.xml");
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc2");
         
         // verify DocumentStatusPolicy = "APP"
@@ -452,6 +565,12 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         RouteNode myNode = myProc.getInitialRouteNode();
         String nextDocStatus = myNode.getNextDocStatus();
         assertTrue("RouteNode nextDocStatus is Invalid", "Approval in Progress".equalsIgnoreCase(nextDocStatus));
+
+        // Test that a document type with app doc status categories has the configured structure
+        DocumentType documentType4 = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc4");
+        List<ApplicationDocumentStatusCategory> categories = documentType4.getApplicationStatusCategories();
+        assertTrue(2 == categories.size());
+        assertTrue(9 == documentType4.getValidApplicationStatuses().size());
     }
 
     @Test public void testLoadDocWithInvalidDocumentStatusPolicy() throws Exception {

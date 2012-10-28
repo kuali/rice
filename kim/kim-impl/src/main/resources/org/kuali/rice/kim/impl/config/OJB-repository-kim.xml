@@ -336,7 +336,7 @@
     <field-descriptor name="nameTitle" column="TITLE_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="nameSuffix" column="SUFFIX_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="noteMessage" column="NOTE_MSG" jdbc-type="VARCHAR"  />
-    <field-descriptor name="nameChangedDate" column="NM_CHNG_DT" jdbc-type="DATE" />
+    <field-descriptor name="nameChangedDate" column="NM_CHNG_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="defaultValue" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />

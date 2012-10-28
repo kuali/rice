@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.apache.cxf.common.util.StringUtils;
-import org.kuali.rice.kew.actionrequest.*;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -122,7 +126,7 @@ public class AdHocAction extends ActionTakenEvent {
             if (nodeName == null || routeNode.getName().equals(nodeName))
             {
                 String message = createAdHocRequest(routeNode, forValidationOnly);
-                if (!StringUtils.isEmpty(message))
+                if (StringUtils.isNotBlank(message))
                 {
                     return message;
                 }
@@ -136,7 +140,7 @@ public class AdHocAction extends ActionTakenEvent {
         
         if (!requestCreated && targetNodes.isEmpty()) {
             String message = createAdHocRequest(null, forValidationOnly);
-            if (!StringUtils.isEmpty(message)) {
+            if (StringUtils.isNotBlank(message)) {
                 return message;
             }
             requestCreated = true;

@@ -133,8 +133,9 @@ public final class KimConstants {
     	public static final String LOOK_UP_RECORDS = "Look Up Records";
     	public static final String INQUIRE_INTO_RECORDS = "Inquire Into Records";
     	public static final String USE_SCREEN = "Use Screen";
+        public static final String BACKDOOR_RESTRICTION = "Backdoor Restriction";
 
-    	public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
+        public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
     	public static final String MAINTAIN_SYSTEM_PARAMETER = "Maintain System Parameter";
     	public static final String SEND_AD_HOC_REQUEST ="Send Ad Hoc Request";
 
@@ -344,6 +345,7 @@ public final class KimConstants {
         public static final String ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL = "actionDetailsAtRoleMemberLevel";
         public static final String DOCUMENT_NUMBER = "documentNumber";
         public static final String DOCUMENT_TYPE_NAME = "documentTypeName";
+        public static final String APP_CODE = "appCode";
         public static final String SECTION_ID = "sectionId";
         public static final String KIM_TYPE_ID = PrimaryKeyConstants.KIM_TYPE_ID;
         public static final String QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER = "qualifierResolverProvidedIdentifier";

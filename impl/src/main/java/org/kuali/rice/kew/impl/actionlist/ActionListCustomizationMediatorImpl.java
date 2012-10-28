@@ -17,7 +17,7 @@ package org.kuali.rice.kew.impl.actionlist;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import org.apache.cxf.common.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionItemCustomization;
@@ -54,7 +54,7 @@ public class ActionListCustomizationMediatorImpl implements ActionListCustomizat
     @Override
     public Map<String, ActionItemCustomization> getActionListCustomizations(String principalId,
             List<ActionItem> actionItems) throws RiceIllegalArgumentException {
-        if (StringUtils.isEmpty(principalId)) {
+        if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("invalid principalId: " + principalId);
         }
         if (actionItems == null) {

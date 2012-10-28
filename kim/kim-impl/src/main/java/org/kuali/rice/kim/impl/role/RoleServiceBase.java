@@ -123,6 +123,17 @@ abstract class RoleServiceBase {
         }
     }
 
+    protected List<RoleMemberBo> getRoleMembersForPrincipalId(String roleId, String principalId) {
+        return roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(roleId), principalId, null);
+    }
+
+    protected List<RoleMemberBo> getRoleMembersForGroupIds(String roleId, List<String> groupIds) {
+        if (CollectionUtils.isEmpty(groupIds)) {
+            return new ArrayList<RoleMemberBo>();
+        }
+        return roleDao.getRoleMembersForGroupIds(roleId, groupIds);
+    }
+
     /**
      * Retrieves a list of RoleMemberBo instances from the KimRoleDao.
      *
@@ -528,7 +539,26 @@ abstract class RoleServiceBase {
                 return getRoleTypeService(roleType);
             }
         }
-        return null;
+        return KimImplServiceLocator.getDefaultRoleTypeService();
+    }
+
+    /**
+     * Retrieves the role type service for the given service name.
+     *
+     * @param serviceName the name of the service to retrieve
+     * @return the Role Type Service
+     */
+    protected RoleTypeService getRoleTypeServiceByName(String serviceName) {
+        try {
+            KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
+            if (service != null && service instanceof RoleTypeService) {
+                return (RoleTypeService) service;
+            }
+            return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+        } catch (Exception ex) {
+            LOG.warn("Unable to find role type service with name: " + serviceName, ex);
+            return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+        }
     }
 
     protected RoleTypeService getRoleTypeService(KimType typeInfo) {
@@ -545,7 +575,7 @@ abstract class RoleServiceBase {
                 return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
             }
         }
-        return null;
+        return KimImplServiceLocator.getDefaultRoleTypeService();
     }
     
     protected Map<String, String> populateQualifiersForExactMatch(Map<String, String> defaultQualification, List<String> attributes) {

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.apache.cxf.common.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
@@ -50,7 +50,7 @@ public class ActionTypeValuesFinder extends UifKeyValuesFinderBase {
         }
 
         // if we have an agenda w/ a selected context
-        if (agendaEditor.getAgenda() != null && !StringUtils.isEmpty(agendaEditor.getAgenda().getContextId())) {
+        if (agendaEditor.getAgenda() != null && StringUtils.isNotBlank(agendaEditor.getAgenda().getContextId())) {
             Collection<KrmsTypeDefinition> actionTypes = getKrmsTypeRepositoryService().findAllActionTypesByContextId(
                     agendaEditor.getAgenda().getContextId());
             for (KrmsTypeDefinition actionType : actionTypes) {

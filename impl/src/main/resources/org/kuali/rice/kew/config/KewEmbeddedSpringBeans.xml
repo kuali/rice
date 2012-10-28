@@ -301,6 +301,9 @@
     <property name="serviceName" value="dataDictionaryService"/>
   </bean>
 
+  <bean id="backdoorRestrictionPermissionTypeService"
+        class="org.kuali.rice.kew.service.impl.BackdoorRestrictionPermissionTypeServiceImpl" />
+
   <bean id="rice.kew.import.persistenceServiceOjb"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="persistenceServiceOjb"/>

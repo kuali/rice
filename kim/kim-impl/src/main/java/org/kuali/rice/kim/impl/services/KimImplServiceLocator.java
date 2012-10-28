@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.impl.group.GroupInternalService;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleDao;
@@ -36,6 +37,7 @@ public class KimImplServiceLocator {
     public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
     public static final String ROLE_INTERNAL_SERVICE = "kimRoleInternalService";
     public static final String LOCAL_CACHE_MANAGER = "kimLocalCacheManager";
+    public static final String DEFAULT_ROLE_TYPE_SERVICE = "kimRoleTypeService";
 
     public static final String KIM_ROLE_DAO = "kimRoleDao";
 
@@ -69,6 +71,10 @@ public class KimImplServiceLocator {
 
     public static CacheManager getLocalCacheManager() {
         return (CacheManager) getService(LOCAL_CACHE_MANAGER);
+    }
+
+    public static RoleTypeService getDefaultRoleTypeService() {
+        return (RoleTypeService) getService(DEFAULT_ROLE_TYPE_SERVICE);
     }
 
     public static RoleDao getRoleDao() {

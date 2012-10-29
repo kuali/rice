@@ -799,12 +799,34 @@
         <column name="DOC_STAT_NM" primaryKey="true" size="64" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column name="CAT_NM" size="64" type="VARCHAR"/>
+        <column name="SEQ_NO" size="5" type="DECIMAL"/>
+        <foreign-key foreignTable="KREW_DOC_TYP_APP_STAT_CAT_T" name="KREW_DOC_TYP_APP_DOC_STAT_FK1">
+            <reference foreign="DOC_TYP_ID" local="DOC_TYP_ID"/>
+            <reference foreign="CAT_NM" local="CAT_NM"/>
+        </foreign-key>
         <unique name="KREW_DOC_TYP_APP_DOC_STAT_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
         <index name="KREW_DOC_TYP_APP_DOC_STAT_T1">
             <index-column name="DOC_TYP_ID"/>
         </index>
+        <index name="KREW_DOC_TYP_APP_DOC_STAT_T2">
+            <index-column name="DOC_TYP_ID"/>
+            <index-column name="CAT_NM"/>
+        </index>
+    </table>
+    <table name="KREW_DOC_TYP_APP_STAT_CAT_T">
+        <column name="DOC_TYP_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="CAT_NM" primaryKey="true" size="64" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <foreign-key foreignTable="KREW_DOC_TYP_T" name="KREW_DOC_TYP_APP_STAT_CAT_FK1">
+            <reference foreign="DOC_TYP_ID" local="DOC_TYP_ID"/>
+        </foreign-key>
+        <unique name="KREW_DOC_TYP_APP_STAT_CAT_TC1">
+            <unique-column name="OBJ_ID"/>
+        </unique>
     </table>
     <table name="KREW_DOC_TYP_ATTR_T">
         <column name="DOC_TYP_ATTRIB_ID" primaryKey="true" size="40" type="VARCHAR"/>

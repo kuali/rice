@@ -62,18 +62,14 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	}
 
 	/**
-	 * The following initialization is performed:
-	 *
-	 * <ul>
-	 * <li>Set the itemSpanStyle</li>
-	 * </ul>
-	 *
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     * java.lang.Object,org.kuali.rice.krad.uif.container.Container)
+     * Sets the item span style
+     *
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override
-    public void performInitialization(View view, Object model, Container container) {
-        super.performInitialization(view, model, container);
+	public void performFinalize(View view, Object model, Container container) {
+		super.performFinalize(view, model, container);
 
         if (StringUtils.isBlank(itemStyle)) {
             itemStyle = "";
@@ -115,15 +111,6 @@ public class BoxLayoutManager extends LayoutManagerBase {
             }
         }
     }
-
-	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
-	 */
-	@Override
-	public void performFinalize(View view, Object model, Container container) {
-		super.performFinalize(view, model, container);
-	}
 
 	/**
 	 * Indicates whether the components should be rendered in a horizontal or

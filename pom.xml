@@ -93,7 +93,7 @@
     <commons-pool.version>1.5.7</commons-pool.version>
     <commons-validator.version>1.3.1</commons-validator.version>
     <connector-api.version>1.5</connector-api.version>
-    <cxf.version>2.3.8</cxf.version>
+    <cxf.version>2.7.0</cxf.version>
     <db-ojb.version>1.0.4-patch8</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
@@ -132,6 +132,7 @@
       Quartz 2.0.x is an impacting api and database-level change -->
     <quartz.version>1.8.4</quartz.version>
     <selenium-java.version>2.16.1</selenium-java.version>
+    <xalan.version>2.7.1</xalan.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.4</slf4j.version>
@@ -144,7 +145,7 @@
     <tiles.version>2.2.2</tiles.version>
 
     <!-- Version 2.3.6 of cxf requires wss4j 1.5.11 or 1.5.12 and does not work with 1.6.0 -->
-    <wss4j.version>1.5.12</wss4j.version>
+    <wss4j.version>1.6.7</wss4j.version>
     <xapool.version>1.5.0-patch3</xapool.version>
     <!-- 2.11.0 is not in maven central repo https://issues.apache.org/jira/browse/XERCESJ-1454 -->
     <xercesImpl.version>2.9.1</xercesImpl.version>
@@ -1307,13 +1308,11 @@
             <artifactId>commons-logging</artifactId>
             <groupId>commons-logging</groupId>
           </exclusion>
+          <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-javamail_1.4_spec</artifactId>
+          </exclusion>
         </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-common-utilities</artifactId>
-        <version>${cxf.version}</version>
       </dependency>
 
       <dependency>
@@ -1927,6 +1926,12 @@
         <groupId>org.codehaus.btm</groupId>
         <artifactId>btm</artifactId>
         <version>${bitronix.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <version>${xalan.version}</version>
       </dependency>
 
       <dependency>

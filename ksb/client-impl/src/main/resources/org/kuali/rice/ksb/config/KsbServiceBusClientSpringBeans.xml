@@ -73,8 +73,7 @@
 	<bean id="rice.ksb.serviceExportManager"
         class="org.kuali.rice.ksb.messaging.serviceexporters.ServiceExportManagerImpl"
         lazy-init="true"
-        p:cxfBus-ref="cxf"
-        p:cxfServerRegistry-ref="org.apache.cxf.endpoint.ServerRegistry" />
+        p:cxfBus-ref="cxf"/>
 
 	<bean id="rice.ksb.javaSecurityManagementService"
         class="org.kuali.rice.ksb.security.admin.service.impl.JavaSecurityManagementServiceImpl"
@@ -83,7 +82,5 @@
 	<bean id="rice.ksb.digitalSignatureService"
         class="org.kuali.rice.ksb.security.service.impl.DigitalSignatureServiceImpl"
         lazy-init="true" />
-
-  <bean class="org.kuali.rice.ksb.util.SignatureAlgorithmCacheCleaner" lazy-init="false" />
 
 </beans>

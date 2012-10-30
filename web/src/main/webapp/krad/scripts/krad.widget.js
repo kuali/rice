@@ -246,14 +246,25 @@ function isCalledWithinLightbox() {
 }
 
 /*
+ * Reload page with lookup result URL
+ */
+function returnLookupResultReload(aElement) {
+    if (top.jQuery('iframe[id*=easyXDM_]').length == 0) {
+        window.open(aElement.attr('href'), aElement.attr('target'));
+    } else {
+        top.jQuery('iframe[id*=easyXDM_]').contents().find('#iframeportlet').attr('src', aElement.attr('href'));
+    }
+}
+
+/*
  * Function that returns lookup results by script
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-    if (usePortalForContext()) {
-        returnField = top.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
+    if (top.jQuery('iframe[id*=easyXDM_]').length == 0) {
+        returnField = top.jq('[name="' + escapeName(fieldName) + '"]');
     }else{
-        returnField = jq('[name="' + escapeName(fieldName) + '"]');
+        returnField = top.jQuery('iframe[id*=easyXDM_]').contents().find('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
     }
     returnField.val(value);
     returnField.focus();
@@ -268,14 +279,10 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    if (usePortalForContext()) {
-        jQuery('#kualiForm').attr('target',getContext().find('#iframeportlet').attr('name'));
-    }else{
-        if (parent.jq != null) {
-            jQuery('#kualiForm').attr('target',parent.jQuery('#iframeportlet').attr('name'));
-        }else{
-            jQuery('#kualiForm').attr('target','_parent');
-        }
+    if (top.jQuery('iframe[id*=easyXDM_]').length == 0) {
+        top.jQuery('#kualiForm').attr('target','_parent');
+    } else {
+        top.jQuery('iframe[id*=easyXDM_]').contents().find('#iframeportlet').contents().find('#kualiForm').attr('target','iframeportlet');
     }
 }
 

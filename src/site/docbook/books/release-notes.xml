@@ -35,6 +35,10 @@
                         how to use.</simpara>
                 </listitem>
                 <listitem>
+                    <simpara>Application Document Status functionality was enhanced to provide
+                        better document search integration.</simpara>
+                </listitem>
+                <listitem>
                     <simpara>Numerous bug fixes. See below for details.</simpara>
                 </listitem>
                 <listitem>
@@ -55,10 +59,12 @@
         <section>
             <title>Documentation</title>
             <para>API Documentation can be found at <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">http://site.kuali.org/rice/${project.version}/apidocs/index.html</link></para>
-            <para>Formal documentation can be found at <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/portal.html">http://site.kuali.org/rice/${project.version}/reference/html/portal.html</link>.
-                This documentation is still in the process of review and update for 2.0 which will
-                continue through subsequent releases, so please follow the notes in each document to
-                report any outdated information.</para>
+            <para>Formal documentation can be found at <link xlink:show="new"
+                    xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/portal.html"
+                    >http://site.kuali.org/rice/${project.version}/reference/html/portal.html</link>.
+                This documentation is still in the process of review and update  which will continue
+                through subsequent releases, so please follow the notes in each document to report
+                any outdated information.</para>
         </section>
         <section>
             <title>Contact</title>
@@ -92,20 +98,13 @@
         </section>
         <section>
             <title>Client Database Upgrade</title>
-            <para>MySQL and Oracle scripts for performing these updates are available in the
-                following locations in the Rice distribution downloads:<variablelist>
+            <para>There was a  MySQL-specific issue that affected a client table, therefore you only
+                need to run a client upgrade script for MySQL.<variablelist>
                     <varlistentry>
                         <term>MySQL</term>
                         <listitem>
                             <para><code>scripts/upgrades/2.1.0 to
                                     2.1.2/final/update_client_final_mysql.sql</code></para>
-                        </listitem>
-                    </varlistentry>
-                    <varlistentry>
-                        <term>Oracle</term>
-                        <listitem>
-                            <para><code>scripts/upgrades/2.1.0 to
-                                    2.1.2/final/update_client_final_oracle.sql</code></para>
                         </listitem>
                     </varlistentry>
                 </variablelist></para>

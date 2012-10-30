@@ -67,6 +67,50 @@
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
     </section>
+    <section xml:id="upgrade-guide" xreflabel="Upgrade Guide">
+        <title>Upgrade Guide: Rice 2.1.0 to Rice ${project.version}</title>
+        <caution><para>We recommend backing up your database before performing any upgrade!</para></caution>
+        <section>
+            <title>Upgrading the server database</title>
+            <para>MySQL and Oracle scripts for performing these updates are available in the
+                following locations in the Rice distribution downloads:<variablelist>
+                    <varlistentry>
+                        <term>MySQL</term>
+                        <listitem>
+                            <para><code>scripts/upgrades/2.1.0 to
+                                    2.1.2/final/update_final_mysql.sql</code></para>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>Oracle</term>
+                        <listitem>
+                            <para><code>scripts/upgrades/2.1.0 to
+                                    2.1.2/final/update_final_oracle.sql</code></para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist></para>
+        </section>
+        <section>
+            <title>Client Database Upgrade</title>
+            <para>MySQL and Oracle scripts for performing these updates are available in the
+                following locations in the Rice distribution downloads:<variablelist>
+                    <varlistentry>
+                        <term>MySQL</term>
+                        <listitem>
+                            <para><code>scripts/upgrades/2.1.0 to
+                                    2.1.2/final/update_client_final_mysql.sql</code></para>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>Oracle</term>
+                        <listitem>
+                            <para><code>scripts/upgrades/2.1.0 to
+                                    2.1.2/final/update_client_final_oracle.sql</code></para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist></para>
+        </section>
+    </section>
     <section xml:id="items_addressed_in_rice">
         <title>Items Addressed in Rice ${project.version}</title>
 <section><title>        Bug Fix

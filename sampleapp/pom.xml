@@ -47,6 +47,13 @@
           <include>**/META-INF/*.xml</include>
         </includes>
       </resource>
+       <resource>
+        <directory>src/it/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </resource>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>false</filtering>

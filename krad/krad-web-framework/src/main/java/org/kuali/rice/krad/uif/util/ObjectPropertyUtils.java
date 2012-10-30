@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
+import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
+import org.springframework.core.convert.support.GenericConversionService;
 
 import java.beans.PropertyDescriptor;
 import java.util.Map;
@@ -103,6 +106,11 @@ public class ObjectPropertyUtils {
 	public static BeanWrapper wrapObject(Object object) {
 		BeanWrapper beanWrapper = new BeanWrapperImpl(object);
 		beanWrapper.setAutoGrowNestedPaths(true);
+
+        GenericConversionService conversionService = new GenericConversionService();
+        conversionService.addConverter(new StringMapConverter());
+        conversionService.addConverter(new StringListConverter());
+        beanWrapper.setConversionService(conversionService);
 
 		return beanWrapper;
 	}

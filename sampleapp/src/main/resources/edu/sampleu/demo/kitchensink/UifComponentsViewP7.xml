@@ -58,7 +58,7 @@
        value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
      <property name="instructionalText"
        value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery richTable and
-       multi-value lookup and having the actions in the first column" />
+       multi-value lookup and having the actions in the first column. Also with custom line actions" />
      <property name="collectionObjectClass"
        value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list2" />
@@ -68,6 +68,12 @@
      <property name="collectionLookup.render" value="true"/>
      <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="collectionLookup.fieldConversions" value="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
+     <property name="lineActions">
+           <list>
+             <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="customLineAction" p:actionLabel="custom"
+                     p:actionParameters="field1:@{#line.field1},field2:@{#line.field2}"/>
+           </list>
+     </property>
      <property name="items">
        <list>
          <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"

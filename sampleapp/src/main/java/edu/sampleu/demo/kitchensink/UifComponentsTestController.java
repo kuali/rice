@@ -381,4 +381,18 @@ public class UifComponentsTestController extends UifControllerBase {
         }
         return super.addLine(uifForm, result, request, response);
     }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=customLineAction")
+    public ModelAndView customLineAction(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        String actionParm1 = uifForm.getActionParamaterValue("field1");
+        String actionParm2 = uifForm.getActionParamaterValue("field2");
+
+        GlobalVariables.getMessageMap().addGrowlMessage("Action Parameters", "actionParms.message", actionParm1,
+                actionParm2);
+
+        return super.deleteLine(uifForm, result, request, response);
+
+    }
 }

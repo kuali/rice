@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -549,6 +550,34 @@ public class ComponentUtils {
         }
 
         return inputFields;
+    }
+
+    /**
+     * Determines whether the given component contains an expression for the given property name
+     *
+     * @param component component instance to check for expressions
+     * @param propertyName name of the property to determine if there is an expression for
+     * @param collectionMatch if set to true will find an expressions for properties that start with the given
+     * property name (for matching expressions on collections like prop[index] or prop['key'])
+     * @return boolean true if the component has an expression for the property name, false if not
+     */
+    public static boolean containsPropertyExpression(Component component, String propertyName,
+            boolean collectionMatch) {
+        boolean hasExpression = false;
+
+        Map<String, String> propertyExpressions = component.getPropertyExpressions();
+
+        if (collectionMatch) {
+            for (String expressionPropertyName : propertyExpressions.keySet()) {
+                if (expressionPropertyName.startsWith(propertyName)) {
+                    hasExpression = true;
+                }
+            }
+        } else if (propertyExpressions.containsKey(propertyName)) {
+            hasExpression = true;
+        }
+
+        return hasExpression;
     }
 
 }

@@ -258,15 +258,15 @@ public class CollectionGroupBuilder implements Serializable {
         // copy fields for line and adjust binding to match collection line path
         lineFields = (List<Field>) ComponentUtils.copyFieldList(lineFields, bindingPath, lineSuffix);
 
-        //If the fields contain any collections themselves (details case) adjust their binding path
-        for(Field f: lineFields){
-            List<CollectionGroup> components = ComponentUtils.getComponentsOfTypeDeep(f, CollectionGroup.class);
-            for(CollectionGroup cg: components){
-                ComponentUtils.prefixBindingPath(cg,bindingPath);
-                cg.setSubCollectionSuffix(lineSuffix);
+        // If the fields contain any collections themselves (details case) adjust their binding path
+        // TODO: does the copyFieldList method above not take care of this?
+        for (Field field : lineFields) {
+            List<CollectionGroup> components = ComponentUtils.getComponentsOfTypeDeep(field, CollectionGroup.class);
+            for (CollectionGroup fieldCollectionGroup : components) {
+                ComponentUtils.prefixBindingPath(fieldCollectionGroup, bindingPath);
+                fieldCollectionGroup.setSubCollectionSuffix(lineSuffix);
             }
         }
-
 
         boolean readOnlyLine = collectionGroup.isReadOnly();
 
@@ -275,7 +275,6 @@ public class CollectionGroupBuilder implements Serializable {
 
         // add special css styles to identify the add line client side
         if (lineIndex == -1) {
-
             // set focus on after the add line submit to first field of add line
             for (Action action : actions) {
                 if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE) && (lineFields
@@ -303,24 +302,14 @@ public class CollectionGroupBuilder implements Serializable {
                         collectionGroup.isRenderSaveLineActions()) {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {
-                            ControlBase control = (ControlBase)((InputField) f).getControl();
-                            control.setOnChangeScript(control.getOnChangeScript()==null?";collectionLineChanged(this, 'uif-newCollectionItem');":control.getOnChangeScript() +
+                            ControlBase control = (ControlBase) ((InputField) f).getControl();
+                            control.setOnChangeScript(control.getOnChangeScript() == null ?
+                                    ";collectionLineChanged(this, 'uif-newCollectionItem');" :
+                                    control.getOnChangeScript() +
                                     ";collectionLineChanged(this, 'uif-newCollectionItem');");
                         }
                     }
                 }
-
-                // Add script to recalculate totals
-                // TODO : only add to total column fields, and add the add line
-/*                if (collectionGroup.getLayoutManager() instanceof TableLayoutManager) {
-                    for (Field f : lineFields) {
-                        if (f instanceof InputField && f.isRender()) {
-                            ControlBase control = (ControlBase)((InputField) f).getControl();
-                            collectionGroup.getLayoutManager()
-                            control.addDataAttribute("total", "true");
-                        }
-                    }
-                }*/
             }
 
             ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE,
@@ -702,9 +691,22 @@ public class CollectionGroupBuilder implements Serializable {
         List<Action> actions = ComponentUtils.copyComponentList(lineActions, lineSuffix);
 
         for (Action action : actions) {
-            action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
-                    collectionGroup.getBindingInfo().getBindingPath());
-            action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
+            if (ComponentUtils.containsPropertyExpression(action, UifPropertyPaths.ACTION_PARAMETERS, true)) {
+                // need to update the actions expressions so our settings do not get overridden
+                action.getPropertyExpressions().put(
+                        UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELLECTED_COLLECTION_PATH + "']",
+                        UifConstants.EL_PLACEHOLDER_PREFIX + "'" + collectionGroup.getBindingInfo().getBindingPath() +
+                                "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
+                action.getPropertyExpressions().put(
+                        UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELECTED_LINE_INDEX + "']",
+                        UifConstants.EL_PLACEHOLDER_PREFIX + "'" + Integer.toString(lineIndex) +
+                                "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
+            } else {
+                action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
+                        collectionGroup.getBindingInfo().getBindingPath());
+                action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
+            }
+            
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.setRefreshId(collectionGroup.getId());
 

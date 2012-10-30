@@ -462,21 +462,29 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
             data.messageMap = messageMap;
         }
 
+        //retrieve header for section
+        if(data.isSection == undefined){
+            var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label");
+            data.isSection = sectionHeader.length;
+        }
+
         //add fresh data to group's message data based on the new field info
         messageMap[fieldId] = fieldData;
 
-        data = calculateMessageTotals(data);
+
 
         //write messages for this group
         if(!pageSetupPhase){
             //Display counts in the header even if messages aren't displayed at that level
+            data = calculateMessageTotals(id, data);
             displayHeaderMessageCount(id, data);
             writeMessagesForGroup(id, data);
         }
     }
 
     if (!pageLevel && parent) {
-        handleMessagesAtGroup(parent, fieldId, fieldData);
+        var parentData = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+        handleMessagesAtGroup(parent, fieldId, fieldData, pageSetupPhase);
     }
 }
 
@@ -522,6 +530,7 @@ function writeMessagesForGroup(id, data){
 
             var newList = jQuery("<ul class='" + kradVariables.VALIDATION_MESSAGES_CLASS + "'></ul>");
 
+            //init data for group
             if(data.messageTotal == undefined){
                 //init empty params
                 if (!data.errors) {
@@ -533,13 +542,12 @@ function writeMessagesForGroup(id, data){
                 if (!data.info) {
                     data.info = [];
                 }
-                calculateMessageTotals(data);
+                calculateMessageTotals(id, data);
             }
 
             if(data.messageTotal){
-                if(data.hasOwnMessages){
-                    newList = generateSectionLevelMessages(id, data, newList);
-                }
+
+                newList = generateSectionLevelMessages(id, data, newList);
 
                 if (data.summarize) {
                     newList = generateSummaries(id, messageMap, sections, order, newList);
@@ -617,8 +625,9 @@ function writeMessagesForPage(){
         }
     }
 
-    writeMessagesForGroup(pageId, data);
     writeMessagesForChildGroups(pageId);
+    writeMessagesForGroup(pageId, data);
+    displayHeaderMessageCount(pageId, data);
     jQuery(".uif-errorMessageItem > div").show();
 }
 
@@ -629,6 +638,7 @@ function writeMessagesForPage(){
  */
 function writeMessagesForChildGroups(parentId){
     jQuery("[data-parent='"+ parentId +"']").each(function(){
+
         var currentGroup = jQuery(this);
         var id = currentGroup.attr("id");
         var data = currentGroup.data(kradVariables.VALIDATION_MESSAGES);
@@ -642,8 +652,9 @@ function writeMessagesForChildGroups(parentId){
         }
 
         if(!(currentGroup.is("div[data-role='InputField']"))){
-            writeMessagesForGroup(id, data);
             writeMessagesForChildGroups(id);
+            writeMessagesForGroup(id, data);
+            displayHeaderMessageCount(id, data);
         }
     });
 }
@@ -682,18 +693,27 @@ function handleTabStyle(id, error, warning, info) {
  */
 function generateSectionLevelMessages(id, data, newList) {
     if (data != undefined && data != null) {
-        //Write all message items for section
-        var errors = jQuery(generateListItems(data.errors, "uif-errorMessageItem", 0, true)
-                + generateListItems(data.serverErrors, "uif-errorMessageItem", 0, true));
-        var warnings = jQuery(generateListItems(data.warnings, "uif-warningMessageItem", 0, true)
-                + generateListItems(data.serverWarnings, "uif-warningMessageItem", 0, true));
-        var info = jQuery(generateListItems(data.info, "uif-infoMessageItem", 0, true)
-                + generateListItems(data.serverInfo, "uif-infoMessageItem", 0, true));
+        if(data.hasOwnMessages){
+            //Write all message items for section
+            var errors = jQuery(generateListItems(data.errors, "uif-errorMessageItem", 0, true)
+                    + generateListItems(data.serverErrors, "uif-errorMessageItem", 0, true));
+            var warnings = jQuery(generateListItems(data.warnings, "uif-warningMessageItem", 0, true)
+                    + generateListItems(data.serverWarnings, "uif-warningMessageItem", 0, true));
+            var info = jQuery(generateListItems(data.info, "uif-infoMessageItem", 0, true)
+                    + generateListItems(data.serverInfo, "uif-infoMessageItem", 0, true));
 
-        //Write all items to the list
-        newList = writeMessageItemToList(errors, newList);
-        newList = writeMessageItemToList(warnings, newList);
-        newList = writeMessageItemToList(info, newList);
+            //Write all items to the list
+            newList = writeMessageItemToList(errors, newList);
+            newList = writeMessageItemToList(warnings, newList);
+            newList = writeMessageItemToList(info, newList);
+        }
+
+        jQuery("#" + id).find("div[data-parent='"+ id +"']").not("div[data-role='InputField']").each(function(){
+            var groupData = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
+            if(groupData && !groupData.isSection){
+                newList = generateSectionLevelMessages(jQuery(this).attr("id"), groupData, newList);
+            }
+        });
     }
     return newList;
 }
@@ -702,23 +722,66 @@ function generateSectionLevelMessages(id, data, newList) {
  * Calculates the message totals for the data passed in, appends these totals to the data map, and passes it back
  * @param data - 'validationMessages' data to count message totals on
  */
-function calculateMessageTotals(data) {
+function calculateMessageTotals(id, data) {
     var errorTotal = 0;
     var warningTotal = 0;
     var infoTotal = 0;
     var messageMap = data.messageMap;
     //Add totals for messages of fields in group
-    for (var id in messageMap) {
-        var currentData = messageMap[id];
+    for (var fId in messageMap) {
+        var currentData = messageMap[fId];
         errorTotal = errorTotal + currentData.serverErrors.length + currentData.errors.length;
         warningTotal = warningTotal + currentData.serverWarnings.length + currentData.warnings.length;
         infoTotal = infoTotal + currentData.serverInfo.length + currentData.info.length;
     }
+
+    var childGroupCount = recursiveGroupMessageCount(id);
+    errorTotal += childGroupCount.errorTotal;
+    warningTotal += childGroupCount.warningTotal;
+    infoTotal += childGroupCount.infoTotal;
+
     //Add totals for messages for THIS Group
     data.errorTotal = errorTotal + data.serverErrors.length + data.errors.length;
     data.warningTotal = warningTotal + data.serverWarnings.length + data.warnings.length;
     data.infoTotal = infoTotal + data.serverInfo.length + data.info.length;
     data.messageTotal = data.errorTotal + data.warningTotal + data.infoTotal;
+
+
+    return data;
+}
+
+/**
+ * Find the count of messages that each subGroup of the parent by id has for its group specifically (does not include
+ * its fields - these are messages keyed to that group)
+ *
+ * @param parentId parent group id to use
+ * @return {Object} data object containing the message count totals
+ */
+function recursiveGroupMessageCount(parentId){
+    var data = {
+        errorTotal: 0,
+        warningTotal: 0,
+        infoTotal: 0
+    };
+
+    if(!parentId){
+        return data;
+    }
+
+    jQuery("#" + parentId).find("div[data-parent='"+ parentId +"']").not("div[data-role='InputField']").each(function(){
+        var groupData = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
+        if(groupData){
+            data.errorTotal = data.errorTotal + groupData.serverErrors.length + (groupData.errors?groupData.errors.length:0);
+            data.warningTotal = data.warningTotal +  groupData.serverWarnings.length + (groupData.warnings?groupData.warnings.length:0);
+            data.infoTotal = data.infoTotal +  groupData.serverInfo.length + (groupData.info?groupData.info.length:0);
+        }
+
+        var childData = recursiveGroupMessageCount(jQuery(this).attr("id"));
+        data.errorTotal += childData.errorTotal;
+        data.warningTotal += childData.warningTotal;
+        data.infoTotal += childData.infoTotal;
+    });
+
     return data;
 }
 

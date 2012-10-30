@@ -1040,4 +1040,6 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * @param tracer Record of component's location
      */
     void completeValidation(ValidationTrace tracer);
+
+    public boolean isDisclosedByAction();
 }

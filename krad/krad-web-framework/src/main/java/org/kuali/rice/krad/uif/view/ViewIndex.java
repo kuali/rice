@@ -147,9 +147,11 @@ public class ViewIndex implements Serializable {
             if (component != null) {
                 // if component has a refresh condition we need to keep it
                 if ((StringUtils.isNotBlank(component.getProgressiveRender()) || StringUtils.isNotBlank(
-                        component.getConditionalRefresh()) ||component.getRefreshTimer() > 0 || (component.getRefreshWhenChangedPropertyNames() != null
-                        && !component.getRefreshWhenChangedPropertyNames().isEmpty()) || component
-                        .isRefreshedByAction()) && !component.isDisableSessionPersistence()) {
+                        component.getConditionalRefresh()) || component.getRefreshTimer() > 0 ||
+                        (component.getRefreshWhenChangedPropertyNames() != null &&
+                                !component.getRefreshWhenChangedPropertyNames().isEmpty()) ||
+                        component.isRefreshedByAction() || component.isDisclosedByAction()) &&
+                        !component.isDisableSessionPersistence()) {
                     holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }

@@ -45,6 +45,8 @@
                   p:methodToCall="addErrorInfoMessages"/>
             <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Warning+Info Messages"
                   p:methodToCall="addWarnInfoMessages"/>
+            <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Single Group Error"
+                  p:methodToCall="addSingleErrorMessage"/>
           </list>
         </property>
       </bean>
@@ -360,7 +362,7 @@
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-HorizontalBoxGroup">
+        <bean id="Uif-ValidationLayout-SubGroup" parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
               <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field10" p:label="Field 10">

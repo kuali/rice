@@ -22,9 +22,6 @@
 
     <#-- now render the updated component (or page) wrapped in an update div -->
     <div id="${Component.id}_update">
-        <#-- rerun view pre-load script to get new state variables for component -->
-        <@krad.script value="${view.preLoadScript!}" component=Component/>
-
         <@krad.template componentUpdate=true component=Component/>
 
         <@krad.script value="${KualiForm.lightboxScript!}" component=Component/>

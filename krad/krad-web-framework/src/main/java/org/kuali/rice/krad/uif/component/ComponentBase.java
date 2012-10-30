@@ -78,6 +78,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private List<String> additionalComponentsToRefresh;
     private String additionalComponentsToRefreshJs;
     private boolean refreshedByAction;
+    private boolean disclosedByAction;
 
     private int refreshTimer;
 
@@ -1728,5 +1729,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             String currentValues [] = {"conditionalRefresh ="+getConditionalRefresh()};
             tracer.createError("conditionalRefresh must follow the Spring EL @{} format",currentValues);;
         }
+    }
+
+    /**
+     * If true if this component is disclosed by an action in js, a placeholder will be put in this components place
+     *
+     * @return true if this component is disclosed by an action
+     */
+    public boolean isDisclosedByAction() {
+        return disclosedByAction;
+    }
+
+    /**
+     * Set if this component is disclosed by some outside action
+     *
+     * @param disclosedByAction
+     */
+    public void setDisclosedByAction(boolean disclosedByAction) {
+        this.disclosedByAction = disclosedByAction;
     }
 }

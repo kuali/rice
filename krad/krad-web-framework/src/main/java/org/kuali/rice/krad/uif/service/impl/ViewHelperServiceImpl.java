@@ -217,9 +217,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // on existing components
         view.setIdSequence(currentSequenceVal);
 
-        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
         String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
-        ComponentUtils.updateIdWithSuffix(component, suffix);
+        if (StringUtils.isNotBlank(suffix)) {
+            ComponentUtils.updateIdWithSuffix(component, suffix);
+        }
 
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
 
@@ -230,7 +231,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             nestedComponent.pushAllToContext(origComponent.getContext());
         }
 
-        // the expression graph for refreshed components is captured in the view index (initially it might expressoins
+        // the expression graph for refreshed components is captured in the view index (initially it might expressions
         // might have come from a parent), after getting the expression graph then we need to populate the expressions
         // on the configurable for which they apply
         Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
@@ -249,8 +250,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (component instanceof Field) {
             ((Field) component).setLabelRendered(((Field) origComponent).isLabelRendered());
         } else if (component instanceof CollectionGroup) {
-            ((CollectionGroup) component).setSubCollectionSuffix(
-                    ((CollectionGroup) origComponent).getSubCollectionSuffix());
+            String subCollectionSuffix = ((CollectionGroup) origComponent).getSubCollectionSuffix();
+            ((CollectionGroup) component).setSubCollectionSuffix(subCollectionSuffix);
+
+            suffix = StringUtils.removeStart(suffix, subCollectionSuffix);
         }
 
         if (origComponent.isRefreshedByAction()) {
@@ -275,11 +278,29 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         performComponentApplyModel(view, component, model);
         view.getViewIndex().indexComponent(component);
 
+        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
+        if (StringUtils.isNotBlank(suffix)) {
+            ComponentUtils.updateChildIdsWithSuffixNested(component, suffix);
+        }
+
+        // if disclosed by action and request was made, make sure the component will display
+        if (component.isDisclosedByAction()) {
+            component.setRender(true);
+            component.setHidden(false);
+        }
+
+        // TODO: need to handle updating client state for component refresh
+        Map<String, Object> clientState = new HashMap<String, Object>();
+        performComponentFinalize(view, component, model, parent, clientState);
+
         // make sure id, binding, and label settings stay the same as initial
         if (component instanceof Group || component instanceof FieldGroup) {
             List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(component);
+            List<Component> originalNestedGroupComponents = ComponentUtils.getAllNestedComponents(origComponent);
+
             for (Component nestedComponent : nestedGroupComponents) {
-                Component origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
+                Component origNestedComponent = ComponentUtils.findComponentInList(originalNestedGroupComponents,
+                        nestedComponent.getId());
 
                 if (origNestedComponent != null) {
                     // update binding
@@ -298,16 +319,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     if (origNestedComponent.isRefreshedByAction()) {
                         nestedComponent.setRefreshedByAction(true);
                     }
-
-                    // update id
-                    ComponentUtils.updateIdWithSuffix(nestedComponent, suffix);
                 }
             }
         }
-
-        // TODO: need to handle updating client state for component refresh
-        Map<String, Object> clientState = new HashMap<String, Object>();
-        performComponentFinalize(view, component, model, parent, clientState);
 
         // get client state for component and build update script for on load
         String clientStateScript = buildClientSideStateScript(view, clientState, true);

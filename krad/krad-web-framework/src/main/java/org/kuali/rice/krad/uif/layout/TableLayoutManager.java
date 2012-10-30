@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.layout;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -28,7 +27,6 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
@@ -41,7 +39,6 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.RichTable;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -98,10 +95,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     //row details properties
     private Group rowDetailsGroup;
     private String rowDetailsLinkName = "Details";
-    private boolean rowDetailsUseImage;
+    private boolean rowDetailsSwapActionImage;
     private boolean rowDetailsOpen;
     private boolean showToggleAllDetails;
     private Action toggleAllDetailsAction;
+    private boolean ajaxDetailsRetrieval;
+    private Action expandDetailsActionPrototype;
 
     //grouping properties
     @KeepExpression
@@ -624,7 +623,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             cellPosition += lineField.getColSpan();
             columnNumber++;
 
-            // special handling for grouping field - this field MUST be first
+            //special handling for grouping field - this field MUST be first
             if (hasGrouping && lineField instanceof MessageField &&
                     lineField.getDataAttributes().get("role") != null && lineField.getDataAttributes().get("role")
                     .equals("grouping")) {
@@ -644,19 +643,20 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
             }
 
-            // details action
+            //details action
             if (lineField instanceof FieldGroup && ((FieldGroup) lineField).getItems() != null) {
                 for (Component component : ((FieldGroup) lineField).getItems()) {
                     if (component != null && component instanceof Action && component.getDataAttributes().get("role")
-                            != null && component.getDataAttributes().get("role").equals("detailsLink")) {
+                            != null && component.getDataAttributes().get("role").equals("detailsLink") &&
+                            StringUtils.isBlank(((Action) component).getActionScript())) {
                         ((Action) component).setActionScript(
-                                "expandDataTableDetail(this,'" + this.getId() + "'," + rowDetailsUseImage + ")");
+                                "rowDetailsActionHandler(this,'" + this.getId() + "');");
                     }
                 }
             }
 
-            // special column calculation handling to identify what type of handler will be attached
-            // and add special styling
+            //special column calculation handling to identify what type of handler will be attached
+            //and add special styling
             if (lineField instanceof InputField && columnCalculations != null) {
                 for (ColumnCalculationInfo cInfo : columnCalculations) {
                     if (cInfo.getPropertyName().equals(((InputField) lineField).getPropertyName())) {
@@ -1377,18 +1377,18 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return true if displaying an image instead of a link for row details
      */
-    @BeanTagAttribute(name="rowDetailsUseImage")
-    public boolean isRowDetailsUseImage() {
-        return rowDetailsUseImage;
+    @BeanTagAttribute(name="rowDetailsSwapActionImage")
+    public boolean isRowDetailsSwapActionImage() {
+        return rowDetailsSwapActionImage;
     }
 
     /**
      * Sets row details link use image flag
      *
-     * @param rowDetailsUseImage true to use image for details, false otherwise
+     * @param rowDetailsSwapActionImage true to use image for details, false otherwise
      */
-    public void setRowDetailsUseImage(boolean rowDetailsUseImage) {
-        this.rowDetailsUseImage = rowDetailsUseImage;
+    public void setRowDetailsSwapActionImage(boolean rowDetailsSwapActionImage) {
+        this.rowDetailsSwapActionImage = rowDetailsSwapActionImage;
     }
 
     /**
@@ -1403,7 +1403,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             return;
         }
 
-        // data attribute to mark this group to open itself when rendered
+        //data attribute to mark this group to open itself when rendered
         collectionGroup.addDataAttribute("detailsDefaultOpen", Boolean.toString(this.rowDetailsOpen));
 
         toggleAllDetailsAction.addDataAttribute("open", Boolean.toString(this.rowDetailsOpen));
@@ -1417,22 +1417,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         dataAttributes.put("role", "detailsFieldGroup");
         detailsFieldGroup.setDataAttributes(dataAttributes);
 
-        Action rowDetailsAction = ComponentFactory.getActionLink();
-        rowDetailsAction.addStyleClass("uif-detailsAction");
+        Action rowDetailsAction = this.getExpandDetailsActionPrototype();
         rowDetailsAction.addDataAttribute("role", "detailsLink");
+        rowDetailsAction.addDataAttribute("swap", Boolean.toString(this.isRowDetailsSwapActionImage()));
+        rowDetailsAction.addActionParameter("lineIndex", "@{#index}");
         view.assignComponentIds(rowDetailsAction);
-
-        if (rowDetailsUseImage) {
-            Image rowDetailsImage = ComponentFactory.getImage();
-            view.assignComponentIds(rowDetailsImage);
-
-            rowDetailsImage.setAltText(rowDetailsLinkName);
-            rowDetailsImage.getPropertyExpressions().put("source",
-                    KRADConstants.IMAGE_URL_EXPRESSION + KRADConstants.DETAILS_IMAGE);
-            rowDetailsAction.setActionImage(rowDetailsImage);
-        } else if (StringUtils.isNotBlank(rowDetailsLinkName)) {
-            rowDetailsAction.setActionLabel(rowDetailsLinkName);
-        }
 
         List<Component> detailsItems = new ArrayList<Component>();
         detailsItems.add(rowDetailsAction);
@@ -1440,6 +1429,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         dataAttributes = new TreeMap<String, String>();
         dataAttributes.put("role", "details");
         this.getRowDetailsGroup().setDataAttributes(dataAttributes);
+
+        if(ajaxDetailsRetrieval){
+            this.getRowDetailsGroup().setRender(false);
+            this.getRowDetailsGroup().setDisclosedByAction(true);
+        }
 
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
@@ -1811,5 +1805,46 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     public void setToggleAllDetailsAction(Action toggleAllDetailsAction) {
         this.toggleAllDetailsAction = toggleAllDetailsAction;
+    }
+
+    /**
+     * If true, when a row details open action is performed, it will get the details content from the server the first
+     * time it is opened.  The methodToCall will be a component "refresh" call by default (this can be set on
+     * expandDetailsActionPrototype) and the additional action parameters sent to the server will be those set
+     * on the expandDetailsActionPrototype (lineIndex will be sent by default).
+     *
+     * @return true if ajax row details retrieval will be used
+     */
+    public boolean isAjaxDetailsRetrieval() {
+        return ajaxDetailsRetrieval;
+    }
+
+    /**
+     * Set if row details content should be retrieved fromt he server
+     *
+     * @param ajaxDetailsRetrieval
+     */
+    public void setAjaxDetailsRetrieval(boolean ajaxDetailsRetrieval) {
+        this.ajaxDetailsRetrieval = ajaxDetailsRetrieval;
+    }
+
+    /**
+     * The Action prototype used for the row details expand link.  Should be set to "Uif-ExpandDetailsAction" or
+     * "Uif-ExpandDetailsImageAction".  Properties can be configured to allow for different methodToCall and
+     * actionParameters to be set for ajax row details retrieval.
+     *
+     * @return the Action details link prototype
+     */
+    public Action getExpandDetailsActionPrototype() {
+        return expandDetailsActionPrototype;
+    }
+
+    /**
+     * Set the expand details Action prototype link
+     *
+     * @param expandDetailsActionPrototype
+     */
+    public void setExpandDetailsActionPrototype(Action expandDetailsActionPrototype) {
+        this.expandDetailsActionPrototype = expandDetailsActionPrototype;
     }
 }

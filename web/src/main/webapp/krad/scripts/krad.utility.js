@@ -1624,6 +1624,8 @@ function normalizeGroupString(sGroup) {
 function getMessage(key, namespace, componentCode) {
     var cacheKey = key;
     var totalExplicitParameters = 3; // if the number of parameters changes, change this number as well
+    var args = arguments;
+    var pattern = new RegExp("{(([0-9])*)}", "g");
 
     if (namespace) {
         cacheKey += "|" + namespace;
@@ -1636,10 +1638,16 @@ function getMessage(key, namespace, componentCode) {
     // check session cache first
     var messageText = retrieveFromSession(cacheKey);
     if (messageText) {
+        //handle variable params
+        messageText = String(messageText).replace(pattern, function(match, index) {
+            var argumentIndex = parseInt(index) + parseInt(totalExplicitParameters);
+            return args[argumentIndex];
+        });
+
         return messageText;
     }
 
-    // retrieve from server
+    // not in cache, retrieve from server
     var params = {};
     params.key = key;
 
@@ -1652,18 +1660,16 @@ function getMessage(key, namespace, componentCode) {
     }
 
     var response = invokeServerListener(kradVariables.RETRIEVE_MESSAGE_METHOD_TO_CALL, params);
+
     if (response && response.messageText) {
-        var pattern = new RegExp("{(([0-9])*)}", "g");
-        var args = arguments;
+        // store back to server for subsequent calls
+        storeToSession(cacheKey, response.messageText);
 
         messageText = String(response.messageText).replace(pattern, function(match, index) {
             var argumentIndex = parseInt(index) + parseInt(totalExplicitParameters);
             return args[argumentIndex];
         });
     }
-
-    // store back to server for subsequent calls
-    storeToSession(cacheKey, messageText);
 
     return messageText;
 }
@@ -1861,4 +1867,25 @@ function getToRecordRichTable(id) {
  */
 function getTotalRecordsRichTable(id) {
     return parseDataTablesInfo (id)[5];
+}
+
+/**
+ * Iterates through the dataTables on the page and returns the dataTable object referenced by the id passed in.
+ * Used to call dataTable functions on a table.
+ *
+ * @param tableId id of the table
+ * @return dataTable reference that one can invoke dataTable functions on
+ */
+function getDataTableHandle(tableId){
+    var oTable = null;
+    var tables = jQuery.fn.dataTable.fnTables();
+    jQuery(tables).each(function () {
+        var dataTable = jQuery(this).dataTable();
+        //ensure the dataTable is the one that contains the action that was clicked
+        if (dataTable.attr("id") == tableId) {
+            oTable = dataTable;
+        }
+    });
+
+    return oTable;
 }

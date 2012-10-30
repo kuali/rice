@@ -2177,14 +2177,14 @@ public class Test2Object {
         <para><emphasis role="bold">rowDetailsGrou</emphasis>p – this can be ANY group or section content you would like to use for the content of details.  The input and data fields used in this group will automatically inherit the necessary collection binding path just like items of the collection itself.
 layoutManager.</para>
         <para><emphasis role="bold">rowDetailsLinkName</emphasis> – this is the name of the link if an image is not being used. </para>
-        <para><emphasis role="bold">rowDetailsUseImage</emphasis> – this will use an image instead of text for the link.  This link with be a + sign when closed and an – sign when opened.
+        <para><emphasis role="bold">rowDetailsSwapActionImage</emphasis> – this will use an image instead of text for the link.  This link with be a + sign when closed and an – sign when opened.
 If neither a name nor images are set to be used, the link will be called “Details” by default.
 </para>
         <para>Sample code using the images option, the group defined is a vertical box group with 2 input fields, these are fields of the collection item:
 </para>
         <programlisting>&lt;bean id=&quot;Demo-RowDetails-Section2&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
 ...
-   &lt;property name=&quot;layoutManager.rowDetailsUseImage&quot; value=&quot;true&quot;/&gt;
+   &lt;property name=&quot;layoutManager.rowDetailsSwapActionImage&quot; value=&quot;true&quot;/&gt;
     &lt;property name=&quot;layoutManager.rowDetailsGroup&quot;&gt;
       &lt;bean parent=&quot;Uif-VerticalBoxGroup&quot;&gt;
         &lt;property name=&quot;items&quot;&gt;

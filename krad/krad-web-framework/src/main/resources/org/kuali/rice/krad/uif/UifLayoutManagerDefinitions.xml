@@ -141,9 +141,12 @@
     </property>
     <property name="suppressLineWrapping" value="true"/>
     <property name="toggleAllDetailsAction">
-      <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Open/Close Row Details"
-            p:actionScript="toggleRowDetails(this);"/>
+      <bean parent="Uif-ToggleRowDetailsAction"/>
     </property>
+    <property name="expandDetailsActionPrototype">
+      <bean parent="Uif-ExpandDetailsAction"/>
+    </property>
+    <property name="rowDetailsSwapActionImage" value="true"/>
     <property name="totalLabel">
       <bean parent="Uif-Label" p:labelText="Total"/>
     </property>
@@ -161,6 +164,7 @@
     </property>
     <property name="showPageTotal" value="true"/>
     <property name="showTotal" value="true"/>
+
   </bean>
 
   <!--Stacked Collection Layout Managers-->

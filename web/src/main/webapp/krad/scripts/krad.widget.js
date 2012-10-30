@@ -624,45 +624,24 @@ function createTable(tableId, options, groupingOptions) {
 /**
  * Expands a data table row by finding the row that matches the actionComponent passed in, in the
  * dataTable which matches tableId.  If useImages is true, images will be swapped out when the
- * action is clicked
+ * action is clicked.  The row will be closed if already open.
  *
  * @param actionComponent the actionComponent clicked
  * @param tableId the dataTable to expand the clicked row in
  * @param useImages if true, swap open/close images on click
  */
-function expandDataTableDetail(actionComponent, tableId, useImages) {
-    var oTable = null;
-    var tables = jQuery.fn.dataTable.fnTables();
-    var fieldGroupWrapper = jQuery(actionComponent).parent();
-    jQuery(tables).each(function () {
-        var dataTable = jQuery(this).dataTable();
-        //ensure the dataTable is the one that contains the action that was clicked
-        if (dataTable.attr("id") == tableId) {
-            oTable = dataTable;
-        }
-    });
+function rowDetailsActionHandler(actionComponent, tableId) {
+    var oTable = getDataTableHandle(tableId);
 
     if (oTable != null) {
-        var nTr = jQuery(actionComponent).parents('tr')[0];
-        if (oTable.fnIsOpen(nTr)) {
-            if (useImages && jQuery(actionComponent).find("img").length) {
-                jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
-            }
-            var detailsContent = jQuery(nTr).next().first().find("[data-role='details']").filter(":first");
-            detailsContent.slideUp(function () {
-                fieldGroupWrapper.append(detailsContent.detach());
-                oTable.fnClose(nTr);
-            });
+        var row = jQuery(actionComponent).parents('tr')[0];
+        if (oTable.fnIsOpen(row)) {
+            closeDetails(oTable, jQuery(row), actionComponent, true);
         }
         else {
-            if (useImages && jQuery(actionComponent).find("img").length) {
-                jQuery(actionComponent).find("img").replaceWith(detailsCloseImage.clone());
-            }
-            var newRow = oTable.fnOpenCustom(nTr, fieldGroupWrapper.find("[data-role='details']").filter(":first"), "uif-rowDetails");
-            var detailsGroup = jQuery(newRow).find("[data-role='details']").filter(":first");
-            detailsGroup.slideDown();
+            openDetails(oTable, jQuery(row), actionComponent, true);
         }
-        jQuery(nTr).data("det-interact", true);
+        jQuery(row).data("det-interact", true);
     }
 }
 
@@ -675,15 +654,7 @@ function expandDataTableDetail(actionComponent, tableId, useImages) {
  * row has been interacted with skip (used to retain state)
  */
 function openAllDetails(tableId, animate, forceOpen) {
-    var oTable = null;
-    var tables = jQuery.fn.dataTable.fnTables();
-    jQuery(tables).each(function () {
-        var dataTable = jQuery(this).dataTable();
-        //ensure the dataTable is the one that contains the action that was clicked
-        if (dataTable.attr("id") == tableId) {
-            oTable = dataTable;
-        }
-    });
+    var oTable = getDataTableHandle(tableId);
 
     if (oTable != null) {
         var rows = jQuery(oTable).find('tr').not(".detailsRow");
@@ -693,26 +664,55 @@ function openAllDetails(tableId, animate, forceOpen) {
             //This is done to retain row details "state" between table draws for rows the user may have interacted with
             if(!oTable.fnIsOpen(this) && (!row.data("det-interact") || forceOpen)){
                 var actionComponent = row.find("a[data-role='detailsLink']");
-                var detailsGroup = row.find("div[data-role='details']").filter(":first");
-
-                if (actionComponent.length && jQuery(actionComponent).find("img").length) {
-                    jQuery(actionComponent).find("img").replaceWith(detailsCloseImage.clone());
-                }
-
-                var newRow = oTable.fnOpenCustom(this, detailsGroup, "uif-rowDetails");
-                detailsGroup = jQuery(newRow).find("[data-role='details']").filter(":first");
-
-                if(animate){
-                    detailsGroup.slideDown();
-                }
-                else{
-                    detailsGroup.show();
-                }
+                
+                openDetails(oTable, row, actionComponent, animate);
 
                 //reset user interaction flag
                 row.data("det-interact", false);
             }
         });
+    }
+}
+
+/**
+ * Open the row details. If the ajaxRetrieval option is set this will retrieve the detail content.
+ *
+ * @param oTable the dataTable object handle
+ * @param row the row to open details for
+ * @param actionComponent [optional] actionComponent used to invoke the action, required if using image swap
+ * or ajaxRetrieval
+ * @param animate if true, the open will have an animation effect
+ */
+function openDetails(oTable, row, actionComponent, animate){
+    var detailsGroup = row.find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+    var ajaxRetrieval = jQuery(detailsGroup).is("span[data-role='placeholder']");
+    var detailsId = jQuery(detailsGroup).attr("id");
+
+    if (actionComponent && jQuery(actionComponent).data("swap") && jQuery(actionComponent).find("img").length) {
+        jQuery(actionComponent).find("img").replaceWith(detailsCloseImage.clone());
+    }
+
+    var newRow = oTable.fnOpenCustom(row[0], detailsGroup, "uif-rowDetails");
+    detailsGroup = jQuery(newRow).find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+
+    if(animate && !ajaxRetrieval){
+        detailsGroup.slideDown();
+    }
+    else{
+        detailsGroup.show();
+    }
+
+    if(ajaxRetrieval){
+        var kradRequest = new KradRequest(jQuery(actionComponent));
+
+        if(!kradRequest.methodToCall){
+            kradRequest.methodToCall = kradVariables.REFRESH_METHOD_TO_CALL;
+        }
+
+        kradRequest.ajaxReturnType = kradVariables.RETURN_TYPE_UPDATE_COMPONENT;
+        kradRequest.refreshId = detailsId;
+
+        kradRequest.send();
     }
 }
 
@@ -725,15 +725,7 @@ function openAllDetails(tableId, animate, forceOpen) {
  * row has been interacted with skip (used to retain state)
  */
 function closeAllDetails(tableId, animate, forceClose) {
-    var oTable = null;
-    var tables = jQuery.fn.dataTable.fnTables();
-    jQuery(tables).each(function () {
-        var dataTable = jQuery(this).dataTable();
-        //ensure the dataTable is the one that contains the action that was clicked
-        if (dataTable.attr("id") == tableId) {
-            oTable = dataTable;
-        }
-    });
+    var oTable = getDataTableHandle(tableId);
 
     if (oTable != null) {
         var rows = jQuery(oTable).find('tr').not(".detailsRow");
@@ -742,32 +734,45 @@ function closeAllDetails(tableId, animate, forceClose) {
             //Means the row is open and the user has not interacted with it (or force if forceClose is true)
             //This is done to retain row details "state" between table draws for rows the user may have interacted with
             if (oTable.fnIsOpen(this) && (!row.data("det-interact") || forceClose)) {
-                var oRow = this;
                 var actionComponent = row.find("a[data-role='detailsLink']");
-                var fieldGroupWrapper = row.find("div[data-role='detailsFieldGroup'] fieldset div.uif-verticalBoxLayout");
-                var detailsContent = row.next().first().find("[data-role='details']").filter(":first");
 
-                if (jQuery(actionComponent).find("img").length) {
-                    jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
-                }
-
-                if(animate){
-                    detailsContent.slideUp(function () {
-                        fieldGroupWrapper.append(detailsContent.detach());
-                        oTable.fnClose(oRow);
-                    });
-                }
-                else{
-                    detailsContent.hide();
-                    fieldGroupWrapper.append(detailsContent.detach());
-                    oTable.fnClose(oRow);
-                }
+                closeDetails(oTable, row, actionComponent, animate);
 
                 //reset user interaction flag
                 row.data("det-interact", false);
             }
         });
     }
+}
+
+/**
+ * Close the row details.
+ *
+ * @param oTable the dataTable object handle
+ * @param row the row to close details for
+ * @param actionComponent [optional] actionComponent used to invoke the action, required if using image swap
+ * @param animate if true, the close will have an animation effect
+ */
+function closeDetails(oTable, row, actionComponent, animate){
+    var fieldGroupWrapper = row.find("div[data-role='detailsFieldGroup'] fieldset div.uif-verticalBoxLayout");
+    var detailsContent = row.next().first().find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+
+    if (actionComponent && jQuery(actionComponent).data("swap") && jQuery(actionComponent).find("img").length) {
+        jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
+    }
+
+    if(animate){
+        detailsContent.slideUp(function () {
+            fieldGroupWrapper.append(detailsContent.detach());
+            oTable.fnClose(row[0]);
+        });
+    }
+    else{
+        detailsContent.hide();
+        fieldGroupWrapper.append(detailsContent.detach());
+        oTable.fnClose(row[0]);
+    }
+
 }
 
 /**

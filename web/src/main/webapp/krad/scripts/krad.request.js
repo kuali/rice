@@ -285,7 +285,7 @@ KradRequest.prototype = {
         // adding blocking configuration to ajax options
         var elementBlockingOptions = {
             beforeSend: function () {
-                if (nonEmpty(request.elementToBlock) && request.elementToBlock.is(":hidden")) {
+                if (nonEmpty(request.elementToBlock) && (request.elementToBlock.is(":hidden, .uif-placeholder"))) {
                     var replaceElement = true;
                     request.elementToBlock.show();
                 }

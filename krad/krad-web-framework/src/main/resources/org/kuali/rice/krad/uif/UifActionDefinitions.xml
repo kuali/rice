@@ -57,4 +57,27 @@
 
   <bean id="Uif-AddViaLightBoxAction" parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"/>
 
+  <bean id="Uif-ToggleRowDetailsAction" parent="Uif-SecondaryActionButton-Small" p:actionLabel="Open/Close Row Details"
+              p:actionScript="toggleRowDetails(this);"/>
+
+  <bean id="Uif-ExpandDetailsAction" parent="Uif-ActionLink" p:actionLabel="Details">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-detailsAction</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ExpandDetailsImageAction" parent="Uif-ActionLink">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-detailsAction</value>
+      </list>
+    </property>
+    <property name="actionImage">
+      <bean parent="Uif-Image" p:altText="Details"
+            p:source="@{#ConfigProperties['krad.externalizable.images.url']}details_open.png"/>
+    </property>
+  </bean>
+
 </beans>

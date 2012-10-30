@@ -163,7 +163,10 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-Section2", "errorSectionTest");
         } else if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SectionsPageUnmatched")) {
             GlobalVariables.getMessageMap().putError("badKey", "unmatchedTest");
+        } else if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SubSectionsPage")) {
+            GlobalVariables.getMessageMap().putError("Uif-ValidationLayout-SubGroup", "errorSectionTest");
         }
+
 
         if (form.getPostedView().getId().equals("RichMessagesView")) {
             GlobalVariables.getMessageMap().putError("Demo-BasicMessagesSection", "richValidationMessageTest");
@@ -258,6 +261,23 @@ public class UifComponentsTestController extends UifControllerBase {
 
         this.addErrors(form, result, request, response);
         this.addInfo(form, result, request, response);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Adds only 1 error message for testing
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addSingleErrorMessage")
+    public ModelAndView addSingleErrorMessage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SubSectionsPage")) {
+            GlobalVariables.getMessageMap().putError("Uif-ValidationLayout-SubGroup", "errorSectionTest");
+        }
+        else {
+            GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-Section1", "errorSectionTest");
+        }
 
         return getUIFModelAndView(form);
     }

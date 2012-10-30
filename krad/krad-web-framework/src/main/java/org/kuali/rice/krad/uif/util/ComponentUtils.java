@@ -230,6 +230,26 @@ public class ComponentUtils {
     }
 
     /**
+     * Searches for the component with the given id within the given list of components
+     *
+     * @param components list of components to search through
+     * @param componentId id for the component to find
+     * @return Component component found in the list or null
+     */
+    public static Component findComponentInList(List<Component> components, String componentId) {
+        Component foundComponent = null;
+
+        for (Component component : components) {
+            if (component != null && component.getId().equals(componentId)) {
+                foundComponent = component;
+                break;
+            }
+        }
+
+        return foundComponent;
+    }
+
+    /**
      * Finds the child component of the given parent component that has the required id
      *
      * @param parent - parent component for component to find
@@ -293,8 +313,11 @@ public class ComponentUtils {
 
     public static void updateIdsWithSuffixNested(Component component, String idSuffix) {
         updateIdWithSuffix(component, idSuffix);
-       // updateFactoryIdWithSuffix(component, idSuffix);
 
+        updateChildIdsWithSuffixNested(component, idSuffix);
+    }
+
+    public static void updateChildIdsWithSuffixNested(Component component, String idSuffix) {
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
             layoutManager.setId(layoutManager.getId() + idSuffix);

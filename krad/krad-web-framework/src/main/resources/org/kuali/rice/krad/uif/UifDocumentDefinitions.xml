@@ -380,4 +380,12 @@
         </property>
   </bean>
 
+
+  <bean id="Uif-TransactionalDocumentView" abstract="true" parent="Uif-TransactionalDocumentView-parentBean"/>
+  <bean id="Uif-TransactionalDocumentView-parentBean" parent="Uif-DocumentView">
+    <property name="formClass" value="org.kuali.rice.krad.web.form.TransactionDocumentFormBase"/>
+    <property name="presentationControllerClass" value="org.kuali.rice.krad.document.TransactionalDocumentPresentationControllerBase"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.document.TransactionalDocumentAuthorizerBase"/>
+  </bean>
+
 </beans>

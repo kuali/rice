@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.web.form;
 
-//import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-//import org.kuali.rice.krad.uif.UifConstants.ViewType;
+package edu.sampleu.travel.travelapproval;
 
-import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.document.TransactionalDocumentAuthorizerBase;
 
-/**
- * Form class for <code>TransactionalView</code> screens
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
-public class TransactionForm  extends DocumentFormBase {
-    private static final long serialVersionUID = 1L;
-
-}
+public class TravelAuthorizationDocumentAuthorizer extends TransactionalDocumentAuthorizerBase {}

@@ -19,24 +19,15 @@ package org.kuali.rice.krad.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.krad.bo.PersistableAttachment;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.document.Copyable;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.form.DocumentFormBase;
-import org.kuali.rice.krad.web.form.TransactionForm;
-import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.TransactionDocumentFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.kuali.rice.krad.document.Document;
 
 /**
  * Controller for <code>TransactionalView</code> screens which operate on
@@ -46,22 +37,22 @@ import org.kuali.rice.krad.document.Document;
  */
 @Controller
 @RequestMapping(value = "/transactional")
-public class TransactionalDocumentController extends DocumentControllerBase {
+public class TransactionalDocumentControllerBase extends DocumentControllerBase {
     protected static final Logger LOG = Logger.getLogger(MaintenanceDocumentController.class);
 
     /**
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected TransactionForm createInitialForm(HttpServletRequest request) {
-        return new TransactionForm();
+    protected TransactionDocumentFormBase createInitialForm(HttpServletRequest request) {
+        return new TransactionDocumentFormBase();
     }
 
     /**
      * Method that will take the current document and call its copy method if Copyable.
      */
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_COPY)
-    public ModelAndView copy(@ModelAttribute("KualiForm") TransactionForm form, BindingResult result,
+    public ModelAndView copy(@ModelAttribute("KualiForm") TransactionDocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         ((Copyable) form.getDocument()).toCopy();
         return getUIFModelAndView(form);

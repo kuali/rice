@@ -163,7 +163,7 @@
                 <jsSourceFile>plugins/rice/menu/krad.navigationMenu.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/textpopout/krad.textareaPopout.js</jsSourceFile>
                 <jsSourceFile>plugins/dirtyform/jquery.dirtyform.js</jsSourceFile>
-                <jsSourceFile>plugins/scrollto/jquery.scrollTo-1.4.2-min.js</jsSourceFile>
+                <jsSourceFile>plugins/scrollto/jquery.scrollTo-1.4.3-min.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/menu/krad.tabMenu.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/datatables/jquery.dataTables.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/datatables/ZeroClipboard.js</jsSourceFile>

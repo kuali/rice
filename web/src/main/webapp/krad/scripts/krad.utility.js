@@ -666,11 +666,11 @@ function jumpToElementByName(name) {
     var theElement = jq("[name='" + escapeName(name) + "']");
     if (theElement.length != 0) {
         if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
-            jQuery.scrollTo(theElement, 0);
+            jQuery.scrollTo(theElement, 1);
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset: {top: headerOffset}});
+            top.jQuery.scrollTo(theElement, 1, {offset: {top: headerOffset}});
         }
     }
 }
@@ -680,11 +680,11 @@ function jumpToElementById(id) {
     var theElement = jq("#" + id);
     if (theElement.length != 0) {
         if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
-            jQuery.scrollTo(theElement, 0);
+            jQuery.scrollTo(theElement, 1);
         }
         else {
             var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-            top.jQuery.scrollTo(theElement, 0, {offset: {top: headerOffset}});
+            top.jQuery.scrollTo(theElement, 1, {offset: {top: headerOffset}});
         }
     }
 }
@@ -692,20 +692,20 @@ function jumpToElementById(id) {
 //Jump(scroll) to the top of the current screen
 function jumpToTop() {
     if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
-        jQuery.scrollTo(jQuery("html"), 0);
+        jQuery.scrollTo(0);
     }
     else {
-        top.jQuery.scrollTo(top.jQuery("html"), 0);
+        top.jQuery.scrollTo(0);
     }
 }
 
 //Jump(scroll) to the bottom of the current screen
 function jumpToBottom() {
     if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
-        jQuery.scrollTo("max", 0);
+        jQuery.scrollTo("max", 1);
     }
     else {
-        top.jQuery.scrollTo("max", 0);
+        top.jQuery.scrollTo("max", 1);
     }
 }
 

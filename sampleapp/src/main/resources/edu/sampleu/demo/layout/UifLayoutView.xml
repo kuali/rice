@@ -61,6 +61,8 @@
         <ref bean="gridGroup-1"/>
         <ref bean="gridGroup-2"/>
         <ref bean="gridGroup-3"/>
+        <ref bean="gridGroup-4"/>
+        <ref bean="gridGroup-5"/>
         </list>
         </property>
         </bean>
@@ -524,6 +526,164 @@
   </list>
   </property>
   </bean>
+
+<bean id="gridGroup-4"
+            parent="Uif-GridGroup"
+            p:title="Title"
+            p:instructionalText="GridGroup Layout number of columns 2"
+            p:layoutManager.numberOfColumns="2"
+            p:layoutManager.renderAlternatingHeaderColumns="false"
+            p:width="85%">
+          <property name="items">
+              <list>
+                  <bean parent="Uif-VerticalBoxSection" p:rowSpan="5">
+                      <property name="items">
+                          <list>
+                              <bean parent="TextAreaTestField" p:propertyName="field35" p:instructionalText="RowSpan 5"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+              </list>
+          </property>
+      </bean>
+      <bean id="gridGroup-5"
+            parent="Uif-GridGroup"
+            p:title="Title"
+            p:instructionalText="GridGroup Layout number of columns 3 and multiple rowspans and colspans"
+            p:layoutManager.numberOfColumns="3"
+            p:layoutManager.renderAlternatingHeaderColumns="false"
+            p:width="85%">
+          <property name="items">
+              <list>
+                  <bean parent="Uif-VerticalBoxSection" p:rowSpan="2">
+                      <property name="items">
+                          <list>
+                               <bean parent="TestInputField" p:propertyName="field34" p:instructionalText="RowSpan 2"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34" />
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection" p:rowSpan="3">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34" p:instructionalText="RowSpan 3"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection" >
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34"/>
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection" p:colSpan="2">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34" p:instructionalText="ColSpan 2"/>
+                          </list>
+                      </property>
+                  </bean>
+                <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34" />
+                          </list>
+                      </property>
+                  </bean>
+
+                  <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34" />
+                          </list>
+                      </property>
+                  </bean>
+                <bean parent="Uif-VerticalBoxSection">
+                      <property name="items">
+                          <list>
+                              <bean parent="TestInputField" p:propertyName="field34" />
+                          </list>
+                      </property>
+                  </bean>
+              </list>
+          </property>
+      </bean>
 
   <bean id="gridGroupNested-1" parent="Uif-GridSection">
   <property name="headerText" value="Section Title"/>

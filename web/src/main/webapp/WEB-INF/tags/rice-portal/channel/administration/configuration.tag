@@ -20,32 +20,32 @@
 
 	<ul class="chan">
 		<li>
-		<portal:portalLink displayTitle="true" title="Parameter"
+		<portal:portalLink displayTitle="true" title="Parameter" appContextName="${ConfigProperties.app.context.name}"
 			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
         </li>
 		<li>
-		<portal:portalLink displayTitle="true" title="Parameter Type"
+		<portal:portalLink displayTitle="true" title="Parameter Type" appContextName="${ConfigProperties.app.context.name}"
 		    url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
         </li>
         <li>
-		<portal:portalLink displayTitle="true" title="Component"
+		<portal:portalLink displayTitle="true" title="Component" appContextName="${ConfigProperties.app.context.name}"
 		    url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
         </li>
 		<li>
-		<portal:portalLink displayTitle="true" title="Namespace"
+		<portal:portalLink displayTitle="true" title="Namespace" appContextName="${ConfigProperties.app.context.name}"
             url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
 		</li>
     	<li>
-		<portal:portalLink displayTitle="true" title="Pessimistic Lock" 
+		<portal:portalLink displayTitle="true" title="Pessimistic Lock" appContextName="${ConfigProperties.app.context.name}"
 			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.krad.document.authorization.PessimisticLock&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" />
 		</li>		
 		<li>
-		<portal:portalLink displayTitle="true" title="Configuration Viewer"
+		<portal:portalLink displayTitle="true" title="Configuration Viewer" appContextName="${ConfigProperties.app.context.name}"
 			url="${ConfigProperties.application.url}/ksb/ConfigViewer.do" />
 		</li>
 		<c:if test="${ConfigProperties.rice.portal.links.showRiceServerConfig == 'true'}">
 		  <li>
-			<portal:portalLink displayTitle="true" title="Rice Configuration Viewer"
+			<portal:portalLink displayTitle="true" title="Rice Configuration Viewer" appContextName="${ConfigProperties.app.context.name}"
 				url="${ConfigProperties.ksb.url}/ConfigViewer.do" />
 		  </li>
 		</c:if>

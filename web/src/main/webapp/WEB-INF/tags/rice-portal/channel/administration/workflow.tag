@@ -19,13 +19,13 @@
 <div class="body">
 	
    	<ul class="chan">
-		<li><portal:portalLink displayTitle="true" title="Rule Attribute" url="${ConfigProperties.kr.url}/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.bo.RuleAttribute&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-        <li><portal:portalLink displayTitle="true" title="Rule Template" url="${ConfigProperties.kr.url}/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.bo.RuleTemplateBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-		<li><portal:portalLink displayTitle="true" title="XML Stylesheets" url="${ConfigProperties.kr.url}/lookup.do?businessObjectClassName=org.kuali.rice.coreservice.impl.style.StyleBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-		<li><portal:portalLink displayTitle="true" title="XML Ingester" url="${ConfigProperties.kew.url}/../core/Ingester.do" /></li>					
-        <li><portal:portalLink displayTitle="true" title="Statistics" url="${ConfigProperties.kew.url}/Stats.do?returnLocation=${ConfigProperties.application.url}/portal.do" /></li>
-        <li><portal:portalLink displayTitle="true" title="Document Operation" url="${ConfigProperties.kew.url}/DocumentOperation.do" /></li>
-        <li><portal:portalLink displayTitle="true" title="Document Type" url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
+		<li><portal:portalLink displayTitle="true" title="Rule Attribute" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kr.url}/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.bo.RuleAttribute&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+        <li><portal:portalLink displayTitle="true" title="Rule Template" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kr.url}/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.bo.RuleTemplateBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+		<li><portal:portalLink displayTitle="true" title="XML Stylesheets" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kr.url}/lookup.do?businessObjectClassName=org.kuali.rice.coreservice.impl.style.StyleBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+		<li><portal:portalLink displayTitle="true" title="XML Ingester" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kew.url}/../core/Ingester.do" /></li>
+        <li><portal:portalLink displayTitle="true" title="Statistics" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kew.url}/Stats.do?returnLocation=${ConfigProperties.application.url}/portal.do" /></li>
+        <li><portal:portalLink displayTitle="true" title="Document Operation" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kew.url}/DocumentOperation.do" /></li>
+        <li><portal:portalLink displayTitle="true" title="Document Type" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
 	</ul>
 
 </div>

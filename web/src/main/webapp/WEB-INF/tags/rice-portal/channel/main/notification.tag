@@ -20,9 +20,9 @@
 <div class="body">
 
     <ul class="chan">
-		<li><portal:portalLink displayTitle="true" title="Notification Search" url="${ConfigProperties.kew.url}/DocumentSearch.do?documentTypeName=KualiNotification&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-	    <li><portal:portalLink displayTitle="true" title="Channel Subscriptions" url="${ConfigProperties.ken.url}/DisplayUserPreferences.form" /></li>
-	   	<li><portal:portalLink displayTitle="true" title="Delivery Types" url="${ConfigProperties.kcb.url}/prefs.kcb" /></li>
+		<li><portal:portalLink displayTitle="true" title="Notification Search" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kew.url}/DocumentSearch.do?documentTypeName=KualiNotification&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+	    <li><portal:portalLink displayTitle="true" title="Channel Subscriptions" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.ken.url}/DisplayUserPreferences.form" /></li>
+	   	<li><portal:portalLink displayTitle="true" title="Delivery Types" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.kcb.url}/prefs.kcb" /></li>
 	    
     </ul>
     

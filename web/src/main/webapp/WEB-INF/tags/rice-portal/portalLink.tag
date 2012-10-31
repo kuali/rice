@@ -16,13 +16,14 @@
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
 <%@ attribute name="url" required="true" %>
+<%@ attribute name="appContextName" required="true" %>
 <%@ attribute name="title" required="true" %>
 <%@ attribute name="displayTitle" required="false" %>
 <%@ attribute name="prefix" required="false" %>
 
 <c:if test="${displayTitle}" >
-  <a class="portal_link" href="${prefix}portal.do?channelTitle=${title}&channelUrl=${url}"  title="${title}">${title}</a>
+  <a class="portal_link" href="${prefix}portal.do?channelTitle=${title}&appContextName=${appContextName}&channelUrl=${url}"  title="${title}">${title}</a>
 </c:if>
 <c:if test="${! displayTitle}" >
-  <a class="portal_link" href="${prefix}portal.do?channelTitle=${title}&channelUrl=${url}" title="${title}"><jsp:doBody/></a>
+  <a class="portal_link" href="${prefix}portal.do?channelTitle=${title}&appContextName=${appContextName}&channelUrl=${url}" title="${title}"><jsp:doBody/></a>
 </c:if>

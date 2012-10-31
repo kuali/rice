@@ -19,48 +19,48 @@
 <div class="body">
   <strong>KIM Inquiries</strong>
   <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Component"
+    <li><portal:portalLink displayTitle="true" title="Component" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&namespaceCode=KR-WKFLW&code=ActionList&dataObjectClassName=org.kuali.rice.core.impl.component.ComponentBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Person"
+    <li><portal:portalLink displayTitle="true" title="Person" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&principalId=admin&dataObjectClassName=org.kuali.rice.kim.api.identity.Person&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Group"
+    <li><portal:portalLink displayTitle="true" title="Group" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=1&dataObjectClassName=org.kuali.rice.kim.impl.group.GroupBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Role"
+    <li><portal:portalLink displayTitle="true" title="Role" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=1&dataObjectClassName=org.kuali.rice.kim.impl.role.RoleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Permission"
+    <li><portal:portalLink displayTitle="true" title="Permission" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&permissionId=140&dataObjectClassName=org.kuali.rice.kim.bo.impl.PermissionImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Responsibility"
+    <li><portal:portalLink displayTitle="true" title="Responsibility" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&responsibilityId=1&dataObjectClassName=org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <!-- <li><portal:portalLink displayTitle="true" title="Role" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&roleId=1&dataObjectClassName=org.kuali.rice.kim.impl.role.RoleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> -->
-    <li><portal:portalLink displayTitle="true" title="Rule"
+    <!-- <li><portal:portalLink displayTitle="true" title="Role" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&roleId=1&dataObjectClassName=org.kuali.rice.kim.impl.role.RoleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> -->
+    <li><portal:portalLink displayTitle="true" title="Rule" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&ruleBaseValuesId=1103&dataObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Rule Delegation"
+    <li><portal:portalLink displayTitle="true" title="Rule Delegation" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&ruleDelegationId=1641&dataObjectClassName=org.kuali.rice.kew.rule.RuleDelegationBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>
   <br/>
   <strong>KIM Lookups</strong>
   <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Person"
+    <li><portal:portalLink displayTitle="true" title="Person" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.api.identity.Person&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Group"
+    <li><portal:portalLink displayTitle="true" title="Group" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.impl.group.GroupBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Role"
+    <li><portal:portalLink displayTitle="true" title="Role" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.impl.role.RoleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>
   <br/>
   <strong>KEW Screens</strong>
   <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Rule Attribute"
+    <li><portal:portalLink displayTitle="true" title="Rule Attribute" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kew.rule.bo.RuleAttribute&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="Rule Template"
+    <li><portal:portalLink displayTitle="true" title="Rule Template" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kew.rule.bo.RuleTemplate&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="XML Stylesheets"
+    <li><portal:portalLink displayTitle="true" title="XML Stylesheets" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.coreservice.impl.style.StyleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="XML Ingester"
+    <li><portal:portalLink displayTitle="true" title="XML Ingester" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/ingester?viewId=KEW-IngesterView&methodToCall=start"/></li>
-    <li><portal:portalLink displayTitle="true" title="Statistics"
+    <li><portal:portalLink displayTitle="true" title="Statistics" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/stats?viewId=KEW-StatView&methodToCall=start"/></li>
-    <li><portal:portalLink displayTitle="true" title="Document Type Maintenance"
+    <li><portal:portalLink displayTitle="true" title="Document Type Maintenance" appContextName="${ConfigProperties.app.context.name}"
                            url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>
 </div>

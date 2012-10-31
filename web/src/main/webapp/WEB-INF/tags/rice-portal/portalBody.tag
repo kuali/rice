@@ -17,6 +17,7 @@
 
 <%@ attribute name="channelTitle" required="true" %>
 <%@ attribute name="channelUrl" required="true" %>
+<%@ attribute name="appContextName" required="true" %>
 <%@ attribute name="selectedTab" required="true" %>
 
 <portal:immutableBar />
@@ -24,7 +25,7 @@
 <c:choose>
   <c:when test='${!empty channelTitle && !empty channelUrl}'>
 	  <div id="iframe_portlet_container_div">
-	  	<portal:iframePortletContainer channelTitle="${channelTitle}" channelUrl="${channelUrl}" />
+	  	<portal:iframePortletContainer channelTitle="${channelTitle}" channelUrl="${channelUrl}" appContextName="${appContextName}" />
 	  </div>
   </c:when>
   <c:otherwise>

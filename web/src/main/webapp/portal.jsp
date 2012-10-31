@@ -23,5 +23,6 @@
 <portal:portalTop />
 <portal:portalTabs selectedTab="${sessionScope.selectedTab}" />
 <portal:portalBody selectedTab="${sessionScope.selectedTab}"
-	channelTitle="${param.channelTitle}" channelUrl="${gotoUrl}" />
+	channelTitle="${param.channelTitle}" channelUrl="${gotoUrl}"
+  appContextName="${param.appContextName}" />
 <portal:portalBottom />

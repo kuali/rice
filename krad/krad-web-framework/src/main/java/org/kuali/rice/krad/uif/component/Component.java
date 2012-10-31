@@ -953,6 +953,21 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setRefreshedByAction(boolean refreshedByAction);
 
     /**
+     * If true if this component is disclosed by an action in js, a placeholder will be put in this components place
+     * if render is also false.
+     *
+     * @return true if this component is disclosed by an action
+     */
+    public boolean isDisclosedByAction();
+
+    /**
+     * Set if this component is disclosed by some outside action
+     *
+     * @param disclosedByAction
+     */
+    public void setDisclosedByAction(boolean disclosedByAction);
+
+    /**
      * Indicates whether data contained within the component should be reset (set to default) when the
      * component is refreshed
      *
@@ -1041,5 +1056,5 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      */
     void completeValidation(ValidationTrace tracer);
 
-    public boolean isDisclosedByAction();
+
 }

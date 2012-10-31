@@ -15,10 +15,9 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -146,7 +145,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private List<PropertyReplacer> propertyReplacers;
 
-    private Map<String,String> dataAttributes;
+    private Map<String, String> dataAttributes;
 
     public ComponentBase() {
         super();
@@ -198,7 +197,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * render status</li>
      * </ul>
      *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performApplyModel(View view, Object model, Component parent) {
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
@@ -224,7 +224,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
      *
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
         if (StringUtils.isNotEmpty(progressiveRender)) {
@@ -341,7 +342,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getId()
      */
-    @BeanTagAttribute(name="id")
+    @BeanTagAttribute(name = "id")
     public String getId() {
         return this.id;
     }
@@ -370,7 +371,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getTemplate()
      */
-    @BeanTagAttribute(name="template")
+    @BeanTagAttribute(name = "template")
     public String getTemplate() {
         return this.template;
     }
@@ -382,7 +383,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         this.template = template;
     }
 
-    @BeanTagAttribute(name="templateName")
+    @BeanTagAttribute(name = "templateName")
     public String getTemplateName() {
         return templateName;
     }
@@ -394,7 +395,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getTitle()
      */
-    @BeanTagAttribute(name="title")
+    @BeanTagAttribute(name = "title")
     public String getTitle() {
         return this.title;
     }
@@ -409,7 +410,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#isHidden()
      */
-    @BeanTagAttribute(name="hidden")
+    @BeanTagAttribute(name = "hidden")
     public boolean isHidden() {
         return this.hidden;
     }
@@ -424,7 +425,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#isReadOnly()
      */
-    @BeanTagAttribute(name="readOnly")
+    @BeanTagAttribute(name = "readOnly")
     public boolean isReadOnly() {
         return this.readOnly;
     }
@@ -439,7 +440,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getRequired()
      */
-    @BeanTagAttribute(name="required")
+    @BeanTagAttribute(name = "required")
     public Boolean getRequired() {
         return this.required;
     }
@@ -454,7 +455,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#isRender()
      */
-    @BeanTagAttribute(name="render")
+    @BeanTagAttribute(name = "render")
     public boolean isRender() {
         return this.render;
     }
@@ -469,7 +470,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getColSpan()
      */
-    @BeanTagAttribute(name="ColSpan")
+    @BeanTagAttribute(name = "ColSpan")
     public int getColSpan() {
         return this.colSpan;
     }
@@ -484,7 +485,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getRowSpan()
      */
-    @BeanTagAttribute(name="rowSpan")
+    @BeanTagAttribute(name = "rowSpan")
     public int getRowSpan() {
         return this.rowSpan;
     }
@@ -508,7 +509,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @return String horizontal align
      * @see org.kuali.rice.krad.uif.CssConstants.TextAligns
      */
-    @BeanTagAttribute(name="align")
+    @BeanTagAttribute(name = "align")
     public String getAlign() {
         return this.align;
     }
@@ -536,7 +537,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @return String vertical align
      * @see org.kuali.rice.krad.uif.CssConstants.VerticalAligns
      */
-    @BeanTagAttribute(name="valign")
+    @BeanTagAttribute(name = "valign")
     public String getValign() {
         return this.valign;
     }
@@ -565,7 +566,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return String width string
      */
-    @BeanTagAttribute(name="width")
+    @BeanTagAttribute(name = "width")
     public String getWidth() {
         return this.width;
     }
@@ -582,7 +583,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
-    @BeanTagAttribute(name="style")
+    @BeanTagAttribute(name = "style")
     public String getStyle() {
         return this.style;
     }
@@ -597,7 +598,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
-    @BeanTagAttribute(name="cssClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "cssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getCssClasses() {
         return this.cssClasses;
     }
@@ -645,7 +646,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodToCall()
      */
-    @BeanTagAttribute(name="finalizeMethodToCall")
+    @BeanTagAttribute(name = "finalizeMethodToCall")
     public String getFinalizeMethodToCall() {
         return this.finalizeMethodToCall;
     }
@@ -662,7 +663,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodAdditionalArguments()
      */
-    @BeanTagAttribute(name="finalizeMethodAdditionalArguments",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "finalizeMethodAdditionalArguments", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Object> getFinalizeMethodAdditionalArguments() {
         return finalizeMethodAdditionalArguments;
     }
@@ -679,7 +680,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodInvoker()
      */
-    @BeanTagAttribute(name="finalizeMethodInvoker",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "finalizeMethodInvoker", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MethodInvokerConfig getFinalizeMethodInvoker() {
         return this.finalizeMethodInvoker;
     }
@@ -696,7 +697,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#isSelfRendered()
      */
-    @BeanTagAttribute(name="selfRendered")
+    @BeanTagAttribute(name = "selfRendered")
     public boolean isSelfRendered() {
         return this.selfRendered;
     }
@@ -711,7 +712,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getRenderedHtmlOutput()
      */
-    @BeanTagAttribute(name="renderedHtmlOutput")
+    @BeanTagAttribute(name = "renderedHtmlOutput")
     public String getRenderedHtmlOutput() {
         return this.renderedHtmlOutput;
     }
@@ -726,7 +727,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see Component#isDisableSessionPersistence()
      */
-    @BeanTagAttribute(name="disableSessionPersistence")
+    @BeanTagAttribute(name = "disableSessionPersistence")
     public boolean isDisableSessionPersistence() {
         return disableSessionPersistence;
     }
@@ -741,7 +742,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see Component#isForceSessionPersistence()
      */
-    @BeanTagAttribute(name="forceSessionPersistence")
+    @BeanTagAttribute(name = "forceSessionPersistence")
     public boolean isForceSessionPersistence() {
         return forceSessionPersistence;
     }
@@ -756,7 +757,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see Component#getComponentSecurity()
      */
-    @BeanTagAttribute(name="componentSecurity",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "componentSecurity", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ComponentSecurity getComponentSecurity() {
         return componentSecurity;
     }
@@ -780,7 +781,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getComponentModifiers()
      */
-    @BeanTagAttribute(name="componentModifiers",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "componentModifiers", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ComponentModifier> getComponentModifiers() {
         return this.componentModifiers;
     }
@@ -795,7 +796,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getContext()
      */
-    @BeanTagAttribute(name="context",type= BeanTagAttribute.AttributeType.MAPBEAN)
+    @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<String, Object> getContext() {
         return this.context;
     }
@@ -843,7 +844,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getPropertyReplacers()
      */
-    @BeanTagAttribute(name="propertyReplacers",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "propertyReplacers", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PropertyReplacer> getPropertyReplacers() {
         return this.propertyReplacers;
     }
@@ -858,7 +859,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.springframework.core.Ordered#getOrder()
      */
-    @BeanTagAttribute(name="order")
+    @BeanTagAttribute(name = "order")
     public int getOrder() {
         return this.order;
     }
@@ -875,7 +876,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getToolTip()
      */
-    @BeanTagAttribute(name="toolTip",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "toolTip", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Tooltip getToolTip() {
         return toolTip;
     }
@@ -890,7 +891,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnLoadScript()
      */
-    @BeanTagAttribute(name="onLoadScript")
+    @BeanTagAttribute(name = "onLoadScript")
     public String getOnLoadScript() {
         return onLoadScript;
     }
@@ -907,14 +908,21 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDocumentReadyScript()
      */
-    @BeanTagAttribute(name="onDocumentReadyScript")
+    @BeanTagAttribute(name = "onDocumentReadyScript")
     public String getOnDocumentReadyScript() {
-        String onDocScript =  this.onDocumentReadyScript;
+        String onDocScript = this.onDocumentReadyScript;
         // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer to the onDocumentReadyScript.
         // if the refreshTimer property is set then the methodToCallOnRefresh should also be set.
-        if(refreshTimer > 0) {
+        if (refreshTimer > 0) {
             onDocScript = (null == onDocScript) ? "" : onDocScript;
-            onDocScript = "refreshComponentUsingTimer('"+ this.id +"','" + this.methodToCallOnRefresh + "'," + refreshTimer +");" + onDocScript;
+            onDocScript = "refreshComponentUsingTimer('"
+                    + this.id
+                    + "','"
+                    + this.methodToCallOnRefresh
+                    + "',"
+                    + refreshTimer
+                    + ");"
+                    + onDocScript;
         }
         return onDocScript;
     }
@@ -931,7 +939,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnUnloadScript()
      */
-    @BeanTagAttribute(name="onUnloadScript")
+    @BeanTagAttribute(name = "onUnloadScript")
     public String getOnUnloadScript() {
         return onUnloadScript;
     }
@@ -948,7 +956,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnCloseScript()
      */
-    @BeanTagAttribute(name="onCloseScript")
+    @BeanTagAttribute(name = "onCloseScript")
     public String getOnCloseScript() {
         return onCloseScript;
     }
@@ -965,7 +973,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnBlurScript()
      */
-    @BeanTagAttribute(name="onBlurScript")
+    @BeanTagAttribute(name = "onBlurScript")
     public String getOnBlurScript() {
         return onBlurScript;
     }
@@ -982,7 +990,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnChangeScript()
      */
-    @BeanTagAttribute(name="onChangeScript")
+    @BeanTagAttribute(name = "onChangeScript")
     public String getOnChangeScript() {
         return onChangeScript;
     }
@@ -999,7 +1007,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnClickScript()
      */
-    @BeanTagAttribute(name="onClickScript")
+    @BeanTagAttribute(name = "onClickScript")
     public String getOnClickScript() {
         return onClickScript;
     }
@@ -1016,7 +1024,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDblClickScript()
      */
-    @BeanTagAttribute(name="onDblClickScript")
+    @BeanTagAttribute(name = "onDblClickScript")
     public String getOnDblClickScript() {
         return onDblClickScript;
     }
@@ -1033,7 +1041,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnFocusScript()
      */
-    @BeanTagAttribute(name="onFocusScript")
+    @BeanTagAttribute(name = "onFocusScript")
     public String getOnFocusScript() {
         return onFocusScript;
     }
@@ -1050,7 +1058,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnSubmitScript()
      */
-    @BeanTagAttribute(name="onSubmitScript")
+    @BeanTagAttribute(name = "onSubmitScript")
     public String getOnSubmitScript() {
         return onSubmitScript;
     }
@@ -1067,7 +1075,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyPressScript()
      */
-    @BeanTagAttribute(name="onKeyPressScript")
+    @BeanTagAttribute(name = "onKeyPressScript")
     public String getOnKeyPressScript() {
         return onKeyPressScript;
     }
@@ -1084,7 +1092,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyUpScript()
      */
-    @BeanTagAttribute(name="onKeyUpScript")
+    @BeanTagAttribute(name = "onKeyUpScript")
     public String getOnKeyUpScript() {
         return onKeyUpScript;
     }
@@ -1101,7 +1109,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyDownScript()
      */
-    @BeanTagAttribute(name="onKeyDownScript")
+    @BeanTagAttribute(name = "onKeyDownScript")
     public String getOnKeyDownScript() {
         return onKeyDownScript;
     }
@@ -1118,7 +1126,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOverScript()
      */
-    @BeanTagAttribute(name="onMouseOverScript")
+    @BeanTagAttribute(name = "onMouseOverScript")
     public String getOnMouseOverScript() {
         return onMouseOverScript;
     }
@@ -1135,7 +1143,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOutScript()
      */
-    @BeanTagAttribute(name="onMouseOutScript")
+    @BeanTagAttribute(name = "onMouseOutScript")
     public String getOnMouseOutScript() {
         return onMouseOutScript;
     }
@@ -1152,7 +1160,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseUpScript()
      */
-    @BeanTagAttribute(name="onMouseUpScript")
+    @BeanTagAttribute(name = "onMouseUpScript")
     public String getOnMouseUpScript() {
         return onMouseUpScript;
     }
@@ -1169,7 +1177,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseDownScript()
      */
-    @BeanTagAttribute(name="onMouseDownScript")
+    @BeanTagAttribute(name = "onMouseDownScript")
     public String getOnMouseDownScript() {
         return onMouseDownScript;
     }
@@ -1186,7 +1194,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseMoveScript()
      */
-    @BeanTagAttribute(name="onMouseMoveScript")
+    @BeanTagAttribute(name = "onMouseMoveScript")
     public String getOnMouseMoveScript() {
         return onMouseMoveScript;
     }
@@ -1203,7 +1211,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
      */
-    @BeanTagAttribute(name="templateOptions",type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "templateOptions", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getTemplateOptions() {
         if (templateOptions == null) {
             templateOptions = new HashMap<String, String>();
@@ -1226,7 +1234,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @return String of widget options formatted as JS Map
      */
     @Override
-    @BeanTagAttribute(name="templateOptionsJSString")
+    @BeanTagAttribute(name = "templateOptionsJSString")
     public String getTemplateOptionsJSString() {
         if (templateOptionsJSString != null) {
             return templateOptionsJSString;
@@ -1282,7 +1290,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return String progressiveRender expression
      */
-    @BeanTagAttribute(name="progressiveRender")
+    @BeanTagAttribute(name = "progressiveRender")
     public String getProgressiveRender() {
         return this.progressiveRender;
     }
@@ -1313,7 +1321,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return the conditionalRefresh
      */
-    @BeanTagAttribute(name="conditionalRefresh")
+    @BeanTagAttribute(name = "conditionalRefresh")
     public String getConditionalRefresh() {
         return this.conditionalRefresh;
     }
@@ -1378,7 +1386,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return the progressiveRenderViaAJAX
      */
-    @BeanTagAttribute(name="progressiveRenderViaAJAX")
+    @BeanTagAttribute(name = "progressiveRenderViaAJAX")
     public boolean isProgressiveRenderViaAJAX() {
         return this.progressiveRenderViaAJAX;
     }
@@ -1402,7 +1410,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return the progressiveRenderAndRefresh
      */
-    @BeanTagAttribute(name="progressiveRenderAndRefresh")
+    @BeanTagAttribute(name = "progressiveRenderAndRefresh")
     public boolean isProgressiveRenderAndRefresh() {
         return this.progressiveRenderAndRefresh;
     }
@@ -1419,7 +1427,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see Component#getRefreshWhenChangedPropertyNames()
      */
-    @BeanTagAttribute(name="refreshWhenChangedPropertyNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "refreshWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getRefreshWhenChangedPropertyNames() {
         return this.refreshWhenChangedPropertyNames;
     }
@@ -1430,13 +1438,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
         this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames;
     }
+
     /**
      * @see Component#getAdditionalComponentsToRefresh()
      */
-    @BeanTagAttribute(name="additionalComponentsToRefresh",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "additionalComponentsToRefresh", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalComponentsToRefresh() {
         return additionalComponentsToRefresh;
     }
+
     /**
      * @see Component#setAdditionalComponentsToRefresh(java.util.List<java.lang.String>)
      */
@@ -1459,16 +1469,30 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.component.Component#isDisclosedByAction()
+     */
+    public boolean isDisclosedByAction() {
+        return disclosedByAction;
+    }
+
+    /**
+     * @see Component#setDisclosedByAction(boolean)
+     */
+    public void setDisclosedByAction(boolean disclosedByAction) {
+        this.disclosedByAction = disclosedByAction;
+    }
+
+    /**
      * Time in seconds that the component will be automatically refreshed
      *
      * <p>
-     *     This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
-     *     When using this property methodToCallOnRefresh and id should also be specified
+     * This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
+     * When using this property methodToCallOnRefresh and id should also be specified
      * </p>
      *
-     * @return  refreshTimer
+     * @return refreshTimer
      */
-    @BeanTagAttribute(name="refreshTimer")
+    @BeanTagAttribute(name = "refreshTimer")
     public int getRefreshTimer() {
         return refreshTimer;
     }
@@ -1485,7 +1509,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see Component#isResetDataOnRefresh()
      */
-    @BeanTagAttribute(name="resetDataOnRefresh")
+    @BeanTagAttribute(name = "resetDataOnRefresh")
     public boolean isResetDataOnRefresh() {
         return resetDataOnRefresh;
     }
@@ -1498,7 +1522,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Name of a method on the controller that should be invoked as part of the component refresh and disclosure process
+     * Name of a method on the controller that should be invoked as part of the component refresh and disclosure
+     * process
      *
      * <p>
      * During the component refresh or disclosure process it might be necessary to perform other operations, such as
@@ -1513,7 +1538,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return String valid controller method name
      */
-    @BeanTagAttribute(name="methodToCallOnRefresh")
+    @BeanTagAttribute(name = "methodToCallOnRefresh")
     public String getMethodToCallOnRefresh() {
         return methodToCallOnRefresh;
     }
@@ -1540,12 +1565,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return the skipInTabOrder flag
      */
-    @BeanTagAttribute(name="skipInTabOrder")
+    @BeanTagAttribute(name = "skipInTabOrder")
     public boolean isSkipInTabOrder() {
         return skipInTabOrder;
     }
-
-
 
     /**
      * Get the dataAttributes setup for this component - to be written to the html/jQuery data
@@ -1557,7 +1580,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return map of dataAttributes
      */
-    @BeanTagAttribute(name="dataAttributes",type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "dataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getDataAttributes() {
         return dataAttributes;
     }
@@ -1577,8 +1600,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param key key of the data attribute
      * @param value value of the data attribute
      */
-    public void addDataAttribute(String key, String value){
-        dataAttributes.put(key,value);
+    public void addDataAttribute(String key, String value) {
+        dataAttributes.put(key, value);
     }
 
     /**
@@ -1600,16 +1623,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return jQuery data script for adding complex data attributes
      */
-    public String getComplexDataAttributesJs(){
+    public String getComplexDataAttributesJs() {
         String js = "";
         if (getDataAttributes() == null) {
             return js;
         } else {
-            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
-                if(data != null && data.getValue() != null &&
-                        data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
-                    js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
-                            +"', " + data.getValue() +");";
+            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
+                if (data != null && data.getValue() != null &&
+                        data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")) {
+                    js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey() + "', " + data.getValue() + ");";
                 }
             }
             return js;
@@ -1622,20 +1644,19 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return html string for data attributes for the simple attributes
      */
-    public String getSimpleDataAttributes(){
+    public String getSimpleDataAttributes() {
         String attributes = "";
         if (getDataAttributes() == null) {
             return attributes;
         } else {
-            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
-                if(data != null && data.getValue() != null && !data.getValue().trim().startsWith("{")){
+            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
+                if (data != null && data.getValue() != null && !data.getValue().trim().startsWith("{")) {
                     attributes = attributes + " " + "data-" + data.getKey() + "=\"" + data.getValue() + "\"";
                 }
             }
             return attributes;
         }
     }
-
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getAllDataAttributesJs()
@@ -1646,9 +1667,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (getDataAttributes() == null) {
             return js;
         } else {
-            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
-                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
-                        +"', " + ScriptUtils.convertToJsValue(data.getValue()) +");";
+            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
+                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey() + "', " + ScriptUtils
+                        .convertToJsValue(data.getValue()) + ");";
             }
             return js;
         }
@@ -1657,9 +1678,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefreshJs
      */
-    public String getAdditionalComponentsToRefreshJs(){
-        if(!(this.getAdditionalComponentsToRefresh().isEmpty())) {
-           additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(this.getAdditionalComponentsToRefresh());
+    public String getAdditionalComponentsToRefreshJs() {
+        if (!(this.getAdditionalComponentsToRefresh().isEmpty())) {
+            additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(
+                    this.getAdditionalComponentsToRefresh());
         }
         return additionalComponentsToRefreshJs;
     }
@@ -1667,85 +1689,90 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
-    public void completeValidation(ValidationTrace tracer){
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Check for invalid characters in the components id
-        if(getId()!=null){
-            if(getId().contains("'")||getId().contains("\"")||getId().contains("[]")||getId().contains(".")||getId().contains("#")){
-                String currentValues [] = {"id = "+getId()};
-                tracer.createError("Id contains invalid characters",currentValues);
+        if (getId() != null) {
+            if (getId().contains("'")
+                    || getId().contains("\"")
+                    || getId().contains("[]")
+                    || getId().contains(".")
+                    || getId().contains("#")) {
+                String currentValues[] = {"id = " + getId()};
+                tracer.createError("Id contains invalid characters", currentValues);
             }
         }
 
-        if(tracer.getValidationStage()== ValidationTrace.BUILD){
+        if (tracer.getValidationStage() == ValidationTrace.BUILD) {
             // Check for a render presence if the component is set to render
-            if((isProgressiveRenderViaAJAX()||isProgressiveRenderAndRefresh()) && (getProgressiveRender()==null)){
-                String currentValues [] = {"progressiveRenderViaAJAX = "+isProgressiveRenderViaAJAX(),"progressiveRenderAndRefresh = "+isProgressiveRenderAndRefresh(),"progressiveRender = "+getProgressiveRender()};
-                tracer.createError("ProgressiveRender must be set if progressiveRenderViaAJAX or progressiveRenderAndRefresh are true",currentValues);
+            if ((isProgressiveRenderViaAJAX() || isProgressiveRenderAndRefresh()) && (getProgressiveRender() == null)) {
+                String currentValues[] = {"progressiveRenderViaAJAX = " + isProgressiveRenderViaAJAX(),
+                        "progressiveRenderAndRefresh = " + isProgressiveRenderAndRefresh(),
+                        "progressiveRender = " + getProgressiveRender()};
+                tracer.createError(
+                        "ProgressiveRender must be set if progressiveRenderViaAJAX or progressiveRenderAndRefresh are true",
+                        currentValues);
             }
         }
 
         // Check for rendered html if the component is set to self render
-        if(isSelfRendered() && getRenderedHtmlOutput()==null) {
-            String currentValues [] = {"selfRendered = "+isSelfRendered(),"renderedHtmlOutput = "+getRenderedHtmlOutput()};
-            tracer.createError("RenderedHtmlOutput must be set if selfRendered is true",currentValues);
+        if (isSelfRendered() && getRenderedHtmlOutput() == null) {
+            String currentValues[] =
+                    {"selfRendered = " + isSelfRendered(), "renderedHtmlOutput = " + getRenderedHtmlOutput()};
+            tracer.createError("RenderedHtmlOutput must be set if selfRendered is true", currentValues);
         }
 
         // Check to prevent over writing of session persistence status
-        if(isDisableSessionPersistence() && isForceSessionPersistence()){
-            String currentValues [] = {"disableSessionPersistence = "+isDisableSessionPersistence(),"forceSessionPersistence = "+isForceSessionPersistence()};
-            tracer.createWarning("DisableSessionPersistence and forceSessionPersistence cannot be both true",currentValues);
+        if (isDisableSessionPersistence() && isForceSessionPersistence()) {
+            String currentValues[] = {"disableSessionPersistence = " + isDisableSessionPersistence(),
+                    "forceSessionPersistence = " + isForceSessionPersistence()};
+            tracer.createWarning("DisableSessionPersistence and forceSessionPersistence cannot be both true",
+                    currentValues);
         }
 
         // Check for un-executable data resets when no refresh option is set
-        if(getMethodToCallOnRefresh()!=null || isResetDataOnRefresh()){
-            if(!isProgressiveRenderAndRefresh() && !isRefreshedByAction() && !isProgressiveRenderViaAJAX() && !StringUtils.isNotEmpty(conditionalRefresh) && !(refreshTimer > 0)){
-                String currentValues [] = {"methodToCallONRefresh = "+getMethodToCallOnRefresh(),"resetDataONRefresh = "+isResetDataOnRefresh(),
-                        "progressiveRenderAndRefresh = "+ isProgressiveRenderAndRefresh(),"refreshedByAction = "+ isRefreshedByAction(),
-                        "progressiveRenderViaAJAX = "+ isProgressiveRenderViaAJAX(),"conditionalRefresh = "+ getConditionalRefresh(),"refreshTimer = "+ getRefreshTimer()};
-                tracer.createWarning("MethodToCallONRefresh and resetDataONRefresh should only be set when a trigger event is set",currentValues);
+        if (getMethodToCallOnRefresh() != null || isResetDataOnRefresh()) {
+            if (!isProgressiveRenderAndRefresh()
+                    && !isRefreshedByAction()
+                    && !isProgressiveRenderViaAJAX()
+                    && !StringUtils.isNotEmpty(conditionalRefresh)
+                    && !(refreshTimer > 0)) {
+                String currentValues[] = {"methodToCallONRefresh = " + getMethodToCallOnRefresh(),
+                        "resetDataONRefresh = " + isResetDataOnRefresh(),
+                        "progressiveRenderAndRefresh = " + isProgressiveRenderAndRefresh(),
+                        "refreshedByAction = " + isRefreshedByAction(),
+                        "progressiveRenderViaAJAX = " + isProgressiveRenderViaAJAX(),
+                        "conditionalRefresh = " + getConditionalRefresh(), "refreshTimer = " + getRefreshTimer()};
+                tracer.createWarning(
+                        "MethodToCallONRefresh and resetDataONRefresh should only be set when a trigger event is set",
+                        currentValues);
             }
         }
 
         // Check to prevent complications with rendering and refreshing a component that is not always shown
-        if(StringUtils.isNotEmpty(getProgressiveRender()) && StringUtils.isNotEmpty(conditionalRefresh)){
-            String currentValues [] = {"progressiveRender = "+getProgressiveRender(),"conditionalRefresh = "+getConditionalRefresh()};
+        if (StringUtils.isNotEmpty(getProgressiveRender()) && StringUtils.isNotEmpty(conditionalRefresh)) {
+            String currentValues[] = {"progressiveRender = " + getProgressiveRender(),
+                    "conditionalRefresh = " + getConditionalRefresh()};
             tracer.createWarning("DO NOT use progressiveRender and conditionalRefresh on the same component unless "
                     + "it is known that the component will always be visible in all cases when a conditionalRefresh "
                     + "happens (ie conditionalRefresh has progressiveRender's condition and with its own condition). "
                     + "If a component should be refreshed every time it is shown, use the progressiveRenderAndRefresh "
-                    + "option with this property instead.",currentValues);
+                    + "option with this property instead.", currentValues);
         }
 
         // Check for valid Spring EL format for progressiveRender
-        if(!Validator.validateSpringEL(getProgressiveRender())){
-            String currentValues [] = {"progressiveRender ="+getProgressiveRender()};
-            tracer.createError("ProgressiveRender must follow the Spring EL @{} format",currentValues);
+        if (!Validator.validateSpringEL(getProgressiveRender())) {
+            String currentValues[] = {"progressiveRender =" + getProgressiveRender()};
+            tracer.createError("ProgressiveRender must follow the Spring EL @{} format", currentValues);
         }
 
         // Check for valid Spring EL format for conditionalRefresh
-        if(!Validator.validateSpringEL(getConditionalRefresh())){
-            String currentValues [] = {"conditionalRefresh ="+getConditionalRefresh()};
-            tracer.createError("conditionalRefresh must follow the Spring EL @{} format",currentValues);;
+        if (!Validator.validateSpringEL(getConditionalRefresh())) {
+            String currentValues[] = {"conditionalRefresh =" + getConditionalRefresh()};
+            tracer.createError("conditionalRefresh must follow the Spring EL @{} format", currentValues);
+            ;
         }
     }
 
-    /**
-     * If true if this component is disclosed by an action in js, a placeholder will be put in this components place
-     *
-     * @return true if this component is disclosed by an action
-     */
-    public boolean isDisclosedByAction() {
-        return disclosedByAction;
-    }
-
-    /**
-     * Set if this component is disclosed by some outside action
-     *
-     * @param disclosedByAction
-     */
-    public void setDisclosedByAction(boolean disclosedByAction) {
-        this.disclosedByAction = disclosedByAction;
-    }
 }

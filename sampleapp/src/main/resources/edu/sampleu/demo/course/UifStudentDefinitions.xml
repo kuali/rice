@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="GenericTextArea" parent="Uif-InputField" abstract="true"
-        p:label="Field Label" p:labelPlacement="TOP"
+        p:labelPlacement="TOP"
         p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40"/>
@@ -30,7 +30,7 @@
   </bean>
 
   <bean id="GenericTextField" parent="Uif-InputField" abstract="true"
-        p:label="Field Label" p:labelPlacement="TOP"
+        p:labelPlacement="TOP"
         p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-TextControl" p:size="30"/>
@@ -58,18 +58,18 @@
   </bean>
 
   <bean id="GenericSelection" parent="Uif-InputField" abstract="true"
-        p:label="Select" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"
+        p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"
         p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-DropdownControl">
         <property name="options">
           <list>
-            <bean parent="Uif-KeyLabelPair" p:key="" p:value=""/>
-            <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Select 1"/>
-            <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Select 2"/>
-            <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Select 3"/>
-            <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select 4"/>
-            <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select 5"/>
+            <bean parent="Uif-KeyLabelPair" p:key=""/>
+            <bean parent="Uif-KeyLabelPair" p:key="1"/>
+            <bean parent="Uif-KeyLabelPair" p:key="2"/>
+            <bean parent="Uif-KeyLabelPair" p:key="3"/>
+            <bean parent="Uif-KeyLabelPair" p:key="4"/>
+            <bean parent="Uif-KeyLabelPair" p:key="4"/>
           </list>
         </property>
       </bean>
@@ -83,12 +83,9 @@
     <property name="disclosure.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field 1" p:required="true"
-              p:propertyName="gField1"/>
-        <bean parent="GenericTextField" p:label="Field 2" p:required="true"
-              p:propertyName="gField2"/>
-        <bean parent="GenericTextField" p:label="Field 3" p:required="true"
-              p:propertyName="gField3"/>
+        <bean parent="GenericTextField" p:required="true" p:propertyName="gField1"/>
+        <bean parent="GenericTextField" p:required="true" p:propertyName="gField2"/>
+        <bean parent="GenericTextField" p:required="true" p:propertyName="gField3"/>
       </list>
     </property>
   </bean>
@@ -100,7 +97,7 @@
     </property>
     <property name="addLineActions">
       <list>
-        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add">
+        <bean id="GenericCollectionGroup-AddLine" parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine">
           <property name="actionImage">
             <bean parent="Uif-Image"
                   p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/icon_btn_add.png"/>
@@ -110,7 +107,7 @@
     </property>
     <property name="lineActions">
       <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete">
+        <bean id="GenericCollectionGroup-DeleteLine" parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine">
           <property name="actionImage">
             <bean parent="Uif-Image"
                   p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/icon_btn_minus.png"/>
@@ -127,9 +124,9 @@
       <bean parent="Uif-VerticalRadioControl">
         <property name="options">
           <list>
-            <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1"/>
-            <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
-            <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Radio 3"/>
+            <bean parent="Uif-KeyLabelPair" p:key="1"/>
+            <bean parent="Uif-KeyLabelPair" p:key="2"/>
+            <bean parent="Uif-KeyLabelPair" p:key="3"/>
           </list>
         </property>
       </bean>
@@ -165,8 +162,7 @@
       <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="true"/>
     </property>
     <property name="quickfinderAction">
-      <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Advanced Search"
-            p:cssClasses="kr-quickfinder action">
+      <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:cssClasses="kr-quickfinder action">
       </bean>
     </property>
   </bean>

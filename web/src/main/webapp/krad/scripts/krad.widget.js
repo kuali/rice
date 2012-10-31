@@ -249,10 +249,14 @@ function isCalledWithinLightbox() {
  * Reload page with lookup result URL
  */
 function returnLookupResultReload(aElement) {
-    if (top.jQuery('iframe[id*=easyXDM_]').length == 0) {
-        window.open(aElement.attr('href'), aElement.attr('target'));
-    } else {
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
         top.jQuery('iframe[id*=easyXDM_]').contents().find('#iframeportlet').attr('src', aElement.attr('href'));
+    } else if (parent.parent.jQuery('#iframeportlet').length > 0) {
+        // portal and content on different domain
+        parent.parent.jQuery('#iframeportlet').attr('src', aElement.attr('href'))
+    } else {
+        window.open(aElement.attr('href'), aElement.attr('target'));
     }
 }
 
@@ -261,10 +265,14 @@ function returnLookupResultReload(aElement) {
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-    if (top.jQuery('iframe[id*=easyXDM_]').length == 0) {
-        returnField = top.jq('[name="' + escapeName(fieldName) + '"]');
-    }else{
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
         returnField = top.jQuery('iframe[id*=easyXDM_]').contents().find('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
+    } else if (parent.parent.jQuery('#iframeportlet').length > 0) {
+        // portal and content on different domain
+        returnField = parent.parent.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
+    } else {
+        returnField = top.jq('[name="' + escapeName(fieldName) + '"]');
     }
     returnField.val(value);
     returnField.focus();
@@ -279,10 +287,14 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    if (top.jQuery('iframe[id*=easyXDM_]').length == 0) {
-        top.jQuery('#kualiForm').attr('target','_parent');
-    } else {
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
         top.jQuery('iframe[id*=easyXDM_]').contents().find('#iframeportlet').contents().find('#kualiForm').attr('target','iframeportlet');
+    } else if (parent.parent.jQuery('#iframeportlet').length > 0) {
+        // portal and content on different domain
+        parent.jQuery('#kualiForm').attr('target','iframeportlet');
+    } else {
+        top.jQuery('#kualiForm').attr('target','_parent');
     }
 }
 

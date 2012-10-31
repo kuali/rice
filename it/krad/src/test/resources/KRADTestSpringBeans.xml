@@ -183,4 +183,27 @@
       </bean>
     </property>
   </bean>
+
+  <bean id="messageService" class="org.kuali.rice.krad.messages.MessageServiceImpl">
+    <property name="messageProviders">
+      <list>
+        <ref bean="rice.krad.import.databaseMessageProvider"/>
+        <ref bean="rice.krad.import.resourceMessageProvider"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="rice.krad.import.databaseMessageProvider"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="databaseMessageProvider" />
+  </bean>
+
+  <bean id="rice.krad.import.resourceMessageProvider"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="resourceMessageProvider" />
+  </bean>
+
+  <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
+    <property name="localServiceName" value="KRADTestContext"/>
+  </bean>
 </beans>

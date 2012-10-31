@@ -1,12 +1,15 @@
 package org.kuali.rice.krad.messages;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.test.KRADTestCase;
+
+import javax.xml.namespace.QName;
 
 import static org.junit.Assert.assertEquals;
 
@@ -87,7 +90,7 @@ public class MessageServiceTest extends KRADTestCase {
     public void testRetrieveMessage_DatabaseByNamespaceComponentKey() throws Exception {
         String messageText = messageService.getMessageText("TEST", "TestComponent", "validation.test2.error");
 
-        assertEquals("Validation message text not correct", "Error found for {0}", messageText);
+        assertEquals("Validation message text not correct", "Component Error found", messageText);
     }
 
     /**

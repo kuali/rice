@@ -1038,7 +1038,6 @@
   <bean id="messageService" class="org.kuali.rice.krad.messages.MessageServiceImpl">
     <property name="messageProviders">
       <list>
-        <ref bean="databaseMessageProvider"/>
         <ref bean="resourceMessageProvider"/>
       </list>
     </property>

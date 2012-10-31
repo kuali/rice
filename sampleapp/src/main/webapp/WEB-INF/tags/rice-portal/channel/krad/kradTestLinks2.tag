@@ -21,10 +21,10 @@
   <ul class="chan">
     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91" />Uif Components (Kitchen Sink)</a></li>
     <li><portal:portalLink displayTitle="true" title="Standard Layout Demo" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-StandardLayout&methodToCall=start" /></li>
-    <li><portal:portalLink displayTitle="true" title="Validation Framework Demo" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start" /></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start">Validation Framework Demo</a></li>
     <li><portal:portalLink displayTitle="true" title="ServerSide Constraint Validation Demo" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationServerSide&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="Uif Layout Test" url="${ConfigProperties.application.url}/kr-krad/uilayouttest?viewId=UifLayoutView&methodToCall=start" /></li>
-    <li><portal:portalLink displayTitle="true" title="Row Details Demo" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-RowDetails&methodToCall=start" /></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-RowDetails&methodToCall=start">Row Details Demo</a></li>
     <li><portal:portalLink displayTitle="true" title="Test View 1 (old)" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView1&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="Test View 2 (old)" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="Incident Report" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2&methodToCall=foo" /></li>

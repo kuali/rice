@@ -66,6 +66,11 @@
         <value>uif-detailsAction</value>
       </list>
     </property>
+    <property name="actionParameters">
+      <map>
+        <entry key="lineIndex" value="@{#index}"/>
+      </map>
+    </property>
   </bean>
 
   <bean id="Uif-ExpandDetailsImageAction" parent="Uif-ActionLink">
@@ -73,6 +78,11 @@
       <list merge="true">
         <value>uif-detailsAction</value>
       </list>
+    </property>
+    <property name="actionParameters">
+      <map>
+        <entry key="lineIndex" value="@{#index}"/>
+      </map>
     </property>
     <property name="actionImage">
       <bean parent="Uif-Image" p:altText="Details"

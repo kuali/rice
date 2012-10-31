@@ -101,6 +101,7 @@
     </property>
     <property name="emptyTableMessage" value="No records found"/>
     <property name="showSearchAndExportOptions" value="false"/>
+    <property name="forceAoColumnDefsOverride" value="false"/>
   </bean>
 
   <bean id="Uif-PagedRichTable" parent="Uif-PagedRichTable-parentBean"/>

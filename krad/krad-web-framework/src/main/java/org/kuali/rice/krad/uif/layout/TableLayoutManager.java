@@ -1419,7 +1419,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         Action rowDetailsAction = this.getExpandDetailsActionPrototype();
         rowDetailsAction.addDataAttribute("role", "detailsLink");
         rowDetailsAction.addDataAttribute("swap", Boolean.toString(this.isRowDetailsSwapActionImage()));
-        rowDetailsAction.addActionParameter("lineIndex", "@{#index}");
         view.assignComponentIds(rowDetailsAction);
 
         List<Component> detailsItems = new ArrayList<Component>();

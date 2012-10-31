@@ -163,7 +163,7 @@ public class ScriptUtils {
      */
     public static String escapeJSONString(String jsonString) {
         if (jsonString != null) {
-            jsonString = jsonString.replace('"', '\"');
+            jsonString = jsonString.replace("\"", "&quot;");
         }
 
         return jsonString;

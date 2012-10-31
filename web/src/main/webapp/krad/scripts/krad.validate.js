@@ -1254,14 +1254,15 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
                 }
             }
             jQuery(link).addClass(linkType);
-            jQuery(link).find("a").click(function () {
+            jQuery(link).find("a").click(function (event) {
+                event.preventDefault();
                 var control = jQuery("#" + fieldId + "_control");
                 if (control.length) {
 
                     jQuery(control).focus();
                 }
                 else {
-                    jQuery("#" + fieldId + "_control1").focus();
+                    jQuery("#" + fieldId + "_control_0").focus();
                 }
             });
             jQuery(link).find("a").focus(function () {
@@ -1355,6 +1356,7 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
 
         var countMessage = generateCountString(errorCount, warningCount, infoCount);
 
+        sectionTitle = sectionTitle.replace(/\r?\n/g, "");
         disclosureText = countMessage + " " + locationText + " " + getMessage(kradVariables.MESSAGE_THE) + " \"" + sectionTitle + "\" " + sectionType;
 
         if (links.length) {
@@ -1398,7 +1400,8 @@ function generateSummaryLink(sectionId) {
 
     if (sectionData && sectionData.messageTotal) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
-
+        //remove newline characters
+        sectionTitle = sectionTitle.replace(/\r?\n/g, "");
         summaryMessage = getMessage(kradVariables.MESSAGE_THE_SECTION_HAS_COUNT, null, null, sectionTitle, sectionType, countMessage);
     }
 
@@ -1421,7 +1424,8 @@ function generateSummaryLink(sectionId) {
         summaryLink = jQuery("<li data-messageItemFor='" + sectionId + "' class='" + linkType + "'><a href='#'>"
                 + summaryMessage + "</a></li>");
 
-        summaryLink.find("a").click(function () {
+        summaryLink.find("a").click(function (event) {
+            event.preventDefault();
             var header = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label");
             jumpToElementById(sectionId);
             if (header.length) {

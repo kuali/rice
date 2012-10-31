@@ -801,18 +801,19 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function (a, b) {
  */
 jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iVisColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var input = jQuery(this).find('input:text');
+    jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var input = jQuery(td).find('input:text');
         if (input.length != 0) {
             aData.push(input.val());
         } else {
             // find span for the data or input field and get its text
-            var input1 = jQuery(this).find('.uif-field');
+            var input1 = jQuery(td).find('.uif-field');
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.find("span:first").text()));
             } else {
                 // just use the text within the cell
-                aData.push(jQuery(this).text());
+                aData.push(jQuery(td).text());
             }
         }
 
@@ -832,12 +833,13 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
  */
 jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iVisColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var selected = jQuery(this).find('select option:selected:first');
+    jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var selected = jQuery(td).find('select option:selected:first');
         if (selected.length != 0) {
             aData.push(selected.text());
         } else {
-            var input1 = jQuery(this).find('.uif-inputField');
+            var input1 = jQuery(td).find('.uif-inputField');
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {
@@ -861,8 +863,9 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn,
  */
 jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iVisColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var checkboxes = jQuery(this).find('input:checkbox');
+    jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var checkboxes = jQuery(td).find('input:checkbox');
         if (checkboxes.length != 0) {
             var str = "";
             for (i = 0; i < checkboxes.length; i++) {
@@ -873,7 +876,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
             }
             aData.push(str);
         } else {
-            var input1 = jQuery(this).find('.uif-inputField');
+            var input1 = jQuery(td).find('.uif-inputField');
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {
@@ -897,8 +900,9 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
  */
 jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn, iVisColumn) {
     var aData = [];
-    jQuery('td:eq(' + iVisColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var radioButtons = jQuery(this).find('input:radio');
+    jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var radioButtons = jQuery(td).find('input:radio');
         if (radioButtons.length != 0) {
             var value = "";
             for (i = 0; i < radioButtons.length; i++) {
@@ -910,7 +914,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn, 
             }
             aData.push(value);
         } else {
-            var input1 = jQuery(this).find('.uif-inputField');
+            var input1 = jQuery(td).find('.uif-inputField');
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {

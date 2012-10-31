@@ -1097,15 +1097,18 @@ li.uif-infoMessageItem:before {
     font-size: 20px;
 }
 
-.uif-errorHighlight > .uif-control, .uif-errorHighlight > fieldset {
+.uif-errorHighlight .uif-control, .uif-errorHighlight > fieldset[data-type="RadioSet"],
+.uif-errorHighlight > fieldset[data-type="CheckboxSet"], .uif-errorHighlight .uif-checkboxControl + label{
     background-color: #FFE1E9;
 }
 
-.uif-warningHighlight > .uif-control, .uif-warningHighlight > fieldset {
+.uif-warningHighlight .uif-control, .uif-warningHighlight > fieldset[data-type="RadioSet"],
+.uif-warningHighlight > fieldset[data-type="CheckboxSet"], .uif-warningHighlight .uif-checkboxControl + label{
     background-color: #FFFEDA;
 }
 
-.uif-infoHighlight > .uif-control, .uif-infoHighlight > fieldset {
+.uif-infoHighlight .uif-control, .uif-infoHighlight > fieldset[data-type="RadioSet"],
+.uif-infoHighlight > fieldset[data-type="CheckboxSet"], .uif-infoHighlight .uif-checkboxControl + label{
     background-color: #E7F3FE;
 }
 

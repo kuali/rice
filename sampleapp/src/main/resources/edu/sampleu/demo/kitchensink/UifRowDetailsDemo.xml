@@ -68,10 +68,14 @@
     </property>
     <property name="layoutManager.applyDefaultCellWidths" value="false"/>
     <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
-    <property name="layoutManager.richTable.templateOptions">
-      <map merge="true">
-        <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
-      </map>
+    <property name="layoutManager.richTable">
+      <bean parent="Uif-PagedRichTable">
+        <property name="templateOptions">
+          <map merge="true">
+            <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+          </map>
+        </property>
+      </bean>
     </property>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
@@ -162,10 +166,16 @@
       <bean parent="Uif-ExpandDetailsImageAction"/>
     </property>
     <property name="layoutManager.applyDefaultCellWidths" value="false"/>
-    <property name="layoutManager.richTable.templateOptions">
-      <map merge="true">
-        <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
-      </map>
+    <property name="layoutManager.richTable">
+      <bean parent="Uif-PagedRichTable">
+        <property name="templateOptions">
+          <map merge="true">
+            <entry key="aaSorting" value="[[1,'desc']]"/>
+            <entry key="aoColumnDefs"
+                   value="[{'sWidth' : '20px', 'aTargets' : [0]},{'aTargets':[2], 'bSortable':false}]"/>
+          </map>
+        </property>
+      </bean>
     </property>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
@@ -195,7 +205,6 @@
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
-    <!--    <property name="layoutManager.richTable.render" value="false"/>-->
     <property name="readOnly" value="true"/>
     <property name="items">
       <list>
@@ -226,10 +235,14 @@
       <bean parent="Uif-ExpandDetailsImageAction"/>
     </property>
     <property name="layoutManager.applyDefaultCellWidths" value="false"/>
-    <property name="layoutManager.richTable.templateOptions">
-      <map merge="true">
-        <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
-      </map>
+    <property name="layoutManager.richTable">
+      <bean parent="Uif-PagedRichTable">
+        <property name="templateOptions">
+          <map merge="true">
+            <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+          </map>
+        </property>
+      </bean>
     </property>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
@@ -299,10 +312,14 @@
       <bean parent="Uif-ExpandDetailsImageAction"/>
     </property>
     <property name="layoutManager.applyDefaultCellWidths" value="false"/>
-    <property name="layoutManager.richTable.templateOptions">
-      <map merge="true">
-        <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
-      </map>
+    <property name="layoutManager.richTable">
+      <bean parent="Uif-PagedRichTable">
+        <property name="templateOptions">
+          <map merge="true">
+            <entry key="aoColumnDefs" value="[{&quot;sWidth&quot; : &quot;20px&quot;, &quot;aTargets&quot; : [0]}]"/>
+          </map>
+        </property>
+      </bean>
     </property>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">

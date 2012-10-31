@@ -61,6 +61,8 @@ public class RichTable extends WidgetBase {
     private String emptyTableMessage;
     private boolean disableTableSort;
 
+    private boolean forceAoColumnDefsOverride;
+
     private Set<String> hiddenColumns;
     private Set<String> sortableColumns;
 
@@ -240,7 +242,8 @@ public class RichTable extends WidgetBase {
 
                 tableToolsColumnOptions.append("]");
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
-            } else if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))) {
+            } else if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))
+                    && forceAoColumnDefsOverride) {
                 String jsArray = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
                 int startBrace = StringUtils.indexOf(jsArray, "[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
@@ -258,6 +261,7 @@ public class RichTable extends WidgetBase {
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                         tableToolsColumnOptions.toString());
             } else {
+
                 // TODO: does this handle multiple rows correctly?
                 for (Component component : collectionGroup.getItems()) {
                     if (actionFieldVisible && columnIndex + 1 == actionIndex) {
@@ -336,6 +340,13 @@ public class RichTable extends WidgetBase {
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
                             ", "));
+                }
+                //merge the aoColumnDefs passed in
+                if(!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))){
+                    String origAoOptions = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS).trim();
+                    origAoOptions = StringUtils.removeStart(origAoOptions, "[");
+                    origAoOptions = StringUtils.removeEnd(origAoOptions, "]");
+                    tableToolsColumnOptions.append("," + origAoOptions);
                 }
                 tableToolsColumnOptions.append("]");
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
@@ -565,5 +576,13 @@ public class RichTable extends WidgetBase {
      */
     public void setGroupingOptionsJSString(String groupingOptionsJSString) {
         this.groupingOptionsJSString = groupingOptionsJSString;
+    }
+
+    public boolean isForceAoColumnDefsOverride() {
+        return forceAoColumnDefsOverride;
+    }
+
+    public void setForceAoColumnDefsOverride(boolean forceAoColumnDefsOverride) {
+        this.forceAoColumnDefsOverride = forceAoColumnDefsOverride;
     }
 }

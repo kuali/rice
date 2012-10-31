@@ -89,4 +89,6 @@
   
     <!--<bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>-->
 
+    <bean id="locationConfigurer" class="org.kuali.rice.location.impl.config.LocationConfigurer"/>
+
 </beans>

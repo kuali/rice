@@ -203,5 +203,6 @@ public class ClientErrorsLegacyIT extends WebDriverLegacyITBase {
 
         Assert.assertFalse(isElementPresentByXpath("//*[@name='field115' and @value='3' and @aria-invalid]"));
         Assert.assertFalse(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
+        passed();
     }
 }

@@ -49,7 +49,7 @@ public class AgendaEditRuleRefreshLegacyIT extends WebDriverLegacyITBase {
         selectFrame("iframeportlet");
         waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  waitAndClick("id=32");
         Thread.sleep(3000);
-        waitAndClickByXpath("//a[@title='edit Agenda Definition withAgenda Id=T1000 ']"); // waitAndClick("id=194_line0");
+        waitAndClickByXpath("//a[@title='edit Agenda Definition withAgenda Id=T1000 ']", "Does user have edit permissions?"); // waitAndClick("id=194_line0");
         checkForIncidentReport("");
         Thread.sleep(3000);
         waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']"); // waitAndClick("//li[@id='473_node_0_parent_root']/a");

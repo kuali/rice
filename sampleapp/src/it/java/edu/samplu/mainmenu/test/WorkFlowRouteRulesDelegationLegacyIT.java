@@ -15,15 +15,12 @@
  */
 package edu.samplu.mainmenu.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriver.Options;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * tests creating and cancelling new and edit Routing Rule Delegation maintenance screens
@@ -60,7 +57,7 @@ public class WorkFlowRouteRulesDelegationLegacyIT extends WebDriverLegacyITBase 
         Thread.sleep(3000);
         waitAndClickByName("methodToCall.processAnswer.button0");
         waitForPageToLoad();
-              
+        passed();
     }
     
     @Test
@@ -91,5 +88,6 @@ public class WorkFlowRouteRulesDelegationLegacyIT extends WebDriverLegacyITBase 
         driver.switchTo().defaultContent();
         waitAndClickByXpath("(//input[@name='imageField'])[2]");
         waitForPageToLoad();
+        passed();
     }
 }

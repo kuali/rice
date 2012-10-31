@@ -214,5 +214,6 @@ public class UifDataAttributesLegacyIT extends WebDriverLegacyITBase {
             //test that all complex and simple attributes set via the list are in a script
             verifyAllAttributesInScript(tagId, "");
         }
+        passed();
     }
 }

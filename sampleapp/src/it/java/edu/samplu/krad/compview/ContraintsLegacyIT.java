@@ -361,5 +361,6 @@ public class ContraintsLegacyIT extends WebDriverLegacyITBase {
         waitAndTypeByName("field33", "");
         fireEvent("field33", "blur");
         Assert.assertTrue(getAttributeByName("field33","class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        passed();
     }
 }

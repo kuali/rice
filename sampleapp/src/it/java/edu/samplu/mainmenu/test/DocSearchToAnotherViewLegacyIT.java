@@ -57,5 +57,6 @@ public class DocSearchToAnotherViewLegacyIT extends WebDriverLegacyITBase {
 		Alert a=driver.switchTo().alert();
 		Assert.assertTrue(a.getText().equals(text));
 		a.dismiss();
+        passed();
 	}
 }

@@ -37,6 +37,7 @@ public class RichMessagesValidationLegacyIT extends WebDriverLegacyITBase {
 				
 		//Verify Link Declarations Section
 		this.verifyLinkDeclarationsFunctionality();
+        passed();
 	}
 	
 	private void verifyBasicFunctionality() throws Exception

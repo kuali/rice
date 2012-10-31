@@ -56,7 +56,7 @@ public abstract class AdminMenuBlanketAppLegacyITBase extends MenuLegacyITBase{
     protected void assertBlanketApproveButtonsPresent() {
         assertElementPresentByName("methodToCall.route");
         assertElementPresentByName("methodToCall.save");
-        assertElementPresentByName("methodToCall.blanketApprove", "Blanket Approve botton not present does " + user + " have permssion?");
+        assertElementPresentByName("methodToCall.blanketApprove", "Blanket Approve button not present does " + user + " have permssion?");
         assertElementPresentByName("methodToCall.close");
         assertElementPresentByName("methodToCall.cancel");
     }

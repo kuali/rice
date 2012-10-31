@@ -66,5 +66,6 @@ public class DeleteSubCollectionLineLegacyIT extends WebDriverLegacyITBase{
         }
         // verify that the value has changed for the input box in the line that has replaced the deleted one
         assertNotSame("selenium", getAttributeByName("list4[0].subList[0].field1","value"));
+        passed();
     }
 }

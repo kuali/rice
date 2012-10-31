@@ -45,7 +45,7 @@ public abstract class MainMenuLookupLegacyITBase extends MenuLegacyITBase {
         selectFrame("iframeportlet");
         // Mixed capitalization
         waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
-        waitAndClickByLinkText("edit", "edit button not pressent does user " + user + " have permission?");
+        waitAndClickByLinkText("edit", "edit button not present does user " + user + " have permission?");
         checkForIncidentReport("submit");
         assertTextPresent("ubmit");
         assertTextPresent("ave");

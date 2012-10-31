@@ -42,7 +42,7 @@ public class AgendaEditRuleRefreshIT extends UpgradedSeleniumITBase {
 		selectFrame("iframeportlet");
 		waitAndClick("css=button:contains(earch)"); //  waitAndClick("id=32");
         Thread.sleep(3000);
-		waitAndClick("css=a[title='edit Agenda Definition withAgenda Id=T1000 ']");  // waitAndClick("id=194_line0");
+		waitAndClick("css=a[title='edit Agenda Definition withAgenda Id=T1000 ']", "Does user have edit permissions?");  // waitAndClick("id=194_line0");
         checkForIncidentReport("");
 		waitAndClick("css=div.uif-message:contains(Rule1: stub rule lorem ipsum)"); // waitAndClick("//li[@id='473_node_0_parent_root']/a");
         waitAndClick("css=//li/a/span.uif-message:contains('When TRUE')");

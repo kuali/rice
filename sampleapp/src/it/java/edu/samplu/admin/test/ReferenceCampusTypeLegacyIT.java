@@ -15,13 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * tests creating and cancelling the new Campus Type maintenance screen 
@@ -52,5 +50,6 @@ public class ReferenceCampusTypeLegacyIT extends WebDriverLegacyITBase {
         assertElementPresentByName("methodToCall.cancel");
         waitAndClickByName("methodToCall.cancel");
         waitAndClickByName("methodToCall.processAnswer.button0");
+        passed();
     }
 }

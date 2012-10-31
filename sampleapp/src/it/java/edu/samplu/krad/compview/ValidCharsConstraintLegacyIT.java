@@ -216,5 +216,6 @@ public class ValidCharsConstraintLegacyIT extends WebDriverLegacyITBase {
 		waitAndTypeByName("field56", "2020-06-02 03:30:30.22");
 		fireEvent("field56", "blur");
 		Assert.assertTrue(getAttributeByName("field56","class").matches("^[\\s\\S]*valid[\\s\\S]*$"));
+        passed();
 	}
 }

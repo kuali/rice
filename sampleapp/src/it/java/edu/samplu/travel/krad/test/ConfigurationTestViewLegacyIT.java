@@ -68,7 +68,7 @@ public class ConfigurationTestViewLegacyIT extends WebDriverLegacyITBase {
         selectByXpath(dropDownSelectLocator, "None");
         Thread.sleep(3000);
         assertEquals("true", getAttributeByXpath(refreshTextSelectLocator, "disabled"));
-
+        passed();
 	}
 
     /**
@@ -105,7 +105,7 @@ public class ConfigurationTestViewLegacyIT extends WebDriverLegacyITBase {
         Thread.sleep(5000); //allow for line to be added
         //confirm that line has been added
         assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline", isElementPresentByXpath("//input[@value='7:06']"));
-        
+        passed();
     }
 
     /**
@@ -133,7 +133,7 @@ public class ConfigurationTestViewLegacyIT extends WebDriverLegacyITBase {
         Thread.sleep(5000); //allow for ajax refresh
         waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
         Thread.sleep(5000); //allow for line to be added           
-
+        passed();
     }
 
     /**
@@ -172,5 +172,6 @@ public class ConfigurationTestViewLegacyIT extends WebDriverLegacyITBase {
 
         //confirm that line has been added (by checking for the new delete button)
         assertEquals("line was not added", rowCount + 1, (getCssCount(cssCountRows)));
+        passed();
     }
 }

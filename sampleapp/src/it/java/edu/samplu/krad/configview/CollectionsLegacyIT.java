@@ -63,7 +63,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
         Assert.assertEquals("asdf4", getAttributeByName("list1[0].field4","value"));
         
         Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
-
+        passed();
     }
 
     
@@ -103,7 +103,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
         waitAndTypeByName("list1[0].field3", "1");
         waitAndTypeByName("list1[0].field4", "1");
         Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());   
-        
+        passed();
         
     }
 
@@ -149,7 +149,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
             Thread.sleep(1000);
         }
         Assert.assertTrue(isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
-
+        passed();
         
     }
     
@@ -168,7 +168,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
         waitAndClickByXpath("//button[@id='uif-addLine_add']");
         Thread.sleep(3000);
 		Assert.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
-
+        passed();
 	}
 	
 	@Test
@@ -195,7 +195,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
         
         //Check for the added if delete is present or not
 		Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
-		
+		passed();
 	}
 
 	@Test
@@ -223,7 +223,7 @@ public class CollectionsLegacyIT extends WebDriverLegacyITBase {
         //Check for the added if delete is present or not
 		Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
 		Assert.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
-		
+		passed();
 	}
 
     

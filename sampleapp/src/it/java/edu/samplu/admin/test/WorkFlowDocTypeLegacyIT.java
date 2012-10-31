@@ -15,13 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-import org.openqa.selenium.internal.selenesedriver.SwitchToFrame;
-
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * tests creating and cancelling new and edit Document Type maintenance screens 
@@ -53,6 +51,7 @@ public class WorkFlowDocTypeLegacyIT extends WebDriverLegacyITBase{
         waitAndClickByName("methodToCall.cancel");
         waitAndClickByName("methodToCall.processAnswer.button0");
         waitForPageToLoad();
+        passed();
     }
     
     @Test
@@ -75,6 +74,7 @@ public class WorkFlowDocTypeLegacyIT extends WebDriverLegacyITBase{
         waitAndClickByLinkText("edit");
         waitAndClickByName("methodToCall.cancel");
         waitAndClickByName("methodToCall.processAnswer.button0");
+        passed();
     }
     
     //Test to validate the requirement of Document Type Label field while submitting a document.
@@ -99,5 +99,6 @@ public class WorkFlowDocTypeLegacyIT extends WebDriverLegacyITBase{
         Thread.sleep(5000);
         waitAndClickByXpath("(//input[@name='imageField'])[2]");
         Thread.sleep(5000);
+        passed();
     }
 }

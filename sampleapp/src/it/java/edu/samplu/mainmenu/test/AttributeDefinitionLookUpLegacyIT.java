@@ -66,5 +66,6 @@ public class AttributeDefinitionLookUpLegacyIT extends WebDriverLegacyITBase{
 //        selectWindow("null");
 //        waitAndClick("xpath=(//input[@name='imageField'])[2]");
 //        waitForPageToLoad();
+        passed();
     }
 }

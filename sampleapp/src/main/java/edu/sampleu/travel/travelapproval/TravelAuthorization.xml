@@ -24,7 +24,6 @@
 
   <bean id="TravelAuthorization" parent="Uif-TransactionalDocumentView">
     <property name="headerText" value="Travel Authorization Request"/>
-    <property name="dataObjectClassName" value="edu.sampleu.travel.travelapproval.TravelAuthorizationDocument"/>
     <property name="items">
       <list merge="true">
         <bean parent="Uif-DataField" p:propertyName="DOC_NBR"/>

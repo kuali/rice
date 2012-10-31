@@ -149,4 +149,42 @@ public interface RouteNodeService {
      */
     public List getRevokedNodeInstances(DocumentRouteHeaderValue document);
     
+    /**
+     * Retrieves the names of the route node instances where the document is currently located
+     * for the document with the given id. This could be active nodes in the document if it is
+     * in the middle of the routing process or it could be the names of the terminal nodes if
+     * the document has completed routing.
+     *
+     * backported from rice 2.1
+     *
+     * @param documentId of the document
+     * @return list of names of the current route node instances
+     */
+    public List<String> getCurrentRouteNodeNames(Long documentId);
+    
+    /**
+     * Retrieves the names of active node instances for the document with the
+     * given id.  The active node instances represent where in the route path
+     * the document is currently located.
+     * 
+     * backported from rice 2.1
+     * 
+     * @param documentId of the document
+     * @return list of names of route node instances
+     */
+    public List<String> getActiveRouteNodeNames(Long documentId);
+    
+    /**
+     * Retrieves the names of terminal node instances for the document with the
+     * given id. The terminal node instances are nodes in the route path which
+     * are both inactive and complete and have no next nodes in their path.
+     * Terminal node instances will typically only exist on documents which are
+     * no longer enroute.
+     * 
+     * backported from rice 2.1
+     * 
+     * @param documentId for the given Document
+     * @return list of terminal node instances
+     */
+    public List<String> getTerminalRouteNodeNames(Long documentId);
 }

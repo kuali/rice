@@ -112,15 +112,12 @@ public class EDLDatabasePostProcessor extends EDocLitePostProcessor {
 	    }
 
 	    private String[] getNodeNames(Long documentId) throws WorkflowException {
-	            RouteNodeInstanceDTO[] activeNodeInstances = new WorkflowInfo().getActiveNodeInstances(documentId);
-	            if (activeNodeInstances == null || activeNodeInstances.length == 0) {
-	        	activeNodeInstances = new WorkflowInfo().getTerminalNodeInstances(documentId);
-	            }
-	            String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
-	            for (int index = 0; index < activeNodeInstances.length; index++) {
-	                nodeNames[index] = activeNodeInstances[index].getName();
-	            }
-	            return nodeNames;
+	        List<String> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(documentId);
+	        if (activeNodeInstances == null || activeNodeInstances.isEmpty()) {
+	            activeNodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalRouteNodeNames(documentId);
+	        }
+	        
+	        return activeNodeInstances != null ? activeNodeInstances.toArray(new String[] {}) : new String[] {};
 	    }
 
 	    private void extractEDLData(DocumentRouteHeaderValue routeHeader, String[] nodeNames) {

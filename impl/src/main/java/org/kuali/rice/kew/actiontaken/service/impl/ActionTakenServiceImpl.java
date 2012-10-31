@@ -182,20 +182,9 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
 
-    public Timestamp getLastApprovedDate(Long routeHeaderId)
+    public Timestamp getLastApprovedDate(Long documentId)
     {
-    	Timestamp dateLastApproved = null;
-    	Collection<ActionTakenValue> actionsTaken= getActionTakenDAO().findByDocIdAndAction(routeHeaderId, KEWConstants.ACTION_TAKEN_APPROVED_CD);
-        for (ActionTakenValue actionTaken : actionsTaken)
-        {
-            // search for the most recent approval action
-            if (dateLastApproved == null || dateLastApproved.compareTo(actionTaken.getActionDate()) <= -1)
-            {
-                dateLastApproved = actionTaken.getActionDate();
-            }
-        }
-    	LOG.info("Exit getLastApprovedDate("+routeHeaderId+") "+dateLastApproved);
-    	return dateLastApproved;
+    	return getActionTakenDAO().getLastActionTakenDate(documentId, KEWConstants.ACTION_TAKEN_APPROVED_CD);
     }
 
 }

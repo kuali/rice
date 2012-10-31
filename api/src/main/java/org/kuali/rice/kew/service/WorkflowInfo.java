@@ -351,12 +351,11 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getCurrentNodeInstances(Long)
      */
     public String[] getCurrentNodeNames(Long documentId) throws WorkflowException {
-    	RouteNodeInstanceDTO[] currentNodeInstances = getWorkflowUtility().getCurrentNodeInstances(documentId);
-    	String[] nodeNames = new String[(currentNodeInstances == null ? 0 : currentNodeInstances.length)];
-    	for (int index = 0; index < currentNodeInstances.length; index++) {
-    		nodeNames[index] = currentNodeInstances[index].getName();
-    	}
-    	return nodeNames;
+        List<String> nodeNames = getWorkflowUtility().getActiveRouteNodeNames(documentId);
+        if (nodeNames.isEmpty()) {
+        	nodeNames = getWorkflowUtility().getTerminalRouteNodeNames(documentId);
+        }
+    	return nodeNames != null ? nodeNames.toArray(new String[] {}) : new String[] {};
     }
 
     /**

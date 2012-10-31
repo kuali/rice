@@ -1079,12 +1079,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getActiveNodeInstances(Long)
      */
     public String[] getNodeNames() throws WorkflowException {
-    	RouteNodeInstanceDTO[] activeNodeInstances = getWorkflowUtility().getActiveNodeInstances(getRouteHeaderId());
-    	String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
-    	for (int index = 0; index < activeNodeInstances.length; index++) {
-    		nodeNames[index] = activeNodeInstances[index].getName();
-    	}
-    	return nodeNames;
+    	final List<String> names = getWorkflowUtility().getActiveRouteNodeNames(getRouteHeaderId());
+        return names != null ? names.toArray(new String[] {}) : new String[] {};
+
     }
 
     /**

@@ -274,14 +274,11 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     }
     
     public List<String> getCurrentNodeNames() {
-    	List<String> currentNodeNames = new ArrayList<String>();
-    	Collection<RouteNodeInstance> nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeaderId());
-        if (nodeInstances.isEmpty()) {
-            nodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(getRouteHeaderId());
+        List<String> currentNodeNames = KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(getRouteHeaderId());
+        if (currentNodeNames.isEmpty()) {
+        	currentNodeNames = KEWServiceLocator.getRouteNodeService().getTerminalRouteNodeNames(getRouteHeaderId());
         }
-        for (RouteNodeInstance nodeInstance : nodeInstances) {
-            currentNodeNames.add(nodeInstance.getRouteNode().getRouteNodeName());
-        }
+
         return currentNodeNames;
     }
 

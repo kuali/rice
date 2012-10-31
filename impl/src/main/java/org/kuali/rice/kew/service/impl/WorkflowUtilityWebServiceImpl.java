@@ -1242,4 +1242,16 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
 		return docLink;
 	}
+	
+    public List<String> getActiveRouteNodeNames(Long documentId) {
+    	return KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(documentId);
+    }
+    
+    public List<String> getTerminalRouteNodeNames(Long documentId) {
+    	return KEWServiceLocator.getRouteNodeService().getTerminalRouteNodeNames(documentId);
+    }
+
+    public List<String> getCurrentRouteNodeNames(Long documentId) {
+    	return KEWServiceLocator.getRouteNodeService().getCurrentRouteNodeNames(documentId);
+    }
 }

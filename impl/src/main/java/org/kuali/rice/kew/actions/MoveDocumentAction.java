@@ -67,12 +67,12 @@ public class MoveDocumentAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()), KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(getRouteHeader().getRouteHeaderId()));
     }
 
     @Override
 	public String validateActionRules(List<ActionRequestValue> actionRequests) {
-        return validateActionRules(actionRequests, KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
+        return validateActionRules(actionRequests, KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(getRouteHeader().getRouteHeaderId()));
 	}
 
     private String validateActionRules(List<ActionRequestValue> actionRequests, Collection activeNodes) {

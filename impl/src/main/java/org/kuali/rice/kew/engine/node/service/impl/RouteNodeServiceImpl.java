@@ -481,5 +481,18 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	return revokedNodeInstances;
 	}
     
-    
+	//@Override
+	public List<String> getActiveRouteNodeNames(Long documentId) {
+		return routeNodeDAO.getActiveRouteNodeNames(documentId);
+	}
+
+	//@Override
+	public List<String> getTerminalRouteNodeNames(Long documentId) {
+		return routeNodeDAO.getTerminalRouteNodeNames(documentId);
+	}
+
+	//@Override
+	public List<String> getCurrentRouteNodeNames(Long documentId) {
+		return routeNodeDAO.getCurrentRouteNodeNames(documentId);
+	}
 }

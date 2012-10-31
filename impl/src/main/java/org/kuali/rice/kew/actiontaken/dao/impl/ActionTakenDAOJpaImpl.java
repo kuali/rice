@@ -139,6 +139,14 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
 	    int count = (Integer) new QueryByCriteria(entityManager, crit).toCountQuery().getSingleResult();
         return count > 0;
     }
+    
+    //@Override
+    public Timestamp getLastActionTakenDate(Long documentId, String actionType) {
+        // TODO - fix this!
+
+        throw new UnsupportedOperationException("The JPA version of this method still needs to be implemented!");
+
+    }
 
     public EntityManager getEntityManager() {
         return this.entityManager;

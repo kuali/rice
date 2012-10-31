@@ -394,5 +394,10 @@ public interface WorkflowUtility {
     public List<DocumentLinkDTO> getLinkedDocumentsByDocId(Long id) throws WorkflowException;
     
     public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException;
+    
+    public List<String> getActiveRouteNodeNames(Long documentId);
+    
+    public List<String> getTerminalRouteNodeNames(Long documentId);
 
+    public List<String> getCurrentRouteNodeNames(Long documentId);
 }

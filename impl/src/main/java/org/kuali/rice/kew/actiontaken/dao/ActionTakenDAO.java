@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actiontaken.dao;
 
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,5 +49,6 @@ public interface ActionTakenDAO {
     public void deleteByRouteHeaderId(Long routeHeaderId);
 
     public boolean hasUserTakenAction(String workflowId, Long routeHeaderId);
-
+    
+    public Timestamp getLastActionTakenDate(final Long documentId, final String actionType);
 }

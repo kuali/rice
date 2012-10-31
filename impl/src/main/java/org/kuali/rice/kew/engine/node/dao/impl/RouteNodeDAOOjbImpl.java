@@ -111,14 +111,10 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
     }
 
     public List getInitialNodeInstances(Long documentId) {
-	Criteria subCriteria = new Criteria();
-	subCriteria.addEqualTo(ROUTE_HEADER_ID, documentId);
-	ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, subCriteria);
-	subQuery.setAttributes(new String[]{"initialRouteNodeInstances.routeNodeInstanceId"});
-	Criteria criteria = new Criteria();
-	criteria.addIn(ROUTE_NODE_INSTANCE_ID, subQuery);
-	return (List) getPersistenceBrokerTemplate().getCollectionByQuery(
-		new QueryByCriteria(RouteNodeInstance.class, criteria));
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo("initialDocumentRouteHeaderValues." + ROUTE_HEADER_ID, documentId);
+        return (List) getPersistenceBrokerTemplate().getCollectionByQuery(
+                new QueryByCriteria(RouteNodeInstance.class, criteria));
     }
 
     public NodeState findNodeState(Long nodeInstanceId, String key) {

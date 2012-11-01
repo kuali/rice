@@ -34,6 +34,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     public static final int DEFAULT_WAIT_SEC = 60;
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
+    public static final String REMOTE_PUBLIC_USER_PROPERTY = "remote.public.user";
 
     public abstract String getTestUrl();
 
@@ -65,7 +66,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     public void setUp() throws Exception {
         // {"test":"1","user":"1"}
         try {
-            if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
+            if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
+                user = System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
+            } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
                 String userResponse = getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + this.toString().trim()));
                 user = userResponse.substring(userResponse.lastIndexOf(":" ) + 2, userResponse.lastIndexOf("\""));
             }

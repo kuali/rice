@@ -31,6 +31,7 @@ public class WebDriverUtil {
 
     public static int DEFAULT_IMPLICIT_WAIT_TIME = 30;
     public static int SHORT_IMPLICIT_WAIT_TIME = 1;
+    public static final String REMOTE_DRIVER_SAUCELABS_PROPERTY = "remote.driver.saucelabs";
 
     /**
      *
@@ -50,7 +51,7 @@ public class WebDriverUtil {
      */
     public static WebDriver setUp(String username, String url, String className, TestName testName) throws Exception {
         WebDriver driver = null;
-        if (System.getProperty("remote.driver.saucelabs") == null) {
+        if (System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
             driver = ITUtil.getWebDriver();
 //        } else {
 //            SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
@@ -72,7 +73,8 @@ public class WebDriverUtil {
     }
 
     public static ChromeDriverService createAndStartService() {
-        String driverParam = System.getProperty("remote.public.driver");
+        String driverParam = System.getProperty(ITUtil.HUB_DRIVER_PROPERTY);
+        // TODO can the saucelabs driver stuff be leveraged here?
         if (driverParam != null && "chrome".equals(driverParam.toLowerCase())) {
             if (System.getProperty("webdriver.chrome.driver") == null) {
                 if (System.getProperty("remote.public.chrome") != null) {

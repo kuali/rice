@@ -45,6 +45,7 @@ import static org.junit.Assert.assertEquals;
 public class ITUtil {
 
     public static final String KUALI_PORTAL_TITLE = "Kuali Portal Index";
+    public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
     public final static String PORTAL = "/portal.do";
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
     public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
@@ -54,7 +55,12 @@ public class ITUtil {
     public static final int WAIT_DEFAULT_SECONDS = 60;
     public static final String DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT = "30000";
     static Map<String, String> jiraMatches;
+    public static final String REMOTE_PUBLIC_URL_PROPERTY = "remote.public.url";
     public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
+    public static final String HUB_PROPERTY = "remote.public.hub";
+    public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
+    public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
+    public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
 
     static {
         jiraMatches = new HashMap<String, String>();
@@ -162,9 +168,9 @@ public class ITUtil {
      * @return http://localhost:8080/kr-dev by default else the value of remote.public.url
      */
     public static String getBaseUrlString() {
-        String baseUrl = System.getProperty("remote.public.url");
+        String baseUrl = System.getProperty(REMOTE_PUBLIC_URL_PROPERTY);
         if (baseUrl == null) {
-            baseUrl = "http://localhost:8080/kr-dev";
+            baseUrl = DEFAULT_BASE_URL;
         }
         baseUrl = prettyHttp(baseUrl);
         return baseUrl;
@@ -191,9 +197,9 @@ public class ITUtil {
      * @return http://localhost:4444/wd/hub by default else the value of remote.public.hub
      */
     public static String getHubUrlString() {
-        String hubUrl = System.getProperty("remote.public.hub");
+        String hubUrl = System.getProperty(HUB_PROPERTY);
         if (hubUrl == null) {
-            hubUrl = "http://localhost:4444/wd/hub";
+            hubUrl = HUB_URL_PROPERTY;
         }
         hubUrl = prettyHttp(hubUrl);
         if (!hubUrl.endsWith("/wd/hub")) {
@@ -208,8 +214,8 @@ public class ITUtil {
      * @return WebDriver or null if unable to create
      */
     public static WebDriver getWebDriver() {
-        String driverParam = System.getProperty("remote.public.driver");
-        String hubParam = System.getProperty("remote.public.hub");
+        String driverParam = System.getProperty(HUB_DRIVER_PROPERTY);
+        String hubParam = System.getProperty(HUB_PROPERTY);
         if (hubParam == null) {
             if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
                 FirefoxProfile profile = new FirefoxProfile();
@@ -306,9 +312,9 @@ public class ITUtil {
      * @return true if the dontTearDownProperty is not set.
      */
     public static boolean dontTearDownPropertyNotSet() {
-        return System.getProperty("remote.driver.dontTearDown") == null ||
-                "f".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase()) ||
-                "n".startsWith(System.getProperty("remote.driver.dontTearDown").toLowerCase());
+        return System.getProperty(DONT_TEAR_DOWN_PROPERTY) == null ||
+                "f".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase()) ||
+                "n".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase());
     }
 
     /**

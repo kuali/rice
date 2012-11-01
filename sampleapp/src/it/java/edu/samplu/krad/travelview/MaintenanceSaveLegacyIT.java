@@ -42,5 +42,6 @@ public class MaintenanceSaveLegacyIT extends KradMenuLegacyITBase {
         waitAndClick("button[data-loadingmessage='Saving...'].uif-action.uif-primaryActionButton.uif-boxLayoutHorizontalItem");
         Thread.sleep(2000);
        // checkErrorMessageItem(" also digit validation jira https://jira.kuali.org/browse/KULRICE-8038");
+        passed();
      }
 }

@@ -16,9 +16,7 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -93,6 +91,7 @@ public class ServerWarningsLegacyIT extends WebDriverLegacyITBase {
                 isElementPresent(".uif-hasError"));
         assertTrue( "img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",
                 isElementPresent("img[src*=\"error.png\"]"));
+        passed();
     }
 
     private void typeBlurFocus(String name, String text) throws InterruptedException{

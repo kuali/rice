@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -40,6 +41,7 @@ public class ClassLoaderEntityResolver implements EntityResolver {
      */
     private static final String XML_NAMESPACE_SCHEMA = "http://www.w3.org/2001/xml.xsd";
     private static final String XSD_NAMESPACE_SCHEMA = "http://www.w3.org/2001/XMLSchema.xsd";
+    private static final String CLASSPATH_PREFIX = "classpath:";
     
     private final String base;
     public ClassLoaderEntityResolver() {
@@ -55,21 +57,12 @@ public class ClassLoaderEntityResolver implements EntityResolver {
             path = base + "/xml.xsd";
         } else if (systemId.equals(XSD_NAMESPACE_SCHEMA)) {
             path = base + "/XMLSchema.xsd";
+        } else if (systemId.startsWith(CLASSPATH_PREFIX)) {
+            path = systemId.substring(CLASSPATH_PREFIX.length());
+            if (path.startsWith("/")) {
+                path = path.substring(1);
+            }
         } else if (systemId.startsWith("resource")) {
-            /* It turns out that the stock XMLSchema.xsd refers to XMLSchema.dtd in a relative
-               fashion which results in the parser qualifying it to some local file:// path
-               which breaks our detection here.
-               So I have made a small mod to the stock XMLSchema.xsd so that it instead refers to
-               resource:XMLSchema.dtd which can be looked up locally.
-               The same is true for XMLSchema.dtd with regard to datatypes.dtd, so I have also
-               modified XMLSchema.dtd to refer to resource:datatypes.dtd.
-               An alternative would be to rely on publicId, however that would essentially hard code
-               the lookup to always be in the classpath and rule out being able to redirect the location
-               of the physical resource through the systemId, which is useful.
-            */
-
-            // TODO: revisit making this more sophisticated than just the classloader
-            // of this class (thread context classloader? plugin classloader?)
             path = base + "/" + systemId.substring("resource:".length());
             // ok, if the path does not itself end in .xsd or .dtd, it is bare/abstract
             // so realize it by appending .xsd
@@ -83,7 +76,7 @@ public class ClassLoaderEntityResolver implements EntityResolver {
             LOG.error("Unable to resolve system id '" + systemId + "' locally...delegating to default resolution strategy.");
             return null;
         }
-        InputStream is = getClass().getClassLoader().getResourceAsStream(path);
+        InputStream is = ClassLoaderUtils.getDefaultClassLoader().getResourceAsStream(path);
         if (is == null) {
             String message = "Unable to find schema (" + path + ") for: " + systemId;
             LOG.error(message);

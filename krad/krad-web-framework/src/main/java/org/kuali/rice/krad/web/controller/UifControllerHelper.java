@@ -208,9 +208,6 @@ public class UifControllerHelper {
 
             View postedView = form.getPostedView();
 
-            // Reset visited id's on the view to avoid component id adjustment
-            postedView.setVisitedIds(new HashMap<String, Integer>());
-
             // run lifecycle and update in view
             postedView.getViewHelperService().performComponentLifecycle(postedView, form, comp, refreshComponentId);
 

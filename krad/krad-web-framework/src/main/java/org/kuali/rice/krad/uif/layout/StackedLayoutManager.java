@@ -160,7 +160,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             lineGroup.addStyleClass(collectionGroup.getNewItemsCssClass());
         }
 
-        ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex);
+        ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex, idSuffix);
 
         // build header text for group
         String headerText = "";

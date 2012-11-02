@@ -586,7 +586,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 ((DataBinding) sequenceField).getBindingInfo().setBindByNamePrefix(bindingPath);
             }
 
-            ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex);
+            ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex, idSuffix);
             dataFields.add(sequenceField);
             extraColumns++;
 
@@ -600,7 +600,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             Field selectField = ComponentUtils.copy(getSelectFieldPrototype(), idSuffix);
             CollectionLayoutUtils.prepareSelectFieldForLine(selectField, collectionGroup, bindingPath, currentLine);
 
-            ComponentUtils.updateContextForLine(selectField, currentLine, lineIndex);
+            ComponentUtils.updateContextForLine(selectField, currentLine, lineIndex, idSuffix);
             dataFields.add(selectField);
             extraColumns++;
 
@@ -697,7 +697,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             List<Action> actions) {
         FieldGroup lineActionsField = ComponentUtils.copy(getActionFieldPrototype(), idSuffix);
 
-        ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex);
+        ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex, idSuffix);
         lineActionsField.setRowSpan(rowSpan);
         lineActionsField.setItems(actions);
 

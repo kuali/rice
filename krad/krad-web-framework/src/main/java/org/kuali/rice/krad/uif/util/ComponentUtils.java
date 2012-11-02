@@ -433,16 +433,18 @@ public class ComponentUtils {
     /**
      * update the contexts of the given components
      *
-     * <p>calls {@link #updateContextForLine(org.kuali.rice.krad.uif.component.Component, Object, int)} for each component</p>
+     * <p>calls {@link #updateContextForLine(org.kuali.rice.krad.uif.component.Component, Object, int, String)}
+     * for each component</p>
      *
      * @param components - the components whose components to update
      * @param collectionLine - an instance of the data object for the line
      * @param lineIndex - the line index
+     * @param lineSuffix id suffix for components in the line to make them unique
      */
     public static void updateContextsForLine(List<? extends Component> components, Object collectionLine,
-            int lineIndex) {
+            int lineIndex, String lineSuffix) {
         for (Component component : components) {
-            updateContextForLine(component, collectionLine, lineIndex);
+            updateContextForLine(component, collectionLine, lineIndex, lineSuffix);
         }
     }
 
@@ -455,10 +457,13 @@ public class ComponentUtils {
      * @param component - the component whose context is to be updated
      * @param collectionLine - an instance of the data object for the line
      * @param lineIndex - the line index
+     * @param lineSuffix id suffix for components in the line to make them unique
      */
-    public static void updateContextForLine(Component component, Object collectionLine, int lineIndex) {
+    public static void updateContextForLine(Component component, Object collectionLine, int lineIndex,
+            String lineSuffix) {
         pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
         pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
+        pushObjectToContext(component, UifConstants.ContextVariableNames.LINE_SUFFIX, lineSuffix);
 
         boolean isAddLine = (lineIndex == -1);
         pushObjectToContext(component, UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);

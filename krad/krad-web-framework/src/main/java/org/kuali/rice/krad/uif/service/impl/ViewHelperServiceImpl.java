@@ -275,7 +275,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         performComponentInitialization(view, model, component);
         view.getViewIndex().indexComponent(component);
 
-        performComponentApplyModel(view, component, model);
+        Map<String, Integer> visitedIds = new HashMap<String, Integer>();
+        performComponentApplyModel(view, component, model, visitedIds);
         view.getViewIndex().indexComponent(component);
 
         // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
@@ -614,7 +615,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // set view context for conditional expressions
         setViewContext(view, model);
 
-        performComponentApplyModel(view, view, model);
+        Map<String, Integer> visitedIds = new HashMap<String, Integer>();
+        performComponentApplyModel(view, view, model, visitedIds);
     }
 
     /**
@@ -693,11 +695,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * the component children
      * </p>
      *
-     * @param view - view instance the component belongs to
-     * @param component - the component instance the model should be applied to
-     * @param model - top level object containing the data
+     * @param view view instance the component belongs to
+     * @param component the component instance the model should be applied to
+     * @param model top level object containing the data
+     * @param visitedIds tracks components ids that have been seen for adjusting duplicates
      */
-    protected void performComponentApplyModel(View view, Component component, Object model) {
+    protected void performComponentApplyModel(View view, Component component, Object model,
+            Map<String, Integer> visitedIds) {
         if (component == null) {
             return;
         }
@@ -741,6 +745,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
                 getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, layoutManager, model,
                         layoutManager.getContext());
+
+                layoutManager.setId(adjustIdIfNecessary(layoutManager.getId(), visitedIds));
             }
         }
 
@@ -749,6 +755,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // invoke authorizer and presentation controller to set component state
         applyAuthorizationAndPresentationLogic(view, component, (ViewModel) model);
+
+        // adjust ids for duplicates if necessary
+        //component.setId(adjustIdIfNecessary(component.getId(), visitedIds));
 
         // invoke component to perform its conditional logic
         Component parent = (Component) component.getContext().get(UifConstants.ContextVariableNames.PARENT);
@@ -764,9 +773,41 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
                 nestedComponent.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
-                performComponentApplyModel(view, nestedComponent, model);
+                performComponentApplyModel(view, nestedComponent, model, visitedIds);
             }
         }
+    }
+
+    /**
+     * Checks against the visited ids to see if the id is duplicate, if so it is adjusted to make
+     * an unique id by appending an unique sequence number
+     *
+     * @param id id to adjust if necessary
+     * @param visitedIds tracks components ids that have been seen for adjusting duplicates
+     * @return String original or adjusted id
+     */
+    protected String adjustIdIfNecessary(String id, Map<String, Integer> visitedIds) {
+        String adjustedId = id;
+
+        if (visitedIds.containsKey(id)) {
+            Integer nextAdjustSeq = visitedIds.get(id);
+            adjustedId = id + nextAdjustSeq;
+
+            // verify the adjustedId does not already exist
+            while (visitedIds.containsKey(adjustedId)) {
+                nextAdjustSeq = nextAdjustSeq + 1;
+                adjustedId = id + nextAdjustSeq;
+            }
+
+            visitedIds.put(adjustedId, new Integer(1));
+
+            nextAdjustSeq = nextAdjustSeq + 1;
+            visitedIds.put(id, nextAdjustSeq);
+        } else {
+            visitedIds.put(id, new Integer(1));
+        }
+
+        return adjustedId;
     }
 
     /**

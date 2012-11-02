@@ -23,28 +23,28 @@
 
   <bean id="Uif-SaveAction" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save"
         p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
-        p:loadingMessageText="Saving..." p:id="uif-save"/>
+        p:loadingMessageText="Saving..." p:id="usave"/>
 
   <bean id="Uif-CloseAction" parent="Uif-SecondaryActionButton" p:methodToCall="close"
-        p:actionLabel="Close" p:performDirtyValidation="true" p:id="uif-close"/>
+        p:actionLabel="Close" p:performDirtyValidation="true" p:id="uclose"/>
 
   <bean id="Uif-CancelAction" parent="Uif-ActionLink" p:methodToCall="cancel"
-        p:actionLabel="Cancel" p:performDirtyValidation="true" p:id="uif-cancel"/>
+        p:actionLabel="Cancel" p:performDirtyValidation="true" p:id="ucancel"/>
 
   <bean id="Uif-CheckFormAction" parent="Uif-SecondaryActionButton" p:methodToCall="checkForm"
-        p:actionLabel="Check Form" p:loadingMessageText="Checking Form..." p:id="uif-checkForm"/>
+        p:actionLabel="Check Form" p:loadingMessageText="Checking Form..." p:id="ucheck"/>
 
   <bean id="Uif-AddLineAction" parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add"
-        p:actionEvent="addLine" p:loadingMessageText="Adding Line..." p:id="uif-addLine"/>
+        p:actionEvent="addLine" p:loadingMessageText="Adding Line..." p:id="@{#collectionGroup.id}_add"/>
 
   <bean id="Uif-DeleteLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
         p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
         p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"
-        p:loadingMessageText="Deleting Line..." p:id="uif-deleteLine"/>
+        p:loadingMessageText="Deleting Line..." p:id="@{#collectionGroup.id}_del@{#lineSuffix}"/>
 
   <bean id="Uif-SaveLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
         p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}"
-        p:performClientSideValidation="true" p:id="uif-saveLine">
+        p:performClientSideValidation="true" p:id="@{#collectionGroup.id}_save@{#lineSuffix}">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-saveLineAction</value>
@@ -53,7 +53,7 @@
   </bean>
 
   <bean id="Uif-AddBlankLineAction" parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine"
-        p:actionLabel="Add Line" p:actionEvent="addBlankLine" p:id="uif-addBlankLine"/>
+        p:actionLabel="Add Line" p:actionEvent="addBlankLine" p:id="@{#collectionGroup.id}_add"/>
 
   <bean id="Uif-AddViaLightBoxAction" parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"/>
 

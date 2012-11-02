@@ -271,7 +271,7 @@ public class CollectionGroupBuilder implements Serializable {
         boolean readOnlyLine = collectionGroup.isReadOnly();
 
         // update contexts before add line fields are added to the index below
-        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
+        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
 
         // add special css styles to identify the add line client side
         if (lineIndex == -1) {
@@ -360,7 +360,8 @@ public class CollectionGroupBuilder implements Serializable {
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 subCollectionFieldGroup.setGroup(subCollectionGroup);
 
-                ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex);
+                ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex,
+                        lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
 
                 subCollectionFields.add(subCollectionFieldGroup);
             }
@@ -730,7 +731,7 @@ public class CollectionGroupBuilder implements Serializable {
             }
         }
 
-        ComponentUtils.updateContextsForLine(actions, collectionLine, lineIndex);
+        ComponentUtils.updateContextsForLine(actions, collectionLine, lineIndex, lineSuffix);
 
         return actions;
     }
@@ -789,7 +790,7 @@ public class CollectionGroupBuilder implements Serializable {
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
 
-        ComponentUtils.updateContextsForLine(lineActions, addLine, -1);
+        ComponentUtils.updateContextsForLine(lineActions, addLine, -1, lineSuffix);
 
         return lineActions;
     }

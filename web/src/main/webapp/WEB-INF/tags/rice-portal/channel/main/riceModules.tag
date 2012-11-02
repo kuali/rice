@@ -19,10 +19,10 @@
 <div class="body">
   
   <ul class="chan">
-	 <li><portal:portalLink displayTitle="true" title="Kuali Enterprise Workflow" appContextName="${ConfigProperties.app.context.name}" url="kew/Portal.do" /></li>
-  	 <li><portal:portalLink displayTitle="true" title="Kuali Service Bus" appContextName="${ConfigProperties.app.context.name}" url="ksb/index.html" /></li>
-  	 <li><portal:portalLink displayTitle="true" title="Kuali Identity Management" appContextName="${ConfigProperties.app.context.name}" url="kim/index.jsp" /></li>
-  	 <li><portal:portalLink displayTitle="true" title="Kuali Enterprise Notification" appContextName="${ConfigProperties.app.context.name}" url="ken/index.jsp" /></li>
+	 <li><portal:portalLink displayTitle="true" title="Kuali Enterprise Workflow" url="kew/Portal.do" /></li>
+  	 <li><portal:portalLink displayTitle="true" title="Kuali Service Bus" url="ksb/index.html" /></li>
+  	 <li><portal:portalLink displayTitle="true" title="Kuali Identity Management" url="kim/index.jsp" /></li>
+  	 <li><portal:portalLink displayTitle="true" title="Kuali Enterprise Notification" url="ken/index.jsp" /></li>
   </ul>
 
   

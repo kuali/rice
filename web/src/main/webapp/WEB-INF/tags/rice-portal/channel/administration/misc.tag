@@ -19,7 +19,7 @@
 <div class="body">
 
   <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Cache Admin" appContextName="${ConfigProperties.app.context.name}"
+    <li><portal:portalLink displayTitle="true" title="Cache Admin"
                            url="${ConfigProperties.krad.url}/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start"/></li>
   </ul>
 

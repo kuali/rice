@@ -20,27 +20,27 @@
 
 	<ul class="chan">
 		<li>
-		<portal:portalLink displayTitle="true" title="Message Queue" appContextName="${ConfigProperties.app.context.name}"
+		<portal:portalLink displayTitle="true" title="Message Queue"
 			url="${ConfigProperties.ksb.url}/MessageQueue.do" />
 		</li>
 		<li>
-		<portal:portalLink displayTitle="true" title="Thread Pool" appContextName="${ConfigProperties.app.context.name}"
+		<portal:portalLink displayTitle="true" title="Thread Pool"
 			url="${ConfigProperties.ksb.url}/ThreadPool.do" />
 		</li>
 		<li>
-		<portal:portalLink displayTitle="true" title="Service Registry" appContextName="${ConfigProperties.app.context.name}"
+		<portal:portalLink displayTitle="true" title="Service Registry"
 			url="${ConfigProperties.ksb.url}/ServiceRegistry.do" />
 		</li>
     <li>
-    <portal:portalLink displayTitle="true" title="Service Bus" appContextName="${ConfigProperties.app.context.name}"
+    <portal:portalLink displayTitle="true" title="Service Bus"
       url="${ConfigProperties.ksb.url}/ServiceBus.do" />
     </li>
 		<li>
-		<portal:portalLink displayTitle="true" title="Quartz" appContextName="${ConfigProperties.app.context.name}"
+		<portal:portalLink displayTitle="true" title="Quartz"
 			url="${ConfigProperties.ksb.url}/Quartz.do" />
 		</li>
 		<li>
-		<portal:portalLink displayTitle="true" title="Security Management" appContextName="${ConfigProperties.app.context.name}"
+		<portal:portalLink displayTitle="true" title="Security Management"
 			url="${ConfigProperties.ksb.url}/JavaSecurityManagement.do" />
 		</li>
 	

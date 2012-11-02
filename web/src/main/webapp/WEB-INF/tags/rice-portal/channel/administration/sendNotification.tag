@@ -19,9 +19,9 @@
 <div class="body">
 	
    	<ul class="chan">
-		<li><portal:portalLink displayTitle="true" title="Send Simple Notification" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.ken.url}/SendSimpleNotificationMessage.form" /></li>
-        <li><portal:portalLink displayTitle="true" title="Send Event Notification" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.ken.url}/SendEventNotificationMessage.form" /></li>
-        <li><portal:portalLink displayTitle="true" title="Manage Content Types" appContextName="${ConfigProperties.app.context.name}" url="${ConfigProperties.ken.url}/ContentTypeManager.form" /></li>
+		<li><portal:portalLink displayTitle="true" title="Send Simple Notification" url="${ConfigProperties.ken.url}/SendSimpleNotificationMessage.form" /></li>
+        <li><portal:portalLink displayTitle="true" title="Send Event Notification" url="${ConfigProperties.ken.url}/SendEventNotificationMessage.form" /></li>
+        <li><portal:portalLink displayTitle="true" title="Manage Content Types" url="${ConfigProperties.ken.url}/ContentTypeManager.form" /></li>
 	</ul>
 
 </div>

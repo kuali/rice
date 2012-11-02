@@ -288,14 +288,16 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
-                            p:required="true"/>
+                            p:required="true" p:constraintText="Type A to make subfield 2 appear"/>
               <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
-                                  p:required="true"/>
+                                  p:required="true" p:progressiveRender="@{#lp.field1 eq 'A'}"/>
             </list>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
-              p:required="true"/>
+              p:required="true" p:constraintText="Change to refresh subfield 4"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
+                            p:required="true" p:refreshWhenChangedPropertyNames="#lp.field3"/>
       </list>
     </property>
   </bean>

@@ -61,6 +61,7 @@ public final class RiceKeyConstants {
     public static final String ERROR_INACTIVE_ADHOC_PERSON_ID = "error.adhoc.inactive.person";
     public static final String ERROR_INVALID_ADHOC_WORKGROUP_ID = "error.adhoc.invalid.workgroup";
     public static final String ERROR_MISSING_ADHOC_WORKGROUP_ID = "error.adhoc.missing.workgroup";
+    public static final String ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE = "error.adhoc.invalid.workgroupNamespaceCode";
     public static final String ERROR_UNAUTHORIZED_ADHOC_WORKGROUP_ID = "error.adhoc.unauthorized.workgroup";
     public static final String MESSAGE_ADHOC_ANNOTATION = "message.adhoc.annotation";
 

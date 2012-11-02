@@ -284,4 +284,18 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 		this.memberFullName = memberFullName;
 	}
 
+    public boolean isMemberNameNull() {
+        if (memberName==null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isMemberNameSpaceCodeNull() {
+        if (memberNamespaceCode==null) {
+            return true;
+        }
+        return false;
+    }
+
 }

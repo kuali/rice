@@ -297,10 +297,10 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         KimDocumentRoleMember newMember = roleDocumentForm.getMember();
 
         //See if possible to add with just Group Details filled in (not returned from lookup)
-        if (StringUtils.isEmpty(newMember.getMemberId())
-                && StringUtils.isNotEmpty(newMember.getMemberName())
-                && StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
-                && StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode())) {
+        if ( StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode())
+                && StringUtils.isEmpty(newMember.getMemberId())
+                && !newMember.isMemberNameNull()
+                && !newMember.isMemberNameSpaceCodeNull() ) {
             Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                     newMember.getMemberNamespaceCode(), newMember.getMemberName());
             if (tempGroup != null) {
@@ -309,9 +309,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
 
         //See if possible to grab details for Principal
-        if (StringUtils.isEmpty(newMember.getMemberId())
-                && StringUtils.isNotEmpty(newMember.getMemberName())
-                && StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode())) {
+        if ( StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode())
+                && StringUtils.isEmpty(newMember.getMemberId())
+                && StringUtils.isNotEmpty(newMember.getMemberName())) {
             Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(newMember.getMemberName());
             if (principal != null) {
                 newMember.setMemberId(principal.getPrincipalId());
@@ -332,9 +332,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         String memberName = null;
         String memberNamespace = null;
 
-        if (StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())) {
+        if (StringUtils.isBlank(newMember.getMemberId())) {
             GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
-                    new String[]{"Member Type Code and Member ID"});
+                    new String[]{"Member ID"});
             return false;
         }
 

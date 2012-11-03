@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.core.impl.impex.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Internal workflow EntityResolver which resolves system ids with the
@@ -41,6 +41,8 @@ public class ClassLoaderEntityResolver implements EntityResolver {
      */
     private static final String XML_NAMESPACE_SCHEMA = "http://www.w3.org/2001/xml.xsd";
     private static final String XSD_NAMESPACE_SCHEMA = "http://www.w3.org/2001/XMLSchema.xsd";
+    private static final String XML_SCHEMA_DTD_PUBLIC_ID = "-//W3C//DTD XMLSCHEMA 200102//EN";
+    private static final String DATATYPES_DTD_PUBLIC_ID = "datatypes";
     private static final String CLASSPATH_PREFIX = "classpath:";
     
     private final String base;
@@ -53,10 +55,14 @@ public class ClassLoaderEntityResolver implements EntityResolver {
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         LOG.debug("Resolving '" + publicId + "' / '" + systemId + "'");
         String path = "";
-        if (systemId.equals(XML_NAMESPACE_SCHEMA)) {
+        if (XML_NAMESPACE_SCHEMA.equals(systemId)) {
             path = base + "/xml.xsd";
         } else if (systemId.equals(XSD_NAMESPACE_SCHEMA)) {
             path = base + "/XMLSchema.xsd";
+        } else if (XML_SCHEMA_DTD_PUBLIC_ID.equals(publicId)) {
+            path = base + "/XMLSchema.dtd";
+        } else if (DATATYPES_DTD_PUBLIC_ID.equals(publicId)) {
+            path = base + "/datatypes.dtd";
         } else if (systemId.startsWith(CLASSPATH_PREFIX)) {
             path = systemId.substring(CLASSPATH_PREFIX.length());
             if (path.startsWith("/")) {
@@ -73,7 +79,7 @@ public class ClassLoaderEntityResolver implements EntityResolver {
                 path += ".xsd";
             }
         } else {
-            LOG.error("Unable to resolve system id '" + systemId + "' locally...delegating to default resolution strategy.");
+            LOG.error("Unable to resolve system id '" + systemId + "' or public id '" + publicId + "' locally...delegating to default resolution strategy.");
             return null;
         }
         InputStream is = ClassLoaderUtils.getDefaultClassLoader().getResourceAsStream(path);

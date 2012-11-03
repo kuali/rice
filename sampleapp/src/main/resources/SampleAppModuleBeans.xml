@@ -170,6 +170,7 @@
     <property name="resourceBundleNames">
       <list>
         <value>edu.sampleu.demo.kitchensink.UifComponentsViewResources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP2Resources</value>
         <value>edu.sampleu.demo.kitchensink.UifComponentsViewP3Resources</value>
         <value>edu.sampleu.demo.course.UifStudentDefinitionsResources</value>
       </list>

@@ -69,7 +69,7 @@
             <bean parent="Uif-KeyLabelPair" p:key="2"/>
             <bean parent="Uif-KeyLabelPair" p:key="3"/>
             <bean parent="Uif-KeyLabelPair" p:key="4"/>
-            <bean parent="Uif-KeyLabelPair" p:key="4"/>
+            <bean parent="Uif-KeyLabelPair" p:key="5"/>
           </list>
         </property>
       </bean>

@@ -1231,7 +1231,7 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
             var name = jQuery("#" + fieldId).data("label");
 
             if (name && showLabel) {
-                name = name.trim();
+                name = jQuery.trim(name);
                 if(name.indexOf(":") == name.length - 1){
                     name = name + " ";
                 }

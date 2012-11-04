@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging.servlet;
 
+import org.apache.commons.collections.EnumerationUtils;
 import org.apache.cxf.Bus;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.transport.http.DestinationRegistry;
+import org.apache.cxf.transport.http.HTTPTransportFactory;
 import org.apache.cxf.transport.servlet.ServletController;
-import org.apache.cxf.transport.servlet.ServletTransportFactory;
+import org.apache.cxf.transport.servlet.servicelist.ServiceListGeneratorServlet;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -42,13 +45,16 @@ import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
-
+import java.util.Vector;
 
 /**
  * A {@link DispatcherServlet} which dispatches incoming requests to the appropriate
@@ -82,18 +88,55 @@ public class KSBDispatcherServlet extends DispatcherServlet {
         	List<Interceptor<? extends Message>> busOutInterceptors = bus.getOutInterceptors();
         	busOutInterceptors.addAll(outInterceptors);
         }
-        
-		ServletTransportFactory servletTransportFactory = KSBServiceLocator.getCXFServletTransportFactory();
-				
-		this.cxfServletController = new ServletController(servletTransportFactory, this.getServletConfig(), this.getServletContext(), bus);
-		
-		if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
-		    // disable handling of URLs ending in /services which display CXF generated service lists
-		    this.cxfServletController.setHideServiceList(true);
-		}
-		
+
+
+		HTTPTransportFactory transportFactory = bus.getExtension(HTTPTransportFactory.class);
+        if (transportFactory == null) {
+            throw new IllegalStateException("Failed to locate HTTPTransportFactory extension on Apache CXF Bus");
+        }
+
+        DestinationRegistry destinationRegistry = transportFactory.getRegistry();
+
+
+		this.cxfServletController = new ServletController(destinationRegistry, getCXFServletConfig(
+                this.getServletConfig()), new ServiceListGeneratorServlet(destinationRegistry, bus));
+
 		this.setPublishEvents(false);
 	}
+
+    /**
+     * This is a workaround after upgrading to CXF 2.7.0 whereby we could no longer just call "setHideServiceList" on
+     * the ServletController. Instead, it is now reading this information from the ServletConfig, so wrapping the base
+     * ServletContext to return true or false for hide service list depending on whether or not we are in dev mode.
+     */
+    protected ServletConfig getCXFServletConfig(final ServletConfig baseServletConfig) {
+        // disable handling of URLs ending in /services which display CXF generated service lists if we are not in dev mode
+        final String shouldHide = Boolean.toString(!ConfigContext.getCurrentContextConfig().getDevMode().booleanValue());
+        return new ServletConfig() {
+            private static final String HIDE_SERVICE_LIST_PAGE_PARAM = "hide-service-list-page";
+            @Override
+            public String getServletName() {
+                return baseServletConfig.getServletName();
+            }
+            @Override
+            public ServletContext getServletContext() {
+                return baseServletConfig.getServletContext();
+            }
+            @Override
+            public String getInitParameter(String parameter) {
+                if (HIDE_SERVICE_LIST_PAGE_PARAM.equals(parameter)) {
+                    return shouldHide;
+                }
+                return baseServletConfig.getInitParameter(parameter);
+            }
+            @Override
+            public Enumeration<String> getInitParameterNames() {
+                List<String> initParameterNames = EnumerationUtils.toList(baseServletConfig.getInitParameterNames());
+                initParameterNames.add(HIDE_SERVICE_LIST_PAGE_PARAM);
+                return new Vector<String>(initParameterNames).elements();
+            }
+        };
+    }
 
     @Override
 	protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch.service.impl
 
-import javax.xml.bind.JAXBContext
-import javax.xml.bind.Marshaller
-import javax.xml.bind.Unmarshaller
 import org.apache.commons.lang.RandomStringUtils
 import org.apache.commons.lang.SerializationUtils
 import org.apache.commons.lang.time.StopWatch
@@ -25,11 +22,15 @@ import org.joda.time.DateTime
 import org.junit.Test
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
-
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
+
+import javax.xml.bind.JAXBContext
+import javax.xml.bind.Marshaller
+import javax.xml.bind.Unmarshaller
+
 import static org.junit.Assert.assertEquals
-import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 
 /**
  * Tests DocumentSearchCriteria marshalling and performance

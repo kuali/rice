@@ -17,8 +17,8 @@ package org.kuali.rice.kew.batch;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.core.impl.impex.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
-import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.test.RiceTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -92,6 +92,7 @@ public class XmlSchemaTest extends RiceTestCase {
                 }
             } catch (Exception e) {
                 if (shouldSucceed) {
+                    e.printStackTrace();
                     fail("Valid test file '" + testFile + "' failed validation");
                 }
             }

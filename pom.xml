@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.7</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -97,7 +97,18 @@
     <commons-digester.version>2.0</commons-digester.version>
     <commons-validator.version>1.3.1</commons-validator.version>
     <connector-api.version>1.5</connector-api.version>
-    <cxf.version>2.3.8</cxf.version>
+    <cxf.version>2.7.0</cxf.version>
+    <jaxb-impl.version>2.2.6</jaxb-impl.version>
+    <!--
+            There appears to be a problem with the 2.2.5 version of jaxb-impl which cxf 2.7.0 depends on by default.
+            Get the following exception when attempting to run cxf-java2ws-plugin on services that use certain Enums:
+
+            java.lang.ClassCastException: com.sun.xml.bind.v2.model.impl.RuntimeEnumLeafInfoImpl cannot be cast to com.sun.xml.bind.v2.model.impl.ClassInfoImpl
+
+            One of the specific offenders here is WorkflowDocumentService and it's use of DocumentStatus enum.
+            Switching to the 2.1-based verson of jaxb-impl version 2.1.13 causes the problem to go away.
+    -->
+    <cxf-java2ws-plugin.jaxb-impl.version>2.1.13</cxf-java2ws-plugin.jaxb-impl.version>
     <db-ojb.version>1.0.4-patch8</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
@@ -137,6 +148,7 @@
       Quartz 2.0.x is an impacting api and database-level change -->
     <quartz.version>1.8.4</quartz.version>
     <selenium-java.version>2.21.0</selenium-java.version>
+    <xalan.version>2.7.1</xalan.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.4</slf4j.version>
@@ -148,7 +160,7 @@
     <subethasmtp.version>3.1.6</subethasmtp.version>
 
     <!-- Version 2.3.6 of cxf requires wss4j 1.5.11 or 1.5.12 and does not work with 1.6.0 -->
-    <wss4j.version>1.5.12</wss4j.version>
+    <wss4j.version>1.6.7</wss4j.version>
     <xapool.version>1.5.0-patch3</xapool.version>
     <!-- 2.11.0 is not in maven central repo https://issues.apache.org/jira/browse/XERCESJ-1454 -->
     <xercesImpl.version>2.9.1</xercesImpl.version>
@@ -698,7 +710,6 @@
             </dependency>
           </dependencies>
         </plugin>
-
         <plugin>
           <groupId>org.apache.cxf</groupId>
           <artifactId>cxf-java2ws-plugin</artifactId>
@@ -713,6 +724,11 @@
               <groupId>org.apache.cxf</groupId>
               <artifactId>cxf-rt-frontend-simple</artifactId>
               <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.sun.xml.bind</groupId>
+              <artifactId>jaxb-impl</artifactId>
+              <version>${cxf-java2ws-plugin.jaxb-impl.version}</version>
             </dependency>
           </dependencies>
           <configuration>
@@ -1329,6 +1345,11 @@
         <artifactId>filemonitor</artifactId>
         <version>${filemonitor.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>${jaxb-impl.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.apache.cxf</groupId>
@@ -1339,13 +1360,11 @@
             <artifactId>commons-logging</artifactId>
             <groupId>commons-logging</groupId>
           </exclusion>
+          <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-javamail_1.4_spec</artifactId>
+          </exclusion>
         </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-common-utilities</artifactId>
-        <version>${cxf.version}</version>
       </dependency>
 
       <dependency>
@@ -1879,6 +1898,12 @@
         <groupId>org.codehaus.btm</groupId>
         <artifactId>btm</artifactId>
         <version>${bitronix.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <version>${xalan.version}</version>
       </dependency>
 
       <dependency>

@@ -16,40 +16,36 @@
 
 package org.kuali.rice.kew.impl.document.search
 
-import org.kuali.rice.kew.docsearch.DocumentSearchTestBase
+import com.google.common.collect.Maps
+import org.joda.time.DateTime
+import org.junit.Before
 import org.junit.Test
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator
+import org.kuali.rice.coreservice.api.component.Component
+import org.kuali.rice.coreservice.api.parameter.Parameter
+import org.kuali.rice.coreservice.api.parameter.ParameterType
+import org.kuali.rice.kew.api.KEWPropertyConstants
 import org.kuali.rice.kew.api.KewApiConstants
 import org.kuali.rice.kew.api.WorkflowDocument
 import org.kuali.rice.kew.api.WorkflowDocumentFactory
-import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime
-import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
-import java.sql.Timestamp
-import org.kuali.rice.krad.util.KRADConstants
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
-import org.joda.time.DateTime
-import static org.junit.Assert.assertNotNull
-import static junit.framework.Assert.assertEquals
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
-import org.kuali.rice.kew.docsearch.service.DocumentSearchService
-import org.kuali.rice.kew.service.KEWServiceLocator
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults
-import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils
-import org.junit.Before
-import com.google.common.collect.Iterables
-import org.apache.xpath.functions.Function
-import com.google.common.collect.Maps
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
-import org.kuali.rice.kew.api.KEWPropertyConstants
-import org.kuali.rice.core.api.config.property.ConfigContext
-import org.kuali.rice.coreservice.api.component.Component
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator
-import org.kuali.rice.coreservice.api.parameter.Parameter
-import org.kuali.rice.coreservice.api.parameter.ParameterType
+import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
+import org.kuali.rice.kew.docsearch.DocumentSearchTestBase
+import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime
+import org.kuali.rice.kew.docsearch.service.DocumentSearchService
 import org.kuali.rice.kew.impl.document.ApplicationDocumentStatusUtils
+import org.kuali.rice.kew.service.KEWServiceLocator
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.krad.util.KRADConstants
 
+import static junit.framework.Assert.assertEquals
 import static junit.framework.Assert.assertTrue
+import static org.junit.Assert.assertNotNull
 
 /**
  * 

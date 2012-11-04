@@ -248,8 +248,8 @@
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="genderCode" column="GNDR_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="genderChangeCode" column="GNDR_CHG_CD" jdbc-type="VARCHAR"  />
-    <field-descriptor name="birthDateValue" column="BIRTH_DT" jdbc-type="DATE"  />
-    <field-descriptor name="deceasedDateValue" column="DECEASED_DT" jdbc-type="DATE"  />
+    <field-descriptor name="birthDateValue" column="BIRTH_DT" jdbc-type="TIMESTAMP"  />
+    <field-descriptor name="deceasedDateValue" column="DECEASED_DT" jdbc-type="TIMESTAMP"  />
     <field-descriptor name="maritalStatusCode" column="MARITAL_STATUS" jdbc-type="VARCHAR"  />
     <field-descriptor name="primaryLanguageCode" column="PRIM_LANG_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="secondaryLanguageCode" column="SEC_LANG_CD" jdbc-type="VARCHAR"  />
@@ -267,8 +267,8 @@
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="statusCode" column="CTZNSHP_STAT_CD" jdbc-type="VARCHAR"  />
-    <field-descriptor name="startDate" column="strt_dt" jdbc-type="DATE"  />
-    <field-descriptor name="endDate" column="end_dt" jdbc-type="DATE"  />
+    <field-descriptor name="startDate" column="strt_dt" jdbc-type="TIMESTAMP"  />
+    <field-descriptor name="endDate" column="end_dt" jdbc-type="TIMESTAMP"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />

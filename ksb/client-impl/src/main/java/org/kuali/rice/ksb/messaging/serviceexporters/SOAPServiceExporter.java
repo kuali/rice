@@ -15,11 +15,9 @@
  */
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
-
 import org.apache.cxf.Bus;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
 import org.apache.cxf.binding.soap.saaj.SAAJInInterceptor;
-import org.apache.cxf.endpoint.ServerRegistry;
 import org.apache.cxf.frontend.ServerFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
@@ -47,8 +45,8 @@ public class SOAPServiceExporter extends AbstractWebServiceExporter implements S
 
 	static final Logger LOG = Logger.getLogger(SOAPServiceExporter.class);
 		
-	public SOAPServiceExporter(SoapServiceDefinition serviceDefinition, Bus cxfBus, ServerRegistry cxfServerRegistry) {
-	    super(serviceDefinition, cxfBus, cxfServerRegistry);
+	public SOAPServiceExporter(SoapServiceDefinition serviceDefinition, Bus cxfBus) {
+	    super(serviceDefinition, cxfBus);
 	}
 
 	/**

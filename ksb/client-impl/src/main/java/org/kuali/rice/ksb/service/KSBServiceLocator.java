@@ -17,10 +17,8 @@ package org.kuali.rice.ksb.service;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.CXFBusImpl;
-import org.apache.cxf.endpoint.ServerRegistry;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
-import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
@@ -98,14 +96,6 @@ public class KSBServiceLocator {
     	return (CXFBusImpl) getService(KSBConstants.ServiceNames.CXF_BUS);
     }
 
-    public static ServletTransportFactory getCXFServletTransportFactory(){
-    	return (ServletTransportFactory)getService(KSBConstants.ServiceNames.CXF_SERVLET_TRANSPORT_FACTORY);
-    }
-    
-    public static ServerRegistry getCXFServerRegistry(){
-    	return (ServerRegistry)getService(KSBConstants.ServiceNames.CXF_SERVER_REGISTRY);
-    }
-    
     public static List<Interceptor<? extends Message>> getInInterceptors() {
     	try {
     		return (List<Interceptor<? extends Message>>) getService(KSBConstants.ServiceNames.BUS_IN_INTERCEPTORS);

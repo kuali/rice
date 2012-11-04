@@ -223,6 +223,7 @@ public interface RoleTypeService extends KimTypeService {
     /**
      * Returns whether a membertype should have its qualifiers validated
      * @return true if
+     * @since 2.1.2
      */
     @WebMethod(operationName="shouldvalidateQualifiersForMemberType")
     @WebResult(name="validateQualifiers")

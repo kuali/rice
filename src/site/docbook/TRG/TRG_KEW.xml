@@ -2810,6 +2810,12 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                                     document</entry>
                             </row>
                             <row>
+                                <entry>validApplicationStatuses</entry>
+                                <entry>The set of valid application document statuses for this document type.  If this
+                                optional configuration is set, the application document status will only allow the
+                                specified values to be set.</entry>
+                            </row>
+                            <row>
                                 <entry>policies</entry>
                                 <entry>The policies that apply to this Document Type</entry>
                             </row>
@@ -5013,6 +5019,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         <para>DEFAULT_APPROVE </para>
                     </listitem>
                     <listitem>
+                        <para>DOCUMENT_STATUS_POLICY </para>
+                    </listitem>
+                    <listitem>
                         <para>INITIATOR_MUST_ROUTE </para>
                     </listitem>
                     <listitem>
@@ -5071,6 +5080,10 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             &lt;name>LOOK_FUTURE&lt;/name>
             &lt;value>false&lt;/value>
         &lt;policy>
+        &lt;policy>
+            &lt;name>DOCUMENT_STATUS_POLICY&lt;/name>
+            &lt;stringValue>APP&lt;/stringValue>
+        &lt;/policy>
     &lt;/policies>
 &lt;/documentType>
 </programlisting>
@@ -5089,6 +5102,55 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     Then, the document will continue to route to the exception workgroup associated
                     with the last route node or to the workgroup defined in the <emphasis
                         role="bold">defaultExceptionWorkgroupname</emphasis>.</para>
+            </sect3>
+            <sect3 id="policies.documentStatusPolicy" xreflabel="Document Type Policies: DOCUMENT_STATUS_POLICY">
+                <title>DOCUMENT_STATUS_POLICY</title>
+                <para>The <emphasis role="bold">DOCUMENT_STATUS_POLICY</emphasis> policy sets whether
+                    to display the KEW Route Status, the Application Document Status, or Both in the
+                    Route Log.  Valid policy values are: <emphasis role="bold">KEW</emphasis>,
+                    <emphasis role="bold">APP</emphasis>, or <emphasis role="bold">BOTH</emphasis>.
+                </para>
+                <para>The set of valid statuses for a given document type may be defined.  If
+                    defined, only those values are allowed as valid statuses. These will also be used
+                    to populate a multi-select box on the doc search screen if this doc type is
+                    selected (see <xref linkend="documentSearch.applicationDocumentStatus"/>). If not
+                    defined, any string with a length of up to 64 characters may be used, and a text
+                    input field is used on the doc search screen.  An example configuration follows.
+                </para>
+                <programlisting>&lt;validApplicationStatuses>
+    &lt;status>Initiated&lt;/status>
+    &lt;status>Validated&lt;/status>
+    &lt;status>Awaiting Content Aproval&lt;/status>
+    &lt;status>Org Review&lt;/status>
+    &lt;status>Approved&lt;/status>
+    ...
+&lt;/validApplicationStatuses>
+                </programlisting>
+                <para>Additionally, the valid statuses may be grouped into named categories for
+                    display and search purposes.  If defined, these categories will display in doc
+                    search (again, if the document type is selected) under the application document
+                    status multi-select as headings under which the individual statuses are grouped.
+                    These categories can be selected as well, which has an equivalent effect on the
+                    search to individually selecting all of the statuses within the category (see
+                    <xref linkend="documentSearch.applicationDocumentStatus"/>). Note that not all
+                    statuses need be grouped within categories, as demonstrated below by the
+                    "Approved" status below.</para>
+                <programlisting>&lt;validApplicationStatuses>
+    &lt;category name="Pre-Submit">
+        &lt;status>Initiated&lt;/status>
+        &lt;status>Validated&lt;/status>
+    &lt;/category>
+    &lt;category name="In Process">
+        &lt;status>Awaiting Content Aproval&lt;/status>
+        &lt;status>Org Review&lt;/status>
+    &lt;/category>
+    &lt;status>Approved&lt;/status>
+    ...
+&lt;/validApplicationStatuses>
+                </programlisting>
+                <para>In the process definition section, automatic status updates may be assigned to
+                    occur on route node transition.  Please see the section on the routePaths in this
+                    guide.</para>
             </sect3>
             <sect3>
                 <title>INITIATOR_MUST_ROUTE</title>
@@ -5570,8 +5632,21 @@ document.routeDocument("user inputted annotation");
                     the step <emphasis role="bold">Adhoc Routing</emphasis> and then progresses to
                     the request node named <emphasis role="bold">Rule routing Route
                     Level</emphasis>. </para>
-                <para>This section only defines the path the eDocs will travel. The nodes themselves
-                    are defined below.</para>
+                <para>Additionally, an automatic progression of the application document status may
+                    be configured to occur on route node transition with the addition of the
+                    nextAppDocStatus attribute in the elements of a routePath:</para>
+                <programlisting>&lt;routePaths>
+    &lt;routePath>
+        &lt;start name="Initiated" nextNode="DestinationApproval" nextAppDocStatus="Approval in Progress"/>
+        &lt;requests name="DestinationApproval" nextNode="TravelerApproval" nextAppDocStatus="Submitted"/>
+        &lt;requests name="TravelerApproval" nextNode="SupervisorApproval" />
+        &lt;requests name="SupervisorApproval" nextNode="AccountApproval" />
+        &lt;requests name="AccountApproval" />
+    &lt;/routePath>
+&lt;/routePaths>
+                </programlisting>
+                <para>This section only defines the path the eDocs will travel, and optionally the
+                    application document status transitions. The nodes themselves are defined below.</para>
             </sect3>
             <sect3>
                 <title>Node Definition XML</title>
@@ -7328,6 +7403,28 @@ EDL EDoclite Example
                     </imageobject>
                 </mediaobject>
             </figure>
+        </sect2>
+        <sect2 id="documentSearch.applicationDocumentStatus" xreflabel="Customizing Document Search: Application Document Status">
+        <title>Application Document Status</title>
+        <para>If the &lt;validApplicationStatuses> configuration is specified in the document type
+            definition, then setting the Document Type on the Document Search page will display a
+            multi-select input titled "Application Document Status" that allows you to search by
+            application statuses or status categories.
+        </para>
+        <figure><title>Document Search Screen: Application Document Status Example</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/doc_search_application_status.png" scalefit="1" contentwidth="793"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>In the figure above, <emphasis role="bold">Pre-Submit</emphasis> is a category of statuses containing
+            <emphasis role="bold">Initiated</emphasis> and <emphasis role="bold">Validated</emphasis> which
+            are individual statuses.  Selecting <emphasis role="bold">Pre-Submit</emphasis> and searching will return
+            identical results to selecting both <emphasis role="bold">Initiated</emphasis> and <emphasis role="bold">
+            Validated</emphasis> and then searching.
+        </para>
+        <para>Please see <xref linkend="policies.documentStatusPolicy"/> for configuration details.</para>
         </sect2>
         <sect2>
             <title>Define Keyword Search</title>

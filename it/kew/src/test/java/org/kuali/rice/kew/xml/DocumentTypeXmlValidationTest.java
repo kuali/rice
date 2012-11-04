@@ -32,6 +32,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
+import org.kuali.rice.core.impl.impex.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;

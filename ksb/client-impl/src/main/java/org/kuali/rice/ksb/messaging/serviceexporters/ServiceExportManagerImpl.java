@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
-import java.net.URI;
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.ServerRegistry;
@@ -29,14 +22,19 @@ import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 
+import javax.xml.namespace.QName;
+import java.net.URI;
+import java.net.URL;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 public class ServiceExportManagerImpl implements ServiceExportManager {
 
 	private final ConcurrentMap<QName, ExportedServiceHolder> exportedServices;
 	private final ServiceNameFinder serviceNameFinder;
 	
 	private Bus cxfBus;
-	private ServerRegistry cxfServerRegistry;
-	
+
 	public ServiceExportManagerImpl() {
 		this.exportedServices = new ConcurrentHashMap<QName, ExportedServiceHolder>();
 		this.serviceNameFinder = new ServiceNameFinder();
@@ -65,7 +63,7 @@ public class ServiceExportManagerImpl implements ServiceExportManager {
 		if (serviceDefinition == null) {
 			throw new IllegalArgumentException("serviceDefinition was null");
 		}
-		ServiceExporter serviceExporter = ServiceExporterFactory.getServiceExporter(serviceDefinition, cxfBus, cxfServerRegistry);
+		ServiceExporter serviceExporter = ServiceExporterFactory.getServiceExporter(serviceDefinition, cxfBus);
 		Object exportedService = serviceExporter.exportService(serviceDefinition);
 		exportedServices.put(serviceDefinition.getServiceName(), new ExportedServiceHolder(exportedService, serviceDefinition));
 		getServiceNameFinder().register(serviceDefinition);
@@ -84,9 +82,13 @@ public class ServiceExportManagerImpl implements ServiceExportManager {
 	public void setCxfBus(Bus cxfBus) {
 		this.cxfBus = cxfBus;
 	}
-	
+
+    /**
+     * @deprecated setting ServerRegistry here has no effect, the ServerRegistry extension on the CXF Bus is used instead
+     */
+    @Deprecated
 	public void setCxfServerRegistry(ServerRegistry cxfServerRegistry) {
-		this.cxfServerRegistry = cxfServerRegistry;
+        // no-op, see deprecation information
 	}
 	
 	protected static class ExportedServiceHolder {
@@ -156,9 +158,6 @@ public class ServiceExportManagerImpl implements ServiceExportManager {
 		
 		/**
 		 * adds a mapping from the service specific portion of the service URL to the service name.
-		 * 
-		 * @param serviceUrl
-		 * @param serviceName
 		 */
 		public void register(ServiceDefinition serviceDefinition) {
 			String serviceUrlBase = trimServiceUrlBase(serviceDefinition.getEndpointUrl().toExternalForm());
@@ -170,8 +169,6 @@ public class ServiceExportManagerImpl implements ServiceExportManager {
 		
 		/**
 		 * removes the mapping (if one exists) for the service specific portion of this url.
-		 * 
-		 * @param serviceUrl
 		 */
 		public void remove(URL endpointUrl) {
 			servicePathToQName.remove(trimServiceUrlBase(endpointUrl.toExternalForm()));

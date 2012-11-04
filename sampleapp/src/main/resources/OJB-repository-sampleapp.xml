@@ -102,8 +102,8 @@
 		<field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" />
 		<field-descriptor name="rate" column="rate" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiPercentFieldConversion"/>
-		<field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-		<field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+		<field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
 	</class-descriptor>
 
 	<class-descriptor class="edu.sampleu.travel.bo.FiscalOfficer" table="TRV_ACCT_FO">
@@ -152,8 +152,8 @@
         <field-descriptor name="title" column="TITLE" jdbc-type="VARCHAR"/>
         <field-descriptor name="typeCode" column="TYP_CD" jdbc-type="VARCHAR" index="true"/>
         <field-descriptor name="isbn" column="isbn" jdbc-type="VARCHAR" />
-		<field-descriptor name="publisher" column="publisher" jdbc-type="VARCHAR" />
-		<field-descriptor name="publicationDate" column="pub_date" jdbc-type="DATE" />
+        <field-descriptor name="publisher" column="publisher" jdbc-type="VARCHAR" />
+        <field-descriptor name="publicationDate" column="pub_date" jdbc-type="TIMESTAMP" />
         <field-descriptor name="price" column="PRICE" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
         <field-descriptor name="rating" column="RATING" jdbc-type="BIGINT" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiIntegerFieldConversion"/>
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"/>

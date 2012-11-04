@@ -1175,7 +1175,7 @@ public class KualiDocumentActionBase extends KualiAction {
             if (parameterName.equals("newAdHocRouteWorkgroup.recipientName") && !"".equals(request.getParameter(parameterName))) {
                 //check for namespace
                 String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
-                if (request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode") != null && !"".equals(request.getParameter("newAdHocRouteWorkgroup.recipientName").trim())) {
+                if (request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode") != null && !"".equals(request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode").trim())) {
                     namespace = request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode").trim();
                 }
                 Group group = getGroupService().getGroupByNamespaceCodeAndName(namespace, request.getParameter(
@@ -1185,7 +1185,8 @@ public class KualiDocumentActionBase extends KualiAction {
                     kualiForm.getNewAdHocRouteWorkgroup().setRecipientName(group.getName());
                     kualiForm.getNewAdHocRouteWorkgroup().setRecipientNamespaceCode(group.getNamespaceCode());
                 } else {
-                    throw new RuntimeException("Invalid workgroup id passed as parameter.");
+                    GlobalVariables.getMessageMap().putError("newAdHocRouteWorkgroup.recipientNamespaceCode", RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE);
+                    return;
                 }
             }
             if (parameterName.startsWith("adHocRouteWorkgroup[") && !"".equals(request.getParameter(parameterName))) {
@@ -1204,7 +1205,8 @@ public class KualiDocumentActionBase extends KualiAction {
                         kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientName(group.getName());
                         kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientNamespaceCode(group.getNamespaceCode());
                     } else {
-                        throw new RuntimeException("Invalid workgroup id passed as parameter.");
+                        GlobalVariables.getMessageMap().putError(namespaceParam, RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE);
+                        return;
                     }
                 }
             }

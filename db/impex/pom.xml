@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+  Copyright 2005-2012 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -274,7 +274,6 @@
         <plugin>
           <groupId>org.kuali.maven.plugins</groupId>
           <artifactId>maven-impex-plugin</artifactId>
-          <version>1.0.26</version>
           <dependencies>
             <dependency>
               <groupId>${jdbc.groupId}</groupId>
@@ -350,6 +349,75 @@
     </pluginManagement>
   </build>
   <profiles>
+    <profile>
+      <!-- Pre-generate and bundle SQL for Oracle/MySQL during a release -->
+      <id>kuali-release</id>
+      <properties>
+        <impex.basedir>${project.basedir}</impex.basedir>
+        <impex.schema.name>${project.artifactId}</impex.schema.name>
+      </properties>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.kuali.maven.plugins</groupId>
+              <artifactId>mvn-maven-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>sql</id>
+                  <phase>process-resources</phase>
+                  <goals>
+                    <goal>mvn</goal>
+                  </goals>
+                  <configuration>
+                    <args>
+                      <arg>process-resources</arg>
+                    </args>
+                    <poms>
+                      <param>classpath:org/kuali/common/deploy/mvn/impex-with-sql.xml</param>
+                    </poms>
+                    <properties>
+                      <property>impex.basedir</property>
+                      <property>impex.schema.name</property>
+                      <property>plugin.impex.version</property>
+                    </properties>
+                  </configuration>
+                </execution>
+              </executions>
+              <dependencies>
+                <dependency>
+                  <groupId>org.kuali.common</groupId>
+                  <artifactId>kuali-deploy</artifactId>
+                  <version>${kuali-deploy.version}</version>
+                </dependency>
+              </dependencies>
+            </plugin>
+            <plugin>
+              <artifactId>maven-jar-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>sql</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                  <configuration>
+                    <skipIfEmpty>true</skipIfEmpty>
+                    <classesDirectory>${project.build.directory}/impex</classesDirectory>
+                    <classifier>sql</classifier>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>mvn-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>export</id>
       <properties>

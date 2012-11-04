@@ -46,6 +46,7 @@
         <bin.phase>none</bin.phase>
         <src.phase>none</src.phase>
         <server.phase>none</server.phase>
+        <wsdl.phase>none</wsdl.phase>
       </properties>
     </profile>
     <profile>

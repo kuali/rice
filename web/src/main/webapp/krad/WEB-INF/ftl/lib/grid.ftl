@@ -31,17 +31,16 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
     <#local rowCount=0/>
     <#local indexCount= 1/>
     <#local splitter = ";"/>
-    <#assign columnArray=[]/>
-    <#assign columnLoopArray=""/>
+    <#local columnArray=[]/>
+    <#local columnLoopArray=""/>
 
     <#list 1..numberOfColumns as i>
-        <#assign columnArray = columnArray + [1] />
+        <#local columnArray = columnArray + [1] />
     </#list>
-
 
     <#local loopCounter = 0/>
 
-    <#list 0..1000 as i>
+    <#list 0..100000 as i>
         <#if (loopCounter >= items?size)>
            <#break>
         </#if>
@@ -118,13 +117,8 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
                 </td>
             </#if>
 
-            <#assign columnLoopArray = columnLoopArray + item.rowSpan + splitter />
-        <#else>
-                <#local loopCounter = (loopCounter - 1)/>
-                <#assign columnLoopArray = columnLoopArray + (index - 1) + splitter />
-        </#if>
-
-        <#local colCount=colCount + item.colSpan - 1/>
+            <#local columnLoopArray = columnLoopArray + item.rowSpan + splitter />
+            <#local colCount=colCount + item.colSpan - 1/>
 
         <#--skip the number of columns if colspan more than 1 and append the rowspan-->
         <#if (item.colSpan > 1)>
@@ -134,8 +128,13 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
                     <#local jValue = (jValue -1)/>
                 </#if>
 
-                <#assign columnLoopArray = columnLoopArray + jValue + splitter />
+                <#local columnLoopArray = columnLoopArray + jValue + splitter />
             </#list>
+        </#if>
+
+            <#else>
+                <#local loopCounter = (loopCounter - 1)/>
+                <#local columnLoopArray = columnLoopArray + (index - 1) + splitter />
         </#if>
 
         <#-- flip alternating flags -->
@@ -150,8 +149,8 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         <#-- end table row -->
         <#if (colCount % numberOfColumns) == 0>
            </tr>
-           <#assign columnArray = columnLoopArray?split(splitter) />
-           <#assign columnLoopArray=""/>
+           <#local columnArray = columnLoopArray?split(splitter) />
+           <#local columnLoopArray=""/>
         </#if>
 
     </#list>

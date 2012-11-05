@@ -75,6 +75,14 @@
         </list>
         </property>
         </bean>
+        <bean parent="Uif-Page" p:id="UifLayoutView-Page5" p:headerText="Table Layouts - MultiRow">
+        <property name="items">
+        <list>
+        <ref bean="tableLayoutMultiRow-1"/>
+        <ref bean="tableLayoutMultiRow-2"/>
+        </list>
+        </property>
+        </bean>
       </list>
     </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
@@ -102,6 +110,8 @@
               p:actionLabel="Basic Layouts - Grid"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifLayoutView-Page4"
               p:actionLabel="Nested Layouts - Grid"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifLayoutView-Page5"
+              p:actionLabel="Table Layouts - MultiRow"/>
       </list>
     </property>
   </bean>
@@ -714,4 +724,80 @@
   </property>
   </bean>
 
+  <bean id="tableLayoutMultiRow-1" parent="Uif-Page">
+      <property name="items">
+        <list>
+          <bean id="collection1-generated" parent="Uif-Disclosure-TableCollectionSection"
+                p:layoutManager.numberOfColumns="2" p:layoutManager.suppressLineWrapping="false">
+            <property name="headerText" value="Collection Group - 10 items"/>
+            <property name="instructionalText"
+                      value="This is a table based layout of a collection.Number of columns is 2 and collection line size is 4 - CollectionGroupTableLayout"/>
+            <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
+            <property name="propertyName" value="list1generated"/>
+            <property name="layoutManager.sequencePropertyName" value="field1"/>
+            <property name="layoutManager.richTable.render" value="false"/>
+            <property name="items">
+              <list>
+                <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+                <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"
+                      p:constraintText="Requires Field 1 be filled out">
+                  <property name="dependencyConstraints">
+                    <list>
+                      <bean parent="PrerequisiteConstraint" p:propertyName="field1"/>
+                    </list>
+                  </property>
+                </bean>
+                <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+                <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
+                      p:required="true">
+                  <property name="control">
+                    <bean parent="Uif-CheckboxControl">
+                      <property name="onChangeScript" value="alert('checkbox clicked')"/>
+                    </bean>
+                  </property>
+                </bean>
+              </list>
+            </property>
+          </bean>
+        </list>
+      </property>
+    </bean>
+    <bean id="tableLayoutMultiRow-2" parent="Uif-Page">
+      <property name="items">
+        <list>
+          <bean id="collection2-generated" parent="Uif-Disclosure-TableCollectionSection"
+                p:layoutManager.numberOfColumns="3" p:layoutManager.suppressLineWrapping="false">
+            <property name="headerText" value="Collection Group - 10 items"/>
+            <property name="instructionalText"
+                      value="This is a table based layout of a collection.Number of columns is 3 and collection line size is 4 - CollectionGroupTableLayout"/>
+            <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
+            <property name="propertyName" value="list1generated"/>
+            <property name="layoutManager.sequencePropertyName" value="field1"/>
+            <property name="layoutManager.richTable.render" value="false"/>
+            <property name="items">
+              <list>
+                <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+                <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"
+                      p:constraintText="Requires Field 1 be filled out">
+                  <property name="dependencyConstraints">
+                    <list>
+                      <bean parent="PrerequisiteConstraint" p:propertyName="field1"/>
+                    </list>
+                  </property>
+                </bean>
+                <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+                <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
+                      p:required="true">
+                  <property name="control">
+                    <bean parent="Uif-CheckboxControl">
+                      <property name="onChangeScript" value="alert('checkbox clicked')"/>
+                    </bean>
+                  </property>
+                </bean>
+              </list>
+            </property>
+          </bean>
+        </list>
+      </property>
+    </bean>
 </beans>

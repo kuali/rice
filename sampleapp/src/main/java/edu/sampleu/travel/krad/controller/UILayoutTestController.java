@@ -18,6 +18,7 @@ package edu.sampleu.travel.krad.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.sampleu.demo.kitchensink.UITestObject;
 import edu.sampleu.demo.kitchensink.UifComponentsTestForm;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -50,6 +51,12 @@ public class UILayoutTestController extends UifControllerBase {
 	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 	    UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
+
+        //Create a collection to be displayed in collection group table layout
+        for (int i = 0; i < 10; i++) {
+            ((UifComponentsTestForm) form).getList1generated().add(new UITestObject("A" + i, "B" + i, "C" + i,
+                    "D" + i));
+        }
 
 		return super.start(uiTestForm, result, request, response);
 	}

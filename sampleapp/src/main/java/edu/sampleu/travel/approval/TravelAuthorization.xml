@@ -23,7 +23,8 @@
 
   <bean id="TravelAuthorization" parent="Uif-TransactionalDocumentView">
     <property name="headerText" value="Travel Authorization Request"/>
-    <!--<property name="dataObjectClassName" value="edu.sampleu.travel.approval.TravelAuthorizationDocument" /> -->
+    <!-- <property name="dataObjectClassName" value="edu.sampleu.travel.approval.TravelAuthorizationDocument" />   -->
+    <property name="formClass" value="edu.sampleu.travel.approval.TravelAuthorizationForm"/>
   </bean>
 
 </beans>

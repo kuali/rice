@@ -104,7 +104,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                extensionValues, workflowIdDirective));
 
         QueryByCriteria query = new QueryByCriteria(RuleDelegationBo.class, crit, true);
-        query.setEndAtIndex(KewApiConstants.MAX_RETURNED_ROWS);
+        query.setEndAtIndex(KewApiConstants.DELEGATE_RULE_LOOKUP_MAX_ROWS_RETURNED);
 
         return (List<RuleDelegationBo>) this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
     }
@@ -138,7 +138,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                extensionValues, actionRequestCodes));
 
         QueryByCriteria query = new QueryByCriteria(RuleDelegationBo.class, crit, true);
-        query.setEndAtIndex(KewApiConstants.MAX_RETURNED_ROWS);
+        query.setEndAtIndex(KewApiConstants.DELEGATE_RULE_LOOKUP_MAX_ROWS_RETURNED);
 
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
     }

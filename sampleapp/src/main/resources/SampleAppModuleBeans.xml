@@ -131,6 +131,7 @@
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Quickfinder.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/RichMessagesView.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/ClientDisableView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifReadOnlyTestView.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifCollectionGrouping.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifCollectionTotaling.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifGuestUserView.xml</value>

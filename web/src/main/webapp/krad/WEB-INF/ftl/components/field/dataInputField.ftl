@@ -68,7 +68,7 @@
                     </#if>
                 </#local>
 
-                <span id="${field.id}_control">
+                <span id="${field.id}_control" class="uif-readOnlyContent">
                     <#-- render inquiry if enabled -->
                     <#if field.inquiry.render>
                         <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"

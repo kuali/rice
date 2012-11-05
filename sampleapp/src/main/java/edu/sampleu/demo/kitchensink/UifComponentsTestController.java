@@ -167,7 +167,6 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putError("Uif-ValidationLayout-SubGroup", "errorSectionTest");
         }
 
-
         if (form.getPostedView().getId().equals("RichMessagesView")) {
             GlobalVariables.getMessageMap().putError("Demo-BasicMessagesSection", "richValidationMessageTest");
             GlobalVariables.getMessageMap().putError("field5", "richValidationMessageTest2");
@@ -274,8 +273,7 @@ public class UifComponentsTestController extends UifControllerBase {
 
         if (form.getPostedView().getCurrentPageId().equals("Demo-ValidationLayout-SubSectionsPage")) {
             GlobalVariables.getMessageMap().putError("Uif-ValidationLayout-SubGroup", "errorSectionTest");
-        }
-        else {
+        } else {
             GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-Section1", "errorSectionTest");
         }
 
@@ -394,5 +392,22 @@ public class UifComponentsTestController extends UifControllerBase {
 
         return super.deleteLine(uifForm, result, request, response);
 
+    }
+
+    /**
+     * Changes the view to readOnly and returns.
+     *
+     * @param uifForm
+     * @param result
+     * @param request
+     * @param response
+     * @return readOnly View
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=makeReadOnly")
+    public ModelAndView makeReadOnly(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        //set View to readOnly
+        uifForm.getView().setReadOnly(true);
+        return getUIFModelAndView(uifForm);
     }
 }

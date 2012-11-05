@@ -46,6 +46,10 @@ public class UifConstants {
     public static final String BLOCKUI_NAVOPTS = "navigation";
     public static final String BLOCKUI_REFRESHOPTS = "refresh";
 
+    public static enum ReadOnlyListTypes {
+        DELIMITED, BREAK, OL, UL
+    }
+
     public static enum Position {
         BOTTOM, LEFT, RIGHT, TOP
     }

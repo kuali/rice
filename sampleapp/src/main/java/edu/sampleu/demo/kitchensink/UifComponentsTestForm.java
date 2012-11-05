@@ -27,7 +27,10 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -185,6 +188,14 @@ public class UifComponentsTestForm extends UifFormBase {
     private String mField2 = "SecretInfo111";
     private String mField3 = "SecretInfo222";
     private String fakeTotal = "123(server value)";
+
+    private List<String> stringList1;
+    private List<String> stringList2;
+    private List<String> stringList3 = new ArrayList<String>(Arrays.asList("String1", "String2", "String3", "String4"));
+    private List<String> stringList4 = new ArrayList<String>(Arrays.asList("String1", "String2", "String3", "String4"));
+    private List<Integer> intList = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
+    private List<Double> doubleList = new ArrayList<Double>(Arrays.asList(1.1, 2.2, 3.3, 4.4));
+    private List<Date> dateList;
 
     private MultipartFile fileUpload;
 
@@ -437,6 +448,18 @@ public class UifComponentsTestForm extends UifFormBase {
         field92 = "Value 92";
 
         field131 = new Integer(0);
+
+        DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
+        dateList = new ArrayList<Date>();
+        try{
+            dateList.add(dateFormat.parse("01/01/1990"));
+            dateList.add(dateFormat.parse("10/31/2001"));
+            dateList.add(dateFormat.parse("11/05/2005"));
+            dateList.add(dateFormat.parse("02/13/2011"));
+        }
+        catch(Exception e){
+
+        }
     }
 
     @Override
@@ -2401,5 +2424,61 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setFakeTotal(String fakeTotal) {
         this.fakeTotal = fakeTotal;
+    }
+
+    public List<String> getStringList1() {
+        return stringList1;
+    }
+
+    public void setStringList1(List<String> stringList1) {
+        this.stringList1 = stringList1;
+    }
+
+    public List<String> getStringList2() {
+        return stringList2;
+    }
+
+    public void setStringList2(List<String> stringList2) {
+        this.stringList2 = stringList2;
+    }
+
+    public List<String> getStringList3() {
+        return stringList3;
+    }
+
+    public void setStringList3(List<String> stringList3) {
+        this.stringList3 = stringList3;
+    }
+
+    public List<String> getStringList4() {
+        return stringList4;
+    }
+
+    public void setStringList4(List<String> stringList4) {
+        this.stringList4 = stringList4;
+    }
+
+    public List<Integer> getIntList() {
+        return intList;
+    }
+
+    public void setIntList(List<Integer> intList) {
+        this.intList = intList;
+    }
+
+    public List<Double> getDoubleList() {
+        return doubleList;
+    }
+
+    public void setDoubleList(List<Double> doubleList) {
+        this.doubleList = doubleList;
+    }
+
+    public List<Date> getDateList() {
+        return dateList;
+    }
+
+    public void setDateList(List<Date> dateList) {
+        this.dateList = dateList;
     }
 }

@@ -123,6 +123,14 @@ input[disabled]+label {
     color: #888888;
 }
 
+ol.uif-readOnlyStringList li{
+    list-style: decimal inside none;
+}
+
+ul.uif-readOnlyStringList li{
+    list-style: disc inside none;
+}
+
 /** View structure related **************************************************************************/
 
 .uif-pageContentWrapper {

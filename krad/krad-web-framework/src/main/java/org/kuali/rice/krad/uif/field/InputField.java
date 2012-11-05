@@ -292,6 +292,40 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
+     * Overrides processReadOnlyListDisplay to handle MultiValueControls by creating the list of values from values
+     * instead of the keys of the options selected (makes the list "human-readable").  Otherwise it just passes the
+     * list ahead as normal if this InputField does not use a MultiValueControl.
+     *
+     * @param model the model
+     * @param originalList originalList of values
+     */
+    @Override
+    protected void processReadOnlyListDisplay(Object model, List<?> originalList) {
+        //Special handling for option based fields
+        if ((control != null) && control instanceof MultiValueControlBase) {
+            List<String> newList = new ArrayList<String>();
+            List<KeyValue> fieldOptions = ((MultiValueControlBase) control).getOptions();
+
+            if(fieldOptions == null || fieldOptions.isEmpty()){
+                return;
+            }
+
+            for(Object fieldValue: originalList){
+                for (KeyValue keyValue : fieldOptions) {
+                    if (fieldValue != null && StringUtils.equals(fieldValue.toString(), keyValue.getKey())) {
+                        newList.add(keyValue.getValue());
+                        break;
+                    }
+                }
+            }
+            super.generateReadOnlyListDisplayReplacement(newList);
+        }
+        else{
+            super.generateReadOnlyListDisplayReplacement(originalList);
+        }
+    }
+
+    /**
      * Adjust paths on the must occur constrain bindings
      *
      * @param mustOccurConstraints

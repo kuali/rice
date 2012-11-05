@@ -108,7 +108,8 @@
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
 
     <property name="propertyName" value="list2"/>
-    <property name="layoutManager.renderSequenceField" value="false"/>
+    <property name="layoutManager.renderSequenceField" value="true"/>
+    <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="readOnly" value="false"/>
     <property name="layoutManager.showToggleAllDetails" value="true"/>
     <!-- Cant figure out how to get this to work at this time

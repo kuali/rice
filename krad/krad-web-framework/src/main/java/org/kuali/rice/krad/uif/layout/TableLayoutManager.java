@@ -492,7 +492,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
             Object currentLine, int lineIndex) {
-        boolean isAddLine = lineIndex == -1;
+        boolean isAddLine = false;
+
+        // If first row or row wrap is happening
+        if(lineIndex == -1 || (lineFields.size() != numberOfDataColumns && ( (lineIndex + 1) * numberOfDataColumns) < lineFields.size())) {
+           isAddLine = true;
+        }
 
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
         int extraColumns = 0;
@@ -618,8 +623,16 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         boolean renderActionsLast = actionColumnIndex == -1 || actionColumnIndex > lineFields.size() + extraColumns;
         boolean hasGrouping = (groupingPropertyNames != null || StringUtils.isNotBlank(this.getGroupingTitle()));
+        boolean insertActionField = false;
 
         for (Field lineField : lineFields) {
+            //Check to see if ActionField needs to be inserted before this lineField because of wrapping.
+            // Since actionField has a colSpan of 1 add that to the previous cellPosition instead of the
+            // current lineField's colSpan.
+            // Only insert if ActionField has to be placed at the end. Else the specification of actionColumnIndex should
+            // take care of putting it in the right location
+            insertActionField = (cellPosition != 0 && lineFields.size() != numberOfDataColumns) && renderActions && renderActionsLast && ((cellPosition % numberOfDataColumns) == 0);
+
             cellPosition += lineField.getColSpan();
             columnNumber++;
 
@@ -635,6 +648,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     ((MessageField) lineField).getMessage().setMessageText("addLine");
                 }
             } else {
+                // If the row wraps before the last element
+                if (insertActionField) {
+                    addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
+                }
+
                 dataFields.add(lineField);
             }
 
@@ -671,7 +689,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         }
 
-        if (renderActions && renderActionsLast) {
+        if (lineFields.size() == numberOfDataColumns && renderActions && renderActionsLast) {
             addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
         }
 
@@ -763,10 +781,21 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         // pull out label fields from the container's items
         int cellPosition = 0;
         boolean renderActionsLast = actionColumnIndex == -1 || actionColumnIndex > lineFields.size() + extraColumns;
-
+        boolean insertActionHeader = false;
         for (Field field : lineFields) {
             if (!field.isRender() && StringUtils.isEmpty(field.getProgressiveRender())) {
                 continue;
+            }
+
+            //Check to see if ActionField needs to be inserted before this lineField because of wrapping.
+            // Since actionField has a colSpan of 1 add that to the previous cellPosition instead of the
+            // current lineField's colSpan.
+            // Only Insert if ActionField has to be placed at the end. Else the specification of actionColumnIndex
+            // should take care of putting it in the right location
+            insertActionHeader = (cellPosition != 0 && lineFields.size() != numberOfDataColumns && renderActions && renderActionsLast && ((cellPosition % numberOfDataColumns) == 0));
+
+            if ( insertActionHeader) {
+                addActionHeader(rowCount, cellPosition);
             }
 
             cellPosition += field.getColSpan();
@@ -779,7 +808,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
         }
 
-        if (renderActions && renderActionsLast) {
+        if (lineFields.size() == numberOfDataColumns && renderActions && renderActionsLast) {
             cellPosition += 1;
             addActionHeader(rowCount, cellPosition);
         }
@@ -842,15 +871,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             return 1;
         }
 
-        int cellCount = 0;
-        for (Field field : items) {
-            cellCount += field.getColSpan() + field.getRowSpan() - 1;
+        // If Overflow is greater than 0 then calculate the col span for the last item in the overflowed row
+        if(items.size() % getNumberOfDataColumns() > 0){
+            //get the last line item
+            Field field = items.get(items.size()-1);
+            field.setColSpan(1+(numberOfDataColumns-(items.size()%numberOfDataColumns)));
+            rowCount = ((items.size()/getNumberOfDataColumns())+1);
+        } else{
+            rowCount = items.size()/getNumberOfDataColumns();
         }
-
-        if (cellCount != 0) {
-            rowCount = cellCount / getNumberOfDataColumns();
-        }
-
         return rowCount;
     }
 

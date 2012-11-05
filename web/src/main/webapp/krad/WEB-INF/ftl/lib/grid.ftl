@@ -79,11 +79,12 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         </#if>
 
 
-        <#-- determine cell width by using default or configured width -->
+        <#-- determine cell width by using default or configured width and round off to two decimal places-->
         <#if item.width?has_content>
-            <#local cellWidth=item.width/>
+            <#local cellWidth=item.width?number?string("0.##")/>
         <#elseif applyDefaultCellWidths>
-            <#local cellWidth="${defaultCellWidth * item.colSpan}%"/>
+            <#local width= (defaultCellWidth * item.colSpan)?number?string("0.##") />
+            <#local cellWidth="${width}%"/>
         </#if>
 
         <#if cellWidth?has_content>

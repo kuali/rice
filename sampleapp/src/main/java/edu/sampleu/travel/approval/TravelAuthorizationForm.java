@@ -19,44 +19,14 @@ package edu.sampleu.travel.approval;
 import edu.sampleu.travel.approval.TravelAuthorizationDocument;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
+import org.kuali.rice.krad.web.form.TransactionDocumentFormBase;
 
-public class TravelAuthorizationForm extends DocumentFormBase {
+public class TravelAuthorizationForm extends TransactionDocumentFormBase {
     private static final long serialVersionUID = -5805825513252498048L;
 
-    protected String dataObjectClassName;
-    protected String action;
-
-    public TravelAuthorizationForm() {
-        super();
-        setViewTypeName(UifConstants.ViewType.DOCUMENT);
-    }
-
     @Override
-    public TravelAuthorizationDocument getDocument() {
-        return (TravelAuthorizationDocument) super.getDocument();
-    }
-
-    // This is to provide a setter with matching type to
-    // public MaintenanceDocument getDocument() so that no
-    // issues occur with spring 3.1-M2 bean wrappers
-    public void setDocument(TravelAuthorizationDocument document) {
-        super.setDocument(document);
-    }
-
-    public String getDataObjectClassName() {
-        return this.dataObjectClassName;
-    }
-
-    public void setDataObjectClassName(String dataObjectClassName) {
-        this.dataObjectClassName = dataObjectClassName;
-    }
-
-    public String getAction() {
-        return this.action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
+    protected String getDefaultDocumentTypeName() {
+        return "TravelAuthorization";
     }
 
 }

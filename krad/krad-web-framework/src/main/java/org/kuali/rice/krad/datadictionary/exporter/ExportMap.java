@@ -34,7 +34,6 @@ public class ExportMap {
         this.exportData = new StringMap();
     }
 
-
     /**
      * @return exportKey associated with this instance
      */
@@ -48,7 +47,6 @@ public class ExportMap {
     public Map<String, Object> getExportData() {
         return Collections.unmodifiableMap(this.exportData);
     }
-
 
     /**
      * Adds the ExportMap's exportKey and exportData as a key,value pair to this Map
@@ -86,7 +84,6 @@ public class ExportMap {
 
         exportData.set(key, value);
     }
-
 
     /**
      * @see java.lang.Object#toString()

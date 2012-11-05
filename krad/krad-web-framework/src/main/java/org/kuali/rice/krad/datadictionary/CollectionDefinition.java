@@ -18,10 +18,7 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.CollectionSizeConstrainable;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-
-import java.util.ArrayList;
 
 /**
  * CollectionDefinition defines a single Collection attribute definition in the DataDictionary
@@ -236,8 +233,8 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
             ValidationTrace tracer) {
         tracer.addBean(this.getClass().getSimpleName(), "Attribute: " + getName());
         if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
-            String currentValues [] = {"property = " + getName(),"Class =" + rootBusinessObjectClass};
-            tracer.createError("Property is not collection property of the class",currentValues);
+            String currentValues[] = {"property = " + getName(), "Class =" + rootBusinessObjectClass};
+            tracer.createError("Property is not collection property of the class", currentValues);
         }
     }
 

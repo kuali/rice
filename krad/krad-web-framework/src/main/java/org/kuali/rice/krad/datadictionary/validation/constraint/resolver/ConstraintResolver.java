@@ -28,8 +28,8 @@ import java.util.List;
  *
  * {@see AttributeDefinitionConstraintProvider} for a number of examples.
  *
- * @author Kuali Rice Team (rice.collab@kuali.org)
  * @param <T>
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public interface ConstraintResolver<T extends Constrainable> {
@@ -41,6 +41,6 @@ public interface ConstraintResolver<T extends Constrainable> {
      * @param <C> - the java type of the constraint
      * @return - a list of constraints
      */
-	public <C extends Constraint> List<C> resolve(T definition);
+    public <C extends Constraint> List<C> resolve(T definition);
 
 }

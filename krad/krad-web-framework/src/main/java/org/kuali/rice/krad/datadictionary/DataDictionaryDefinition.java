@@ -23,12 +23,14 @@ import java.io.Serializable;
 public interface DataDictionaryDefinition extends DictionaryBean, Serializable {
 
     /**
-     * Performs complete intra-definition validation which couldn't be done earlier - for example, verifies that field references
+     * Performs complete intra-definition validation which couldn't be done earlier - for example, verifies that field
+     * references
      * refer to actual fields of some specific class.
      *
      * @param rootBusinessObjectClass Class of the BusinessObjectEntry which ultimately contains this definition
      * @param otherBusinessObjectClass other stuff required to complete validation
-     * @throws org.kuali.rice.krad.datadictionary.exception.CompletionException if a problem arises during validation-completion
+     * @throws org.kuali.rice.krad.datadictionary.exception.CompletionException if a problem arises during
+     * validation-completion
      */
     public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass);
 

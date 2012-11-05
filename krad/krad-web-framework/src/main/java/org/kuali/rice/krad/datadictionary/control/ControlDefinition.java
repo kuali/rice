@@ -19,16 +19,16 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryDefinition;
 
 /**
  * ControlDefinition
- *
- *
  */
 @Deprecated
 public interface ControlDefinition extends DataDictionaryDefinition {
 
     public boolean isDatePicker();
+
     public void setDatePicker(boolean datePicker);
 
     public boolean isExpandedTextArea();
+
     public void setExpandedTextArea(boolean eTextArea);
 
     /**
@@ -67,7 +67,6 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isTextarea();
 
     /**
-     *
      * @return any Script associated with this control
      */
     public String getScript();
@@ -78,7 +77,6 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isCurrency();
 
     /**
-     *
      * @return true if the ControlDefinition instance represents a kualiUser control
      */
     public boolean isKualiUser();
@@ -126,12 +124,12 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public void setValuesFinderClass(String valuesFinderClass);
 
     /**
-     * Sets the BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for radiobutton and select controls.
+     * Sets the BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for
+     * radiobutton and select controls.
      *
      * @param businessObjectClass
      */
     public void setBusinessObjectClass(String businessObjectClass);
-
 
     /**
      * Sets the keyAttribute used for building radiobutton and select controls.
@@ -167,7 +165,8 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public String getValuesFinderClass();
 
     /**
-     * @return BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for radiobutton and select controls.
+     * @return BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for
+     *         radiobutton and select controls.
      */
     public String getBusinessObjectClass();
 

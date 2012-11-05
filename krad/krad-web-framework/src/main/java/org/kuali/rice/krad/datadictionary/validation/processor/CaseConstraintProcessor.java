@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
@@ -34,6 +31,9 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * CaseConstraintProcessor processes 'case constraints', which are constraints that are imposed only in specific cases
  *
@@ -46,7 +46,9 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
     private static final String CONSTRAINT_NAME = "case constraint";
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult,
+     *      Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint,
+     *      org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
      */
     @Override
     public ProcessorResult process(DictionaryValidationResult result, Object value, CaseConstraint caseConstraint,

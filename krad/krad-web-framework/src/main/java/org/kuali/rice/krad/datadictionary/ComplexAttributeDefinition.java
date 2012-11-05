@@ -18,42 +18,44 @@ package org.kuali.rice.krad.datadictionary;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 
 /**
- *  A complex attribute definition in the DataDictictionary. This can be be used to define
- *  an attribute for a DataObjectEntry's attribute list which is represented by another
- *  object entry definition. It will
+ * A complex attribute definition in the DataDictictionary. This can be be used to define
+ * an attribute for a DataObjectEntry's attribute list which is represented by another
+ * object entry definition. It will
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComplexAttributeDefinition extends AttributeDefinitionBase{
+public class ComplexAttributeDefinition extends AttributeDefinitionBase {
 
-	protected DataDictionaryEntry dataObjectEntry;
+    protected DataDictionaryEntry dataObjectEntry;
 
+    /**
+     * @return the dataObjectEntry
+     */
+    public DataDictionaryEntry getDataObjectEntry() {
+        return this.dataObjectEntry;
+    }
 
-	/**
-	 * @return the dataObjectEntry
-	 */
-	public DataDictionaryEntry getDataObjectEntry() {
-		return this.dataObjectEntry;
-	}
+    /**
+     * @param dataObjectEntry the dataObjectEntry to set
+     */
+    public void setDataObjectEntry(DataDictionaryEntry dataObjectEntry) {
+        this.dataObjectEntry = dataObjectEntry;
+    }
 
-	/**
-	 * @param dataObjectEntry the dataObjectEntry to set
-	 */
-	public void setDataObjectEntry(DataDictionaryEntry dataObjectEntry) {
-		this.dataObjectEntry = dataObjectEntry;
-	}
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
+     *      java.lang.Class)
+     */
+    @Override
+    public void completeValidation(Class<?> rootObjectClass, Class<?> otherObjectClass) {
+        if (getDataObjectEntry() == null) {
+            throw new AttributeValidationException("complex property '"
+                    + getName()
+                    + "' in class '"
+                    + rootObjectClass.getName()
+                    + " does not have a dataObjectClass defined");
 
-
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
-	 */
-	@Override
-	public void completeValidation(Class<?> rootObjectClass, Class<?> otherObjectClass) {
-		if (getDataObjectEntry() == null){
-			throw new AttributeValidationException("complex property '" + getName() + "' in class '"
-					+ rootObjectClass.getName() + " does not have a dataObjectClass defined");
-
-		}
-	}
+        }
+    }
 
 }

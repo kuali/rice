@@ -25,52 +25,56 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  defines the information expected when a processor has processed a constraint
+ * defines the information expected when a processor has processed a constraint
  *
- *  @see ConstraintProcessor
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see ConstraintProcessor
  */
 public class ProcessorResult {
 
-	private final transient List<Constraint> constraints;
-	private final transient Constrainable definition;
-	private final transient AttributeValueReader attributeValueReader;
+    private final transient List<Constraint> constraints;
+    private final transient Constrainable definition;
+    private final transient AttributeValueReader attributeValueReader;
 
-	private final List<ConstraintValidationResult> constraintValidationResults;
+    private final List<ConstraintValidationResult> constraintValidationResults;
 
     /**
      * creates a processor result from the provided constraint validation result
      *
      * @param constraintValidationResult - the constraint validation result
      */
-	public ProcessorResult(ConstraintValidationResult constraintValidationResult) {
-		this(constraintValidationResult, null, null);
-	}
+    public ProcessorResult(ConstraintValidationResult constraintValidationResult) {
+        this(constraintValidationResult, null, null);
+    }
 
     /**
-     *  creates a processor result from the parameters provided
+     * creates a processor result from the parameters provided
      *
      * @param constraintValidationResult - the constraint validation result
-     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code CollectionDefinition}
+     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code
+     * CollectionDefinition}
      * @param attributeValueReader - provides access to the attribute being validated
      * @param constraints - optional constraints to use
      */
-	public ProcessorResult(ConstraintValidationResult constraintValidationResult, Constrainable definition, AttributeValueReader attributeValueReader, Constraint... constraints) {
-		this.constraintValidationResults = Collections.singletonList(constraintValidationResult);
-		this.definition = definition;
-		this.attributeValueReader = attributeValueReader;
-		this.constraints = Arrays.asList(constraints);
-	}
+    public ProcessorResult(ConstraintValidationResult constraintValidationResult, Constrainable definition,
+            AttributeValueReader attributeValueReader, Constraint... constraints) {
+        this.constraintValidationResults = Collections.singletonList(constraintValidationResult);
+        this.definition = definition;
+        this.attributeValueReader = attributeValueReader;
+        this.constraints = Arrays.asList(constraints);
+    }
 
     /**
-     *  creates a processor result from the parameters provided
+     * creates a processor result from the parameters provided
      *
      * @param constraintValidationResult - the constraint validation result
-     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code CollectionDefinition}
+     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code
+     * CollectionDefinition}
      * @param attributeValueReader - provides access to the attribute being validated
      * @param constraints - the list of constraints to use
      */
-    public ProcessorResult(ConstraintValidationResult constraintValidationResult, Constrainable definition, AttributeValueReader attributeValueReader, List<Constraint> constraints) {
+    public ProcessorResult(ConstraintValidationResult constraintValidationResult, Constrainable definition,
+            AttributeValueReader attributeValueReader, List<Constraint> constraints) {
         this.constraintValidationResults = Collections.singletonList(constraintValidationResult);
         this.definition = definition;
         this.attributeValueReader = attributeValueReader;
@@ -82,87 +86,89 @@ public class ProcessorResult {
      *
      * @param constraintValidationResults - the constraint validation results to use
      */
-	public ProcessorResult(List<ConstraintValidationResult> constraintValidationResults) {
-		this(constraintValidationResults, null, null);
-	}
+    public ProcessorResult(List<ConstraintValidationResult> constraintValidationResults) {
+        this(constraintValidationResults, null, null);
+    }
 
     /**
-     *  creates a processor result from the parameters provided
+     * creates a processor result from the parameters provided
      *
      * @param constraintValidationResults - the constraint validation results
-     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code CollectionDefinition}
+     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code
+     * CollectionDefinition}
      * @param attributeValueReader - provides access to the attribute being validated
      * @param constraints - optional constraints to use
      */
-	public ProcessorResult(List<ConstraintValidationResult> constraintValidationResults, Constrainable definition, AttributeValueReader attributeValueReader, Constraint... constraints) {
-		this.constraintValidationResults = constraintValidationResults;
-		this.definition = definition;
-		this.attributeValueReader = attributeValueReader;
-		this.constraints = Arrays.asList(constraints);
-	}
+    public ProcessorResult(List<ConstraintValidationResult> constraintValidationResults, Constrainable definition,
+            AttributeValueReader attributeValueReader, Constraint... constraints) {
+        this.constraintValidationResults = constraintValidationResults;
+        this.definition = definition;
+        this.attributeValueReader = attributeValueReader;
+        this.constraints = Arrays.asList(constraints);
+    }
 
     /**
      * checks whether this object has a single constraint validation result
      *
      * @return true if only one result found, false if not
      */
-	public boolean isSingleConstraintResult() {
-		return this.constraintValidationResults.size() == 1;
-	}
+    public boolean isSingleConstraintResult() {
+        return this.constraintValidationResults.size() == 1;
+    }
 
     /**
      * checks whether a Data Dictionary definition is present
      *
      * @return true if definition is present, false otherwise
      */
-	public boolean isDefinitionProvided() {
-		return definition != null;
-	}
+    public boolean isDefinitionProvided() {
+        return definition != null;
+    }
 
     /**
      * checks whether an attribute value reader is present
      *
      * @return true if reader is present, false otherwise
      */
-	public boolean isAttributeValueReaderProvided() {
-		return attributeValueReader != null;
-	}
+    public boolean isAttributeValueReaderProvided() {
+        return attributeValueReader != null;
+    }
 
     /**
      * gets the first constraint validation result
      *
      * @return null if there are no results
      */
-	public ConstraintValidationResult getFirstConstraintValidationResult() {
-		return this.constraintValidationResults.isEmpty() ? null : this.constraintValidationResults.get(0);
-	}
+    public ConstraintValidationResult getFirstConstraintValidationResult() {
+        return this.constraintValidationResults.isEmpty() ? null : this.constraintValidationResults.get(0);
+    }
 
-	/**
-	 * @return the constraintValidationResults
-	 */
-	public List<ConstraintValidationResult> getConstraintValidationResults() {
-		return this.constraintValidationResults;
-	}
+    /**
+     * @return the constraintValidationResults
+     */
+    public List<ConstraintValidationResult> getConstraintValidationResults() {
+        return this.constraintValidationResults;
+    }
 
-	/**
-	 * @return the definition
-	 */
-	public Constrainable getDefinition() {
-		return this.definition;
-	}
+    /**
+     * @return the definition
+     */
+    public Constrainable getDefinition() {
+        return this.definition;
+    }
 
-	/**
-	 * @return the attributeValueReader
-	 */
-	public AttributeValueReader getAttributeValueReader() {
-		return this.attributeValueReader;
-	}
+    /**
+     * @return the attributeValueReader
+     */
+    public AttributeValueReader getAttributeValueReader() {
+        return this.attributeValueReader;
+    }
 
-	/**
-	 * @return the constraints
-	 */
-	public List<Constraint> getConstraints() {
-		return this.constraints;
-	}
+    /**
+     * @return the constraints
+     */
+    public List<Constraint> getConstraints() {
+        return this.constraints;
+    }
 
 }

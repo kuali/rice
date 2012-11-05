@@ -23,11 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-            This element is used to define a set of workflowPropertyGroups, which are used to
-            specify which document properties should be serialized during the document serialization
-            process.
+ * This element is used to define a set of workflowPropertyGroups, which are used to
+ * specify which document properties should be serialized during the document serialization
+ * process.
  */
-@BeanTag(name="workflowProperties")
+@BeanTag(name = "workflowProperties")
 public class WorkflowProperties implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -38,20 +38,21 @@ public class WorkflowProperties implements Serializable {
     }
 
     /**
-     * Returns a list of workflow property groups, which are used to determine which properties should be serialized when generating
+     * Returns a list of workflow property groups, which are used to determine which properties should be serialized
+     * when generating
      * routing XML
      *
      * @return a list of {@link WorkflowPropertyGroup} objects, in the order in which they were added
      */
-    @BeanTagAttribute(name="workflowPropertyGroups",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "workflowPropertyGroups", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<WorkflowPropertyGroup> getWorkflowPropertyGroups() {
         return this.workflowPropertyGroups;
     }
 
     /**
-            This element is used to define a set of workflowPropertyGroups, which are used to
-            specify which document properties should be serialized during the document serialization
-            process.
+     * This element is used to define a set of workflowPropertyGroups, which are used to
+     * specify which document properties should be serialized during the document serialization
+     * process.
      */
     public void setWorkflowPropertyGroups(List<WorkflowPropertyGroup> workflowPropertyGroups) {
         this.workflowPropertyGroups = workflowPropertyGroups;

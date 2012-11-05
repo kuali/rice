@@ -23,26 +23,28 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An object that returns the constrainable definition itself as a list for a definition implementing the capability {@link Constrainable}.
+ * An object that returns the constrainable definition itself as a list for a definition implementing the capability
+ * {@link Constrainable}.
  * This definition must also implement the interface {@link Constraint}, or a ClassCastException will be thrown.
  *
- * An example is {@link LengthConstrainable}, where members of the definition itself need to be made available to the ConstraintProcessor.
+ * An example is {@link LengthConstrainable}, where members of the definition itself need to be made available to the
+ * ConstraintProcessor.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefinitionConstraintResolver<T extends Constrainable> implements ConstraintResolver<T> {
 
-	@Override
-	public <C extends Constraint> List<C> resolve(T definition) throws ClassCastException {
-		if (definition instanceof Constraint) {
-			@SuppressWarnings("unchecked")
-			C constraint = (C)definition;
-			return Collections.singletonList(constraint);
-		}
-/*        else if(definiton instanceof InputField){
+    @Override
+    public <C extends Constraint> List<C> resolve(T definition) throws ClassCastException {
+        if (definition instanceof Constraint) {
+            @SuppressWarnings("unchecked") C constraint = (C) definition;
+            return Collections.singletonList(constraint);
+        }
+        /*        else if(definiton instanceof InputField){
             C constraint = (C)definition.get
         }*/
-		throw new ClassCastException("DefinitionConstraintResolver can only be used for a definition that implements both Constraint and Constrainable, or derives from a class that does.");
-	}
+        throw new ClassCastException(
+                "DefinitionConstraintResolver can only be used for a definition that implements both Constraint and Constrainable, or derives from a class that does.");
+    }
 
 }

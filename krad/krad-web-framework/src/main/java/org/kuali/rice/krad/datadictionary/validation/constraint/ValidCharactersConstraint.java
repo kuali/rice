@@ -17,13 +17,12 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
-import java.util.ArrayList;
-
 /**
- * This is a constraint that limits attribute values to some subset of valid characters or to match a particular regular expression.
+ * This is a constraint that limits attribute values to some subset of valid characters or to match a particular
+ * regular
+ * expression.
  *
  * For example:
  * - To limit to both upper and lower-case letters, value can be set to "[A-Za-z]*"
@@ -31,7 +30,7 @@ import java.util.ArrayList;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="validCharactersConstraint")
+@BeanTag(name = "validCharactersConstraint")
 public class ValidCharactersConstraint extends BaseConstraint {
 
     protected String value;
@@ -39,9 +38,10 @@ public class ValidCharactersConstraint extends BaseConstraint {
     /**
      * The Java based regex for valid characters
      * This value should include the ^ and $ symbols if needed
+     *
      * @return the value
      */
-    @BeanTagAttribute(name="value")
+    @BeanTagAttribute(name = "value")
     public String getValue() {
         return value;
     }
@@ -60,12 +60,12 @@ public class ValidCharactersConstraint extends BaseConstraint {
      * @param tracer Record of component's location
      */
     @Override
-    public void completeValidation(ValidationTrace tracer){
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean("ValidCharacterConstraint", getMessageKey());
 
-        if(getValue()==null){
-            String currentValues [] = {"getValue ="+getValue()};
-            tracer.createWarning("GetValue should return something",currentValues);
+        if (getValue() == null) {
+            String currentValues[] = {"getValue =" + getValue()};
+            tracer.createWarning("GetValue should return something", currentValues);
         }
 
         super.completeValidation(tracer.getCopy());

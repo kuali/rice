@@ -17,11 +17,8 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-
-import java.util.List;
 
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation,
@@ -31,7 +28,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="businessObjectEntry")
+@BeanTag(name = "businessObjectEntry")
 public class BusinessObjectEntry extends DataObjectEntry {
 
     protected Class<? extends BusinessObject> baseBusinessObjectClass;
@@ -64,7 +61,7 @@ public class BusinessObjectEntry extends DataObjectEntry {
         this.baseBusinessObjectClass = baseBusinessObjectClass;
     }
 
-    @BeanTagAttribute(name="baseBusinessObjectClass")
+    @BeanTagAttribute(name = "baseBusinessObjectClass")
     public Class<? extends BusinessObject> getBaseBusinessObjectClass() {
         return baseBusinessObjectClass;
     }
@@ -101,11 +98,11 @@ public class BusinessObjectEntry extends DataObjectEntry {
         if (inactivationBlockingDefinitions != null) {
             for (InactivationBlockingDefinition ibd : inactivationBlockingDefinitions) {
                 ibd.setBusinessObjectClass(getBusinessObjectClass());
-                if (StringUtils.isNotBlank(ibd.getBlockedReferencePropertyName()) &&
-                        ibd.getBlockedBusinessObjectClass() == null) {
+                if (StringUtils.isNotBlank(ibd.getBlockedReferencePropertyName())
+                        && ibd.getBlockedBusinessObjectClass() == null) {
                     // if the user didn't specify a class name for the blocked reference, determine it here
-                    ibd.setBlockedBusinessObjectClass(DataDictionary
-                            .getAttributeClass(getDataObjectClass(), ibd.getBlockedReferencePropertyName()));
+                    ibd.setBlockedBusinessObjectClass(DataDictionary.getAttributeClass(getDataObjectClass(),
+                            ibd.getBlockedReferencePropertyName()));
                 }
                 ibd.setBlockingReferenceBusinessObjectClass(getBusinessObjectClass());
             }

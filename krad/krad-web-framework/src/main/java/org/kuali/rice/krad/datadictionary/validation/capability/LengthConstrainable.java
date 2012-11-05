@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint
  */
 public interface LengthConstrainable extends Constrainable, LengthConstraint {
 
-	// To match up with legacy code for AttributeDefinition, length constraint members are fields
-	// on the definition, making the capability a sub-interface of the constraint
+    // To match up with legacy code for AttributeDefinition, length constraint members are fields
+    // on the definition, making the capability a sub-interface of the constraint
 
 }

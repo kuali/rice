@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <group disclosure.render="false" headertext="Progressive Disclosure of Fields" id="prog1"
+         layoutManager.orientation="VERTICAL" parent="Uif-VerticalBoxSection">
+    <items>
+      <inputField instructionalText="Chose an option to display the corresponding fields"
+                  label="Progressive Disclose options" parent="Uif-InputField" propertyName="field34" width="auto">
+        <control>
+          <radioGroupControl parent="Uif-VerticalRadioControl">
+            <options>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="show1"/>
+                <spring:property name="value"
+                                 value="Show Field 1 - no ajax request, the content is already on the page but hidden"/>
+              </spring:bean>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="show2"/>
+                <spring:property name="value"
+                                 value="Show Field 2 - this will do an ajax request for the field the first time, then hide and show it locally"/>
+              </spring:bean>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="show3"/>
+                <spring:property name="value"
+                                 value="Show Field 3 - this will do an ajax request for the field each time the condition is met"/>
+              </spring:bean>
+            </options>
+          </radioGroupControl>
+        </control>
+      </inputField>
+      <inputField label="Field 1" parent="GenericTextField" progressiveRender="@{#dp.field34 eq 'show1'}"
+                  propertyName="field35"/>
+      <inputField label="Field 2" parent="GenericTextField" progressiveRender="field34 eq 'show2'"
+                  progressiveRenderViaAJAX="true" propertyName="field36"/>
+      <inputField instructionalText="has email address validCharactersConstraint" label="Field 3"
+                  parent="GenericTextField" progressiveRender="@{#form.field34 eq 'show3'}"
+                  progressiveRenderAndRefresh="true" propertyName="field37">
+        <validCharactersConstraint>
+          <spring:bean parent="EmailAddressPatternConstraint"/>
+        </validCharactersConstraint>
+      </inputField>
+      <inputField
+              instructionalText="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"
+              label="Show Field through matching" maxLength="1" parent="GenericTextField"
+              progressiveRenderAndRefresh="true" propertyName="field47"/>
+      <inputField label="Field A" parent="GenericTextField" progressiveRender="field47 matches '^[aA]$'"
+                  progressiveRenderAndRefresh="true" propertyName="field48"/>
+      <inputField label="Field B" parent="GenericTextField" progressiveRender="field47 matches '^[bB]$'"
+                  progressiveRenderAndRefresh="true" propertyName="field49"/>
+    </items>
+  </group>
+  <group disclosure.render="false" headertext="Progressive Disclosure of Groups" id="prog2"
+         layoutManager.orientation="VERTICAL" parent="Uif-VerticalBoxSection">
+    <items>
+      <inputField instructionalText="Progressive Disclosure also works on displaying entire groups"
+                  label="Progressive Disclose options" parent="Uif-InputField" propertyName="field38" width="auto">
+        <control>
+          <radioGroupControl parent="Uif-VerticalRadioControl">
+            <options>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="show1"/>
+                <spring:property name="value" value="Show Group 1 - no ajax request"/>
+              </spring:bean>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="show2"/>
+                <spring:property name="value" value="Show Group 2 - ajax request for group"/>
+              </spring:bean>
+            </options>
+          </radioGroupControl>
+        </control>
+      </inputField>
+      <group disclosure.render="false" headertext="Group 1" parent="Uif-HorizontalBoxSection"
+             progressiveRender="field38 eq 'show1'">
+        <items>
+          <inputField label="Field 1A" parent="GenericTextField" propertyName="field39"/>
+          <inputField label="Field 2A" parent="GenericTextField" propertyName="field40"/>
+          <inputField label="Field 3A" parent="GenericTextField" propertyName="field41"/>
+        </items>
+      </group>
+      <group disclosure.render="false" headertext="Group 2" parent="Uif-HorizontalBoxSection"
+             progressiveRender="field38 eq 'show2'" progressiveRenderViaAJAX="true">
+        <items>
+          <inputField label="Field 1B" parent="GenericTextField" propertyName="field42"/>
+          <inputField label="Field 2B" parent="GenericTextField" propertyName="field43"/>
+        </items>
+      </group>
+    </items>
+  </group>
+  <group disclosure.render="false" headertext="Conditional Refresh" id="prog3" layoutManager.orientation="VERTICAL"
+         parent="Uif-VerticalBoxSection">
+    <items>
+      <inputField instructionalText="Chose an option to cause a conditional refresh on a field"
+                  label="Conditional Refresh" parent="Uif-InputField" propertyName="field44" width="auto">
+        <control>
+          <radioGroupControl parent="Uif-VerticalRadioControl">
+            <options>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="show1"/>
+                <spring:property name="value"
+                                 value="Refresh Field 1 - refreshes when this option is selected, conditionalRefresh statement option"/>
+              </spring:bean>
+              <spring:bean parent="Uif-KeyLabelPair">
+                <spring:property name="key" value="show2"/>
+                <spring:property name="value"
+                                 value="Refresh Field 2, make it read only if this is selected, otherwise editable by using refreshWhenChanged pointing to this field"/>
+              </spring:bean>
+            </options>
+          </radioGroupControl>
+        </control>
+      </inputField>
+      <inputField conditionalRefresh="#dp.field44 eq 'show1'" label="Field 1" parent="GenericTextField"
+                  propertyName="field45"/>
+      <inputField label="Field 2" parent="GenericTextField" progressiveRenderViaAJAX="true" propertyName="field46"
+                  readOnly="@{field44 eq 'show2'}" refreshWhenChangedPropertyNames="#form.field44"/>
+      <fieldGroup
+              group.instructionalText="Choose an option from the first select control which will change the options available in the second select control"
+              label="Conditional Options" parent="GenericHorizontalFieldGroup">
+        <items>
+          <inputField label="Field 1" parent="GenericTextField" propertyName="field88">
+            <control>
+              <selectControl parent="Uif-DropdownControl">
+                <options>
+                  <spring:bean parent="Uif-KeyLabelPair">
+                    <spring:property name="key" value="Fruits"/>
+                    <spring:property name="value" value="Fruits"/>
+                  </spring:bean>
+                  <spring:bean parent="Uif-KeyLabelPair">
+                    <spring:property name="key" value="Vegetables"/>
+                    <spring:property name="value" value="Vegetables"/>
+                  </spring:bean>
+                </options>
+              </selectControl>
+            </control>
+          </inputField>
+          <inputField label="Field 2" optionsFinderClass="edu.sampleu.travel.options.FoodKeyValuesFinder"
+                      parent="GenericTextField" propertyName="field89" refreshWhenChangedPropertyNames="field88">
+            <control>
+              <selectControl parent="Uif-DropdownControl"/>
+            </control>
+          </inputField>
+        </items>
+      </fieldGroup>
+      <fieldGroup label="Refresh Buttons" parent="GenericHorizontalFieldGroup">
+        <items>
+          <action actionLabel="Refresh Group" methodToCall="refreshProgGroup" parent="Uif-PrimaryActionButton"
+                  refreshId="prog3"/>
+          <action actionLabel="Refresh Field" methodToCall="refreshProgGroup" parent="Uif-PrimaryActionButton"
+                  refreshPropertyName="field45"/>
+          <action actionLabel="Refresh Field but with Server Errors" methodToCall="refreshWithServerMessages"
+                  parent="Uif-PrimaryActionButton" refreshPropertyName="field45"/>
+          <action actionLabel="Refresh Page" methodToCall="refresh" parent="Uif-PrimaryActionButton"/>
+        </items>
+      </fieldGroup>
+      <group headertext="Refresh based on timer" id="timer1" methodToCallOnRefresh="refreshProgGroup"
+             parent="Uif-VerticalBoxSection" refreshTimer="10">
+        <items>
+          <message messageText="This message refreshes every 10 seconds: @{currentTimestamp}" parent="Uif-Message"/>
+        </items>
+      </group>
+    </items>
+  </group>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   headertext="Collection Group With Refresh" id="Uif-CollectionRefresh"
+                   instructionalText="This demonstrates refreshes fields and groups within a collection"
+                   layoutManager.summaryFields="field1" layoutManager.summaryTitle="Line Summary"
+                   parent="Uif-Disclosure-StackedCollectionSection" propertyName="list5">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField constraintText="Type ref" label="Field 2" parent="Uif-InputField" propertyName="field2"
+                  required="true"/>
+      <fieldGroup conditionalRefresh="@{#lp.field2 eq 'ref'}" label="Field Group" parent="Uif-VerticalFieldGroup">
+        <items>
+          <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+          <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+        </items>
+      </fieldGroup>
+    </items>
+    <subCollection>
+      <collectionGroup parent="Uif-SubCollectionRefresh" refreshWhenChangedPropertyNames="#lp.field2"/>
+    </subCollection>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" disclosure.render="false"
+                   headertext="SubCollection With Refresh" id="Uif-SubCollectionRefresh"
+                   instructionalText="This demonstrates refreshes within a sub-collection"
+                   layoutManager.summaryFields="field1" layoutManager.summaryTitle="Line Summary"
+                   parent="Uif-StackedCollectionSection" propertyName="subList">
+    <items>
+      <inputField constraintText="Type show2" label="SubField 1" parent="Uif-InputField" propertyName="field1"
+                  required="true"/>
+      <inputField label="SubField 2" parent="Uif-InputField" progressiveRender="@{#lp.field1 eq 'show2'}"
+                  propertyName="field2" required="true"/>
+      <fieldGroup conditionalRefresh="@{#lp.field2 eq 'ref'}" label="Field Group" parent="Uif-VerticalFieldGroup">
+        <items>
+          <inputField label="SubField 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+          <inputField label="SubField 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+        </items>
+      </fieldGroup>
+    </items>
+  </collectionGroup>
+</spring:beans>

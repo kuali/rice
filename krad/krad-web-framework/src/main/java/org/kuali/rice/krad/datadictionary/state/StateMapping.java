@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.state;
 
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

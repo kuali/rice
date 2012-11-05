@@ -141,8 +141,8 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
     protected void processBeanMessages(String beanName, BeanDefinition beanDefinition,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
         Class<?> beanClass = getBeanClass(beanDefinition, beanFactory);
-        if ((beanClass == null) || !(DictionaryBean.class.isAssignableFrom(beanClass) ||
-                ListFactoryBean.class.isAssignableFrom(beanClass))) {
+        if ((beanClass == null) || !(DictionaryBean.class.isAssignableFrom(beanClass) || ListFactoryBean.class
+                .isAssignableFrom(beanClass))) {
             return;
         }
 
@@ -421,7 +421,7 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
                 String expressionMessageText = getMessageTextForKey(expressionMessageKey, nestedBeanStack);
                 newPropertyValue = StringUtils.replace(newPropertyValue,
                         KRADConstants.EXPRESSION_MESSAGE_PLACEHOLDER_PREFIX + expressionMessageKey +
-                        KRADConstants.EXPRESSION_MESSAGE_PLACEHOLDER_SUFFIX, expressionMessageText);
+                                KRADConstants.EXPRESSION_MESSAGE_PLACEHOLDER_SUFFIX, expressionMessageText);
             }
         }
 

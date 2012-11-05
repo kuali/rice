@@ -34,7 +34,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
     /**
      * @see DictionaryBean#getNamespaceCode()
      */
-    @BeanTagAttribute(name="namespaceCode")
+    @BeanTagAttribute(name = "namespaceCode")
     public String getNamespaceCode() {
         return namespaceCode;
     }
@@ -51,7 +51,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
     /**
      * @see DictionaryBean#getComponentCode()
      */
-    @BeanTagAttribute(name="componentCode")
+    @BeanTagAttribute(name = "componentCode")
     public String getComponentCode() {
         return componentCode;
     }

@@ -1155,7 +1155,8 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata format="JPEG" fileref="RDV_MainMenu.jpg" width="500px" depth="500px"/>
+            <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDV_MainMenu.jpg" width="500px"
+                       depth="500px"/>
           </imageobject>
         </mediaobject>
 
@@ -1210,6 +1211,476 @@
             Once the user has completed running validations they can "Exit" the RDV by selecting exit
             from the main menu.
           </para>
+        </section>
+      </section>
+    </section>
+  </section>
+  <section>
+    <title>Rice Dictionary Schema</title>
+    <section>
+      <title>Introduction</title>
+      <section>
+        <title>Purpose</title>
+        <para>
+          The KRAD Framework works by utilizing the Spring Framework and its Bean feature that allows for
+          the filling of the data objects from xml files. These xml files are wrote using the Spring Bean
+          xml tags. This reduces the file to a collection of a limited number of tags with little
+          connection to the information they are contain and an unnatural semantic flow. The purpose of
+          the Rice Dictionary Schema is to expand the variety of the xml files to make them easier to
+          understand and connect with the data objects they are representing.
+        </para>
+      </section>
+      <section>
+        <title>What is RDS?</title>
+        <para>
+          The Rice Dictionary Schema the creation and setup of an extension to the Spring Framework that
+          allows for the use of unique and descriptive xml tags when creating the needed files for the
+          KRAD Framework. The tooling application developed for RDS allows the user to setup maintain and
+          expand the this language extension.
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Setting Up the RDS</title>
+      <section>
+        <title>Basic Overview</title>
+        <para>
+          The RDS utilizes another feature of the Spring Framework, Xml Authoring, that allows the user to
+          setup and define a way for the Spring Framework to translate xml tags into the normal Bean tag
+          format. Authoring functions through the use of five files to define the different aspects of the
+          xml tags including reading the xml, translating into beans and informing Spring of the language.
+          RDS automates and eases the creation of these files that are then compiled into the KRAD
+          Framework.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>Schema Xsd - Defines the semantics of the bean xml file.</para>
+          </listitem>
+          <listitem>
+            <para>Namespace Handler - Registers the Bean Tag with the a parser.</para>
+          </listitem>
+          <listitem>
+            <para>Parser - Defines the semantics of the bean xml file.</para>
+          </listitem>
+          <listitem>
+            <para>Spring.schemas - Registers the schema xsd with the Spring Framework.</para>
+          </listitem>
+          <listitem>
+            <para>Spring.handlers - Registers the handler with the Spring Framework.</para>
+          </listitem>
+        </itemizedlist>
+        <para>
+          The RDS allows users to create new tags for the Rice Schema by building onto other schemas,
+          giving the new schema access to the older schemas tags and resources, including all of the files
+          needed to define the schema. Because of this when implementing a new schema users only have to
+          create two of the files (Spring.schemas and schema.xsd) for their schema and the system will
+          provide the rest of the files.
+        </para>
+      </section>
+      <section>
+        <title>Expanding the Schema</title>
+        <section>
+          <title>Schema Naming</title>
+          <para>
+            When creating a new schema the first thing a user should do is name the schema. The name of
+            the schema is used in several ways by the RDS and all schema names should be unique. The
+            class list file and schema file both use the name as part of the automatic processing.
+            Example:
+          </para>
+          <itemizedlist>
+            <listitem>
+              <para>SCHEMANAME_schema.xsd</para>
+            </listitem>
+            <listitem>
+              <para>SCHEMANAME_schemaclasses.xml</para>
+            </listitem>
+            <listitem>
+              <para>spring.schemas</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section>
+          <title>Schema Xsd</title>
+          <para>
+            When creating the xsd file the user uses the following code and replaces SCHEMANAME with the
+            name of the schema being guild off of and repeat this line in schema location for each
+            support schema being build off of. For each tag bean added in the schema add the element tag
+            used in the example with the name set to new tag name.
+          </para>
+          <literallayout>
+            &lt;xsd:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="http://www.kuali.org/schema"
+            xmlns="http://www.kuali.org/schema"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+
+            &lt;xsd:include schemaLocation="http://www.kuali.org/SCHEMANAME/schema.xsd"/&gt;
+
+            &lt;xsd:element name="PROPERTYNAME" type="schema"/&gt;
+            &lt;xsd:element name="PROPERTYNAME2" type="schema"/&gt;
+            &lt;/xsd:schema&gt;
+          </literallayout>
+        </section>
+        <section>
+          <title>spring.schemas</title>
+          <para>
+            When creating the spring file the user simply adds the following line; as with creating the
+            xsd replace SCHEMANAME with the name of the schema being created (instead of the supporting
+            schema name).
+          </para>
+          http\://www.kuali.org/SCHEMANAME/schema.xsd = META-INF/SCHEMANAME_schema.xsd
+        </section>
+        <section>
+          <title>Class List File</title>
+          <para>
+            Since the tags for the RDS are defined using annotations a list of classes will be needed so
+            the system can read them. This file is an xml file with each class being listed with a class
+            tag. The classes can be listed individually or in a list with comma's separating them. Below
+            is an example of the file:
+          </para>
+          <literallayout>
+            &lt;kradSchema>
+            &lt;class&gt;org.kuali.rice.krad.datadictionary.Class1&lt;/class&gt;
+            &lt;class&gt;org.kuali.rice.krad.datadictionary.Class2&lt;/class&gt;
+            &lt;class&gt;org.kuali.rice.krad.datadictionary.Class3&lt;/class&gt;
+            &lt;class&gt;org.kuali.rice.krad.datadictionary.Class4&lt;/class&gt;
+            &lt;/kradSchema>
+          </literallayout>
+        </section>
+      </section>
+      <section>
+        <title>Adding Annotations</title>
+        <section>
+          <title>Restrictions</title>
+          <para>
+            When adding tags to the custom schema there is several restrictions to the tag names and
+            property names.
+          </para>
+          <itemizedlist>
+            <listitem>
+              <para>Tag names should be valid string names as xml tags (ex. variable1,
+                subclass.variable
+                ,...)
+              </para>
+            </listitem>
+            <listitem>
+              <para>The tag names of beans must be unique</para>
+            </listitem>
+            <listitem>
+              <para>The tag names of the properties should be unique among the other tags used in the
+                bean (be careful as the bean tag gains the property tags of any parent classes)
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                Property tags found in the bean file but not in the annotations will be dropped
+                through when parsed to be handled by the Spring Framework (ex.
+                layoutmanager.numcols)
+              </para>
+            </listitem>
+            <listitem>
+              <para>Reserved object tags: ref</para>
+            </listitem>
+            <listitem>
+              <para>Reserved property tags: id, parent, abstract, ref</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section>
+          <title>Bean Tag</title>
+          <para>
+            To create a new bean tag for the custom schema add the annotation tag BeanTag to the class
+            that it will represent. When adding a BeanTag the user will have to declare a name for the
+            new tag and can also declare a bean default parent for beans of that tag. If there is no
+            parent declared in the tag the default none will be used.
+          </para>
+        </section>
+        <section>
+          <title>Property Tag</title>
+          <para>
+            To create a new tag or attribute for a property add the annotation tag BeanTagAttribute to
+            the
+            property's get function. When adding the tag the user will need to also declare a name for
+            the new tag and the type of the property being defined. If the type is not declared in the
+            tag the property will be treated as SingleValue. The types are defined by the types below
+            found in the BeanTag Attribute:
+            <itemizedlist>
+              <listitem>
+                <para>AttributeType.SINGLEVALUE - A single property of a simple data type.</para>
+              </listitem>
+              <listitem>
+                <para>AttributeType.SINGLEBEAN - A single property of a bean object.</para>
+              </listitem>
+              <listitem>
+                <para>AttributeType.LISTVALUE - A list property of a simple data types.</para>
+              </listitem>
+              <listitem>
+                <para>AttributeType.LISTBEAN - A list property of a bean objects.</para>
+              </listitem>
+              <listitem>
+                <para>AttributeType.MAPVALUE - A map of two simple data types.</para>
+              </listitem>
+              <listitem>
+                <para>AttributeType.MAPBEAN - A map of a simple data type to a bean object.</para>
+              </listitem>
+              <listitem>
+                <para>AttributeType.MAP2BEAN - A map of two bean objects.</para>
+              </listitem>
+              <listitem>
+                <para>AttributeType.SETVALUE - A set of simple data types.</para>
+              </listitem>
+              <listitem>
+                <para>AttributeType.SETBEAN - A set of bean objects.</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+      </section>
+      <section>
+        <title>Writing the Bean File</title>
+        <para>Spring and Custom Schema</para>
+        <para>
+          The Spring Beans and Xml Authoring systems allow for the mix of both spring and custom schema in
+          the same set of beans. This means that a bean declaration can either be in the custom schema
+          format or the spring bean format. The property declarations within the bean has to follow the
+          schema that the bean was declared in but if a nested bean is added it can be declared in any
+          format.
+        </para>
+        <para>Property Names</para>
+        <para>
+          When using the custom schema the tag names of the properties do not all have to be declared in
+          the annotations to be used in the bean file. Property names that are not found in the schema are
+          dropped through using the unidentified name in the property declaration. They will then follow
+          the normal spring rules on property names which means that compound names can be used as well.
+          Do not that if an unknown name is found it will be treated as a single value if in the attribute
+          tags or as a single bean if it is a nested tag.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>Beans Header</para>
+            <para>
+              When creating the beans header in the bean file there are two things that need to be
+              looked at: the namespace prefix and the namespace schema location. If the custom schema
+              is going to be the primary tags used then it can be set to the xmlns and the spring
+              beans given a prefix. The namespace for the custom schema is
+              http://www.kuali.org/schema.
+              To add the custom schema to the bean file it needs to be added to the schema location
+              using the line:
+            </para>
+            <literallayout>
+              &lt;spring:beans xmlns="http://www.kuali.org/schema"
+              xmlns:p="http://www.springframework.org/schema/p"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:spring="http://www.springframework.org/schema/beans"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+              http://www.kuali.org/schema http://www.kuali.org/test/schema.xsd"&gt;
+              &lt;spring:beans&gt;
+            </literallayout>
+          </listitem>
+          <listitem>
+            <para>Bean Object</para>
+            <para>
+              If custom schema is the primary namespace of the xml then the object tag can be used
+              without a prefix. To use the custom tag use the name declared in the class annotation
+              for the tag name then add any properties that are simple data types as attributes. Even
+              if the properties do not have a custom tag or are compound names, non-bean singles are
+              handle by the attributes. Attributes encountered that are not found in the custom schema
+              are dropped through as property values by the parser.
+            </para>
+            <literallayout>
+              &lt;classTagName parent="uif-class1" id="classId" abstract="true"
+              tagProperty="this is tagged" unTagProperty="this isnt" compound.name="Authors"/&gt;
+            </literallayout>
+          </listitem>
+          <listitem>
+            <para>Single Bean</para>
+            <para>
+              For adding nested beans the property is declared as a new tag with no attributes and
+              nest the new bean within it.
+            </para>
+            <literallayout>
+              &lt;beanProperty&gt;
+              &lt;singleBean parent="uif-bean"/&gt;
+              &lt;/beanProperty&gt;
+            </literallayout>
+          </listitem>
+          <listitem>
+            <para>List Value</para>
+            <para>
+              When declaring a list of simple data types in the bean the property name is used in a
+              new tag without any attributes. Values are then added by nested value tags under the
+              property tag.
+            </para>
+            <literallayout>
+              &lt;listProperty&gt;
+              &lt;value&gt;v1&lt;/value&gt;
+              &lt;value&gt;v2&lt;/value&gt;
+              &lt;value&gt;v3&lt;/value&gt;
+              &lt;/listProperty&gt;
+            </literallayout>
+          </listitem>
+          <listitem>
+            <para>List Bean</para>
+            <para>
+              A list of bean objects is started the same as the list value with the property tag
+              declared. However instead of nested value tags the bean tags are declared either by a
+              referenced bean or new spring or custom bean declarations.
+            </para>
+            <literallayout>
+              &lt;attributes&gt;
+              &lt;ref bean="bean-id"/&gt;
+              &lt;spring:bean parent="uif-bean"/&gt;
+              &lt;customBean parent="uif-custom"/&gt;
+              &lt;/attributes&gt;
+            </literallayout>
+          </listitem>
+        </itemizedlist>
+
+      </section>
+      <section>
+        <title>Rice Tools</title>
+        <table>
+          <title>Rice Tooling: RDS</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Main Menu</entry>
+                <entry>Preview</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDS_MainMenu.jpg" width="500px"
+                                 depth="500px"/>
+                    </imageobject>
+                  </mediaobject>
+                </entry>
+                <entry>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata format="JPEG" fileref="../images/KRAD_Guide/rice-tools/RDS_Preview.jpg" width="500px"
+                                 depth="500px"/>
+                    </imageobject>
+                  </mediaobject>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>
+          The RDS tool included in the Rice Tool package aids the creation and management of a custom
+          schema by automating creating the schema xsd, spring.schemas and the class list file. This
+          allows the user to deploy a new schema and expand upon it easily before redeploying it with the
+          changes. It also gives the user instructions and lines needed to implement the schema in the
+          KRAD Framework. The RDS allows the copying of created schema configurations letting users manage
+          multiple schemas at the same time.
+        </para>
+        <para>
+          With this tool the work needed by the user to implement a schema is greatly reduced as the user
+          only needs to provide four things:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>Schema Name - The name of the new schema.</para>
+          </listitem>
+          <listitem>
+            <para>META-INF - The location of the META-INF folder (.../META-INF).</para>
+          </listitem>
+          <listitem>
+            <para>List of Support Schemas - The names of the schemas that the new schema is being build
+              on.
+            </para>
+          </listitem>
+          <listitem>
+            <para>List of Tags - A list of new tags to be used in the schema with the class it
+              repersents.
+            </para>
+          </listitem>
+        </itemizedlist>
+        <section>
+          <title>Using Rice Tool's RDS</title>
+          <itemizedlist>
+            <listitem>
+              <para>Setting the Schema Name:</para>
+              <para>
+                To set the name of the new schema select the "Set Schema Name" option. Next enter a
+                name for
+                the new schema that is unique among the schemas being used and are acceptable as
+                file names.
+              </para>
+            </listitem>
+            <listitem>
+              <para>META-INF Location:</para>
+              <para>
+                To set the name of the new schema select the "Set META-INF Location" option at the
+                main menu
+                and enter the path of the META-INF file. This path is actually into the folder so it
+                should
+                end in with "/META-INF".
+              </para>
+            </listitem>
+            <listitem>
+              <para>Handling Support Schemas:</para>
+              <para>
+                To add a schema to build upon select "Add Support" from the menu and enter the name
+                of the
+                schema to be added to the user. Supports can be removed by selecting "Remove
+                Support" and
+                selecting the support to remove. The name of the supports are case sensitive.
+              </para>
+            </listitem>
+            <listitem>
+              <para>Handling Tags:</para>
+              <para>
+                To add a new class to the schema select "Add Tag" from the main menu and enter both
+                the name
+                of the new tag and the package of the tag's class. Supports can be removed by
+                selecting
+                "Remove Tags" and selecting the support to remove.
+              </para>
+            </listitem>
+            <listitem>
+              <para>Handling the Schema Configuration:</para>
+              <para>
+                The current configuration being worked on is handled automatically and can be viewed
+                and
+                saved by selecting the the option on the menu. The load configuration option will
+                load the
+                last configuration saved automatically. This is the working configuration and is
+                automatically saved to a default file so users will not have to enter a file name.
+              </para>
+            </listitem>
+            <listitem>
+              <para>Handling Additional Schemas:</para>
+              <para>
+                If the user is working on multiple schemas the configuration for each of them can be
+                saved
+                outside the working configuration by selecting the save and load copy options.
+                Unlike the
+                working configuration these are saved to user defined xml files so the user will
+                have to
+                enter their file path.
+              </para>
+            </listitem>
+            <listitem>
+              <para>Generating a Schema:</para>
+              <para>
+                Once the schema configuration is complete the custom schema can be deployed by
+                selecting
+                "Generate Schema" from the menu. This will create the schema, spring.schemas and
+                class list
+                and save them to the META-INF folder. The RDS will notify the user that the files
+                were
+                created followed by the schema location needed to be used in the bean xml files and
+                the
+                setting needed for the KRAD configuration files for the class list.
+              </para>
+            </listitem>
+          </itemizedlist>
         </section>
       </section>
     </section>

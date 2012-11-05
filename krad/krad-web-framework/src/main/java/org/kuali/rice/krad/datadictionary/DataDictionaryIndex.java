@@ -122,8 +122,9 @@ public class DataDictionaryIndex implements Runnable {
         for (DocumentEntry entry : docBeans.values()) {
             String entryName = entry.getDocumentTypeName();
 
-            if ((entry instanceof TransactionalDocumentEntry) && (documentEntries.get(entry.getFullClassName()) !=
-                    null) && !StringUtils.equals(documentEntries.get(entry.getFullClassName()).getDocumentTypeName(),
+            if ((entry instanceof TransactionalDocumentEntry)
+                    && (documentEntries.get(entry.getFullClassName()) != null)
+                    && !StringUtils.equals(documentEntries.get(entry.getFullClassName()).getDocumentTypeName(),
                     entry.getDocumentTypeName())) {
                 throw new DataDictionaryException(new StringBuffer(
                         "Two transactional document types may not share the same document class: this=").append(
@@ -194,8 +195,9 @@ public class DataDictionaryIndex implements Runnable {
         }
         boolean duplicateAdd = !inactivationBlockingDefinitions.add(inactivationBlockingDefinition);
         if (duplicateAdd) {
-            throw new DataDictionaryException("Detected duplicate InactivationBlockingDefinition for class " +
-                    inactivationBlockingDefinition.getBlockingReferenceBusinessObjectClass().getClass().getName());
+            throw new DataDictionaryException(
+                    "Detected duplicate InactivationBlockingDefinition for class " + inactivationBlockingDefinition
+                            .getBlockingReferenceBusinessObjectClass().getClass().getName());
         }
     }
 

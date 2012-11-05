@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <group headertext="Field Groups" id="UifCompView-FieldGroups"
+         instructionalText="Field Groups can have multiple fields but appear to the user as one logical field grouping."
+         parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <fieldGroup group.instructionalText="Field group with vertical layout and group/field labels"
+                  label="Field Group 1" parent="Uif-VerticalFieldGroup">
+        <items>
+          <inputField label="Field 1" parent="Uif-InputField" propertyName="field80">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+          <inputField label="Field 2" parent="Uif-InputField" propertyName="field121">
+            <control>
+              <textControl parent="Uif-TextControl" size="21"/>
+            </control>
+          </inputField>
+        </items>
+      </fieldGroup>
+      <fieldGroup group.instructionalText="Field group with horizontal layout and no field labels" label="Field Group 2"
+                  parent="Uif-HorizontalFieldGroup">
+        <items>
+          <inputField fieldLabel.render="false" parent="Uif-InputField" propertyName="field122">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+          <inputField fieldLabel.render="false" parent="Uif-InputField" propertyName="field123">
+            <control>
+              <textControl parent="Uif-TextControl" size="21"/>
+            </control>
+          </inputField>
+        </items>
+      </fieldGroup>
+      <fieldGroup group.instructionalText="Field group with input and action field" label="Field Group 3"
+                  parent="Uif-HorizontalFieldGroup">
+        <items>
+          <inputField fieldLabel.render="false" parent="Uif-InputField" propertyName="field124">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+          <action actionLabel="find" actionScript="alert('You clicked a button');" parent="Uif-PrimaryActionButton"/>
+        </items>
+      </fieldGroup>
+    </items>
+  </group>
+  <group headertext="Message Fields" id="UifCompView-MessageFields"
+         instructionalText="Message fields display read-only text" parent="Uif-VerticalBoxSection">
+    <items>
+      <message messageText="Message Field 1 Text" parent="Uif-Message"/>
+      <message messageText="Message Field with expression text: '@{field88}'" parent="Uif-Message"/>
+    </items>
+  </group>
+  <group headertext="Attribute Security" id="UifCompView-AttributeSecurity"
+         instructionalText="Input Fields with Security Masking" parent="Uif-VerticalBoxSection">
+    <items>
+      <inputField label="Masked Field" parent="GenericTextField" propertyName="mField1">
+        <componentSecurity.attributeSecurity>
+          <attributeSecurity mask="true" parent="AttributeSecurity">
+            <maskFormatter>
+              <maskFormatterLiteral literal="*********" parent="MaskFormatterLiteral"/>
+            </maskFormatter>
+          </attributeSecurity>
+        </componentSecurity.attributeSecurity>
+      </inputField>
+      <inputField instructionalText="maskLength 5" label="Partial Masked Field" parent="GenericTextField"
+                  propertyName="mField2">
+        <componentSecurity.attributeSecurity>
+          <attributeSecurity parent="AttributeSecurity" partialMask="true">
+            <partialMaskFormatter>
+              <maskFormatteSubString maskLength="5" parent="MaskFormatterSubString"/>
+            </partialMaskFormatter>
+          </attributeSecurity>
+        </componentSecurity.attributeSecurity>
+      </inputField>
+    </items>
+  </group>
+  <group headertext="Image Fields" id="UifCompView-ImageFields" instructionalText="Fields that display an image"
+         parent="Uif-VerticalBoxSection">
+    <items>
+      <imageField altText="pdf image" label="Image field with alt text" parent="Uif-ImageField"
+                  source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png" title="pdf image"/>
+      <imageField altText="computer programming" captionHeaderText="Image Caption Text" cssClasses="kr-photo"
+                  cutlineText="Image cutline text here" fieldLabel.render="false" parent="Uif-ImageField"
+                  source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"
+                  title="computer programming"/>
+    </items>
+  </group>
+  <group headertext="Action Fields" id="UifCompView-ActionFields"
+         instructionalText="Action fields perform an action and can be images, links, buttons or combinations of the aforementioned"
+         parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <action actionLabel="ActionLinkField" actionScript="alert('You clicked the link');" parent="Uif-ActionLink"/>
+      <action actionLabel="ActionLinkField presubmit call true" methodToCall="refresh" parent="Uif-ActionLink"
+              preSubmitCall="return testPresubmitCall()"/>
+      <action actionLabel="ActionLinkField presubmit call false" methodToCall="refresh" parent="Uif-ActionLink"
+              preSubmitCall="return testPresubmitCall2(this, 'stop')"/>
+      <action actionLabel="ActionLinkField ajaxSubmit call false" ajaxSubmit="false" methodToCall="refresh"
+              parent="Uif-ActionLink" preSubmitCall="var valid=true;return valid;"/>
+      <action actionLabel="ActionLinkField sucessCallBack" methodToCall="refresh" parent="Uif-ActionLink"
+              successCallback="testSuccessCallback(responseContents)"/>
+      <action actionLabel="ActionLinkField validate" methodToCall="refresh" parent="Uif-ActionLink"
+              performClientSideValidation="true"/>
+      <action actionLabel="ActionLinkField errorCallBack" errorCallback="testErrorCallback" methodToCall="errorCheck"
+              parent="Uif-ActionLink"/>
+      <action actionLabel="ActionLinkField ajax redirect" ajaxSubmit="true" methodToCall="redirectCheck"
+              parent="Uif-ActionLink"/>
+      <action actionImagePlacement="RIGHT" actionLabel="ActionLinkField image right"
+              actionScript="alert('You clicked a button');" parent="Uif-ActionLink">
+        <actionImage>
+          <image altText="Search" parent="Uif-Image"
+                 source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </actionImage>
+      </action>
+      <action actionLabel="ActionLinkField image left (default)" actionScript="alert('You clicked a button');"
+              parent="Uif-ActionLink">
+        <actionImage>
+          <image altText="Search" parent="Uif-Image"
+                 source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </actionImage>
+      </action>
+      <action actionScript="alert('You clicked a button');" parent="Uif-ActionImage">
+        <actionImage>
+          <image altText="Action Image demonstration" parent="Uif-Image"
+                 source="@{#ConfigProperties['krad.externalizable.images.url']}down.png"/>
+        </actionImage>
+      </action>
+      <action actionLabel="button" actionScript="alert('You clicked a button');" parent="Uif-PrimaryActionButton"/>
+      <action actionImagePlacement="BOTTOM" actionLabel="Image BOTTOM" actionScript="alert('You clicked a button');"
+              parent="Uif-PrimaryActionButton">
+        <actionImage>
+          <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </actionImage>
+      </action>
+      <action actionImagePlacement="TOP" actionLabel="Image TOP" actionScript="alert('You clicked a button');"
+              parent="Uif-PrimaryActionButton">
+        <actionImage>
+          <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </actionImage>
+      </action>
+      <action actionImagePlacement="LEFT" actionLabel="Image LEFT" actionScript="alert('You clicked a button');"
+              parent="Uif-PrimaryActionButton">
+        <actionImage>
+          <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </actionImage>
+      </action>
+      <action actionImagePlacement="RIGHT" actionLabel="Image RIGHT" actionScript="alert('You clicked a button');"
+              parent="Uif-PrimaryActionButton">
+        <actionImage>
+          <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </actionImage>
+      </action>
+      <action actionScript="alert('You clicked a button');" parent="Uif-PrimaryActionButton">
+        <actionImage>
+          <image altText="Image Only button" parent="Uif-Image"
+                 source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </actionImage>
+      </action>
+      <action actionLabel="Disabled Button" disabled="true" methodToCall="foo" parent="Uif-PrimaryActionButton"/>
+      <actionField label="Action Field" methodToCall="foo" parent="Uif-ActionField">
+        <actionImage>
+          <image altText="Action Field" parent="Uif-Image"
+                 source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+        </actionImage>
+      </actionField>
+    </items>
+  </group>
+  <group headertext="Link Fields" id="UifCompView-LinkFields" parent="Uif-VerticalBoxSection">
+    <items>
+      <linkField href="http://www.kuali.org" label="LinkField is used for href links" linkText="Kuali Website"
+                 parent="Uif-LinkField"/>
+      <linkField href="http://www.kuali.org" label="LinkField can be used with lightboxes"
+                 linkText="Kuali Website in a lightbox" parent="Uif-LinkField" target="_blank">
+        <lightBox>
+          <lightBox parent="Uif-LightBox"/>
+        </lightBox>
+      </linkField>
+      <linkGroup groupBeginDelimiter="[" groupEndDelimiter="]" headertext="LinkGroup"
+                 instructionalText="LinkGroup with | delimiter and [] begin and end delimiter" linkSeparator="|"
+                 parent="Uif-LinkGroup">
+        <items>
+          <action actionLabel="Link 1" actionScript="alert('You clicked the link');" parent="Uif-ActionLink"/>
+          <action actionLabel="Link 2" actionScript="alert('You clicked the link');" parent="Uif-ActionLink"/>
+          <action actionLabel="Link 3" actionScript="alert('You clicked the link');" parent="Uif-ActionLink"/>
+        </items>
+      </linkGroup>
+    </items>
+  </group>
+  <group headertext="Miscellaneous Fields and Groups" id="UifCompView-OtherFields"
+         instructionalText="A variety of other fields and groups" parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <tabGroup headertext="Tabs"
+                instructionalText="TabGroup holds a list of groups that can be switched between, titles are based on the groups title property"
+                parent="Uif-TabSection">
+        <items>
+          <group parent="UifCompView-TextFields3"/>
+          <group parent="UifCompView-TextAreas"/>
+        </items>
+      </tabGroup>
+      <treeGroup headertext="Basic String Data tree" instructionalText="Data Tree" parent="Uif-TreeSection"
+                 propertyName="tree1"/>
+      <treeGroup headertext="Tree with Data Group" instructionalText="Data Tree" parent="Uif-TreeSection"
+                 propertyName="tree2">
+        <defaultNodePrototype>
+          <nodePrototype>
+            <labelPrototype>
+              <message parent="Uif-Message"/>
+            </labelPrototype>
+            <dataGroupPrototype>
+              <group parent="Uif-VerticalBoxGroup" style="margin-left: 2em;">
+                <items>
+                  <fieldGroup parent="Uif-HorizontalFieldGroup">
+                    <items>
+                      <inputField fieldLabel.cssClasses="labelTop" instructionalText="instructions 1" label="Field 1"
+                                  labelPlacment="TOP" parent="Uif-InputField" propertyName="field1" required="true"/>
+                      <inputField fieldLabel.cssClasses="labelTop" instructionalText="instructions 2" label="Field 2"
+                                  labelPlacment="TOP" parent="Uif-InputField" propertyName="field2" required="true"/>
+                      <inputField fieldLabel.cssClasses="labelTop" instructionalText="instructions 3" label="Field 3"
+                                  labelPlacment="TOP" parent="Uif-InputField" propertyName="field3" required="true"/>
+                      <inputField fieldLabel.cssClasses="labelTop" instructionalText="instructions 4" label="Field 4"
+                                  labelPlacment="TOP" parent="Uif-InputField" propertyName="field4" required="true"/>
+                    </items>
+                  </fieldGroup>
+                </items>
+              </group>
+            </dataGroupPrototype>
+          </nodePrototype>
+        </defaultNodePrototype>
+      </treeGroup>
+      <reorderingGroup headertext="Reordering Group"
+                       instructionalText="Reorder the group items by dragging one of the items to its new position. Note each of these 'boxes' could contain a field or group of fields"
+                       parent="Uif-ReorderSection">
+        <items>
+          <message cssClasses="fl-font-size-150,fl-input-outline" messageText="Box 1" parent="Uif-Message"/>
+          <message cssClasses="fl-font-size-150,fl-input-outline" messageText="Box 2" parent="Uif-Message"/>
+          <message cssClasses="fl-font-size-150,fl-input-outline" messageText="Box 3" parent="Uif-Message"/>
+          <message cssClasses="fl-font-size-150,fl-input-outline" messageText="Box 4" parent="Uif-Message"/>
+          <message cssClasses="fl-font-size-150,fl-input-outline" messageText="Box 5" parent="Uif-Message"/>
+        </items>
+      </reorderingGroup>
+      <iFrame height="550px" parent="Uif-Iframe" source="http://www.kuali.org" width="800px"/>
+    </items>
+  </group>
+  <group headertext="Scrollable Groups" id="UifCompView-ScrollableGroups"
+         instructionalText="By adding scrollable to a group or section a scrollbar appears if the content exceeds the specified size."
+         parent="Uif-Disclosure-HorizontalBoxSection">
+    <items>
+      <group headertext="This is a scrollable sub section." instructionalText="This also works on sections."
+             parent="Uif-Disclosure-VerticalBoxSubSection" width="30%">
+        <scrollpane>
+          <scrollpane height="100px" parent="Uif-Scrollpane"/>
+        </scrollpane>
+        <items>
+          <message
+                  messageText="A group or section can be made scrollable by adding the Uif-Scrollpane bean.                 With the Uif-Scrollpane bean the height and/or width can be specified.  If the content size exceeds the specified size then                 scrollbars are rendered for the group/section."
+                  parent="Uif-Message"/>
+          <inputField label="Field 1" parent="Uif-InputField" propertyName="field80">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+          <message
+                  messageText="Only the content of the section/sub section is made scrollable.  Title and the                instructional text are not scrolled."
+                  parent="Uif-Message"/>
+        </items>
+      </group>
+      <group parent="Uif-VerticalBoxGroup" width="30%">
+        <scrollpane>
+          <scrollpane height="100px" parent="Uif-Scrollpane"/>
+        </scrollpane>
+        <items>
+          <message messageText="This is a scrollable group." parent="Uif-Message"/>
+          <inputField label="Field 1" parent="Uif-InputField" propertyName="field80">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+          <message
+                  messageText="A group or section can be made scrollable by adding the Uif-Scrollpane bean.                 With the Uif-Scrollpane bean the height and/or width can be specified.  If the content size exceeds the specified size then                 scrollbars are rendered for the group/section."
+                  parent="Uif-Message"/>
+        </items>
+      </group>
+    </items>
+  </group>
+</spring:beans>

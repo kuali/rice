@@ -21,16 +21,17 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import java.util.List;
 
 /**
- * An object that returns the list of prerequisite constraints for a definition implementing the capability {@link PrerequisiteConstrainable}.
+ * An object that returns the list of prerequisite constraints for a definition implementing the capability {@link
+ * PrerequisiteConstrainable}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PrerequisiteConstraintsResolver<T extends PrerequisiteConstrainable> implements ConstraintResolver<T> {
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <C extends Constraint> List<C> resolve(T definition) {
-		return (List<C>) definition.getPrerequisiteConstraints();
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public <C extends Constraint> List<C> resolve(T definition) {
+        return (List<C>) definition.getPrerequisiteConstraints();
+    }
 
 }

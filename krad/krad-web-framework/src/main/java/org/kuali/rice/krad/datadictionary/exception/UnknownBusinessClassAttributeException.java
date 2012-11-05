@@ -16,10 +16,9 @@
 package org.kuali.rice.krad.datadictionary.exception;
 
 /**
- * Use this when the data dictionary cannot find a matching business object's attribute entry for a populated business object that
+ * Use this when the data dictionary cannot find a matching business object's attribute entry for a populated business
+ * object that
  * runs through the data dictionary validation service and its methods.
- *
- *
  */
 public class UnknownBusinessClassAttributeException extends RuntimeException {
     private static final long serialVersionUID = -2021739544938001742L;

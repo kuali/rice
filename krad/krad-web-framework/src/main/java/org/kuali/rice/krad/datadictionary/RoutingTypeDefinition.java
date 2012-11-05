@@ -20,56 +20,57 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.util.List;
 
-
 /**
  * This is a description of what this class does - mpham don't forget to fill this in.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-@BeanTag(name="routingTypeDefinition")
+@BeanTag(name = "routingTypeDefinition")
 public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
-	private static final long serialVersionUID = -5455042765223753531L;
+    private static final long serialVersionUID = -5455042765223753531L;
 
-	private List<RoutingAttribute> routingAttributes;
-	private List<DocumentValuePathGroup> documentValuePathGroups;
+    private List<RoutingAttribute> routingAttributes;
+    private List<DocumentValuePathGroup> documentValuePathGroups;
 
-	/**
-	 * @return the routingAttributes
-	 */
-    @BeanTagAttribute(name="routingAttributes",type= BeanTagAttribute.AttributeType.LISTBEAN)
-	public List<RoutingAttribute> getRoutingAttributes() {
-		return this.routingAttributes;
-	}
-	/**
-	 * @return the documentValuePathGroups
-	 */
-    @BeanTagAttribute(name="documentValuePathGroups",type= BeanTagAttribute.AttributeType.LISTBEAN)
-	public List<DocumentValuePathGroup> getDocumentValuePathGroups() {
-		return this.documentValuePathGroups;
-	}
-	/**
-	 * @param routingAttributes the routingAttributes to set
-	 */
-	public void setRoutingAttributes(List<RoutingAttribute> routingAttributes) {
-		this.routingAttributes = routingAttributes;
-	}
-	/**
-	 * @param documentValuePathGroups the documentValuePathGroups to set
-	 */
-	public void setDocumentValuePathGroups(
-			List<DocumentValuePathGroup> documentValuePathGroups) {
-		this.documentValuePathGroups = documentValuePathGroups;
-	}
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
-	 */
-	public void completeValidation(Class rootBusinessObjectClass,
-			Class otherBusinessObjectClass) {
-		// TODO wliang - THIS METHOD NEEDS JAVADOCS
+    /**
+     * @return the routingAttributes
+     */
+    @BeanTagAttribute(name = "routingAttributes", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    public List<RoutingAttribute> getRoutingAttributes() {
+        return this.routingAttributes;
+    }
 
-	}
+    /**
+     * @return the documentValuePathGroups
+     */
+    @BeanTagAttribute(name = "documentValuePathGroups", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    public List<DocumentValuePathGroup> getDocumentValuePathGroups() {
+        return this.documentValuePathGroups;
+    }
+
+    /**
+     * @param routingAttributes the routingAttributes to set
+     */
+    public void setRoutingAttributes(List<RoutingAttribute> routingAttributes) {
+        this.routingAttributes = routingAttributes;
+    }
+
+    /**
+     * @param documentValuePathGroups the documentValuePathGroups to set
+     */
+    public void setDocumentValuePathGroups(List<DocumentValuePathGroup> documentValuePathGroups) {
+        this.documentValuePathGroups = documentValuePathGroups;
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
+     *      java.lang.Class)
+     */
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        // TODO wliang - THIS METHOD NEEDS JAVADOCS
+
+    }
 
 }

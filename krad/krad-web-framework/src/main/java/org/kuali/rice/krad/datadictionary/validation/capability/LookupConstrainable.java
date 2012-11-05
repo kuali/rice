@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.LookupConstraint
  */
 public interface LookupConstrainable extends Constrainable {
 
-	// FIXME: rename to getLookupConstraint()
-	public LookupConstraint getLookupConstraint();
+    // FIXME: rename to getLookupConstraint()
+    public LookupConstraint getLookupConstraint();
 
 }

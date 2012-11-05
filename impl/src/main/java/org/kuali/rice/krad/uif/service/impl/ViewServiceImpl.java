@@ -15,21 +15,25 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
-import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of <code>ViewService</code>
@@ -105,7 +109,7 @@ public class ViewServiceImpl implements ViewService {
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.view.View, java.lang.Object,
-     * java.util.Map<java.lang.String,java.lang.String>)
+     *      java.util.Map<java.lang.String,java.lang.String>)
      */
     public void buildView(View view, Object model, Map<String, String> parameters) {
         // get the configured helper service for the view
@@ -121,11 +125,12 @@ public class ViewServiceImpl implements ViewService {
         performViewLifecycle(view, model, parameters);
 
         // Validation of the page's beans
-        /*if(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean("validate.data.dictionary")){
-            ValidationController validator = new ValidationController(true,true,true,true,false);
+        if (KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
+                "validate.data.dictionary.onbuild")) {
+            ValidationController validator = new ValidationController(true, true, true, true, false);
             Log tempLogger = LogFactory.getLog(ViewServiceImpl.class);
-            validator.validate(view,tempLogger,false);
-        }*/
+            validator.validate(view, tempLogger, false);
+        }
     }
 
     /**

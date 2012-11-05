@@ -16,13 +16,14 @@
 package org.kuali.rice.krad.datadictionary.validation.capability;
 
 /**
- * This interface defines methods that must be implemented by classes that you want to participate in dictionary validation as
+ * This interface defines methods that must be implemented by classes that you want to participate in dictionary
+ * validation as
  * for example 'attribute-level' object structure definitions.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Constrainable {
 
-	public String getName();
+    public String getName();
 
 }

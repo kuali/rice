@@ -25,6 +25,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -147,9 +148,9 @@ public class CustomTagAnnotations {
      */
     private static String getFieldName(String methodName) {
         // Check if function is of the form isPropertyName()
-        if(methodName.substring(0,2).toLowerCase().compareTo("is")==0){
+        if (methodName.substring(0, 2).toLowerCase().compareTo("is") == 0) {
             String letter = methodName.substring(2, 3);
-            return letter.toLowerCase() + methodName.substring(2, methodName.length());
+            return letter.toLowerCase() + methodName.substring(3, methodName.length());
         }
         // Since the annotation is attached to the get function the property name starts at the 4th letter and has been upper-cased as assumed by the Spring Beans.
         String letter = methodName.substring(3, 4);
@@ -308,8 +309,39 @@ public class CustomTagAnnotations {
             }
 
         } catch (Exception e) {
-            LOG.error("Error Loading class list", e);
-            e.printStackTrace();
+            try {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document document;
+                File file = new File(path);
+                document = builder.parse(file);
+
+                // Read package names into a comma separated list
+                NodeList classes = document.getElementsByTagName("class");
+                String classList = "";
+                for (int i = 0; i < classes.getLength(); i++) {
+                    classList = classList + classes.item(i).getTextContent() + ",";
+                }
+
+                // Split array into list by ,
+                if (classList.length() > 0) {
+                    if (classList.charAt(classList.length() - 1) == ',') {
+                        classList = classList.substring(0, classList.length() - 1);
+                    }
+                    String list[] = classList.split(",");
+                    for (int i = 0; i < list.length; i++) {
+                        completeList.add(list[i]);
+                    }
+                }
+
+                // Add any schemas being built off of.
+                NodeList includes = document.getElementsByTagName("include");
+                for (int i = 0; i < includes.getLength(); i++) {
+                    completeList.addAll(getClassList(includes.item(i).getTextContent()));
+                }
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
 
         return completeList;

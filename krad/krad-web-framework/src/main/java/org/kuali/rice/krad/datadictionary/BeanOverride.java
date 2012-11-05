@@ -21,14 +21,15 @@ import java.util.List;
  * Performs overrides on the fields of a Data Dictionary bean.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface BeanOverride {
-	 /**
+    /**
      * Return the name of the bean to perform the override.
+     *
      * @return
      */
     public String getBeanName();
+
     /**
      * Returns the list of fields to perform the override.
      */

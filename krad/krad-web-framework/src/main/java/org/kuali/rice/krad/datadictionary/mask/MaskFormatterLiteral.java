@@ -25,7 +25,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="maskFormatterLiteral")
+@BeanTag(name = "maskFormatterLiteral")
 public class MaskFormatterLiteral implements MaskFormatter {
     private static final long serialVersionUID = 3368293409242411693L;
 
@@ -40,7 +40,7 @@ public class MaskFormatterLiteral implements MaskFormatter {
      *
      * @return Returns the literal String.
      */
-    @BeanTagAttribute(name="literal")
+    @BeanTagAttribute(name = "literal")
     public String getLiteral() {
         return literal;
     }

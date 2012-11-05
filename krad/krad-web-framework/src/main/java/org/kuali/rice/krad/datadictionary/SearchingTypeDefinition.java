@@ -20,53 +20,55 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.util.List;
 
-
 /**
  * This is a description of what this class does - mpham don't forget to fill this in.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-@BeanTag(name="searchingTypeDefinition")
+@BeanTag(name = "searchingTypeDefinition")
 public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
-	private static final long serialVersionUID = -8779609937539520677L;
+    private static final long serialVersionUID = -8779609937539520677L;
 
-	private SearchingAttribute searchingAttribute;
-	private List<String> paths;
+    private SearchingAttribute searchingAttribute;
+    private List<String> paths;
 
-	/**
-	 * @return the searchingAttribute
-	 */
-    @BeanTagAttribute(name="searchAttribute",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public SearchingAttribute getSearchingAttribute() {
-		return this.searchingAttribute;
-	}
-	/**
-	 * @return the documentValues
-	 */
-    @BeanTagAttribute(name="documentValues",type= BeanTagAttribute.AttributeType.LISTVALUE)
-	public List<String> getDocumentValues() {
-		return this.paths;
-	}
-	/**
-	 * @param searchingAttribute the searchingAttribute to set
-	 */
-	public void setSearchingAttribute(SearchingAttribute searchingAttribute) {
-		this.searchingAttribute = searchingAttribute;
-	}
-	/**
-	 * @param documentValues the documentValues to set
-	 */
-	public void setDocumentValues(List<String> paths) {
-		this.paths = paths;
-	}
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
-	 */
-	public void completeValidation(Class rootBusinessObjectClass,
-			Class otherBusinessObjectClass) {
+    /**
+     * @return the searchingAttribute
+     */
+    @BeanTagAttribute(name = "searchAttribute", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public SearchingAttribute getSearchingAttribute() {
+        return this.searchingAttribute;
+    }
 
-	}
+    /**
+     * @return the documentValues
+     */
+    @BeanTagAttribute(name = "documentValues", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getDocumentValues() {
+        return this.paths;
+    }
+
+    /**
+     * @param searchingAttribute the searchingAttribute to set
+     */
+    public void setSearchingAttribute(SearchingAttribute searchingAttribute) {
+        this.searchingAttribute = searchingAttribute;
+    }
+
+    /**
+     * @param documentValues the documentValues to set
+     */
+    public void setDocumentValues(List<String> paths) {
+        this.paths = paths;
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
+     *      java.lang.Class)
+     */
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+
+    }
 }

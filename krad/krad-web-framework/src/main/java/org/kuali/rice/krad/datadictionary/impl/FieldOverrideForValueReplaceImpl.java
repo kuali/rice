@@ -15,47 +15,46 @@
  */
 package org.kuali.rice.krad.datadictionary.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.kuali.rice.krad.datadictionary.FieldOverride;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * A Field Override used to replace value elements from a Data Dictionary bean.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class FieldOverrideForValueReplaceImpl implements FieldOverride{
+public class FieldOverrideForValueReplaceImpl implements FieldOverride {
 
-	private String propertyName;
-	private Object value;
+    private String propertyName;
+    private Object value;
 
-	public String getPropertyName() {
-		return propertyName;
-	}
+    public String getPropertyName() {
+        return propertyName;
+    }
 
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
 
-	public Object getValue() {
-		return value;
-	}
+    public Object getValue() {
+        return value;
+    }
 
-	public void setValue(Object value) {
-		this.value = value;
-	}
+    public void setValue(Object value) {
+        this.value = value;
+    }
 
-	public Object performFieldOverride(Object bean, Object property) {
-		try {
-			BeanUtils.setProperty(bean, this.getPropertyName(), this.getValue());
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
+    public Object performFieldOverride(Object bean, Object property) {
+        try {
+            BeanUtils.setProperty(bean, this.getPropertyName(), this.getValue());
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
 
-		return getValue();
-	}
+        return getValue();
+    }
 }

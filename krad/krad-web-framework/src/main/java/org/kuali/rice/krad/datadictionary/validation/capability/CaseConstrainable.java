@@ -25,6 +25,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
  */
 public interface CaseConstrainable extends Constrainable {
 
-	public CaseConstraint getCaseConstraint();
+    public CaseConstraint getCaseConstraint();
 
 }

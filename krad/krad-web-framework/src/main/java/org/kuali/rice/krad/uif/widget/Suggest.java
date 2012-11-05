@@ -18,13 +18,13 @@ package org.kuali.rice.krad.uif.widget;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
-import org.kuali.rice.krad.uif.util.ScriptUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
+import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.view.View;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="suggest")
+@BeanTag(name = "suggest")
 public class Suggest extends WidgetBase {
     private static final long serialVersionUID = 7373706855319347225L;
 
@@ -150,7 +150,7 @@ public class Suggest extends WidgetBase {
      *
      * @return AttributeQuery
      */
-    @BeanTagAttribute(name="suggestQuery",type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "suggestQuery", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public AttributeQuery getSuggestQuery() {
         return suggestQuery;
     }
@@ -171,7 +171,7 @@ public class Suggest extends WidgetBase {
      *
      * @return String source property name
      */
-    @BeanTagAttribute(name="sourcePropertyName")
+    @BeanTagAttribute(name = "sourcePropertyName")
     public String getSourcePropertyName() {
         return sourcePropertyName;
     }
@@ -197,9 +197,9 @@ public class Suggest extends WidgetBase {
      * </p>
      *
      * @return boolean true if the query method results should be used as the suggestions, false to assume
-     * objects are returned and suggestions are formed using the source property name
+     *         objects are returned and suggestions are formed using the source property name
      */
-    @BeanTagAttribute(name="sourceQueryMethodResults")
+    @BeanTagAttribute(name = "sourceQueryMethodResults")
     public boolean isSourceQueryMethodResults() {
         return sourceQueryMethodResults;
     }
@@ -230,9 +230,9 @@ public class Suggest extends WidgetBase {
      * </p>
      *
      * @return boolean true to provide the suggest options initially, false to use ajax retrieval based on the
-     * user's input
+     *         user's input
      */
-    @BeanTagAttribute(name="retrieveAllSuggestions")
+    @BeanTagAttribute(name = "retrieveAllSuggestions")
     public boolean isRetrieveAllSuggestions() {
         return retrieveAllSuggestions;
     }
@@ -262,7 +262,7 @@ public class Suggest extends WidgetBase {
      *
      * @return List<Object> list of suggest options
      */
-    @BeanTagAttribute(name="SuggestOptions",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "suggestOptions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Object> getSuggestOptions() {
         return suggestOptions;
     }

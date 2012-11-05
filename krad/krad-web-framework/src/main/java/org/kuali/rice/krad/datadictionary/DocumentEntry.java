@@ -18,7 +18,6 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentAuthorizer;
@@ -105,7 +104,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return Class<? extends Document>
      */
-    @BeanTagAttribute(name="documentClass")
+    @BeanTagAttribute(name = "documentClass")
     public Class<? extends Document> getDocumentClass() {
         return documentClass;
     }
@@ -130,7 +129,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return Class<? extends Document>
      */
-    @BeanTagAttribute(name="getBaseDocumentClass")
+    @BeanTagAttribute(name = "getBaseDocumentClass")
     public Class<? extends Document> getBaseDocumentClass() {
         return baseDocumentClass;
     }
@@ -147,7 +146,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return BusinessRule
      */
-    @BeanTagAttribute(name="businessRulesClass",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "businessRulesClass")
     public Class<? extends BusinessRule> getBusinessRulesClass() {
         return businessRulesClass;
     }
@@ -169,7 +168,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return String
      */
-    @BeanTagAttribute(name="documentTypeName")
+    @BeanTagAttribute(name = "documentTypeName")
     public String getDocumentTypeName() {
         return this.documentTypeName;
     }
@@ -189,16 +188,19 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     @Override
-    public void completeValidation(ValidationTrace tracer){
-        tracer.addBean(this.getClass().getSimpleName(),getDocumentTypeName());
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this.getClass().getSimpleName(), getDocumentTypeName());
 
-        if(workflowProperties != null && workflowAttributes != null){
-            String currentValues [] = {"workflowProperties = "+getWorkflowProperties(),"workflowAttributes = "+getWorkflowAttributes()};
-            tracer.createError("WorkflowProperties and workflowAttributes cannot both be defined for a document",currentValues);
+        if (workflowProperties != null && workflowAttributes != null) {
+            String currentValues[] = {"workflowProperties = " + getWorkflowProperties(),
+                    "workflowAttributes = " + getWorkflowAttributes()};
+            tracer.createError("WorkflowProperties and workflowAttributes cannot both be defined for a document",
+                    currentValues);
         }
 
         super.completeValidation(tracer.getCopy());
     }
+
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getFullClassName()
      */
@@ -229,7 +231,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name="displayTopicFieldInNotes")
+    @BeanTagAttribute(name = "displayTopicFieldInNotes")
     public boolean getDisplayTopicFieldInNotes() {
         return displayTopicFieldInNotes;
     }
@@ -248,7 +250,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return usePessimisticLocking boolean
      */
-    @BeanTagAttribute(name="usePessimisticLocking")
+    @BeanTagAttribute(name = "usePessimisticLocking")
     public boolean getUsePessimisticLocking() {
         return this.usePessimisticLocking;
     }
@@ -269,7 +271,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return useWorkflowPessimisticLocking boolean
      */
-    @BeanTagAttribute(name="useWorkflowPessimisticLocking")
+    @BeanTagAttribute(name = "useWorkflowPessimisticLocking")
     public boolean getUseWorkflowPessimisticLocking() {
         return this.useWorkflowPessimisticLocking;
     }
@@ -301,7 +303,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * @see org.kuali.rice.krad.datadictionary.control.ControlDefinition#getValuesFinderClass()
      */
-    @BeanTagAttribute(name="attachmentTypesValuesFinderClass")
+    @BeanTagAttribute(name = "attachmentTypesValuesFinderClass")
     public Class<? extends KeyValuesFinder> getAttachmentTypesValuesFinderClass() {
         return attachmentTypesValuesFinderClass;
     }
@@ -315,7 +317,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         this.allowsCopy = allowsCopy;
     }
 
-    @BeanTagAttribute(name="allowsCopy")
+    @BeanTagAttribute(name = "allowsCopy")
     public boolean getAllowsCopy() {
         return allowsCopy;
     }
@@ -329,7 +331,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name="allowsNoteAttachments")
+    @BeanTagAttribute(name = "allowsNoteAttachments")
     public boolean getAllowsNoteAttachments() {
         return this.allowsNoteAttachments;
     }
@@ -348,7 +350,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name="allowsNoteFYI")
+    @BeanTagAttribute(name = "allowsNoteFYI")
     public boolean getAllowsNoteFYI() {
         return allowsNoteFYI;
     }
@@ -362,7 +364,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         this.allowsNoteFYI = allowsNoteFYI;
     }
 
-    @BeanTagAttribute(name="workflowProperties",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "workflowProperties", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public WorkflowProperties getWorkflowProperties() {
         return this.workflowProperties;
     }
@@ -376,7 +378,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         this.workflowProperties = workflowProperties;
     }
 
-    @BeanTagAttribute(name="workflowAttributes",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "workflowAttributes", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public WorkflowAttributes getWorkflowAttributes() {
         return this.workflowAttributes;
     }
@@ -390,7 +392,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return class name for document authorizer
      */
-    @BeanTagAttribute(name="documentAuthorizerClass")
+    @BeanTagAttribute(name = "documentAuthorizerClass")
     public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
         return documentAuthorizerClass;
     }
@@ -410,7 +412,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return class name for document presentation controller
      */
-    @BeanTagAttribute(name="documentPresentationControllerClass")
+    @BeanTagAttribute(name = "documentPresentationControllerClass")
     public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass() {
         return documentPresentationControllerClass;
     }
@@ -436,7 +438,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return
      */
-    @BeanTagAttribute(name="defaultExistenceChecks",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "defaultExistenceChecks", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ReferenceDefinition> getDefaultExistenceChecks() {
         return defaultExistenceChecks;
     }
@@ -472,7 +474,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name="encryptDocumentDataInPersistentSessionStorage")
+    @BeanTagAttribute(name = "encryptDocumentDataInPersistentSessionStorage")
     public boolean isEncryptDocumentDataInPersistentSessionStorage() {
         return this.encryptDocumentDataInPersistentSessionStorage;
     }

@@ -34,7 +34,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@BeanTag(name="baseConstraint")
+@BeanTag(name = "baseConstraint")
 public class BaseConstraint implements Constraint {
     protected String messageNamespaceCode;
     protected String messageComponentCode;
@@ -60,7 +60,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return String constraint message namespace code
      */
-    @BeanTagAttribute(name="messageNamespaceCode")
+    @BeanTagAttribute(name = "messageNamespaceCode")
     public String getMessageNamespaceCode() {
         return messageNamespaceCode;
     }
@@ -84,7 +84,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return String message component code
      */
-    @BeanTagAttribute(name="messageComponentCode")
+    @BeanTagAttribute(name = "messageComponentCode")
     public String getMessageComponentCode() {
         return messageComponentCode;
     }
@@ -104,7 +104,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return String message key
      */
-    @BeanTagAttribute(name="messageKey")
+    @BeanTagAttribute(name = "messageKey")
     public String getMessageKey() {
         return messageKey;
     }
@@ -124,7 +124,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return the applyClientSide
      */
-    @BeanTagAttribute(name="applyClientSide")
+    @BeanTagAttribute(name = "applyClientSide")
     public Boolean getApplyClientSide() {
         return this.applyClientSide;
     }
@@ -142,7 +142,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return the validationMessageParams
      */
-    @BeanTagAttribute(name="validationMessageParams",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "validationMessageParams", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getValidationMessageParams() {
         return this.validationMessageParams;
     }
@@ -185,12 +185,13 @@ public class BaseConstraint implements Constraint {
      * These can be mixed and matched, as appropriate, though states using a + symbol should always be the last
      * item of a list (as they imply this state and everything else after).</p>
      *
-     * <p>Example state list may be: ["state1", "state3>state5", "state6+"].  In this example, note that this constraint
+     * <p>Example state list may be: ["state1", "state3>state5", "state6+"].  In this example, note that this
+     * constraint
      * is never applied to "state2" (assuming these example states represent a state order by number)</p>
      *
      * @return the states to apply the constraint on, an empty list if the constraint is applied for all states
      */
-    @BeanTagAttribute(name="states",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "states", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getStates() {
         if (states == null) {
             states = new ArrayList<String>();
@@ -219,7 +220,7 @@ public class BaseConstraint implements Constraint {
      *
      * @return List of constraint overrides for this constraint
      */
-    @BeanTagAttribute(name="constraintStateOverrides",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "constraintStateOverrides", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends BaseConstraint> getConstraintStateOverrides() {
         return constraintStateOverrides;
     }
@@ -255,8 +256,8 @@ public class BaseConstraint implements Constraint {
                 }
                 if (bc.getStates().isEmpty()) {
                     throw new RuntimeException(
-                            "Constraint State Overrides MUST declare the states they apply to.  No states" +
-                                    "were declared.");
+                            "Constraint State Overrides MUST declare the states they apply to.  No states"
+                                    + "were declared.");
                 }
             }
         }
@@ -275,17 +276,19 @@ public class BaseConstraint implements Constraint {
         if (getConstraintStateOverrides() != null) {
             for (int i = 0; i < constraintStateOverrides.size(); i++) {
                 if (constraintStateOverrides.get(i).getStates() == null) {
-                    String currentValues [] = { "constraintStateOverrides(" + i + ").messageKey =" + constraintStateOverrides.get(i)
-                            .getMessageKey()};
-                    tracer.createError("Constraints set in State Overrides must have there states property set",currentValues);
+                    String currentValues[] =
+                            {"constraintStateOverrides(" + i + ").messageKey =" + constraintStateOverrides.get(i)
+                                    .getMessageKey()};
+                    tracer.createError("Constraints set in State Overrides must have there states property set",
+                            currentValues);
                 }
                 constraintStateOverrides.get(i).completeValidation(tracer.getCopy());
             }
         }
 
         if (getMessageKey() == null) {
-            String currentValues [] = {"messageKey ="+getMessageKey()};
-            tracer.createWarning("Message key is not set",currentValues);
+            String currentValues[] = {"messageKey =" + getMessageKey()};
+            tracer.createWarning("Message key is not set", currentValues);
             ErrorReport error = new ErrorReport(ErrorReport.WARNING);
         }
     }

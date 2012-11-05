@@ -21,13 +21,13 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
-import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

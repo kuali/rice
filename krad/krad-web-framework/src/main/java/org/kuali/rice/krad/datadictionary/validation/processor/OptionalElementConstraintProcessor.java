@@ -17,19 +17,17 @@ package org.kuali.rice.krad.datadictionary.validation.processor;
 
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 
-
 /**
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class OptionalElementConstraintProcessor<C extends Constraint> implements ConstraintProcessor<Object, C> {
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#isOptional()
-	 */
-	@Override
-	public boolean isOptional() {
-		return true;
-	}
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#isOptional()
+     */
+    @Override
+    public boolean isOptional() {
+        return true;
+    }
 
 }

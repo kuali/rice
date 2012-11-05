@@ -26,7 +26,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="numericPatternConstraint")
+@BeanTag(name = "numericPatternConstraint")
 public class NumericPatternConstraint extends AllowCharacterConstraint {
 
     /**

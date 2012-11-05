@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.DataTypeConstrai
  */
 public interface DataTypeConstrainable extends Constrainable, DataTypeConstraint {
 
-	// To match up with legacy code for length and range constraints, data type constraints are imposed
-	// on the definition, making the capability a sub-interface of the constraint
+    // To match up with legacy code for length and range constraints, data type constraints are imposed
+    // on the definition, making the capability a sub-interface of the constraint
 
 }

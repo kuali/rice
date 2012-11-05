@@ -27,6 +27,6 @@ import java.util.List;
  */
 public interface PrerequisiteConstrainable extends Constrainable {
 
-	public List<PrerequisiteConstraint> getPrerequisiteConstraints();
+    public List<PrerequisiteConstraint> getPrerequisiteConstraints();
 
 }

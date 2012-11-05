@@ -24,30 +24,34 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.Definit
 import java.util.HashMap;
 
 /**
- * An object that looks up constraints for attribute definitions by constraint type. This can either by instantiated by dependency
- * injection, in which case a map of class names to constraint resolvers can be injected, or the default map can be constructed by
+ * An object that looks up constraints for attribute definitions by constraint type. This can either by instantiated by
+ * dependency
+ * injection, in which case a map of class names to constraint resolvers can be injected, or the default map can be
+ * constructed by
  * calling the init() method immediately after instantiation.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComplexAttributeDefinitionConstraintProvider extends BaseConstraintProvider<ComplexAttributeDefinition> {
 
-	@Override
-	public void init() {
-		resolverMap = new HashMap<String, ConstraintResolver<ComplexAttributeDefinition>>();
-		resolverMap.put(ExistenceConstraint.class.getName(), new DefinitionConstraintResolver<ComplexAttributeDefinition>());
-	}
+    @Override
+    public void init() {
+        resolverMap = new HashMap<String, ConstraintResolver<ComplexAttributeDefinition>>();
+        resolverMap.put(ExistenceConstraint.class.getName(),
+                new DefinitionConstraintResolver<ComplexAttributeDefinition>());
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider#isSupported(org.kuali.rice.krad.datadictionary.validation.capability.Constrainable)
-	 */
-	@Override
-	public boolean isSupported(Constrainable definition) {
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider#isSupported(org.kuali.rice.krad.datadictionary.validation.capability.Constrainable)
+     */
+    @Override
+    public boolean isSupported(Constrainable definition) {
 
-		if (definition instanceof ComplexAttributeDefinition)
-			return true;
+        if (definition instanceof ComplexAttributeDefinition) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
 }

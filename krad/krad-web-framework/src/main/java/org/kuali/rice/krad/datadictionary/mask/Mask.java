@@ -21,19 +21,20 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import java.io.Serializable;
 
 /**
-    The displayMask element specifies the type of masking to
-    be used to hide the value from un-authorized users.
-    There are three types of masking.
+ * The displayMask element specifies the type of masking to
+ * be used to hide the value from un-authorized users.
+ * There are three types of masking.
  */
-@BeanTag(name="mask")
+@BeanTag(name = "mask")
 public class Mask implements Serializable {
     private static final long serialVersionUID = 4035984416568235531L;
 
-	protected MaskFormatter maskFormatter;
+    protected MaskFormatter maskFormatter;
     protected Class<? extends MaskFormatter> maskFormatterClass;
 
     /**
      * Masks a data value with the configured maskFormatter;
+     *
      * @param value of the object
      * @return string value of the masked object
      */
@@ -43,10 +44,10 @@ public class Mask implements Serializable {
                 try {
                     maskFormatter = maskFormatterClass.newInstance();
                 } catch (Exception e) {
-                    throw new RuntimeException("Unable to create instance of mask formatter class: " + maskFormatterClass.getName());
+                    throw new RuntimeException(
+                            "Unable to create instance of mask formatter class: " + maskFormatterClass.getName());
                 }
-            }
-            else {
+            } else {
                 throw new RuntimeException("Mask formatter not set for secure field.");
             }
         }
@@ -59,13 +60,12 @@ public class Mask implements Serializable {
      *
      * @return Returns the maskFormatter.
      */
-    @BeanTagAttribute(name="maskFormater",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "maskFormater", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MaskFormatter getMaskFormatter() {
         return maskFormatter;
     }
 
     /**
-     *
      * @param maskFormatter instance to be used for masking field values.
      */
     public void setMaskFormatter(MaskFormatter maskFormatter) {
@@ -77,7 +77,7 @@ public class Mask implements Serializable {
      *
      * @return Returns the maskFormatterClass.
      */
-    @BeanTagAttribute(name="maskFormatterClass",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "maskFormatterClass", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Class<? extends MaskFormatter> getMaskFormatterClass() {
         return maskFormatterClass;
     }

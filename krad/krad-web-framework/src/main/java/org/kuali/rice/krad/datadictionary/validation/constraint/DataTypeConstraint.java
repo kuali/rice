@@ -30,6 +30,6 @@ public interface DataTypeConstraint extends Constraint {
      *
      * @return the data type
      */
-	public DataType getDataType();
+    public DataType getDataType();
 
 }

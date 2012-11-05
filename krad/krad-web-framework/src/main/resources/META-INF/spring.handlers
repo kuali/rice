@@ -1,0 +1,2 @@
+http\://www.kuali.org/schema = org.kuali.rice.krad.datadictionary.parse.CustomNamespace
+http\://www.springframework.org/schema/p=org.springframework.beans.factory.xml.factory.SimplePropertyNamespaceHandler

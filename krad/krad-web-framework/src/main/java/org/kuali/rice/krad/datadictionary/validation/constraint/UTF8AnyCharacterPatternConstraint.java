@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="utf8AnyCharacterPatternConstraint")
+@BeanTag(name = "utf8AnyCharacterPatternConstraint")
 public class UTF8AnyCharacterPatternConstraint extends ValidCharactersPatternConstraint {
     protected boolean allowWhitespace = false;
     protected boolean omitNewline = false;
@@ -33,7 +33,7 @@ public class UTF8AnyCharacterPatternConstraint extends ValidCharactersPatternCon
     /**
      * @return allowWhitespace
      */
-    @BeanTagAttribute(name="allowWhitespace")
+    @BeanTagAttribute(name = "allowWhitespace")
     public boolean getAllowWhitespace() {
         return allowWhitespace;
     }
@@ -81,7 +81,7 @@ public class UTF8AnyCharacterPatternConstraint extends ValidCharactersPatternCon
         }
     }
 
-    @BeanTagAttribute(name="omitNewline")
+    @BeanTagAttribute(name = "omitNewline")
     public boolean isOmitNewline() {
         return omitNewline;
     }
@@ -90,6 +90,7 @@ public class UTF8AnyCharacterPatternConstraint extends ValidCharactersPatternCon
      * When set to true, omit new line characters from the set of valid characters.  This flag
      * will only have an effect if the allowWhitespace flag is true, otherwise all whitespace
      * including new lines characters are omitted.
+     *
      * @param omitNewline
      */
     public void setOmitNewline(boolean omitNewline) {

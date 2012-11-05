@@ -28,7 +28,6 @@ import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
-import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -90,7 +89,7 @@ public class DataDictionary {
     public void parseDataDictionaryConfigurationFiles(boolean allowConcurrentValidation) {
         setupProcessor(ddBeans);
 
-        loadDictionaryBeans(ddBeans,moduleDictionaryFiles,ddIndex,beanValidationFiles);
+        loadDictionaryBeans(ddBeans, moduleDictionaryFiles, ddIndex, beanValidationFiles);
 
         performDictionaryPostProcessing(allowConcurrentValidation);
     }
@@ -100,7 +99,7 @@ public class DataDictionary {
      *
      * @param beans - The bean factory for the the dictionary beans
      */
-    public static void setupProcessor(KualiDefaultListableBeanFactory beans){
+    public static void setupProcessor(KualiDefaultListableBeanFactory beans) {
         try {
             // UIF post processor that sets component ids
             BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
@@ -127,7 +126,9 @@ public class DataDictionary {
      * @param index - Index of the data dictionary beans
      * @param validationFiles - The List of bean xml files loaded into the bean file
      */
-    public void loadDictionaryBeans(KualiDefaultListableBeanFactory beans, Map<String,List<String>> moduleDictionaryFiles, DataDictionaryIndex index,ArrayList<String> validationFiles){
+    public void loadDictionaryBeans(KualiDefaultListableBeanFactory beans,
+            Map<String, List<String>> moduleDictionaryFiles, DataDictionaryIndex index,
+            ArrayList<String> validationFiles) {
         // expand configuration locations into files
         LOG.info("Starting DD XML File Load");
 
@@ -158,8 +159,6 @@ public class DataDictionary {
 
         LOG.info("Completed DD XML File Load");
     }
-
-
 
     /**
      * Invokes post processors and builds indexes for the beans contained in the dictionary
@@ -192,11 +191,10 @@ public class DataDictionary {
     public void validateDD(boolean validateEbos) {
         DataDictionary.validateEBOs = validateEbos;
 
-//        ValidationController validator = new ValidationController();
-//        String files[] = new String[beanValidationFiles.size()];
-//        files = beanValidationFiles.toArray(files);
-//        validator.validate(files, xmlReader.getResourceLoader(), ddBeans,
-//                LOG, false);
+        /*  ValidationController validator = new ValidationController();
+    String files[] = new String[beanValidationFiles.size()];
+    files = beanValidationFiles.toArray(files);
+    validator.validate(files, xmlReader.getResourceLoader(), ddBeans, LOG, false);*/
 
         Map<String, DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
         for (DataObjectEntry entry : doBeans.values()) {

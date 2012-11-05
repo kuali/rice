@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ExistenceConstra
  */
 public interface ExistenceConstrainable extends Constrainable, ExistenceConstraint {
 
-	// To match up with legacy code for AttributeDefinition, the existence constraint isRequired() member is a field
-	// on the definition, making the capability a sub-interface of the constraint
+    // To match up with legacy code for AttributeDefinition, the existence constraint isRequired() member is a field
+    // on the definition, making the capability a sub-interface of the constraint
 
 }

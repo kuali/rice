@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
@@ -25,7 +25,6 @@ import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTagAttribute(name="message")
+@BeanTag(name = "message")
 public class Message extends ContentElementBase {
     private static final long serialVersionUID = 4090058533452450395L;
 
@@ -148,7 +147,7 @@ public class Message extends ContentElementBase {
      *
      * @return String message text
      */
-    @BeanTagAttribute(name="messageText")
+    @BeanTagAttribute(name = "messageText")
     public String getMessageText() {
         return this.messageText;
     }
@@ -168,7 +167,7 @@ public class Message extends ContentElementBase {
      *
      * @return true if generating a wrapping span, false otherwise
      */
-    @BeanTagAttribute(name="generateSpan")
+    @BeanTagAttribute(name = "generateSpan")
     public boolean isGenerateSpan() {
         return generateSpan;
     }
@@ -215,7 +214,7 @@ public class Message extends ContentElementBase {
      *
      * @return the inlineComponents to be filled in at indexes referenced by [n] in the message
      */
-    @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "inlineComponents", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }
@@ -233,17 +232,16 @@ public class Message extends ContentElementBase {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public void completeValidation(ValidationTrace tracer){
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Checks that text is set
-        if(getMessageText()==null){
-            if(Validator.checkExpressions(this, "messageText")) {
-                String currentValues [] = {"messageText  ="+getMessageText()};
-                tracer.createWarning("MessageText should be set",currentValues);
+        if (getMessageText() == null) {
+            if (Validator.checkExpressions(this, "messageText")) {
+                String currentValues[] = {"messageText  =" + getMessageText()};
+                tracer.createWarning("MessageText should be set", currentValues);
             }
         }
-
 
         super.completeValidation(tracer.getCopy());
     }

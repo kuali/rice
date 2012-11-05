@@ -23,6 +23,6 @@ package org.kuali.rice.krad.datadictionary.validation.capability;
  */
 public interface HierarchicallyConstrainable extends Constrainable {
 
-	public String getChildEntryName();
+    public String getChildEntryName();
 
 }

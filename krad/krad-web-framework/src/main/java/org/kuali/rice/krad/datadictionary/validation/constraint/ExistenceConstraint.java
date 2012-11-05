@@ -16,7 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 /**
- * An existence constraint is a constraint that requires (or does not require) that some non-empty value exist for this constrained
+ * An existence constraint is a constraint that requires (or does not require) that some non-empty value exist for this
+ * constrained
  * object or field.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,6 +25,6 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
  */
 public interface ExistenceConstraint extends Constraint {
 
-	public Boolean isRequired();
+    public Boolean isRequired();
 
 }

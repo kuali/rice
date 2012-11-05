@@ -25,6 +25,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
  */
 public interface ValidCharactersConstrainable extends Constrainable {
 
-	public ValidCharactersConstraint getValidCharactersConstraint();
+    public ValidCharactersConstraint getValidCharactersConstraint();
 
 }

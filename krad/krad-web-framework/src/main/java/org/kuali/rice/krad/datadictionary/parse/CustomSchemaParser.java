@@ -17,21 +17,23 @@ package org.kuali.rice.krad.datadictionary.parse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hsqldb.lib.StringUtil;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedList;
+import org.springframework.beans.factory.support.ManagedMap;
+import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
+import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Parser for parsing xml bean's created using the custom schema into normal spring bean format.
@@ -40,6 +42,8 @@ import java.util.Set;
  */
 public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
     private static final Log LOG = LogFactory.getLog(CustomSchemaParser.class);
+
+    private static int beanNumber = 0;
 
     /**
      * Retrieves the class of the bean defined by the xml element.
@@ -115,13 +119,7 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
                 // If the tag is not in the schema map let spring handle the value by forwarding the tag as the
                 // propertyName
                 propertyName = tag;
-                int temp = DomUtils.getChildElementsByTagName(children.get(i), "value").size();
-
-                if (temp > 0) {
-                    type = BeanTagAttribute.AttributeType.LISTVALUE;
-                } else {
-                    type = BeanTagAttribute.AttributeType.SINGLEBEAN;
-                }
+                type = findBeanType(children.get(i));
             } else {
                 // If the tag is found in the schema map use the connected name stored in the attribute information
                 propertyName = info.getName();
@@ -131,21 +129,22 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
             ArrayList<Element> grandChildren = (ArrayList<Element>) DomUtils.getChildElements(children.get(i));
 
             if (type == BeanTagAttribute.AttributeType.SINGLEBEAN) {
-                processSingleBean(propertyName, grandChildren.get(0), parserContext, bean);
+                bean.addPropertyValue(propertyName, parseBean(grandChildren.get(0), bean, parserContext));
             } else if (type == BeanTagAttribute.AttributeType.LISTBEAN) {
-                processListBean(propertyName, grandChildren, parserContext, bean);
+                bean.addPropertyValue(propertyName, parseList(grandChildren, children.get(i), bean, parserContext));
             } else if (type == BeanTagAttribute.AttributeType.LISTVALUE) {
-                processListValue(propertyName, grandChildren, bean);
+                bean.addPropertyValue(propertyName, parseList(grandChildren, children.get(i), bean, parserContext));
             } else if (type == BeanTagAttribute.AttributeType.MAPVALUE) {
-                processMapValue(propertyName, grandChildren, bean);
+                bean.addPropertyValue(propertyName, parseMap(grandChildren, children.get(i), bean, parserContext));
             } else if (type == BeanTagAttribute.AttributeType.MAPBEAN) {
-                processMapBean(propertyName, grandChildren, parserContext, bean);
+                bean.addPropertyValue(propertyName, parseMap(grandChildren, children.get(i), bean, parserContext));
             } else if (type == BeanTagAttribute.AttributeType.SETVALUE) {
-                processSetValue(propertyName, grandChildren, bean);
+                bean.addPropertyValue(propertyName, parseSet(grandChildren, children.get(i), bean, parserContext));
             } else if (type == BeanTagAttribute.AttributeType.SETBEAN) {
-                processSetBean(propertyName, grandChildren, parserContext, bean);
+                bean.addPropertyValue(propertyName, parseSet(grandChildren, children.get(i), bean, parserContext));
             }
         }
+        return;
     }
 
     /**
@@ -166,259 +165,298 @@ public class CustomSchemaParser extends AbstractSingleBeanDefinitionParser {
             // If the attribute is defining the parent as  abstract set it in the bean builder.
             bean.setAbstract(Boolean.valueOf(value));
         } else if (name.toLowerCase().compareTo("id") == 0) {
+            if (value.contains("Demo-CollectionGrouping-Section1")) {
+                System.out.println();
+            }
+
             //nothing - insures that its erased
         } else {
             // If the attribute is not a reserved case find the property name form the connected map and add the new
             // property value.
-            BeanTagAttributeInfo info = entries.get(name);
-            String propertyName;
 
-            if (info == null) {
-                propertyName = name;
+            if (name.contains("-ref")) {
+                bean.addPropertyValue(name.substring(0, name.length() - 4), new RuntimeBeanReference(value));
             } else {
-                propertyName = info.getName();
-            }
+                BeanTagAttributeInfo info = entries.get(name);
+                String propertyName;
 
-            bean.addPropertyValue(propertyName, value);
+                if (info == null) {
+                    propertyName = name;
+                } else {
+                    propertyName = info.getName();
+                }
+                bean.addPropertyValue(propertyName, value);
+            }
         }
     }
 
     /**
-     * Process the child of a sub tag. Since single entries containing none bean information should have been created
-     * as
-     * attributes it is assumed that the child being processed is a bean.
+     * Finds the key of a map entry in the custom schema.
      *
-     * @param propertyName - Name of the property the bean is added as.
-     * @param grandChild - The Xml bean being process (Is the grand child of the bean tag being parsed).
-     * @param parserContext - Provided information and functionality regarding current bean set.
-     * @param bean - The bean definition being created.
+     * @param grandchild - The map entry.
+     * @return The object (bean or value) entry key
      */
-    private void processSingleBean(String propertyName, Element grandChild, ParserContext parserContext,
-            BeanDefinitionBuilder bean) {
-
-        // Check if the tag is a Spring bean or custom schema based tag by looking at the namespace definition it.
-        if (grandChild.getNamespaceURI().compareTo("http://www.springframework.org/schema/beans") == 0) {
-            // check if the tag is a reference to another bean
-            if (grandChild.getLocalName().compareTo("ref") == 0) {
-                // Create the referenced bean by creating a new bean and setting its parent to the referenced bean then
-                // replace grand child with it
-                Element temp = grandChild.getOwnerDocument().createElement("bean");
-                temp.setAttribute("parent", grandChild.getAttribute("bean"));
-                grandChild = temp;
-            }
-
-            // Create the bean definition for the grandchild and add it as a property value.
-            BeanDefinitionHolder bean2 = parserContext.getDelegate().parseBeanDefinitionElement(grandChild);
-            bean.addPropertyValue(propertyName, bean2.getBeanDefinition());
+    private Object findKey(Element grandchild) {
+        String key = grandchild.getAttribute("key");
+        if (!key.isEmpty()) {
+            return key;
         } else {
-            if (grandChild.getLocalName().compareTo("ref") == 0) {
-                // Create the referenced bean by creating a new bean and setting its parent to the referenced bean then
-                // replace grand child with it
-                Element temp = grandChild.getOwnerDocument().createElement("bean");
-                temp.setAttribute("parent", grandChild.getAttribute("bean"));
-                grandChild = temp;
-                BeanDefinitionHolder bean2 = parserContext.getDelegate().parseBeanDefinitionElement(grandChild);
-                bean.addPropertyValue(propertyName, bean2.getBeanDefinition());
-                return;
-            }
-            // Create the bean definition for the grandchild and add it as a property value.
-            BeanDefinition bean2 = parserContext.getDelegate().parseCustomElement(grandChild, bean.getBeanDefinition());
-            bean.addPropertyValue(propertyName, bean2);
-        }
-    }
-
-    /**
-     * Process the children of a sub tag into a list.  All tags are assumed to be value tags.
-     *
-     * @param propertyName - The name of the property.
-     * @param grandChildren - The children of the property that are being processed.
-     * @param bean - The bean definition being created.
-     */
-    private void processListValue(String propertyName, ArrayList<Element> grandChildren, BeanDefinitionBuilder bean) {
-        // Process sub tag as a list of content information
-        ArrayList<String> list = new ArrayList<String>();
-        for (int j = 0; j < grandChildren.size(); j++) {
-            list.add(grandChildren.get(j).getTextContent());
-        }
-        ManagedList beans = new ManagedList(list.size());
-        beans.addAll(list);
-        bean.addPropertyValue(propertyName, beans);
-    }
-
-    /**
-     * Process the children of a sub tag into a list.
-     *
-     * @param propertyName - The name of the property.
-     * @param grandChildren - The children of the property that are being processed.
-     * @param parserContext - Provided information and functionality regarding current bean set.
-     * @param bean - The bean definition being created.
-     */
-    private void processListBean(String propertyName, ArrayList<Element> grandChildren, ParserContext parserContext,
-            BeanDefinitionBuilder bean) {
-        // Process sub tag as a list of sub bean definitions
-        ArrayList<BeanDefinition> list = new ArrayList<BeanDefinition>();
-        for (int j = 0; j < grandChildren.size(); j++) {
-            Element grandChild = grandChildren.get(j);
-            // Check if the tag is a Spring bean or custom schema based tag by looking at the namespace definition it.
-            if (grandChild.getNamespaceURI().compareTo("http://www.springframework.org/schema/beans") == 0) {
-                // check if the tag is a reference to another bean
-                if (grandChild.getLocalName().compareTo("ref") == 0) {
-                    // Create the referenced bean by creating a new bean and setting its parent to the referenced bean
-                    // then replace grand child with it
-                    Element temp = grandChild.getOwnerDocument().createElement("bean");
-                    temp.setAttribute("parent", grandChild.getAttribute("bean"));
-                    grandChild = temp;
-                }
-                // Create the bean definition for the grandchild and return it.
-                BeanDefinitionHolder bean2 = parserContext.getDelegate().parseBeanDefinitionElement(grandChild);
-                list.add(bean2.getBeanDefinition());
+            Element keyTag = DomUtils.getChildElementByTagName(grandchild, "key");
+            if (DomUtils.getChildElements(keyTag).size() == 0) {
+                return keyTag.getTextContent();
             } else {
-                if (grandChild.getLocalName().compareTo("ref") == 0) {
-                    // Create the referenced bean by creating a new bean and setting its parent to the referenced bean
-                    // then replace grand child with it
-                    Element temp = grandChild.getOwnerDocument().createElement("bean");
-                    temp.setAttribute("parent", grandChild.getAttribute("bean"));
-                    grandChild = temp;
-                    BeanDefinitionHolder bean2 = parserContext.getDelegate().parseBeanDefinitionElement(grandChild);
-                    list.add(bean2.getBeanDefinition());
-                    continue;
-                }
-                // Create the bean definition for the grandchild and return it.
-                BeanDefinition bean2 = parserContext.getDelegate().parseCustomElement(grandChild,
-                        bean.getBeanDefinition());
-                list.add(bean2);
+                return DomUtils.getChildElements(keyTag).get(0);
             }
         }
-        ManagedList beans = new ManagedList(list.size());
-        beans.addAll(list);
-        bean.addPropertyValue(propertyName, beans);
+        //throw new Exception("Cannot find Map's key");
     }
 
     /**
-     * Process the children of a sub tag into a map. Assumed the key is the tag name and the value is the text context.
+     * Finds the value of a map entry in the custom schema.
      *
-     * @param propertyName - The name of the property.
-     * @param grandChildren - The children of the property that are being processed.
-     * @param bean - The bean definition being created.
+     * @param grandchild - The map entry.
+     * @return The object (bean or value) entry value
      */
-    private void processMapValue(String propertyName, ArrayList<Element> grandChildren, BeanDefinitionBuilder bean) {
-        Map<String, String> map = new HashMap<String, String>();
-        for (int j = 0; j < grandChildren.size(); j++) {
-            String name = grandChildren.get(j).getLocalName();
-            String value = grandChildren.get(j).getTextContent();
-            map.put(name, value);
-        }
-        bean.addPropertyValue(propertyName, map);
-    }
-
-    /**
-     * Process the children of a sub tag into a map.
-     *
-     * @param propertyName - The name of the property.
-     * @param grandChildren - The children of the property that are being processed.
-     * @param parserContext - Provided information and functionality regarding current bean set.
-     * @param bean - The bean definition being created.
-     */
-    private void processMapBean(String propertyName, ArrayList<Element> grandChildren, ParserContext parserContext,
-            BeanDefinitionBuilder bean) {
-        Map<String, BeanDefinition> map = new HashMap<String, BeanDefinition>();
-        for (int j = 0; j < grandChildren.size(); j++) {
-            String name = grandChildren.get(j).getLocalName();
-            Element grandChild = grandChildren.get(j);
-            if (grandChild.getNamespaceURI().compareTo("http://www.springframework.org/schema/beans") == 0) {
-                // check if the tag is a reference to another bean
-                if (grandChild.getLocalName().compareTo("ref") == 0) {
-                    // Create the referenced bean by creating a new bean and setting its parent to the referenced bean
-                    // then replace grand child with it
-                    Element temp = grandChild.getOwnerDocument().createElement("bean");
-                    temp.setAttribute("parent", grandChild.getAttribute("bean"));
-                    grandChild = temp;
-                }
-
-                // Create the bean definition for the grandchild and add it as a property value.
-                BeanDefinitionHolder bean2 = parserContext.getDelegate().parseBeanDefinitionElement(grandChild);
-                map.put(name, bean2.getBeanDefinition());
+    private Object findValue(Element grandchild) {
+        String value = grandchild.getAttribute("value");
+        if (!value.isEmpty()) {
+            return value;
+        } else {
+            Element valueTag = DomUtils.getChildElementByTagName(grandchild, "value");
+            if (DomUtils.getChildElements(valueTag).size() == 0) {
+                return valueTag.getTextContent();
             } else {
-                if (grandChild.getLocalName().compareTo("ref") == 0) {
-                    // Create the referenced bean by creating a new bean and setting its parent to the referenced bean
-                    // then replace grand child with it
-                    Element temp = grandChild.getOwnerDocument().createElement("bean");
-                    temp.setAttribute("parent", grandChild.getAttribute("bean"));
-                    grandChild = temp;
-                    BeanDefinitionHolder bean2 = parserContext.getDelegate().parseBeanDefinitionElement(grandChild);
-                    bean.addPropertyValue(propertyName, bean2.getBeanDefinition());
-                    return;
-                }
-                // Create the bean definition for the grandchild and add it as a property value.
-                BeanDefinition bean2 = parserContext.getDelegate().parseCustomElement(grandChild,
-                        bean.getBeanDefinition());
-                map.put(name, bean2);
+                return DomUtils.getChildElements(valueTag).get(0);
+            }
+        }
+        //throw new Exception("Cannot find Map's value");
+    }
+
+    /**
+     * Finds the attribute type of the schema being used by the element.
+     *
+     * @param tag - The tag to check.
+     * @return The schema attribute type.
+     */
+    private BeanTagAttribute.AttributeType findBeanType(Element tag) {
+        int numberChildren = 0;
+
+        // Checks if the user overrides the default attribute type of the schema.
+        String overrideType = tag.getAttribute("overrideBeanType");
+        if (!StringUtil.isEmpty(overrideType)) {
+            if (overrideType.toLowerCase().compareTo("singlebean") == 0) {
+                return BeanTagAttribute.AttributeType.SINGLEBEAN;
+            }
+            if (overrideType.toLowerCase().compareTo("singlevalue") == 0) {
+                return BeanTagAttribute.AttributeType.SINGLEVALUE;
+            }
+            if (overrideType.toLowerCase().compareTo("listbean") == 0) {
+                return BeanTagAttribute.AttributeType.LISTBEAN;
+            }
+            if (overrideType.toLowerCase().compareTo("listvalue") == 0) {
+                return BeanTagAttribute.AttributeType.LISTVALUE;
+            }
+            if (overrideType.toLowerCase().compareTo("mapbean") == 0) {
+                return BeanTagAttribute.AttributeType.MAPBEAN;
+            }
+            if (overrideType.toLowerCase().compareTo("mapvalue") == 0) {
+                return BeanTagAttribute.AttributeType.MAPVALUE;
+            }
+            if (overrideType.toLowerCase().compareTo("setbean") == 0) {
+                return BeanTagAttribute.AttributeType.SETBEAN;
+            }
+            if (overrideType.toLowerCase().compareTo("setvalue") == 0) {
+                return BeanTagAttribute.AttributeType.SETVALUE;
             }
         }
 
-        bean.addPropertyValue(propertyName, map);
-
-    }
-
-    /**
-     * Process the children of a sub tag into a set. Assumed that the value is stored in the tags text context.
-     *
-     * @param propertyName - The name of the property.
-     * @param grandChildren - The children of the property that are being processed.
-     * @param bean - The bean definition being created.
-     */
-    private void processSetValue(String propertyName, ArrayList<Element> grandChildren, BeanDefinitionBuilder bean) {
-        Set<String> set = new HashSet<String>();
-        for (int j = 0; j < grandChildren.size(); j++) {
-            String value = grandChildren.get(j).getTextContent();
-            set.add(value);
+        // Checks if the element is a list composed of standard types
+        numberChildren = DomUtils.getChildElementsByTagName(tag, "value").size();
+        if (numberChildren > 0) {
+            return BeanTagAttribute.AttributeType.LISTVALUE;
         }
-        bean.addPropertyValue(propertyName, set);
+
+        // Checks if the element is a map
+        numberChildren = DomUtils.getChildElementsByTagName(tag, "entry").size();
+        if (numberChildren > 0) {
+            return BeanTagAttribute.AttributeType.MAPVALUE;
+        }
+
+        // Checks if the element is a list of beans
+        numberChildren = DomUtils.getChildElements(tag).size();
+        if (numberChildren > 1) {
+            return BeanTagAttribute.AttributeType.LISTBEAN;
+        }
+
+        // Defaults to return the element as a single bean.
+        return BeanTagAttribute.AttributeType.SINGLEBEAN;
     }
 
     /**
-     * Process the children of a sub tag into a set.
+     * Parses a bean based on the namespace of the bean.
      *
-     * @param propertyName - The name of the property.
-     * @param grandChildren - The children of the property that are being processed.
+     * @param tag - The Element to be parsed.
+     * @param parent - The parent bean that the tag is nested in.
      * @param parserContext - Provided information and functionality regarding current bean set.
-     * @param bean - The bean definition being created.
+     * @return The parsed bean.
      */
-    private void processSetBean(String propertyName, ArrayList<Element> grandChildren, ParserContext parserContext,
-            BeanDefinitionBuilder bean) {
-        Set<BeanDefinition> set = new HashSet<BeanDefinition>();
-        for (int j = 0; j < grandChildren.size(); j++) {
-            Element grandChild = grandChildren.get(j);
-            if (grandChild.getNamespaceURI().compareTo("http://www.springframework.org/schema/beans") == 0) {
-                // check if the tag is a reference to another bean
-                if (grandChild.getLocalName().compareTo("ref") == 0) {
-                    // Create the referenced bean by creating a new bean and setting its parent to the referenced bean
-                    // then replace grand child with it
-                    Element temp = grandChild.getOwnerDocument().createElement("bean");
-                    temp.setAttribute("parent", grandChild.getAttribute("bean"));
-                    grandChild = temp;
-                }
+    private Object parseBean(Element tag, BeanDefinitionBuilder parent, ParserContext parserContext) {
+        if (tag.getNamespaceURI().compareTo("http://www.springframework.org/schema/beans") == 0) {
+            return parseSpringBean(tag, parserContext);
+        } else {
+            return parseCustomBean(tag, parent, parserContext);
+        }
+    }
 
-                // Create the bean definition for the grandchild and add it as a property value.
-                BeanDefinitionHolder bean2 = parserContext.getDelegate().parseBeanDefinitionElement(grandChild);
-                set.add(bean2.getBeanDefinition());
+    /**
+     * Parses a bean of the spring namespace.
+     *
+     * @param tag - The Element to be parsed.
+     * @return The parsed bean.
+     */
+    private Object parseSpringBean(Element tag, ParserContext parserContext) {
+        if (tag.getLocalName().compareTo("ref") == 0) {
+            // Create the referenced bean by creating a new bean and setting its parent to the referenced bean
+            // then replace grand child with it
+            Element temp = tag.getOwnerDocument().createElement("bean");
+            temp.setAttribute("parent", tag.getAttribute("bean"));
+            tag = temp;
+            return new RuntimeBeanReference(tag.getAttribute("bean"));
+        }
+        // Create the bean definition for the grandchild and return it.
+        BeanDefinitionParserDelegate delegate = parserContext.getDelegate();
+        BeanDefinitionHolder bean = delegate.parseBeanDefinitionElement(tag);
+
+        // Creates a custom name for the new bean.
+        String name = bean.getBeanDefinition().getParentName() + "$Customchild" + beanNumber;
+        if (tag.getAttribute("id") != null && !StringUtil.isEmpty(tag.getAttribute("id"))) {
+            name = tag.getAttribute("id");
+        } else {
+            beanNumber++;
+        }
+
+        return new BeanDefinitionHolder(bean.getBeanDefinition(), name);
+    }
+
+    /**
+     * Parses a bean of the custom namespace.
+     *
+     * @param tag - The Element to be parsed.
+     * @param parent - The parent bean that the tag is nested in.
+     * @param parserContext - Provided information and functionality regarding current bean set.
+     * @return The parsed bean.
+     */
+    private Object parseCustomBean(Element tag, BeanDefinitionBuilder parent, ParserContext parserContext) {
+        BeanDefinitionHolder bean;
+        if (tag.getLocalName().compareTo("ref") == 0) {
+            return new RuntimeBeanReference(tag.getAttribute("bean"));
+
+        } else {
+            BeanDefinition beanDefinition = parserContext.getDelegate().parseCustomElement(tag,
+                    parent.getBeanDefinition());
+
+            String name = beanDefinition.getParentName() + "$Customchild" + beanNumber;
+            if (tag.getAttribute("id") != null && !StringUtil.isEmpty(tag.getAttribute("id"))) {
+                name = tag.getAttribute("id");
             } else {
-                if (grandChild.getLocalName().compareTo("ref") == 0) {
-                    // Create the referenced bean by creating a new bean and setting its parent to the referenced bean
-                    // then replace grand child with it
-                    Element temp = grandChild.getOwnerDocument().createElement("bean");
-                    temp.setAttribute("parent", grandChild.getAttribute("bean"));
-                    grandChild = temp;
-                    BeanDefinitionHolder bean2 = parserContext.getDelegate().parseBeanDefinitionElement(grandChild);
-                    bean.addPropertyValue(propertyName, bean2.getBeanDefinition());
-                    return;
-                }
-                // Create the bean definition for the grandchild and add it as a property value.
-                BeanDefinition bean2 = parserContext.getDelegate().parseCustomElement(grandChild,
-                        bean.getBeanDefinition());
-                set.add(bean2);
+                beanNumber++;
+            }
+            bean = new BeanDefinitionHolder(beanDefinition, name);
+        }
+
+        return bean;
+    }
+
+    /**
+     * Parses a list of elements into a list of beans/standard content.
+     *
+     * @param grandChildren - The list of beans/content in a bean property
+     * @param child - The property tag for the parent.
+     * @param parent - The parent bean that the tag is nested in.
+     * @param parserContext - Provided information and functionality regarding current bean set.
+     * @return A managedList of the nested content.
+     */
+    private ManagedList parseList(ArrayList<Element> grandChildren, Element child, BeanDefinitionBuilder parent,
+            ParserContext parserContext) {
+        ArrayList<Object> listItems = new ArrayList<Object>();
+
+        for (int i = 0; i < grandChildren.size(); i++) {
+            Element grandChild = grandChildren.get(i);
+
+            if (grandChild.getTagName().compareTo("value") == 0) {
+                listItems.add(grandChild.getTextContent());
+            } else {
+                listItems.add(parseBean(grandChild, parent, parserContext));
             }
         }
-        bean.addPropertyValue(propertyName, set);
+
+        String merge = child.getAttribute("merge");
+
+        ManagedList beans = new ManagedList(listItems.size());
+
+        if (merge != null) {
+            beans.setMergeEnabled(Boolean.valueOf(merge));
+        }
+
+        beans.addAll(listItems);
+        return beans;
+    }
+
+    /**
+     * Parses a list of elements into a set of beans/standard content.
+     *
+     * @param grandChildren - The set of beans/content in a bean property
+     * @param child - The property tag for the parent.
+     * @param parent - The parent bean that the tag is nested in.
+     * @param parserContext - Provided information and functionality regarding current bean set.
+     * @return A managedSet of the nested content.
+     */
+    private ManagedSet parseSet(ArrayList<Element> grandChildren, Element child, BeanDefinitionBuilder parent,
+            ParserContext parserContext) {
+        ManagedSet setItems = new ManagedSet();
+
+        for (int i = 0; i < grandChildren.size(); i++) {
+            Element grandChild = grandChildren.get(i);
+
+            if (child.getTagName().compareTo("value") == 0) {
+                setItems.add(grandChild.getTextContent());
+            } else {
+                setItems.add(parseBean(grandChild, parent, parserContext));
+            }
+        }
+
+        String merge = child.getAttribute("merge");
+        if (merge != null) {
+            setItems.setMergeEnabled(Boolean.valueOf(merge));
+        }
+
+        return setItems;
+    }
+
+    /**
+     * Parses a list of elements into a map of beans/standard content.
+     *
+     * @param grandChildren - The list of beans/content in a bean property
+     * @param child - The property tag for the parent.
+     * @param parent - The parent bean that the tag is nested in.
+     * @param parserContext - Provided information and functionality regarding current bean set.
+     * @return A managedSet of the nested content.
+     */
+    private ManagedMap parseMap(ArrayList<Element> grandChildren, Element child, BeanDefinitionBuilder parent,
+            ParserContext parserContext) {
+        ManagedMap map = new ManagedMap();
+
+        for (int j = 0; j < grandChildren.size(); j++) {
+            Object key = findKey(grandChildren.get(j));
+            Object value = findValue(grandChildren.get(j));
+            map.put(key, value);
+        }
+
+        String merge = child.getAttribute("merge");
+        if (merge != null) {
+            map.setMergeEnabled(Boolean.valueOf(merge));
+        }
+
+        return map;
     }
 }

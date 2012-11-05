@@ -22,7 +22,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.DataTypeConstrai
 
 import java.util.List;
 
-
 /**
  * This class allows a single attribute value to be exposed to the validation service, along
  * with some guidance about how that value should be interpreted, provided by the AttributeDefinition
@@ -35,66 +34,70 @@ import java.util.List;
  */
 public class SingleAttributeValueReader extends BaseAttributeValueReader {
 
-	private Object value;
-	private AttributeDefinition definition;
+    private Object value;
+    private AttributeDefinition definition;
 
-	public SingleAttributeValueReader(Object value, String entryName, String attributeName, AttributeDefinition definition) {
-		this.value = value;
-		this.entryName = entryName;
-		this.attributeName = attributeName;
-		this.definition = definition;
-	}
+    public SingleAttributeValueReader(Object value, String entryName, String attributeName,
+            AttributeDefinition definition) {
+        this.value = value;
+        this.entryName = entryName;
+        this.attributeName = attributeName;
+        this.definition = definition;
+    }
 
-	@Override
-	public Constrainable getDefinition(String attributeName) {
-		// Only return the definition if you have it, and if it's the definition for the passed attribute name
-		return definition != null && definition.getName() != null && definition.getName().equals(attributeName) ? definition : null;
-	}
+    @Override
+    public Constrainable getDefinition(String attributeName) {
+        // Only return the definition if you have it, and if it's the definition for the passed attribute name
+        return definition != null && definition.getName() != null && definition.getName().equals(attributeName) ?
+                definition : null;
+    }
 
-	@Override
-	public List<Constrainable> getDefinitions() {
-		return null;
-	}
+    @Override
+    public List<Constrainable> getDefinitions() {
+        return null;
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.AttributeValueReader#getEntry()
-	 */
-	@Override
-	public Constrainable getEntry() {
-		return null;
-	}
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.AttributeValueReader#getEntry()
+     */
+    @Override
+    public Constrainable getEntry() {
+        return null;
+    }
 
-	@Override
-	public String getLabel(String attributeName) {
-		if (definition != null && definition.getName() != null && definition.getName().equals(attributeName))
-			return definition.getLabel();
+    @Override
+    public String getLabel(String attributeName) {
+        if (definition != null && definition.getName() != null && definition.getName().equals(attributeName)) {
+            return definition.getLabel();
+        }
 
-		return attributeName;
-	}
+        return attributeName;
+    }
 
-	@Override
-	public Object getObject() {
-		return null;
-	}
+    @Override
+    public Object getObject() {
+        return null;
+    }
 
-	@Override
-	public String getPath() {
-		return attributeName;
-	}
+    @Override
+    public String getPath() {
+        return attributeName;
+    }
 
-	@Override
-	public Class<?> getType(String selectedAttributeName) {
-		Constrainable attributeDefinition = getDefinition(selectedAttributeName);
+    @Override
+    public Class<?> getType(String selectedAttributeName) {
+        Constrainable attributeDefinition = getDefinition(selectedAttributeName);
 
-		if (attributeDefinition != null && attributeDefinition instanceof DataTypeConstraint) {
-			DataTypeConstraint dataTypeConstraint = (DataTypeConstraint)attributeDefinition;
-			if (dataTypeConstraint.getDataType() != null)
-				return dataTypeConstraint.getDataType().getType();
-		}
+        if (attributeDefinition != null && attributeDefinition instanceof DataTypeConstraint) {
+            DataTypeConstraint dataTypeConstraint = (DataTypeConstraint) attributeDefinition;
+            if (dataTypeConstraint.getDataType() != null) {
+                return dataTypeConstraint.getDataType().getType();
+            }
+        }
 
-		// Assuming we can reliably guess
-		return value != null ? value.getClass() : null;
-	}
+        // Assuming we can reliably guess
+        return value != null ? value.getClass() : null;
+    }
 
     @Override
     public boolean isReadable() {
@@ -102,23 +105,25 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
     }
 
     @Override
-	public <X> X getValue() throws AttributeValidationException {
-		return (X) value;
-	}
-
-	@Override
-	public <X> X getValue(String attributeName) throws AttributeValidationException {
-		Constrainable attributeDefinition = getDefinition(attributeName);
-
-		if (attributeDefinition != null)
-			return (X) value;
-
-		return null;
-	}
+    public <X> X getValue() throws AttributeValidationException {
+        return (X) value;
+    }
 
     @Override
-    public AttributeValueReader clone(){
-        SingleAttributeValueReader clone = new SingleAttributeValueReader(this.value, this.entryName, this.attributeName, this.definition);
+    public <X> X getValue(String attributeName) throws AttributeValidationException {
+        Constrainable attributeDefinition = getDefinition(attributeName);
+
+        if (attributeDefinition != null) {
+            return (X) value;
+        }
+
+        return null;
+    }
+
+    @Override
+    public AttributeValueReader clone() {
+        SingleAttributeValueReader clone = new SingleAttributeValueReader(this.value, this.entryName,
+                this.attributeName, this.definition);
         clone.setAttributeName(this.attributeName);
         return clone;
     }

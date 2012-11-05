@@ -15,24 +15,22 @@
  */
 package org.kuali.rice.krad.datadictionary.impl;
 
-import java.util.Comparator;
-import java.util.List;
-
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * The super class which implementations of the FieldOverride interface will extend.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class FieldOverrideForListElementBase {
 
     private String propertyName;
     private Object element;
     protected String propertyNameForElementCompare;
-
 
     public String getPropertyNameForElementCompare() {
         return propertyNameForElementCompare;
@@ -46,22 +44,16 @@ public class FieldOverrideForListElementBase {
         Comparator comparator = this.getComparator();
         int pos = -1;
 
-        if ( object != null && theList != null )
-        {
-            for ( int i = 0; i < theList.size(); ++i )
-            {
+        if (object != null && theList != null) {
+            for (int i = 0; i < theList.size(); ++i) {
                 Object item = theList.get(i);
                 boolean equalFlag = false;
-                if ( comparator != null )
-                {
+                if (comparator != null) {
                     equalFlag = comparator.compare(object, item) == 0;
-                }
-                else
-                {
+                } else {
                     equalFlag = item.equals(object);
                 }
-                if ( equalFlag )
-                {
+                if (equalFlag) {
                     pos = i;
                     break;
                 }
@@ -86,19 +78,15 @@ public class FieldOverrideForListElementBase {
         this.element = value;
     }
 
-
     public FieldOverrideForListElementBase() {
         super();
     }
 
     protected Comparator getComparator() {
         Comparator comparator = null;
-        if ( StringUtils.isNotBlank(propertyNameForElementCompare))
-        {
+        if (StringUtils.isNotBlank(propertyNameForElementCompare)) {
             comparator = new BeanComparator(propertyNameForElementCompare);
-        }
-        else
-        {
+        } else {
             throw new RuntimeException("Missing required comparator definitions.");
         }
         return comparator;

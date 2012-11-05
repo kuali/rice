@@ -18,7 +18,6 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -31,14 +30,14 @@ import java.util.regex.Pattern;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="charsetPatternConstraint")
+@BeanTag(name = "charsetPatternConstraint")
 public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
     protected String validChars;
 
     /**
      * @return String containing all valid chars for this charset
      */
-    @BeanTagAttribute(name="validChars")
+    @BeanTagAttribute(name = "validChars")
     public String getValidChars() {
         return validChars;
     }
@@ -53,7 +52,6 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
 
         this.validChars = validChars;
     }
-
 
     /**
      * Escapes every special character I could think of, to limit potential misuse of this pattern.
@@ -79,25 +77,26 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
         return regexString.toString();
     }
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
-	 */
-	@Override
-	public String getMessageKey() {
-		String messageKey = super.getMessageKey();
-		if (StringUtils.isNotEmpty(messageKey)) {
-			return messageKey;
-		}
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getMessageKey()
+     */
+    @Override
+    public String getMessageKey() {
+        String messageKey = super.getMessageKey();
+        if (StringUtils.isNotEmpty(messageKey)) {
+            return messageKey;
+        }
 
-		return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "charsetPattern");
-	}
+        return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "charsetPattern");
+    }
 
     /**
      * Parameters to be used in the string retrieved by this constraint's messageKey
+     *
      * @return the validationMessageParams
      */
     public List<String> getValidationMessageParams() {
-        if(validationMessageParams == null){
+        if (validationMessageParams == null) {
             validationMessageParams = new ArrayList<String>();
             if (StringUtils.isNotBlank(validChars)) {
                 validationMessageParams.add(validChars);
@@ -115,12 +114,12 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
      * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
-    public void completeValidation(ValidationTrace tracer){
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean("CharsetPatternConstraint", getMessageKey());
 
-        if(getValidChars()==null){
-            String currentValues [] = {"validChars ="+getValidChars()};
-            tracer.createError("ValidChars must be set",currentValues);
+        if (getValidChars() == null) {
+            String currentValues[] = {"validChars =" + getValidChars()};
+            tracer.createError("ValidChars must be set", currentValues);
         }
 
         super.completeValidation(tracer.getCopy());

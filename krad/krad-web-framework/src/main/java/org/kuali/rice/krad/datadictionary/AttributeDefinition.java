@@ -37,14 +37,12 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.LookupConstraint
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.PropertyEditor;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,9 +52,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="attributeDefinition")
-public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable,
-        Formatable, HierarchicallyConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
+@BeanTag(name = "attributeDefinition")
+public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, Formatable, HierarchicallyConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -2490613377818442742L;
 
     protected Boolean forceUppercase = Boolean.FALSE;
@@ -122,7 +119,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return boolean true if force upper case is set
      */
-    @BeanTagAttribute(name="forceUppercase")
+    @BeanTagAttribute(name = "forceUppercase")
     public Boolean getForceUppercase() {
         return this.forceUppercase;
     }
@@ -130,7 +127,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMaxLength()
      */
-    @BeanTagAttribute(name="maxLength")
+    @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
         return this.getSimpleConstraint().getMaxLength();
     }
@@ -147,7 +144,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getExclusiveMin()
      */
-    @BeanTagAttribute(name="exclusiveMin")
+    @BeanTagAttribute(name = "exclusiveMin")
     public String getExclusiveMin() {
         return this.getSimpleConstraint().getExclusiveMin();
     }
@@ -164,7 +161,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getInclusiveMax()
      */
-    @BeanTagAttribute(name="inclusiveMax")
+    @BeanTagAttribute(name = "inclusiveMax")
     public String getInclusiveMax() {
         return this.getSimpleConstraint().getInclusiveMax();
     }
@@ -178,46 +175,46 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.getSimpleConstraint().setInclusiveMax(inclusiveMax);
     }
 
-	/**
-	 * The validationPattern element defines the allowable character-level or
-	 * field-level values for an attribute.
-	 *
-	 * JSTL: validationPattern is a Map which is accessed using a key of
-	 * "validationPattern". Each entry may contain some of the keys listed
-	 * below. The keys that may be present for a given attribute are dependent
-	 * upon the type of validationPattern.
-	 *
-	 * maxLength (String) exactLength type allowWhitespace allowUnderscore
-	 * allowPeriod validChars precision scale allowNegative
-	 *
-	 * The allowable keys (in addition to type) for each type are: Type****
-	 * ***Keys*** alphanumeric exactLength maxLength allowWhitespace
-	 * allowUnderscore allowPeriod
-	 *
-	 * alpha exactLength maxLength allowWhitespace
-	 *
-	 * anyCharacter exactLength maxLength allowWhitespace
-	 *
-	 * charset validChars
-	 *
-	 * numeric exactLength maxLength
-	 *
-	 * fixedPoint allowNegative precision scale
-	 *
-	 * floatingPoint allowNegative
-	 *
-	 * date n/a emailAddress n/a javaClass n/a month n/a phoneNumber n/a
-	 * timestamp n/a year n/a zipcode n/a
-	 *
-	 * Note: maxLength and exactLength are mutually exclusive. If one is
-	 * entered, the other may not be entered.
-	 *
-	 * Note: See ApplicationResources.properties for exact regex patterns. e.g.
-	 * validationPatternRegex.date for regex used in date validation.
-	 */
-	public void setValidationPattern(ValidationPattern validationPattern) {
-		this.validationPattern = validationPattern;
-	}
+    /**
+     * The validationPattern element defines the allowable character-level or
+     * field-level values for an attribute.
+     *
+     * JSTL: validationPattern is a Map which is accessed using a key of
+     * "validationPattern". Each entry may contain some of the keys listed
+     * below. The keys that may be present for a given attribute are dependent
+     * upon the type of validationPattern.
+     *
+     * maxLength (String) exactLength type allowWhitespace allowUnderscore
+     * allowPeriod validChars precision scale allowNegative
+     *
+     * The allowable keys (in addition to type) for each type are: Type****
+     * ***Keys*** alphanumeric exactLength maxLength allowWhitespace
+     * allowUnderscore allowPeriod
+     *
+     * alpha exactLength maxLength allowWhitespace
+     *
+     * anyCharacter exactLength maxLength allowWhitespace
+     *
+     * charset validChars
+     *
+     * numeric exactLength maxLength
+     *
+     * fixedPoint allowNegative precision scale
+     *
+     * floatingPoint allowNegative
+     *
+     * date n/a emailAddress n/a javaClass n/a month n/a phoneNumber n/a
+     * timestamp n/a year n/a zipcode n/a
+     *
+     * Note: maxLength and exactLength are mutually exclusive. If one is
+     * entered, the other may not be entered.
+     *
+     * Note: See ApplicationResources.properties for exact regex patterns. e.g.
+     * validationPatternRegex.date for regex used in date validation.
+     */
+    public void setValidationPattern(ValidationPattern validationPattern) {
+        this.validationPattern = validationPattern;
+    }
 
     /**
      * Defines the allowable character-level or
@@ -266,6 +263,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return control
      */
+    @BeanTagAttribute(name = "oldControl", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ControlDefinition getControl() {
         return control;
     }
@@ -321,7 +319,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     @Override
-    @BeanTagAttribute(name="formatterClass")
+    @BeanTagAttribute(name = "formatterClass")
     public String getFormatterClass() {
         return formatterClass;
     }
@@ -352,7 +350,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return PropertyEditor property editor instance to use for this field
      */
-    @BeanTagAttribute(name="propertyEditor",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "propertyEditor", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PropertyEditor getPropertyEditor() {
         return propertyEditor;
     }
@@ -444,17 +442,17 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
     public void completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationTrace tracer) {
-        tracer.addBean(this.getClass().getSimpleName(),"Attribute: "+getName());
+        tracer.addBean(this.getClass().getSimpleName(), "Attribute: " + getName());
         try {
             if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
-                String currentValues [] = {"property = "+getName(), "class = "+rootObjectClass.getName()};
-                tracer.createError("Property is not found in class",currentValues);
+                String currentValues[] = {"property = " + getName(), "class = " + rootObjectClass.getName()};
+                tracer.createError("Property is not found in class", currentValues);
             }
 
             //TODO currently requiring a control or controlField, but this should not be case (AttrField should probably do the check)
             if (getControl() == null && getControlField() == null) {
-                String currentValues [] = {"property = "+getName(), "class = "+rootObjectClass.getName()};
-                tracer.createError("Property does not have a control defined in the class",currentValues);
+                String currentValues[] = {"property = " + getName(), "class = " + rootObjectClass.getName()};
+                tracer.createError("Property does not have a control defined in the class", currentValues);
             }
 
             if (getControl() != null) {
@@ -462,11 +460,11 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
             }
 
             if (attributeSecurity != null) {
-                attributeSecurity.completeValidation(rootObjectClass, otherObjectClass,tracer.getCopy());
+                attributeSecurity.completeValidation(rootObjectClass, otherObjectClass, tracer.getCopy());
             }
 
             if (validationPattern != null) {
-               // validationPattern.completeValidation(tracer.getCopy());
+                // validationPattern.completeValidation(tracer.getCopy());
             }
 
             if (formatterClass != null) {
@@ -474,17 +472,18 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
                     Class formatterClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(),
                             getFormatterClass());
                     if (!Formatter.class.isAssignableFrom(formatterClassObject)) {
-                        String currentValues [] = {"formatterClassObject = "+formatterClassObject.getName()};
-                        tracer.createError("FormatterClass is not a valid instance",currentValues);
+                        String currentValues[] = {"formatterClassObject = " + formatterClassObject.getName()};
+                        tracer.createError("FormatterClass is not a valid instance", currentValues);
                     }
                 } catch (ClassNotFoundException e) {
-                    String currentValues [] = {"class = "+getFormatterClass()};
-                    tracer.createError("FormatterClass could not be found",currentValues);
+                    String currentValues[] = {"class = " + getFormatterClass()};
+                    tracer.createError("FormatterClass could not be found", currentValues);
                 }
             }
         } catch (RuntimeException ex) {
-            String currentValues [] = {"attribute = "+rootObjectClass + "." + getName(),"Exception = "+ex.getMessage()};
-            tracer.createError("Unable to validate attribute",currentValues);
+            String currentValues[] =
+                    {"attribute = " + rootObjectClass + "." + getName(), "Exception = " + ex.getMessage()};
+            tracer.createError("Unable to validate attribute", currentValues);
         }
     }
 
@@ -499,7 +498,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the attributeSecurity
      */
-    @BeanTagAttribute(name="attributeSecurity",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "attributeSecurity", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public AttributeSecurity getAttributeSecurity() {
         return this.attributeSecurity;
     }
@@ -511,12 +510,12 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.attributeSecurity = attributeSecurity;
     }
 
-	/**
-	 * @return the unique
-	 */
-	public Boolean getUnique() {
-		return this.unique;
-	}
+    /**
+     * @return the unique
+     */
+    public Boolean getUnique() {
+        return this.unique;
+    }
 
     /**
      * @param unique the unique to set
@@ -532,7 +531,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return Control instance
      */
-    @BeanTagAttribute(name="control",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Control getControlField() {
         return this.controlField;
     }
@@ -549,7 +548,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMinLength()
      */
-    @BeanTagAttribute(name="minLength")
+    @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {
         return this.getSimpleConstraint().getMinLength();
     }
@@ -566,7 +565,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the dataType
      */
-    @BeanTagAttribute(name="dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {
         return simpleConstraint.getDataType();
     }
@@ -585,7 +584,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the customValidatorClass
      */
-    @BeanTagAttribute(name="customValidatorClass")
+    @BeanTagAttribute(name = "customValidatorClass")
     public String getCustomValidatorClass() {
         return this.customValidatorClass;
     }
@@ -601,7 +600,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the validChars
      */
     @Override
-    @BeanTagAttribute(name="validChractersConstraint",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "validChractersConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidCharactersConstraint getValidCharactersConstraint() {
         return this.validCharactersConstraint;
     }
@@ -617,7 +616,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the caseConstraint
      */
     @Override
-    @BeanTagAttribute(name="caseConstraint", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "caseConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CaseConstraint getCaseConstraint() {
         return this.caseConstraint;
     }
@@ -633,7 +632,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the requireConstraint
      */
     @Override
-    @BeanTagAttribute(name="prerequisteConstraint",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "prerequisteConstraint", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
         return this.dependencyConstraints;
     }
@@ -649,7 +648,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the occursConstraint
      */
     @Override
-    @BeanTagAttribute(name="mustOccurConstraints",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "mustOccurConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
     }
@@ -692,7 +691,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the childEntryName
      */
-    @BeanTagAttribute(name="childEntryName")
+    @BeanTagAttribute(name = "childEntryName")
     public String getChildEntryName() {
         return this.childEntryName;
     }
@@ -712,7 +711,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return KeyValuesFinder instance
      */
-    @BeanTagAttribute(name="optionFinder",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "optionFinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public KeyValuesFinder getOptionsFinder() {
         return this.optionsFinder;
     }
@@ -740,7 +739,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.additionalDisplayAttributeName = additionalDisplayAttributeName;
     }
 
-    @BeanTagAttribute(name="additionalDisplayAttributeName")
+    @BeanTagAttribute(name = "additionalDisplayAttributeName")
     public String getAdditionalDisplayAttributeName() {
         return this.additionalDisplayAttributeName;
     }
@@ -749,7 +748,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.alternateDisplayAttributeName = alternateDisplayAttributeName;
     }
 
-    @BeanTagAttribute(name="alternateDisplayAttributeName")
+    @BeanTagAttribute(name = "alternateDisplayAttributeName")
     public String getAlternateDisplayAttributeName() {
         return this.alternateDisplayAttributeName;
     }

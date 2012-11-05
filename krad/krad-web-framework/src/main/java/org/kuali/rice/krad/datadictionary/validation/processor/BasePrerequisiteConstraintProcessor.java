@@ -31,19 +31,21 @@ import java.util.Collection;
  */
 public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> extends MandatoryElementConstraintProcessor<C> {
 
-	protected ConstraintValidationResult processPrerequisiteConstraint(PrerequisiteConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
-		ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(getName());
+    protected ConstraintValidationResult processPrerequisiteConstraint(PrerequisiteConstraint constraint,
+            AttributeValueReader attributeValueReader) throws AttributeValidationException {
+        ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(getName());
 
-		if (constraint == null) {
-			constraintValidationResult.setStatus(ErrorLevel.NOCONSTRAINT);
-			return constraintValidationResult;
-		}
+        if (constraint == null) {
+            constraintValidationResult.setStatus(ErrorLevel.NOCONSTRAINT);
+            return constraintValidationResult;
+        }
 
-    	// TODO: Does this code need to be able to look at more than just the other immediate members of the object?
+        // TODO: Does this code need to be able to look at more than just the other immediate members of the object?
         String attributeName = constraint.getPropertyName();
 
         if (ValidationUtils.isNullOrEmpty(attributeName)) {
-        	throw new AttributeValidationException("Prerequisite constraints must include the name of the attribute that is required");
+            throw new AttributeValidationException(
+                    "Prerequisite constraints must include the name of the attribute that is required");
         }
 
         Object value = attributeValueReader.getValue(attributeName);
@@ -51,19 +53,20 @@ public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> 
         boolean isSuccessful = true;
 
         if (value instanceof java.lang.String) {
-        	isSuccessful = ValidationUtils.hasText((String) value);
+            isSuccessful = ValidationUtils.hasText((String) value);
         } else if (value instanceof Collection) {
-        	isSuccessful = (((Collection<?>) value).size() > 0);
+            isSuccessful = (((Collection<?>) value).size() > 0);
         } else {
-        	isSuccessful = (null != value) ? true : false;
+            isSuccessful = (null != value) ? true : false;
         }
 
         if (!isSuccessful) {
-        	String label = attributeValueReader.getLabel(attributeName);
-        	if (label != null)
-        		attributeName = label;
+            String label = attributeValueReader.getLabel(attributeName);
+            if (label != null) {
+                attributeName = label;
+            }
 
-        	constraintValidationResult.setError(RiceKeyConstants.ERROR_REQUIRES_FIELD, attributeName);
+            constraintValidationResult.setError(RiceKeyConstants.ERROR_REQUIRES_FIELD, attributeName);
             constraintValidationResult.setConstraintLabelKey(constraint.getMessageKey());
             constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
         }

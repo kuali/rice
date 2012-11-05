@@ -25,7 +25,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="simpleContraint")
+@BeanTag(name = "simpleContraint")
 public class SimpleConstraint extends BaseConstraint implements ExistenceConstraint, RangeConstraint, LengthConstraint {
 
     private Boolean required;
@@ -45,7 +45,7 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
      *
      * @return the required
      */
-    @BeanTagAttribute(name="required")
+    @BeanTagAttribute(name = "required")
     public Boolean getRequired() {
         return this.required;
     }
@@ -70,7 +70,7 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
      *
      * @return the maxLength
      */
-    @BeanTagAttribute(name="maxLength")
+    @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
         return this.maxLength;
     }
@@ -87,7 +87,7 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
      *
      * @return the minLength
      */
-    @BeanTagAttribute(name="minLength")
+    @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {
         return this.minLength;
     }
@@ -104,7 +104,7 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
      *
      * @return the exclusiveMin
      */
-    @BeanTagAttribute(name="exclusiveMin")
+    @BeanTagAttribute(name = "exclusiveMin")
     public String getExclusiveMin() {
         return this.exclusiveMin;
     }
@@ -121,7 +121,7 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
      *
      * @return the inclusiveMax
      */
-    @BeanTagAttribute(name="inclusiveMax")
+    @BeanTagAttribute(name = "inclusiveMax")
     public String getInclusiveMax() {
         return this.inclusiveMax;
     }
@@ -138,7 +138,7 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
      *
      * @return the minOccurs
      */
-    @BeanTagAttribute(name="minOccurs")
+    @BeanTagAttribute(name = "minOccurs")
     public Integer getMinOccurs() {
         return this.minOccurs;
     }
@@ -155,7 +155,7 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
      *
      * @return the maxOccurs
      */
-    @BeanTagAttribute(name="maxOccurs")
+    @BeanTagAttribute(name = "maxOccurs")
     public Integer getMaxOccurs() {
         return this.maxOccurs;
     }
@@ -167,7 +167,7 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
         this.maxOccurs = maxOccurs;
     }
 
-    @BeanTagAttribute(name="dataType",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {
         return dataType;
     }

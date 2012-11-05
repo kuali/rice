@@ -20,13 +20,12 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 
-
 /**
  * Pattern for matching alpha characters
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="alphaPatternConstraint")
+@BeanTag(name = "alphaPatternConstraint")
 public class AlphaPatternConstraint extends AllowCharacterConstraint {
     protected boolean lowerCase = false;
     protected boolean upperCase = false;
@@ -41,8 +40,7 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
          */
         if (lowerCase) {
             regexString = new StringBuilder("[a-z");
-        }
-        else if(upperCase){
+        } else if (upperCase) {
             regexString = new StringBuilder("[A-Z");
         }
         regexString.append(this.getAllowedCharacterRegex());
@@ -63,10 +61,9 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
             StringBuilder key = new StringBuilder("");
             if (lowerCase) {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPatternLowerCase");
-            } else if(upperCase){
+            } else if (upperCase) {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPatternUpperCase");
-            }
-            else{
+            } else {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPattern");
             }
         }
@@ -77,7 +74,7 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
     /**
      * @return the lowerCase
      */
-    @BeanTagAttribute(name="lowerCase")
+    @BeanTagAttribute(name = "lowerCase")
     public boolean isLowerCase() {
         return this.lowerCase;
     }
@@ -92,7 +89,7 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
         this.lowerCase = lowerCase;
     }
 
-    @BeanTagAttribute(name="upperCase")
+    @BeanTagAttribute(name = "upperCase")
     public boolean isUpperCase() {
         return upperCase;
     }

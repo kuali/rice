@@ -34,48 +34,52 @@ import java.util.Map;
  */
 public abstract class BaseConstraintProvider<T extends Constrainable> implements ConstraintProvider<T> {
 
-
-	protected Map<String, ConstraintResolver<T>> resolverMap;
+    protected Map<String, ConstraintResolver<T>> resolverMap;
 
     /**
      * initializes the constraints
      *
-     * <p>By doing initialization here, and not in a constructor, constraints are only placed in memory when they are utilized.</p>
+     * <p>By doing initialization here, and not in a constructor, constraints are only placed in memory when they are
+     * utilized.</p>
      */
-	public void init() {
-		if (resolverMap == null)
-			resolverMap = new HashMap<String, ConstraintResolver<T>>();
+    public void init() {
+        if (resolverMap == null) {
+            resolverMap = new HashMap<String, ConstraintResolver<T>>();
+        }
 
-	}
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider#getConstraints(org.kuali.rice.krad.datadictionary.validation.capability.Constrainable, java.lang.Class)
-	 */
-	@Override
-	public List<Constraint> getConstraints(T definition, Class<? extends Constraint> constraintType) {
-		if (resolverMap == null)
-			init();
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider#getConstraints(org.kuali.rice.krad.datadictionary.validation.capability.Constrainable,
+     *      java.lang.Class)
+     */
+    @Override
+    public List<Constraint> getConstraints(T definition, Class<? extends Constraint> constraintType) {
+        if (resolverMap == null) {
+            init();
+        }
 
-		ConstraintResolver<T> resolver = resolverMap.get(constraintType.getName());
+        ConstraintResolver<T> resolver = resolverMap.get(constraintType.getName());
 
-		if (resolver == null)
-			return null;
+        if (resolver == null) {
+            return null;
+        }
 
-		return resolver.resolve(definition);
-	}
+        return resolver.resolve(definition);
+    }
 
-	/**
-	 * @return the resolverMap
-	 */
-	public Map<String, ConstraintResolver<T>> getResolverMap() {
-		return this.resolverMap;
-	}
+    /**
+     * @return the resolverMap
+     */
+    public Map<String, ConstraintResolver<T>> getResolverMap() {
+        return this.resolverMap;
+    }
 
-	/**
-	 * @param resolverMap the resolverMap to set
-	 */
-	public void setResolverMap(Map<String, ConstraintResolver<T>> resolverMap) {
-		this.resolverMap = resolverMap;
-	}
+    /**
+     * @param resolverMap the resolverMap to set
+     */
+    public void setResolverMap(Map<String, ConstraintResolver<T>> resolverMap) {
+        this.resolverMap = resolverMap;
+    }
 
 }

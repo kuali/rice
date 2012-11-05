@@ -20,10 +20,10 @@ import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
-import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationControllerBase;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="maintenanceDocumentEntry")
+@BeanTag(name = "maintenanceDocumentEntry")
 public class MaintenanceDocumentEntry extends DocumentEntry {
     private static final long serialVersionUID = 4990040987835057251L;
 
@@ -71,7 +71,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         this.dataObjectClass = dataObjectClass;
     }
 
-    @BeanTagAttribute(name="dataObjectClass")
+    @BeanTagAttribute(name = "dataObjectClass")
     public Class<?> getDataObjectClass() {
         return dataObjectClass;
     }
@@ -98,7 +98,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         this.maintainableClass = maintainableClass;
     }
 
-    @BeanTagAttribute(name="maintainableClass")
+    @BeanTagAttribute(name = "maintainableClass")
     public Class<? extends Maintainable> getMaintainableClass() {
         return maintainableClass;
     }
@@ -116,7 +116,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      *
      * @return Returns the allowsNewOrCopy.
      */
-    @BeanTagAttribute(name="allowsNewOrCopy")
+    @BeanTagAttribute(name = "allowsNewOrCopy")
     public boolean getAllowsNewOrCopy() {
         return allowsNewOrCopy;
     }
@@ -150,9 +150,8 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
             reference.completeValidation(dataObjectClass, null);
         }
 
-
-        if (documentAuthorizerClass != null &&
-                !MaintenanceDocumentAuthorizer.class.isAssignableFrom(documentAuthorizerClass)) {
+        if (documentAuthorizerClass != null && !MaintenanceDocumentAuthorizer.class.isAssignableFrom(
+                documentAuthorizerClass)) {
             throw new ClassValidationException(
                     "This maintenance document for '" + getDataObjectClass().getName() + "' has an invalid " +
                             "documentAuthorizerClass ('" + documentAuthorizerClass.getName() + "').  " +
@@ -167,7 +166,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         return "MaintenanceDocumentEntry for documentType " + getDocumentTypeName();
     }
 
-    @BeanTagAttribute(name="lockingKeys",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "lockingKeys", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getLockingKeys() {
         return lockingKeys;
     }
@@ -189,7 +188,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     /**
      * @return the preserveLockingKeysOnCopy
      */
-    @BeanTagAttribute(name="preserveLockingKeysOnCopy")
+    @BeanTagAttribute(name = "preserveLockingKeysOnCopy")
     public boolean getPreserveLockingKeysOnCopy() {
         return this.preserveLockingKeysOnCopy;
     }
@@ -204,7 +203,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     /**
      * @return the allowRecordDeletion
      */
-    @BeanTagAttribute(name="allowsRecordDeletion")
+    @BeanTagAttribute(name = "allowsRecordDeletion")
     public boolean getAllowsRecordDeletion() {
         return this.allowsRecordDeletion;
     }

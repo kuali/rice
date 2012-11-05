@@ -23,6 +23,6 @@ package org.kuali.rice.krad.datadictionary.validation.capability;
  */
 public interface Formatable {
 
-	public String getFormatterClass();
+    public String getFormatterClass();
 
 }

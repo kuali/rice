@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.datadictionary.uif;
 
 import org.kuali.rice.krad.datadictionary.DictionaryBeanBase;
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -16,18 +16,13 @@
 package org.kuali.rice.krad.datadictionary.validation;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.beans.BeanWrapperImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +44,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     /**
      * Constructor for ViewAttributeValueReader, the View must already be indexed and
      * the InputFields must have already be initialized for this reader to work properly
+     *
      * @param view the View to validate
      * @param form model object representing the View's form data
      */
@@ -74,7 +70,6 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
         }
     }*/
 
-
     /**
      * Gets the definition which is an InputField on the View/Page
      */
@@ -83,14 +78,14 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
         InputField field = inputFieldMap.get(attributeName);
         if (field != null) {
             return field;
-        }
-        else{
+        } else {
             return null;
         }
     }
 
     /**
      * Gets all InputFields (which extend Constrainable)
+     *
      * @return
      */
     @Override
@@ -100,22 +95,23 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
     /**
      * Returns the label associated with the InputField which has that AttributeName
+     *
      * @param attributeName
      * @return
      */
     @Override
     public String getLabel(String attributeName) {
         InputField field = inputFieldMap.get(attributeName);
-        if(field != null){
+        if (field != null) {
             return field.getLabel();
-        }
-        else{
+        } else {
             return null;
         }
     }
 
     /**
      * Returns the View object
+     *
      * @return view set in the constructor
      */
     @Override
@@ -125,6 +121,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
     /**
      * Not used for this reader, returns null
+     *
      * @return null
      */
     @Override
@@ -134,6 +131,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
     /**
      * Returns current attributeName which represents the path
+     *
      * @return attributeName set on this reader
      */
     @Override
@@ -143,6 +141,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
     /**
      * Gets the type of value for this AttributeName as represented on the Form
+     *
      * @param attributeName
      * @return
      */
@@ -155,11 +154,12 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     /**
      * If the current attribute being evaluated is a field of an addLine return false because it should not
      * be evaluated during Validation.
+     *
      * @return false if InputField is part of an addLine for a collection, true otherwise
      */
     @Override
     public boolean isReadable() {
-        if(attributeName != null && attributeName.contains(UifPropertyPaths.NEW_COLLECTION_LINES)){
+        if (attributeName != null && attributeName.contains(UifPropertyPaths.NEW_COLLECTION_LINES)) {
             return false;
         }
         return true;
@@ -167,6 +167,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
     /**
      * Return value of the field for the attributeName currently set on this reader
+     *
      * @param <X> return type
      * @return value of the field for the attributeName currently set on this reader
      * @throws AttributeValidationException
@@ -174,7 +175,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     @Override
     public <X> X getValue() throws AttributeValidationException {
         X fieldValue = null;
-        if(StringUtils.isNotBlank(this.attributeName)){
+        if (StringUtils.isNotBlank(this.attributeName)) {
             fieldValue = ObjectPropertyUtils.<X>getPropertyValue(form, this.attributeName);
         }
         return fieldValue;
@@ -182,6 +183,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
     /**
      * Return value of the field for the attributeName passed in
+     *
      * @param attributeName name (which represents a path) of the value to be retrieved on the Form
      * @param <X> return type
      * @return value of that attributeName represents on the form
@@ -190,7 +192,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     @Override
     public <X> X getValue(String attributeName) throws AttributeValidationException {
         X fieldValue = null;
-        if(StringUtils.isNotBlank(attributeName)){
+        if (StringUtils.isNotBlank(attributeName)) {
             fieldValue = ObjectPropertyUtils.<X>getPropertyValue(form, this.attributeName);
         }
         return fieldValue;
@@ -198,10 +200,11 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
     /**
      * Cones this AttributeValueReader
+     *
      * @return AttributeValueReader
      */
     @Override
-    public AttributeValueReader clone(){
+    public AttributeValueReader clone() {
         ViewAttributeValueReader clone = new ViewAttributeValueReader(view, form);
         clone.setAttributeName(this.attributeName);
         return clone;

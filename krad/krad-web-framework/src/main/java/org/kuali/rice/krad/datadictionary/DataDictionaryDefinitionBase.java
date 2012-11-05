@@ -18,21 +18,20 @@ package org.kuali.rice.krad.datadictionary;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.springframework.beans.factory.InitializingBean;
 
-
-
 /**
  * Common base class for DataDictionaryDefinition types.
  *
- *  @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase implements DataDictionaryDefinition, InitializingBean {
     private static final long serialVersionUID = -2003626577498716712L;
 
-	protected String id;
+    protected String id;
 
     public DataDictionaryDefinitionBase() {
     }
-    @BeanTagAttribute(name="id")
+
+    @BeanTagAttribute(name = "id")
     public String getId() {
         return this.id;
     }

@@ -28,15 +28,14 @@ import java.lang.annotation.RetentionPolicy;
 public @interface BeanTagAttribute {
     /*
      * The different types the property could be.
-     * SingleValue -
-     * SingleBean -
+     * SingleValue - Property is a single standard value (attribute). (DEFAULT)
+     * SingleBean - Property is a single bean object.
      * ListBean - Property is a list consisting of beans.
      * ListValue - Property is a list consisting of standard values (string, int, char, etc).
-     * MapValue - A <String,String> map
-     * MapBean - A <String,Bean> map
-     * Map2Bean - A <Bean, Bean> map
-     * SetValue - SET<String>
-     * SetBean - SET<BEAN>
+     * MapValue - The property is a map that consists of String keys and String values.
+     * MapBean - The property is a map that consists of either String or bean keys and bean values.
+     * SetValue - The property is a set consisting of standard values.
+     * SetBean - The property is a set consisting of beans.
      */
     public enum AttributeType {
         SINGLEVALUE, SINGLEBEAN, LISTBEAN, LISTVALUE, MAPVALUE, MAPBEAN, MAP2BEAN, SETVALUE, SETBEAN

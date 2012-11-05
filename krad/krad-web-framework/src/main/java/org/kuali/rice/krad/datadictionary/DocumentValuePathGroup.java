@@ -20,56 +20,57 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.util.List;
 
-
 /**
  * This is a description of what this class does - mpham don't forget to fill this in.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-@BeanTag(name="documentValuePathGroup")
-public class DocumentValuePathGroup  extends DataDictionaryDefinitionBase{
-	private static final long serialVersionUID = 6285682208264817105L;
+@BeanTag(name = "documentValuePathGroup")
+public class DocumentValuePathGroup extends DataDictionaryDefinitionBase {
+    private static final long serialVersionUID = 6285682208264817105L;
 
-	private List<String> paths;
-	private DocumentCollectionPath documentCollectionPath;
+    private List<String> paths;
+    private DocumentCollectionPath documentCollectionPath;
 
-	/**
-	 * @return the documentValues
-	 */
-    @BeanTagAttribute(name="paths",type= BeanTagAttribute.AttributeType.LISTVALUE)
-	public List<String> getDocumentValues() {
-		return this.paths;
-	}
-	/**
-	 * @return the documentCollectionPath
-	 */
-    @BeanTagAttribute(name="documentCollectionPath",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public DocumentCollectionPath getDocumentCollectionPath() {
-		return this.documentCollectionPath;
-	}
-	/**
-	 * @param documentValues the documentValues to set
-	 */
-	public void setDocumentValues(List<String> paths) {
-		this.paths = paths;
-	}
-	/**
-	 * @param documentCollectionPath the documentCollectionPath to set
-	 */
-	public void setDocumentCollectionPath(
-			DocumentCollectionPath documentCollectionPath) {
-		this.documentCollectionPath = documentCollectionPath;
-	}
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
-	 */
-	public void completeValidation(Class rootBusinessObjectClass,
-			Class otherBusinessObjectClass) {
-		// TODO mpham - THIS METHOD NEEDS JAVADOCS
+    /**
+     * @return the documentValues
+     */
+    @BeanTagAttribute(name = "paths", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getDocumentValues() {
+        return this.paths;
+    }
 
-	}
+    /**
+     * @return the documentCollectionPath
+     */
+    @BeanTagAttribute(name = "documentCollectionPath", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public DocumentCollectionPath getDocumentCollectionPath() {
+        return this.documentCollectionPath;
+    }
+
+    /**
+     * @param documentValues the documentValues to set
+     */
+    public void setDocumentValues(List<String> paths) {
+        this.paths = paths;
+    }
+
+    /**
+     * @param documentCollectionPath the documentCollectionPath to set
+     */
+    public void setDocumentCollectionPath(DocumentCollectionPath documentCollectionPath) {
+        this.documentCollectionPath = documentCollectionPath;
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
+     *      java.lang.Class)
+     */
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+        // TODO mpham - THIS METHOD NEEDS JAVADOCS
+
+    }
 
 }

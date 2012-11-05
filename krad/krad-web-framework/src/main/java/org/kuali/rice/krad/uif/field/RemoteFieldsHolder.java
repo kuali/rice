@@ -59,11 +59,11 @@ import java.util.List;
  * <p>
  * e.g. configuration
  * {@code
- *    <property name="items">
-      <list>
-        <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
-              p:fetchingMethodToCall="retrieveRemoteFields"/>
- *    ...
+ * <property name="items">
+ * <list>
+ * <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
+ * p:fetchingMethodToCall="retrieveRemoteFields"/>
+ * ...
  * }
  *
  * This example will invoke a method named 'retrieveRemoteFields' on the view helper service, which should return
@@ -76,7 +76,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="remoteFieldsHolder")
+@BeanTag(name = "remoteFieldsHolder")
 public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
     private static final long serialVersionUID = -8493923312021633727L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RemoteFieldsHolder.class);
@@ -99,7 +99,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      * @param model - object containing the view data, sent to the fetching method
      * @param parent - container instance that holder is configured for, sent to the fetching method
      * @return List<AttributeField> list of attribute fields that should be placed into container, if no remotable
-     * fields were returned from the fetching method the list will be empty
+     *         fields were returned from the fetching method the list will be empty
      */
     public List<InputField> fetchAndTranslateRemoteFields(View view, Object model, Container parent) {
         if (StringUtils.isBlank(fetchingMethodToCall) && (fetchingMethodInvoker == null)) {
@@ -181,7 +181,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      *
      * @return String path to property on model
      */
-    @BeanTagAttribute(name="propertyName")
+    @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
         return propertyName;
     }
@@ -205,7 +205,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      *
      * @return BindingInfo instance containing binding information for the Map property
      */
-    @BeanTagAttribute(name="propertyName",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return bindingInfo;
     }
@@ -234,7 +234,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      *
      * @return String name of method to invoke for fetching remote fields
      */
-    @BeanTagAttribute(name="fetchingMethodToCall")
+    @BeanTagAttribute(name = "fetchingMethodToCall")
     public String getFetchingMethodToCall() {
         return fetchingMethodToCall;
     }
@@ -265,7 +265,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      *
      * @return MethodInvokerConfig instance containing method configuration
      */
-    @BeanTagAttribute(name="fetchingMethodInvoker",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "fetchingMethodInvoker", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MethodInvokerConfig getFetchingMethodInvoker() {
         return fetchingMethodInvoker;
     }

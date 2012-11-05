@@ -30,13 +30,14 @@ import java.util.List;
  *
  * <p>
  * These constraints can be looked up in a variety of ways. They may be:
- *  <ol>
+ * <ol>
  * <li> member variables of the Constrainable definition itself {@see CaseConstrainable.class}</li>
  * <li> the Constrainable definition itself may extend Constraint {@see LengthConstrainable.class}</li>
  * <li> provided from some external source, or generated on the fly</li>
  * </ol>
- *  </p>
- * <p>The goal here is to provide a mechanism that enables implementing institutions to inject new Constraints and ConstraintProcessor
+ * </p>
+ * <p>The goal here is to provide a mechanism that enables implementing institutions to inject new Constraints and
+ * ConstraintProcessor
  * classes into the DictionaryValidationService implementation via dependency injection.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -47,11 +48,12 @@ public interface ConstraintProvider<T extends Constrainable> {
     /**
      * gets the constraints provided
      *
-     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code CollectionDefinition}
+     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code
+     * CollectionDefinition}
      * @param constraintType - a java class that represents the constraint
      * @return the list of constraints
      */
-	public List<Constraint> getConstraints(T definition, Class<? extends Constraint> constraintType);
+    public List<Constraint> getConstraints(T definition, Class<? extends Constraint> constraintType);
 
     /**
      * checks whether this provider supports the provided definition
@@ -59,6 +61,6 @@ public interface ConstraintProvider<T extends Constrainable> {
      * @param definition - a Data Dictionary definition e.g. {@code AttributeDefinition}
      * @return true if supported, false otherwise
      */
-	public boolean isSupported(Constrainable definition);
+    public boolean isSupported(Constrainable definition);
 
 }

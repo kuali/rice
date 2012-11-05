@@ -34,10 +34,11 @@ public enum ErrorLevel {
     }
 
     public static ErrorLevel min(ErrorLevel e1, ErrorLevel e2) {
-    	return e1.ordinal() < e2.ordinal() ? e1 : e2;
+        return e1.ordinal() < e2.ordinal() ? e1 : e2;
     }
+
     public static ErrorLevel max(ErrorLevel e1, ErrorLevel e2) {
-    	return e1.ordinal() > e2.ordinal() ? e1 : e2;
+        return e1.ordinal() > e2.ordinal() ? e1 : e2;
     }
 
 }

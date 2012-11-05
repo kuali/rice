@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="alphaNumericPatternConstraint")
+@BeanTag(name = "alphaNumericPatternConstraint")
 public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     protected boolean lowerCase = false;
     protected boolean upperCase = false;
@@ -63,8 +63,7 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
          */
         if (lowerCase) {
             regexString = new StringBuilder("[a-z0-9");
-        }
-        else if(upperCase){
+        } else if (upperCase) {
             regexString = new StringBuilder("[A-Z0-9");
         }
 
@@ -78,7 +77,7 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     /**
      * @return the lowerCase
      */
-    @BeanTagAttribute(name="lowerCase")
+    @BeanTagAttribute(name = "lowerCase")
     public boolean isLowerCase() {
         return this.lowerCase;
     }
@@ -93,7 +92,7 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
         this.lowerCase = lowerCase;
     }
 
-    @BeanTagAttribute(name="upperCase")
+    @BeanTagAttribute(name = "upperCase")
     public boolean isUpperCase() {
         return upperCase;
     }

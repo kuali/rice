@@ -25,39 +25,39 @@ import java.util.List;
  */
 public class LookupConstraintParamMapping {
     protected String fieldPath;
-	protected String paramKey;
-	protected List<String> defaultValueList;
-	protected String defaultValueString;
+    protected String paramKey;
+    protected List<String> defaultValueList;
+    protected String defaultValueString;
 
-	public String getFieldPath() {
-		return fieldPath;
-	}
+    public String getFieldPath() {
+        return fieldPath;
+    }
 
-	public void setFieldPath(String fieldPath) {
-		this.fieldPath = fieldPath;
-	}
+    public void setFieldPath(String fieldPath) {
+        this.fieldPath = fieldPath;
+    }
 
-	public String getParamKey() {
-		return paramKey;
-	}
+    public String getParamKey() {
+        return paramKey;
+    }
 
-	public void setParamKey(String paramKey) {
-		this.paramKey = paramKey;
-	}
+    public void setParamKey(String paramKey) {
+        this.paramKey = paramKey;
+    }
 
-	public List<String> getDefaultValueList() {
-		return defaultValueList;
-	}
+    public List<String> getDefaultValueList() {
+        return defaultValueList;
+    }
 
-	public void setDefaultValueList(List<String> defaultValueList) {
-		this.defaultValueList = defaultValueList;
-	}
+    public void setDefaultValueList(List<String> defaultValueList) {
+        this.defaultValueList = defaultValueList;
+    }
 
-	public String getDefaultValueString() {
-		return defaultValueString;
-	}
+    public String getDefaultValueString() {
+        return defaultValueString;
+    }
 
-	public void setDefaultValueString(String defaultValueString) {
-		this.defaultValueString = defaultValueString;
-	}
+    public void setDefaultValueString(String defaultValueString) {
+        this.defaultValueString = defaultValueString;
+    }
 }

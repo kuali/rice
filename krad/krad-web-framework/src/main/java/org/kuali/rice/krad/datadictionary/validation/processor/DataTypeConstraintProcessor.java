@@ -27,78 +27,83 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 
 /**
- *  DataTypeConstraintProcessor processes constraints of type {@link DataTypeConstraint}
+ * DataTypeConstraintProcessor processes constraints of type {@link DataTypeConstraint}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataTypeConstraintProcessor extends MandatoryElementConstraintProcessor<DataTypeConstraint> {
 
-	private static final String CONSTRAINT_NAME = "data type constraint";
-
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
-	 */
-	@Override
-	public ProcessorResult process(DictionaryValidationResult result, Object value, DataTypeConstraint constraint, AttributeValueReader attributeValueReader)
-			throws AttributeValidationException {
-
-		DataType dataType = constraint.getDataType();
-
-		return new ProcessorResult(processDataTypeConstraint(result, dataType, value, attributeValueReader));
-	}
-
-	@Override
-	public String getName() {
-		return CONSTRAINT_NAME;
-	}
-
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
-	 */
-	@Override
-	public Class<? extends Constraint> getConstraintType() {
-		return DataTypeConstraint.class;
-	}
+    private static final String CONSTRAINT_NAME = "data type constraint";
 
     /**
-     *  validates the value provided using {@code DataTypeConstraint}
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult,
+     *      Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint,
+     *      org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     */
+    @Override
+    public ProcessorResult process(DictionaryValidationResult result, Object value, DataTypeConstraint constraint,
+            AttributeValueReader attributeValueReader) throws AttributeValidationException {
+
+        DataType dataType = constraint.getDataType();
+
+        return new ProcessorResult(processDataTypeConstraint(result, dataType, value, attributeValueReader));
+    }
+
+    @Override
+    public String getName() {
+        return CONSTRAINT_NAME;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
+     */
+    @Override
+    public Class<? extends Constraint> getConstraintType() {
+        return DataTypeConstraint.class;
+    }
+
+    /**
+     * validates the value provided using {@code DataTypeConstraint}
      *
      * @param result - a holder for any already run validation results
      * @param dataType - the expected data type
      * @param value - the value to validate
      * @param attributeValueReader - provides access to the attribute being validated
-     * @return  the passed in result, updated with the results of the processing
+     * @return the passed in result, updated with the results of the processing
      */
-	protected ConstraintValidationResult processDataTypeConstraint(DictionaryValidationResult result, DataType dataType, Object value, AttributeValueReader attributeValueReader) {
-		if (dataType == null)
-			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
+    protected ConstraintValidationResult processDataTypeConstraint(DictionaryValidationResult result, DataType dataType,
+            Object value, AttributeValueReader attributeValueReader) {
+        if (dataType == null) {
+            return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
+        }
 
-		if (ValidationUtils.isNullOrEmpty(value))
-			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
+        if (ValidationUtils.isNullOrEmpty(value)) {
+            return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
+        }
 
-		try {
-			ValidationUtils.convertToDataType(value, dataType, dateTimeService);
-		} catch (Exception e) {
-			switch (dataType) {
-			case BOOLEAN:
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BOOLEAN);
-			case INTEGER:
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INTEGER);
-			case LONG:
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_LONG);
-			case DOUBLE:
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
-			case FLOAT:
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
-			case TRUNCATED_DATE:
-			case DATE:
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
-			case STRING:
-			}
-		}
+        try {
+            ValidationUtils.convertToDataType(value, dataType, dateTimeService);
+        } catch (Exception e) {
+            switch (dataType) {
+                case BOOLEAN:
+                    return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BOOLEAN);
+                case INTEGER:
+                    return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INTEGER);
+                case LONG:
+                    return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_LONG);
+                case DOUBLE:
+                    return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
+                case FLOAT:
+                    return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
+                case TRUNCATED_DATE:
+                case DATE:
+                    return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
+                case STRING:
+            }
+        }
 
-		// If we get here then it was a success!
-		return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
-	}
+        // If we get here then it was a success!
+        return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
+    }
 
 }

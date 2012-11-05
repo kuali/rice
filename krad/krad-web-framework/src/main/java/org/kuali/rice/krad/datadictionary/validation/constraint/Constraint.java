@@ -17,11 +17,14 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import java.io.Serializable;
 
-
 /**
- * This is the marker interface for constraints. Constraints are a central concept in the Rice data dictionary validation, and are the
- * primary mechanism by which the validation of an object or one of its attributes takes place. For example, by imposing a length constraint
- * on an attribute of a business object, it's possible to indicate that only values shorter (or longer) than a specific number of characters
+ * This is the marker interface for constraints. Constraints are a central concept in the Rice data dictionary
+ * validation, and are the
+ * primary mechanism by which the validation of an object or one of its attributes takes place. For example, by
+ * imposing
+ * a length constraint
+ * on an attribute of a business object, it's possible to indicate that only values shorter (or longer) than a specific
+ * number of characters
  * are valid for that attribute.
  *
  * Any interface that extends Constraint is by definition a constraint, and may have one of the following defined:
@@ -35,6 +38,6 @@ import java.io.Serializable;
  */
 public interface Constraint extends Serializable {
 
-	// Empty - since this is a marker interface, all of the interesting stuff is in interfaces or classes that extend this interface
+    // Empty - since this is a marker interface, all of the interesting stuff is in interfaces or classes that extend this interface
 
 }

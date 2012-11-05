@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint;
  */
 public interface RangeConstrainable extends Constrainable, RangeConstraint {
 
-	// To match up with legacy code for AttributeDefinition, range constraint members are fields
-	// on the definition, making the capability a sub-interface of the constraint
+    // To match up with legacy code for AttributeDefinition, range constraint members are fields
+    // on the definition, making the capability a sub-interface of the constraint
 
 }

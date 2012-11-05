@@ -27,54 +27,55 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintProcessor<PrerequisiteConstraint> {
 
-	private static final String CONSTRAINT_NAME = "prerequisite constraint";
+    private static final String CONSTRAINT_NAME = "prerequisite constraint";
     private static final String FALLBACK_KEY = "prerequisiteFallback";
 
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult,
+     *      Object, org.kuali.rice.krad.datadictionary.validation.capability.Validatable,
+     *      org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     */
+    @Override
+    public ProcessorResult process(DictionaryValidationResult result, Object value, PrerequisiteConstraint constraint,
+            AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.capability.Validatable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
-	 */
-	@Override
-	public ProcessorResult process(DictionaryValidationResult result, Object value, PrerequisiteConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+        if (ValidationUtils.isNullOrEmpty(value)) {
+            return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
+        }
 
-		if (ValidationUtils.isNullOrEmpty(value))
-			return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
+        ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(constraint,
+                attributeValueReader);
 
-
-		ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(constraint, attributeValueReader);
-
-        if(constraint != null){
-            if(StringUtils.isNotBlank(constraint.getMessageKey())){
+        if (constraint != null) {
+            if (StringUtils.isNotBlank(constraint.getMessageKey())) {
                 constraintValidationResult.setConstraintLabelKey(constraint.getMessageKey());
-            }
-            else{
-                constraintValidationResult.setConstraintLabelKey(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX +
-                        FALLBACK_KEY);
+            } else {
+                constraintValidationResult.setConstraintLabelKey(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + FALLBACK_KEY);
             }
             constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
         }
 
-		result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
+        result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
 
-		return new ProcessorResult(constraintValidationResult);
-	}
+        return new ProcessorResult(constraintValidationResult);
+    }
 
-	@Override
-	public String getName() {
-		return CONSTRAINT_NAME;
-	}
+    @Override
+    public String getName() {
+        return CONSTRAINT_NAME;
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
-	 */
-	@Override
-	public Class<? extends Constraint> getConstraintType() {
-		return PrerequisiteConstraint.class;
-	}
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
+     */
+    @Override
+    public Class<? extends Constraint> getConstraintType() {
+        return PrerequisiteConstraint.class;
+    }
 
 }

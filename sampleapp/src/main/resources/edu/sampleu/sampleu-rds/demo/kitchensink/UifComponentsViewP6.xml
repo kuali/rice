@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <group disclosure.render="false" id="lookups1" layoutManager.orientation="VERTICAL" parent="Uif-VerticalBoxSection">
+    <items>
+      <inputField defaultValue="a2" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                  instructionalText="Click the link to perform an inquiry on this TravelAccount number" label="Inquiry"
+                  parent="GenericTextField" propertyName="field59" readOnly="true">
+        <inquiry.inquiryParameters>
+          <entry key="field59" value="number"/>
+        </inquiry.inquiryParameters>
+      </inputField>
+      <inputField defaultValue="a1" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                  instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
+                  label="Direct Inquiry" parent="GenericTextField" propertyName="field71">
+        <inquiry.inquiryParameters>
+          <entry key="field71" value="number"/>
+        </inquiry.inquiryParameters>
+      </inputField>
+      <inputField defaultValue="a1" inquiry.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                  inquiry.viewName="ks_inquiry"
+                  instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
+                  label="Direct Inquiry with an alternate view" parent="GenericTextField" propertyName="field71">
+        <inquiry.inquiryParameters>
+          <entry key="field71" value="number"/>
+        </inquiry.inquiryParameters>
+      </inputField>
+      <inputField defaultValue="a3"
+                  instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
+                  label="Ajax Field Query" parent="GenericTextField" propertyName="field72">
+        <propertyNamesForAdditionalDisplay>
+          <value>field73</value>
+          <value>field74</value>
+        </propertyNamesForAdditionalDisplay>
+        <attributeQuery>
+          <attributeQuery dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" parent="Uif-AttributeQueryConfig"
+                          queryFieldMapping="field72:number" returnFieldMapping="name:field73,subAccountName:field74"/>
+        </attributeQuery>
+      </inputField>
+      <inputField instructionalText="click the button to perform a lookup on TravelAccounts" label="Lookup"
+                  parent="GenericTextField" propertyName="field60"
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
+        <quickfinder.fieldConversions>
+          <entry key="number" value="field60"/>
+        </quickfinder.fieldConversions>
+      </inputField>
+      <inputField instructionalText="click the button to perform a lookup on TravelAccounts"
+                  label="Lookup (Return by script)" parent="GenericTextField" propertyName="field90"
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
+        <quickfinder>
+          <quickFinder parent="Uif-QuickFinderByScript"/>
+        </quickfinder>
+        <quickfinder.fieldConversions>
+          <entry key="number" value="field90"/>
+        </quickfinder.fieldConversions>
+      </inputField>
+      <inputField instructionalText="overriden link to display different text - Search Now" label="Lookup"
+                  parent="GenericTextField" propertyName="field87"
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                  quickfinder.quickfinderAction.actionLabel="Search Now">
+        <quickfinder.fieldConversions>
+          <entry key="number" value="field87"/>
+        </quickfinder.fieldConversions>
+      </inputField>
+      <inputField instructionalText="for example, type ea or ca to see a suggestion" label="Suggest"
+                  parent="GenericTextField" propertyName="field61">
+        <suggest>
+          <suggest parent="Uif-Suggest" render="true" sourcePropertyName="accountTypeCode"
+                   suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
+        </suggest>
+      </inputField>
+    </items>
+  </group>
+</spring:beans>

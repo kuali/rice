@@ -29,8 +29,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="integerPatternConstraint")
-public class IntegerPatternConstraint extends ValidDataPatternConstraint{
+@BeanTag(name = "integerPatternConstraint")
+public class IntegerPatternConstraint extends ValidDataPatternConstraint {
     protected boolean allowNegative;
     protected boolean onlyNegative;
     protected boolean omitZero;
@@ -44,17 +44,14 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
 
         if (isAllowNegative() && !onlyNegative) {
             regex.append("((-?");
-        }
-        else if(onlyNegative){
+        } else if (onlyNegative) {
             regex.append("((-");
-        }
-        else {
+        } else {
             regex.append("((");
         }
-        if(omitZero){
+        if (omitZero) {
             regex.append("[1-9][0-9]*))");
-        }
-        else{
+        } else {
             regex.append("[1-9][0-9]*)|[0]*)");
         }
 
@@ -64,7 +61,7 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
     /**
      * @return the allowNegative
      */
-    @BeanTagAttribute(name="allowNegative")
+    @BeanTagAttribute(name = "allowNegative")
     public boolean isAllowNegative() {
         return this.allowNegative;
     }
@@ -76,26 +73,28 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
         this.allowNegative = allowNegative;
     }
 
-    @BeanTagAttribute(name="onlyNegative")
+    @BeanTagAttribute(name = "onlyNegative")
     public boolean isOnlyNegative() {
         return onlyNegative;
     }
 
     /**
      * When set to true, only allows negative numbers (and zero if allowZero is still true)
+     *
      * @param onlyNegative
      */
     public void setOnlyNegative(boolean onlyNegative) {
         this.onlyNegative = onlyNegative;
     }
 
-    @BeanTagAttribute(name="omitZero")
+    @BeanTagAttribute(name = "omitZero")
     public boolean isOmitZero() {
         return omitZero;
     }
 
     /**
      * When set to true, zero is not allowed in the set of allowed numbers.
+     *
      * @param omitZero
      */
     public void setOmitZero(boolean omitZero) {
@@ -113,35 +112,28 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
             validationMessageParams = new ArrayList<String>();
             ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
             if (allowNegative && !onlyNegative) {
-                if(omitZero){
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
-                                    + "positiveOrNegative"));
+                if (omitZero) {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegative"));
+                } else {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegativeOrZero"));
                 }
-                else{
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
-                                    + "positiveOrNegativeOrZero"));
+            } else if (onlyNegative) {
+                if (omitZero) {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "negative"));
+                } else {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "negativeOrZero"));
                 }
-            }
-            else if(onlyNegative){
-                if(omitZero){
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "negative"));
-                }
-                else{
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "negativeOrZero"));
-                }
-            }
-            else {
-                if(omitZero){
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
-                }
-                else{
-                    validationMessageParams.add(configService
-                            .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrZero"));
+            } else {
+                if (omitZero) {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
+                } else {
+                    validationMessageParams.add(configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrZero"));
                 }
             }
         }

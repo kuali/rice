@@ -18,7 +18,6 @@ package org.kuali.rice.krad.datadictionary.validation.constraint.resolver;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
-import org.kuali.rice.krad.uif.field.InputField;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,16 +27,16 @@ public class SimpleConstraintResolver<T extends Constrainable> implements Constr
 
     /**
      * Return SimpleConstraint if SimpleConstrainable, otherwise return an empty list.
+     *
      * @param definition Definition to extract a SimpleConstraint from
      * @param <C> SimpleConstraint
      * @return SimpleConstraint if SimpleConstrainable, otherwise return an empty list.
      */
     public <C extends Constraint> List<C> resolve(T definition) {
-        if(definition instanceof SimpleConstrainable){
-            C simpleConstraint = (C)(((SimpleConstrainable)definition).getSimpleConstraint());
+        if (definition instanceof SimpleConstrainable) {
+            C simpleConstraint = (C) (((SimpleConstrainable) definition).getSimpleConstraint());
             return Collections.singletonList(simpleConstraint);
-        }
-        else{
+        } else {
             return new ArrayList<C>();
         }
     }

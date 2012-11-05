@@ -49,6 +49,6 @@ public interface RangeConstraint extends DataTypeConstraint {
      *
      * @return String specifying the minimum value
      */
-	String getExclusiveMin();
+    String getExclusiveMin();
 
 }

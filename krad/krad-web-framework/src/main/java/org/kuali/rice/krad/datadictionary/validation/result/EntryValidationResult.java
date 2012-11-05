@@ -20,30 +20,29 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EntryValidationResult {
 
-	private String entryName;
-	private Map<String, AttributeValidationResult> attributeValidationResultMap;
+    private String entryName;
+    private Map<String, AttributeValidationResult> attributeValidationResultMap;
 
-	public EntryValidationResult(String entryName) {
-		this.entryName = entryName;
-		this.attributeValidationResultMap = new LinkedHashMap<String, AttributeValidationResult>();
-	}
+    public EntryValidationResult(String entryName) {
+        this.entryName = entryName;
+        this.attributeValidationResultMap = new LinkedHashMap<String, AttributeValidationResult>();
+    }
 
-	public Iterator<AttributeValidationResult> iterator() {
-		return attributeValidationResultMap.values().iterator();
-	}
+    public Iterator<AttributeValidationResult> iterator() {
+        return attributeValidationResultMap.values().iterator();
+    }
 
-	protected AttributeValidationResult getAttributeValidationResult(String attributeName) {
-		AttributeValidationResult attributeValidationResult = attributeValidationResultMap.get(attributeName);
-		if (attributeValidationResult == null) {
-			attributeValidationResult = new AttributeValidationResult(attributeName);
-			attributeValidationResultMap.put(attributeName, attributeValidationResult);
-		}
-		return attributeValidationResult;
-	}
+    protected AttributeValidationResult getAttributeValidationResult(String attributeName) {
+        AttributeValidationResult attributeValidationResult = attributeValidationResultMap.get(attributeName);
+        if (attributeValidationResult == null) {
+            attributeValidationResult = new AttributeValidationResult(attributeName);
+            attributeValidationResultMap.put(attributeName, attributeValidationResult);
+        }
+        return attributeValidationResult;
+    }
 
 }

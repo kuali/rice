@@ -23,8 +23,8 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
  */
 public interface CollectionSizeConstraint extends Constraint {
 
-	public Integer getMaximumNumberOfElements();
+    public Integer getMaximumNumberOfElements();
 
-	public Integer getMinimumNumberOfElements();
+    public Integer getMinimumNumberOfElements();
 
 }

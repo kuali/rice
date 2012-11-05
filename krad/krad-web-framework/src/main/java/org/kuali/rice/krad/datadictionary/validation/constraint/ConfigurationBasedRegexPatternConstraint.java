@@ -31,7 +31,7 @@ public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternCo
      *
      * @return the patternTypeKey
      */
-    @BeanTagAttribute(name="patternTypeKey")
+    @BeanTagAttribute(name = "patternTypeKey")
     public String getPatternTypeKey() {
         return this.patternTypeKey;
     }
@@ -59,13 +59,13 @@ public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternCo
         return buf.toString();
     }
 
-	/**
-	 * Uses the key returned by {@link #getPatternTypeKey()} to fetch the
-	 * validationPattern's regex string from the ConfigurationService which should not include
+    /**
+     * Uses the key returned by {@link #getPatternTypeKey()} to fetch the
+     * validationPattern's regex string from the ConfigurationService which should not include
      * the start(^) and end($) symbols
      *
      * @return String regex validation string
-	 */
+     */
     protected String getRegexString() {
         return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(getPatternTypeKey());
     }

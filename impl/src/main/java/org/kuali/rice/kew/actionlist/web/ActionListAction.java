@@ -265,9 +265,7 @@ public class ActionListAction extends KualiAction {
 
                     SimpleDateFormat dFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
                     if (actionList == null) {
-                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
+                        setCountAndMaxDate(request,principalId,actionListSrv);
                         // fetch the action list
                         actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
 
@@ -276,9 +274,7 @@ public class ActionListAction extends KualiAction {
                         // force a refresh... usually based on filter change or parameter specifying refresh needed
                         actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
                         request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
+                        setCountAndMaxDate(request,principalId,actionListSrv);
 
                     }else if (refreshList(request,principalId)){
                         actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
@@ -349,6 +345,23 @@ public class ActionListAction extends KualiAction {
 
         LOG.debug("end start ActionListAction");
         return mapping.findForward("viewActionList");
+    }
+
+    /**
+     * Sets the maxActionItemDate and actionItemcount for user in the session
+     * @param request
+     * @param principalId
+     * @param actionListSrv
+     */
+    private void setCountAndMaxDate(HttpServletRequest request,String principalId,ActionListService actionListSrv ){
+        SimpleDateFormat dFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+        String maxActionItemDateAssignedForUserKey = "";
+        if(countAndMaxDate.get(0)!= null){
+           maxActionItemDateAssignedForUserKey = dFormatter.format(countAndMaxDate.get(0));
+        }
+        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, maxActionItemDateAssignedForUserKey);
+        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
     }
 
     private boolean refreshList(HttpServletRequest request,String principalId ){

@@ -21,10 +21,6 @@ import org.joda.time.DateTime
 import org.junit.Before
 import org.junit.Test
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator
-import org.kuali.rice.coreservice.api.component.Component
-import org.kuali.rice.coreservice.api.parameter.Parameter
-import org.kuali.rice.coreservice.api.parameter.ParameterType
 import org.kuali.rice.kew.api.KEWPropertyConstants
 import org.kuali.rice.kew.api.KewApiConstants
 import org.kuali.rice.kew.api.WorkflowDocument
@@ -38,7 +34,6 @@ import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService
-import org.kuali.rice.kew.impl.document.ApplicationDocumentStatusUtils
 import org.kuali.rice.kew.service.KEWServiceLocator
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.krad.util.KRADConstants
@@ -112,20 +107,9 @@ class DocumentSearchCriteriaTranslatorTest extends DocumentSearchTestBase {
 
 
         // KULRICE-7786: support for groups (categories) of application document statuses
-
-        CoreServiceApiServiceLocator.getComponentService().publishDerivedComponents("foo", Collections.singletonList(
-                Component.Builder.create("KR-WKFLW", "SearchDocType", "SearchDocType").build()
-        ));
-
-        Parameter.Builder parameterBuilder = Parameter.Builder.create("KUALI",
-                ApplicationDocumentStatusUtils.CATEGORIES_COMPONENT_NAMESPACE, "SearchDocType",
-                ApplicationDocumentStatusUtils.CATEGORIES_PARAMETER_NAME,
-                ParameterType.Builder.create("CONFG"));
-        parameterBuilder.setValue("TestCategory=Approval In Progress,Submitted");
-
-        CoreServiceApiServiceLocator.getParameterRepositoryService().createParameter(parameterBuilder.build());
-
         fields.put("applicationDocumentStatus", "category:TestCategory");
+        // TestCategory matches up with an app doc status category defined in the doc type xml that
+        // contains a couple of statuses
         crit = documentSearchCriteriaTranslator.translateFieldsToCriteria(fields);
 
         assertTrue(crit.getApplicationDocumentStatuses().contains("Approval In Progress"));

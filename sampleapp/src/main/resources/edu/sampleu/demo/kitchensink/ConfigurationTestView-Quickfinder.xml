@@ -153,7 +153,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:label="Suggest 5"
+        <bean parent="Uif-InputField" p:label="Suggest 6"
               p:instructionalText="local suggest options, press arrow down for all options or type c"
               p:propertyName="field67">
           <property name="suggest">
@@ -172,7 +172,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:label="Suggest 6"
+        <bean parent="Uif-InputField" p:label="Suggest 7"
               p:instructionalText="rich suggest options, press arrow down for all options or type r"
               p:propertyName="field68">
           <property name="suggest">
@@ -192,7 +192,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:label="Suggest 7"
+        <bean parent="Uif-InputField" p:label="Suggest 8"
               p:instructionalText="configured suggest options, press arrow down for all options or type c"
               p:propertyName="field69">
           <property name="suggest">
@@ -233,7 +233,7 @@
           </property>
         </bean>
         
-        <bean parent="Uif-InputField" p:label="Suggest 8"
+        <bean parent="Uif-InputField" p:label="Suggest 9"
               p:instructionalText="custom selection (sets hidden, input, and info), press arrow down for all options or type c"
               p:propertyName="field70" p:additionalHiddenPropertyNames="field71"
               p:propertyNamesForAdditionalDisplay="field72">

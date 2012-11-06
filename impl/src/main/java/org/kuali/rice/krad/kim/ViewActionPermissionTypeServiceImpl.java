@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +30,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ViewActionPermissionTypeServiceImpl extends PermissionTypeServiceBase {
+public class ViewActionPermissionTypeServiceImpl extends ViewPermissionTypeServiceImpl {
 
     @Override
     protected List<String> getRequiredAttributes() {

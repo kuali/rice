@@ -265,7 +265,7 @@ delete from krim_role_perm_t where role_perm_id = '856'
 -- # Sample App Tables #
 -- #####################
 
--- drop all sample application tables
+-- drop all sample application tables and data
 
 drop table trav_doc_2_accounts
 /
@@ -290,7 +290,16 @@ drop table TRV_ATT_SAMPLE
 drop sequence trv_fo_id_s
 /
 
-
+delete from krim_role_perm_t where perm_id in (select perm_id from krim_perm_t where nmspc_cd = 'KR-SAP')
+/
+delete from krim_perm_attr_data_t where perm_id in (select perm_id from krim_perm_t where nmspc_cd = 'KR-SAP')
+/
+delete from krim_perm_t where nmspc_cd = 'KR-SAP'
+/
+delete from krim_role_mbr_t where role_id in (select role_id from krim_role_t where nmspc_cd = 'KR-SAP')
+/
+delete from krim_role_t where nmspc_cd = 'KR-SAP'
+/
 
 drop table kr_kim_test_bo
 /

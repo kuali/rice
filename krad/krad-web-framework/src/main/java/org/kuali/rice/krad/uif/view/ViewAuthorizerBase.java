@@ -485,6 +485,25 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
         return permissionDetails;
     }
+    
+    /**
+     * Builds the permission details map for an action which includes the namespace, view id, and
+     * action id and event
+     *
+     * @param view - view instance the widget belongs to
+     * @param dataObject - default object from the data model (used for subclasses to build details)
+     * @param action - action instance the details are being built for
+     * @return Map<String, String> permission details for action
+     */
+    protected Map<String, String> getActionPermissionDetails(View view, Object dataObject, Action action) {
+        Map<String, String> permissionDetails = new HashMap<String, String>();
+
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
+        permissionDetails.put(KimConstants.AttributeConstants.FIELD_ID, action.getId());
+
+        return permissionDetails;
+    }
 
     /**
      * Performs a permission check for the given template name in the context of the given view and component
@@ -531,6 +550,8 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             permissionDetails.putAll(getGroupPermissionDetails(view, dataObjectForContext, (Group) component));
         } else if (component instanceof Widget) {
             permissionDetails.putAll(getWidgetPermissionDetails(view, dataObjectForContext, (Widget) component));
+        } else if (component instanceof Action) {
+            permissionDetails.putAll(getActionPermissionDetails(view, dataObjectForContext, (Action) component));
         }
 
         // pick up additional attributes and overrides from component security

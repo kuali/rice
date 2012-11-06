@@ -298,7 +298,7 @@ public class CollectionGroupBuilder implements Serializable {
                         currentLine);
 
                 // Add script to fields to activate save button on any change
-                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) &&
+                if (!readOnlyLine && !((UifFormBase) model).isAddedCollectionItem(currentLine) &&
                         collectionGroup.isRenderSaveLineActions()) {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {

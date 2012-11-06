@@ -49,17 +49,13 @@
   <param name="datasource.ojb.platform" override="false">Oracle9i</param>
 
   <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.OracleDriver</param>
-  <param name="datasource.platform.Oracle" override="false">
-    org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform
-  </param>
+  <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
   <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
   <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
   <param name="datasource.pool.validationQuery.Oracle" override="false">select 1 from dual</param>
 
   <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.OracleDriver</param>
-  <param name="datasource.platform.Oracle9i" override="false">
-    org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform
-  </param>
+  <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
   <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
   <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>
   <param name="datasource.pool.validationQuery.Oracle9i" override="false">select 1 from dual</param>

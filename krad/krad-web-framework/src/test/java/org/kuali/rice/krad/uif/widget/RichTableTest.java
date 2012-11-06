@@ -39,6 +39,19 @@ import static org.junit.Assert.assertEquals;
 
 public class RichTableTest {
 
+    public static final String S_TYPE = "{\"sType\" : \"numeric\", \"aTargets\": [0]}";
+    public static final String S_SORT_DATA_TARGETS_1 = "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [1]}";
+    public static final String S_SORT_DATA_TARGETS_2 = S_SORT_DATA_TARGETS_1.replace("1", "2");
+    public static final String S_SORT_DATA_TARGETS_3 = S_SORT_DATA_TARGETS_1.replace("1", "3");
+
+    public static final String EXPECTED = S_TYPE + ", " +
+            S_SORT_DATA_TARGETS_1 + " , " +
+            S_SORT_DATA_TARGETS_2 + " , " +
+            S_SORT_DATA_TARGETS_3;
+
+    public static final String B_VISIBLE_FALSE_TARGETS_1 = "{bVisible: false, \"aTargets\": [1]}";
+    public static final String B_SORTABLE_FALSE_TARGETS_3 = "{'bSortable': false, \"aTargets\": [3]}";
+    
     private RichTable richTable;
     private CollectionGroup group;
 
@@ -75,11 +88,7 @@ public class RichTableTest {
      * test that without aoColumns being set explicitly, the default behaviour continues
      */
     public void testComponentOptionsDefault() throws Exception {
-        String expected =
-                "[{\"sType\" : \"numeric\", \"aTargets\": [0]}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [1]} , "
-                        + "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [2]} , "
-                        + "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [3]} ]";
-        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
+        assertRichTableComponentOptions(null, "[" + EXPECTED + " ]", UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
     @Test
@@ -88,9 +97,7 @@ public class RichTableTest {
      */
     public void testComponentOptionsAoColumnsJSOptions() throws Exception {
         String innerColValues = "{bVisible: false}, null, null";
-        String options = "[" + innerColValues + "]";
-        String expected = "[{\"sType\" : \"numeric\", \"aTargets\": [0]}, " + innerColValues + "]";
-        assertRichTableComponentOptions(options, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
+        assertRichTableComponentOptions("[" + innerColValues + "]", "[" + EXPECTED + " ," + innerColValues + "]", UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
     @Test
@@ -104,8 +111,10 @@ public class RichTableTest {
         sortableColumns.add("positionTitle");
         richTable.setSortableColumns(sortableColumns);
         richTable.setHiddenColumns(hiddenColumns);
-        String expected =
-                "[{\"sType\" : \"numeric\", \"aTargets\": [0]}, {bVisible: false, \"aTargets\": [1]}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [2]}, {'bSortable': false, \"aTargets\": [3]}]";
+        String expected = "[" + S_TYPE + ", " +
+                B_VISIBLE_FALSE_TARGETS_1 + ", " +
+                S_SORT_DATA_TARGETS_2 +", " +
+                B_SORTABLE_FALSE_TARGETS_3 + "]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
@@ -128,9 +137,10 @@ public class RichTableTest {
         lmSortableColumns.add("employeeId");
         ((TableLayoutManager) group.getLayoutManager()).setSortableColumns(lmSortableColumns);
         ((TableLayoutManager) group.getLayoutManager()).setHiddenColumns(lmHiddenColumns);
-
-        String expected =
-                "[{\"sType\" : \"numeric\", \"aTargets\": [0]}, {bVisible: false, \"aTargets\": [1]}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [2]}, {'bSortable': false, \"aTargets\": [3]}]";
+        // Watch out for spaces
+        String expected = "[" + EXPECTED.replace(S_SORT_DATA_TARGETS_1 + " ,", B_VISIBLE_FALSE_TARGETS_1 + ",") + "]";
+        expected = expected.replace(S_SORT_DATA_TARGETS_2 + " ,", S_SORT_DATA_TARGETS_2 + ",");
+        expected = expected.replace(S_SORT_DATA_TARGETS_3, B_SORTABLE_FALSE_TARGETS_3);
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 

@@ -154,4 +154,10 @@ public class UITestObject implements Serializable {
     public void setBfield(boolean bfield) {
         this.bfield = bfield;
     }
+
+    @Override
+    public String toString() {
+
+        return "" + field1 + field2 + field3 + field4;
+    }
 }

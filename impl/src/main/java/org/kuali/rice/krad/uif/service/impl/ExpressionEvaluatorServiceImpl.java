@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -41,6 +36,11 @@ import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
  * Evaluates expression language statements using the Spring EL engine
  *
@@ -52,10 +52,11 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
 
     /**
      * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#evaluateExpressionsOnConfigurable(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, java.lang.Object, java.util.Map<java.lang.String,java.lang.Object>)
+     *      org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, java.lang.Object,
+     *      java.util.Map<java.lang.String,java.lang.Object>)
      */
-    public void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable, Object contextObject,
-            Map<String, Object> evaluationParameters) {
+    public void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable,
+            Object contextObject, Map<String, Object> evaluationParameters) {
         if ((expressionConfigurable instanceof Component) || (expressionConfigurable instanceof LayoutManager)) {
             evaluatePropertyReplacers(view, expressionConfigurable, contextObject, evaluationParameters);
         }
@@ -136,6 +137,10 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
                     new Class[]{Class.class, Class.class}));
             context.registerFunction("empty", ExpressionFunctions.class.getDeclaredMethod("empty",
                     new Class[]{Object.class}));
+            context.registerFunction("emptyList", ExpressionFunctions.class.getDeclaredMethod("emptyList",
+                    new Class[]{List.class}));
+            context.registerFunction("listContains", ExpressionFunctions.class.getDeclaredMethod("listContains",
+                    new Class[]{List.class, Object[].class}));
             context.registerFunction("getName", ExpressionFunctions.class.getDeclaredMethod("getName",
                     new Class[]{Class.class}));
             context.registerFunction("getParm", ExpressionFunctions.class.getDeclaredMethod("getParm",
@@ -160,7 +165,8 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      * corresponding property
      *
      * @param view - view instance being rendered
-     * @param expressionConfigurable - expressionConfigurable instance with property replacers list, should be either a component or layout
+     * @param expressionConfigurable - expressionConfigurable instance with property replacers list, should be either a
+     * component or layout
      * manager
      * @param contextObject - context for el evaluation
      * @param evaluationParameters - parameters for el evaluation
@@ -202,8 +208,8 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      * @param contextObject - object providing the default context for expressions
      * @param evaluationParameters - map of additional parameters that may be used within the expressions
      */
-    protected void evaluatePropertyExpressions(View view, UifDictionaryBean expressionConfigurable, Object contextObject,
-            Map<String, Object> evaluationParameters) {
+    protected void evaluatePropertyExpressions(View view, UifDictionaryBean expressionConfigurable,
+            Object contextObject, Map<String, Object> evaluationParameters) {
         Map<String, String> propertyExpressions = expressionConfigurable.getPropertyExpressions();
         for (Entry<String, String> propertyExpression : propertyExpressions.entrySet()) {
             String propertyName = propertyExpression.getKey();

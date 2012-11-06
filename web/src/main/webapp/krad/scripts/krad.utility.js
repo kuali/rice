@@ -470,8 +470,14 @@ function clearHiddens() {
 function coerceValue(name) {
     var value = "";
     var nameSelect = "[name='" + escapeName(name) + "']";
-    if (jQuery(nameSelect + ":checkbox").length) {
+    if (jQuery(nameSelect + ":checkbox").length == 1) {
         value = jQuery(nameSelect + ":checked").val();
+    }
+    else if(jQuery(nameSelect + ":checkbox").length > 1){
+        value = [];
+        jQuery(nameSelect + ":checked").each(function(){
+            value.push(jQuery(this).val());
+        });
     }
     else if (jQuery(nameSelect + ":radio").length) {
         value = jQuery(nameSelect + ":checked").val();
@@ -503,15 +509,6 @@ function coerceValue(name) {
 function setValue(name, value) {
     var nameSelect = "[name='" + escapeName(name) + "']";
     jQuery(nameSelect).val(value);
-}
-
-function isValueEmpty(value) {
-    if (value != undefined && value != null && value != "") {
-        return false;
-    }
-    else {
-        return true;
-    }
 }
 
 //returns true if the field with name of name1 occurs before field with name2
@@ -1888,4 +1885,71 @@ function getDataTableHandle(tableId){
     });
 
     return oTable;
+}
+
+/**
+ * Checks if the value is empty
+ *
+ * @param value string value
+ * @return {Boolean} true if empty false otherwise
+ */
+function isValueEmpty(value) {
+    if (value != undefined && value != null && value != "") {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+/**
+ * Check if the listValues contains the values passed in, values can be an array or a single value
+ *
+ * @param listValues the array list of values
+ * @param values value(s) to be check for existence in listValues
+ * @return {Boolean} true if the list contains the values, false if it does not or the listValues is empty/undefined
+ */
+function listContains(listValues, values){
+    if(listValues == undefined || listValues.length == 0){
+        return false;
+    }
+
+    if(values instanceof Array){
+        return containsAll(values, listValues);
+    }
+    else{
+        values = values.toString();
+        return jQuery.inArray(values, listValues) > -1;
+    }
+}
+
+/**
+ * Returns true if the listValues array is empty or undefined
+ *
+ * @param listValues the array to be checked for emptiness
+ * @return {Boolean} true if empty/undefined, false otherwise
+ */
+function emptyList(listValues){
+    if(listValues == undefined || listValues.length == 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+/**
+ * Checks to see if values of the subArray are contained in the parentArray
+ *
+ * @param subArray subset values to check for in parentArray
+ * @param parentArray the parentArray to check for values in
+ * @return {Boolean} true if all values in subArray exist in parentArray, false otherwise
+ */
+function containsAll(subArray, parentArray){
+    for(var i = 0 , len = subArray.length; i < len; i++){
+        if(subArray[i] != undefined && jQuery.inArray(subArray[i].toString(), parentArray) == -1){
+            return false;
+        }
+    }
+    return true;
 }

@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -195,7 +196,8 @@ public class ExpressionUtils {
                 "\\s(?i:gt)\\s", " > ").replaceAll("\\s(?i:lt)\\s", " < ").replaceAll("\\s(?i:lte)\\s", " <= ")
                 .replaceAll("\\s(?i:gte)\\s", " >= ").replaceAll("\\s(?i:and)\\s", " && ").replaceAll("\\s(?i:or)\\s",
                         " || ").replaceAll("\\s(?i:not)\\s", " != ").replaceAll("\\s(?i:null)\\s?", " '' ").replaceAll(
-                        "\\s?(?i:#empty)\\((.*?)\\)", "isValueEmpty($1)");
+                        "\\s?(?i:#empty)\\((.*?)\\)", "isValueEmpty($1)").replaceAll("\\s?(?i:#listContains)\\((.*?)\\)",
+                        "listContains($1)").replaceAll("\\s?(?i:#emptyList)\\((.*?)\\)", "emptyList($1)");
 
         if (conditionJs.contains("matches")) {
             conditionJs = conditionJs.replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(/" + "$0" + "/) != null ");
@@ -203,9 +205,22 @@ public class ExpressionUtils {
             conditionJs = conditionJs.replaceAll("'\\s*/\\)", "/)");
         }
 
+        List<String> removeControlNames = new ArrayList<String>();
+        //convert property names to use coerceValue function and convert arrays to js arrays
         for (String propertyName : controlNames) {
+            //array definitions are caught in controlNames because of the nature of the parse - convert them and remove
+            if(propertyName.trim().startsWith("{") && propertyName.trim().endsWith("}")){
+                String array = propertyName.trim().replace('{', '[');
+                array = array.replace('}', ']');
+                conditionJs = conditionJs.replace(propertyName, array);
+                removeControlNames.add(propertyName);
+                continue;
+            }
+
             conditionJs = conditionJs.replace(propertyName, "coerceValue(\"" + propertyName + "\")");
         }
+
+        controlNames.removeAll(removeControlNames);
 
         return conditionJs;
     }
@@ -238,6 +253,8 @@ public class ExpressionUtils {
                     || stack.equalsIgnoreCase("and")
                     || stack.equalsIgnoreCase("or")
                     || stack.contains("#empty")
+                    || stack.contains("#emptyList")
+                    || stack.contains("#listContains")
                     || stack.startsWith("'")
                     || stack.endsWith("'"))) {
 
@@ -252,6 +269,11 @@ public class ExpressionUtils {
                 }
 
                 if (!(isNumber)) {
+                    //correct argument of a custom function ending in comma
+                    if(StringUtils.endsWith(stack, ",")){
+                        stack = StringUtils.removeEnd(stack, ",").trim();
+                    }
+
                     if (!controlNames.contains(stack)) {
                         controlNames.add(stack);
                     }

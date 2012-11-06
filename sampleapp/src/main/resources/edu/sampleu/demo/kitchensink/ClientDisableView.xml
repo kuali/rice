@@ -32,10 +32,14 @@
               <ref bean="Demo-DisableSection2"/>
               <ref bean="Demo-DisableSection3"/>
               <ref bean="Demo-DisableSection4"/>
+              <ref bean="Demo-DisableSection5"/>
             </list>
           </property>
         </bean>
       </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FormFooter"/>
     </property>
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
@@ -242,7 +246,8 @@
             <bean parent="Uif-TextControl" p:disabled="@{#lp.field1 eq 'disable'}"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:constraintText="Disabled when field2 is 10">
+        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
+              p:constraintText="Disabled when field2 is 10">
           <property name="control">
             <bean parent="Uif-TextControl" p:disabled="@{#lp.field1 eq 'disable' or #lp.field2 eq '10'}"/>
           </property>
@@ -259,6 +264,68 @@
             </list>
           </property>
         </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DisableSection5" p:headerText="Disabled for List backed fields/properties" p:instructionalText="Some
+  examples are not client-side examples in this section (testing purposes)"
+        parent="Uif-HorizontalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="stringList2" p:label="Checkboxes 1"
+              p:instructionalText="Make selections to disable the following controls" p:width="auto">
+          <property name="control">
+            <bean parent="Uif-VerticalCheckboxesControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field10" p:label="TestField"
+              p:constraintText="Disabled when Option 1 is selected">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="@{#listContains(stringList2, 1)}"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field11" p:label="TestField"
+              p:constraintText="Disabled when Option 2 and Option 3 is selected">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="@{#listContains(stringList2, {'2','3'})}"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field12" p:label="TestField"
+              p:constraintText="Disabled when no options selected">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="@{#emptyList(stringList2)}"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field13" p:label="TestField"
+              p:constraintText="Disabled when property 'list2' has toString(overridden at the object level)
+                      values: 'ABCD' and '1234'.  This has no js/client equivalent functionality.">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="@{#listContains(list2, {'ABCD','1234'})}"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field14" p:label="TestField"
+              p:constraintText="Disabled when property 'intList' has value 1 and 4 ">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="@{#listContains(intList, {1,4})}"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field14" p:label="TestField"
+              p:constraintText="Disabled when property 'doubleList' has value 2.2 and 3.3 ">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="@{#listContains(doubleList, {2.2,3.3})}"/>
+          </property>
+        </bean>
+
       </list>
     </property>
   </bean>

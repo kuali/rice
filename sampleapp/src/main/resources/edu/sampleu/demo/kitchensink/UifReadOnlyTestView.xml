@@ -80,7 +80,7 @@
             <bean parent="Uif-MultiSelectControl"/>
           </property>
           <property name="optionsFinder">
-            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
           </property>
         </bean>
 
@@ -88,7 +88,7 @@
               p:width="auto"
               p:instructionalText="RadioGroupControl using an optionsFinder">
           <property name="control">
-            <bean parent="Uif-VerticalRadioControl" p:disabled="@{#form.field118 eq 'disable'}"/>
+            <bean parent="Uif-VerticalRadioControl"/>
           </property>
           <property name="optionsFinder">
             <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
@@ -98,7 +98,7 @@
         <bean parent="Uif-InputField-LabelTop" p:propertyName="bField1" p:label="Checkbox"
               p:defaultValue="true"
               p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by
-            default">
+            default" >
           <property name="control">
             <bean parent="Uif-CheckboxControl"
                   p:checkboxLabel="Checkbox Label"/>
@@ -106,7 +106,8 @@
         </bean>
 
         <bean parent="Uif-InputField-LabelTop" p:propertyName="field115" p:label="Checkboxes 1"
-              p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto">
+              p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
+              p:readOnlyDisplayReplacement="@{#emptyList(field115)?'No Options Selected':''}">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl"/>
           </property>
@@ -199,5 +200,7 @@
       </list>
     </property>
   </bean>
+
+
 
 </beans>

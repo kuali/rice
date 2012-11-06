@@ -21,6 +21,10 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +55,63 @@ public class ExpressionFunctions {
      */
     public static boolean empty(Object value) {
         return (value == null) || (StringUtils.isBlank(value.toString()));
+    }
+
+    /**
+     * Checks to see if the list is empty.  Throws a RuntimeException if list is not a List.
+     *
+     * @param value the list
+     * @return true if the list is null or empty, false otherwise
+     */
+    public static boolean emptyList(List<?> list){
+        return (list == null) || list.isEmpty();
+    }
+
+    /**
+     * Check to see if the list contains the values passed in.
+     *
+     * <p>In the SpringEL call values can be single item or array due to the way the EL converts values.
+     * The values can be string or numeric and should match
+     * the content type being stored in the list.  If the list is String and the values passed in are not string,
+     * toString() conversion will be used.  Returns true if the values are in the list and both lists are non-empty,
+     * false otherwise.
+     * </p>
+     *
+     * @param list the list to be evaluated
+     * @param values the values to be to check for in the list
+     * @return true if all values exist in the list and both values and list are non-null/not-empty, false otherwise
+     */
+    public static boolean listContains(List<?> list, Object[] values){
+        if(list != null && values != null && values.length > 0 && !list.isEmpty()){
+            //conversion for if the values are non-string but the list is string (special case)
+            if(list.get(0) instanceof String && !(values[0] instanceof String)){
+                String[] stringValues = new String[values.length];
+                for(int i = 0; i < values.length; i++){
+                    stringValues[i] = values[i].toString();
+                }
+                return list.containsAll(Arrays.asList(stringValues));
+            }
+            else if(list.get(0) instanceof Date && values[0] instanceof String){
+                //TODO date conversion
+                return false;
+            }
+            else if(!(list.get(0) instanceof String) && values[0] instanceof String){
+                //values passed in are string but the list is of objects, use object's toString method
+                List<String> stringList = new ArrayList<String>();
+                for(Object value: list){
+                    stringList.add(value.toString());
+                }
+                return stringList.containsAll(Arrays.asList(values));
+            }
+            else{
+                //no conversion for if neither list is String, assume matching types (numeric case)
+                return list.containsAll(Arrays.asList(values));
+            }
+        }
+
+        //no cases satisfied, return false
+        return false;
+
     }
 
     /**

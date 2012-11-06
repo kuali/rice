@@ -135,4 +135,8 @@
         NM="Document Type &amp; Attachment Type" NMSPC_CD="KR-NS"
         OBJ_ID="5ADF18B6D4CD7954E0404F8189D85002"
         SRVC_NM="documentTypeAndAttachmentTypePermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KR1000"
+        NM="Document Type, Route Node, and Route Status"
+        NMSPC_CD="KR-SYS" OBJ_ID="CDC48BA7E67687DFE040F90A05B92A31"
+        SRVC_NM="documentTypeAndNodeAndRouteStatusPermissionTypeService" VER_NBR="1"/>
 </dataset>

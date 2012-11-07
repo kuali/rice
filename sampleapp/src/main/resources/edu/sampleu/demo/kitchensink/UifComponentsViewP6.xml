@@ -62,13 +62,43 @@
           </bean>
           <bean parent="GenericTextField" p:label="Ajax Field Query"
             p:instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
-            p:propertyName="field72" p:defaultValue="a3">
+            p:propertyName="field72" p:defaultValue="a1">
             <property name="propertyNamesForAdditionalDisplay" value="field73,field74" />
             <property name="attributeQuery">
               <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                 p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74" />
             </property>
           </bean>
+          <bean parent="GenericTextField" p:label="Ajax Field Query Custom Method"
+                p:instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
+                p:propertyName="field76" p:defaultValue="a2">
+            <property name="propertyNamesForAdditionalDisplay" value="field77,field78" />
+            <property name="attributeQuery">
+              <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccounts"
+                    p:queryMethodArgumentFieldList="number"
+                    p:returnFieldMapping="name:field77,subAccountName:field78"
+                    p:queryFieldMapping="field76:number"/>
+            </property>
+          </bean>
+          <bean parent="GenericTextField" p:label="Ajax Field Query Custom Method and Service"
+                p:instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
+                p:propertyName="field79" p:defaultValue="a3">
+            <property name="propertyNamesForAdditionalDisplay" value="field80,field81"/>
+            <property name="attributeQuery">
+              <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsByNumber"
+                    p:queryMethodArgumentFieldList="number"
+                    p:returnFieldMapping="name:field80,subAccountName:field81"
+                    p:queryFieldMapping="field79:number">
+                <property name="queryMethodInvokerConfig.targetObject">
+                  <bean class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+                    <property name="serviceName" value="testAttributeQueryService"/>
+                  </bean>
+                </property>
+              </bean>
+            </property>
+          </bean>
+
+
           <bean parent="GenericTextField" p:label="Lookup"
             p:instructionalText="click the button to perform a lookup on TravelAccounts"
             p:propertyName="field60">

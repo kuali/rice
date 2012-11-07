@@ -264,5 +264,7 @@
 
   <bean id="testSuggestService" class="edu.sampleu.demo.kitchensink.TestSuggestServiceImpl"/>
 
+  <bean id="testAttributeQueryService" class="edu.sampleu.demo.kitchensink.TestAttributeQueryServiceImpl"/>
+
 </beans>
 

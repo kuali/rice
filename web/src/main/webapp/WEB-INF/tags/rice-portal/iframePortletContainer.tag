@@ -41,18 +41,26 @@
           contextNames.push("<c:out value="${contextName.value}" />");
   </c:if>
   </c:forEach>
+  var swf;
   var remote = channelLocation.protocol + '//' + channelLocation.host + "/";
-  for (var i = 0; i < contextNames.length; i++) {
-    if (channelLocation.pathname.lastIndexOf(contextNames[i], 1) === 1) {
-      remote += contextNames[i] + "/";
-      break;
-    }
-  }
-  var swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
   if (jQuery.browser.msie){
+    for (var i = 0; i < contextNames.length; i++) {
+      if (channelLocation.pathname.lastIndexOf(contextNames[i], 0) === 0) {
+        remote += contextNames[i] + "/";
+        break;
+      }
+    }
+    swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
     remote += "rice-portal/scripts/easyXDM/resize_intermediate.html?url=/"
             + encodeURIComponent(channelLocation.pathname + channelLocation.search);
   } else {
+    for (var i = 0; i < contextNames.length; i++) {
+      if (channelLocation.pathname.lastIndexOf(contextNames[i], 1) === 1) {
+        remote += contextNames[i] + "/";
+        break;
+      }
+    }
+    swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
     remote += "rice-portal/scripts/easyXDM/resize_intermediate.html?url="
             + encodeURIComponent(channelLocation.pathname + channelLocation.search);
   }

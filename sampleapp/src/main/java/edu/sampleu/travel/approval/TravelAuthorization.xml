@@ -24,7 +24,7 @@
   <bean id="TravelAuthorization" parent="Uif-TransactionalDocumentView">
     <property name="headerText" value="Travel Authorization Request"/>
     <!-- <property name="dataObjectClassName" value="edu.sampleu.travel.approval.TravelAuthorizationDocument" />   -->
-    <property name="formClass" value="edu.sampleu.travel.approval.TravelAuthorizationForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.web.form.TransactionDocumentForm"/>
   </bean>
 
 </beans>

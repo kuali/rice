@@ -25,7 +25,12 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TransactionDocumentFormBase extends DocumentFormBase {
+public class TransactionDocumentForm extends DocumentFormBase {
     private static final long serialVersionUID = 1236345613323L;
+
+    @Override
+    protected String getDefaultDocumentTypeName() {
+        return "TravelAuthorization";
+    }
 
 }

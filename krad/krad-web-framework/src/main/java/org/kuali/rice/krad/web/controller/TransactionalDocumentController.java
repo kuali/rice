@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.document.Copyable;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.form.TransactionDocumentFormBase;
+import org.kuali.rice.krad.web.form.TransactionDocumentForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,23 +36,23 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-@RequestMapping(value = "/transactional")
-public class TransactionalDocumentControllerBase extends DocumentControllerBase {
-    protected static final Logger LOG = Logger.getLogger(MaintenanceDocumentController.class);
+@RequestMapping(value = "/travelauthorization")
+public class TransactionalDocumentController extends DocumentControllerBase {
+    protected static final Logger LOG = Logger.getLogger(TransactionalDocumentController.class);
 
     /**
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected TransactionDocumentFormBase createInitialForm(HttpServletRequest request) {
-        return new TransactionDocumentFormBase();
+    protected TransactionDocumentForm createInitialForm(HttpServletRequest request) {
+        return new TransactionDocumentForm();
     }
 
     /**
      * Method that will take the current document and call its copy method if Copyable.
      */
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_COPY)
-    public ModelAndView copy(@ModelAttribute("KualiForm") TransactionDocumentFormBase form, BindingResult result,
+    public ModelAndView copy(@ModelAttribute("KualiForm") TransactionDocumentForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         ((Copyable) form.getDocument()).toCopy();
         return getUIFModelAndView(form);

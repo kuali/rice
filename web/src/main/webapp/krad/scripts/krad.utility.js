@@ -598,6 +598,7 @@ function getAttributeId(elementId) {
  * @param jumpToName - name of the dom element to jump to
  */
 function performFocusAndJumpTo(setFocus, autoFocus, autoJump, focusId, jumpToId, jumpToName) {
+    gAutoFocus = autoFocus && setFocus;
     if (setFocus) {
         performFocus(focusId);
     }
@@ -634,12 +635,39 @@ function performJumpTo(jumpToId, jumpToName) {
  * @param focusId - id of the dom element to focus on
  * @param autoFocus - boolean that indicates where focus to top should happen if focus to not set
  */
-function performFocus(focusId, autoFocus) {
-    if (focusId) {
-        jQuery("#" + focusId).focus();
+function performFocus(focusId) {
+    if(!focusId){
+        return;
     }
-    else if (autoFocus) {
-        jQuery("div[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
+
+    if (focusId == "FIRST" && gAutoFocus) {
+        var id = jQuery("div[data-role='InputField'] .uif-control:input:first", "#kualiForm").attr("id");
+        focus(id);
+        return;
+    }
+
+    if (focusId.match("^" + kradVariables.NEXT_INPUT.toString())) {
+        focusId = focusId.substr(kradVariables.NEXT_INPUT.length, focusId.length);
+        var original = jQuery("#" + focusId);
+        var inputs = jQuery(":input:visible, a:visible:not(\"a[data-role='disclosureLink']\")");
+        var index = jQuery(inputs).index(original);
+        if(index && jQuery(inputs).length > index + 1){
+            var id = jQuery(inputs).eq(index + 1).attr("id");
+            focus(id);
+        }
+    }else{
+        var focusElement = jQuery("#" + focusId);
+        if(focusElement.length){
+            focus(focusId);
+        }
+        else{
+            focusId = focusId.replace(/_control\S*/, "");
+            focusElement = jQuery("#" + focusId).find(":input:visible, a:visible").first();
+            if(focusElement.length){
+                focus(jQuery(focusElement).attr("id"));
+            }
+        }
+
     }
 }
 
@@ -655,6 +683,32 @@ function focusOnElementByName(name) {
 function focusOnElementById(focusId) {
     if (focusId) {
         jQuery("#" + focusId).focus();
+    }
+}
+
+/**
+ * This function focuses the element and if its a textual input puts the cursor after the content
+ *
+ * @param id
+ */
+function focus(id){
+    var inputField = document.getElementById(id);
+    if (inputField != null && jQuery(inputField).is(":text,textarea,:password") &&
+            inputField.value && inputField.value.length != 0){
+        if (inputField.createTextRange){
+            var FieldRange = inputField.createTextRange();
+            FieldRange.moveStart('character',inputField.value.length);
+            FieldRange.collapse();
+            FieldRange.select();
+        }else if (inputField.selectionStart ||
+                (inputField.selectionStart != undefined &&inputField.selectionStart == '0')) {
+            var elemLen = inputField.value.length;
+            inputField.selectionStart = elemLen;
+            inputField.selectionEnd = elemLen;
+            inputField.focus();
+        }
+    }else if(inputField != null){
+        inputField.focus();
     }
 }
 

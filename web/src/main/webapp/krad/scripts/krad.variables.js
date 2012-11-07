@@ -17,10 +17,10 @@
 /**
  * Common constants and variables for KRAD
  */
-function KradVariables () {
+function JavascriptKradVariables () {
 }
 
-KradVariables.prototype = {
+JavascriptKradVariables.prototype = {
 
     // validation init
 //    var pageValidatorReady : false,
@@ -117,7 +117,8 @@ KradVariables.prototype = {
      WARNING_HIGHLIGHT_SECTION_CLASS : "uif-warningHighlight-section",
      WARNING_MESSAGE_ITEM_CLASS : "uif-warningMessageItem-field",
      GROUP_CLASS : "uif-group",
-     ROW_DETAILS_CLASS : "uif-rowDetails"
+     ROW_DETAILS_CLASS : "uif-rowDetails",
+     NEXT_INPUT : "NEXT_INPUT:"
 }
 
-var kradVariables = new KradVariables();
+var kradVariables = new JavascriptKradVariables();

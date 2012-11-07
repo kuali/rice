@@ -318,10 +318,15 @@ public class Action extends ContentElementBase {
         submitData.put(UifConstants.UrlParams.SHOW_HOME, "false");
 
         // if focus id not set default to focus on action
-        if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
+        if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.SELF.toString())) {
             focusOnIdAfterSubmit = this.getId();
             submitData.put("focusId", focusOnIdAfterSubmit);
-        } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
+        }
+        else if(focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.NEXT_INPUT.toString())){
+            focusOnIdAfterSubmit = UifConstants.Order.NEXT_INPUT.toString() + ":" + this.getId();
+            submitData.put("focusId", focusOnIdAfterSubmit);
+        }
+        else {
             // Use the id passed in
             submitData.put("focusId", focusOnIdAfterSubmit);
         }
@@ -632,10 +637,19 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * The id of the field to place focus on in the new page after the new page
-     * is retrieved. Passing in "FIRST" will focus on the first visible input
-     * element on the form. Passing in the empty string will result in this
-     * Action being focused.
+     * The element to place focus on in the new page after the new page
+     * is retrieved.
+     *
+     * <p>The following are allowed:
+     * <ul>
+     * <li>A valid element id</li>
+     * <li>"FIRST" will focus on the first visible input element on the form</li>
+     * <li>"SELF" will result in this Action being focused (action bean defaults to "SELF")</li>
+     * <li>"LINE_FIRST" will result in the first input of the collection line to be focused (if available)</li>
+     * <li>"NEXT_INPUT" will result in the next available input that exists after this Action to be focused
+     * (only if this action still exists on the page)</li>
+     * </ul>
+     * </p>
      *
      * @return the focusOnAfterSubmit
      */

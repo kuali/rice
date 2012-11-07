@@ -55,7 +55,7 @@ public class UifConstants {
     }
 
     public static enum Order {
-        FIRST
+        FIRST, LINE_FIRST, NEXT_INPUT, SELF
     }
 
     public static enum NavigationType {

@@ -178,6 +178,7 @@
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/action.ftl"/>
     <property name="templateName" value="uif_action"/>
+    <property name="focusOnIdAfterSubmit" value="SELF"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-action</value>

@@ -273,15 +273,17 @@ public class CollectionGroupBuilder implements Serializable {
         // update contexts before add line fields are added to the index below
         ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
 
+        for (Action action : actions) {
+            if(action !=null && StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
+                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString())
+                    && (lineFields.size() > 0)){
+                action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
+            }
+        }
+
         // add special css styles to identify the add line client side
         if (lineIndex == -1) {
-            // set focus on after the add line submit to first field of add line
-            for (Action action : actions) {
-                if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE) && (lineFields
-                        .size() > 0)) {
-                    action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
-                }
-            }
+            // do nothing
         } else {
             // for existing lines, check view line auth
             boolean canViewLine = checkViewLineAuthorizationAndPresentationLogic(view, (ViewModel) model,

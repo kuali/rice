@@ -1448,7 +1448,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         Action rowDetailsAction = this.getExpandDetailsActionPrototype();
         rowDetailsAction.addDataAttribute("role", "detailsLink");
         rowDetailsAction.addDataAttribute("swap", Boolean.toString(this.isRowDetailsSwapActionImage()));
-        view.assignComponentIds(rowDetailsAction);
+        rowDetailsAction.setId(collectionGroup.getId() + "_detLink");
 
         List<Component> detailsItems = new ArrayList<Component>();
         detailsItems.add(rowDetailsAction);
@@ -1464,7 +1464,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
+        detailsFieldGroup.setId(collectionGroup.getId() + "_detGroup");
         view.assignComponentIds(detailsFieldGroup);
+
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);

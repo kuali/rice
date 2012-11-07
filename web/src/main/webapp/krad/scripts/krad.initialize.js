@@ -27,6 +27,7 @@ var validateClient = true;
 var messageSummariesShown = false;
 var pauseTooltipDisplay = false;
 var haltValidationMessaging = false;
+var gAutoFocus = false;
 
 var errorImage;
 var errorGreyImage;
@@ -78,6 +79,8 @@ jQuery(document).ready(function () {
 
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
+
+    performFocus("FIRST");
 });
 
 /**

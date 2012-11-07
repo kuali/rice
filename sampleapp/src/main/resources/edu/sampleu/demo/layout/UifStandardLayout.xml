@@ -235,6 +235,11 @@
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-WithBoxItems"/>
     </property>
+    <property name="addLineActions">
+      <list>
+        <bean parent="Uif-AddLineAction" p:focusOnIdAfterSubmit="SELF"/>
+      </list>
+    </property>
     <property name="layoutManager.summaryTitle" value="Collection Item Title" />
         <property name="layoutManager.summaryFields" value="field1" />
     <property name="propertyName" value="list1"/>
@@ -255,6 +260,11 @@
               value="Uif-StackedCollectionSection with Uif-Disclosure-TableSubCollection-WithinSection (note the postfix)"/>
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="addLineActions">
+      <list>
+        <bean parent="Uif-AddLineAction" p:focusOnIdAfterSubmit="NEXT_INPUT"/>
+      </list>
+    </property>
     <property name="layoutManager.summaryTitle" value="Collection Item Title" />
     <property name="layoutManager.summaryFields" value="field1" />
     <property name="propertyName" value="list4"/>

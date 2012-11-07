@@ -35,7 +35,8 @@
         p:actionLabel="Check Form" p:loadingMessageText="Checking Form..." p:id="ucheck"/>
 
   <bean id="Uif-AddLineAction" parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add"
-        p:actionEvent="addLine" p:loadingMessageText="Adding Line..." p:id="@{#collectionGroup.id}_add"/>
+        p:actionEvent="addLine" p:loadingMessageText="Adding Line..." p:focusOnIdAfterSubmit="LINE_FIRST"
+        p:id="@{#collectionGroup.id}_add"/>
 
   <bean id="Uif-DeleteLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
         p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"

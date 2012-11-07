@@ -37,6 +37,7 @@
                     iframe.onload = function() {
                         var d = iframe.contentWindow.document;
                         var originalHeight = d.body.clientHeight || d.body.offsetHeight || d.body.scrollHeight;
+                        originalHeight += 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
                         var oldHeight = originalHeight;  // to avoid dancing when table labels wrap/unwrap on screen resize
 
                         // We want to monitor the document for resize events in case of the use of accordions and such,
@@ -49,10 +50,11 @@
                                 try {
                                     var d = iframe.contentWindow.document;
                                     var newHeight = d.body.clientHeight || d.body.offsetHeight || d.body.scrollHeight;
+                                    newHeight += 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
                                     if(newHeight != originalHeight && newHeight != oldHeight) {
                                         // The height has changed since last we checked
                                         oldHeight = originalHeight;
-                                        originalHeight = newHeight + 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
+                                        originalHeight = newHeight;
                                         socket.postMessage(originalHeight);
                                     }
                                 } catch(e) {

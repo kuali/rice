@@ -23,6 +23,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewRoutingKualiForm;
 
 import javax.servlet.http.HttpServletRequest;
@@ -197,6 +198,19 @@ public class SuperUserForm extends KewRoutingKualiForm {
             return false;
         }
         return true;
+    }
+
+    public boolean isSuperUserFinalApproveAllowed() {
+        return getDocumentType().getAllowSuperUserFinalApprovalPolicy().getPolicyValue().booleanValue();
+    }
+
+    public boolean isSuperUserFinalApproveAllowedForActionRequest() {
+        if (!isSuperUserFinalApproveAllowed() &&
+            KEWServiceLocator.getRouteNodeService().findFutureNodeNames(getRouteHeader().getDocumentId()).isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public DocumentType getDocumentType() {

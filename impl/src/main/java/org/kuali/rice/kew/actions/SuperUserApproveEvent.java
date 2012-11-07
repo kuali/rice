@@ -81,7 +81,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 		DocumentType docType = getRouteHeader().getDocumentType();
 
-        String errorMessage = super.validateActionRules();
+        String errorMessage = validateActionRules();
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             LOG.info("User not authorized");
             List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();

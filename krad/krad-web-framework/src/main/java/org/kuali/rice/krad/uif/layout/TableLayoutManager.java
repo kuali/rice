@@ -492,11 +492,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
             Object currentLine, int lineIndex) {
+
+        // if first line for table set number of data columns
+        if (dataFields.isEmpty()) {
+            if (isSuppressLineWrapping()) {
+                setNumberOfDataColumns(lineFields.size());
+            } else {
+                setNumberOfDataColumns(getNumberOfColumns());
+            }
+        }
+
         boolean isAddLine = false;
 
         // If first row or row wrap is happening
-        if(lineIndex == -1 || (lineFields.size() != numberOfDataColumns && ( (lineIndex + 1) * numberOfDataColumns) < lineFields.size())) {
-           isAddLine = true;
+        if (lineIndex == -1 || (lineFields.size() != numberOfDataColumns
+                && ((lineIndex + 1) * numberOfDataColumns) < lineFields.size())) {
+            isAddLine = true;
         }
 
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
@@ -536,15 +547,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
 
             return;
-        }
-
-        // if first line for table set number of data columns
-        if (dataFields.isEmpty()) {
-            if (isSuppressLineWrapping()) {
-                setNumberOfDataColumns(lineFields.size());
-            } else {
-                setNumberOfDataColumns(getNumberOfColumns());
-            }
         }
 
         // TODO: implement repeat header

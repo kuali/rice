@@ -100,46 +100,48 @@ KradResponse.prototype = {
             component.remove("#" + displayWithId + "_label_span");
         }
 
-        elementToBlock.unblock({onUnblock: function () {
-            jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
-
-            // remove old stuff
-            if (jQuery("#" + id + "_errors").length) {
-                jQuery("#" + id + "_errors").remove();
-            }
-
-            jQuery("input[data-for='" + id + "']").each(function () {
-                jQuery(this).remove();
-            });
-
-            // replace component
-            if (jQuery("#" + id).length) {
-                jQuery("#" + id).replaceWith(component.html());
-            }
-
-            if (jQuery("#" + id).parent().is("td")) {
-                jQuery("#" + id).parent().show();
-            }
-
-            // runs scripts on the span or div with id
-            runHiddenScripts(id);
-
-            // lightbox specific processing
-            if (jQuery('#renderedInLightBox').val() == 'true') {
-                jQuery("#" + id).css('display', 'none');
-            }
-
-            var newComponent = jQuery("#" + id);
-            newComponent.animate({backgroundColor:"transparent"}, 6000);
-            jQuery(component).find("#" + id).animate({backgroundColor:"transparent"}, 6000);
+        // remove old stuff
+        if (jQuery("#" + id + "_errors").length) {
+            jQuery("#" + id + "_errors").remove();
         }
+
+        jQuery("input[data-for='" + id + "']").each(function () {
+            jQuery(this).remove();
         });
+
+        // replace component
+        if (jQuery("#" + id).length) {
+            jQuery("#" + id).replaceWith(component.html());
+        }
+
+        if (jQuery("#" + id).parent().is("td")) {
+            jQuery("#" + id).parent().show();
+        }
+
+        // lightbox specific processing
+        if (jQuery('#renderedInLightBox').val() == 'true') {
+            jQuery("#" + id).css('display', 'none');
+        }
+
+        var newComponent = jQuery("#" + id);
 
         var displayWithLabel = jQuery(".displayWith-" + displayWithId);
         displayWithLabel.show();
         if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
             displayWithLabel.parent().show();
         }
+
+        // runs scripts on the span or div with id
+        runHiddenScripts(id);
+
+        elementToBlock.unblock({onUnblock: function () {
+            jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+            newComponent.animate({backgroundColor:"transparent"}, 6000);
+            jQuery(component).find("#" + id).animate({backgroundColor:"transparent"}, 6000);
+        }
+        });
+
+
     },
 
     // performs a redirect to the URL found in the returned contents

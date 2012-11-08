@@ -16,7 +16,7 @@
     limitations under the License.
 
 -->
-  <bean id="BookOrderDocumentType" parent="BookOrderDocument-parentBean"/>
+  <bean id="BookOrderDocument" parent="BookOrderDocument-parentBean"/>
 
   <bean id="BookOrderDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry"> 
     <property name="documentTypeName" value="BookOrderDocumentType"/>

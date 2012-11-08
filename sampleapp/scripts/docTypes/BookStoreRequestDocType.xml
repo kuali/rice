@@ -117,6 +117,13 @@
 <!--      <label>Book Order Document</label>-->
 <!--      <docHandler>${application.url}/bookOrder.do?methodToCall=docHandler</docHandler>			 -->
 <!--    </documentType>-->
+		<documentType>
+		      <name>BookOrderDocumentType</name>
+		      <parent>RiceDocument</parent>
+		      <description>Create Book Order</description>
+		      <label>Book Order Document</label>
+		      <docHandler>${application.url}/bookOrder.do?methodToCall=docHandler</docHandler>
+	    </documentType>
     <documentType>
       <name>BookMaintenanceDocument</name>
       <parent>BookstoreParentMaintenanceDocument</parent>

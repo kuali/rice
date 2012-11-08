@@ -450,11 +450,12 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
             if (principalInfo != null) {
                 ret.add(principalInfo) ;
             }
-            else {
-                return null;
-            }
         }
-        return ret;
+        if (!ret.isEmpty()) {
+            return ret;
+        } else {
+            return null;
+        }
     }
 
     @Override

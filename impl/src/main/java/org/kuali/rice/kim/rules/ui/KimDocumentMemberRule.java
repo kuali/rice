@@ -37,6 +37,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.impl.KRADModuleService;
 import org.kuali.rice.core.api.util.VersionHelper;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
@@ -103,22 +104,22 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	i++;
 	    }
 
-        ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
-        Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(document.getKimType().getServiceName()));
-        String endpointVersion = endpoint.getServiceConfiguration().getServiceVersion();
-        boolean versionOk = false;
-        versionOk = VersionHelper.compareVersion(endpointVersion, CoreConstants.Versions.VERSION_2_1_2)!=-1? true:false;
-        RoleTypeService rts = (RoleTypeService)endpoint.getService();
-        boolean shouldNotValidate = true;
-        if (rts != null) {
-            if(versionOk) {
-                shouldNotValidate = rts.shouldValidateQualifiersForMemberType( MemberType.fromCode(newMember.getMemberTypeCode()));
-            } else {
-                shouldNotValidate = newMember.isRole();
+        boolean shouldNotValidate = newMember.isRole();
+	    if ( kimTypeService != null && ObjectUtils.isNotNull( document.getKimType() ) && StringUtils.isNotBlank(document.getKimType().getServiceName()) ) {
+	        ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+            Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(document.getKimType().getServiceName()));
+            if ( endpoint != null ) {
+                boolean versionOk = true;
+                String endpointVersion = endpoint.getServiceConfiguration().getServiceVersion();
+                if ( StringUtils.isNotBlank(endpointVersion) ) {
+                    versionOk = VersionHelper.compareVersion(endpointVersion, CoreConstants.Versions.VERSION_2_1_2) != -1;
+                }
+                if(versionOk) {
+                    shouldNotValidate = ((RoleTypeService)kimTypeService).shouldValidateQualifiersForMemberType( MemberType.fromCode(newMember.getMemberTypeCode()));
+                }
             }
         }
         if (kimTypeService !=null && !shouldNotValidate) {
-            KimType kt =  document.getKimType();
     		List<RemotableAttributeError> localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
 	        validationErrors.addAll( attributeValidationHelper.convertErrors("member",
                     attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()), localErrors) );

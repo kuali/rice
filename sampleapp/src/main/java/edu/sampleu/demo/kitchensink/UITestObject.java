@@ -17,6 +17,7 @@ package edu.sampleu.demo.kitchensink;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class UITestObject implements Serializable {
     private String field3;
     private String field4;
     private boolean bfield;
+    private List<String> stringList = Arrays.asList("String1", "String2", "String3");
 
     private Map<String, Object> remoteFieldValuesMap;
 
@@ -159,5 +161,13 @@ public class UITestObject implements Serializable {
     public String toString() {
 
         return "" + field1 + field2 + field3 + field4;
+    }
+
+    public List<String> getStringList() {
+        return stringList;
+    }
+
+    public void setStringList(List<String> stringList) {
+        this.stringList = stringList;
     }
 }

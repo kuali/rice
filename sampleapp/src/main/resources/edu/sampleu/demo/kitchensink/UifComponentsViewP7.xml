@@ -49,6 +49,8 @@
              </bean>
            </property>
          </bean>
+         <bean parent="Uif-DataField" p:propertyName="stringList"
+               p:readOnlyDisplayReplacement="@{#emptyList(#lp.stringList)?'None Available':''}"/>
        </list>
      </property>
    </bean>

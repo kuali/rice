@@ -611,7 +611,7 @@ public class CollectionGroupBuilder implements Serializable {
                     if (lineField.getPropertyExpressions().containsKey("readOnly")) {
                         lineField.getPropertyExpressions().remove("readOnly");
                     }
-                } else{
+                } else if(lineField instanceof InputField){
                     lineField.setReadOnly(false);
                 }
             }

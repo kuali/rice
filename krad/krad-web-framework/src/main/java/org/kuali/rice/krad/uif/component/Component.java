@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.view.View;
@@ -467,6 +466,29 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setRowSpan(int rowSpan);
 
     /**
+     * The cellCssClasses property defines the classes that will be placed on the corresponding td (or th) elements
+     * relating to this component when used in a table backed layout.  This property has no effect on other layouts.
+     *
+     * @return the css classes to apply to the wrapping td (or th) element for this component
+     */
+    public List<String> getCellCssClasses();
+
+    /**
+     * Set the cellCssClasses property which defines the classes that will be placed on the corresponding td (or th)
+     * relating to this component when used in a table backed layout.  This property has no effect on other layouts.
+     *
+     * @param cellCssClasses
+     */
+    public void setCellCssClasses(List<String> cellCssClasses);
+
+    /**
+     * Add a cell css class to the cell classes list
+     *
+     * @param cssClass the name of the class to add
+     */
+    public void addCellCssClass(String cssClass);
+
+    /**
      * Context map for the component
      *
      * <p>
@@ -904,11 +926,12 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames);
 
     /**
-     *  Returns a list of componentIds which will be also be refreshed when this component is refreshed
-     *  <p>
-     *  This will be a comma separated list of componentIds that need to be refreshed when a refresh
-     *  condition has been set on this component.
-     *  </p>
+     * Returns a list of componentIds which will be also be refreshed when this component is refreshed
+     * <p>
+     * This will be a comma separated list of componentIds that need to be refreshed when a refresh
+     * condition has been set on this component.
+     * </p>
+     *
      * @return List<String>
      */
     public List<String> getAdditionalComponentsToRefresh();
@@ -983,14 +1006,14 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setResetDataOnRefresh(boolean resetDataOnRefresh);
 
     /**
-     *  Time in seconds after which the component is automatically refreshed
+     * Time in seconds after which the component is automatically refreshed
      *
-     * @return  time in seconds
+     * @return time in seconds
      */
     int getRefreshTimer();
 
     /**
-     *  Setter for refreshTimer
+     * Setter for refreshTimer
      *
      * @param refreshTimer
      */
@@ -1055,6 +1078,5 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * @param tracer Record of component's location
      */
     void completeValidation(ValidationTrace tracer);
-
 
 }

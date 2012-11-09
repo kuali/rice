@@ -848,6 +848,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         headerLabel.setRowSpan(field.getRowSpan());
         headerLabel.setColSpan(field.getColSpan());
 
+        //copy cell css classes for this label
+        headerLabel.setCellCssClasses(field.getCellCssClasses());
+
         if ((field.getRequired() != null) && field.getRequired().booleanValue()) {
             headerLabel.getRequiredMessage().setRender(!field.isReadOnly());
         } else {

@@ -92,8 +92,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String valign;
     private String width;
 
+    //optional table-backed layout options
     private int colSpan;
     private int rowSpan;
+    private List<String> cellCssClasses;
 
     private String style;
     private List<String> cssClasses;
@@ -495,6 +497,47 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public void setRowSpan(int rowSpan) {
         this.rowSpan = rowSpan;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getCellCssClasses()
+     */
+    public List<String> getCellCssClasses() {
+        return cellCssClasses;
+    }
+
+    /**
+     * @see Component#setCellCssClasses(java.util.List)
+     */
+    public void setCellCssClasses(List<String> cellCssClasses) {
+        this.cellCssClasses = cellCssClasses;
+    }
+
+    /**
+     * @see Component#addCellCssClass(String)
+     */
+    public void addCellCssClass(String cssClass) {
+        if (this.cellCssClasses == null){
+            this.cellCssClasses = new ArrayList<String>();
+        }
+
+        if(cssClass != null){
+            this.cellCssClasses.add(cssClass);
+        }
+    }
+
+    /**
+     * Builds the HTML class attribute string by combining the cellStyleClasses list
+     * with a space delimiter
+     *
+     * @return String class attribute string
+     */
+    public String getCellStyleClassesAsString() {
+        if (cellCssClasses != null) {
+            return StringUtils.join(cellCssClasses, " ");
+        }
+
+        return "";
     }
 
     /**

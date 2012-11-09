@@ -99,6 +99,11 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         <#-- build cells for row if value @ columnArray itemIndex = 1 -->
         <#local index = columnArray[columnIndex]?number />
 
+        <#local cellClassAttr=""/>
+        <#if item.cellStyleClassesAsString?has_content>
+            <#local cellClassAttr="class=\"${item.cellStyleClassesAsString}\""/>
+        </#if>
+
         <#if (index == 1)>
             <#if renderHeaderColumn>
                 <#if renderHeaderRow || (renderFirstRowHeader && firstRow)>
@@ -108,12 +113,12 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
                 </#if>
 
                 <th scope="${headerScope}" ${cellWidth!} colspan="${item.colSpan}"
-                    rowspan="${item.rowSpan}" ${krad.attrBuild(item)}>
+                    rowspan="${item.rowSpan}" ${cellClassAttr}>
                     <@template component=item/>
                 </th>
             <#else>
                 <td role="presentation" ${cellWidth!} colspan="${item.colSpan}"
-                    rowspan="${item.rowSpan}" ${krad.attrBuild(item)}>
+                    rowspan="${item.rowSpan}" ${cellClassAttr}>
                     <@template component=item/>
                 </td>
             </#if>

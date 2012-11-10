@@ -26,9 +26,7 @@
       
       <property name="items">
         <list>
-          <bean parent="GenericTextField" p:label="Inquiry" p:readOnly="true"
-            p:instructionalText="Click the link to perform an inquiry on this TravelAccount number"
-            p:propertyName="field59" p:defaultValue="a2">
+          <bean parent="GenericTextField" p:readOnly="true" p:propertyName="field59" p:defaultValue="a2">
             <property name="inquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
             <property name="inquiry.inquiryParameters">
               <map>
@@ -36,20 +34,16 @@
               </map>
             </property>
           </bean>
-          <bean parent="GenericTextField" p:label="Direct Inquiry"
-            p:instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
-            p:propertyName="field71" p:defaultValue="a1">
+          <bean parent="GenericTextField" p:propertyName="field70">
             <property name="inquiry.dataObjectClassName"
               value="edu.sampleu.travel.bo.TravelAccount" />
             <property name="inquiry.inquiryParameters">
               <map>
-                <entry key="field71" value="number" />
+                <entry key="field70" value="number" />
               </map>
             </property>
           </bean>
-          <bean parent="GenericTextField" p:label="Direct Inquiry with an alternate view"
-            p:instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
-            p:propertyName="field71" p:defaultValue="a1">
+          <bean parent="GenericTextField" p:propertyName="field71">
             <property name="inquiry.dataObjectClassName"
                       value="edu.sampleu.travel.bo.TravelAccount"/>
             <property name="inquiry.viewName"
@@ -60,18 +54,14 @@
               </map>
             </property>
           </bean>
-          <bean parent="GenericTextField" p:label="Ajax Field Query"
-            p:instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
-            p:propertyName="field72" p:defaultValue="a1">
+          <bean parent="GenericTextField" p:propertyName="field72">
             <property name="propertyNamesForAdditionalDisplay" value="field73,field74" />
             <property name="attributeQuery">
               <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                 p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74" />
             </property>
           </bean>
-          <bean parent="GenericTextField" p:label="Ajax Field Query Custom Method"
-                p:instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
-                p:propertyName="field76" p:defaultValue="a2">
+          <bean parent="GenericTextField" p:propertyName="field76">
             <property name="propertyNamesForAdditionalDisplay" value="field77,field78" />
             <property name="attributeQuery">
               <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccounts"
@@ -80,9 +70,7 @@
                     p:queryFieldMapping="field76:number"/>
             </property>
           </bean>
-          <bean parent="GenericTextField" p:label="Ajax Field Query Custom Method and Service"
-                p:instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
-                p:propertyName="field79" p:defaultValue="a3">
+          <bean parent="GenericTextField" p:propertyName="field79">
             <property name="propertyNamesForAdditionalDisplay" value="field80,field81"/>
             <property name="attributeQuery">
               <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsByNumber"
@@ -99,9 +87,7 @@
           </bean>
 
 
-          <bean parent="GenericTextField" p:label="Lookup"
-            p:instructionalText="click the button to perform a lookup on TravelAccounts"
-            p:propertyName="field60">
+          <bean parent="GenericTextField" p:propertyName="field60">
             <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
             <property name="quickfinder.fieldConversions">
               <map>
@@ -109,9 +95,7 @@
               </map>
             </property>
           </bean>
-          <bean parent="GenericTextField" p:label="Lookup (Return by script)"
-            p:instructionalText="click the button to perform a lookup on TravelAccounts"
-            p:propertyName="field90">
+          <bean parent="GenericTextField" p:propertyName="field90">
             <property name="quickfinder">
               <bean parent="Uif-QuickFinderByScript"/>
             </property>
@@ -122,20 +106,15 @@
               </map>
             </property>
           </bean>
-          <bean parent="GenericTextField" p:label="Lookup"
-            p:instructionalText="overriden link to display different text - Search Now"
-            p:propertyName="field87">
+          <bean parent="GenericTextField" p:propertyName="field87">
             <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
             <property name="quickfinder.fieldConversions">
               <map>
                 <entry key="number" value="field87" />
               </map>
             </property>
-            <property name="quickfinder.quickfinderAction.actionLabel" value="Search Now"/>
           </bean>
-          <bean parent="GenericTextField" p:label="Suggest"
-            p:instructionalText="for example, type ea or ca to see a suggestion"
-            p:propertyName="field61">
+          <bean parent="GenericTextField" p:propertyName="field61">
             <property name="suggest">
                 <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="accountTypeCode"
                       p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>

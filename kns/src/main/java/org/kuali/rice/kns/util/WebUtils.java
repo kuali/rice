@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -757,12 +758,18 @@ public class WebUtils {
 		String outputString = StringEscapeUtils.escapeHtml(inputString);
 		// string has been escaped of all <, >, and & (and other characters)
 
-		Map<String, String> findAndReplacePatterns = new HashMap<String, String>();
+        Map<String, String> findAndReplacePatterns = new LinkedHashMap<String, String>();
 
-		// now replace our rice custom markup into html
+        // now replace our rice custom markup into html
 
-		// DON'T ALLOW THE SCRIPT TAG OR ARBITRARY IMAGES/URLS/ETC. THROUGH
+        // DON'T ALLOW THE SCRIPT TAG OR ARBITRARY IMAGES/URLS/ETC. THROUGH
 
+        //strip out instances where javascript precedes a URL
+        findAndReplacePatterns.put("\\[a ((javascript|JAVASCRIPT|JavaScript).+)\\]", "");
+        //turn passed a href value into appropriate tag
+        findAndReplacePatterns.put("\\[a (.+)\\]", "<a href=\"$1\">");
+        findAndReplacePatterns.put("\\[/a\\]", "</a>");
+        
 		// filter any one character tags
 		findAndReplacePatterns.put("\\[([A-Za-z])\\]", "<$1>");
 		findAndReplacePatterns.put("\\[/([A-Za-z])\\]", "</$1>");

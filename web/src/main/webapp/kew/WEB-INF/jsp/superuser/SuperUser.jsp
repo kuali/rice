@@ -123,7 +123,7 @@
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
        <tr>
 	     <td nowrap align="center">
-           <c:if test="${SuperUserForm.SUDocument && SuperUserForm.stateAllowsAction}">
+           <c:if test="${SuperUserForm.SUDocument && SuperUserForm.stateAllowsAction && SuperUserForm.superUserFinalApproveAllowed}">
              <html-el:image property="methodToCall.approve" src="images/buttonsmall_approvedoc.gif" style="border-style:none;" align="absmiddle" />
              <c:set var="futureNodeNames" value="${SuperUserForm.futureNodeNames}" />
 
@@ -167,7 +167,7 @@
   </tr>
  </c:if>
 
-  <c:if test="${(! SuperUserForm.routeHeader.stateInitiated) && (! empty SuperUserForm.actionRequests)}">
+  <c:if test="${(! SuperUserForm.routeHeader.stateInitiated) && (! empty SuperUserForm.actionRequests) && SuperUserForm.superUserFinalApproveAllowedForActionRequest}">
     <tr>
       <td height="20"></td>
     </tr>

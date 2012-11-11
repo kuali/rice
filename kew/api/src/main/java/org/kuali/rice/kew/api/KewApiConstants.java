@@ -794,7 +794,7 @@ public final class KewApiConstants {
 
 	public static final int DEFAULT_TRANSACTION_TIMEOUT_SECONDS = 3600;
 
-    public static final int MAX_RETURNED_ROWS = 500;
+    public static final int DELEGATE_RULE_LOOKUP_MAX_ROWS_RETURNED = 500;
 
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
 

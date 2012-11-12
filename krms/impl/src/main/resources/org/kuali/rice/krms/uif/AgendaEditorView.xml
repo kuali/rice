@@ -77,6 +77,17 @@
         <bean parent="AgendaEditorView-AgendaSection" />
       </list>
     </property>
+    <property name="propertyReplacers">
+      <list>
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items" p:condition="dataObject eq null">
+          <property name="replacement">
+            <list>
+              <bean parent="Uif-MessageField" p:messageText="No records found for the given parameters."/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <bean id="AgendaEditorView-AddRule-Page-Parent" parent="Uif-Page">

@@ -2810,11 +2810,19 @@
 			
 			if ( typeof mAction === "number" )
 			{
-				oSettings._iDisplayStart = mAction * oSettings._iDisplayLength;
-				if ( oSettings._iDisplayStart > oSettings.fnRecordsDisplay() )
+                oSettings._iDisplayStart = mAction * oSettings._iDisplayLength;
+
+                // Kuali customization - allow for add lines
+                var start = oSettings._iDisplayStart;
+                if (!$(oSettings.nTable).hasClass("uif-hasAddLine")) {
+                    start = start + 1;
+                }
+
+				if ( start > oSettings.fnRecordsDisplay() )
 				{
 					oSettings._iDisplayStart = 0;
 				}
+                // End Kuali customization
 			}
 			else if ( mAction == "first" )
 			{
@@ -2864,7 +2872,7 @@
 				_fnLog( oSettings, 0, "Unknown paging action: "+mAction );
 			}
 			$(oSettings.oInstance).trigger('page', oSettings);
-			
+            jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 			return iOldStart != oSettings._iDisplayStart;
 		}
 		

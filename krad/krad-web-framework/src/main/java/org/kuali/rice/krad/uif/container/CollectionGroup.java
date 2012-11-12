@@ -221,6 +221,21 @@ public class CollectionGroup extends Group implements DataBinding {
         if (!view.getObjectPathToConcreteClassMapping().containsKey(collectionPath)) {
             view.getObjectPathToConcreteClassMapping().put(collectionPath, getCollectionObjectClass());
         }
+
+        // Adds the script to the add line buttons to keep collection on the same page
+        if (renderAddBlankLineButton) {
+            if (addLinePlacement.equals("BOTTOM")) {
+                addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
+            }else {
+                addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
+            }
+        } else if (addViaLightBox) {
+            if (addLinePlacement.equals("BOTTOM")) {
+                addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
+            } else {
+                addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
+            }
+        }
     }
 
     /**

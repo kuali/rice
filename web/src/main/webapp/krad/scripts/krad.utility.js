@@ -1843,9 +1843,13 @@ function nonEmpty(jqObject) {
     return jqObject && jqObject.length;
 }
 
-
+/**
+ * Returns the table id for a given child component in a table layout collection
+ *
+ * @param component
+ */
 function getTableIdFromChild(component) {
-    return jQuery(component).closest('.dataTables_wrapper').attr('id');
+    return jQuery(component).closest('.uif-tableCollectionSection').attr('id');
 }
 
 /**
@@ -1874,13 +1878,30 @@ function getCurrentPageForRichTable(id) {
  *
  * @param collectionAction
  */
-function writeRichTableInfoToHidden(collectionAction) {
+function writeRichTableInfoToHidden(collectionAction, page) {
     var tableId = getTableIdFromChild(collectionAction);
-    writeHiddenToForm('currentPageRichTable', getCurrentPageForRichTable(tableId));
+    var currentPage = (page==null?getCurrentPageForRichTable(tableId):page);
+    writeHiddenToForm('currentPageRichTable', currentPage);
     var dataTableInfo = parseDataTablesInfo(tableId);
     writeHiddenToForm('fromRecordRichTable', dataTableInfo[1]);
     writeHiddenToForm('toRecordRichTable', dataTableInfo[3]);
     writeHiddenToForm('totalRecordsRichTable', dataTableInfo[5]);
+}
+
+/**
+ * Writes the paging state to the session for the given actions parent table
+ *
+ * <p>
+ * Writes the current page number to session using 'currentPageRichTable' concatenated to the table id as the key.
+ * </p>
+ *
+ * @param collectionAction
+ * @param page - (optional) overide current page with this parameter
+ */
+function writeCurrentPageToSession(collectionAction, page) {
+    var tableId = getTableIdFromChild(collectionAction);
+    var currentPage = (page==null?getCurrentPageForRichTable(tableId):page);
+    storeToSession(tableId + ':currentPageRichTable',currentPage);
 }
 
 /**
@@ -1918,6 +1939,26 @@ function getToRecordRichTable(id) {
  */
 function getTotalRecordsRichTable(id) {
     return parseDataTablesInfo (id)[5];
+}
+
+/**
+ * Opens a page on a table layout collection
+ *
+ * @param tableId
+ * @param pageNumber - numeric page number or 'first'/'last' string
+ */
+function openDataTablePage (tableId, pageNumber) {
+    var oTable = getDataTableHandle(tableId);
+    if (oTable == null) {
+        oTable = getDataTableHandle(jQuery('#' + tableId).find('.dataTable').attr('id'));
+    }
+    if (pageNumber == "first" || pageNumber == "last") {
+        oTable.fnPageChange(pageNumber);
+    } else {
+        var numericPage =  Number(pageNumber) -1;
+        console.debug(numericPage);
+        oTable.fnPageChange(numericPage);
+    }
 }
 
 /**

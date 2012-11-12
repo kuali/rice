@@ -134,6 +134,12 @@ KradResponse.prototype = {
         // runs scripts on the span or div with id
         runHiddenScripts(id);
 
+        // Only for table layout collections. Keeps collection on same page.
+        var currentPage = retrieveFromSession(id + ":currentPageRichTable");
+        if (currentPage != null) {
+            openDataTablePage(id, currentPage);
+        }
+
         elementToBlock.unblock({onUnblock: function () {
             jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
             newComponent.animate({backgroundColor:"transparent"}, 6000);

@@ -36,7 +36,7 @@
                     var timer;
                     iframe.onload = function() {
                         var d = iframe.contentWindow.document;
-                        var originalHeight = d.body.clientHeight || d.body.offsetHeight || d.body.scrollHeight;
+                        var originalHeight =  jQuery(d).find('#view_div').height();
                         originalHeight += 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
                         var oldHeight = originalHeight;  // to avoid dancing when table labels wrap/unwrap on screen resize
 
@@ -49,12 +49,11 @@
                             timer = setInterval(function() {
                                 try {
                                     var d = iframe.contentWindow.document;
-                                    var newHeight = d.body.clientHeight || d.body.offsetHeight || d.body.scrollHeight;
-                                    newHeight += 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
+                                    var newHeight = jQuery(d).find('#view_div').height();
                                     if(newHeight != originalHeight && newHeight != oldHeight) {
                                         // The height has changed since last we checked
                                         oldHeight = originalHeight;
-                                        originalHeight = newHeight;
+                                        originalHeight = newHeight + 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
                                         socket.postMessage(originalHeight);
                                     }
                                 } catch(e) {

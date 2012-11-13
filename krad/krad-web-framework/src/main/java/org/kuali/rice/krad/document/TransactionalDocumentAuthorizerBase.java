@@ -46,6 +46,7 @@ public class TransactionalDocumentAuthorizerBase extends ViewAuthorizerBase {
     public boolean canOpenView(View view, ViewModel model, Person user) {
         boolean canOpen = super.canOpenView(view, model, user);
 
+        /**
         if (canOpen) {
             LookupForm lookupForm = (LookupForm) model;
 
@@ -65,6 +66,7 @@ public class TransactionalDocumentAuthorizerBase extends ViewAuthorizerBase {
                         additionalPermissionDetails, null);
             }
         }
+         */
 
         return canOpen;
     }

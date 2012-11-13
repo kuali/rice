@@ -67,7 +67,7 @@ public class UifConstants {
     }
 
     public static enum ViewType {
-        DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT;
+        DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT, TRANSACTION;
     }
 
     public static enum ControlType {

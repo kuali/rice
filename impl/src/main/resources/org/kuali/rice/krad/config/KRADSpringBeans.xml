@@ -994,6 +994,7 @@
         <ref bean="inquiryViewTypeService"/>
         <ref bean="lookupViewTypeService"/>
         <ref bean="maintenanceViewTypeService"/>
+        <ref bean="transactionalViewTypeService"/>
       </list>
     </property>
   </bean>
@@ -1006,6 +1007,15 @@
   <bean id="lookupViewTypeService" class="org.kuali.rice.krad.uif.service.impl.LookupViewTypeServiceImpl"/>
 
   <bean id="maintenanceViewTypeService" class="org.kuali.rice.krad.uif.service.impl.MaintenanceViewTypeServiceImpl">
+    <property name="documentService">
+      <ref bean="documentService"/>
+    </property>
+    <property name="documentDictionaryService">
+      <ref bean="documentDictionaryService"/>
+    </property>
+  </bean>
+
+  <bean id="transactionalViewTypeService" class="org.kuali.rice.krad.uif.service.impl.TransactionalViewTypeServiceImpl">
     <property name="documentService">
       <ref bean="documentService"/>
     </property>

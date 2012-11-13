@@ -38,8 +38,7 @@ public class BasicApplicationIT {
     public void testBasicApplicationStartup() throws Exception {
         URL url = new URL("http://localhost:" + getPort() + "/${artifactId}");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        assertEquals(200, connection.getResponseCode());
+        assertEquals(url.toString(), 200, connection.getResponseCode());
     }
 
     private String getPort() {
@@ -47,6 +46,6 @@ public class BasicApplicationIT {
         if (port == null || port.trim().equals("")) {
             port = "8080";
         }
-        return "8080";
+        return port;
     }
 }

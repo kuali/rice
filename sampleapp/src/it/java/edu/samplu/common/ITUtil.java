@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */package edu.samplu.common;
+ */
+package edu.samplu.common;
 
 import com.thoughtworks.selenium.Selenium;
 import org.apache.commons.lang.RandomStringUtils;
@@ -47,6 +48,7 @@ public class ITUtil {
     public static final String KUALI_PORTAL_TITLE = "Kuali Portal Index";
     public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
     public final static String PORTAL = "/portal.do";
+    public final static String PORTAL_URL =  ITUtil.getBaseUrlString() + ITUtil.PORTAL;
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
     public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
     public static String WAIT_TO_END_TEST = "5000";

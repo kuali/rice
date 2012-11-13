@@ -307,6 +307,48 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         driver.switchTo().window(locator);
     }
 
+    protected void testCancelConfirmation() throws InterruptedException {
+        waitAndCancelConfirmation();
+        passed();
+    }
+
+    protected void testCreateNewSearchReturnValueCancelConfirmation() throws InterruptedException, Exception {
+        selectFrame("iframeportlet");
+        waitAndCreateNew();
+        waitAndSearch();
+        waitAndReturnValue();
+        waitAndCancelConfirmation();
+        passed();
+    }
+
+    protected void testSearchEditCancel() throws InterruptedException {
+        selectFrame("iframeportlet");
+        waitAndSearch();
+        waitAndEdit();
+        testCancelConfirmation();
+    }
+
+    protected void waitAndCancelConfirmation() throws InterruptedException {
+        waitAndClickByName("methodToCall.cancel");
+        waitAndClickByName("methodToCall.processAnswer.button0");
+    }
+
+    protected void waitAndCreateNew() throws InterruptedException {
+        waitAndClickByXpath("//img[@alt='create new']");
+    }
+
+    protected void waitAndEdit() throws InterruptedException {
+        waitAndClickByLinkText("edit");
+    }
+
+    protected void waitAndReturnValue() throws InterruptedException {
+        waitAndClickByLinkText("return value");
+    }
+
+    protected void waitAndSearch() throws InterruptedException {
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
+    }
+
     protected String waitForDocId() throws InterruptedException {
         waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         return driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();

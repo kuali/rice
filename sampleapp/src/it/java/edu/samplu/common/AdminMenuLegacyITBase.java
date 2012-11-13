@@ -43,9 +43,7 @@ public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
      */
     public void testCreateNewCancel() throws Exception {
         gotoCreateNew();
-        waitAndClickByName("methodToCall.cancel");
-        waitAndClickByName("methodToCall.processAnswer.button0");
-        passed();
+        testCancelConfirmation();
     }
 
     /**
@@ -53,10 +51,6 @@ public abstract class AdminMenuLegacyITBase extends MenuLegacyITBase {
      */
     public void testEditCancel() throws Exception {
         gotoMenuLinkLocator();
-        waitAndClick("input[alt='search']");
-        waitAndClickByLinkText("edit");
-        waitAndClickByName("methodToCall.cancel");
-        waitAndClickByName("methodToCall.processAnswer.button0");
-        passed();
+        testSearchEditCancel();
     }
 }

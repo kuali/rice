@@ -101,14 +101,14 @@
         <para>The KRAD framework provides the ability to build modal dialogs into a web application.  Modal dialogs
           can improve the usability and flow of a web page. Dialogs allow the server-side controller to gather additional
           information from the user after the form is submitted without having to change page.</para>
-        <para>A common and simple example of a dialog is to confirm with the user before performing a potentially
+        <para>A common and simple example of a dialog is to confirm with the user before performing a potentially dangerous
           action. For Example, "Are You Sure, you want to delete?". In this simple example, the question is displayed in
           a lightbox. The user must select a response, closing the lightbox, before they can interact again with the
           underlying page contents.</para>
         <para>KRAD dialogs support even more complex interactions with the user, with multiple components and controls,
           conditional logic, and rich styling. With KRAD, you can create re-usable dialog group components
-          that enables rich styling (from CSS stylesheets) and user interaction, to pose questions and collect the
-          user's responses.  The dialogs support images, tables, declarative logic, checkboxes, radio buttons, dropdowns,
+          that enables rich styling (from CSS stylesheets) and user interaction, to pose questions and collect user
+          responses.  The dialogs support images, tables, declarative logic, checkboxes, radio buttons, dropdowns,
           and input fields (for example, for user to provide a text description, with details for their response choice),
           or keyboard navigation. Dialogs also have the ability to progressively disclose questions and other UI choices
           depending on other selections made in the lightbox, to dynamically add to the content and re-size
@@ -123,8 +123,8 @@
         <title>Using Dialogs in a View</title>
         <para>To use a dialog in a view requires the following three setup steps</para>
         <itemizedlist>
-          <listitem><para>Define the dialog group (or use a pre-defined dialog group)</para></listitem>
-          <listitem><para>Declare the dialog group in the dialogList View property</para></listitem>
+          <listitem><para>Define the dialog group (or use a pre-defined dialog group) in the view definition file.</para></listitem>
+          <listitem><para>Declare the dialog group in the dialogList View property (also in the view definition)</para></listitem>
           <listitem><para>Invoke the dialog from the view controller</para></listitem>
         </itemizedlist>
         <para>First, let's take a look at a most simple example. This is one of the pre-defined KRAD dialogs.</para>
@@ -166,13 +166,13 @@
       <section>
         <title>Creating a Dialog Group For a View</title>
         <para>Next, let's take a closer look at dialog groups. Any group defined in the view can be used as content in
-          the lightbox. Just add a reference to it in the"dialogs" list property in the view definition. A DialogGroup
+          the lightbox. Just add a reference to it in the "dialogs" list property in the view definition. A DialogGroup
           provides some additionalproperties for convenience, but any group will do. It should be set to hidden unless
           you want it the group displayed on the main page as well. So the designer has a few options:</para>
         <itemizedlist><listitem>use a pre-defined KRAD dialog</listitem>
         <listitem>customize an existing dialog<para>change any of the prompt text, the number of option buttons, the value
           of the option buttons, adds items to the group, add custom styling,...</para></listitem>
-          <listitem>create your own group</listitem></itemizedlist>
+          <listitem>create your own custom, hidden group</listitem></itemizedlist>
         <para>Here is the bean definition for a DialogGroup. The dialogGroup is a hidden group with some additional
         properties for convenience.</para>
         <itemizedlist><listitem>prompt - the  message displayed to the user</listitem>
@@ -233,10 +233,12 @@
         <listitem>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)<para>Returns whether the dialog has
           been presented to the user during this conversation.</para></listitem>
           <listitem>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)<para>Returns whether the dialog has
-            already been answered by the user during this conversation.</para></listitem>
+            already been answered by the user during this conversation. This method also performs hasDialogBeenDisplayed()
+            prior to checking the answered status. This method is the preferred choice because it can test for both cases
+            of whether the the dialog has been displayed and whether it has been answered.</para></listitem>
         <listitem>boolean getBooleanDialogResponse(dialogId, form, request, response)
           <para>If the dialog has already been answered by the user, returns true if user chose affirmative response,
-            false if negative response was chosen</para></listitem>
+            false if negative response was chosen. Also returns false if the dialog has not been answered.</para></listitem>
         <listitem>String getStringDialogResponse(dialogId, form, request, response)
           <para>If the dialog has already been answered by the user, returns the string value of the option chosen by
           the user</para></listitem></itemizedlist>
@@ -251,8 +253,27 @@
       </section>
       <section>
         <title>Pre-Defined Dialog Groups</title>
-        <para></para>
-        <!-- TODO: Add content here.  -->
+        <para>For convenience, the KRAD UI Framework contains several pre-built dialog groups. </para>
+        <itemizedlist>
+          <listitem>Uif-OK-Cancel-DialogGroup<para>A basic dialog with the header text set as
+          "Please Confirm to Continue". The prompt text default is "Would You Like to Continue?". Available responses are
+          "OK" and "Cancel"</para></listitem>
+          <listitem>Uif-Yes-No-DialogGroup<para>A basic dialog with the header text set to "Please Select".
+          The prompt text default is "Would You Like to Continue? Available responses are "Yes" and "No"</para></listitem>
+          <listitem>Uif-True-False-DialogGroup<para>A basic dialog with the header text set to "Please select from the
+          values below". The prompt text default is "Would You Like to Continue? Available responses are "True" and "False"
+          </para></listitem>
+          <listitem>Uif-SensitiveData-DialogGroup<para>A basic dialog with the header text set to "Warning: Sensitive Data".
+          The prompt text default is ""Potentially sensitive data was found on the document. Do you wish to continue?"
+          Available responses are "Yes" and "No"
+          </para></listitem>
+          <listitem>Uif-Checkbox-DialogGroup<para>A basic dialog with the checkbox control for the explanation. The
+          default responses are "OK" and "Cancel".</para>
+          </listitem>
+          <listitem>Uif-RadioButton-DialogGroup<para>A basic dialog with the radio button control for the explanation.
+          The default responses are "OK" and "Cancel"</para>
+          </listitem>
+        </itemizedlist>
       </section>
       <section>
         <title>Customizing Dialog Groups</title>

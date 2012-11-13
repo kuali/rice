@@ -54,7 +54,7 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         String id = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         String altId =  request.getParameter(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID);
-        
+
         String roleId = StringUtils.isNotEmpty(id) ? id : altId;
         Role role = KimApiServiceLocator.getRoleService().getRole(roleId);
         if (role != null) {
@@ -78,7 +78,11 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
 
         KualiTableRenderFormMetadata memberTableMetadata =  roleDocumentForm.getMemberTableMetadata();
         memberTableMetadata.setPreviouslySortedColumnName(previouslySortedColumnName);
-        if (sortDescending != null) {
+        String columnToSort = memberTableMetadata.getColumnToSortName();
+        if  (previouslySortedColumnName != null && StringUtils.isEmpty(columnToSort)) {
+            memberTableMetadata.setColumnToSortName(previouslySortedColumnName);
+        }
+        if (sortDescending != null && !StringUtils.isEmpty(columnToSort)) {
             memberTableMetadata.setSortDescending(sortDescending.booleanValue());
         }
         if (roleDocumentForm.getMemberRows() != null) {

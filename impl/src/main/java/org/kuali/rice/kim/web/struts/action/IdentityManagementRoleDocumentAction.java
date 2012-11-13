@@ -101,7 +101,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     }
 
     public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
+        memberTableMetadata.setSwitchToPageNumber(0);
     	return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -315,8 +317,8 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
             Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(newMember.getMemberName());
             if (principal != null) {
                 newMember.setMemberId(principal.getPrincipalId());
+                }
             }
-        }
         if (checkKimDocumentRoleMember(newMember) &&
                 KRADServiceLocatorWeb.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))) {
             newMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());

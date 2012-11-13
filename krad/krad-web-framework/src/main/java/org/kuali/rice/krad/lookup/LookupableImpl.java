@@ -47,6 +47,7 @@ import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
@@ -634,8 +635,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         //special handling to handle history correctly
-        List<HistoryEntry> historyEntries = n
-         = lookupForm.getFormHistory().getGeneratedBreadcrumbs();
+        List<HistoryEntry> historyEntries = null;
+        History history = lookupForm.getFormHistory();
+
+        if(history != null){
+            historyEntries = history.getGeneratedBreadcrumbs();
+        }
+
         String historyParams = "";
         if(historyEntries != null && !historyEntries.isEmpty()){
             //get the last entry

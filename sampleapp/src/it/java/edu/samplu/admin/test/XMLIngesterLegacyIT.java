@@ -38,7 +38,9 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
     // values set by default for repeatable testing; left as configurable for load tests
     private List<File> fileUploadList;
     private int userCnt = Integer.valueOf(System.getProperty("test.xmlingester.user.cnt", "10"));
+    private boolean userPadding = Boolean.valueOf(System.getProperty("test.xmlingester.user.padding", "true"));
     private String userPrefix = System.getProperty("test.xmlingester.user.prefix", ITUtil.DTS);
+    private String emailDomain = System.getProperty("test.xmlingester.user.email.domain", "@kuali.org");
     // group default values
     private String groupId = System.getProperty("test.xmlingester.grp.id", "2203");
     private String groupNamespace = System.getProperty("test.xmlingester.grp.namespace","KUALI");
@@ -97,14 +99,21 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         writer.write("<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\">\n");
         writer.write("\t<users xmlns=\"ns:workflow/User\" xsi:schemaLocation=\"ns:workflow/User resource:User\">\n");
+        String count = "";
+        String format = "%0" + (numberOfUsers + "").length() + "d";
         for(int i = 0; i < numberOfUsers; i++) {
+            if (userPadding) {
+                count = prefix + String.format(format, i);
+            } else {
+                count = prefix + i;
+            }
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("\t\t<user><principalId>lt" + prefix + i + "</principalId>");
-            stringBuffer.append("<emplId>lt" + prefix + i + "emplid</emplId>");
-            stringBuffer.append("<principalName>loadtester" + prefix + i + "</principalName>");
-            stringBuffer.append("<givenName>Tester</givenName>");
-            stringBuffer.append("<lastName>McLoady" + prefix + i + "</lastName>");
-            stringBuffer.append("<emailAddress>loadtester" + prefix + i + "@kuali.org</emailAddress>");
+            stringBuffer.append("\t\t<user><principalId>lt" + count + "</principalId>");
+            stringBuffer.append("<emplId>lt" + count + "emplid</emplId>");
+            stringBuffer.append("<principalName>loadtester" + count + "</principalName>");
+            stringBuffer.append("<givenName>Tester" + count + "</givenName>");
+            stringBuffer.append("<lastName>McLoady" + count + "</lastName>");
+            stringBuffer.append("<emailAddress>loadtester" + count + emailDomain + "</emailAddress>");
             stringBuffer.append("</user>\n");
             writer.write(stringBuffer.toString());
         }
@@ -134,9 +143,16 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
         writer.write("<members>");
         writer.write("<principalName>admin</principalName>");
         writer.write("<principalName>notsys</principalName>");
+        String count = "";
+        String format = "%0" + (numberOfUsers + "").length() + "d";
         for(int i = 0; i < numberOfUsers; i++) {
+            if (userPadding) {
+                count = prefix + String.format(format, i);
+            } else {
+                count = prefix + i;
+            }
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("<principalName>loadtester" + prefix + i + "</principalName>");
+            stringBuffer.append("<principalName>loadtester" + count + "</principalName>");
             writer.write(stringBuffer.toString());
         }
         writer.write("\t\t</members>\n\t</group>\n</groups>\n</data>\n");

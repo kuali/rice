@@ -21,43 +21,43 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="Demo-ButtonLevels" parent="Uif-HorizontalBoxSection" p:headerText="Button/Link Levels">
+  <bean id="Demo-ButtonLevels" parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-VerticalBoxSubSection" p:headerText="Primary">
+        <bean id="Demo-Primary" parent="Uif-VerticalBoxSubSection">
           <property name="items">
             <list>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Normal"
+              <bean id="Demo-Primary-Action1" parent="Uif-PrimaryActionButton"
                     p:actionScript="alert('You clicked a button');"/>
-              <bean parent="Uif-PrimaryActionButton" p:disabled="true" p:actionLabel="Normal"
+              <bean id="Demo-Primary-Action2" parent="Uif-PrimaryActionButton" p:disabled="true"
                     p:actionScript="alert('You clicked a button');"/>
-              <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Small"
+              <bean id="Demo-Primary-Action3" parent="Uif-PrimaryActionButton-Small"
                     p:actionScript="alert('You clicked a button');"/>
-              <bean parent="Uif-PrimaryActionButton-Small" p:disabled="true" p:actionLabel="Small"
+              <bean id="Demo-Primary-Action4" parent="Uif-PrimaryActionButton-Small" p:disabled="true"
                     p:actionScript="alert('You clicked a button');"/>
             </list>
           </property>
         </bean>
-        <bean parent="Uif-VerticalBoxSubSection" p:headerText="Secondary">
+        <bean id="Demo-Secondary" parent="Uif-VerticalBoxSubSection">
           <property name="items">
             <list>
-              <bean parent="Uif-SecondaryActionButton" p:actionLabel="Normal"
+              <bean id="Demo-Secondary-Action1" parent="Uif-SecondaryActionButton"
                     p:actionScript="alert('You clicked a button');"/>
-              <bean parent="Uif-SecondaryActionButton" p:disabled="true" p:actionLabel="Normal"
+              <bean id="Demo-Secondary-Action2" parent="Uif-SecondaryActionButton" p:disabled="true"
                     p:actionScript="alert('You clicked a button');"/>
-              <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Small"
+              <bean id="Demo-Secondary-Action3" parent="Uif-SecondaryActionButton-Small"
                     p:actionScript="alert('You clicked a button');"/>
-              <bean parent="Uif-SecondaryActionButton-Small" p:disabled="true" p:actionLabel="Small"
+              <bean id="Demo-Secondary-Action4" parent="Uif-SecondaryActionButton-Small" p:disabled="true"
                     p:actionScript="alert('You clicked a button');"/>
             </list>
           </property>
         </bean>
-        <bean parent="Uif-VerticalBoxSubSection" p:headerText="Links">
+        <bean id="Demo-Links" parent="Uif-VerticalBoxSubSection">
           <property name="items">
             <list>
-              <bean parent="Uif-ActionLink" p:actionLabel="Action link" p:actionScript="alert('You clicked a link');"/>
+              <bean id="Demo-Links-Action1" parent="Uif-ActionLink" p:actionScript="alert('You clicked a link');"/>
               <!--          TODO Does not work yet
-     <bean parent="Uif-ActionLink" p:disabled="true" p:actionLabel="Action link disabled"
+     <bean id="Demo-Links-Action2" parent="Uif-ActionLink" p:disabled="true"
            p:actionScript="alert('You clicked a link');"/>-->
             </list>
           </property>
@@ -66,19 +66,19 @@
     </property>
   </bean>
 
-  <bean id="Demo-HeaderLevels" parent="Uif-VerticalBoxSection" p:headerText="H3 Header Title">
+  <bean id="Demo-HeaderLevels" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-VerticalBoxSubSection" p:headerText="H4 Header Title">
+        <bean id="Demo-HeaderLevel1" parent="Uif-VerticalBoxSubSection">
           <property name="items">
             <list>
-              <bean parent="Uif-VerticalBoxGroup" p:headerText="H5 Header Title">
+              <bean id="Demo-HeaderLevel2" parent="Uif-VerticalBoxGroup">
                 <property name="header">
                   <bean parent="Uif-HeaderFive"/>
                 </property>
                 <property name="items">
                   <list>
-                    <bean parent="Uif-VerticalBoxGroup" p:headerText="H6 Header Title">
+                    <bean id="Demo-HeaderLevel3" parent="Uif-VerticalBoxGroup">
                       <property name="header">
                         <bean parent="Uif-HeaderSix"/>
                       </property>
@@ -93,13 +93,13 @@
     </property>
   </bean>
 
-  <bean id="Demo-Disclosure-HeaderLevels" parent="Uif-Disclosure-VerticalBoxSection" p:headerText="H3 Header Title">
+  <bean id="Demo-Disclosure-HeaderLevels" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="H4 Header Title">
+        <bean id="Demo-Disclosure-HeaderLevel1" parent="Uif-Disclosure-VerticalBoxSubSection">
           <property name="items">
             <list>
-              <bean parent="Uif-VerticalBoxGroup" p:headerText="H5 Header Title">
+              <bean id="Demo-Disclosure-HeaderLevel2" parent="Uif-VerticalBoxGroup">
                 <property name="cssClasses">
                   <list merge="true">
                     <value>uif-disclosure</value>
@@ -111,7 +111,7 @@
                 </property>
                 <property name="items">
                   <list>
-                    <bean parent="Uif-VerticalBoxGroup" p:headerText="H6 Header Title">
+                    <bean id="Demo-Disclosure-HeaderLevel3" parent="Uif-VerticalBoxGroup">
                       <property name="cssClasses">
                         <list merge="true">
                           <value>uif-disclosure</value>
@@ -132,12 +132,12 @@
     </property>
   </bean>
 
-  <bean id="Demo-HeaderGroups" parent="Uif-VerticalBoxSection" p:headerText="Header Groups Demo">
+  <bean id="Demo-HeaderGroups" parent="Uif-VerticalBoxSection">
     <property name="header.upperGroup">
       <bean parent="Uif-HeaderUpperGroup">
         <property name="items">
           <list>
-            <bean parent="Uif-Message" p:messageText="Upper Group"/>
+            <bean id="Demo-HeaderGroups-Message1" parent="Uif-Message"/>
           </list>
         </property>
       </bean>
@@ -146,7 +146,7 @@
       <bean parent="Uif-HeaderRightGroup">
         <property name="items">
           <list>
-            <bean parent="Uif-Message" p:messageText="Right Group"/>
+            <bean id="Demo-HeaderGroups-Message2" parent="Uif-Message"/>
           </list>
         </property>
       </bean>
@@ -155,7 +155,7 @@
       <bean parent="Uif-HeaderLowerGroup">
         <property name="items">
           <list>
-            <bean parent="Uif-Message" p:messageText="Lower Group"/>
+            <bean id="Demo-HeaderGroups-Message3" parent="Uif-Message"/>
           </list>
         </property>
       </bean>

@@ -44,7 +44,7 @@
              </bean>
            </property>
          </bean>
-         <bean parent="Uif-DataField" p:propertyName="stringList"
+         <bean parent="Uif-DataField" p:propertyName="stringList"  p:label="Read-only Sublist"
                p:readOnlyDisplayReplacement="@{#emptyList(#lp.stringList)?'None Available':''}"/>
        </list>
      </property>

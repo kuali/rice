@@ -107,8 +107,8 @@ public class LookupInquiryUtils {
 		for (String key : keyValueMap.keySet()) {
 			String fieldVal = keyValueMap.get(key).toString();
 
-			titleText.append(KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(element, key) + "="
-					+ fieldVal.toString() + " ");
+			titleText.append(" " + KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(element, key) + "="
+					+ fieldVal.toString());
 		}
 
 		return titleText.toString();

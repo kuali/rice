@@ -47,6 +47,7 @@ import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
@@ -56,6 +57,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -630,7 +632,30 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             returnLinkField.setRender(false);
             return;
         }
-        // TODO: need to handle returning anchor
+
+        //special handling to handle history correctly
+        List<HistoryEntry> historyEntries = n
+         = lookupForm.getFormHistory().getGeneratedBreadcrumbs();
+        String historyParams = "";
+        if(historyEntries != null && !historyEntries.isEmpty()){
+            //get the last entry
+            String url = historyEntries.get(historyEntries.size() - 1).getUrl();
+            if(url != null && url.indexOf('?') > -1 && (url.indexOf('?') + 1) < url.length()){
+                historyParams = url.substring(url.indexOf('?') + 1);
+                //remove method to call and form key; href string already has these
+                historyParams = historyParams.replaceFirst("(^|&)" +
+                        KRADConstants.DISPATCH_REQUEST_PARAMETER + "=.*?($|&)","");
+                historyParams = historyParams.replaceFirst("(^|&)" +
+                                    KRADConstants.FORM_KEY + "=.*?($|&)","");
+            }
+        }
+
+        //append the modified history params
+        if(StringUtils.isNotBlank(historyParams)){
+            href = href + "&" + historyParams;
+        }
+
+        //set the return link
         returnLinkField.setHref(href);
 
         // build return link label and title

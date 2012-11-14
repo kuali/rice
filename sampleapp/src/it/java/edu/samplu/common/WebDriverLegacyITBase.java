@@ -483,25 +483,44 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         waitAndType(By.name(name), text);
     }
     
-    protected void selectByXpath(String locator, String select) throws InterruptedException {
-        select(By.xpath(locator), select);
+    protected void selectByXpath(String locator, String selectText) throws InterruptedException {
+        select(By.xpath(locator), selectText);
     }
     
-    protected void selectByName(String name, String select) throws InterruptedException {
-        select(By.name(name), select);
+    protected void selectByName(String name, String selectText) throws InterruptedException {
+        select(By.name(name), selectText);
     }
     
-    protected void select(By by, String select)  throws InterruptedException {
+    protected void select(By by, String selectText)  throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
         for(WebElement option : options){
-            if(option.getText().equals(select)){
+            if(option.getText().equals(selectText)){
                 option.click();
                 break;
             }
         }
     }
-    
+
+    protected void selectOptionByName(String name, String optionValue) throws InterruptedException {
+        selectOption(By.name(name), optionValue);
+    }
+
+    protected void selectOptionByXpath(String locator, String optionValue) throws InterruptedException {
+        selectOption(By.name(locator), optionValue);
+    }
+
+    protected void selectOption(By by, String optionValue)  throws InterruptedException {
+        WebElement select1 = driver.findElement(by);
+        List<WebElement> options = select1.findElements(By.tagName("option"));
+        for(WebElement option : options){
+            if(option.getAttribute("value").equals(optionValue)){
+                option.click();
+                break;
+            }
+        }
+    }
+
     protected String[] getSelectOptions(By by) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));

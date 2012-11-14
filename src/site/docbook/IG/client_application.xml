@@ -291,12 +291,12 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                 <listitem>
                   <para>Interactive mode:</para>
                   <programlisting>
-C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=2.2.0-M4-SNAPSHOT</programlisting>
+C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=${project.version}</programlisting>
                 </listitem>
                 <listitem>
                   <para>Automated mode:</para>
                   <programlisting>
-C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=2.2.0-M4-SNAPSHOT
+C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=${project.version}
 -DgroupId=org.foo
 -DartifactId=bar
 -Dversion=1.0-SNAPSHOT

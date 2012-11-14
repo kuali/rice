@@ -45,6 +45,8 @@ public final class KRADConstants {
     public static final String KRAD_INITIATED_DOCUMENT_URL_KEY="initiated.document.url";
     public static final String KRAD_INITIATED_DOCUMENT_VIEW_NAME="InitiatedDocumentView";
 
+    public static final String KRAD_DICTIONARY_INDEX_POOL_SIZE = "krad.dictionary.indexPoolSize";
+
     public static final String PARAM_MAINTENANCE_VIEW_MODE = "maintenanceViewMode";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";

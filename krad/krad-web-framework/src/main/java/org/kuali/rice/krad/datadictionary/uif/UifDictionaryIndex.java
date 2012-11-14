@@ -18,6 +18,7 @@ package org.kuali.rice.krad.datadictionary.uif;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -25,6 +26,7 @@ import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
@@ -34,13 +36,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
- * Indexes <code>View</code> bean entries for retrieval
+ * Indexes {@code View} bean entries for retrieval
  *
  * <p>
- * This is used to retrieve a <code>View</code> instance by its unique id.
- * Furthermore, view of certain types (that have a <code>ViewTypeService</code>
+ * This is used to retrieve a {@code View} instance by its unique id.
+ * Furthermore, view of certain types (that have a {@code ViewTypeService}
  * are indexed by their type to support retrieval of views based on parameters.
  * </p>
  *
@@ -60,12 +64,26 @@ public class UifDictionaryIndex implements Runnable {
     // views that are loaded eagerly
     private Map<String, UifViewPool> viewPools;
 
+    // threadpool size
+    private static final int THREADS = 4;
+    private boolean poolSizeSet;
+    private Integer threadPoolSize;
+
     public UifDictionaryIndex(KualiDefaultListableBeanFactory ddBeans) {
         this.ddBeans = ddBeans;
     }
 
+    @Override
     public void run() {
         LOG.info("Starting View Index Building");
+        try {
+            Integer size = new Integer(ConfigContext.getCurrentContextConfig().getProperty(
+                    KRADConstants.KRAD_DICTIONARY_INDEX_POOL_SIZE));
+            threadPoolSize = size;
+            poolSizeSet = true;
+        } catch (NumberFormatException nfe) {
+            // ignore this, instead the pool will be set to DEFAULT_SIZE
+        }
         buildViewIndicies();
         LOG.info("Completed View Index Building");
     }
@@ -86,12 +104,11 @@ public class UifDictionaryIndex implements Runnable {
     public View getViewById(final String viewId) {
         // check for preloaded view
         if (viewPools.containsKey(viewId)) {
-            View view = null;
 
             final UifViewPool viewPool = viewPools.get(viewId);
             synchronized (viewPool) {
                 if (!viewPool.isEmpty()) {
-                    view = viewPool.getViewInstance();
+                    View view = viewPool.getViewInstance();
 
                     // replace view in the pool
                     Runnable createView = new Runnable() {
@@ -134,7 +151,7 @@ public class UifDictionaryIndex implements Runnable {
     }
 
     /**
-     * Retrieves a <code>View</code> instance that is of the given type based on
+     * Retrieves a {@code View} instance that is of the given type based on
      * the index key
      *
      * @param viewTypeName - type name for the view
@@ -158,7 +175,7 @@ public class UifDictionaryIndex implements Runnable {
     }
 
     /**
-     * Indicates whether a <code>View</code> exists for the given view type and index information
+     * Indicates whether a {@code View} exists for the given view type and index information
      *
      * @param viewTypeName - type name for the view
      * @param indexKey - Map of index key parameters, these are the parameters the indexer used to index
@@ -231,7 +248,7 @@ public class UifDictionaryIndex implements Runnable {
     }
 
     /**
-     * Gets all <code>View</code> prototypes configured for the given view type
+     * Gets all {@code View} prototypes configured for the given view type
      * name
      *
      * @param viewTypeName - view type name to retrieve
@@ -256,8 +273,8 @@ public class UifDictionaryIndex implements Runnable {
     }
 
     /**
-     * Initializes the view index <code>Map</code> then iterates through all the
-     * beans in the factory that implement <code>View</code>, adding them to the
+     * Initializes the view index {@code Map} then iterates through all the
+     * beans in the factory that implement {@code View}, adding them to the
      * index
      */
     protected void buildViewIndicies() {
@@ -265,9 +282,14 @@ public class UifDictionaryIndex implements Runnable {
         viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
         viewPools = new HashMap<String, UifViewPool>();
 
+        int threads = THREADS;
+        if (poolSizeSet) {
+            threads = threadPoolSize;
+        }
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
+
         String[] beanNames = ddBeans.getBeanNamesForType(View.class);
-        for (int i = 0; i < beanNames.length; i++) {
-            final String beanName = beanNames[i];
+        for (final String beanName : beanNames) {
             BeanDefinition beanDefinition = ddBeans.getMergedBeanDefinition(beanName);
             PropertyValues propertyValues = beanDefinition.getPropertyValues();
 
@@ -295,29 +317,29 @@ public class UifDictionaryIndex implements Runnable {
                 viewPool.setMaxSize(poolSize);
                 for (int j = 0; j < poolSize; j++) {
                     Runnable createView = new Runnable() {
+                        @Override
                         public void run() {
                             View view = (View) ddBeans.getBean(beanName);
                             viewPool.addViewInstance(view);
                         }
                     };
 
-                    Thread t = new Thread(createView);
-                    t.start();
+                    executor.execute(createView);
                 }
-
                 viewPools.put(id, viewPool);
             }
         }
+        executor.shutdown();
     }
 
     /**
      * Performs additional indexing based on the view type associated with the view instance. The
-     * <code>ViewTypeService</code> associated with the view type name on the instance is invoked to retrieve
+     * {@code ViewTypeService} associated with the view type name on the instance is invoked to retrieve
      * the parameter key/value pairs from the configured property values, which are then used to build up an index
      * used to key the entry
      *
      * @param propertyValues - property values configured on the view bean definition
-     * @param beanName - id (or bean name if id was not set) for the view
+     * @param id - id (or bean name if id was not set) for the view
      */
     protected void indexViewForType(PropertyValues propertyValues, String id) {
         String viewTypeName = ViewModelUtils.getStringValFromPVs(propertyValues, "viewTypeName");
@@ -346,7 +368,7 @@ public class UifDictionaryIndex implements Runnable {
     }
 
     /**
-     * Retrieves the <code>ViewTypeDictionaryIndex</code> instance for the given
+     * Retrieves the {@code ViewTypeDictionaryIndex} instance for the given
      * view type name. If one does not exist yet for the given name, a new
      * instance is created
      *

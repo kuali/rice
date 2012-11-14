@@ -114,390 +114,163 @@
         <title>Items Addressed in Rice ${project.version}</title>
 <section><title>        Bug Fix
 </title>
-<para><itemizedlist>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-6938'>KULRICE-6938</link>] -         Adhoc Group Request results in stack trace
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-6943'>KULRICE-6943</link>] -         Derived components are not showing the namespace in lookup or inquiry screens
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7045'>KULRICE-7045</link>] -         Group Viewer ID is mistakenly included on the &quot;basic&quot; doc search
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7089'>KULRICE-7089</link>] -         KNS version of MaintenanceDocumentPresentationControllerBase references KRAD MaintenanceDocument vs KNS MaintenanceDocument
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7096'>KULRICE-7096</link>] -         Detailed Document Search for PURAP - Application Document Status should be multiselect control to allow selection of multiple values for search.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7303'>KULRICE-7303</link>] -         Able to add assignees to Derived Roles
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7335'>KULRICE-7335</link>] -         Env1: NPE trying to put message in queue from Quartz link
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7346'>KULRICE-7346</link>] -         KREW_RTE_NODE_T / ACTVN_TYP seems to be wrong size in Rice master data source
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7349'>KULRICE-7349</link>] -         PeopleFlow: UI allows attempted creation of duplicate PeopleFlows
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7376'>KULRICE-7376</link>] -         APPL_ID length is inconsistent
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7378'>KULRICE-7378</link>] -         MySQL Upgrade script for Rice 2.0 is dropping not null constraints
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7412'>KULRICE-7412</link>] -         KREW_HLP_T and KREW_HLP_S Still in master datasource and should not be
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7440'>KULRICE-7440</link>] -         KRMS_CNTXT_TERM_SPEC_PREREQ_S is still in master datasource
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7442'>KULRICE-7442</link>] -         Searching on component on parameter lookup returns no results.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7465'>KULRICE-7465</link>] -         CoreServiceRemoteModuleService needs to support more EBOs
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7487'>KULRICE-7487</link>] -         Lookup links on Role document not functioning and appearing in too many places
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7494'>KULRICE-7494</link>] -         Document Search URLs are broken for non-Rice custom searches
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7501'>KULRICE-7501</link>] -         Lookups/Edit failing due to creation of child Interface object
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7502'>KULRICE-7502</link>] -         ObjectUtils could not create Object from a collection property with null value
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7503'>KULRICE-7503</link>] -         Document search not defaulting from date when document type entered
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7508'>KULRICE-7508</link>] -         Attempting to lookup groups by group type Organization Group results in stack trace
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7509'>KULRICE-7509</link>] -         Rice KIM documents stay editable after submission
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7546'>KULRICE-7546</link>] -         When doing a lookup from Detailed Doc Search, you are returned to Basic Doc Search
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7557'>KULRICE-7557</link>] -         Large attachments on notes and attachments framework cause exceptions
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7570'>KULRICE-7570</link>] -         Unable to edit groups with the KFS Organization Group type
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7571'>KULRICE-7571</link>] -         Entering an document type qualifier on a Role document causes stack trace on add
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7579'>KULRICE-7579</link>] -         Remoting of WorkflowRuleAttribute does not appear to be working well because WorkflowRuleAttributeHandlerService does not appear to be hooked up properly
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7580'>KULRICE-7580</link>] -         BO Notes are not brought from original document to the new document.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7604'>KULRICE-7604</link>] -         County (not Country) maintenance document allowing bad state data 
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7605'>KULRICE-7605</link>] -         Person and Role document broken when displaying data with role that has namespace qualifier
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7608'>KULRICE-7608</link>] -         Dynamic role membership being cached incorrectly
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7615'>KULRICE-7615</link>] -         Error loading action list when user has action request resulting from delegation for a group
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7616'>KULRICE-7616</link>] -         the KEW ActionSet class is mutable and I assume it should not be
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7619'>KULRICE-7619</link>] -         People Flow members of type Role appear as type Principal when editing
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7637'>KULRICE-7637</link>] -         show inactive / hide inactive button on subtab is not working correctly.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7640'>KULRICE-7640</link>] -         Custom Action List processing throws NPE when processing KFS CustomActionListAttribute
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7642'>KULRICE-7642</link>] -         RoleResponsibilityAction APIs are insufficient
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7646'>KULRICE-7646</link>] -         On BO notes, the attachment can not be opened.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7655'>KULRICE-7655</link>] -         WorkflowDocumentService.getActionsTaken has the wrong method name
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7661'>KULRICE-7661</link>] -         AdHoc Group request - isAddHocRouteWorkgroupValid() method should validate the groups permission and it is not.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7694'>KULRICE-7694</link>] -         input field assumes option value of type string
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7695'>KULRICE-7695</link>] -         IndicatorYNNullSelectControl does not display the Y/N values.  Always showing nulls
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7706'>KULRICE-7706</link>] -         KRAD role type services passing nulls to location/core service methods
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7707'>KULRICE-7707</link>] -         KIM Person document does not indicate fields with errors
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7709'>KULRICE-7709</link>] -         Doc Search - receive Stack Trace when clearing Created To &amp; From dates
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7710'>KULRICE-7710</link>] -         Role type column on Role lookup links to role inquiry rather than KIM type inquiry
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7711'>KULRICE-7711</link>] -         Role qualifier validation being ignored when assigning a role as a member
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7712'>KULRICE-7712</link>] -         Validate adhoc reviewers when clicking add
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7715'>KULRICE-7715</link>] -         Hook up routing report feature to WorkflowRuleAttributeHandlerService
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7719'>KULRICE-7719</link>] -         Missing buttons on Super User Approval Tab
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7733'>KULRICE-7733</link>] -         Agenda Rule edit button js error when clicked.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7738'>KULRICE-7738</link>] -         Responsibility Actions not appearing when adding a person to a role with action details defined at role member level
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7739'>KULRICE-7739</link>] -         Error when trying to nest one group inside of another group.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7745'>KULRICE-7745</link>] -         County (not Country) maintenance document allowing bad state data - add FK constriant
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7748'>KULRICE-7748</link>] -         IdentityResponsibilityBlanketAppIT fails expected:&lt;[ENROUTE]&gt; but was:&lt;[FINAL]&gt; 
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7749'>KULRICE-7749</link>] -         Unable to inactivate Role Assignment from a Person record when the qualifier data does not validate
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7753'>KULRICE-7753</link>] -         WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7761'>KULRICE-7761</link>] -         Super user approval - the role is showing up in addition to the people in the role. Approving for the Role leaves the Delegator column blank.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7762'>KULRICE-7762</link>] -         Super user approved for two fiscal officers - annotation only showed up for one. 
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7763'>KULRICE-7763</link>] -         Doc Search: need ability to alter results based on searcher&#39;s permissions
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7768'>KULRICE-7768</link>] -         RoleService.updateDelegateMember() throws exception if you pass in an existing delegate member
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7770'>KULRICE-7770</link>] -         DwrServlet initialization Stack Overflow
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7777'>KULRICE-7777</link>] -         Qualifier resolvers on KIM documents were not updated for Rice 2.0 classes
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7781'>KULRICE-7781</link>] -         DataDictionaryQualifierResolver class package was not updated in Rice 2.0 upgrade scripts
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7782'>KULRICE-7782</link>] -         Document Service superUserDisapproveDocument is not consistent with disapproveDocument
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7784'>KULRICE-7784</link>] -         Add application code to the subject of Incident Reports and other email from Kauli (i.e. email from batch jobs, etc)
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7785'>KULRICE-7785</link>] -         Role member update API not updating existing role member attribute records (inserting new ones)
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7786'>KULRICE-7786</link>] -         Document Specific Doc Search Application Document Status should be available (and groupable) on the basic version of search
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7790'>KULRICE-7790</link>] -         KimTypeQualifierResolver should be returning the custom document type from handleGroupDocument()
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7791'>KULRICE-7791</link>] -         Document configuration view blows up if any document-based permissions are not assigned to roles
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7792'>KULRICE-7792</link>] -         DB Update: Qualifier resolvers on KIM documents were not updated for Rice 2.0 classes
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7793'>KULRICE-7793</link>] -         DB Update: DataDictionaryQualifierResolver class package was not updated in Rice 2.0 upgrade scripts
-</para></listitem>
-<listitem><para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-7796">KULRICE-7796</link>] -
-                            getWorkflowDocumentService().documentSearch saves the search into user
-                            options but is failing to save because the value for VAL is too big.  </para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7798'>KULRICE-7798</link>] -         Recall from Routing - Remaining Configuration Requirements
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7840'>KULRICE-7840</link>] -         Validation doesn&#39;t appear to be done correctly when completing a doc via the Super User Action tab
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7841'>KULRICE-7841</link>] -         Unable to designate a Group as a Recipient for an Ad Hoc Route
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7845'>KULRICE-7845</link>] -         Error message is given when role is longer than 10 characters.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7855'>KULRICE-7855</link>] -         NOTIFY_PENDING_ON_RETURN Policy (related to Recall from routing functionality) doesn&#39;t appear to be inherited
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7863'>KULRICE-7863</link>] -         No cancel/disapprove button ad hoc route for completion recipient
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7875'>KULRICE-7875</link>] -         Role document not reporting some errors properly
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7879'>KULRICE-7879</link>] -         superUserActions.tag is displaying tab on un-submitted documents
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7881'>KULRICE-7881</link>] -         Copying/Creating a permission is not populating permission identifier even when the document is routed.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7882'>KULRICE-7882</link>] -         KNS validationPattern property on AttributeDefinition being ignored
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7883'>KULRICE-7883</link>] -         Document requeuer does not forward back to the appropriate application properly
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7896'>KULRICE-7896</link>] -         NullPointerException if no role qualifier added on Person document
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7902'>KULRICE-7902</link>] -         filename value of Content-disposition Header should be quoted to ensure proper file download
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7906'>KULRICE-7906</link>] -         Unable to create a Role with Campus KimType
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7921'>KULRICE-7921</link>] -         Lookup parameters from AdHoc recipients tab incorrect for added group lines
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7931'>KULRICE-7931</link>] -         IdentityRoleBlanketAppIT.testRole  fails expected:&lt;[ENROUTE]&gt; but was:&lt;[FINAL]&gt;
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7958'>KULRICE-7958</link>] -         Route Log &quot;For Delegator&quot; inquiry link broken with group delegations
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7964'>KULRICE-7964</link>] -         Add a method to ServiceBusImpl.java to get endpoints based on a given application id ; Contribution from IU
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7965'>KULRICE-7965</link>] -         With rice rev. 34214, the blank line(s) on any document is being validated and the document can not be saved/submitted at this point.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7971'>KULRICE-7971</link>] -         KRMS maintenance prints unintelligible characters when adding a proposition
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7993'>KULRICE-7993</link>] -          findPrimaryDelegationRecipients logging is incorrect for primary delegate drop down list 
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8005'>KULRICE-8005</link>] -         DataDictionaryIndexMapper change breaks transactional documents when institutions override business object classes
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8008'>KULRICE-8008</link>] -         Taking an action on any KRMS maintenance Documents in embedded mode returns to rice server
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8010'>KULRICE-8010</link>] -         Date attribute is not validating correctly.  So the documents where user entered date fields are there, the documents can neither be saved nor submitted.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8034'>KULRICE-8034</link>] -         Business object validation is validating reference objects when it should not
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8040'>KULRICE-8040</link>] -         PeopleFlow - delegates are not populated during edit
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8048'>KULRICE-8048</link>] -         People Flow - Adding roles to a stop allowed without selecting the role
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8062'>KULRICE-8062</link>] -         Change StandardGenericXMLRuleAttributeTest.java so it doesn&#39;t prevent error from being thrown if NodeInstance is null on the doc content
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8067'>KULRICE-8067</link>] -         ActionTakenValue#getDelegatorDisplayName NPE
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8074'>KULRICE-8074</link>] -         Getting client side validation errors when no errors are present
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8102'>KULRICE-8102</link>] -         DictionaryValidationServiceImplTest testRequiredNestedAttribute and testCollectionConstraints null pointers
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8103'>KULRICE-8103</link>] -         KRMS rule edit screen: &quot;add parent&quot; button on proposition tree bar just toggles edit mode on the selected proposition
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8124'>KULRICE-8124</link>] -         KIM rules are extending the KRAD DocumentRuleBase
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8125'>KULRICE-8125</link>] -         Permission Lookup by Role Name not working
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8134'>KULRICE-8134</link>] -         Investigate NPE in DocumentRuleBase.isDocumentOverviewValid(DocumentRuleBase.java:99)
-</para></listitem>
-<listitem><para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-8142">KULRICE-8142</link>] -  NPE in
-                            MaintenanceDocumentRuleBase.processAddCollectionLineBusinessRules </para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8153'>KULRICE-8153</link>] -         Permission screen problems entering permission details
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8156'>KULRICE-8156</link>] -         KRMSConfigurer needs the ability to specify a datasource
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8161'>KULRICE-8161</link>] -         Work Flow Route Rules cancel new yields 404 not found
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8185'>KULRICE-8185</link>] -         Opening two docs of the same time at the same time blows up due to ConcurrentModificationException
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8186'>KULRICE-8186</link>] -         if principal name is null the Initiator name on doc search results can be incorrect
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8187'>KULRICE-8187</link>] -         After Blanket Approve, route header is not saved so the status stays in Exception
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8188'>KULRICE-8188</link>] -         Searchable XmlAttribute not working when column visibility set to false; not added to the document search criteria like it should be
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8189'>KULRICE-8189</link>] -         Searchable XmlAttribute should be ordered alphabetically
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8193'>KULRICE-8193</link>] -         Prevent null pointer exception from being thrown in DocumentSecurityServiceImpl.getDocumentTypeSecurity() if doc type is not found
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8198'>KULRICE-8198</link>] -         Wrap all calls to RoleTypeService within a loop with try/catch
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8199'>KULRICE-8199</link>] -         Make routing methods in MaintenanceDocumentAuthorizerBase non-final
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8201'>KULRICE-8201</link>] -         Group lookup by principal returns groups where member is inactive
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8202'>KULRICE-8202</link>] -         Person Inquiry screen hangs indefinitely at times 
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8203'>KULRICE-8203</link>] -         Doc Search does not clear Document Status
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8204'>KULRICE-8204</link>] -         Exception on server side manifests as a security error on the client side of Kuali Rice web services
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8205'>KULRICE-8205</link>] -         Rice mailer implementation doesn&#39;t handle connecting to a secure mail SMTP server
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8208'>KULRICE-8208</link>] -         DeprecatedDocumentTagsTest.testDocTypeSecurityAndResponsibilityAndVisibilityWorkgroupNames rule attribute field does not have the expected visibility expected:&lt;false&gt; but was:&lt;true&gt;
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8209'>KULRICE-8209</link>] -         StartBusTest.testStartTheBus java.lang.SecurityException: class &quot;javax.servlet.FilterRegistration&quot;&#39;s signer information does not match signer information of other classes in the same package
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8210'>KULRICE-8210</link>] -         Add SocketTimeoutException as a service removal exception in BusClientFailureProxy.java
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8211'>KULRICE-8211</link>] -         Potential Issue in BusClientFailoverProxy causing infinite loop
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8212'>KULRICE-8212</link>] -         In NoteAction.save, if note id is null need to make sure the note is preserved
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8213'>KULRICE-8213</link>] -         Document type individual email preferences are not working
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8218'>KULRICE-8218</link>] -         Emails can be sent to secondary approvers even if they should not be based on preferences
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8219'>KULRICE-8219</link>] -         Services in KIM referencing KRAD dictionary validation service
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8220'>KULRICE-8220</link>] -         BusinessObjectService.getReferenceIfExists should consult BOMetaDataService
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8222'>KULRICE-8222</link>] -         Error when inquiring on or attempting to edit user with delegations
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8224'>KULRICE-8224</link>] -         prevent null pointer exception during doc simulation
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8227'>KULRICE-8227</link>] -         Doc search initiator column doesn&#39;t link to person inquiry
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8228'>KULRICE-8228</link>] -         Missing ruleTemplate(attr)Id param which broke values on lookup screens
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8230'>KULRICE-8230</link>] -         Issue with KimTypeAttributeBo which causes problems initiating documents in bundled environment
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8231'>KULRICE-8231</link>] -         typo in the ActionList.jsp which caused the inline action list view to not display properly
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8232'>KULRICE-8232</link>] -         Routing &amp; Identity Management Document Type Hierarchy searches are not pre-populating the ruleTemplate name correctly
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8233'>KULRICE-8233</link>] -         Super User search failing due to jsp error in SuperUser.jsp
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8236'>KULRICE-8236</link>] -         SchemaSpy link in Rice documentation is incorrect
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8241'>KULRICE-8241</link>] -         PhoneNumberFormatter should remove all non-numerics from string before formatting
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8249'>KULRICE-8249</link>] -         Unable to run simulation for KC documents in some cases
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8250'>KULRICE-8250</link>] -         Improve EDocLite Performance
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8254'>KULRICE-8254</link>] -         Editing Delegations does not work correctly
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8255'>KULRICE-8255</link>] -         Add a check to verify that the email address is not blank before trying to send email -- prevents frequent &quot;Invalid Address in String&quot; error messages
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8256'>KULRICE-8256</link>] -         KIM Role Document: stack trace when clicking to sort role members on 
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8260'>KULRICE-8260</link>] -         Document descriptions have a max lentgh of 40, which does not match length of database field
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8261'>KULRICE-8261</link>] -         Error processing for Automatic Refresh Rate and Action List Page Size not working properly for preferences
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8264'>KULRICE-8264</link>] -         Groups tab on rule maintenance documents don&#39;t have a lookup for groups
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8265'>KULRICE-8265</link>] -         Update EntityDefaultInfoCacheBo builder to deal with entities missing principal names appropriately
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8300'>KULRICE-8300</link>] -         problems with implementation of super user tab
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8321'>KULRICE-8321</link>] -         KualiMaintainableImpl logging can throw NPEs
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8334'>KULRICE-8334</link>] -         Previous route level action is shown on the superuser screen when it is not valid
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8335'>KULRICE-8335</link>] -         Responsibility ID not being treated as string in DocumentRouteHeaderDAOOjbImpl
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8342'>KULRICE-8342</link>] -         Person document incorrectly validating &quot;unique&quot; attributes on role memberships
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8372'>KULRICE-8372</link>] -         Null checking needed in RoleServiceImpl.getRoleBoLiteMap()
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8373'>KULRICE-8373</link>] -         Delegation/Role caches not being updated after role document delegation change
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8378'>KULRICE-8378</link>] -         KNS-based maintenance documents are not using KNS Business Rules classes
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8395'>KULRICE-8395</link>] -         RoleServiceImpl.removeDelegateMembers() does not work
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8404'>KULRICE-8404</link>] -         KR-SAP namespace is in the server bootstrap master dataset
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8414'>KULRICE-8414</link>] -         Doc Search sort by numbers(dollar amounts) are not sorting by dollar amount but rather by text number
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8449'>KULRICE-8449</link>] -         Custom Doc Search lookups against Rice BOs are failing
-</para></listitem>
-</itemizedlist></para>
+<para>TODO</para>
 </section>                                                                                        
 <section><title>        Improvement
 </title>
-<para><itemizedlist>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-5063'>KULRICE-5063</link>] -         BusinessObjectService#getReferenceIfExists should consult BOMetaDataService
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7454'>KULRICE-7454</link>] -         decompose ActionListEmailServiceImpl.sendEmail(..)
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7483'>KULRICE-7483</link>] -         make doc search work like other lookups in terms of result limits
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7511'>KULRICE-7511</link>] -         Using max(actn_itm_id) for action list caching but the action item id is not guaranteed to be a numeric value
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7517'>KULRICE-7517</link>] -         Improve performance of RoleService by not loading membership information for the RoleBo for nearly every method call
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7612'>KULRICE-7612</link>] -         Update core and location services to not throw exceptions when passed null arguments
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7636'>KULRICE-7636</link>] -         Remove requirement that baseDocumentClass is a superclass of the documentClass
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7799'>KULRICE-7799</link>] -         Create a separate permission for accessing the new super user tab
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7802'>KULRICE-7802</link>] -         KREW_RTE_NODE_CFG_PARM_T is selected by a field with no indexes - full table scan every time
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8083'>KULRICE-8083</link>] -         Create permission and derived role used to support the ADHOC complete functionality.
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8084'>KULRICE-8084</link>] -         Create permission and derived role used to support the ADHOC complete functionality.
-</para></listitem>
-<listitem><para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-8332">KULRICE-8332</link>] - Errors
-                            on passing a non-OJB-bound object into
-                            PersistenceServiceStructureImplBase.getBusinessObjectAttributeClass </para></listitem>
-</itemizedlist></para>
+    <para>TODO</para>
 </section>                                                                                                                        
 <section><title>        Task
 </title>
-<para><itemizedlist>
-<listitem><para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-333">KULRICE-333</link>] - Look into
-                            using Maven Archetypes for our rice_template project (aka
-                            createproject.groovy script)  </para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7992'>KULRICE-7992</link>] -         Fix issues identified by KFS with 2.0 and 2.1 upgrade scripts
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8063'>KULRICE-8063</link>] -         List of IU Rice bug fixes that should be contributed back to Foundation
-</para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8075'>KULRICE-8075</link>] -         fix broken service failover tests in ServiceCallClusterTest.java
-</para></listitem>
-<listitem><para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-8123">KULRICE-8123</link>] - Merge
-                            the changes from 2.2 branch to 2.1 branch for the validation.null error
-                            on required fields on maintenance documents   </para></listitem>
-<listitem><para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-8403">KULRICE-8403</link>] - Once
-                            KULRICE-8402 is resolved, delete un-needed classes  </para></listitem>
-<listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8422'>KULRICE-8422</link>] -         Fix upgrade script issue: Update Rice default From email address
-</para></listitem>
-</itemizedlist></para>
+    <para>TODO</para>
 </section>                                                                                                                                                                                                                       
+    </section>
+    <section>
+        <title>Library Changes</title>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para>Apache CXF has been upgraded from 2.3.8 to 2.7.0, this includes changes to
+                        wss4j and xmlschema libraries - <emphasis role="bold">Note, there are
+                            impacting dependency changes here! Details below:</emphasis>
+                        <itemizedlist>
+                            <listitem>
+                                <para>wss4j-1.5.12.jar -&gt; wss4j-1.6.7.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>XmlSchema-1.4.7.jar -&gt; <emphasis role="bold"
+                                        >xmlschema-core-2.0.3.jar</emphasis></para>
+                            </listitem>
+                            <listitem>
+                                <para><emphasis role="bold">ADDED</emphasis> -&gt;
+                                    javax.ws.rs-api-2.0-m10.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>jaxb-impl-2.1.13.jar -&gt; jaxb-impl-2.2.6.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>jettison-1.3.jar -&gt; <emphasis role="bold"
+                                        >REMOVED</emphasis></para>
+                            </listitem>
+                            <listitem>
+                                <para>neethi-2.0.5.jar -&gt; neethi-3.0.2.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para><emphasis role="bold">ADDED</emphasis> -&gt;
+                                    opensaml-2.5.1-1.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para><emphasis role="bold">ADDED</emphasis> -&gt;
+                                    openws-1.4.2-1.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>woodstox-core-asl-4.1.1.jar -&gt;
+                                    woodstox-core-asl-4.1.4.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>xmlsec-1.4.4.jar -&gt; xmlsec-1.5.2.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para><emphasis role="bold">ADDED</emphasis> -&gt;
+                                    xmltooling-1.3.2-1.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-api-2.3.8.jar -&gt; cxf-api-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-bindings-soap-2.3.8.jar -&gt;
+                                    cxf-rt-bindings-soap-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-bindings-xml-2.3.8.jar -&gt;
+                                    cxf-rt-bindings-xml-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-core-2.3.8.jar -&gt; cxf-rt-core-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-databinding-aegis-2.3.8.jar -&gt;
+                                    cxf-rt-databinding-aegis-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-databinding-jaxb-2.3.8.jar -&gt;
+                                    cxf-rt-databinding-jaxb-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-frontend-jaxrs-2.3.8.jar -&gt;
+                                    cxf-rt-frontend-jaxrs-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-frontend-jaxws-2.3.8.jar -&gt;
+                                    cxf-rt-frontend-jaxws-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-frontend-simple-2.3.8.jar -&gt;
+                                    cxf-rt-frontend-simple-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-transports-http-2.3.8.jar -&gt;
+                                    cxf-rt-transports-http-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-ws-addr-2.3.8.jar -&gt; cxf-rt-ws-addr-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-ws-security-2.3.8.jar -&gt;
+                                    cxf-rt-ws-security-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para><emphasis role="bold">ADDED</emphasis> -&gt;
+                                    cxf-rt-ws-policy-2.7.0.jar</para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-common-schemas-2.3.8.jar -&gt; <emphasis role="bold"
+                                        >REMOVED</emphasis></para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-common-utilities-2.3.8.jar -&gt; <emphasis role="bold"
+                                        >REMOVED</emphasis></para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-rt-transports-common-2.3.8.jar -&gt; <emphasis role="bold"
+                                        >REMOVED</emphasis></para>
+                            </listitem>
+                            <listitem>
+                                <para>cxf-tools-common-2.3.8.jar -&gt; <emphasis role="bold"
+                                        >REMOVED</emphasis></para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>wss4j has been upgraded from 1.5.12 to 1.6.7 (as per above)</para>
+                </listitem>
+                <listitem>
+                    <para>Note that, by default, Apache CXF 2.7.0 depends on jaxb-impl-2.2.5 instead
+                        of jaxb-impl-2.2.6. The 2.2.6 version should be explicitly included (or the
+                        version forced using the depedencyManagement section of the pom). The reason
+                        being that if this is not done then the org.apache.cxf:cxf-java2ws-plugin
+                        might fail when running java2ws on JDK 1.7 if you are using @XmlEnum on any
+                        of your web service objects in which case you would get an error like the
+                        following when the plugin attempts to generate the WSDL:
+                        <programlisting>java.lang.ClassCastException: com.sun.xml.bind.v2.model.impl.RuntimeEnumLeafInfoImpl cannot be cast to com.sun.xml.bind.v2.model.impl.ClassInfoImpl</programlisting>
+                    </para>
+                </listitem>
+                <listitem><para>The Logging interceptors now log using service specific categories/loggers
+                    instead of just LoggingInInterceptor/LoggingOutInterceptor. The names of the
+                    logger that is used is
+                    org.apache.cxf.services.ServiceName.PortName.PortTypeName. This allows the user
+                    to configure specific per service filters and formatters in their logging
+                    configuration. In KSB, these interceptors are added to exported services
+                    automatically. Because of that, existing Rice apps might use a log4j setting
+                    like the following to prevent SOAP message logging noise: 
+                    <programlisting>log4j.logger.org.apache.cxf.interceptor=WARN</programlisting></para>
+                    <para>Because of the changes made to CXF, these should be changed to the
+                        following:
+                    <programlisting>log4j.logger.org.apache.cxf.services=WARN</programlisting>
+                </para>
+                </listitem>
+            </itemizedlist>
+        </para>
     </section>        
 </article>

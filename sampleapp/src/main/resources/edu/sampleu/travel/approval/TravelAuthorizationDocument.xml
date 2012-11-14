@@ -20,7 +20,7 @@
   <bean id="Uif-TransactionalDocumentView" abstract="true" parent="Uif-TransactionalDocumentView-parentBean"/>
   <bean id="Uif-TransactionalDocumentView-parentBean" parent="Uif-DocumentView" class="edu.sampleu.travel.approval.TransactionalView">
     <property name="presentationControllerClass" value="org.kuali.rice.krad.document.TransactionalDocumentPresentationControllerBase"/>
-    <property name="authorizerClass" value="org.kuali.rice.krad.document.TransactionalDocumentAuthorizerBase"/>
+    <property name="authorizerClass" value="edu.sampleu.travel.approval.TravelAuthorizationViewAuthorizer" />
     <property name="viewTypeName" value="TRANSACTION"/>
     <property name="viewName" value="defaultTransaction"/>
   </bean>

@@ -64,6 +64,10 @@ public class DocumentFormBase extends UifFormBase {
 	}
 
 	public String getDocTypeName() {
+        if(this.docTypeName == null && !this.getDefaultDocumentTypeName().isEmpty())
+        {
+            return this.getDefaultDocumentTypeName();
+        }
 		return this.docTypeName;
 	}
 

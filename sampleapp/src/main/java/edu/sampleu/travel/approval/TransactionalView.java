@@ -33,7 +33,6 @@ public class TransactionalView extends DocumentView {
 
     public TransactionalView() {
         super();
-
         setViewTypeName(UifConstants.ViewType.TRANSACTION);
     }
 
@@ -82,5 +81,4 @@ public class TransactionalView extends DocumentView {
     public String getOldObjectBindingPath() {
         return this.oldObjectBindingPath;
     }
-
 }

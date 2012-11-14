@@ -26,6 +26,7 @@
     <property name="viewName" value="TravelAuthorization"/>
     <property name="formClass" value="edu.sampleu.travel.approval.TravelAuthorizationForm"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.approval.TravelAuthorizationDocument"/>
+    <property name="documentClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocument"/>
   </bean>
 
 </beans>

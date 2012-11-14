@@ -121,7 +121,9 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.dao.UiDocumentServiceDAO;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kns.datadictionary.exporter.AttributesMapBuilder;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
@@ -134,7 +136,6 @@ import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -171,9 +172,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	private KimTypeInfoService kimTypeInfoService;
     private DocumentHelperService documentHelperService;
     private ParameterService parameterService;
+    private UiDocumentServiceDAO uiDocumentServiceDAO;
 
-
-	/**
+    /**
 	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
 	 */
 	public void saveEntityPerson(
@@ -1590,7 +1591,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	/* Role document methods */
 	@SuppressWarnings("unchecked")
 	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, Role role){
-		Map<String, String> criteria = new HashMap<String, String>();
+        Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, role.getId());
 		RoleBo roleBo = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
 
@@ -1607,16 +1608,44 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementRoleDocument.setRoleNamespace(roleBo.getNamespaceCode());
 		identityManagementRoleDocument.setEditing(true);
 
-		identityManagementRoleDocument.setPermissions(loadPermissions((List<RolePermissionBo>)getBusinessObjectService().findMatching(RolePermissionBo.class, subClassCriteria)));
-		identityManagementRoleDocument.setResponsibilities(loadResponsibilities((List<RoleResponsibilityBo>)getBusinessObjectService().findMatching(RoleResponsibilityBo.class, subClassCriteria)));
-		loadResponsibilityRoleRspActions(identityManagementRoleDocument);
-		identityManagementRoleDocument.setMembers(loadRoleMembers(identityManagementRoleDocument, roleBo.getMembers()));
-		loadMemberRoleRspActions(identityManagementRoleDocument);
+		identityManagementRoleDocument.setPermissions(loadPermissions(
+                (List<RolePermissionBo>) getBusinessObjectService().findMatching(RolePermissionBo.class,
+                        subClassCriteria)));
+        identityManagementRoleDocument.setResponsibilities(loadResponsibilities(
+                (List<RoleResponsibilityBo>) getBusinessObjectService().findMatching(RoleResponsibilityBo.class,
+                        subClassCriteria)));
+        loadResponsibilityRoleRspActions(identityManagementRoleDocument);
+        identityManagementRoleDocument.setMembers(loadRoleMembers(identityManagementRoleDocument, roleBo.getMembers()));
+        loadMemberRoleRspActions(identityManagementRoleDocument);
 		identityManagementRoleDocument.setDelegations(loadRoleDocumentDelegations(identityManagementRoleDocument, getRoleDelegations(roleBo.getId())));
 		//Since delegation members are flattened out on the UI...
 		setDelegationMembersInDocument(identityManagementRoleDocument);
 		identityManagementRoleDocument.setKimType(KimTypeBo.to(roleBo.getKimRoleType()));
-	}
+    }
+
+    @SuppressWarnings("unchecked")
+    public void loadRoleMembersBasedOnSearch(IdentityManagementRoleDocument identityManagementRoleDocument,
+                                                    String memberSearchValue){
+
+        List<KimDocumentRoleMember> roleMembersRestricted = new ArrayList<KimDocumentRoleMember>();
+        List<KimDocumentRoleMember> members = identityManagementRoleDocument.getMembers();
+        for (KimDocumentRoleMember roleMember : members){
+            String memberName = roleMember.getMemberName().toLowerCase();
+            if (memberName.startsWith(memberSearchValue.toLowerCase())) {
+                roleMembersRestricted.add(roleMember);
+            }
+        }
+
+        identityManagementRoleDocument.setSearchResultMembers(roleMembersRestricted);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void clearRestrictedRoleMembersSearchResults(IdentityManagementRoleDocument identityManagementRoleDocument) {
+        List<KimDocumentRoleMember> roleMembersRestricted =  new ArrayList<KimDocumentRoleMember>();
+        List<KimDocumentRoleMember> members = identityManagementRoleDocument.getMembers();
+        identityManagementRoleDocument.setSearchResultMembers(roleMembersRestricted);
+        identityManagementRoleDocument.setMembers(members);
+    }
 
 	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument){
 		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
@@ -1665,35 +1694,95 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return documentRolePermissions;
 	}
 
-	protected List<KimDocumentRoleMember> loadRoleMembers(
-			IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> members){
-		List<KimDocumentRoleMember> pndMembers = new ArrayList<KimDocumentRoleMember>();
-		KimDocumentRoleMember pndMember;
-		if(ObjectUtils.isNotNull(members)){
-			for(RoleMemberBo member: members){
-				pndMember = new KimDocumentRoleMember();
-				pndMember.setActiveFromDate(member.getActiveFromDateValue());
-				pndMember.setActiveToDate(member.getActiveToDateValue());
-				pndMember.setActive(member.isActive(new Timestamp(System.currentTimeMillis())));
-				if(pndMember.isActive()){
-					pndMember.setRoleMemberId(member.getId());
-					pndMember.setRoleId(member.getRoleId());
-					pndMember.setMemberId(member.getMemberId());
-					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getType(), member.getMemberId()));
-					pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
-					pndMember.setMemberFullName(getMemberFullName(member.getType(), member.getMemberId()));
-					pndMember.setMemberTypeCode(member.getType().getCode());
-					pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributeDetails()));
-					pndMember.setEdit(true);
-					pndMembers.add(pndMember);
-				}
-			}
-		}
-            Collections.sort(pndMembers, identityManagementRoleDocument.getMemberMetaDataType());
-		return pndMembers;
-	}
+    protected List<KimDocumentRoleMember> loadRoleMembers(
+            IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> members){
+        List<KimDocumentRoleMember> pndMembers = new ArrayList<KimDocumentRoleMember>();
+        KimDocumentRoleMember pndMember;
 
-	protected void loadResponsibilityRoleRspActions(IdentityManagementRoleDocument identityManagementRoleDocument){
+        Map<String, PrincipalBo> principalsForPrincipalIds = new HashMap<String, PrincipalBo>();
+        Map<String, EntityName> entityNamesForPrincipals = new HashMap<String,EntityName>();
+        Map<String, String> principalIdEntityIdMap = new HashMap<String,String>();
+        List<String> roleMemberPrincipalIds = new ArrayList<String>();
+
+        if(ObjectUtils.isNotNull(members)){
+            for(RoleMemberBo roleMember : members) {
+                if (roleMember.getType().getCode().equals(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode())) {
+                    if ((!roleMemberPrincipalIds.contains(roleMember.getMemberId())) && roleMember.isActive()) {
+                        roleMemberPrincipalIds.add(roleMember.getMemberId());
+                    }
+                }
+            }
+
+            Collection<PrincipalBo> principals = findPrincipalsByPrincipalIds(roleMemberPrincipalIds);
+            if (principals != null) {
+                for(PrincipalBo principal : principals) {
+                    principalsForPrincipalIds.put(principal.getPrincipalId(), principal);
+                    principalIdEntityIdMap.put(principal.getPrincipalId(), principal.getEntityId());
+                }
+                entityNamesForPrincipals = getUiDocumentServiceDAO().findEntityNamesForRole(
+                        identityManagementRoleDocument.getRoleId());
+            }
+
+            Map<String, Group> roleGroupMembers = getUiDocumentServiceDAO().findGroupsForRole(identityManagementRoleDocument.getRoleId());
+
+            for(RoleMemberBo member: members){
+                pndMember = new KimDocumentRoleMember();
+                pndMember.setActiveFromDate(member.getActiveFromDateValue());
+                pndMember.setActiveToDate(member.getActiveToDateValue());
+                pndMember.setActive(member.isActive(new Timestamp(System.currentTimeMillis())));
+                if(pndMember.isActive()){
+                    pndMember.setRoleMemberId(member.getId());
+                    pndMember.setRoleId(member.getRoleId());
+                    pndMember.setMemberId(member.getMemberId());
+                    pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getType(), member.getMemberId()));
+
+                    PrincipalBo principal =  principalsForPrincipalIds.get(member.getMemberId());
+                    Group group =  null;
+
+                    if (principal != null) {
+                        pndMember.setMemberName(principal.getPrincipalName());
+                    } else {
+                        group =  roleGroupMembers.get(member.getMemberId());
+                        if (group != null) {
+                            pndMember.setMemberName(group.getName());
+                            pndMember.setMemberNamespaceCode(group.getNamespaceCode());
+                        } else {
+                            pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
+                        }
+                    }
+
+                    EntityName entityName =  entityNamesForPrincipals.get(principalIdEntityIdMap.get(member.getMemberId()));
+                    if (entityName != null) {
+                        pndMember.setMemberFullName(entityName.getFirstName() + " " + entityName.getLastName());
+                    } else {
+                        if (group != null) {
+                            pndMember.setMemberFullName(group.getName());
+                        } else {
+                            pndMember.setMemberFullName(getMemberFullName(member.getType(), member.getMemberId()));
+                        }
+                    }
+                    pndMember.setMemberTypeCode(member.getType().getCode());
+                    pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributeDetails()));
+                    pndMember.setEdit(true);
+                    pndMembers.add(pndMember);
+                }
+            }
+        }
+        Collections.sort(pndMembers, identityManagementRoleDocument.getMemberMetaDataType());
+        return pndMembers;
+    }
+
+    public Collection<PrincipalBo>  findPrincipalsByPrincipalIds(Collection<String> principalIds) {
+        if (!principalIds.isEmpty()) {
+            Map<String,Collection> prncplNameSearchCrit = new HashMap<String,Collection>();
+            prncplNameSearchCrit.put("PRNCPL_ID", principalIds);
+            return getBusinessObjectService().findMatching(PrincipalBo.class, prncplNameSearchCrit);
+        } else {
+            return null;
+        }
+    }
+
+    protected void loadResponsibilityRoleRspActions(IdentityManagementRoleDocument identityManagementRoleDocument){
 		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getResponsibilities())){
 			for(KimDocumentRoleResponsibility responsibility: identityManagementRoleDocument.getResponsibilities()){
 				responsibility.getRoleRspActions().addAll(loadKimDocumentRoleRespActions(
@@ -1763,25 +1852,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	if(MemberType.PRINCIPAL.equals(memberType)) {
         	roleMemberTypeClass = PrincipalBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
-	 	 	Principal principalInfo = getIdentityService().getPrincipal(memberId);
-	 	 	if (principalInfo != null) {
-	 	 		
-	 	 	}
         } else if(MemberType.GROUP.equals(memberType)){
         	roleMemberTypeClass = GroupBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
-        	Group groupInfo = null;
-	 	 	groupInfo = getGroupService().getGroup(memberId);
-	 	 	if (groupInfo != null) {
-	 	 		
-	 	 	}
         } else if(MemberType.ROLE.equals(memberType)){
         	roleMemberTypeClass = RoleBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
-	 	 	Role role = getRoleService().getRole(memberId);
-	 	 	if (role != null) {
-	 	 		
-	 	 	}
         }
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put(roleMemberIdName, memberId);
@@ -1812,7 +1888,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         	if (principalInfo != null) {
         		String principalName = principalInfo.getPrincipalName();
         		Person psn = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
-        		memberFullName = psn.getFirstName() + " " + psn.getLastName();
+        		if (psn != null) {
+        		    memberFullName = psn.getFirstName() + " " + psn.getLastName();
+                }
         	}        	        	
         } else if(MemberType.GROUP.equals(memberType)){
         	Group group = null;
@@ -2057,7 +2135,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 */
 	@SuppressWarnings("unchecked")
 	public void saveRole(IdentityManagementRoleDocument identityManagementRoleDocument) {
-		RoleBo roleBo = new RoleBo();
+        RoleBo roleBo = new RoleBo();
 		Map<String, String> criteria = new HashMap<String, String>();
 		String roleId = identityManagementRoleDocument.getRoleId();
 		criteria.put(KimConstants.PrimaryKeyConstants.ID, roleId);
@@ -2066,7 +2144,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<RolePermissionBo> origRolePermissions = new ArrayList<RolePermissionBo>();
 		List<RoleResponsibilityBo> origRoleResponsibilities = new ArrayList<RoleResponsibilityBo>();
 		List<RoleMemberBo> origRoleMembers = new ArrayList<RoleMemberBo>();
-		List<DelegateTypeBo> origRoleDelegations = new ArrayList<DelegateTypeBo>();
+        List<DelegateTypeBo> origRoleDelegations = new ArrayList<DelegateTypeBo>();
 
 		roleBo.setId(identityManagementRoleDocument.getRoleId());
 		roleBo.setKimTypeId(identityManagementRoleDocument.getRoleTypeId());
@@ -2084,8 +2162,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             altCriteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId);
 			origRolePermissions = new ArrayList<RolePermissionBo>(getBusinessObjectService().findMatching(RolePermissionBo.class, altCriteria));
             origRoleResponsibilities = (List<RoleResponsibilityBo>)getBusinessObjectService().findMatching(RoleResponsibilityBo.class, altCriteria);
-			origRoleMembers = (List<RoleMemberBo>)getBusinessObjectService().findMatching(RoleMemberBo.class, altCriteria);
-			origRoleDelegations = (List<DelegateTypeBo>)getBusinessObjectService().findMatching(DelegateTypeBo.class, altCriteria);
+            origRoleMembers = (List<RoleMemberBo>)getBusinessObjectService().findMatching(RoleMemberBo.class, altCriteria);
+            origRoleDelegations = (List<DelegateTypeBo>)getBusinessObjectService().findMatching(DelegateTypeBo.class, altCriteria);
 		}
 
 		if( getKimTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()) == null ) {
@@ -2270,8 +2348,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementRoleDocument.setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
         KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(identityManagementRoleDocument.getKimType());
 
-        if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
-            for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){
+        if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getModifiedMembers())){
+            for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getModifiedMembers()){
                 origRoleMemberImplTemp = null;
 
                 newRoleMember = new RoleMemberBo();
@@ -2297,6 +2375,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                         if(origRoleMemberImpl.getId()!=null && StringUtils.equals(origRoleMemberImpl.getId(), newRoleMember.getId())){
                             newRoleMember.setVersionNumber(origRoleMemberImpl.getVersionNumber());
                             origRoleMemberImplTemp = origRoleMemberImpl;
+
+                            // Obtain role rsp actions from db and assign to origRoleMemberImplTemp
+                            List<RoleResponsibilityActionBo> roleRespActionBos = getRoleMemberResponsibilityActionImpls(origRoleMemberImplTemp.getId());
+                            if(ObjectUtils.isNotNull(roleRespActionBos))
+                                origRoleMemberImplTemp.setRoleRspActions(roleRespActionBos);
                         }
                     }
                 }
@@ -2307,8 +2390,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                 newRoleMember.setAttributeDetails(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), origAttributes, activatingInactive, newRoleMemberIdAssigned));
                 newRoleMember.setRoleRspActions(getRoleMemberResponsibilityActions(documentRoleMember, origRoleMemberImplTemp, activatingInactive, newRoleMemberIdAssigned));
                 newRoleMember.setType(MemberType.fromCode(documentRoleMember.getMemberTypeCode()));
-                roleMembers.add(newRoleMember);
+
+                if( (origRoleMemberImplTemp == null) || (!newRoleMember.equals(origRoleMemberImplTemp)) ) {
+                    roleMembers.add(newRoleMember);
+                }
                 activatingInactive = false;
+                origRoleMemberImplTemp = null;
             }
         }
         return roleMembers;
@@ -2340,7 +2427,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						}
 						if (origRspAction.getId()!=null && StringUtils.equals(origRspAction.getId(), newRoleRspAction.getId())) {
 							newRoleRspAction.setVersionNumber(origRspAction.getVersionNumber());
-						}
+                            newRoleRspAction.setObjectId(origRspAction.getObjectId());
+
+                        }
 					}
 				}
 				roleRspActions.add(newRoleRspAction);
@@ -2974,5 +3063,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     public static IdentityArchiveService getIdentityArchiveService() {
         return GlobalResourceLoader.getService(KIM_IDENTITY_ARCHIVE_SERVICE);
+    }
+
+    public UiDocumentServiceDAO getUiDocumentServiceDAO() {
+        if ( uiDocumentServiceDAO == null ) {
+            uiDocumentServiceDAO = KIMServiceLocatorInternal.getUiDocumentServiceDAO();
+        }
+        return uiDocumentServiceDAO;
+    }
+
+    public void setUiDocumentService(UiDocumentServiceDAO uiDocumentServiceDAO) {
+        this.uiDocumentServiceDAO = uiDocumentServiceDAO;
     }
 }

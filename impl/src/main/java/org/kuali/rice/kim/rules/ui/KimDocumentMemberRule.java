@@ -79,29 +79,30 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         Long newMemberFromTime = newMember.getActiveFromDate() == null ? 0L : newMember.getActiveFromDate().getTime();
         Long newMemberToTime = newMember.getActiveToDate() == null ? Long.MAX_VALUE : newMember.getActiveToDate().getTime();
         
-		List<RemotableAttributeError> errorsAttributesAgainstExisting;
-	    int i = 0;
-	    Map<String, String> newMemberQualifiers;
+		List<RemotableAttributeError> errorsAttributesAgainstExisting  = new ArrayList<RemotableAttributeError>();
+        Map<String, String> newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers());
+
 	    Map<String, String> oldMemberQualifiers;
 	    for (KimDocumentRoleMember member: document.getMembers()){
 	    	Long memberFromTime = member.getActiveFromDate() == null ? 0L : member.getActiveFromDate().getTime();
             Long memberToTime = member.getActiveToDate() == null ? Long.MAX_VALUE : member.getActiveToDate().getTime();
-	    	newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers());
 	    	oldMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(member.getQualifiers());
-	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
+
+            if ((member.getMemberId().equals(newMember.getMemberId()) &&
+                    member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))
+                    && ((newMemberFromTime >= memberFromTime && newMemberFromTime < memberToTime)
+                    || (newMemberToTime >= memberFromTime && newMemberToTime <= memberToTime)))  {
+
+                errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			document.getKimType().getId(), newMemberQualifiers, oldMemberQualifiers);
-			validationErrors.addAll(
+			    validationErrors.addAll(
 					attributeValidationHelper.convertErrorsForMappedFields(ERROR_PATH, errorsAttributesAgainstExisting));
-	    	if (!errorsAttributesAgainstExisting.isEmpty() && (member.getMemberId().equals(newMember.getMemberId()) &&
-	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))
-	    			&& ((newMemberFromTime >= memberFromTime && newMemberFromTime < memberToTime) 
-        					|| (newMemberToTime >= memberFromTime && newMemberToTime <= memberToTime))
-	    	){
-	            rulePassed = false;
-	            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
-	            break;
-	    	}
-	    	i++;
+	    	    if (!errorsAttributesAgainstExisting.isEmpty()) {
+	                rulePassed = false;
+	                GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	                break;
+	    	    }
+            }
 	    }
 
         boolean shouldNotValidate = newMember.isRole();

@@ -135,7 +135,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         valid &= validPermissions(roleDoc);
         valid &= validResponsibilities(roleDoc);
         //KULRICE-6858 Validate group members are in identity system
-        valid &= validRoleMemberPrincipalIDs(roleDoc.getMembers());
+        valid &= validRoleMemberPrincipalIDs(roleDoc.getModifiedMembers());
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         validateRoleAssigneesAndDelegations &= validAssignRole(roleDoc);
         if(validateRoleAssigneesAndDelegations){
@@ -144,14 +144,15 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         	// Use the Active Role Member Helper to retrieve only those Role Members & Delegation member that are active
         	// If a member or delegation is active on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will fail
         	// If a member or delegation is inactive on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will pass
-        	List<KimDocumentRoleMember> activeRoleMembers = activeRoleMemberHelper.getActiveRoleMembers(roleDoc.getMembers());
-        	List<RoleDocumentDelegationMember> activeRoleDelegationMembers = activeRoleMemberHelper.getActiveDelegationRoleMembers(roleDoc.getDelegationMembers());
+            List<KimDocumentRoleMember> activeRoleMembers = activeRoleMemberHelper.getActiveRoleMembers(roleDoc.getMembers());
+            List<KimDocumentRoleMember> newActiveRoleMembers = activeRoleMemberHelper.getActiveRoleMembers(roleDoc.getModifiedMembers());
+            List<RoleDocumentDelegationMember> activeRoleDelegationMembers = activeRoleMemberHelper.getActiveDelegationRoleMembers(roleDoc.getDelegationMembers());
 
-	        valid &= validateRoleQualifier(activeRoleMembers, roleDoc.getKimType());
-	        valid &= validRoleMemberActiveDates(roleDoc.getMembers());
-	        valid &= validateDelegationMemberRoleQualifier(activeRoleMembers, activeRoleDelegationMembers, roleDoc.getKimType());
+            valid &= validateRoleQualifier(newActiveRoleMembers, roleDoc.getKimType());
+	        valid &= validRoleMemberActiveDates(roleDoc.getModifiedMembers());
+	        valid &= validateDelegationMemberRoleQualifier(newActiveRoleMembers, activeRoleDelegationMembers, roleDoc.getKimType(), activeRoleMembers);
 	        valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());
-	        valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
+	        valid &= validRoleMembersResponsibilityActions(roleDoc.getModifiedMembers());
         }
         valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
@@ -188,9 +189,11 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
             for(KimDocumentRoleMember roleMember: roleMembers) {
                 if (StringUtils.equals(roleMember.getMemberTypeCode(), MemberType.PRINCIPAL.getCode()) ) {
                     boolean validPrincipalId = false;
-                    for(Principal validPrincipal: validPrincipals) {
-                        if(roleMember.getMemberId().equals(validPrincipal.getPrincipalId()))     {
-                            validPrincipalId = true;
+                    if(validPrincipals != null && !validPrincipals.isEmpty())       {
+                        for(Principal validPrincipal: validPrincipals) {
+                            if(roleMember.getMemberId().equals(validPrincipal.getPrincipalId()))     {
+                             validPrincipalId = true;
+                            }
                         }
                     }
                     if(!validPrincipalId) {
@@ -495,7 +498,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     protected boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers,
-    		List<RoleDocumentDelegationMember> delegationMembers, KimType kimType){
+    		List<RoleDocumentDelegationMember> delegationMembers, KimType kimType, List<KimDocumentRoleMember> nonModifiedroleMembers){
 		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 		boolean valid;
 		int memberCounter = 0;
@@ -516,7 +519,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 				validationErrors.addAll(
 						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
 			}
-			roleMember = getRoleMemberForDelegation(roleMembers, delegationMember);
+			roleMember = getRoleMemberForDelegation(nonModifiedroleMembers, delegationMember);
 			if(roleMember==null){
 				valid = false;
 				GlobalVariables.getMessageMap().putError("document.delegationMembers["+memberCounter+"]", RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});

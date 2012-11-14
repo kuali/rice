@@ -78,8 +78,25 @@ public interface UiDocumentService {
 	 * @param identityManagementRoleDocument
 	 */
 	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, Role kimRole);
-	
-	/**
+
+    /**
+     *
+     * This method loads a role document members based on search criteria
+     *
+     * @param identityManagementRoleDocument
+     */
+    public void loadRoleMembersBasedOnSearch(IdentityManagementRoleDocument identityManagementRoleDocument,
+                                             String memberSearchValue);
+
+    /**
+     *
+     * This method loads a document's original role members
+     *
+     * @param identityManagementRoleDocument
+     */
+    public void clearRestrictedRoleMembersSearchResults(IdentityManagementRoleDocument identityManagementRoleDocument);
+
+    /**
 	 * 
 	 * This method ...
 	 * 

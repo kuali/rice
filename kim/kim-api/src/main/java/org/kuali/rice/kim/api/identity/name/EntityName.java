@@ -340,8 +340,21 @@ public final class EntityName extends AbstractDataTransferObject
 
         private Builder() { }
 
+        private Builder(String id, String entityId, String firstName, String lastName, boolean suppressName) {
+            setId(id);
+            setEntityId(entityId);
+            setFirstName(firstName);
+            setLastName(lastName);
+            setSuppressName(suppressName);
+        }
+
         public static Builder create() {
             return new Builder();
+        }
+
+        public static Builder create(String id, String entityId, String firstName,
+        						     String lastName, boolean suppressName) {
+			return new Builder(id, entityId, firstName, lastName, suppressName);
         }
 
         public static Builder create(EntityNameContract contract) {

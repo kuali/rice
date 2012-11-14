@@ -99,4 +99,28 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
     public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+
+    public ActionForward search(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        String memberSearchValue = roleDocumentForm.getMemberSearchValue();
+        if (memberSearchValue != null && !memberSearchValue.isEmpty()) {
+            memberSearchValue = memberSearchValue.replaceAll("[%*]","");
+            getUiDocumentService().loadRoleMembersBasedOnSearch(roleDocumentForm.getRoleDocument(), memberSearchValue);
+        } else {
+            clear(mapping, form, request, response);
+        }
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        roleDocumentForm.setMemberSearchValue("");
+        getUiDocumentService().clearRestrictedRoleMembersSearchResults(roleDocumentForm.getRoleDocument());
+
+        KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
+        if (roleDocumentForm.getMemberRows() != null) {
+            memberTableMetadata.jumpToFirstPage(roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
+        }
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
 }

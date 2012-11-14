@@ -52,6 +52,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	protected boolean canAssignRole = true;
 	protected boolean canModifyAssignees = true;
 	protected KimType kimType;
+    protected String memberSearchValue;
 
     //kim type id
     protected String id;
@@ -339,5 +340,19 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	public void setDmrmi(String dmrmi) {
 		this.dmrmi = dmrmi;
 	}
+
+    /**
+     * @return the memberSearchValue
+     */
+    public String getMemberSearchValue() {
+        return this.memberSearchValue;
+    }
+
+    /**
+     * @param memberSearchValue the memberSearchValue to set
+     */
+    public void setMemberSearchValue(String memberSearchValue) {
+        this.memberSearchValue = memberSearchValue;
+    }
 
 }

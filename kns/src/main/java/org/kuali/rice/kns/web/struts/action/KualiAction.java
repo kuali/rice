@@ -289,6 +289,16 @@ public abstract class KualiAction extends DispatchAction {
     }
 
     /**
+     * Parses the method to call attribute to pick off the line number which should be edited.
+     *
+     * @param request
+     * @return
+     */
+    protected int getLineToEdit(HttpServletRequest request) {
+        return getSelectedLine(request);
+    }
+
+    /**
      * Parses the method to call attribute to pick off the line number which should have an action performed on it.
      *
      * @param request

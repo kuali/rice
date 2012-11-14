@@ -65,9 +65,14 @@
                         Rice Concepts and Architecture</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:show="new" xlink:href="UG.html"
-                            >HTML</link> / <link xlink:show="new" xlink:href="../pdf/UG.pdf">PDF</link> ) - How to
-                        use a feature </para>
+                <para><emphasis role="bold">KRAD Guide</emphasis> (<link
+                    xlink:show="new" xlink:href="KRAD_Guide.html">HTML</link> /<link
+                        xlink:show="new" xlink:href="../pdf/KRAD_Guide.pdf">PDF</link> ) - Manual on how to get started and use KRAD, Rice's primary development framework</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:show="new"
+                            xlink:href="UG.html">HTML</link> / <link xlink:show="new"
+                            xlink:href="../pdf/UG.pdf">PDF</link> ) - How to use a feature </para>
                 </listitem>
 <!--            TODO: Flesh out this guide    
                 <listitem>

@@ -335,7 +335,7 @@
     <c:if test="${(!empty memberSearchValue) && (!empty KualiForm.document.searchResultMembers)}">
     <table cellpadding="0" cellspacing="0" summary="">
       <tr>
-        <td colspan="100%" class="tab-subhead">Members whose name starts with ${memberSearchValue}:</td>
+        <td colspan="100%" class="tab-subhead">Members who have a name starting with ${memberSearchValue}:</td>
       </tr>
       <tr>
         <th>&nbsp;<input type="hidden" id="sortMethodToCallPlaceholder" name="sortMethodToCallPlaceholder" value="placeholder"/></th>

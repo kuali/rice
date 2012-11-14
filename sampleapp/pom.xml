@@ -266,6 +266,11 @@
       <artifactId>selenium-java</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+    </dependency>
+
   </dependencies>
 </project>
 

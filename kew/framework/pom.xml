@@ -36,6 +36,10 @@
       <artifactId>rice-kew-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+    </dependency>
   </dependencies>
   <properties>
     <svc.sa.name>SearchableAttribute</svc.sa.name>

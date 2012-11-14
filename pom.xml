@@ -99,16 +99,6 @@
     <connector-api.version>1.5</connector-api.version>
     <cxf.version>2.7.0</cxf.version>
     <jaxb-impl.version>2.2.6</jaxb-impl.version>
-    <!--
-            There appears to be a problem with the 2.2.5 version of jaxb-impl which cxf 2.7.0 depends on by default.
-            Get the following exception when attempting to run cxf-java2ws-plugin on services that use certain Enums:
-
-            java.lang.ClassCastException: com.sun.xml.bind.v2.model.impl.RuntimeEnumLeafInfoImpl cannot be cast to com.sun.xml.bind.v2.model.impl.ClassInfoImpl
-
-            One of the specific offenders here is WorkflowDocumentService and it's use of DocumentStatus enum.
-            Switching to the 2.1-based verson of jaxb-impl version 2.1.13 causes the problem to go away.
-    -->
-    <cxf-java2ws-plugin.jaxb-impl.version>2.1.13</cxf-java2ws-plugin.jaxb-impl.version>
     <db-ojb.version>1.0.4-patch8</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
@@ -501,6 +491,7 @@
                       <exclude>javax.xml.bind</exclude>
                       <exclude>org.apache.geronimo.specs:geronimo-jaxb_2.1_spec</exclude>
                       <exclude>org.apache.geronimo.specs:geronimo-jaxb_2.2_spec</exclude>
+                      <exclude>com.sun.xml.bind:jaxb-impl</exclude>
 
                       <!-- jaxws apis - in jdk 6 -->
                       <exclude>javax.xml.ws</exclude>
@@ -564,6 +555,7 @@
 
                       <include>org.slf4j:*:${slf4j.version}</include>
                       <include>net.sf.ehcache:*:${ehcache.version}:jar:runtime</include>
+                      <include>com.sun.xml.bind:jaxb-impl:${jaxb-impl.version}</include>
                     </includes>
                   </bannedDependencies>
                 </rules>
@@ -728,7 +720,7 @@
             <dependency>
               <groupId>com.sun.xml.bind</groupId>
               <artifactId>jaxb-impl</artifactId>
-              <version>${cxf-java2ws-plugin.jaxb-impl.version}</version>
+              <version>${jaxb-impl.version}</version>
             </dependency>
           </dependencies>
           <configuration>
@@ -1410,6 +1402,10 @@
           <exclusion>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-xjc</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

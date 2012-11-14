@@ -177,5 +177,9 @@
       <version>${commons-digester.version}</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+    </dependency>
   </dependencies>
 </project>

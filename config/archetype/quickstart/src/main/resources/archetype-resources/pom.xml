@@ -75,6 +75,7 @@
     <mysql.jdbc.artifactId>${mysql.jdbc.artifactId}</mysql.jdbc.artifactId>
 
     <rice.version>${project.version}</rice.version>
+    <jaxb-impl.version>${jaxb-impl.version}</jaxb-impl.version>
     <servlet-api.version>${servlet-api.version}</servlet-api.version>
 
     <!--plugin versions -->
@@ -533,6 +534,12 @@
     </dependency>
 
     <!-- third party libraries -->
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>\${jaxb-impl.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>

@@ -31,6 +31,10 @@
   var getLocation = function(href) {
     var location = document.createElement("a");
     location.href = href;
+    // IE doesn't populate all fields for relative URLs
+    if (location.host == "") {
+      location.href = location.href;
+    }
     return location;
   };
 

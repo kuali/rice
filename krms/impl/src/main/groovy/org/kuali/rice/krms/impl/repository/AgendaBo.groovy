@@ -22,6 +22,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 import org.kuali.rice.krad.util.ObjectUtils
 import org.kuali.rice.krad.service.SequenceAccessorService
 import org.kuali.rice.krad.service.KRADServiceLocator
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
 
 
 public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract {
@@ -134,5 +135,15 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
         }
         Long id = sequenceAccessorService.getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class);
         return id.toString();
+    }
+
+    /**
+     * Converts a mutable bo to it's immutable counterpart
+     * @param AgendaBo the mutable business object
+     * @return the immutable object AgendaDefinition
+     */
+    static AgendaDefinition to(AgendaBo bo) {
+        if (bo == null) { return null; }
+        return org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Builder.create(bo).build();
     }
 }

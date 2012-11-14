@@ -47,6 +47,16 @@ public interface RuleBoService {
 	public void updateRule(RuleDefinition rule);
 
     /**
+     * Delete the {@link RuleDefinition} with the given id.
+     *
+     * @param ruleId to delete.
+     * @throws IllegalArgumentException if the Rule is null.
+     * @throws IllegalStateException if the Rule does not exists in the system
+     *
+     */
+    public void deleteRule(String ruleId);
+
+    /**
      * Retrieves an Rule from the repository based on the given rule id.
      *
      * @param ruleId the id of the Rule to retrieve

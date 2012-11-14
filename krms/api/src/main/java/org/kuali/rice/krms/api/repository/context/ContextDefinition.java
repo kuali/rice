@@ -412,7 +412,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         /**
          * Sets the Map of attributes as name / value pairs.
          *
-         * @param attributes a Map of name value String pairs respresenting the attributes
+         * @param attributes a Map of name value String pairs representing the attributes
          * associated with this context
          */
 		public void setAttributes(Map<String, String> attributes){

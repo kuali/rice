@@ -26,7 +26,8 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionType
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType
 import org.kuali.rice.krad.service.SequenceAccessorService
 import org.kuali.rice.krms.api.repository.LogicalOperator
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.StringUtils
+import org.kuali.rice.krms.impl.ui.TermParameter;
 
 
 public class PropositionBo extends PersistableBusinessObjectBase implements PropositionDefinitionContract {
@@ -48,6 +49,11 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
     def String parameterDisplayString
     def boolean editMode = false
     def String categoryId;
+
+    def String termSpecId;
+    def boolean showCustomValue;
+    def String termParameter;
+    def List<TermParameter> termParameterList = new ArrayList<TermParameter>();
 
     // members used for creating new parameterized terms
     // These are not mapped to the database
@@ -364,5 +370,37 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
      */
     private static String getNewPropParameterId(){
         return getNewId("KRMS_PROP_PARM_S", PropositionParameterBo.class);
+    }
+
+    public String getTermSpecId() {
+        return termSpecId;
+    }
+
+    public void setTermSpecId(String componentId) {
+        this.termSpecId = componentId;
+    }
+
+    public boolean isShowCustomValue() {
+        return showCustomValue;
+    }
+
+    public void setShowCustomValue(boolean showCustomValue) {
+        this.showCustomValue = showCustomValue;
+    }
+
+    public String getTermParameter() {
+        return termParameter
+    }
+
+    public void setTermParameter(String termParameter) {
+        this.termParameter = termParameter
+    }
+
+    public List<TermParameter> getTermParameterList() {
+        return termParameterList
+    }
+
+    public void setTermParameterList(List<TermParameter> termParameterList) {
+        this.termParameterList = termParameterList
     }
 }

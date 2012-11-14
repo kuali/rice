@@ -31,6 +31,7 @@
     <module>api</module>
     <module>framework</module>
     <module>impl</module>
+    <module>gen</module>
   </modules>
 
 </project>

@@ -16,7 +16,7 @@
 package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
-
+import java.util.Set;
 
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
@@ -54,6 +54,15 @@ public interface PropositionBoService {
     void updateProposition(PropositionDefinition prop);
 
     /**
+     * This will delete an existing {@link PropositionDefinition}.
+     *
+     * @param propId the proposition to delete
+     * @throws IllegalArgumentException if the proposition is null
+     * @throws IllegalStateException if the proposition does not exist in the system
+     */
+    void deleteProposition(String propId);
+
+    /**
      * Lookup the proposition based on the given proposition id.
      *
      * @param propId the given proposition id
@@ -63,7 +72,9 @@ public interface PropositionBoService {
     @Cacheable(value= PropositionDefinition.Cache.NAME, key="'propId=' + #p0")
     PropositionDefinition getPropositionById(String propId);
 
+    public Set<PropositionDefinition> getPropositionsByType(String typeId);
 
+    public Set<PropositionDefinition> getPropositionsByRule(String ruleId);
 
     /**
      * This will create a {@link PropositionParameter} exactly like the parameter passed in.
@@ -86,6 +97,7 @@ public interface PropositionBoService {
     @CacheEvict(value={PropositionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
     void updateParameter(PropositionParameter parameter);
 
+
     /**
      * Lookup the proposition parameters based on the given proposition id.
      *
@@ -107,7 +119,7 @@ public interface PropositionBoService {
     /**
      * Lookup the proposition parameter based on the proposition id and sequence number.
      *
-     * @param id the given proposition id
+     * @param propId the given proposition id
      * @return an immutable PropositionParameters associated with the given proposition id and sequence number.  A null reference is returned if an invalid or
      *         non-existant.
      */

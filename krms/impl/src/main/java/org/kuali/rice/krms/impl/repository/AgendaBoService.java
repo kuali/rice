@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
@@ -52,7 +54,17 @@ public interface AgendaBoService {
      */
     @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
 	public void updateAgenda(AgendaDefinition agenda);
-	
+
+    /**
+     * Delete the {@link AgendaDefinition} with the given id.
+     *
+     * @param agendaId to delete.
+     * @throws IllegalArgumentException if the Agenda is null.
+     * @throws IllegalStateException if the Agenda does not exists in the system
+     *
+     */
+    public void deleteAgenda(String agendaId);
+
     /**
      * Retrieves an Agenda from the repository based on the given agenda id.
      *
@@ -84,7 +96,7 @@ public interface AgendaBoService {
      * A null reference is returned if an invalid or contextId is supplied.
      */
     @Cacheable(value= AgendaDefinition.Cache.NAME, key="'contextId=' + #p0")
-	public Set<AgendaDefinition> getAgendasByContextId(String contextId);
+	public List<AgendaDefinition> getAgendasByContextId(String contextId);
 	
     /**
      * This will create an {@link org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition} in the repository exactly like
@@ -116,7 +128,7 @@ public interface AgendaBoService {
      * @param agendaItem  The AgendaItemDefinition to create
      * @param parentId  The id of the existing AgendaItemDefinition to be linked with the
      *  newly created AgendaItemDefinition
-     * @param position. A boolean used to specify the relationship between the
+     * @param position A boolean used to specify the relationship between the
      *  linked AgendaItems.
      *  <p> If the position parameter is true, the new AgendaItemDefinition is linked as the next
      *  AgendaItemDefinition to be evaluated if the parent AgendaItemDefinition evaluates to TRUE.
@@ -140,6 +152,29 @@ public interface AgendaBoService {
      */
     @Cacheable(value= AgendaItemDefinition.Cache.NAME, key="'id=' + #p0")
 	public AgendaItemDefinition getAgendaItemById(String id);
+
+    // TODO: caching annotations
+    public List<AgendaItemDefinition> getAgendaItemsByAgendaId(String id);
+
+    // TODO: caching annotations
+    public List<AgendaDefinition> getAgendasByType(String typeId) throws RiceIllegalArgumentException;
+
+    // TODO: caching annotations
+    public List<AgendaDefinition> getAgendasByTypeAndContext(String typeId, String contextId)
+            throws RiceIllegalArgumentException;
+
+    // TODO: caching annotations
+    public List<AgendaItemDefinition> getAgendaItemsByType(String typeId) throws RiceIllegalArgumentException;
+
+    // TODO: caching annotations
+    public List<AgendaItemDefinition> getAgendaItemsByContext(String contextId) throws RiceIllegalArgumentException;
+
+    // TODO: caching annotations
+    public List<AgendaItemDefinition> getAgendaItemsByTypeAndContext(String typeId, String contextId)
+            throws RiceIllegalArgumentException;
+
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
+    public void deleteAgendaItem(String id) throws RiceIllegalArgumentException;
 
 	/**
 	* Converts a mutable bo to it's immutable counterpart

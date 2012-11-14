@@ -15,28 +15,55 @@
  */
 package org.kuali.rice.krms.test;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.TermBoService;
+import org.kuali.rice.test.BaselineTestCase;
 
-@Ignore
-public class TermBoServiceTest extends KRMSTestCase {
+import java.util.Arrays;
+import java.util.Collections;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
+public class TermBoServiceTest extends AbstractBoTest {
 	
 	TermBoService termBoService = null;
-	
-//	@Before
-//	public void setUp() {
-//		termBoService = (TermBoService)KSBServiceLocator.getService("termBoService");
-//	}
+
+    @Override
+	@Before
+	public void setUp() throws Exception {
+        super.setUp();
+		termBoService = KrmsRepositoryServiceLocator.getTermBoService();
+	}
 
 	@Test
-	public void persistTerm() {
-//		termBoService = GlobalResourceLoader.getService("termBoService");
-//		
-//		TermSpecificationDefinition termSpec = 
-//			TermSpecificationDefinition.Builder.create(null, "1", "testTermSpec", "java.lang.String").build();
-//		
-//		termBoService.createTermSpecification(termSpec);
+	public void testPersistTermSpecificationContextIds() {
+
+        ContextDefinition context1 = createContextDefinition("KR-SAP", "TermBoServiceTest-Context1", Collections.<String,String>emptyMap());
+        ContextDefinition context2 = createContextDefinition("KR-SAP", "TermBoServiceTest-Context2", Collections.<String,String>emptyMap());
+
+        termBoService = GlobalResourceLoader.getService("termBoService");
+
+		TermSpecificationDefinition.Builder termSpecBuilder =
+			TermSpecificationDefinition.Builder.create(null, "1", "testTermSpec", "java.lang.String");
+
+        termSpecBuilder.getContextIds().add(context1.getId());
+        termSpecBuilder.getContextIds().add(context2.getId());
+
+        TermSpecificationDefinition termSpecificationDefinition = termBoService.createTermSpecification(termSpecBuilder.build());
+
+        assertNotNull(termSpecificationDefinition);
+        assertTrue(termSpecificationDefinition.getContextIds().size() == 2);
+        for (String contextId : Arrays.asList(context1.getId(), context2.getId())) {
+            assertTrue(termSpecificationDefinition.getContextIds().contains(contextId));
+        }
+
 	}
 	
 }

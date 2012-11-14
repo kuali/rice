@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.krms.test;
 
+import org.junit.Before;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -40,7 +44,7 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 	public KRMSTestCase() {
 		super(KRMS_MODULE_NAME);
 	}
-	
+
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
@@ -67,16 +71,27 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 	
 	protected List<String> getPerTestTablesNotToClear() {
 		List<String> tablesNotToClear = new ArrayList<String>();
-		tablesNotToClear.add("KRIM_.*");
+
+        tablesNotToClear.addAll(super.getPerTestTablesNotToClear());
+        tablesNotToClear.add("KRIM_.*");
 		tablesNotToClear.add("KRNS_.*");
 		tablesNotToClear.add("KREW_.*");
 		tablesNotToClear.add("KREN_.*");
         tablesNotToClear.add("KRCR_.*");
+
 		return tablesNotToClear;
 	}
 
+    protected List<String> getPerTestTablesToClear() {
+        List<String> tablesToClear = new ArrayList<String>();
 
-	/**
+        tablesToClear.addAll(super.getPerTestTablesToClear());
+        tablesToClear.add("KRMS_.*");
+
+        return tablesToClear;
+    }
+
+    /**
      * @see org.kuali.rice.test.RiceTestCase#getModuleName()
      */
 	@Override

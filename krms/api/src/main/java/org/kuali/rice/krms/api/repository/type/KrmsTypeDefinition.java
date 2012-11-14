@@ -230,8 +230,12 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 		 *
 		 * @param id the id value to set; can be null; a null id is an indicator
          * the this has not yet been persisted to the database.
+         * @throws IllegalArgumentException if the id is blank
 		 */
         public void setId(String id) {
+            if (id != null && StringUtils.isBlank(id)) {
+                throw new IllegalArgumentException("ID must be non-blank");
+            }
             this.id = id;
         }
 

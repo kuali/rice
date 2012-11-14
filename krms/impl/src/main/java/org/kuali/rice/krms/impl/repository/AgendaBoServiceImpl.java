@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,7 +26,17 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.core.api.mo.ModelObjectUtils;
+import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
@@ -33,6 +44,9 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
+import org.springframework.util.CollectionUtils;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
 
 /**
  * Implementation of the interface for accessing KRMS repository Agenda related
@@ -46,8 +60,26 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     // TODO: deal with active flag
 
     private BusinessObjectService businessObjectService;
+    private CriteriaLookupService criteriaLookupService;
     private KrmsAttributeDefinitionService attributeDefinitionService;
     private SequenceAccessorService sequenceAccessorService;
+
+    // used for converting lists of BOs to model objects
+    private static final ModelObjectUtils.Transformer<AgendaItemBo, AgendaItemDefinition> toAgendaItemDefinition =
+            new ModelObjectUtils.Transformer<AgendaItemBo, AgendaItemDefinition>() {
+                public AgendaItemDefinition transform(AgendaItemBo input) {
+                    return AgendaItemBo.to(input);
+                };
+            };
+
+    // used for converting lists of BOs to model objects
+    private static final ModelObjectUtils.Transformer<AgendaBo, AgendaDefinition> toAgendaDefinition =
+            new ModelObjectUtils.Transformer<AgendaBo, AgendaDefinition>() {
+                public AgendaDefinition transform(AgendaBo input) {
+                    return AgendaBo.to(input);
+                };
+            };
+
 
     /**
      * This overridden method creates a KRMS Agenda in the repository
@@ -55,7 +87,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public AgendaDefinition createAgenda(AgendaDefinition agenda) {
         if (agenda == null){
-            throw new IllegalArgumentException("agenda is null");
+            throw new RiceIllegalArgumentException("agenda is null");
         }
         final String nameKey = agenda.getName();
         final String contextId = agenda.getContextId();
@@ -75,7 +107,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public void updateAgenda(AgendaDefinition agenda) {
         if (agenda == null){
-            throw new IllegalArgumentException("agenda is null");
+            throw new RiceIllegalArgumentException("agenda is null");
         }
 
         // must already exist to be able to update
@@ -106,13 +138,21 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
         businessObjectService.save(boToUpdate);
     }
 
+    @Override
+    public void deleteAgenda(String agendaId) {
+        if (agendaId == null){ throw new RiceIllegalArgumentException("agendaId is null"); }
+        final AgendaDefinition existing = getAgendaByAgendaId(agendaId);
+        if (existing == null){ throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);}
+        businessObjectService.delete(from(existing));
+    }
+
     /**
      * This overridden method retrieves an Agenda from the repository
      */
     @Override
     public AgendaDefinition getAgendaByAgendaId(String agendaId) {
         if (StringUtils.isBlank(agendaId)){
-            throw new IllegalArgumentException("agenda id is null");
+            throw new RiceIllegalArgumentException("agenda id is null");
         }
         AgendaBo bo = businessObjectService.findBySinglePrimaryKey(AgendaBo.class, agendaId);
         return to(bo);
@@ -124,10 +164,10 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public AgendaDefinition getAgendaByNameAndContextId(String name, String contextId) {
         if (StringUtils.isBlank(name)) {
-            throw new IllegalArgumentException("name is blank");
+            throw new RiceIllegalArgumentException("name is blank");
         }
         if (StringUtils.isBlank(contextId)) {
-            throw new IllegalArgumentException("contextId is blank");
+            throw new RiceIllegalArgumentException("contextId is blank");
         }
 
         final Map<String, Object> map = new HashMap<String, Object>();
@@ -142,14 +182,14 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
      * This overridden method retrieves a set of agendas from the repository
      */
     @Override
-    public Set<AgendaDefinition> getAgendasByContextId(String contextId) {
+    public List<AgendaDefinition> getAgendasByContextId(String contextId) {
         if (StringUtils.isBlank(contextId)){
-            throw new IllegalArgumentException("context ID is null or blank");
+            throw new RiceIllegalArgumentException("context ID is null or blank");
         }
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
-        Set<AgendaBo> bos = (Set<AgendaBo>) businessObjectService.findMatching(AgendaBo.class, map);
-        return convertListOfBosToImmutables(bos);
+        List<AgendaBo> bos = (List<AgendaBo>) businessObjectService.findMatching(AgendaBo.class, map);
+        return convertAgendaBosToImmutables(bos);
     }
 
     /**
@@ -158,7 +198,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public AgendaItemDefinition createAgendaItem(AgendaItemDefinition agendaItem) {
         if (agendaItem == null){
-            throw new IllegalArgumentException("agendaItem is null");
+            throw new RiceIllegalArgumentException("agendaItem is null");
         }
         if (agendaItem.getId() != null){
             final AgendaDefinition existing = getAgendaByAgendaId(agendaItem.getId());
@@ -178,7 +218,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public void updateAgendaItem(AgendaItemDefinition agendaItem) {
         if (agendaItem == null){
-            throw new IllegalArgumentException("agendaItem is null");
+            throw new RiceIllegalArgumentException("agendaItem is null");
         }
         final String agendaItemIdKey = agendaItem.getId();
         final AgendaItemDefinition existing = getAgendaItemById(agendaItemIdKey);
@@ -203,7 +243,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public void addAgendaItem(AgendaItemDefinition agendaItem, String parentId, Boolean position) {
         if (agendaItem == null){
-            throw new IllegalArgumentException("agendaItem is null");
+            throw new RiceIllegalArgumentException("agendaItem is null");
         }
         AgendaItemDefinition parent = null;
         if (parentId != null){
@@ -247,10 +287,131 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public AgendaItemDefinition getAgendaItemById(String id) {
         if (StringUtils.isBlank(id)){
-            throw new IllegalArgumentException("agenda item id is null");
+            throw new RiceIllegalArgumentException("agenda item id is null or blank");
         }
         AgendaItemBo bo = businessObjectService.findBySinglePrimaryKey(AgendaItemBo.class, id);
         return AgendaItemBo.to(bo);
+    }
+
+    @Override
+    public List<AgendaItemDefinition> getAgendaItemsByAgendaId(String agendaId) {
+        if (StringUtils.isBlank(agendaId)){
+            throw new RiceIllegalArgumentException("agenda id is null or null");
+        }
+        List<AgendaItemDefinition> results = null;
+
+        Collection<AgendaItemBo> bos = businessObjectService.findMatching(AgendaItemBo.class, Collections.singletonMap("agendaId", agendaId));
+
+        if (CollectionUtils.isEmpty(bos)) {
+            results = Collections.emptyList();
+        } else {
+            results = Collections.unmodifiableList(ModelObjectUtils.transform(bos, toAgendaItemDefinition));
+        }
+
+        return results;
+    }
+
+    @Override
+    public List<AgendaDefinition> getAgendasByType(String typeId) throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(typeId)){
+            throw new RiceIllegalArgumentException("type ID is null or blank");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("typeId", typeId);
+        List<AgendaBo> bos = (List<AgendaBo>) businessObjectService.findMatching(AgendaBo.class, map);
+        return convertAgendaBosToImmutables(bos);
+    }
+
+    @Override
+    public List<AgendaDefinition> getAgendasByTypeAndContext(String typeId,
+            String contextId) throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(typeId)){
+            throw new RiceIllegalArgumentException("type ID is null or blank");
+        }
+        if (StringUtils.isBlank(contextId)){
+            throw new RiceIllegalArgumentException("context ID is null or blank");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("typeId", typeId);
+        map.put("contextId", contextId);
+        Collection<AgendaBo> bos = businessObjectService.findMatching(AgendaBo.class, map);
+        return convertAgendaBosToImmutables(bos);
+    }
+
+    @Override
+    public List<AgendaItemDefinition> getAgendaItemsByType(String typeId) throws RiceIllegalArgumentException {
+        return findAgendaItemsForAgendas(getAgendasByType(typeId));
+    }
+
+    @Override
+    public List<AgendaItemDefinition> getAgendaItemsByContext(String contextId) throws RiceIllegalArgumentException {
+        return findAgendaItemsForAgendas(getAgendasByContextId(contextId));
+    }
+
+    @Override
+    public List<AgendaItemDefinition> getAgendaItemsByTypeAndContext(String typeId,
+            String contextId) throws RiceIllegalArgumentException {
+        return findAgendaItemsForAgendas(getAgendasByTypeAndContext(typeId, contextId));
+    }
+
+    @Override
+    public void deleteAgendaItem(String agendaItemId) throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(agendaItemId)) {
+            throw new RiceIllegalArgumentException("agendaItemId must not be blank or null");
+        }
+
+        businessObjectService.deleteMatching(AgendaItemBo.class, Collections.singletonMap("id", agendaItemId));
+    }
+
+    private List<AgendaItemDefinition> findAgendaItemsForAgendas(List<AgendaDefinition> agendaDefinitions) {
+        List<AgendaItemDefinition> results = null;
+
+        if (!CollectionUtils.isEmpty(agendaDefinitions)) {
+            List<AgendaItemBo> boResults = new ArrayList<AgendaItemBo>(agendaDefinitions.size());
+
+            List<String> agendaIds = new ArrayList<String>(20);
+            for (AgendaDefinition agendaDefinition : agendaDefinitions) {
+                agendaIds.add(agendaDefinition.getId());
+
+                if (agendaIds.size() == 20) {
+                    // fetch batch
+
+                    Predicate predicate = in("agendaId", agendaIds.toArray());
+                    QueryByCriteria criteria = QueryByCriteria.Builder.fromPredicates(predicate);
+                    GenericQueryResults<AgendaItemBo> batch = criteriaLookupService.lookup(AgendaItemBo.class, criteria);
+
+                    boResults.addAll(batch.getResults());
+
+                    // reset agendaIds
+                    agendaIds.clear();
+                }
+            }
+
+            if (agendaIds.size() > 0) {
+                Predicate predicate = in("agendaId", agendaIds.toArray());
+                QueryByCriteria criteria = QueryByCriteria.Builder.fromPredicates(predicate);
+                GenericQueryResults<AgendaItemBo> batch = criteriaLookupService.lookup(AgendaItemBo.class, criteria);
+
+                boResults.addAll(batch.getResults());
+            }
+
+            results = Collections.unmodifiableList(ModelObjectUtils.transform(boResults, toAgendaItemDefinition));
+        } else {
+            results = Collections.emptyList();
+        }
+
+        return results;
+    }
+
+    public CriteriaLookupService getCriteriaLookupService() {
+        if (criteriaLookupService == null) {
+            criteriaLookupService = KrmsRepositoryServiceLocator.getCriteriaLookupService();
+        }
+        return criteriaLookupService;
+    }
+
+    public void setCriteriaLookupService(CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
     }
 
     /**
@@ -302,15 +463,11 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
      * @param agendaBos a mutable Set<AgendaBo> to made completely immutable.
      * @return An unmodifiable Set<Agenda>
      */
-    public Set<AgendaDefinition> convertListOfBosToImmutables(final Collection<AgendaBo> agendaBos) {
-        Set<AgendaDefinition> agendas = new HashSet<AgendaDefinition>();
-        if (agendaBos != null){
-            for (AgendaBo bo : agendaBos) {
-                AgendaDefinition agenda = to(bo);
-                agendas.add(agenda);
-            }
+    public List<AgendaDefinition> convertAgendaBosToImmutables(final Collection<AgendaBo> agendaBos) {
+        if (CollectionUtils.isEmpty(agendaBos)) {
+            return Collections.emptyList();
         }
-        return Collections.unmodifiableSet(agendas);
+        return Collections.unmodifiableList(ModelObjectUtils.transform(agendaBos, toAgendaDefinition));
     }
 
     /**

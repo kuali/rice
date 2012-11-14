@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.test;
 
+import org.junit.Before;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
@@ -23,12 +24,16 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.repository.ContextAttributeBo;
+import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +44,15 @@ public abstract class AbstractBoTest extends KRMSTestCase {
     protected ContextBoService contextRepository;
     protected KrmsTypeRepositoryService krmsTypeRepository;
     protected KrmsAttributeDefinitionService krmsAttributeDefinitionService;
+
+    @Override
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+        contextRepository = KrmsRepositoryServiceLocator.getContextBoService();
+        krmsTypeRepository = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
+        krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
+    }
 
     protected BusinessObjectService getBoService() {
 		return KRADServiceLocator.getBusinessObjectService();
@@ -118,5 +132,25 @@ public abstract class AbstractBoTest extends KRMSTestCase {
 
         return krmsGenericTypeDefinition;
     }
-	
+
+
+    public String getNamespaceByContextName(String name) {
+        Collection<ContextBo> results = getBoService().findMatching(ContextBo.class, Collections.singletonMap("name", name));
+        if (CollectionUtils.isEmpty(results)) {
+            return null;
+        }
+        if (results.size() != 1) {
+            throw new IllegalStateException(
+                    "getNamespaceByContextName can't handle a universe where multiple contexts have the same name");
+        }
+        return results.iterator().next().getNamespace();
+    }
+
+    public ContextBoService getContextRepository() {
+        return contextRepository;
+    }
+
+    public KrmsTypeRepositoryService getKrmsTypeRepository() {
+        return krmsTypeRepository;
+    }
 }

@@ -69,7 +69,15 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 		
 		TermSpecificationBo termSpecBo = TermSpecificationBo.from(termSpec);
 		
-		businessObjectService.save(termSpecBo);
+		termSpecBo = businessObjectService.save(termSpecBo);
+
+        // save relations to the contexts on the BO
+        if (!CollectionUtils.isEmpty(termSpec.getContextIds())) for (String contextId : termSpec.getContextIds()) {
+            ContextValidTermBo contextValidTerm = new ContextValidTermBo();
+            contextValidTerm.setContextId(contextId);
+            contextValidTerm.setTermSpecificationId(termSpecBo.getId());
+            businessObjectService.save(contextValidTerm);
+        }
 		
 		return TermSpecificationBo.to(termSpecBo);
 	}

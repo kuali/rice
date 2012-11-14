@@ -56,7 +56,8 @@ import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
         TermSpecificationDefinition.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
         TermSpecificationDefinition.Elements.CATEGORIES,
-		CoreConstants.CommonElements.FUTURE_ELEMENTS
+        "contextIds", // has to match the field name -- the element wrapper name does not
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class TermSpecificationDefinition extends AbstractDataTransferObject implements TermSpecificationDefinitionContract {
 	
@@ -81,7 +82,11 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
     @XmlElement(name = Elements.CATEGORY, required = false)
     private final List<CategoryDefinition> categories;
 
-	
+
+    @XmlElementWrapper(name = Elements.CONTEXTS, required = false)
+    @XmlElement(name = Elements.CONTEXT_ID, required = false)
+    private final List<String> contextIds;
+
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
@@ -98,6 +103,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         active = true;
         versionNumber = null;
         this.categories = null;
+        this.contextIds = null;
 	}
 	
 	/**
@@ -114,6 +120,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         active = b.isActive();
 		versionNumber = b.getVersionNumber();
         this.categories = constructCategories(b.getCategories());
+        this.contextIds = Collections.unmodifiableList(new ArrayList(b.getContextIds()));
 	}
 
     private static List<CategoryDefinition> constructCategories(List<CategoryDefinition.Builder> categoryBuilders) {
@@ -143,6 +150,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         private boolean active;
         private Long versionNumber;
         private List<CategoryDefinition.Builder> categories;
+        private List<String> contextIds;
 
 		private static final String NON_NULL_NON_EMPTY_ERROR =  " must be non-null and must contain non-whitespace chars"; 
 
@@ -164,6 +172,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 			setType(type);
             setActive(true);
             setCategories(new ArrayList<CategoryDefinition.Builder>());
+            setContextIds(new ArrayList<String>());
 		}
 		
 		/**
@@ -190,13 +199,16 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		 */
 		public static Builder create(TermSpecificationDefinitionContract termSpecification) {
 			if (termSpecification == null) throw new IllegalArgumentException("termSpecification must be non-null");
-			Builder builder =new Builder(termSpecification.getId(), termSpecification.getName(), termSpecification.getNamespace(),
+			Builder builder = new Builder(termSpecification.getId(), termSpecification.getName(), termSpecification.getNamespace(),
                     termSpecification.getType());
             builder.setDescription(termSpecification.getDescription());
             builder.setActive(termSpecification.isActive());
 			builder.setVersionNumber(termSpecification.getVersionNumber());
             for (CategoryDefinitionContract category : termSpecification.getCategories()) {
                 builder.getCategories().add(CategoryDefinition.Builder.create(category));
+            }
+            if (termSpecification.getContextIds() != null) {
+                builder.getContextIds().addAll(termSpecification.getContextIds());
             }
 
 			return builder;
@@ -268,8 +280,18 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
             }
             this.categories = categories;
         }
-        
-		// Getters
+
+        /**
+         * @param contextIds the contextIds to set.  May not be null but may be empty.
+         */
+        public void setContextIds(List<String> contextIds) {
+            if (contextIds == null) {
+                throw new IllegalArgumentException("contextIds was null");
+            }
+            this.contextIds = contextIds;
+        }
+
+        // Getters
 		
 		/**
 		 * @return the termSpecificationId
@@ -329,8 +351,12 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
             return this.categories;
         }
 
+        @Override
+        public List<String> getContextIds() {
+            return contextIds;
+        }
 
-		/**
+        /**
 		 * Constructs a {@link TermSpecificationDefinition}
 		 * @see org.kuali.rice.core.api.mo.ModelBuilder#build()
 		 */
@@ -395,8 +421,13 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
     public List<CategoryDefinition> getCategories() {
         return Collections.unmodifiableList(categories);
     }
-	
-	/**
+
+    @Override
+    public List<String> getContextIds() {
+        return contextIds;
+    }
+
+    /**
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
@@ -413,6 +444,8 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         public static final String ACTIVE = "active";
         public final static String CATEGORIES = "categories";
         public final static String CATEGORY = "category";
+        public final static String CONTEXTS = "contexts";
+        public final static String CONTEXT_ID = "contextId";
     }
 
     public static class Cache {

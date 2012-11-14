@@ -17,13 +17,8 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.impl.repository.ActionBoService;
 import org.kuali.rice.krms.impl.repository.ActionBoServiceImpl;
@@ -38,25 +33,13 @@ import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.RuleBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
+import org.kuali.rice.krms.test.AbstractBoTest;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
-import org.kuali.rice.krms.test.AbstractBoTest;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Validation Integration Test
@@ -65,8 +48,9 @@ import static org.junit.Assert.assertTrue;
 @BaselineMode(Mode.CLEAR_DB)
 public class AgendaEditorMaintainableIntegrationTest extends AbstractBoTest {
 
-    static final String NAMESPACE1 = "KRMS_TEST_1";
-    static final String CONTEXT1 = "Context1";
+    static final String NAMESPACE1 = "AEMIT_KRMS_TEST_1";
+    static final String CONTEXT1 = "AEMIT_Context1";
+
     static final String CONTEXT1_QUALIFIER = "Context1Qualifier";
     static final String CONTEXT1_QUALIFIER_VALUE = "BLAH1";
     static final String AGENDA1 = "TestAgenda1";

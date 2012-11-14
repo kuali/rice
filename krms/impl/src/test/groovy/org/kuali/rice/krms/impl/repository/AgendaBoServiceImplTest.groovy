@@ -227,14 +227,14 @@ class AgendaBoServiceImplTest {
 
 	@Test
 	public void test_getAgendasByContextId() {
-		Set<AgendaBo> resultSet = new HashSet<AgendaBo>();
-		resultSet.add(TEST_AGENDA_BO);
-		mockBusinessObjectService.demand.findMatching(1..1) {Class clazz, Map map -> resultSet}
+		List<AgendaBo> results = new ArrayList<AgendaBo>();
+        results.add(TEST_AGENDA_BO);
+		mockBusinessObjectService.demand.findMatching(1..1) {Class clazz, Map map -> results}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
 		service.setBusinessObjectService(bos)
-		Set<AgendaDefinition> myAgendas = service.getAgendasByContextId(CONTEXT_ID_1)
+		List<AgendaDefinition> myAgendas = service.getAgendasByContextId(CONTEXT_ID_1)
 
 		Assert.assertEquals(service.to(TEST_AGENDA_BO), myAgendas.iterator().next())
 		mockBusinessObjectService.verify(bos)

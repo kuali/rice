@@ -23,9 +23,15 @@ public class KrmsImplConstants {
      */
     public static final String PARAMETERIZED_TERM_PREFIX = "parameterized:";
 
+    public static final String STUDENT_LOOKUP_VIEW = "StudentLookupView";
+    public static final String STUDENT_INQUIRY_VIEW = "StudentInquiryView";
+
     public final static class WebPaths {
         public static final String AGENDA_INQUIRY_PATH = "krmsAgendaInquiry";
         public static final String AGENDA_EDITOR_PATH = "krmsAgendaEditor";
+        public static final String AGENDA_STUDENT_INQUIRY_PATH = "krmsAgendaStudentInquiry";
+        public static final String AGENDA_STUDENT_EDITOR_PATH = "krmsAgendaStudentEditor";
+        public static final String PROPOSITION_PATH = "krmsProposition";
     }
 
     /**
@@ -50,6 +56,18 @@ public class KrmsImplConstants {
             public static final String NAME = "name";
             public static final String NAMESPACE = "namespace";
             public static final String ATTRIBUTE_BOS = "attributeBos";
+        }
+
+        public static final class NaturalLanguageTemplate {
+            public static final String NATURAL_LANGUAGE_TEMPLATE_ID ="naturalLanguageTemplateId";
+        }
+
+        public static final class NaturalLanguageUsage {
+            public static final String NATURAL_LANGUAGE_USAGE_ID ="naturalLanguageUsageId";
+        }
+
+        public static final class ReferenceObjectBinding {
+            public static final String REFERENCE_OBJECT_BINDING_ID ="referenceObjectBindingId";
         }
 
         public static final class Rule {

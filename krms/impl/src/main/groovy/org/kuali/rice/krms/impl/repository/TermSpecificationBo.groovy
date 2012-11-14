@@ -17,9 +17,10 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract
+import javax.persistence.Transient
 
-public class TermSpecificationBo extends PersistableBusinessObjectBase implements TermSpecificationDefinitionContract{
+public class TermSpecificationBo extends PersistableBusinessObjectBase implements TermSpecificationDefinitionContract {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +32,13 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
     def boolean active = true
 
     def List<CategoryBo> categories = new ArrayList<CategoryBo>()
-    def List<ContextBo> contexts = new ArrayList<ContextBo>()
+    def List<String> contextIds = new ArrayList<String>()
+
+    /**
+     * This field may require manual population based on the {@link #contextIds} list.
+     */
+    @Transient
+    def transient List<ContextBo> contexts = new ArrayList<ContextBo>()
 
 	/**
 	* Converts a mutable bo to it's immutable counterpart
@@ -61,6 +68,9 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
        for (category in im.categories) {
            bo.categories.add(CategoryBo.from(category))
        }
+
+       bo.contextIds.addAll(im.contextIds);
+
        bo.active = im.active
 	   bo.versionNumber = im.versionNumber
 	   

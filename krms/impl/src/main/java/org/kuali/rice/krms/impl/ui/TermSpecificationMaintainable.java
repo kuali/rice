@@ -23,8 +23,10 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 
 import java.util.Collection;
@@ -56,6 +58,16 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         TermSpecificationBo termSpecificationBo = (TermSpecificationBo) super.retrieveObjectForEditOrCopy(document,
                 dataObjectKeys);
 
+        if (!CollectionUtils.isEmpty(termSpecificationBo.getContextIds())) {
+            for (String contextId : termSpecificationBo.getContextIds()) {
+                ContextDefinition context =
+                        KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextId);
+                if (context != null) {
+                    termSpecificationBo.getContexts().add(ContextBo.from(context));
+                }
+            }
+        }
+
         if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
             document.getDocumentHeader().setDocumentDescription("New Term Specification Document");
         }
@@ -74,8 +86,7 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
                     Collections.singletonMap("termSpecificationId", termSpecificationBo.getId()));
 
         if (!CollectionUtils.isEmpty(validContextMappings)) for (ContextValidTermBo validContextMapping : validContextMappings) {
-            ContextBo context = getBoService().findBySinglePrimaryKey(ContextBo.class, validContextMapping.getContextId());
-            termSpecificationBo.getContexts().add(context);
+            termSpecificationBo.getContextIds().add(validContextMapping.getContextId());
         }
     }
 

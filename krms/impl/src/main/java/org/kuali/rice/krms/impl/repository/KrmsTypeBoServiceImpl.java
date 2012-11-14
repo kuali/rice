@@ -257,6 +257,25 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
     }
 
     /**
+     * Converts a immutable {@link KrmsTypeDefinition} to its mutable {@link KrmsTypeBo} counterpart.
+     * @param krmsType the immutable object.
+     * @return a {@link KrmsTypeBo} the mutable KrmsTypeBo.
+     *
+     */
+    public KrmsTypeBo from(KrmsTypeDefinition krmsType) {
+        if (krmsType == null) return null;
+        KrmsTypeBo krmsTypeBo = new KrmsTypeBo();
+        krmsTypeBo.setName(krmsType.getName());
+        krmsTypeBo.setNamespace(krmsType.getNamespace());
+        krmsTypeBo.setServiceName(krmsType.getServiceName());
+        krmsTypeBo.setId(krmsType.getId());
+        krmsTypeBo.setActive(krmsType.isActive());
+        krmsTypeBo.setVersionNumber(krmsType.getVersionNumber());
+        // TODO collections, etc.
+        return krmsTypeBo;
+    }
+
+    /**
      * Sets the businessObjectService attribute value.
      *
      * @param businessObjectService The businessObjectService to set.

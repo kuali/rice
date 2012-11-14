@@ -35,6 +35,13 @@
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>
+      <artifactId>rice-krms-api</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
       <artifactId>rice-krms-impl</artifactId>
       <scope>test</scope>
       <type>test-jar</type>
@@ -47,6 +54,11 @@
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-edl-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-client-contrib</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

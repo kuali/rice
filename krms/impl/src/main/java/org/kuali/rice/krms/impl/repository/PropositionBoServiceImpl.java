@@ -16,9 +16,13 @@
 package org.kuali.rice.krms.impl.repository;
 
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -97,6 +101,44 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
 		return PropositionBo.to(bo);
 	}
 
+    @Override
+    public Set<PropositionDefinition> getPropositionsByType(String typeId) {
+        if (org.apache.commons.lang.StringUtils.isBlank(typeId)) {
+            throw new IllegalArgumentException("typeId is null or blank");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("typeId", typeId);
+        Set<PropositionBo> bos = (Set<PropositionBo>) businessObjectService.findMatching(PropositionBo.class, map);
+        return convertBosToImmutables(bos);
+    }
+
+    @Override
+    public Set<PropositionDefinition> getPropositionsByRule(String ruleId) {
+        if (org.apache.commons.lang.StringUtils.isBlank(ruleId)) {
+            throw new IllegalArgumentException("ruleId is null or blank");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("ruleId", ruleId);
+        Set<PropositionBo> bos = (Set<PropositionBo>) businessObjectService.findMatching(PropositionBo.class, map);
+        return convertBosToImmutables(bos);
+    }
+
+    public Set<PropositionDefinition> convertBosToImmutables(final Collection<PropositionBo> propositionBos) {
+        Set<PropositionDefinition> immutables = new HashSet<PropositionDefinition>();
+        if (propositionBos != null) {
+            PropositionDefinition immutable = null;
+            for (PropositionBo bo : propositionBos ) {
+                immutable = to(bo);
+                immutables.add(immutable);
+            }
+        }
+        return Collections.unmodifiableSet(immutables);
+    }
+
+    public PropositionDefinition to(PropositionBo propositionBo) {
+        return PropositionBo.to(propositionBo);
+    }
+
 	/**
 	 * This overridden method creates a PropositionParameter if it does not 
 	 * already exist in the repository.
@@ -146,6 +188,14 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
         businessObjectService.save(PropositionParameterBo.from(toUpdate));
 	}
 
+    @Override
+    public void deleteProposition(String propId) {
+        if (propId == null){ throw new IllegalArgumentException("propId is null"); }
+        final PropositionDefinition existing = getPropositionById(propId);
+        if (existing == null){ throw new IllegalStateException("the Proposition to delete does not exists: " + propId);}
+        businessObjectService.delete(from(existing));
+    }
+    
 	/**
 	 * This overridden method retrieves a list of parameters for a given proposition
 	 * 
@@ -196,6 +246,24 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
 		PropositionParameterBo bo = businessObjectService.findByPrimaryKey(PropositionParameterBo.class, map);
 		return PropositionParameterBo.to(bo);
 	}
+    /**
+     * Converts a immutable {@link PropositionDefinition} to its mutable {@link PropositionBo} counterpart.
+     * @param proposition the immutable object.
+     * @return a {@link PropositionBo} the mutable PropositionBo.
+     *
+     */
+    public PropositionBo from(PropositionDefinition proposition) {
+        if (proposition == null) { return null; }
+        PropositionBo propositionBo = new PropositionBo();
+        propositionBo.setDescription(proposition.getDescription());
+        propositionBo.setTypeId(proposition.getTypeId());
+        propositionBo.setRuleId(proposition.getRuleId());
+        propositionBo.setPropositionTypeCode(proposition.getPropositionTypeCode());
+        propositionBo.setCompoundOpCode(proposition.getCompoundOpCode());
+        propositionBo.setId(proposition.getId());
+        propositionBo.setVersionNumber(proposition.getVersionNumber());
+        return propositionBo;
+    }
 
     /**
      * Sets the businessObjectService attribute value.

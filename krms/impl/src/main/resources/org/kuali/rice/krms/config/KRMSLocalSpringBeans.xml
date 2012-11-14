@@ -129,6 +129,10 @@
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 
+  <bean id="typeTypeRelationBoService" class="org.kuali.rice.krms.impl.repository.TypeTypeRelationBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
   <bean id="propositionBoService" class="org.kuali.rice.krms.impl.repository.PropositionBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
@@ -139,6 +143,7 @@
 
   <bean id="agendaBoService" class="org.kuali.rice.krms.impl.repository.AgendaBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="criteriaLookupService" ref="criteriaLookupService"/>
     <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
   </bean>
 

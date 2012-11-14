@@ -275,7 +275,7 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
       <para>
         Note: Due to Maven Central's archetype index policy, there could be a slight delay from when rice officially
         releases and the availability of the archetype.
-        See <link xlink:href="http://localhost:8080/bar">https://docs.sonatype.org/display/Repository/Central+Repository+FAQ</link>
+        See <link xlink:href="https://docs.sonatype.org/display/Repository/Central+Repository+FAQ">https://docs.sonatype.org/display/Repository/Central+Repository+FAQ</link>
       </para>
       <para>
         Below are the instruction for Maven CLI, Eclipse, and Intellij.

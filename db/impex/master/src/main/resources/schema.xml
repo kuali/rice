@@ -3072,6 +3072,71 @@
             <index-column name="TYP_ID"/>
         </index>
     </table>
+    <table name="KRMS_NL_TMPL_ATTR_T">
+        <column name="NL_TMPL_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NL_TMPL_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_DEFN_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_VAL" size="400" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRMS_NL_TMPL_T" name="KRMS_NL_TMPL_ATTR_FK1">
+            <reference foreign="NL_TMPL_ID" local="NL_TMPL_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_ATTR_DEFN_T" name="KRMS_NL_TMPL_ATTR_FK2">
+            <reference foreign="ATTR_DEFN_ID" local="ATTR_DEFN_ID"/>
+        </foreign-key>
+        <unique name="KRMS_NL_TMPL_ATTR_TC1">
+            <unique-column name="NL_TMPL_ID"/>
+            <unique-column name="ATTR_DEFN_ID"/>
+        </unique>
+    </table>
+    <table name="KRMS_NL_TMPL_T">
+        <column name="NL_TMPL_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="LANG_CD" required="true" size="2" type="VARCHAR"/>
+        <column name="NL_USAGE_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="TMPL" required="true" size="4000" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_TYP_T">
+            <reference foreign="TYP_ID" local="TYP_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_NL_USAGE_T" name="KRMS_NL_TMPL_FK1">
+            <reference foreign="NL_USAGE_ID" local="NL_USAGE_ID"/>
+        </foreign-key>
+        <unique name="KRMS_NL_TMPL_TC1">
+            <unique-column name="LANG_CD"/>
+            <unique-column name="NL_USAGE_ID"/>
+            <unique-column name="TYP_ID"/>
+        </unique>
+    </table>
+    <table name="KRMS_NL_USAGE_ATTR_T">
+        <column name="NL_USAGE_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NL_USAGE_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_DEFN_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_VAL" size="400" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRMS_NL_USAGE_T" name="KRMS_NL_USAGE_ATTR_FK1">
+            <reference foreign="NL_USAGE_ID" local="NL_USAGE_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_ATTR_DEFN_T" name="KRMS_NL_USAGE_ATTR_FK2">
+            <reference foreign="ATTR_DEFN_ID" local="ATTR_DEFN_ID"/>
+        </foreign-key>
+        <unique name="KRMS_NL_USAGE_ATTR_TC1">
+            <unique-column name="NL_USAGE_ID"/>
+            <unique-column name="ATTR_DEFN_ID"/>
+        </unique>
+    </table>
+    <table name="KRMS_NL_USAGE_T">
+        <column name="NL_USAGE_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NM" required="true" size="255" type="VARCHAR"/>
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="DESC_TXT" size="255" type="VARCHAR"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <unique name="KRMS_NL_USAGE_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
+    </table>
     <table name="KRMS_PROP_PARM_T">
         <column name="PROP_PARM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PROP_ID" required="true" size="40" type="VARCHAR"/>
@@ -3104,6 +3169,25 @@
         <index name="KRMS_PROP_TI1">
             <index-column name="RULE_ID"/>
         </index>
+    </table>
+    <table name="KRMS_REF_OBJ_KRMS_OBJ_T">
+        <column name="REF_OBJ_KRMS_OBJ_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="COLLECTION_NM" size="40" type="VARCHAR"/>
+        <column name="KRMS_OBJ_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="KRMS_DSCR_TYP" required="true" size="40" type="VARCHAR"/>
+        <column name="REF_OBJ_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="REF_DSCR_TYP" required="true" size="255" type="VARCHAR"/>
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <unique name="KRMS_REF_OBJ_KRMS_OBJ_TC1">
+            <unique-column name="COLLECTION_NM"/>
+            <unique-column name="KRMS_OBJ_ID"/>
+            <unique-column name="KRMS_DSCR_TYP"/>
+            <unique-column name="REF_OBJ_ID"/>
+            <unique-column name="REF_DSCR_TYP"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
     </table>
     <table name="KRMS_RULE_ATTR_T">
         <column name="RULE_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -3285,6 +3369,26 @@
         <index name="KRMS_TYP_ATTR_TI2">
             <index-column name="TYP_ID"/>
         </index>
+    </table>
+    <table name="KRMS_TYP_RELN_T">
+        <column name="TYP_RELN_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="FROM_TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="TO_TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="RELN_TYP" required="true" size="40" type="VARCHAR"/>
+        <column name="SEQ_NO" required="true" size="5" type="DECIMAL"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_TYP_RELN_FK1">
+            <reference foreign="TYP_ID" local="FROM_TYP_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_TYP_RELN_FK2">
+            <reference foreign="TYP_ID" local="TO_TYP_ID"/>
+        </foreign-key>
+        <unique name="KRMS_TYP_RELN_TC1">
+            <unique-column name="FROM_TYP_ID"/>
+            <unique-column name="TO_TYP_ID"/>
+            <unique-column name="RELN_TYP"/>
+        </unique>
     </table>
     <table name="KRMS_TYP_T">
         <column name="TYP_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -3934,8 +4038,13 @@
     <sequence name="KRMS_CTGRY_S" nextval="1"/>
     <sequence name="KRMS_FUNC_PARM_S" nextval="10000"/>
     <sequence name="KRMS_FUNC_S" nextval="10000"/>
+    <sequence name="KRMS_NL_TMPL_ATTR_S" nextval="10000"/>
+    <sequence name="KRMS_NL_TMPL_S" nextval="10000"/>
+    <sequence name="KRMS_NL_USAGE_ATTR_S" nextval="10000"/>
+    <sequence name="KRMS_NL_USAGE_S" nextval="10000"/>
     <sequence name="KRMS_PROP_PARM_S" nextval="10000"/>
     <sequence name="KRMS_PROP_S" nextval="10000"/>
+    <sequence name="KRMS_REF_OBJ_KRMS_OBJ_S" nextval="10000"/>
     <sequence name="KRMS_RULE_ATTR_S" nextval="10000"/>
     <sequence name="KRMS_RULE_S" nextval="10000"/>
     <sequence name="KRMS_TERM_PARM_S" nextval="10000"/>
@@ -3946,6 +4055,7 @@
     <sequence name="KRMS_TERM_S" nextval="10000"/>
     <sequence name="KRMS_TERM_SPEC_S" nextval="10000"/>
     <sequence name="KRMS_TYP_ATTR_S" nextval="10000"/>
+    <sequence name="KRMS_TYP_RELN_S" nextval="10000"/>
     <sequence name="KRMS_TYP_S" nextval="10000"/>
     <sequence name="KRNS_DOC_TYP_ATTR_S" nextval="1000"/>
     <sequence name="KRNS_LOCK_S" nextval="2000"/>

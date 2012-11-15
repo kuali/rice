@@ -162,7 +162,7 @@
         p:namespaceRequiredOnStoredMap="true"/>
 
   <bean id="groupPermissionTypeService"
-        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
+        class="org.kuali.rice.krad.kim.PopulateGroupPermissionTypeServiceImpl"
         p:exactMatchStringAttributeName="groupName"
         p:namespaceRequiredOnStoredMap="true"/>
 

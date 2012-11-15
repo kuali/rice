@@ -348,6 +348,7 @@ public final class KimConstants {
         public static final String APP_CODE = "appCode";
         public static final String SECTION_ID = "sectionId";
         public static final String KIM_TYPE_ID = PrimaryKeyConstants.KIM_TYPE_ID;
+        public static final String KIM_TYPE_NAME = "kimTypeName";
         public static final String QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER = "qualifierResolverProvidedIdentifier";
         public static final String VIEW_ID = "viewId";
         public static final String ACTION_EVENT = "actionEvent";

@@ -182,7 +182,8 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         if (!StringUtils.isEmpty(document.getGroupNamespace())) {
         	additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getGroupNamespace());
         	additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_NAME, document.getGroupName());
-        	if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+            additionalPermissionDetails.put(KimConstants.AttributeConstants.KIM_TYPE_NAME, document.getKimType().getName());
+            if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
         			document, 
         			KimConstants.NAMESPACE_CODE, 
         			KimConstants.PermissionTemplateNames.POPULATE_GROUP, 

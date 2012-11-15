@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.kuali.rice.krms.api.repository.reference;
+
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;

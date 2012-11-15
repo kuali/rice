@@ -15,7 +15,14 @@
  */
 package edu.sampleu.travel.approval;
 
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.document.DocumentAuthorizerBase;
+import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implementation of {@link org.kuali.rice.krad.uif.view.ViewAuthorizer} for

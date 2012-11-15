@@ -108,10 +108,10 @@
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="notePostedTimestamp" p:readOnly="true"/>
-        <bean parent="Uif-InputField" p:propertyName="authorUniversal.principalName" p:readOnly="true"/>
+        <bean parent="Uif-DataField" p:propertyName="notePostedTimestamp" p:readOnly="true"/>
+        <bean parent="Uif-DataField" p:propertyName="authorUniversal.principalName" p:readOnly="true"/>
         <bean parent="Uif-InputField" p:propertyName="noteTopicText" p:render="@{#DocumentEntry.displayTopicFieldInNotes}"/>
-        <bean parent="Uif-InputField" p:propertyName="noteText" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="noteText" p:required="true" p:readOnly="@{#line.noteText != ''}"/>
         <bean parent="Uif-VerticalFieldGroup" p:label="Attached File" p:render="@{#DocumentEntry.allowsNoteAttachments}">
           <property name="items">
             <list>
@@ -162,7 +162,7 @@
         </bean>
         <!-- TODO: field needs translation to options label when read-only -->
         <bean parent="Uif-InputField" p:propertyName="attachment.attachmentTypeCode"
-              p:render="@{#DocumentEntry.allowsNoteAttachments}"/>
+              p:render="@{#DocumentEntry.allowsNoteAttachments and #DocumentEntry.attachmentTypesValuesFinderClass != null}"/>
         <bean parent="Uif-InputField" p:propertyName="adHocRouteRecipient.id" p:readOnly="@{!#isAddLine}"
               p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}"/>
       </list>

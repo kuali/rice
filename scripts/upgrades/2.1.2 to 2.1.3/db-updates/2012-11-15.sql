@@ -18,8 +18,8 @@
 --    KULRICE-8415 - Large roles cannot be opened or edited in KIM
 --
 
-alter table KRIM_TYP_ATTR_T ADD constraint KRIM_TYP_ATTR_TC1 unique (SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND);
-
+alter table KRIM_TYP_ATTR_T ADD constraint KRIM_TYP_ATTR_TC1 unique (SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND)
+/
 
 
 --

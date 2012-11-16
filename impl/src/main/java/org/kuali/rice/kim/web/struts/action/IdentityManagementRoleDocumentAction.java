@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -539,6 +540,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if (checkDelegationMember(newDelegationMember) && KRADServiceLocatorWeb.getKualiRuleService().applyRules(
                 new AddDelegationMemberEvent("", roleDocumentForm.getRoleDocument(), newDelegationMember))) {
             newDelegationMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
+            if (StringUtils.isEmpty(newDelegationMember.getDelegationTypeCode())) {
+               newDelegationMember.setDelegationTypeCode(DelegationType.SECONDARY.getCode());
+            }
             roleDocumentForm.getRoleDocument().addDelegationMember(newDelegationMember);
             roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
         }

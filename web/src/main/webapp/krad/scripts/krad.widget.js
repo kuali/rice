@@ -341,12 +341,12 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 
     for (i in parameterPairs) {
         var parameters = parameterPairs[i].split(":");
-
-        if (jQuery('[name="' + escapeName(parameters[0]) + '"]').val() == "") {
+        var value = checkDirectInquiryValueValid(jQuery('[name="' + escapeName(parameters[0]) + '"]').val());
+        if (!value) {
             alert(getMessage(kradVariables.MESSAGE_PLEASE_ENTER_VALUE));
             return false;
         } else {
-            queryString = queryString + "&" + parameters[1] + "=" + jQuery('[name="' + escapeName(parameters[0]) + '"]').val();
+            queryString = queryString + "&" + parameters[1] + "=" + value;
         }
     }
 
@@ -368,6 +368,20 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
         queryString = queryString + "&showHistory=false";
         window.open(url + queryString, "_blank", "width=640, height=600, scrollbars=yes");
     }
+}
+
+/**
+ * Removes wildcards and check for empty values
+ *
+ * @param value - value without wildcards or false if empty
+ */
+function checkDirectInquiryValueValid(value) {
+    value = value.replace(/\*/g, '');
+    console.debug(value);
+    if (value == "") {
+        return false;
+    }
+    return value;
 }
 
 /**

@@ -189,9 +189,9 @@
                 <jsSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.js</jsSourceFile>
                 <jsSourceFile>plugins/easing/jquery.easing-1.3.pack.js</jsSourceFile>
               </jsSourceFiles>
-              <cssTargetDir>krad/css</cssTargetDir>
+              <cssTargetDir>krad/min/css</cssTargetDir>
               <cssFinalFile>krad_${project.version}.css</cssFinalFile>
-              <jsTargetDir>krad/scripts</jsTargetDir>
+              <jsTargetDir>krad/min/scripts</jsTargetDir>
               <jsFinalFile>krad_${project.version}.js</jsFinalFile>
             </configuration>
             <goals>
@@ -211,7 +211,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/css</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/css</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/fancybox</directory>
@@ -231,7 +231,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/css</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/css</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/jgrowl</directory>
@@ -251,7 +251,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/css/images</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/css/images</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/jqueryUI/images</directory>
@@ -271,7 +271,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/css</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/css</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/jstree</directory>
@@ -291,7 +291,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/scripts</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/scripts</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/jstree</directory>
@@ -310,7 +310,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/css</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/css</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/rice/datatables</directory>
@@ -331,7 +331,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/css/images</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/css/images</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/rice/datatables/images</directory>
@@ -351,7 +351,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/css/images</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/css/images</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/rice/spinner/images</directory>
@@ -371,7 +371,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <outputDirectory>${basedir}/src/main/webapp/krad/css</outputDirectory>
+              <outputDirectory>${basedir}/src/main/webapp/krad/min/css</outputDirectory>
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp/krad/plugins/tooltip</directory>

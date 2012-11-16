@@ -15,6 +15,12 @@
  */
 package edu.sampleu.travel.approval;
 
+import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.TransactionalDocumentPresentationControllerBase;
 
-public class TravelAuthorizationDocumentPresentationController extends TransactionalDocumentPresentationControllerBase {}
+import java.util.Set;
+
+public class TravelAuthorizationPresentationController extends TransactionalDocumentPresentationControllerBase {
+
+
+}

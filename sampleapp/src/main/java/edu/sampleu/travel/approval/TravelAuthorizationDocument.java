@@ -22,7 +22,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="trv_auth_doc")
-public class TravelAuthorizationDocument extends TransactionalDocumentBase {
+public class TravelAuthorizationDocument  extends TransactionalDocumentBase {
     @Column(name="status")
     private String status;
 

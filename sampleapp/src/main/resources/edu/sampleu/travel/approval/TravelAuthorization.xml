@@ -27,20 +27,10 @@
     <property name="formClass" value="edu.sampleu.travel.approval.TravelAuthorizationForm"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.approval.TravelAuthorizationDocument"/>
     <property name="documentClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocument"/>
+    <property name="items">
+      <list merge="true">
+        <bean parent="Uif-InputField" p:propertyName="status"/>
+      </list>
+    </property>
   </bean>
-
 </beans>
-
-        <!--
-          <bean id="TravelAuthorization" parent="Uif-TransactionalDocumentView">
-            <property name="headerText" value="Travel Authorization Request"/>
-            <property name="items">
-              <list merge="true">
-                <bean parent="Uif-DataField" p:propertyName="DOC_NBR"/>
-                <bean parent="Uif-DataField" p:propertyName="VER_NBR"/>
-                <bean parent="Uif-DataField" p:propertyName="OBJ_ID"/>
-                <bean parent="Uif-DataField" p:propertyName="status"/>
-              </list>
-          </bean>
-
-        </beans>         -->

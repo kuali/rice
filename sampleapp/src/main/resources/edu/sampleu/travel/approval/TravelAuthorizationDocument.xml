@@ -19,36 +19,53 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   <bean id="Uif-TransactionalDocumentView" abstract="true" parent="Uif-TransactionalDocumentView-parentBean"/>
   <bean id="Uif-TransactionalDocumentView-parentBean" parent="Uif-DocumentView" class="edu.sampleu.travel.approval.TransactionalView">
-    <property name="presentationControllerClass" value="org.kuali.rice.krad.document.TransactionalDocumentPresentationControllerBase"/>
+    <property name="presentationControllerClass" value="edu.sampleu.travel.approval.TravelAuthorizationPresentationController"/>
     <property name="authorizerClass" value="edu.sampleu.travel.approval.TravelAuthorizationViewAuthorizer" />
     <property name="viewTypeName" value="TRANSACTION"/>
     <property name="viewName" value="defaultTransaction"/>
   </bean>
 
   <bean id="TravelAuthorizationDocument" parent="TravelAuthorizationDocument-parentBean"/>
-<bean id="TravelAuthorizationDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-<property name="documentTypeName" value="TravelAuthorization"/>
-<property name="documentClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocument"/>
-<property name="businessRulesClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocumentRule"/>
-<property name="documentAuthorizerClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocumentAuthorizer"/>
-<!--
-<property name="workflowAttributes">
-  <ref bean="AssetTransferDocument-workflowAttributes"/>
-</property>
-  -->
-<property name="attributes">
-  <list>
-  </list>
-</property>
+  <bean id="TravelAuthorizationDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
+    <property name="documentTypeName" value="TravelAuthorization"/>
+    <property name="documentClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocument"/>
+    <property name="businessRulesClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocumentRule"/>
+    <property name="documentAuthorizerClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocumentAuthorizer"/>
+    <!-- <property name="workflowAttributes">
+      <list>
+      </list>
+    </property>     -->
+    <property name="attributes">
+      <list>
+        <ref bean="TravelAuthorization-status"/>
+      </list>
+    </property>
+    <property name="defaultExistenceChecks">
+      <list>
+      </list>
+    </property>
 
-<property name="defaultExistenceChecks">
-  <list>
-  </list>
-</property>
+    <property name="relationships">
+      <list>
+      </list>
+    </property>
+  </bean>
 
-<property name="relationships">
-  <list>
-  </list>
-</property>
-</bean>
-  </beans>
+  <bean id="TravelAuthorization-status" parent="TravelAuthorization-status-parentBean"/>
+  <bean id="TravelAuthorization-status-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="status"/>
+    <property name="shortLabel" value="Travel Authorization Status"/>
+    <property name="label" value="Travel Authorization Status"/>
+    <property name="description" value="Travel Authorization Status"/>
+    <property name="maxLength" value="5"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="5"/>
+    </property>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="5"/>
+    </property>
+  </bean>
+</beans>

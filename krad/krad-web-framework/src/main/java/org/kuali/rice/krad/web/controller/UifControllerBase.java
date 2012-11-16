@@ -92,7 +92,7 @@ public abstract class UifControllerBase {
      * @param request - the http request that was made
      */
     @ModelAttribute(value = "KualiForm")
-    public final UifFormBase initForm(HttpServletRequest request) {
+    public UifFormBase initForm(HttpServletRequest request) {
         UifFormBase requestForm = null;
 
         // get Uif form manager from session if exists or setup a new one for the session

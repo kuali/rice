@@ -47,6 +47,6 @@ public class BasicApplicationIT {
         if (port == null || port.trim().equals("")) {
             port = "8080";
         }
-        return "8080";
+        return port;
     }
 }

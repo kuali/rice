@@ -377,7 +377,6 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
  */
 function checkDirectInquiryValueValid(value) {
     value = value.replace(/\*/g, '');
-    console.debug(value);
     if (value == "") {
         return false;
     }

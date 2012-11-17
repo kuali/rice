@@ -134,4 +134,12 @@
         CMPNT_NM="org.kuali.rice.kim.bo.impl.KimAttributes"
         KIM_ATTR_DEFN_ID="9" NM="attachmentTypeCode" NMSPC_CD="KR-NS"
         OBJ_ID="5ADF18B6D4907954E0404F8189D85002" VER_NBR="1"/>
+    <KRIM_ATTR_DEFN_T ACTV_IND="Y"
+        CMPNT_NM="org.kuali.rice.kim.bo.impl.KimAttributes"
+        KIM_ATTR_DEFN_ID="KR1000" LBL="Application Code" NM="appCode"
+        NMSPC_CD="KR-SYS" OBJ_ID="CEA27C3715268653E040F90A05B924A3" VER_NBR="1"/>
+    <KRIM_ATTR_DEFN_T ACTV_IND="Y"
+        CMPNT_NM="org.kuali.rice.kim.bo.impl.KimAttributes"
+        KIM_ATTR_DEFN_ID="KR1001" LBL="Kim Type Name" NM="kimTypeName"
+        NMSPC_CD="KR-IDM" OBJ_ID="CEA27C3715298653E040F90A05B924A3" VER_NBR="1"/>
 </dataset>

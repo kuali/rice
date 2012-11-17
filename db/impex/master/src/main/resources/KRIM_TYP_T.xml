@@ -139,4 +139,8 @@
         NM="Document Type, Route Node, and Route Status"
         NMSPC_CD="KR-SYS" OBJ_ID="CDC48BA7E67687DFE040F90A05B92A31"
         SRVC_NM="documentTypeAndNodeAndRouteStatusPermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KR1001"
+        NM="Backdoor Restriction" NMSPC_CD="KR-SYS"
+        OBJ_ID="CEA27F2DB2D93593E040F90A05B924DB"
+        SRVC_NM="backdoorRestrictionPermissionTypeService" VER_NBR="1"/>
 </dataset>

@@ -2651,6 +2651,12 @@
         <unique name="KRIM_TYP_ATTR_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
+        <unique name="KRIM_TYP_ATTR_TC1">
+            <unique-column name="SORT_CD"/>
+            <unique-column name="KIM_TYP_ID"/>
+            <unique-column name="KIM_ATTR_DEFN_ID"/>
+            <unique-column name="ACTV_IND"/>
+        </unique>
         <index name="KRIM_TYP_ATTRIBUTE_TI1">
             <index-column name="KIM_TYP_ID"/>
         </index>

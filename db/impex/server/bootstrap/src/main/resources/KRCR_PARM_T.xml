@@ -40,6 +40,10 @@
         PARM_DESC_TXT="Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected."
         PARM_NM="DEFAULT_COUNTRY" PARM_TYP_CD="CONFG" VAL="US" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
+        NMSPC_CD="KR-NS" OBJ_ID="CAA025BC0FFDC4F9E040F90A05B912C4"
+        PARM_DESC_TXT="The locale code that should be used within the application when otherwise not specified."
+        PARM_NM="DEFAULT_LOCALE_CODE" PARM_TYP_CD="CONFG" VAL="en-US" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-NS" OBJ_ID="53680C68F59BAD9BE0404F8189D80A6C"
         PARM_DESC_TXT="Flag for enabling/disabling direct inquiries on screens that are drawn by the nervous system (i.e. lookups and maintenance documents)"
         PARM_NM="ENABLE_DIRECT_INQUIRIES_IND" PARM_TYP_CD="CONFG"
@@ -233,4 +237,8 @@
         OBJ_ID="5A689075D35B7AEBE0404F8189D80321"
         PARM_DESC_TXT="Time in milliseconds that the scheduleStep should wait between iterations."
         PARM_NM="STATUS_CHECK_INTERVAL" PARM_TYP_CD="CONFG" VAL="30000" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="TRAVEL" CMPNT_CD="TEST_COMPONENT"
+        EVAL_OPRTR_CD="A" NMSPC_CD="KR-SAP"
+        OBJ_ID="B6A90093AB168D60E040DC0A1F8A1116" PARM_NM="TEST_PARAM"
+        PARM_TYP_CD="HELP" VAL="http://www.kuali.org/?system_parm" VER_NBR="1"/>
 </dataset>

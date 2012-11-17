@@ -357,4 +357,74 @@
         NM="Send Complete Request Kuali Document" NMSPC_CD="KR-SYS"
         OBJ_ID="BFCADCB34017249AE0402E0AA9D7065D" PERM_ID="848"
         PERM_TMPL_ID="49" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to view the group in kitchen sink page 9."
+        NM="View Kitchen Sink Group" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915D6BF1FE040F90A05B94313" PERM_ID="KRSAP10003"
+        PERM_TMPL_ID="58" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to view page 9 in the kitchen sink"
+        NM="View Kitchen Sink Page" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915DABF1FE040F90A05B94313" PERM_ID="KRSAP10004"
+        PERM_TMPL_ID="58" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit the group in page 9 of the kitchen sink"
+        NM="Edit Kitchen Sink Group" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915DEBF1FE040F90A05B94313" PERM_ID="KRSAP10005"
+        PERM_TMPL_ID="59" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to view the field in page 9 of the kitchen sink"
+        NM="View Kitchen Sink Field" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915E2BF1FE040F90A05B94313" PERM_ID="KRSAP10006"
+        PERM_TMPL_ID="56" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit the field in page 9 of the kitchen sink"
+        NM="Edit Kitchen Sink Field" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915E6BF1FE040F90A05B94313" PERM_ID="KRSAP10007"
+        PERM_TMPL_ID="57" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to view the field group in page 9 of the kitchen sink"
+        NM="View Kitchen Sink Field Group" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915EABF1FE040F90A05B94313" PERM_ID="KRSAP10008"
+        PERM_TMPL_ID="56" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit the field group in page 9 of the kitchen sink"
+        NM="Edit Kitchen Sink Field Group" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915EEBF1FE040F90A05B94313" PERM_ID="KRSAP10009"
+        PERM_TMPL_ID="57" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to perform the save action in page 9 of the kitchen sink"
+        NM="Perform Kitchen Sink Action" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915F2BF1FE040F90A05B94313" PERM_ID="KRSAP10010"
+        PERM_TMPL_ID="62" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to view the quickfinder widget in page 9 of the kitchen sink"
+        NM="View Kitchen Sink Widget" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915F6BF1FE040F90A05B94313" PERM_ID="KRSAP10011"
+        PERM_TMPL_ID="60" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to view the collection line in page 9 of the kitchen sink"
+        NM="View Kitchen Sink Line" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915FABF1FE040F90A05B94313" PERM_ID="KRSAP10012"
+        PERM_TMPL_ID="63" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit the collection line in page 9 of the kitchen sink"
+        NM="Edit Kitchen Sink Line" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD8032915FEBF1FE040F90A05B94313" PERM_ID="KRSAP10013"
+        PERM_TMPL_ID="64" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to view the collection line field in page 9 of the kitchen sink"
+        NM="View Kitchen Sink Line Field" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD803291602BF1FE040F90A05B94313" PERM_ID="KRSAP10014"
+        PERM_TMPL_ID="65" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit the collection line field in page 9 of the kitchen sink"
+        NM="Edit Kitchen Sink Line Field" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD803291607BF1FE040F90A05B94313" PERM_ID="KRSAP10015"
+        PERM_TMPL_ID="66" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to perform the delete line action in page 9 of the kitchen sink"
+        NM="Perform Kitchen Sink Line Action" NMSPC_CD="KR-SAP"
+        OBJ_ID="CDD80329160CBF1FE040F90A05B94313" PERM_ID="KRSAP10016"
+        PERM_TMPL_ID="67" VER_NBR="1"/>
 </dataset>

@@ -22,17 +22,15 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="UifCompView-SecureGroupView" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Secure Group View"/>
-    <property name="instructionalText" value="Viewing of group is secured by a KIM permission."/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1">
+        <bean parent="Uif-InputField" p:propertyName="field1">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="5"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2">
+        <bean parent="Uif-InputField" p:propertyName="field2">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="21"/>
           </property>
@@ -43,17 +41,15 @@
   </bean>
 
   <bean id="UifCompView-SecureGroupEdit" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Secure Group Edit"/>
-    <property name="instructionalText" value="Editing of group is secured by a KIM permission."/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 1">
+        <bean parent="Uif-InputField" p:propertyName="field3">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="5"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 2">
+        <bean parent="Uif-InputField" p:propertyName="field4">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="21"/>
           </property>
@@ -64,24 +60,22 @@
   </bean>
 
   <bean id="UifCompView-SecureFields" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Secure Fields"/>
-    <property name="instructionalText" value="Viewing of field 2 and edit of field 3 is secured by a KIM permission."/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field5" p:label="Field 1">
+        <bean parent="Uif-InputField" p:propertyName="field5">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="5"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field6" p:label="Field 2">
+        <bean parent="Uif-InputField" p:propertyName="field6">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="21"/>
           </property>
           <property name="componentSecurity.viewAuthz" value="true"/>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field7" p:label="Field 3">
+        <bean parent="Uif-InputField" p:propertyName="field7">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="21"/>
           </property>
@@ -92,21 +86,18 @@
   </bean>
 
   <bean id="UifCompView-SecureFieldGroups" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Secure Field Groups"/>
-    <property name="instructionalText"
-              value="Viewing of the second field group and editing of the third field group is secured by a KIM permission"/>
     <property name="items">
       <list>
-        <bean parent="Uif-HorizontalFieldGroup">
+        <bean id="UifCompView-SecureFieldGroup1" parent="Uif-HorizontalFieldGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field8" p:label="Field 1">
+              <bean parent="Uif-InputField" p:propertyName="field8">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="field9" p:label="Field 2">
+              <bean parent="Uif-InputField" p:propertyName="field9">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
@@ -115,16 +106,16 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-SecureFieldGroup1" parent="Uif-HorizontalFieldGroup">
+        <bean id="UifCompView-SecureFieldGroup2" parent="Uif-HorizontalFieldGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field10" p:label="Field 3">
+              <bean parent="Uif-InputField" p:propertyName="field10">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="field11" p:label="Field 4">
+              <bean parent="Uif-InputField" p:propertyName="field11">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
@@ -134,16 +125,16 @@
           <property name="componentSecurity.viewAuthz" value="true"/>
         </bean>
 
-        <bean id="UifCompView-SecureFieldGroup2" parent="Uif-HorizontalFieldGroup">
+        <bean id="UifCompView-SecureFieldGroup3" parent="Uif-HorizontalFieldGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field12" p:label="Field 5">
+              <bean parent="Uif-InputField" p:propertyName="field12">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="field13" p:label="Field 6">
+              <bean parent="Uif-InputField" p:propertyName="field13">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
@@ -157,12 +148,10 @@
   </bean>
 
   <bean id="UifCompView-SecureActions" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Secure Actions"/>
-    <property name="instructionalText" value="Ability to perform the Save action is secured by a KIM permission."/>
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save" p:actionEvent="save">
+        <bean id="UifCompView-SecureAction1" parent="Uif-PrimaryActionButton" p:methodToCall="close"/>
+        <bean id="UifCompView-SecureAction2" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionEvent="save">
           <property name="componentSecurity.performActionAuthz" value="true"/>
         </bean>
       </list>
@@ -170,11 +159,9 @@
   </bean>
 
   <bean id="UifCompView-SecureWidgets" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Secure Widgets"/>
-    <property name="instructionalText" value="Ability to use quickfinder is secured by a KIM permission."/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field14">
+        <bean parent="Uif-InputField" p:propertyName="field14">
           <property name="quickfinder.id" value="UifCompView-SecureWidget"/>
           <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           <property name="quickfinder.fieldConversions" value="number:field60"/>
@@ -185,80 +172,68 @@
   </bean>
 
   <bean id="UifCompView-SecureLineView" parent="Uif-TableCollectionSection">
-    <property name="headerText" value="Secure Line View"/>
-    <property name="instructionalText" value="Ability to view a collection line is controlled by a KIM permission."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list1"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
     <property name="componentSecurity.viewLineAuthz" value="true"/>
   </bean>
 
   <bean id="UifCompView-SecureLineEdit" parent="Uif-TableCollectionSection">
-    <property name="headerText" value="Secure Line Edit"/>
-    <property name="instructionalText" value="Ability to edit a collection line is controlled by a KIM permission."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list2"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
     <property name="componentSecurity.editLineAuthz" value="true"/>
   </bean>
 
   <bean id="UifCompView-SecureLineFields" parent="Uif-TableCollectionSection">
-    <property name="headerText" value="Secure Line Fields"/>
-    <property name="instructionalText"
-              value="Ability to view field 2 or edit field 3 is controlled by a KIM permission."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list3"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"
-              p:componentSecurity.viewInLineAuthz="true"/>
-        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"
-              p:componentSecurity.editInLineAuthz="true"/>
-        <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:required="true" p:componentSecurity.viewInLineAuthz="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:componentSecurity.editInLineAuthz="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
   </bean>
 
   <bean id="UifCompView-SecureLineActions" parent="Uif-TableCollectionSection">
-    <property name="headerText" value="Secure Line Actions"/>
-    <property name="instructionalText"
-              value="Ability to perform the line delete action is controlled by a KIM permission."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list4"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
-        <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
     <property name="lineActions">
       <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
+        <bean id="UifCompView-DeleteAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine"
               p:actionEvent="delete" p:componentSecurity.performLineActionAuthz="true"/>
       </list>
     </property>

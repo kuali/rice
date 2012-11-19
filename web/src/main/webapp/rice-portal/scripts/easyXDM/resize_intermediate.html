@@ -38,7 +38,7 @@
                         var d = iframe.contentWindow.document;
                         var originalHeight =  jQuery(d).find('#view_div').height();
                         originalHeight += 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers
-                        var oldHeight = originalHeight;  // to avoid dancing when table labels wrap/unwrap on screen resize
+                        var oldHeight = originalHeight;  // to avoid flashing vertical scroll bar in Google Chrome when table labels wrap/unwrap on screen resize
 
                         // We want to monitor the document for resize events in case of the use of accordions and such,
                         // but unfortunately only the window node emits the resize event, and we need the body's.
@@ -50,7 +50,7 @@
                                 try {
                                     var d = iframe.contentWindow.document;
                                     var newHeight = jQuery(d).find('#view_div').height();
-                                    if(newHeight != originalHeight && newHeight != oldHeight) {
+                                    if(newHeight != originalHeight && newHeight + 45 != oldHeight) {
                                         // The height has changed since last we checked
                                         oldHeight = originalHeight;
                                         originalHeight = newHeight + 45; // +45 needed otherwise double vertical scroll bar will reappear with horizontal scroll bar in some browsers

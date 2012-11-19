@@ -19,6 +19,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
+import org.apache.commons.lang.StringUtils
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -35,5 +36,20 @@ public class RoleMemberAttributeDataBo extends KimAttributeDataBo {
 
     public void setAssignedToId(String roleMemberId) {
         this.assignedToId = roleMemberId;
+    }
+
+    public boolean equals(RoleMemberAttributeDataBo roleMemberAttributeDataBo)
+    {
+        if(!StringUtils.equals(roleMemberAttributeDataBo.getKimTypeId(),getKimTypeId())){
+            return false;
+        }
+        if(!StringUtils.equals(roleMemberAttributeDataBo.getKimAttributeId(),getKimAttributeId())) {
+            return false;
+        }
+        if(!StringUtils.equals(roleMemberAttributeDataBo.getAttributeValue(),getAttributeValue())) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -197,7 +197,7 @@
 			    	<bean-el:message key="lookup.using.primary.keys" arg0="${KualiForm.primaryKeyFieldLabels}"/>
 			    	<br/><br/>
 			    </c:if>
-			    <c:if test="${!empty reqSearchResults && !KualiForm.hasReturnableRow && KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues}">
+			    <c:if test="${empty reqSearchResults && !KualiForm.hasReturnableRow && KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues}">
     				<bean-el:message key="lookup.no.returnable.rows" />
     				<br/><br/>
     			</c:if>

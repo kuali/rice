@@ -52,7 +52,8 @@ public class KrmsRetriever {
     public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(AgendaEditor agendaEditor) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
         // if we have an rule action w/ a typeId set on it
-        if (!StringUtils.isBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
+        if (agendaEditor != null && agendaEditor.getAgendaItemLineRuleAction() != null
+                &&!StringUtils.isBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
             ActionTypeService actionTypeService = getActionTypeService(agendaEditor.getAgendaItemLineRuleAction().getTypeId());
             results.addAll(actionTypeService.getAttributeFields(agendaEditor.getAgendaItemLineRuleAction().getTypeId()));
         }
@@ -103,7 +104,8 @@ public class KrmsRetriever {
     public List<RemotableAttributeField> retrieveAgendaCustomAttributes(AgendaEditor agendaEditor) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
         // if we have an agenda w/ a typeId set on it
-        if (agendaEditor.getAgenda() != null && !StringUtils.isBlank(agendaEditor.getAgenda().getTypeId())) {
+        if (agendaEditor != null && agendaEditor.getAgenda() != null
+                && !StringUtils.isBlank(agendaEditor.getAgenda().getTypeId())) {
 
             String krmsTypeId = agendaEditor.getAgenda().getTypeId();
 
@@ -141,7 +143,7 @@ public class KrmsRetriever {
     public List<RemotableAttributeField> retrieveRuleCustomAttributes(AgendaEditor agendaEditor) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
         // if we have an rule w/ a typeId set on it
-        if (agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
+        if (agendaEditor != null && agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
                 && !StringUtils.isBlank(agendaEditor.getAgendaItemLine().getRule().getTypeId())) {
 
             String krmsTypeId = agendaEditor.getAgendaItemLine().getRule().getTypeId();

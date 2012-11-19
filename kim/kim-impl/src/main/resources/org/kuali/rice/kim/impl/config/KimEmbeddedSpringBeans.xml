@@ -162,7 +162,7 @@
         p:namespaceRequiredOnStoredMap="true"/>
 
   <bean id="groupPermissionTypeService"
-        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
+        class="org.kuali.rice.krad.kim.PopulateGroupPermissionTypeServiceImpl"
         p:exactMatchStringAttributeName="groupName"
         p:namespaceRequiredOnStoredMap="true"/>
 
@@ -184,6 +184,11 @@
   <bean id="rice.kim.import.persistenceServiceOjb"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="persistenceServiceOjb"/>
+
+  <bean id="uiDocumentServiceDAO" class="org.kuali.rice.kim.service.dao.impl.UiDocumentServiceDAOJdbcImpl"
+        lazy-init="true">
+    <property name="dataSource" ref="kimDataSource"/>
+  </bean>
 
   <bean id="kimModuleConfiguration-parentBean" class="org.kuali.rice.krad.bo.ModuleConfiguration" abstract="true"
         p:namespaceCode="KR-IDM"

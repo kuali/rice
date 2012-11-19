@@ -23,6 +23,8 @@
 <c:set var="readOnlyAssignees" scope="request" value="${!KualiForm.canAssignRole || readOnly}" />
 <c:set var="canModifyAssignees" scope="request" value="${KualiForm.canModifyAssignees && !readOnlyAssignees}" />
 <c:set var="editingDocument" scope="request" value="${KualiForm.document.editing}" />
+<c:set var="memberSearchValue" scope="request" value="${KualiForm.memberSearchValue}" />
+
 
 <c:set var="formAction" value="identityManagementRoleDocument" />
 <c:if test="${inquiry}">

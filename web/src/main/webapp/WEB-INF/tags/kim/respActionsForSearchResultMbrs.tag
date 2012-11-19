@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <%@ attribute name="mbrIdx" required="true" description="The index of the member in the list of members on the IdentityManagementRoleDocument to display role responsibility actions for." %>
-<c:set var="roleMember" value="${KualiForm.document.members[mbrIdx]}"/>
+<c:set var="roleMember" value="${KualiForm.document.searchResultMembers[mbrIdx]}"/>
 <c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />
 
 <kul:subtab lookedUpCollectionName="roleRspActions" noShowHideButton="true" width="${tableWidth}" subTabTitle="Responsibility Actions">
@@ -35,22 +35,22 @@
         		</td>
 				<td>
 					<div align="center">
-		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(roleRspAction.actionTypeDescription)}" readOnly="true" />
+		            	<kul:htmlControlAttribute property="document.searchResultMembers[${mbrIdx}].roleRspActions[${actionStatus.index}].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(roleRspAction.actionTypeDescription)}" readOnly="true" />
 		            </div>
         		</td>
         		<td>
 	        		<div align="center">
-		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].priorityNumber"  attributeEntry="${docRoleRspActionAttributes.priorityNumber}" readOnly="true" />
+		            	<kul:htmlControlAttribute property="document.searchResultMembers[${mbrIdx}].roleRspActions[${actionStatus.index}].priorityNumber"  attributeEntry="${docRoleRspActionAttributes.priorityNumber}" readOnly="true" />
 	        		</div>
         		</td>
         		<td>
 	        		<div align="center">
-		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${fn:escapeXml(roleRspAction.actionPolicyDescription)}" readOnly="true" />
+		            	<kul:htmlControlAttribute property="document.searchResultMembers[${mbrIdx}].roleRspActions[${actionStatus.index}].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${fn:escapeXml(roleRspAction.actionPolicyDescription)}" readOnly="true" />
 	        		</div>
         		</td>
 	       		<td>
 	        		<div align="center">
-		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].forceAction"  attributeEntry="${docRoleRspActionAttributes.forceAction}" readOnly="true" />
+		            	<kul:htmlControlAttribute property="document.searchResultMembers[${mbrIdx}].roleRspActions[${actionStatus.index}].forceAction"  attributeEntry="${docRoleRspActionAttributes.forceAction}" readOnly="true" />
 	        		</div>
 	       		</td>
 		    </tr>

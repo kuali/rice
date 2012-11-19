@@ -376,17 +376,20 @@ public class KualiTableRenderFormMetadata {
         // If the user has decided to resort by the same column that the list is currently sorted by, then assume that s/he wants to reverse the order of the sort
         if (!StringUtils.isEmpty(columnToSortOn) && !StringUtils.isEmpty(previouslySortedColumnName) && columnToSortOn.equals(previouslySortedColumnName)) {
             // we're already sorted on the same column that the user clicked on, so we reverse the list
-        	if (isSortDescending())
-        		comparator = Collections.reverseOrder(comparator);
+            if (isSortDescending())
+                comparator = Collections.reverseOrder(comparator);
 
-        	setSortDescending(!isSortDescending());
+            setSortDescending(!isSortDescending());
         } else {
         	// Track which column we're currently sorting, so that the above logic will work on the next sort
         	setPreviouslySortedColumnName(columnToSortOn);
         	setSortDescending(true);
         }
 
-        Collections.sort(items, comparator);
+        //if the user is just going between pages no need to sort
+        if (getSwitchToPageNumber() == getViewedPageNumber()) {
+            Collections.sort(items, comparator);
+        }
 
 		jumpToFirstPage(items.size(), maxRowsPerPage);
     }

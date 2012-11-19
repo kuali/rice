@@ -54,7 +54,7 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         String id = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         String altId =  request.getParameter(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID);
-        
+
         String roleId = StringUtils.isNotEmpty(id) ? id : altId;
         Role role = KimApiServiceLocator.getRoleService().getRole(roleId);
         if (role != null) {
@@ -78,7 +78,11 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
 
         KualiTableRenderFormMetadata memberTableMetadata =  roleDocumentForm.getMemberTableMetadata();
         memberTableMetadata.setPreviouslySortedColumnName(previouslySortedColumnName);
-        if (sortDescending != null) {
+        String columnToSort = memberTableMetadata.getColumnToSortName();
+        if  (previouslySortedColumnName != null && StringUtils.isEmpty(columnToSort)) {
+            memberTableMetadata.setColumnToSortName(previouslySortedColumnName);
+        }
+        if (sortDescending != null && !StringUtils.isEmpty(columnToSort)) {
             memberTableMetadata.setSortDescending(sortDescending.booleanValue());
         }
         if (roleDocumentForm.getMemberRows() != null) {
@@ -93,6 +97,30 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
     }
 
     public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward search(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        String memberSearchValue = roleDocumentForm.getMemberSearchValue();
+        if (memberSearchValue != null && !memberSearchValue.isEmpty()) {
+            memberSearchValue = memberSearchValue.replaceAll("[%*]","");
+            getUiDocumentService().loadRoleMembersBasedOnSearch(roleDocumentForm.getRoleDocument(), memberSearchValue);
+        } else {
+            clear(mapping, form, request, response);
+        }
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        roleDocumentForm.setMemberSearchValue("");
+        getUiDocumentService().clearRestrictedRoleMembersSearchResults(roleDocumentForm.getRoleDocument());
+
+        KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
+        if (roleDocumentForm.getMemberRows() != null) {
+            memberTableMetadata.jumpToFirstPage(roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
+        }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 }

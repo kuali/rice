@@ -141,6 +141,17 @@
     </property>
     <property name="singlePageView" value="false"/>
     <property name="entryPageId" value="AgendaEditorView-Agenda-Page"/>
+    <property name="propertyReplacers">
+      <list>
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items[0].items" p:condition="dataObject eq null">
+          <property name="replacement">
+            <list>
+              <bean parent="Uif-MessageField" p:messageText="No records found for the given parameters."/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
 </beans>

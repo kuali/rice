@@ -165,10 +165,8 @@
 				</th>
 	            <td align="left" valign="middle">
 	               	<div align="center">
-						<c:set var="jumpToRoleMemberAnchorName" value="methodToCall.jumpToRoleMember.dmrmi${KualiForm.document.delegationMembers[statusMember.index].roleMemberId}" />
-			  	   		${kfunc:registerEditableProperty(KualiForm, jumpToRoleMemberAnchorName)}
-						<input type="submit" tabindex="${tabindex}" name="${jumpToRoleMemberAnchorName}" value="${KualiForm.document.delegationMembers[statusMember.index].roleMemberNamespaceCode}&nbsp;${KualiForm.document.delegationMembers[statusMember.index].roleMemberName}"/>
-					</div>
+						<c:out value="${member.roleMemberNamespaceCode} ${member.roleMemberName}" />
+			  	</div>
 				</td>
 	            <td align="left" valign="middle">
 	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].memberTypeCode"  attributeEntry="${delegationMemberAttributes.memberTypeCode}" disabled="true" readOnly="false" />

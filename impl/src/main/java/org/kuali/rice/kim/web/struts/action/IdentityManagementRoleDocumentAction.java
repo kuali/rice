@@ -19,12 +19,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -49,6 +51,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,14 +73,14 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public static final String REMOVE_AFFECTED_DELEGATES_QUESTION_ID = "RemoveAffectedDelegates";
 
     protected List<String> methodToCallToUncheckedList = new ArrayList<String>();
-	
+
     /**
      * This method doesn't actually sort the column - it's just that we need a sort method in
      * order to exploit the existing methodToCall logic. The sorting is handled in the execute
      * method below, and delegated to the KualiTableRenderFormMetadata object. 
-     * 
+     *
      * @param mapping
-     * @param form 
+     * @param form
      * @param request
      * @param response
      * @return
@@ -101,25 +104,27 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     }
 
     public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
+        memberTableMetadata.setSwitchToPageNumber(0);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     @Override
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         if (roleDocumentForm.getRoleId() == null) {
             String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID);
             roleDocumentForm.setRoleId(roleId);
         }
 
-		KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
-		if (roleDocumentForm.getRoleDocument()!=null && roleDocumentForm.getMemberRows() != null) {
-			memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
-			// KULRICE-3972: need to be able to sort by column header like on lookups when editing large roles and groups
-			memberTableMetadata.sort(roleDocumentForm.getMemberRows(), roleDocumentForm.getRecordsPerPage());
-		}
+        KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
+        if (roleDocumentForm.getRoleDocument()!=null && roleDocumentForm.getMemberRows() != null) {
+            memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
+            // KULRICE-3972: need to be able to sort by column header like on lookups when editing large roles and groups
+            memberTableMetadata.sort(roleDocumentForm.getMemberRows(), roleDocumentForm.getRecordsPerPage());
+        }
 
         // KULRICE-4762: active delegates of "inactivated" role members cause validation problems
         ActionForward forward = promptForAffectedDelegates(mapping, form, request, response,
@@ -149,8 +154,11 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         setKimType(roleDocumentForm.getRoleDocument().getRoleTypeId(), roleDocumentForm);
-        getUiDocumentService().setDelegationMembersInDocument(roleDocumentForm.getRoleDocument());
 
+        Role role = KimApiServiceLocator.getRoleService().getRole(roleDocumentForm.getRoleDocument().getRoleId());
+        getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
+
+        getUiDocumentService().setDelegationMembersInDocument(roleDocumentForm.getRoleDocument());
         roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
         roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
 
@@ -315,16 +323,38 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
             Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(newMember.getMemberName());
             if (principal != null) {
                 newMember.setMemberId(principal.getPrincipalId());
+                String fullName = checkMemberFullName(principal.getPrincipalId());
+                if (fullName != null) {
+                    newMember.setMemberFullName(fullName);
+                }
+            }
+        } else if ( StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode())
+                && StringUtils.isNotEmpty(newMember.getMemberId())
+                && StringUtils.isNotEmpty(newMember.getMemberName())) {
+            String fullName = checkMemberFullName(newMember.getMemberId());
+            if (fullName != null) {
+                newMember.setMemberFullName(fullName);
             }
         }
+
         if (checkKimDocumentRoleMember(newMember) &&
                 KRADServiceLocatorWeb.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))) {
             newMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
             roleDocumentForm.getRoleDocument().addMember(newMember);
             roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
-            roleDocumentForm.getMemberTableMetadata().jumpToLastPage(roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    protected String checkMemberFullName(String principalId) {
+        Principal principal = getIdentityService().getPrincipal(principalId);
+        if (principal != null) {
+            Person psn = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principal.getPrincipalName());
+            if (psn != null) {
+                return psn.getFirstName() + " " + psn.getLastName();
+            }
+        }
+        return null;
     }
 
     protected boolean checkKimDocumentRoleMember(KimDocumentRoleMember newMember) {
@@ -375,7 +405,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     public ActionForward deleteMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        KimDocumentRoleMember inactivatedRoleMember = roleDocumentForm.getRoleDocument().getMembers().get(getLineToDelete(request));
+        KimDocumentRoleMember inactivatedRoleMember = roleDocumentForm.getRoleDocument().getModifiedMembers().get(getLineToDelete(request));
 
         // KULRICE-4762: active delegates of "inactivated" role members cause validation problems
         ActionForward forward = promptForAffectedDelegates(mapping, form, request, response,
@@ -388,7 +418,50 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         Calendar cal = Calendar.getInstance();
         inactivatedRoleMember.setActiveToDate(new Timestamp(cal.getTimeInMillis()));
 
-        roleDocumentForm.getRoleDocument().getMembers().set(getLineToDelete(request), inactivatedRoleMember);
+        roleDocumentForm.getRoleDocument().getModifiedMembers().set(getLineToDelete(request), inactivatedRoleMember);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward editMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        KimDocumentRoleMember roleMemberToEdit = roleDocumentForm.getRoleDocument().getMembers().get(getLineToEdit(request));
+        KimDocumentRoleMember copiedMember = (KimDocumentRoleMember)ObjectUtils.deepCopy(roleMemberToEdit);
+        roleDocumentForm.getRoleDocument().getModifiedMembers().add(copiedMember);
+        roleDocumentForm.getRoleDocument().getMembers().remove(roleMemberToEdit);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward editSearchResultsMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        KimDocumentRoleMember roleMemberToEdit = roleDocumentForm.getRoleDocument().getSearchResultMembers().get(getLineToEdit(request));
+        KimDocumentRoleMember copiedMember = (KimDocumentRoleMember)ObjectUtils.deepCopy(roleMemberToEdit);
+        roleDocumentForm.getRoleDocument().getModifiedMembers().add(copiedMember);
+        roleDocumentForm.getRoleDocument().getSearchResultMembers().remove(roleMemberToEdit);
+        roleDocumentForm.getRoleDocument().getMembers().remove(roleMemberToEdit);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward search(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        String memberSearchValue = roleDocumentForm.getMemberSearchValue();
+        if (memberSearchValue != null && !memberSearchValue.isEmpty()) {
+            memberSearchValue = memberSearchValue.replaceAll("[%*]","");
+            getUiDocumentService().loadRoleMembersBasedOnSearch(roleDocumentForm.getRoleDocument(), memberSearchValue);
+        } else {
+            clear(mapping, form, request, response);
+        }
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        roleDocumentForm.setMemberSearchValue("");
+        getUiDocumentService().clearRestrictedRoleMembersSearchResults(roleDocumentForm.getRoleDocument());
+
+        KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
+        if (roleDocumentForm.getMemberRows() != null) {
+            memberTableMetadata.jumpToFirstPage(roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
+        }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -467,6 +540,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if (checkDelegationMember(newDelegationMember) && KRADServiceLocatorWeb.getKualiRuleService().applyRules(
                 new AddDelegationMemberEvent("", roleDocumentForm.getRoleDocument(), newDelegationMember))) {
             newDelegationMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
+            if (StringUtils.isEmpty(newDelegationMember.getDelegationTypeCode())) {
+               newDelegationMember.setDelegationTypeCode(DelegationType.SECONDARY.getCode());
+            }
             roleDocumentForm.getRoleDocument().addDelegationMember(newDelegationMember);
             roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
         }
@@ -514,9 +590,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
      * @param roleMembersToConsiderInactive additional role members to consider inactive for the purposes of this computation
      */
     private ActionForward promptForAffectedDelegates(ActionMapping mapping,
-                                                     ActionForm form, HttpServletRequest request,
-                                                     HttpServletResponse response,
-                                                     IdentityManagementRoleDocumentForm roleDocumentForm, KimDocumentRoleMember... roleMembersToConsiderInactive)
+            ActionForm form, HttpServletRequest request,
+            HttpServletResponse response,
+            IdentityManagementRoleDocumentForm roleDocumentForm, KimDocumentRoleMember... roleMembersToConsiderInactive)
             throws Exception {
         // KULRICE-4762: Role: Removed an Assignee who has delegations associated with him and now the Role cannot be updated
         // To solve this issue, prompt for confirmation if there are active delegates for the role member being "inactivated",
@@ -548,9 +624,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
      * will cancel further action.
      */
     private ActionForward getAffectedDelegatesQuestionActionForward(List<RoleDocumentDelegationMember> activeDelegatesOfInactiveRoleMembers,
-                                                                    ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                                                    HttpServletResponse response,
-                                                                    IdentityManagementRoleDocumentForm roleDocumentForm)
+            ActionMapping mapping, ActionForm form, HttpServletRequest request,
+            HttpServletResponse response,
+            IdentityManagementRoleDocumentForm roleDocumentForm)
             throws Exception {
 
         if (activeDelegatesOfInactiveRoleMembers.size() > 0) {

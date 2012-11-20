@@ -117,7 +117,6 @@
                 </property>
                 <property name="fieldLookup.lookupParameters">
                   <map>
-                    <entry key="agendaItemLine.rule.id" value="id"/>
                     <entry key="copyRuleName" value="name"/>
                     <entry key="agendaItemLine.rule.namespace" value="namespace"/>
                   </map>

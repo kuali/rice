@@ -348,6 +348,25 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         testCancelConfirmation();
     }
 
+    protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
+        selectFrame("iframeportlet");
+        waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.DTS_TWO);
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number", "1234567890");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
+
+        waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");
+
+        assertElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number", "https://jira.kuali.org/browse/KULRICE-8564");
+
+        assertEquals("1234567890", getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number","value"));
+        assertEquals("2", getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId","value"));
+
+        waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
+
+        assertElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
+        passed();
+    }
+
     protected void waitAndCancelConfirmation() throws InterruptedException {
         waitAndClickByName("methodToCall.cancel");
         waitAndClickByName("methodToCall.processAnswer.button0");

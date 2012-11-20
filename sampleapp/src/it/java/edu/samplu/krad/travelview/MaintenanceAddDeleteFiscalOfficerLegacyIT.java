@@ -15,11 +15,8 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.KradMenuLegacyITBase;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,21 +34,7 @@ public class MaintenanceAddDeleteFiscalOfficerLegacyIT extends KradMenuLegacyITB
      */
     public void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
         gotoMenuLinkLocator();
-        waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.DTS_TWO);
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number", "1234567890");
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
-        
-        waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");
-
-        assertElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number", "https://jira.kuali.org/browse/KULRICE-8564");
-
-        assertEquals("1234567890", getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number","value"));
-        assertEquals("2", getAttributeByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId","value"));
-       
-        waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
-        
-        assertElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
-        passed();
+        testVerifyAddDeleteFiscalOfficerLegacy();
     }
 
 }

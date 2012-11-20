@@ -92,6 +92,11 @@ public class UifDateEditor extends PropertyEditorSupport implements Serializable
      */
     protected Object convertToObject(String text) throws IllegalArgumentException {
         try {
+            // Allow user to clear dates
+            if (text == null || text.equals("")) {
+                return null;
+            }
+
             Date result = getDateTimeService().convertToSqlDate(text);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(result);

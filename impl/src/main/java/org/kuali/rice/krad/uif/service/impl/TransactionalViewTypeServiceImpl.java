@@ -94,7 +94,7 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
                 }
                 if (document != null) {
                     String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
-                    Class<?> objectClassName = getDocumentDictionaryService().getMaintenanceDataObjectClass(docTypeName);
+                    Class<?> objectClassName = getDocumentDictionaryService().getDocumentClassByName(docTypeName);
                     if (objectClassName != null) {
                         objectClassFound = true;
                         parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, objectClassName.getName());

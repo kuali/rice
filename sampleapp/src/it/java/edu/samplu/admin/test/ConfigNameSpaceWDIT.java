@@ -24,7 +24,7 @@ import org.junit.Test;
  */
 
 public class ConfigNameSpaceWDIT extends WebDriverLegacyITBase {
-    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Role&channelUrl=" + ITUtil.getBaseUrlString() +
+    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Namespace&channelUrl=" + ITUtil.getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
     @Override

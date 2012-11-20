@@ -154,7 +154,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try{
                 driver.findElement(By.name(name));
         }catch(Exception e){
-                Assert.fail(name+ " not present "+ message);                
+                Assert.fail(name+ " not present "+ message);
         }
     }
 
@@ -458,7 +458,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             (driver.findElement(by)).click();
         } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + " " + message);
+            fail(e.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl() );
             e.printStackTrace();
         }
     }
@@ -496,7 +496,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + " " + text);
+            fail(e.getMessage() + " " + by.toString() + " " + text + " " + driver.getCurrentUrl());
             e.printStackTrace();
         }
     }
@@ -506,7 +506,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + " " + text + "  "+message);
+            fail(e.getMessage() + " " + by.toString() + " " + text + "  " + message + " " + driver.getCurrentUrl());
             e.printStackTrace();
         }
     }
@@ -655,7 +655,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             Thread.sleep(1000);
         }
         checkForIncidentReport(elementLocator); // after timeout to be sure page is loaded
-        if (failed) fail("timeout of 60 seconds waiting for " + elementLocator + " " + message);
+        if (failed) fail("timeout of 60 seconds waiting for " + elementLocator + " " + message + " " + driver.getCurrentUrl());
     }
     
     protected void waitIsVisible(String locator) throws InterruptedException {

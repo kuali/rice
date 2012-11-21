@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class eDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
+public class IUeDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
     // values set by default for repeatable testing; left as configurable for load tests
     private List<File> fileUploadList;
 
@@ -51,7 +51,7 @@ public class eDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
         // Load the directory as a resource
         // Turn the resource into a File object
 
-        File dir = new File("src/it/resources");
+        File dir = new File("src/it/resources/IU");
 
         if (dir != null && dir.listFiles().length > 0) {
             Integer i = 1;
@@ -87,14 +87,7 @@ public class eDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
         waitAndClick(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]"));
         Thread.sleep(2000);
 
-        assertEquals("eDoc.Example1Doctype", driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[3]"))
-                .getText());
-        assertEquals("InterviewRequest", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[2]/td[3]")).getText());
-        assertEquals("OfferRequest", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[3]/td[3]")).getText());
-        assertEquals("SearchStatus", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[4]/td[3]")).getText());
-        assertEquals("VacancyNotice", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[5]/td[3]")).getText());
-        assertEquals("WaiverRequest", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[6]/td[3]")).getText());
-
+       
         driver.switchTo().defaultContent();
 
         waitAndClickByXpath("//input[@name='imageField' and @value='Logout']");
@@ -116,6 +109,10 @@ public class eDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
                 List<List<File>> subLists = getSubListsForFile(fileUploadList, 10);
                 for (List<File> fileSet : subLists) {
                     fileIngester(fileSet);
+                    for (File file : fileSet) {
+                        assertTextPresent("Ingested xml doc: " + file.getName());
+                    }
+
                 }
             } else {
                 fileIngester(fileUploadList);
@@ -149,11 +146,7 @@ public class eDocLiteXMLIngestLegacyIT extends AdminMenuLegacyITBase {
         waitAndClickByXpath("//*[@id='imageField']");
         Thread.sleep(1000);
         // confirm all files were uploaded successfully
-        for (File file : fileToUpload) {
-            assertTextPresent("Ingested xml doc: " + file.getName());
-
-        }
-    }
+            }
 
     /**
      * Divides fileUploadList from resources into sublists to match the maximum number of file

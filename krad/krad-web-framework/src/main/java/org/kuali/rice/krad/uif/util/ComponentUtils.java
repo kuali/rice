@@ -241,7 +241,7 @@ public class ComponentUtils {
         Component foundComponent = null;
 
         for (Component component : components) {
-            if (component != null && component.getId().equals(componentId)) {
+            if (component != null && component.getId() != null && component.getId().equals(componentId)) {
                 foundComponent = component;
                 break;
             }

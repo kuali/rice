@@ -33,18 +33,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <bean parent="Uif-DataField" p:propertyName="number"/>
                 <bean parent="Uif-DataField" p:propertyName="name"/>
                 <bean parent="Uif-DataField" p:propertyName="extension.accountType.codeAndDescription"/>
-                <bean parent="Uif-DataField" p:propertyName="subAccount" p:label="@msg{subAccountLabel}"/>
+                <bean parent="Uif-DataField" p:propertyName="subAccount"/>
                 <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
                 <bean parent="Uif-DataField" p:propertyName="createDate"/>
                 <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
                 <bean parent="Uif-DataField" p:propertyName="foId"/>
                </list>
              </property>
-             <property name="headerText" value="@msg{inquirySectionHeader}Account Information"/>
+             <property name="headerText" value="Account Information"/>
            </bean>
 
            <bean id="TravelAccount-InquiryView-FO1" parent="Uif-Disclosure-StackedCollectionSection">
-              <property name="headerText" value="@msg{TravelAccount-InquiryView-General:inquirySectionHeader}Fiscal Officer Accounts"/>
+              <property name="headerText" value="Fiscal Officer Accounts"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="items">

@@ -19,7 +19,11 @@
 <html>
     <#-- now render the updated component (or page) wrapped in an update div -->
     <div id="page_update">
-        <#-- rerun view pre-load script to get new state variables for component -->
+        <#list view.viewTemplates as viewTemplate>
+            <#include "${viewTemplate}" parse=true/>
+        </#list>
+
+            <#-- rerun view pre-load script to get new state variables for component -->
             <@krad.script value="${view.preLoadScript!}" component=Component/>
 
             <@krad.template componentUpdate=true component=Component/>

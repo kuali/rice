@@ -120,7 +120,6 @@ public class Help extends WidgetBase {
      *
      * @param view - used to get the default namespace
      * @param parent used to get the help title text used in the html title attribute of the help icon
-
      */
     protected void buildExternalHelp(View view, Component parent) {
         if (StringUtils.isBlank(externalHelpUrl) && (helpDefinition != null)) {

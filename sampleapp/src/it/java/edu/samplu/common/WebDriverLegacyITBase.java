@@ -386,7 +386,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void waitAndSearch() throws InterruptedException {
-        waitAndClick("input[alt='search']");
+        waitAndClickByXpath("//input[@value='search']");
+//        waitAndClickByXpath("//input[@name='methodToCall.search']");
+//        waitAndClick("input[alt='search']");
 //        waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
     }
 

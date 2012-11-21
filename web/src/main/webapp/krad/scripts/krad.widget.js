@@ -278,15 +278,33 @@ function isCalledWithinLightbox() {
 }
 
 /*
+ * Reload page with lookup result URL
+ */
+function returnLookupResultReload(aElement) {
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
+        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', aElement.attr('href'));
+    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
+        // portal and content on different domain
+        parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', aElement.attr('href'))
+    } else {
+        window.open(aElement.attr('href'), aElement.attr('target'));
+    }
+}
+
+/*
  * Function that returns lookup results by script
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-    if (usePortalForContext() && isPortalContainer(top)) {
-        returnField = top.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('[name="' +
-                escapeName(fieldName) + '"]');
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
+        returnField = top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('[name="' + escapeName(fieldName) + '"]');
+    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
+        // portal and content on different domain
+        returnField = parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('[name="' + escapeName(fieldName) + '"]');
     } else {
-        returnField = getContext()('[name="' + escapeName(fieldName) + '"]');
+        returnField = top.jq('[name="' + escapeName(fieldName) + '"]');
     }
 
     if (!returnField.length) {
@@ -306,18 +324,17 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    var returnWindowName;
-    if (usePortalForContext() && isPortalContainer(top)) {
-        returnWindowName = top.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).attr('name');
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
+        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('#' + kradVariables.KUALI_FORM).attr('target',kradVariables.PORTAL_IFRAME_ID);
+    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
+        // portal and content on different domain
+        parent.jQuery('#' + kradVariables.KUALI_FORM).attr('target',kradVariables.PORTAL_IFRAME_ID);
+    } else if (parent != null) {
+        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target',parent.name);
+    } else {
+        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target','_parent');
     }
-    else if (parent != null) {
-        returnWindowName = parent.name;
-    }
-    else {
-        returnWindowName = '_parent';
-    }
-
-    jQuery('#' + kradVariables.KUALI_FORM).attr('target', returnWindowName);
 }
 
 /**

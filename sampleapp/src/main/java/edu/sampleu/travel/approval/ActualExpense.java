@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package edu.sampleu.travel.approval;
 
-import org.kuali.rice.krad.document.TransactionalDocumentBase;
-
-import javax.persistence.*;
-
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-@Table(name="TRVL_AUTH_DOC_T")
-public class TravelAuthorizationDocument  extends TransactionalDocumentBase {
-    /**
-    @Column(name="status")
-    private String status;
+@Table(name="TRVL_EXP_T")
+public class ActualExpense extends PersistableBusinessObjectBase {}
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-     */
-}

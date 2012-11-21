@@ -42,7 +42,7 @@
   //**********************
 
   -->
-  <!--
+
   <class-descriptor class="edu.sampleu.travel.approval.TravelAuthorizationDocument" table="TRVL_AUTH_DOC_T">
     <field-descriptor name="documentNumber" primarykey="true" column="FDOC_NBR" jdbc-type="VARCHAR"/>
     <field-descriptor name="travelDocumentIdentifier" column="TRVL_ID" jdbc-type="VARCHAR"/>
@@ -57,7 +57,7 @@
     <field-descriptor name="primaryDestinationCountryState" column="PRIMARY_DEST_CNTRY_ST" jdbc-type="VARCHAR"/>
     <field-descriptor name="primaryDestinationCounty" column="PRIMARY_DEST_CNTY" jdbc-type="VARCHAR"/>
     <field-descriptor name="tripDescription" column="TRIP_DESC" jdbc-type="VARCHAR"/>
-    <field-descriptor name="delinquentTRException" column="DELINQUENT_TR_EXCEPTION" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+    <field-descriptor name="delinquentTRException" column="DELINQUENT_TR_EXCEPTION" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="perDiemAdjustment" column="PER_DIEM_ADJ" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
     <field-descriptor name="cellPhoneNumber" column="CELL_PH_NUM" jdbc-type="VARCHAR"/>
     <field-descriptor name="regionFamiliarity" column="RGN_FAMIL" jdbc-type="VARCHAR"/>
@@ -167,13 +167,13 @@
     <field-descriptor name="generateEncumbrance" column="GEN_ENC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="encumbranceBalanceType" column="ENC_BAL_TYP" jdbc-type="VARCHAR"/>
     <field-descriptor name="encumbranceObjCode" column="ENC_OBJ_CD" jdbc-type="VARCHAR"/>
-    <field-descriptor name="contactInfoRequired" column="CONT_INFO_REQ_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion..OjbCharBooleanConversion"/>
+    <field-descriptor name="contactInfoRequired" column="CONT_INFO_REQ_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="blanketTravel" column="BLANKET_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="autoTravelReimbursementLimit" column="AUTO_TR_LIMIT" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
     <field-descriptor name="usePerDiem" column="USE_PER_DIEM" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="travelAuthorizationRequired" column="TA_REQUIRED" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="perDiemCalcMethod" column="PER_DIEM_CALC_METHOD" jdbc-type="VARCHAR"/>
-    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR"/>
     <field-descriptor name="versionNumber" locking="true" column="VER_NBR" jdbc-type="BIGINT"/>
   </class-descriptor>
@@ -185,7 +185,7 @@
     <field-descriptor name="countryStateName" 			column="COUNTRY_NM" 	jdbc-type="VARCHAR"/>
     <field-descriptor name="county"                     column="COUNTY_CD"      jdbc-type="VARCHAR"/>
     <field-descriptor name="primaryDestinationName"     column="PRI_DEST"       jdbc-type="VARCHAR"/>
-    <field-descriptor name="active"                     column="ACTV_IND"       jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion..OjbCharBooleanConversion"/>
+    <field-descriptor name="active"                     column="ACTV_IND"       jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="objectId"                   column="OBJ_ID"         jdbc-type="VARCHAR"/>
     <field-descriptor name="versionNumber"              column="VER_NBR"        jdbc-type="BIGINT" locking="true"/>
     <reference-descriptor name="tripType" class-ref="edu.sampleu.travel.approval.TripType" auto-retrieve="true" auto-update="none" auto-delete="none">
@@ -206,7 +206,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="edu.sampleu.travel.approval.businessobject.TransportationMode" table="TRVL_TRANS_MD_T">
+  <class-descriptor class="edu.sampleu.travel.approval.TransportationMode" table="TRVL_TRANS_MD_T">
     <field-descriptor name="code" primarykey="true" column="CODE" jdbc-type="VARCHAR"/>
     <field-descriptor name="name" column="NAME" jdbc-type="VARCHAR"/>
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
@@ -228,7 +228,7 @@
     <field-descriptor name="lunchValue" column="LUNCH_VAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
     <field-descriptor name="dinnerValue" column="DINNER_VAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
     <field-descriptor name="incidentalsValue" column="INCIDENTALS_VAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
-    <field-descriptor name="personal" column="PERSONAL" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+    <field-descriptor name="personal" column="PERSONAL" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="perDiemId" column="PER_DIEM_ID" jdbc-type="INTEGER"/>
     <field-descriptor name="lodging" column="LODGING" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
     <field-descriptor name="miles" column="MILES" jdbc-type="INTEGER"/>
@@ -297,7 +297,7 @@
       <inverse-foreignkey field-ref="expenseParentId" />
     </collection-descriptor>
   </class-descriptor>
-    -->
+
   <class-descriptor class="edu.sampleu.travel.approval.TravelAdvance" table="TRVL_ADV_T">
     <field-descriptor name="id" primarykey="true" sequence-name="TEM_TRVL_ADV_ID_SEQ" autoincrement="true" column="id" jdbc-type="INTEGER"/>
     <field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR"/>
@@ -321,13 +321,13 @@
   </class-descriptor>
 
 
-  <!-- Test Table -->
+  <!-- Test Table
   <class-descriptor class="edu.sampleu.travel.approval.TravelAuthorizationDocument" table="trv_auth_doc">
     <field-descriptor name="documentNumber" column="DOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor name="status" column="STATUS" jdbc-type="VARCHAR" indexed="true" />
-  </class-descriptor>
+  </class-descriptor>     -->
 
   <class-descriptor class="edu.sampleu.travel.document.TravelDocument2" table="TRV_DOC_2">
 		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />

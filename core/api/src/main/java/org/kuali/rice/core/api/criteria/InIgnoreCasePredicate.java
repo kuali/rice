@@ -86,6 +86,7 @@ public final class InIgnoreCasePredicate extends AbstractPredicate implements Mu
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}
 		this.propertyPath = propertyPath;
+        CriteriaSupportUtils.validateValuesForMultiValuedPredicate(values);
 
         if (values == null) {
             this.values = Collections.emptySet();

@@ -169,6 +169,7 @@ public class UifConstants {
         public static final String NODE = "node";
         public static final String NODE_PATH = "nodePath";
         public static final String PARENT = "parent";
+        public static final String THEME_IMAGES = "ThemeImages";
         public static final String UIF_CONSTANTS = "UifConstants";
         public static final String VIEW = "view";
         public static final String VIEW_HELPER = "ViewHelper";

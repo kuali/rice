@@ -45,7 +45,7 @@
     <property name="templateOptions">
       <map>
         <entry key="showOn" value="button"/>
-        <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+        <entry key="buttonImage" value="@{#ThemeImages}cal.gif"/>
         <entry key="buttonImageOnly" value="true"/>
         <entry key="showAnim" value="slideDown"/>
         <entry key="showButtonPanel" value="true"/>
@@ -344,10 +344,15 @@
     <property name="actionImage">
       <bean parent="Uif-HelpImage"/>
     </property>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-helpAction</value>
+      </list>
+    </property>
   </bean>
 
   <bean id="Uif-HelpImage" parent="Uif-Image"
-        p:source="@{#ConfigProperties['krad.externalizable.images.url']}icon_help.png"
+        p:source="@{#ThemeImages}icon_help.png"
         p:altText="Help" p:title="Help">
     <property name="cssClasses">
       <list merge="true">

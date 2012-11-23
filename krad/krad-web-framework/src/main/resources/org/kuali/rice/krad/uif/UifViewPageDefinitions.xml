@@ -95,6 +95,7 @@
 
   <bean id="Uif-ClassicKnsTheme" abstract="true" parent="Uif-ClassicKnsTheme-parentBean"/>
   <bean id="Uif-ClassicKnsTheme-parentBean" parent="Uif-BaseTheme">
+    <property name="imageDirectory" value="@{#ConfigProperties['krad.externalizable.images.url']}kns/"/>
     <property name="cssFiles">
       <list merge="true">
         <value>krad/css/kns/theme-kns.css</value>
@@ -104,6 +105,7 @@
 
   <bean id="Uif-KradTheme" abstract="true" parent="Uif-KradTheme-parentBean"/>
   <bean id="Uif-KradTheme-parentBean" parent="Uif-BaseTheme">
+    <property name="imageDirectory" value="@{#ConfigProperties['krad.externalizable.images.url']}ks/"/>
     <property name="cssFiles">
       <list merge="true">
         <value>krad/css/ks/theme-krad.css</value>

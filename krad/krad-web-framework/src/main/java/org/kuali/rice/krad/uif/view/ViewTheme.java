@@ -32,8 +32,33 @@ import java.util.List;
 public class ViewTheme extends UifDictionaryBeanBase implements Serializable{
     private static final long serialVersionUID = 7063256242857896580L;
 
+    private String imageDirectory;
+    
     private List<String> cssFiles;
     private List<String> scriptFiles;
+
+    /**
+     * Path to the directory (either relative or absolute) that contains images for the theme
+     * 
+     * <p>
+     * Configured diretory will populate the {@link org.kuali.rice.krad.uif.UifConstants.ContextVariableNames#THEME_IMAGES}
+     * context variable which can be referenced with an expression for an image source
+     * </p>
+     * 
+     * @return String theme image directory
+     */
+    public String getImageDirectory() {
+        return imageDirectory;
+    }
+
+    /**
+     * Setter for the directory that contains images for the theme
+     * 
+     * @param imageDirectory
+     */
+    public void setImageDirectory(String imageDirectory) {
+        this.imageDirectory = imageDirectory;
+    }
 
     /**
      * Get the css stylesheets to be imported for this view, this must be a list of .css files

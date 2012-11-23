@@ -1032,6 +1032,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         Map<String, Object> context = new HashMap<String, Object>();
 
         context.putAll(view.getContext());
+        context.put(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
         return context;

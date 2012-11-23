@@ -30,7 +30,7 @@ Standard HTML TextArea Input
     </#if>
 
     <#if control.readOnly>
-        <#local attributes='${attributes} readonly="true"'/>
+        <#local attributes='${attributes} readonly="readonly"'/>
     </#if>
 
     <#if control.style?has_content>

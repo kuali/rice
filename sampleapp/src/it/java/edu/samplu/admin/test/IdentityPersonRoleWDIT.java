@@ -19,9 +19,6 @@ import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchFrameException;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * tests creating and cancelling new and edit Role maintenance screens
@@ -30,6 +27,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class IdentityPersonRoleWDIT extends WebDriverLegacyITBase{
 
+    public static final String EDIT_URL = ITUtil.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?returnLocation=" + ITUtil.PORTAL_URL_ENCODED + "&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" + ITUtil.getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
@@ -47,22 +45,19 @@ public class IdentityPersonRoleWDIT extends WebDriverLegacyITBase{
     /**
      */
     public void testPersonRole() throws InterruptedException {
+//        String easyFrame = null;
+//        String match = "easyXDM_default";
+//        String source = driver.getPageSource();
+//        if (source.indexOf(match) > -1) {
+//            easyFrame = source.substring(source.indexOf(match, source.indexOf(match) + 20));
+//            easyFrame = easyFrame.substring(0, easyFrame.indexOf("_provider")) + "_provider";
+//        }
+
         String id = "";
         String format = "%0" + (userCnt + "").length() + "d";
         for(int i = userCntStart; i < userCnt; i++) {
             id = idBase + String.format(format, i);
-            try {
-                selectFrame("iframeportlet");
-            } catch (NoSuchFrameException nsfe) {
-                open(ITUtil.getBaseUrlString() + TEST_URL);
-                waitForPageToLoad();
-                selectFrame("iframeportlet");
-            }
-            waitAndTypeByName("principalId", id);
-            waitAndSearch();
-            waitAndClickByLinkText("edit");
-            waitForPageToLoad();
-//            waitAndClickByXpath("//a[contains(@href, '" + id + "')]");
+            open(EDIT_URL.replace("LTID", id));
             waitAndTypeByName("document.documentHeader.documentDescription", "Admin permissions for " + id); // don't make unique
 
             selectByName("newAffln.affiliationTypeCode", "Affiliate");
@@ -72,12 +67,11 @@ public class IdentityPersonRoleWDIT extends WebDriverLegacyITBase{
 
             waitAndClick(By.id("tab-Membership-imageToggle"));
             waitAndType(By.id("newRole.roleId"), ADMIN_ROLE_ID);
-            waitAndClickByName("methodToCall.addRole.anchor");
+            driver.findElement(By.name("methodToCall.addRole.anchor")).click();
+
             waitAndType(By.id("newRole.roleId"), KRMS_ADMIN_ROLE_ID);
-            waitAndClickByName("methodToCall.addRole.anchor");
+            driver.findElement(By.name("methodToCall.addRole.anchor")).click();
             waitAndClickByName("methodToCall.blanketApprove");
-            waitForPageToLoad();
-            open(ITUtil.getBaseUrlString() + TEST_URL);
             waitForPageToLoad();
         }
         passed();

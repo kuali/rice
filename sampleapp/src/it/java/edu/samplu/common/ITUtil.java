@@ -30,6 +30,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,6 +50,7 @@ public class ITUtil {
     public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
     public final static String PORTAL = "/portal.do";
     public final static String PORTAL_URL =  ITUtil.getBaseUrlString() + ITUtil.PORTAL;
+    public final static String PORTAL_URL_ENCODED = URLEncoder.encode(PORTAL_URL);
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
     public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
     public static String WAIT_TO_END_TEST = "5000";

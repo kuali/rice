@@ -15,19 +15,11 @@
  */
 package org.kuali.rice.krad.document;
 
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.document.Document;
-
-import java.util.Set;
-
-
 /**
- * Extension to DocumentAuthorizer interface which adds transactional-document-specific methods.
+ * Extension to DocumentAuthorizer interface which adds transactional document specific methods
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {
-    /**
-     * @param document
-     * @return Map of operations that allow to take on that document.
-     */
-    public Set<String> getEditModes(Document document, Person user, Set<String> editModes);
+
 }

@@ -19,17 +19,17 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 /**
- * Form class for <code>MaintenanceView</code> screens
+ * Form class for <code>MaintenanceDocumentView</code> screens
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceForm extends DocumentFormBase {
+public class MaintenanceDocumentForm extends DocumentFormBase {
 	private static final long serialVersionUID = -5805825500852498048L;
 
 	protected String dataObjectClassName;
 	protected String maintenanceAction;
 
-	public MaintenanceForm() {
+	public MaintenanceDocumentForm() {
 		super();
 		setViewTypeName(ViewType.MAINTENANCE);
 	}

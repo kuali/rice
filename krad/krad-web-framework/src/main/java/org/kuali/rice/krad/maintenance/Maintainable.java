@@ -30,7 +30,7 @@ import java.util.Map;
  * same document class <code>MaintenanceDocumentBase</code> certain document callbacks such as workflow post processing
  * are invoked on the maintainable. Second the maintainable provides a hook for custom actions on the maintenance view.
  * Finally since the maintainable extends <code>ViewHelperService</code> it is used to customize <code>View</code>
- * configuration for <code>MaintenanceView</code> instances </p>
+ * configuration for <code>MaintenanceDocumentView</code> instances </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

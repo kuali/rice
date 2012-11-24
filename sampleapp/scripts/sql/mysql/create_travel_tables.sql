@@ -28,7 +28,6 @@ CREATE TABLE TRV_ACCT
 ) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_bin
 /
 
-
 # -----------------------------------------------------------------------
 # TRV_ACCT_EXT
 # -----------------------------------------------------------------------
@@ -46,7 +45,6 @@ CREATE TABLE TRV_ACCT_EXT
 
 ) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_bin
 /
-
 
 # -----------------------------------------------------------------------
 # TRV_ACCT_FO
@@ -66,7 +64,6 @@ CREATE TABLE TRV_ACCT_FO
 ) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_bin
 /
 
-
 # -----------------------------------------------------------------------
 # TRV_ACCT_TYPE
 # -----------------------------------------------------------------------
@@ -84,7 +81,6 @@ CREATE TABLE TRV_ACCT_TYPE
 
 ) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_bin
 /
-
 
 # -----------------------------------------------------------------------
 # TRV_DOC_2
@@ -110,7 +106,6 @@ CREATE TABLE TRV_DOC_2
 ) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_bin
 /
 
-
 # -----------------------------------------------------------------------
 # TRV_DOC_ACCT
 # -----------------------------------------------------------------------
@@ -128,6 +123,7 @@ CREATE TABLE TRV_DOC_ACCT
 
 ) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_bin
 /
+
 # -----------------------------------------------------------------------
 # TRV_FO_ID_S
 # -----------------------------------------------------------------------
@@ -146,6 +142,7 @@ ALTER TABLE TRV_ACCT
     FOREIGN KEY (ACCT_FO_ID)
     REFERENCES TRV_ACCT_FO (ACCT_FO_ID)
 /
+
 # -----------------------------------------------------------------------------
 # -- TRAV_DOC_2_ACCOUNTS
 # -----------------------------------------------------------------------------
@@ -158,6 +155,7 @@ CREATE TABLE TRAV_DOC_2_ACCOUNTS
         , CONSTRAINT TRAV_DOC_2_ACCOUNTSP1 PRIMARY KEY(FDOC_NBR,ACCT_NUM)
 )
 /
+
 # -----------------------------------------------------------------------------
 # -- TRAV_ATTACHMENT TEST TABLES
 # -----------------------------------------------------------------------------
@@ -181,3 +179,96 @@ create table TRV_MULTI_ATT_SAMPLE (gen_id number(14,0) not null,
                               primary key (gen_id),
                               foreign key (attachment_id) references TRV_ATT_SAMPLE(attachment_id))
 /
+
+# -----------------------------------------------------------------------------
+# Travel Approval
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS TRVL_AUTH_DOC_T
+  (
+     FDOC_NBR                VARCHAR(14) NOT NULL,
+     TRVL_ID                 VARCHAR(19) NULL,
+     TRAVELER_DTL_ID         BIGINT(19) NULL,
+     TEM_PROFILE_ID          BIGINT(19) NULL,
+     TRIP_TYP_CD             VARCHAR(3) NULL,
+     TRIP_BGN_DT             DATE NULL,
+     TRIP_END_DT             DATE NULL,
+     PRIMARY_DEST_ID         BIGINT(19) NULL,
+     PRIMARY_DEST_NAME       VARCHAR(100) NULL,
+     PRIMARY_DEST_CNTRY_ST   VARCHAR(100) NULL,
+     PRIMARY_DEST_CNTY       VARCHAR(100) NULL,
+     EXP_LMT                 DECIMAL(19, 2) DEFAULT 0 NULL,
+     MEAL_WITHOUT_LODGING    VARCHAR(255) NULL,
+     TRIP_DESC               VARCHAR(255) NULL,
+     DELINQUENT_TR_EXCEPTION VARCHAR(1) NULL,
+     PER_DIEM_ADJ            DECIMAL(19, 2) DEFAULT 0 NULL,
+     AR_CUST_ID              VARCHAR(255) NULL,
+     AR_INV_DOC_NBR          VARCHAR(255) NULL,
+     CELL_PH_NUM             VARCHAR(20) NULL,
+     RGN_FAMIL               VARCHAR(255) NULL,
+     CTZN_CNTRY_CD           VARCHAR(255) NULL,
+     FDOC_NXT_EXP_NBR        DECIMAL(7, 0) NULL,
+     VER_NBR                 DECIMAL(8, 0) DEFAULT 1 NOT NULL,
+     OBJ_ID                  VARCHAR(36) NOT NULL,
+     CONSTRAINT TRVL_AUTH_DOC_T_TC0 UNIQUE (OBJ_ID),
+     CONSTRAINT TRVL_AUTH_DOC_T_TP1 PRIMARY KEY(FDOC_NBR)
+  )
+/
+
+CREATE TABLE IF NOT EXISTS TRVL_PER_DIEM_T
+    (
+       ID                BIGINT(19) NOT NULL,
+       TRIP_TYP_CD       VARCHAR(3) NOT NULL,
+       COUNTRY           VARCHAR(100) NULL,
+       COUNTRY_NM        VARCHAR(100) NULL,
+       COUNTY_CD         VARCHAR(100) NULL,
+       PRI_DEST          VARCHAR(100) NULL,
+       SSN_BGN_DT        DATE NULL,
+       EFFECT_FROM_DT    DATE NULL,
+       EFFECT_TO_DT      DATE DEFAULT NULL NULL,
+       LOAD_DT           DATE DEFAULT NULL NULL,
+       SSN_BGN_MONTH_DAY VARCHAR(5) DEFAULT NULL NULL,
+       BKFST             BIGINT(19) NULL,
+       LUNCH             BIGINT(19) NULL,
+       DIN               BIGINT(19) NULL,
+       LODGING           DECIMAL(19, 2) DEFAULT 0 NULL,
+       INC               DECIMAL(19, 2) DEFAULT 0 NULL,
+       MEALS_INC         DECIMAL(19, 2) DEFAULT 0 NULL,
+       ACTV_IND          VARCHAR(1) NOT NULL,
+       VER_NBR           DECIMAL(8, 0) DEFAULT 1 NOT NULL,
+       OBJ_ID            VARCHAR(36) NOT NULL,
+       CONSTRAINT TRVL_PER_DIEM_T_TC0 UNIQUE (OBJ_ID),
+       CONSTRAINT TRVL_PER_DIEM_T_TP1 PRIMARY KEY(ID)
+    )
+/
+
+CREATE TABLE IF NOT EXISTS TRVL_PER_DIEM_ID_SEQ
+(
+	id bigint(19) not null auto_increment, primary key (id)
+) ENGINE MyISAM
+/
+
+ALTER TABLE TRVL_PER_DIEM_ID_SEQ auto_increment = 1000
+/
+
+CREATE TABLE IF NOT EXISTS TRVL_TRIP_TYP_T
+    (
+       CODE              		VARCHAR(3) 		NOT NULL,
+       NM                		VARCHAR(40) 	NOT NULL,
+       GEN_ENC_IND       		VARCHAR(1) 		NOT NULL,
+       ENC_BAL_TYP       		VARCHAR(2) 		NULL,
+       ENC_OBJ_CD        		VARCHAR(4) 		NULL,
+       CONT_INFO_REQ_IND 		VARCHAR(1) 		NOT NULL,
+       BLANKET_IND       		VARCHAR(1) 		NOT NULL,
+       AUTO_TR_LIMIT			DECIMAL(19,2)  	NOT NULL,
+       USE_PER_DIEM 			VARCHAR(1) 		NOT NULL,
+       TA_REQUIRED 			VARCHAR(1) 		NOT NULL,
+       PER_DIEM_CALC_METHOD 	VARCHAR(1) 		NOT NULL,
+       ACTV_IND          		VARCHAR(1) 		NOT NULL,
+       VER_NBR           		DECIMAL(8, 0) 	DEFAULT 1 NOT NULL,
+       OBJ_ID            		VARCHAR(36) 	NOT NULL,
+       CONSTRAINT TRVL_TRIP_TYP_T_TC0 UNIQUE (OBJ_ID),
+       CONSTRAINT TRVL_TRIP_TYP_T_TP1 PRIMARY KEY(CODE)
+    )
+/
+

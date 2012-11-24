@@ -17,10 +17,7 @@ package org.kuali.rice.krms.impl.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.web.form.InquiryForm;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
@@ -62,12 +59,12 @@ public class KrmsRetriever {
     }
 
     /**
-     * Get the AgendaEditor out of the MaintenanceForm's newMaintainableObject
-     * @param model the MaintenanceForm
+     * Get the AgendaEditor out of the MaintenanceDocumentForm's newMaintainableObject
+     * @param model the MaintenanceDocumentForm
      * @return the AgendaEditor
      */
     private AgendaEditor getAgendaEditor(Object model) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm)model;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm)model;
         return (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
     }
 

@@ -31,6 +31,16 @@ import org.springframework.beans.PropertyValues;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Type service implementation for transactional views
+ *
+ * <p>
+ * Indexes views on document class and view name. Can retrieve views by document type,
+ * document type and view name, document class, document class and view name, or document id
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class TransactionalViewTypeServiceImpl implements ViewTypeService {
     private DocumentService documentService;
     private DocumentDictionaryService documentDictionaryService;
@@ -39,7 +49,7 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
      * @see org.kuali.rice.krad.uif.service.ViewTypeService#getViewTypeName()
      */
     public UifConstants.ViewType getViewTypeName() {
-        return UifConstants.ViewType.TRANSACTION;
+        return UifConstants.ViewType.TRANSACTIONAL;
     }
 
     /**
@@ -50,18 +60,19 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
         Map<String, String> parameters = new HashMap<String, String>();
 
         String viewName = ViewModelUtils.getStringValFromPVs(propertyValues, UifParameters.VIEW_NAME);
-        String dataObjectClassName = ViewModelUtils.getStringValFromPVs(propertyValues,
-                UifParameters.DATA_OBJECT_CLASS_NAME);
+        String documentClass = ViewModelUtils.getStringValFromPVs(propertyValues,
+                UifParameters.DOCUMENT_CLASS);
 
         parameters.put(UifParameters.VIEW_NAME, viewName);
-        parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
+        parameters.put(UifParameters.DOCUMENT_CLASS, documentClass);
 
         return parameters;
     }
 
     /**
      * Check for document id in request parameters, if given retrieve document
-     * instance to get the object class and set the name parameter
+     * instance to get the document class. Otherwise check for document class or
+     * document type parameters for creating a new document view
      *
      * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromRequest(java.util.Map)
      */
@@ -69,47 +80,53 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
     public Map<String, String> getParametersFromRequest(Map<String, String> requestParameters) {
         Map<String, String> parameters = new HashMap<String, String>();
 
+        if (requestParameters.containsKey(KRADPropertyConstants.DOC_ID)) {
+            String documentNumber = requestParameters.get(KRADPropertyConstants.DOC_ID);
+
+            Class<?> documentClass = null;
+            try {
+                // determine object class based on the document type
+                Document document = documentService.getByDocumentHeaderId(documentNumber);
+                if (!documentService.documentExists(documentNumber)) {
+                    parameters = new HashMap<String, String>();
+                    parameters.put(UifParameters.VIEW_ID, KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME);
+                    return parameters;
+                }
+
+                if (document != null) {
+                    String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
+                    documentClass = getDocumentDictionaryService().getDocumentClassByName(docTypeName);
+                    if (documentClass != null) {
+                        parameters.put(UifParameters.DOCUMENT_CLASS, documentClass.getName());
+                    }
+                }
+
+                if (documentClass == null) {
+                    throw new RuntimeException(
+                            "Could not determine document class for document with id: " + documentNumber);
+                }
+            } catch (WorkflowException e) {
+                throw new RuntimeException(
+                        "Encountered workflow exception while retrieving document with id: " + documentNumber, e);
+            }
+        }
+        else {
+            if (requestParameters.containsKey(UifParameters.DOCUMENT_CLASS)) {
+                parameters.put(UifParameters.DOCUMENT_CLASS, requestParameters.get(UifParameters.DOCUMENT_CLASS));
+            } else if (requestParameters.containsKey(UifParameters.DOC_TYPE_NAME)) {
+                String docTypeName = requestParameters.get(UifParameters.DOC_TYPE_NAME);
+                Class<?> documentClass = getDocumentDictionaryService().getDocumentClassByName(docTypeName);
+                if (documentClass != null) {
+                    parameters.put(UifParameters.DOCUMENT_CLASS, documentClass.getName());
+                }
+            }
+        }
+
         if (requestParameters.containsKey(UifParameters.VIEW_NAME)) {
             parameters.put(UifParameters.VIEW_NAME, requestParameters.get(UifParameters.VIEW_NAME));
         }
         else {
             parameters.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
-        }
-
-        if (requestParameters.containsKey(UifParameters.DATA_OBJECT_CLASS_NAME)) {
-            parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME,
-                    requestParameters.get(UifParameters.DATA_OBJECT_CLASS_NAME));
-        }
-        else if (requestParameters.containsKey(KRADPropertyConstants.DOC_ID)) {
-            String documentNumber = requestParameters.get(KRADPropertyConstants.DOC_ID);
-
-            boolean objectClassFound = false;
-            try {
-                // determine object class based on the document type
-                Document document = documentService.getByDocumentHeaderId(documentNumber);
-                if (!documentService.documentExists(documentNumber)) {
-                    parameters = new HashMap<String,String>();
-                    parameters.put(UifParameters.VIEW_ID, KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME);
-                    return parameters;
-                }
-                if (document != null) {
-                    String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
-                    Class<?> objectClassName = getDocumentDictionaryService().getDocumentClassByName(docTypeName);
-                    if (objectClassName != null) {
-                        objectClassFound = true;
-                        parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, objectClassName.getName());
-                    }
-                }
-
-                if (!objectClassFound) {
-                    throw new RuntimeException("Could not determine object class for maintenance document with id: "
-                            + documentNumber);
-                }
-            }
-            catch (WorkflowException e) {
-                throw new RuntimeException("Encountered workflow exception while retrieving document with id: "
-                        + documentNumber, e);
-            }
         }
 
         return parameters;

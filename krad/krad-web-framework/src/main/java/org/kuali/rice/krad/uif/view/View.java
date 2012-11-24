@@ -213,7 +213,11 @@ public class View extends ContainerBase {
             if (page != null) {
                 view.assignComponentIds(page);
 
-                page.setItems(new ArrayList<Group>(items));
+                // add the items configured on the view to the page items, and set as the
+                // new page items
+                List<Component> newItems = (List<Component>) page.getItems();
+                newItems.addAll(items);
+                page.setItems(newItems);
 
                 // reset the items list to include the one page
                 items = new ArrayList<Group>();

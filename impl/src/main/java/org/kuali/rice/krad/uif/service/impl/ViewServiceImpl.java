@@ -91,12 +91,7 @@ public class ViewServiceImpl implements ViewService {
 
         Map<String, String> typeParameters = typeService.getParametersFromRequest(parameters);
 
-        Map<String, String> indexKey = new HashMap<String, String>();
-        for (Map.Entry<String, String> parameter : typeParameters.entrySet()) {
-            indexKey.put(parameter.getKey(), parameter.getValue());
-        }
-
-        View view = dataDictionaryService.getViewByTypeIndex(viewType, indexKey);
+        View view = dataDictionaryService.getViewByTypeIndex(viewType, typeParameters);
         if (view == null) {
             LOG.warn("View not found for type: " + viewType);
         } else {

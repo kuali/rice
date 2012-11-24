@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.document;
 
-import org.kuali.rice.krad.uif.view.ViewAuthorizerBase;
-
 /**
- * Base class for all TransactionalDocumentAuthorizers.
+ * Base class for all TransactionalDocumentAuthorizers
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TransactionalDocumentAuthorizerBase extends ViewAuthorizerBase {
+public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase implements TransactionalDocumentAuthorizer {
     private static final long serialVersionUID = 3255133642834256283L;
 }

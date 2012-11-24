@@ -13,13 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.travel.approval;
+package org.kuali.rice.krad.web.form;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+//import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+//import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
-@Entity
-@Table(name="TRVL_EXP_T")
-public class ActualExpense extends PersistableBusinessObjectBase {}
+import org.kuali.rice.krad.uif.UifConstants;
 
+/**
+ * Form class for <code>TransactionalView</code> screens
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public abstract class TransactionalDocumentFormBase extends DocumentFormBase {
+    private static final long serialVersionUID = 1236345613323L;
+
+    public TransactionalDocumentFormBase() {
+        super();
+        setViewTypeName(UifConstants.ViewType.TRANSACTIONAL);
+    }
+}

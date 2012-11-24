@@ -88,7 +88,7 @@
   <class>org.kuali.rice.krad.uif.view.LookupView</class>
   <class>org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter</class>
   <class>org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry</class>
-  <class>org.kuali.rice.krad.uif.view.MaintenanceView</class>
+  <class>org.kuali.rice.krad.uif.view.MaintenanceDocumentView</class>
   <class>org.kuali.rice.krad.datadictionary.mask.Mask</class>
   <class>org.kuali.rice.krad.datadictionary.mask.MaskFormatterLiteral</class>
   <class>org.kuali.rice.krad.datadictionary.mask.MaskFormatterSubString</class>

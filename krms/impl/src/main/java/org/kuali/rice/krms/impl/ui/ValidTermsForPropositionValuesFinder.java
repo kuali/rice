@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.impl.repository.*;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
@@ -46,7 +46,7 @@ public class ValidTermsForPropositionValuesFinder extends UifKeyValuesFinderBase
     public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
 
-        MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
         PropositionBo rootProposition = ((PropositionBo) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
 
         PropositionBo editModeProposition = findPropositionUnderEdit(rootProposition);

@@ -35,14 +35,13 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
-import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -424,8 +423,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         super.processAfterAddLine(view, collectionGroup, model, addLine);
 
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) && !(addLine instanceof Note) && !(addLine instanceof AdHocRoutePerson) && !(addLine instanceof AdHocRouteWorkgroup)) {
-            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+        if (model instanceof MaintenanceDocumentForm
+                && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction()) && !(addLine instanceof Note) && !(addLine instanceof AdHocRoutePerson) && !(addLine instanceof AdHocRouteWorkgroup)) {
+            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
             // get the old object's collection
@@ -467,11 +467,12 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         super.processAfterDeleteLine(view, collectionGroup, model, lineIndex);
 
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction())
+        if (model instanceof MaintenanceDocumentForm
+                && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction())
                 && !collectionGroup.getCollectionObjectClass().getName().equals(Note.class.getName())
                 && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRoutePerson.class.getName())
                 && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRouteWorkgroup.class.getName())) {
-            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
             // get the old object's collection

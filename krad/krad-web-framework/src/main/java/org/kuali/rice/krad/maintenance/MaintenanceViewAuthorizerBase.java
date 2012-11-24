@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * Implementation of {@link org.kuali.rice.krad.uif.view.ViewAuthorizer} for
- * {@link org.kuali.rice.krad.uif.view.MaintenanceView} instances
+ * {@link org.kuali.rice.krad.uif.view.MaintenanceDocumentView} instances
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

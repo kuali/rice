@@ -22,7 +22,7 @@
 
   <bean id="Uif-MaintenanceView" abstract="true" parent="Uif-MaintenanceView-parentBean"/>
   <bean id="Uif-MaintenanceView-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.view.MaintenanceView" parent="Uif-DocumentView">
+        class="org.kuali.rice.krad.uif.view.MaintenanceDocumentView" parent="Uif-DocumentView">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-maintenanceView</value>
@@ -34,10 +34,11 @@
     <property name="presentationControllerClass"
               value="org.kuali.rice.krad.maintenance.MaintenanceViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.maintenance.MaintenanceViewAuthorizerBase"/>
-    <property name="formClass" value="org.kuali.rice.krad.web.form.MaintenanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.web.form.MaintenanceDocumentForm"/>
     <property name="preloadPoolSize" value="0"/>
     <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
     <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>
+    <property name="singlePageView" value="true"/>
     <property name="page">
       <bean parent="Uif-MaintenancePage"/>
     </property>
@@ -97,7 +98,6 @@
       </list>
     </property>
   </bean>
-
 
   <bean id="Uif-MaintenanceGridSubSection" abstract="true" parent="Uif-MaintenanceGridSubSection-parentBean"/>
   <bean id="Uif-MaintenanceGridSubSection-parentBean" parent="Uif-Disclosure-GridSubSection">

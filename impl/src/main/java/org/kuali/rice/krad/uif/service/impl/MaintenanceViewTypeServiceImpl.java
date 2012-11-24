@@ -71,59 +71,57 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 
 	/**
 	 * Check for document id in request parameters, if given retrieve document
-	 * instance to get the object class and set the name parameter
+	 * instance to get the data object class. Otherwise check for data object class parameter for
+     * creating a new maintenance view
 	 * 
 	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromRequest(java.util.Map)
 	 */
 	@Override
-	public Map<String, String> getParametersFromRequest(Map<String, String> requestParameters) {
-		Map<String, String> parameters = new HashMap<String, String>();
+    public Map<String, String> getParametersFromRequest(Map<String, String> requestParameters) {
+        Map<String, String> parameters = new HashMap<String, String>();
 
-		if (requestParameters.containsKey(UifParameters.VIEW_NAME)) {
-			parameters.put(UifParameters.VIEW_NAME, requestParameters.get(UifParameters.VIEW_NAME));
-		}
-		else {
-			parameters.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
-		}
+        if (requestParameters.containsKey(KRADPropertyConstants.DOC_ID)) {
+            String documentNumber = requestParameters.get(KRADPropertyConstants.DOC_ID);
 
-		if (requestParameters.containsKey(UifParameters.DATA_OBJECT_CLASS_NAME)) {
-			parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME,
-					requestParameters.get(UifParameters.DATA_OBJECT_CLASS_NAME));
-		}
-		else if (requestParameters.containsKey(KRADPropertyConstants.DOC_ID)) {
-			String documentNumber = requestParameters.get(KRADPropertyConstants.DOC_ID);
-
-			boolean objectClassFound = false;
-			try {
-				// determine object class based on the document type
-				Document document = documentService.getByDocumentHeaderId(documentNumber);
+            Class<?> objectClassName = null;
+            try {
+                // determine object class based on the document type
+                Document document = documentService.getByDocumentHeaderId(documentNumber);
                 if (!documentService.documentExists(documentNumber)) {
-                    parameters = new HashMap<String,String>();
+                    parameters = new HashMap<String, String>();
                     parameters.put(UifParameters.VIEW_ID, KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME);
                     return parameters;
                 }
-				if (document != null) {
-					String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
-					Class<?> objectClassName = getDocumentDictionaryService().getMaintenanceDataObjectClass(docTypeName);
-					if (objectClassName != null) {
-						objectClassFound = true;
-						parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, objectClassName.getName());
-					}
-				}
 
-				if (!objectClassFound) {
-					throw new RuntimeException("Could not determine object class for maintenance document with id: "
-							+ documentNumber);
-				}
-			}
-			catch (WorkflowException e) {
-				throw new RuntimeException("Encountered workflow exception while retrieving document with id: "
-						+ documentNumber, e);
-			}
-		}
+                if (document != null) {
+                    String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
+                    objectClassName = getDocumentDictionaryService().getMaintenanceDataObjectClass(docTypeName);
+                    if (objectClassName != null) {
+                        parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, objectClassName.getName());
+                    }
+                }
 
-		return parameters;
-	}
+                if (objectClassName == null) {
+                    throw new RuntimeException(
+                            "Could not determine object class for maintenance document with id: " + documentNumber);
+                }
+            } catch (WorkflowException e) {
+                throw new RuntimeException(
+                        "Encountered workflow exception while retrieving document with id: " + documentNumber, e);
+            }
+        } else if (requestParameters.containsKey(UifParameters.DATA_OBJECT_CLASS_NAME)) {
+            parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, requestParameters.get(
+                    UifParameters.DATA_OBJECT_CLASS_NAME));
+        }
+
+        if (requestParameters.containsKey(UifParameters.VIEW_NAME)) {
+            parameters.put(UifParameters.VIEW_NAME, requestParameters.get(UifParameters.VIEW_NAME));
+        } else {
+            parameters.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
+        }
+
+        return parameters;
+    }
 
 	protected DocumentService getDocumentService() {
         if (documentService == null) {

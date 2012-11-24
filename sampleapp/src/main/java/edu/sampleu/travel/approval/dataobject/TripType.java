@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.travel.approval;
+
+package edu.sampleu.travel.approval.dataobject;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import java.util.LinkedHashMap;
@@ -24,32 +25,24 @@ import javax.persistence.Table;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @Entity
 @Table(name="TRVL_TRIP_TYP_T")
 public class TripType extends PersistableBusinessObjectBase implements Inactivatable {
+
     private String code;
-
     private String name;
-
     private Boolean generateEncumbrance = Boolean.FALSE;
-
     private String encumbranceBalanceType;
-
     private String encumbranceObjCode;
-
     private Boolean contactInfoRequired = Boolean.FALSE;
-
     private Boolean blanketTravel = Boolean.FALSE;
-
     private KualiDecimal autoTravelReimbursementLimit;
-
     private Boolean usePerDiem = Boolean.FALSE;
-
     private Boolean travelAuthorizationRequired = Boolean.FALSE;
-
     private String perDiemCalcMethod = "P"; //TemConstants.PERCENTAGE;
-
-
     private Boolean active = Boolean.TRUE;
 
     //private BalanceType balanceType;

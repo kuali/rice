@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.form.InquiryForm;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
@@ -45,7 +45,7 @@ public class ActionTypeValuesFinder extends UifKeyValuesFinderBase {
             agendaEditor = ((AgendaEditor) inquiryForm.getDataObject());
 
         } else {
-            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
             agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
         }
 

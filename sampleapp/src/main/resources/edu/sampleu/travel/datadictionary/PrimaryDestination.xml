@@ -1,0 +1,139 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="PrimaryDestination" parent="PrimaryDestination-parentBean"/>
+  <bean id="PrimaryDestination-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="dataObjectClass" value="edu.sampleu.travel.approval.dataobject.PrimaryDestination"/>
+    <property name="titleAttribute" value="id"/>
+    <property name="objectLabel" value="PrimaryDestination"/>
+    <property name="attributes">
+      <list>
+        <ref bean="PrimaryDestination-id"/>
+        <ref bean="PrimaryDestination-tripTypeCode"/>
+        <ref bean="PrimaryDestination-countryState"/>
+        <ref bean="PrimaryDestination-county"/>
+        <ref bean="PrimaryDestination-primaryDestinationName"/>
+        <ref bean="PrimaryDestination-active"/>
+        <ref bean="PrimaryDestination-versionNumber"/>
+      </list>
+    </property>
+    <property name="relationships">
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="tripType"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="tripTypeCode" p:targetName="code"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="PrimaryDestination-id" parent="PrimaryDestination-id-parentBean"/>
+  <bean id="PrimaryDestination-id-parentBean" parent="AttributeDefinition">
+    <property name="name" value="id"/>
+    <property name="label" value="Id"/>
+    <property name="shortLabel" value="Id"/>
+    <property name="maxLength" value="32"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Id"/>
+    <property name="description" value="Id"/>
+    <property name="controlField">
+      <bean parent="Uif-HiddenControl"/>
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="NumericPatternConstraint"/>
+    </property>
+  </bean>
+
+  <bean id="PrimaryDestination-tripTypeCode" parent="PrimaryDestination-tripTypeCode-parentBean"/>
+  <bean id="PrimaryDestination-tripTypeCode-parentBean" parent="AttributeDefinition">
+    <property name="name" value="tripTypeCode"/>
+    <property name="label" value="Trip Type"/>
+    <property name="shortLabel" value="Trip Type Code"/>
+    <property name="maxLength" value="3"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Trip Type Code"/>
+    <property name="description" value="Trip Type Code"/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="3"/>
+    </property>
+  </bean>
+
+  <bean id="PrimaryDestination-countryState" parent="PrimaryDestination-countryState-parentBean"/>
+  <bean id="PrimaryDestination-countryState-parentBean" parent="AttributeDefinition">
+    <property name="name" value="countryState"/>
+    <property name="label" value="Country State"/>
+    <property name="shortLabel" value="Country State"/>
+    <property name="maxLength" value="100"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Country State"/>
+    <property name="description" value="Country State"/>
+    <property name="controlField">
+      <bean parent="Uif-DropdownControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="" p:value=""/>
+            <bean parent="Uif-KeyLabelPair" p:key="IN" p:value="Indiana"/>
+            <bean parent="Uif-KeyLabelPair" p:key="OH" p:value="Ohio"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="PrimaryDestination-county" parent="PrimaryDestination-county-parentBean"/>
+  <bean id="PrimaryDestination-county-parentBean" parent="AttributeDefinition">
+    <property name="name" value="county"/>
+    <property name="label" value="County"/>
+    <property name="shortLabel" value="County"/>
+    <property name="maxLength" value="100"/>
+    <property name="required" value="false"/>
+    <property name="summary" value="County"/>
+    <property name="description" value="County"/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="100"/>
+    </property>
+  </bean>
+
+  <bean id="PrimaryDestination-primaryDestinationName" parent="PrimaryDestination-primaryDestinationName-parentBean"/>
+  <bean id="PrimaryDestination-primaryDestinationName-parentBean" parent="AttributeDefinition">
+    <property name="name" value="primaryDestinationName"/>
+    <property name="label" value="Primary Destination"/>
+    <property name="shortLabel" value="Primary Destination"/>
+    <property name="maxLength" value="100"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Primary Destination"/>
+    <property name="description" value="Primary Destination"/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="100"/>
+    </property>
+  </bean>
+
+  <bean id="PrimaryDestination-active" parent="PrimaryDestination-active-parentBean"/>
+  <bean id="PrimaryDestination-active-parentBean" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active"/>
+    <property name="label" value="Active"/>
+    <property name="shortLabel" value="Active"/>
+    <property name="required" value="true"/>
+    <property name="summary" value="Active"/>
+    <property name="description" value="Active"/>
+  </bean>
+
+  <bean id="PrimaryDestination-versionNumber" parent="PrimaryDestination-versionNumber-parentBean"/>
+  <bean id="PrimaryDestination-versionNumber-parentBean" parent="AttributeReferenceDummy-versionNumber">
+    <property name="name" value="versionNumber"/>
+    <property name="label" value="Version Number"/>
+    <property name="shortLabel" value="Version Number"/>
+    <property name="summary" value="Version Number"/>
+    <property name="description" value="Version Number"/>
+  </bean>
+
+</beans>

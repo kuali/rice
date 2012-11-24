@@ -25,7 +25,6 @@ import org.kuali.rice.krad.inquiry.InquirableImpl;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.InquiryForm;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,7 +20,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import javax.persistence.MappedSuperclass;
 
 /**
- * Controller that handles requests coming from a <code>TransactionalDocumentView</code>
+ * Base class for transactional documents
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

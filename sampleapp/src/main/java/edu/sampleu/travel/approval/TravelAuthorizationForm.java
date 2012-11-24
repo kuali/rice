@@ -15,15 +15,17 @@
  */
 package edu.sampleu.travel.approval;
 
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.web.form.TransactionDocumentFormBase;
+import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
 
-public class TravelAuthorizationForm extends TransactionDocumentFormBase{
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
 
     public TravelAuthorizationForm() {
         super();
-        setViewTypeName(UifConstants.ViewType.TRANSACTION);
     }
+
     @Override
     protected String getDefaultDocumentTypeName() {
         return "TravelAuthorization";

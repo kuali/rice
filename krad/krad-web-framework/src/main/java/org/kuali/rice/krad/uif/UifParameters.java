@@ -32,7 +32,9 @@ public class UifParameters {
     public static final String CONFIG_PROPERTIES = "ConfigProperties";
 	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
 	public static final String DISABLE_SEARCH_BUTTONS = "disableSearchButtons";
+    public static final String DOCUMENT_CLASS = "documentClass";
     public static final String DOC_NUM = "docNum";
+    public static final String DOC_TYPE_NAME = "docTypeName";
     public static final String FORM_KEY = "formKey";
     public static final String FORM_MANAGER = "formManager";
 	public static final String HEADER_BAR_ENABLED = "headerBarEnabled";

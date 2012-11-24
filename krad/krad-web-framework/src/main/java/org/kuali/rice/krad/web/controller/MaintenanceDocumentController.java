@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.PersistableAttachment;
@@ -40,7 +38,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -48,14 +46,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 
 /**
- * Controller for <code>MaintenanceView</code> screens which operate on
+ * Controller for <code>MaintenanceDocumentView</code> screens which operate on
  * <code>MaintenanceDocument</code> instances
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -69,8 +63,8 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected MaintenanceForm createInitialForm(HttpServletRequest request) {
-        return new MaintenanceForm();
+    protected MaintenanceDocumentForm createInitialForm(HttpServletRequest request) {
+        return new MaintenanceDocumentForm();
     }
 
     /**
@@ -85,7 +79,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
         // so pasting in superclass code
         // super.docHandler(formBase, request, response);
         // * begin copy/paste from the base
-        MaintenanceForm form = (MaintenanceForm) formBase;
+        MaintenanceDocumentForm form = (MaintenanceDocumentForm) formBase;
 
         // in all of the following cases we want to load the document
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, form.getCommand()) && form.getDocId() != null) {
@@ -139,13 +133,13 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 
     /**
      * Default method for controller that setups a new
-     * <code>MaintenanceView</code> with the default new action
+     * <code>MaintenanceDocumentView</code> with the default new action
      */
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_NEW)
     @Override
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
 
         setupMaintenance(maintenanceForm, request, KRADConstants.MAINTENANCE_NEW_ACTION);
 
@@ -153,11 +147,11 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     }
 
     /**
-     * Setups a new <code>MaintenanceView</code> with the edit maintenance
+     * Setups a new <code>MaintenanceDocumentView</code> with the edit maintenance
      * action
      */
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_EDIT)
-    public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceForm form, BindingResult result,
+    public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         setupMaintenance(form, request, KRADConstants.MAINTENANCE_EDIT_ACTION);
@@ -166,11 +160,11 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     }
 
     /**
-     * Setups a new <code>MaintenanceView</code> with the copy maintenance
+     * Setups a new <code>MaintenanceDocumentView</code> with the copy maintenance
      * action
      */
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_COPY)
-    public ModelAndView maintenanceCopy(@ModelAttribute("KualiForm") MaintenanceForm form, BindingResult result,
+    public ModelAndView maintenanceCopy(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         setupMaintenance(form, request, KRADConstants.MAINTENANCE_COPY_ACTION);
@@ -179,11 +173,11 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     }
 
     /**
-     * Setups a new <code>MaintenanceView</code> with the new with existing
+     * Setups a new <code>MaintenanceDocumentView</code> with the new with existing
      * maintenance action
      */
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_NEW_WITH_EXISTING)
-    public ModelAndView maintenanceNewWithExisting(@ModelAttribute("KualiForm") MaintenanceForm form,
+    public ModelAndView maintenanceNewWithExisting(@ModelAttribute("KualiForm") MaintenanceDocumentForm form,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         setupMaintenance(form, request, KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION);
@@ -200,13 +194,13 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * <code>Maintainable</code> to do setup on the object being maintained.
      * </p>
      *
-     * @param form - <code>MaintenanceForm</code> instance
+     * @param form - <code>MaintenanceDocumentForm</code> instance
      * @param request - HTTP request object
      * @param maintenanceAction - the maintenance action (new, new from existing, edit, copy)
      * being request
      * @throws Exception
      */
-    protected void setupMaintenance(MaintenanceForm form, HttpServletRequest request, String maintenanceAction) {
+    protected void setupMaintenance(MaintenanceDocumentForm form, HttpServletRequest request, String maintenanceAction) {
         MaintenanceDocument document = form.getDocument();
 
         // create a new document object, if required

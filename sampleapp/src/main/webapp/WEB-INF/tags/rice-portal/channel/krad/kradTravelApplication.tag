@@ -36,8 +36,8 @@
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccountType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Travel Account Multi-Value Lookup"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true&suppressActions=true&conversionFields=number:foo,name:foo"/></li>
-    <li><portal:portalLink displayTitle="true" title="Travel Authorization Transactional Document"
-                           url="${ConfigProperties.application.url}/kr-krad/approval?methodToCall=docHandler&command=initiate&dataObjectClassName=edu.sampleu.travel.approval.TravelAuthorizationDocument&viewName=TravelAuthorization"/></li>
+    <li><portal:portalLink displayTitle="true" title="Travel Authorization Document"
+                           url="${ConfigProperties.application.url}/kr-krad/approval?methodToCall=docHandler&command=initiate&documentClass=edu.sampleu.travel.approval.TravelAuthorizationDocument"/></li>
 
   </ul>
   <br/>

@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,7 +85,7 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
         List<RemotableAttributeField> remoteFields = new ArrayList<RemotableAttributeField>();
 
         PeopleFlowBo peopleFlow =
-                (PeopleFlowBo) ((MaintenanceForm) model).getDocument().getNewMaintainableObject().getDataObject();
+                (PeopleFlowBo) ((MaintenanceDocumentForm) model).getDocument().getNewMaintainableObject().getDataObject();
 
         // retrieve the type service and invoke to get the remotable field definitions
         String typeId = peopleFlow.getTypeId();
@@ -134,8 +134,9 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
      */
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine, String collectionPath) {
         // Check for maintenance documents in edit but exclude notes
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) && !(addLine instanceof Note)) {
-//            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+        if (model instanceof MaintenanceDocumentForm
+                && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction()) && !(addLine instanceof Note)) {
+//            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
 //            MaintenanceDocument document = maintenanceForm.getDocument();
 
             // get the old object's collection
@@ -203,7 +204,8 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
     protected void processAfterDeleteLine(View view, String collectionPath, Object model, int lineIndex) {
 
         // Check for maintenance documents in edit
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction())) {
+        if (model instanceof MaintenanceDocumentForm
+                && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction())) {
 
             // get the old object's collection
             String oldCollectionPath = collectionPath.replace("newMaintainableObject","oldMaintainableObject");

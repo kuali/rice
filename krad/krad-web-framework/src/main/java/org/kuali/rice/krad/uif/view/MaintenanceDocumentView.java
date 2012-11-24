@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
  * </p>
  *
  * <p>
- * The <code>MaintenanceView</code> provides the interface for the maintenance
+ * The <code>MaintenanceDocumentView</code> provides the interface for the maintenance
  * framework. It works with the <code>Maintainable</code> service and
  * maintenance controller.
  * </p>
@@ -49,10 +49,10 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name="maintenanceView")
-public class MaintenanceView extends DocumentView {
+public class MaintenanceDocumentView extends DocumentView {
     private static final long serialVersionUID = -3382802967703882341L;
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceView.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentView.class);
 
     private Class<?> dataObjectClassName;
 
@@ -61,7 +61,7 @@ public class MaintenanceView extends DocumentView {
     @RequestParameter
     private String maintenanceAction;
 
-    public MaintenanceView() {
+    public MaintenanceDocumentView() {
         super();
 
         setViewTypeName(ViewType.MAINTENANCE);

@@ -36,15 +36,19 @@
     <property name="authorizerClass" value="org.kuali.rice.krad.document.DocumentViewAuthorizerBase"/>
     <property name="viewHelperServiceClass"
               value="org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl"/>
-    <property name="singlePageView" value="true"/>
     <property name="header">
       <bean parent="Uif-DocumentViewHeader"/>
     </property>
-    <property name="page">
-      <bean parent="Uif-DocumentPage"/>
-    </property>
     <property name="footer">
       <bean parent="Uif-FooterBase"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-DocumentPage" parent="Uif-Disclosure-Page">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-documentPage</value>
+      </list>
     </property>
     <property name="defaultItemPosition" value="11"/>
     <property name="items">
@@ -53,14 +57,6 @@
         <bean parent="Uif-DocumentNotesSection" p:disclosure.defaultOpen="false" p:order="30"/>
         <bean parent="Uif-DocumentAdHocRecipientsSection" p:disclosure.defaultOpen="false" p:order="40"/>
         <bean parent="Uif-DocumentRouteLogSection" p:disclosure.defaultOpen="false" p:order="50"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-DocumentPage" parent="Uif-Disclosure-Page">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-documentPage</value>
       </list>
     </property>
     <property name="footer">
@@ -304,6 +300,22 @@
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>
       </list>
     </property>
+  </bean>
+
+  <bean id="Uif-TransactionalDocumentView" abstract="true" parent="Uif-TransactionalDocumentView-parentBean"/>
+  <bean id="Uif-TransactionalDocumentView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.view.TransactionalDocumentView" parent="Uif-DocumentView">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-transactionalView</value>
+      </list>
+    </property>
+    <property name="viewTypeName" value="TRANSACTIONAL"/>
+    <property name="viewName" value="default"/>
+    <property name="presentationControllerClass"
+              value="org.kuali.rice.krad.document.TransactionalDocumentViewPresentationControllerBase"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.document.TransactionalDocumentViewAuthorizerBase"/>
+    <property name="formClass" value="org.kuali.rice.krad.web.form.TransactionalDocumentFormBase"/>
   </bean>
 
   <bean id="Uif-DocumentNumber" parent="Uif-InputField" p:propertyName="documentNumber"

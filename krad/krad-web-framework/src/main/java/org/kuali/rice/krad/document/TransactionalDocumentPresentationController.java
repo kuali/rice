@@ -15,21 +15,12 @@
  */
 package org.kuali.rice.krad.document;
 
-import org.kuali.rice.krad.document.Document;
-
-import java.util.Set;
-
 /**
- * The DocumentPresentationController class is used for non-user related lock down
+ * Extension to DocumentPresentationController interface which adds transactional document specific methods
  *
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface TransactionalDocumentPresentationController extends DocumentPresentationController {
-    /**
-     * @param document
-     * @return Set of operations that allow to take on that document.
-     */
-    public Set<String> getEditModes(Document document);
 
 
 }

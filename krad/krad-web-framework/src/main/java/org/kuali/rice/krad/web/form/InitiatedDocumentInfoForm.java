@@ -20,7 +20,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
- * Controller for <code>MaintenanceView</code> screens which operate on
+ * Controller for <code>MaintenanceDocumentView</code> screens which operate on
  * <code>MaintenanceDocument</code> instances
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

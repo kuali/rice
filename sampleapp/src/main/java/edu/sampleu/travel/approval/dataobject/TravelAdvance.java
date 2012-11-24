@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.travel.approval;
+package edu.sampleu.travel.approval.dataobject;
 
-import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.TransactionalDocumentPresentationControllerBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import java.util.Set;
-
-public class TravelAuthorizationPresentationController extends TransactionalDocumentPresentationControllerBase {
-
-
-}
+@Entity
+@Table(name="TRVL_ADV_T")
+public class TravelAdvance extends PersistableBusinessObjectBase {}

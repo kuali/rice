@@ -18,11 +18,15 @@ package edu.sampleu.travel.approval;
 import org.kuali.rice.krad.web.controller.TransactionalDocumentControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @Controller
 @RequestMapping(value = "/approval")
-public class TravelAuthorizationController extends TransactionalDocumentControllerBase{
+public class TravelAuthorizationController extends TransactionalDocumentControllerBase {
 
     @Override
     protected TravelAuthorizationForm createInitialForm(HttpServletRequest request) {

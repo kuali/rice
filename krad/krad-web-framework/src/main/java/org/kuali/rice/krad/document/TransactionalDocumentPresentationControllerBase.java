@@ -24,10 +24,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Base class for all TransactionalDocumentPresentationControllers.
+ * Base class for all TransactionalDocumentPresentationControllers
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TransactionalDocumentPresentationControllerBase extends DocumentViewPresentationControllerBase{
+public class TransactionalDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements TransactionalDocumentPresentationController {
     private static Log LOG = LogFactory.getLog(TransactionalDocumentPresentationControllerBase.class);
-
 
 }

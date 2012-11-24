@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.impl.repository.ActionBo;
@@ -205,19 +205,19 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     }
 
     /**
-     * Get the AgendaEditor out of the MaintenanceForm's newMaintainableObject
+     * Get the AgendaEditor out of the MaintenanceDocumentForm's newMaintainableObject
      *
-     * @param model the MaintenanceForm
+     * @param model the MaintenanceDocumentForm
      * @return the AgendaEditor
      */
     private AgendaEditor getAgendaEditor(Object model) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
         return (AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
     }
 
     public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(View view, Object model,
             Container container) {
-        AgendaEditor agendaEditor = getAgendaEditor((MaintenanceForm) model);
+        AgendaEditor agendaEditor = getAgendaEditor((MaintenanceDocumentForm) model);
         return krmsRetriever.retrieveRuleActionCustomAttributes(agendaEditor);
     }
 
@@ -225,7 +225,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
      * This only supports a single action within a rule.
      */
     public List<RemotableAttributeField> retrieveRuleCustomAttributes(View view, Object model, Container container) {
-        AgendaEditor agendaEditor = getAgendaEditor((MaintenanceForm) model);
+        AgendaEditor agendaEditor = getAgendaEditor((MaintenanceDocumentForm) model);
         return krmsRetriever.retrieveRuleCustomAttributes(agendaEditor);
     }
 

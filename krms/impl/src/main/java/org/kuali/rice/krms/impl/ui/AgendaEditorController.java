@@ -23,11 +23,10 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService;
@@ -60,7 +59,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -70,7 +68,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Controller for the Test UI Page
@@ -94,7 +91,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response) {
 
         ModelAndView modelAndView;
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
         agendaEditor.setSelectedAgendaItemId("");
         agendaEditor.setDisableButtons(true);
@@ -115,7 +112,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         ModelAndView modelAndView = super.refresh(form, result, request, response);
 
         // handle return from context lookup
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
         if (rule.validContext(agendaEditor) && rule.validAgendaName(agendaEditor)) {
@@ -141,7 +138,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
 
     @Override
-    public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceForm form, BindingResult result,
+    public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // Reset the page Id so that bread crumbs can come back to the default page on EditAgenda
@@ -283,7 +280,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         MaintenanceDocument document = maintenanceForm.getDocument();
         if (rule.processAgendaItemBusinessRules(document)) {
             newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S", AgendaItemBo.class)
@@ -591,7 +588,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         updateRuleAction(agendaEditor);
 
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         MaintenanceDocument document = maintenanceForm.getDocument();
         if (rule.processAgendaItemBusinessRules(document)) {
             node.setRule(agendaItemLine.getRule());
@@ -1225,7 +1222,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return the {@link AgendaEditor} from the form
      */
     private AgendaEditor getAgendaEditor(UifFormBase form) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         return ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
     }
 

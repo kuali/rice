@@ -76,6 +76,7 @@ public class DataDictionary {
     protected DataDictionaryMapper ddMapper = new DataDictionaryIndexMapper();
 
     protected Map<String, List<String>> moduleDictionaryFiles = new HashMap<String, List<String>>();
+    protected List<String> moduleLoadOrder = new ArrayList<String>();
 
     protected ArrayList<String> beanValidationFiles = new ArrayList<String>();
 
@@ -133,15 +134,17 @@ public class DataDictionary {
         LOG.info("Starting DD XML File Load");
 
         List<String> allBeanNames = new ArrayList<String>();
-        for (Map.Entry<String, List<String>> moduleDictionary : moduleDictionaryFiles.entrySet()) {
-            String namespaceCode = moduleDictionary.getKey();
+        for (String namespaceCode : moduleLoadOrder) {
+            List<String> moduleDictionaryLocations = moduleDictionaryFiles.get(namespaceCode);
+
             XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(beans);
 
-            String configFileLocationsArray[] = new String[moduleDictionary.getValue().size()];
-            configFileLocationsArray = moduleDictionary.getValue().toArray(configFileLocationsArray);
+            String configFileLocationsArray[] = new String[moduleDictionaryLocations.size()];
+            configFileLocationsArray = moduleDictionaryLocations.toArray(configFileLocationsArray);
             for (int i = 0; i < configFileLocationsArray.length; i++) {
                 validationFiles.add(configFileLocationsArray[i]);
             }
+
             try {
                 xmlReader.loadBeanDefinitions(configFileLocationsArray);
 
@@ -225,6 +228,11 @@ public class DataDictionary {
      * @throws IOException
      */
     public void addConfigFileLocation(String namespaceCode, String location) throws IOException {
+        // add module to load order so we load in the order modules were configured
+        if (!moduleLoadOrder.contains(namespaceCode)) {
+            moduleLoadOrder.add(namespaceCode);
+        }
+
         indexSource(namespaceCode, location);
     }
 

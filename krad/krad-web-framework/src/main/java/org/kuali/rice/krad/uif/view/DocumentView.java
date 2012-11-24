@@ -95,6 +95,8 @@ public class DocumentView extends FormView {
                         documentEntry.getDocumentPresentationControllerClass());
             }
         }
+
+        getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDocumentClass());
     }
 
     /**

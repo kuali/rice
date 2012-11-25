@@ -17,12 +17,9 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import junit.framework.Assert;
-
-import org.junit.Test;
-import org.openqa.selenium.By;
-
 import edu.samplu.common.WebDriverLegacyITBase;
+import junit.framework.Assert;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -81,5 +78,6 @@ public class ServerErrorsLegacyIT extends WebDriverLegacyITBase {
 
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
         Assert.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        passed();
     }
 }

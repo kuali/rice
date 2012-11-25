@@ -54,6 +54,7 @@ public class WorkFlowRouteRulesLegacyIT extends WebDriverLegacyITBase {
         waitForPageToLoad();
         Thread.sleep(3000);
         waitAndClickByName("methodToCall.processAnswer.button0", "https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.");
+        passed();
     }
 
     @Test
@@ -75,5 +76,6 @@ public class WorkFlowRouteRulesLegacyIT extends WebDriverLegacyITBase {
         waitForPageToLoad();      
         Thread.sleep(3000);
         waitAndClickByName("methodToCall.processAnswer.button0");
+        passed();
     }
 }

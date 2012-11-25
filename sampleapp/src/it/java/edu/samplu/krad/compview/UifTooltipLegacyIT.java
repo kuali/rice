@@ -73,5 +73,6 @@ public class UifTooltipLegacyIT extends WebDriverLegacyITBase {
                 isVisibleByXpath("//img[@class='uif-validationImage']"));
         // TODO figure out this last assert
         //Assert.assertFalse(isVisible("//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
+        passed();
     }
 }

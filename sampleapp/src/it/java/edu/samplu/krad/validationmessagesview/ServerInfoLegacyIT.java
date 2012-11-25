@@ -16,12 +16,9 @@
 
 package edu.samplu.krad.validationmessagesview;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-
 import junit.framework.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -87,5 +84,6 @@ public class ServerInfoLegacyIT extends WebDriverLegacyITBase {
         fireEvent("field1", "blur");
         Assert.assertTrue(isElementPresent("div.uif-hasError"));
         Assert.assertTrue(isElementPresent("img[src*=\"error.png\"]"));
+        passed();
     }
 }

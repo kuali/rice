@@ -410,7 +410,7 @@
 	<param name="load.data.dictionary" override="false">true</param>=
 	<param name="validate.data.dictionary" override="false">true</param>
 	<param name="validate.data.dictionary.ebo.references" override="false">true</param>
-  <param name="validate.data.dictionary.onbuild" override="false">true</param>
+  <param name="validate.views.onbuild" override="false">false</param>
 	<param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
   <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
   <param name="reload.data.dictionary.interval" override="false">3000</param>

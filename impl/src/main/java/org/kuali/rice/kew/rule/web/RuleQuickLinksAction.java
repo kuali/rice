@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -340,11 +341,28 @@ public class RuleQuickLinksAction extends KewKualiAction {
                     equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
                     equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
                     equal("active", "Y"),
-                    equal("attributes[documentTypeName]", getDocumentType().getName()),
-                    equal("attributes[routeNodeName]", getRouteNodeName())
+                    equal("attributes[documentTypeName]", getDocumentType().getName())
+                    // KULRICE-8538 -- Check the route node by looping through the results below.  If it is added
+                    // into the predicate, no rows are ever returned.
+                    // equal("attributes[routeNodeName]", getRouteNodeName())
                 );
+
+
                 builder.setPredicates(p);
- 				responsibilities = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build()).getResults();
+
+                List<Responsibility> possibleResponsibilities =
+                    KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build()).getResults();
+
+                if ( !possibleResponsibilities.isEmpty() ) {
+                    for ( Responsibility resp : possibleResponsibilities ) {
+                        String routeNodeName = resp.getAttributes().get( KimConstants.AttributeConstants.ROUTE_NODE_NAME);
+                        if (StringUtils.isNotEmpty(routeNodeName) && StringUtils.equals(routeNodeName, getRouteNodeName())){
+                             responsibilities.add(resp);
+                        }
+                    }
+                } else {
+                    responsibilities = possibleResponsibilities;
+                }
 			}
 			return responsibilities;
 		}

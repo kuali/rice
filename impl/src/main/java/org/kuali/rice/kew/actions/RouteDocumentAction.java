@@ -119,10 +119,18 @@ public class RouteDocumentAction extends ActionTakenEvent {
             try {
                 String oldStatus = getRouteHeader().getDocRouteStatus();
                 getRouteHeader().markDocumentEnroute();
-                
+
                 if (((ProcessDefinitionBo)getRouteHeader().getDocumentType().getProcesses().get(0)).getInitialRouteNode() == null) {
                     getRouteHeader().setApprovedDate(new Timestamp(System.currentTimeMillis()));
+
+                    notifyStatusChange(getRouteHeader().getDocRouteStatus(), oldStatus);
+                    oldStatus = getRouteHeader().getDocRouteStatus();
+
                     getRouteHeader().markDocumentProcessed();
+
+                    notifyStatusChange(getRouteHeader().getDocRouteStatus(), oldStatus);
+                    oldStatus = getRouteHeader().getDocRouteStatus();
+
                     getRouteHeader().markDocumentFinalized();
                 }
 

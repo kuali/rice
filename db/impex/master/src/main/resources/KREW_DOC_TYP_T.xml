@@ -128,7 +128,7 @@
         DOC_TYP_DESC="Parent Document Type for all Rice Documents"
         DOC_TYP_ID="2681" DOC_TYP_NM="RiceDocument" DOC_TYP_VER_NBR="0"
         LBL="Rice Document" OBJ_ID="6166CBA1BA82644DE0404F8189D86C09"
-        PARNT_ID="2680" RTE_VER_NBR="2" VER_NBR="9"/>
+        PARNT_ID="2680" RTE_VER_NBR="2" VER_NBR="11"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${application.url}/travelDocument2.do?methodToCall=docHandler"
         DOC_TYP_DESC="Create a New Travel Request" DOC_TYP_ID="2683"
@@ -357,6 +357,25 @@
         HELP_DEF_URL="default.htm?turl=WordDocuments%2Fparametertype.htm"
         LBL="Component Maintenance Document"
         OBJ_ID="e9e0086b-30ce-4a9b-a2d6-564772076a1e" PARNT_ID="2681"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
+        RTE_VER_NBR="2" VER_NBR="1"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
+        DOC_HDLR_URL="${application.url}/kr-krad/approval?methodToCall=docHandler"
+        DOC_TYP_DESC="Create a New Travel Authorization Document"
+        DOC_TYP_ID="3008" DOC_TYP_NM="TravelAuthorization"
+        DOC_TYP_VER_NBR="0" GRP_ID="1"
+        LBL="Travel Authorization Document"
+        OBJ_ID="b9110d38-8fe0-4123-a65a-5df2336795fa" PARNT_ID="2681"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
+        RTE_VER_NBR="1" VER_NBR="1"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
+        DOC_HDLR_URL="${application.url}/krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo"
+        DOC_TYP_DESC="Create a New Fiscal Officer Maintenance Document"
+        DOC_TYP_ID="3009"
+        DOC_TYP_NM="FiscalOfficerInfoMaintenanceDocument"
+        DOC_TYP_VER_NBR="0" GRP_ID="1"
+        LBL="Fiscal Officer Info Maintenance Document"
+        OBJ_ID="a4ecd35b-f35a-40ac-a9e1-ed47201281ec" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
 </dataset>

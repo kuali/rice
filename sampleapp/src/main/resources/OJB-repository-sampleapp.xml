@@ -45,12 +45,12 @@
 
   <class-descriptor class="edu.sampleu.travel.approval.TravelAuthorizationDocument" table="TRVL_AUTH_DOC_T">
     <field-descriptor name="documentNumber" primarykey="true" column="FDOC_NBR" jdbc-type="VARCHAR"/>
-    <!--<field-descriptor name="travelDocumentIdentifier" column="TRVL_ID" jdbc-type="VARCHAR"/>-->
+    <field-descriptor name="travelDocumentIdentifier" column="TRVL_ID" jdbc-type="VARCHAR"/>
     <!--<field-descriptor name="temProfileId" column="TEM_PROFILE_ID" jdbc-type="INTEGER"/>-->
     <!--<field-descriptor name="travelerDetailId" column="TRAVELER_DTL_ID" jdbc-type="INTEGER"/>-->
     <field-descriptor name="tripTypeCode" column="TRIP_TYP_CD" jdbc-type="VARCHAR"/>
-    <field-descriptor name="tripBegin" column="TRIP_BGN_DT" jdbc-type="TIMESTAMP"/>
-    <field-descriptor name="tripEnd" column="TRIP_END_DT" jdbc-type="TIMESTAMP"/>
+    <field-descriptor name="tripBegin" column="TRIP_BGN_DT" jdbc-type="DATE"/>
+    <field-descriptor name="tripEnd" column="TRIP_END_DT" jdbc-type="DATE"/>
     <!--<field-descriptor name="expenseLimit" column="EXP_LMT" jdbc-type="DECIMAL"-->
                       <!--conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>-->
     <!--<field-descriptor name="mealWithoutLodgingReason" column="MEAL_WITHOUT_LODGING" jdbc-type="VARCHAR"/>-->

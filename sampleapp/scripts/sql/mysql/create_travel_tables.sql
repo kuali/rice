@@ -272,3 +272,8 @@ CREATE TABLE IF NOT EXISTS TRVL_TRIP_TYP_T
     )
 /
 
+CREATE TABLE IF NOT EXISTS TRVL_ID_SEQ
+(
+	id bigint(19) not null auto_increment, primary key (id)
+) ENGINE MyISAM
+/

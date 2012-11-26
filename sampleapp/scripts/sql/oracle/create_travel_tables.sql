@@ -29,8 +29,6 @@ CREATE TABLE TRAV_DOC_2_ACCOUNTS
 (
       FDOC_NBR VARCHAR2(14)
         , ACCT_NUM VARCHAR2(10)
-    
-
 )
 /
 
@@ -38,12 +36,6 @@ ALTER TABLE TRAV_DOC_2_ACCOUNTS
     ADD CONSTRAINT TRAV_DOC_2_ACCOUNTSP1
 PRIMARY KEY (FDOC_NBR,ACCT_NUM)
 /
-
-
-
-
-
-
 
 -----------------------------------------------------------------------------
 -- TRV_ACCT
@@ -61,8 +53,6 @@ CREATE TABLE TRV_ACCT
         , ACCT_NAME VARCHAR2(50)
         , ACCT_TYPE VARCHAR2(100)
         , ACCT_FO_ID NUMBER(14)
-    
-
 )
 /
 
@@ -70,12 +60,6 @@ ALTER TABLE TRV_ACCT
     ADD CONSTRAINT TRV_ACCTP1
 PRIMARY KEY (ACCT_NUM)
 /
-
-
-
-
-
-
 
 -----------------------------------------------------------------------------
 -- TRV_ACCT_EXT
@@ -91,8 +75,6 @@ CREATE TABLE TRV_ACCT_EXT
 (
       ACCT_NUM VARCHAR2(10)
         , ACCT_TYPE VARCHAR2(100)
-    
-
 )
 /
 
@@ -100,12 +82,6 @@ ALTER TABLE TRV_ACCT_EXT
     ADD CONSTRAINT TRV_ACCT_EXTP1
 PRIMARY KEY (ACCT_NUM,ACCT_TYPE)
 /
-
-
-
-
-
-
 
 -----------------------------------------------------------------------------
 -- TRV_ACCT_FO
@@ -121,8 +97,6 @@ CREATE TABLE TRV_ACCT_FO
 (
       ACCT_FO_ID NUMBER(14)
         , ACCT_FO_USER_NAME VARCHAR2(50) NOT NULL
-    
-
 )
 /
 
@@ -130,12 +104,6 @@ ALTER TABLE TRV_ACCT_FO
     ADD CONSTRAINT TRV_ACCT_FOP1
 PRIMARY KEY (ACCT_FO_ID)
 /
-
-
-
-
-
-
 
 -----------------------------------------------------------------------------
 -- TRV_ACCT_TYPE
@@ -151,8 +119,6 @@ CREATE TABLE TRV_ACCT_TYPE
 (
       ACCT_TYPE VARCHAR2(10)
         , ACCT_TYPE_NAME VARCHAR2(50)
-    
-
 )
 /
 
@@ -160,12 +126,6 @@ ALTER TABLE TRV_ACCT_TYPE
     ADD CONSTRAINT TRV_ACCT_TYPEP1
 PRIMARY KEY (ACCT_TYPE)
 /
-
-
-
-
-
-
 
 -----------------------------------------------------------------------------
 -- TRV_DOC_2
@@ -187,8 +147,6 @@ CREATE TABLE TRV_DOC_2
         , TRAVELER VARCHAR2(200)
         , ORG VARCHAR2(60)
         , DEST VARCHAR2(60)
-    
-
 )
 /
 
@@ -196,12 +154,6 @@ ALTER TABLE TRV_DOC_2
     ADD CONSTRAINT TRV_DOC_2P1
 PRIMARY KEY (FDOC_NBR)
 /
-
-
-
-
-
-
 
 -----------------------------------------------------------------------------
 -- TRV_DOC_ACCT
@@ -217,8 +169,6 @@ CREATE TABLE TRV_DOC_ACCT
 (
       DOC_HDR_ID VARCHAR2(40)
         , ACCT_NUM VARCHAR2(10)
-    
-
 )
 /
 
@@ -227,4 +177,104 @@ ALTER TABLE TRV_DOC_ACCT
 PRIMARY KEY (DOC_HDR_ID,ACCT_NUM)
 /
 
+# -----------------------------------------------------------------------------
+# Travel Approval
+# -----------------------------------------------------------------------------
 
+CREATE TABLE TRVL_AUTH_DOC_T
+  (
+     FDOC_NBR                VARCHAR2(14) NOT NULL,
+     TRVL_ID                 VARCHAR2(19) NULL,
+     TRAVELER_DTL_ID         NUMBER(19) NULL,
+     TEM_PROFILE_ID          NUMBER(19) NULL,
+     TRIP_TYP_CD             VARCHAR2(3) NULL,
+     TRIP_BGN_DT             DATE NULL,
+     TRIP_END_DT             DATE NULL,
+     PRIMARY_DEST_ID         NUMBER(19) NULL,
+     PRIMARY_DEST_NAME       VARCHAR2(100) NULL,
+     PRIMARY_DEST_CNTRY_ST   VARCHAR2(100) NULL,
+     PRIMARY_DEST_CNTY       VARCHAR2(100) NULL,
+     EXP_LMT                 NUMBER(19, 2) DEFAULT 0 NULL,
+     MEAL_WITHOUT_LODGING    VARCHAR2(255) NULL,
+     TRIP_DESC               VARCHAR2(255) NULL,
+     DELINQUENT_TR_EXCEPTION VARCHAR2(1) NULL,
+     PER_DIEM_ADJ            NUMBER(19, 2) DEFAULT 0 NULL,
+     AR_CUST_ID              VARCHAR2(255) NULL,
+     AR_INV_DOC_NBR          VARCHAR2(255) NULL,
+     CELL_PH_NUM             VARCHAR2(20) NULL,
+     RGN_FAMIL               VARCHAR2(255) NULL,
+     CTZN_CNTRY_CD           VARCHAR2(255) NULL,
+     FDOC_NXT_EXP_NBR        NUMBER(7) NULL,
+     VER_NBR                 NUMBER(8) DEFAULT 1 NOT NULL,
+     OBJ_ID                  VARCHAR2(36) NOT NULL
+  )
+/
+
+ALTER TABLE TRVL_AUTH_DOC_T
+    ADD CONSTRAINT TRVL_AUTH_DOC_TP1
+PRIMARY KEY (FDOC_NBR)
+/
+
+CREATE TABLE TRVL_PER_DIEM_T
+    (
+       ID                NUMBER(19) NOT NULL,
+       TRIP_TYP_CD       VARCHAR2(3) NOT NULL,
+       COUNTRY           VARCHAR2(100) NULL,
+       COUNTRY_NM        VARCHAR2(100) NULL,
+       COUNTY_CD         VARCHAR2(100) NULL,
+       PRI_DEST          VARCHAR2(100) NULL,
+       SSN_BGN_DT        DATE NULL,
+       EFFECT_FROM_DT    DATE NULL,
+       EFFECT_TO_DT      DATE DEFAULT NULL NULL,
+       LOAD_DT           DATE DEFAULT NULL NULL,
+       SSN_BGN_MONTH_DAY VARCHAR2(5) DEFAULT NULL NULL,
+       BKFST             NUMBER(19) NULL,
+       LUNCH             NUMBER(19) NULL,
+       DIN               NUMBER(19) NULL,
+       LODGING           NUMBER(19, 2) DEFAULT 0 NULL,
+       INC               NUMBER(19, 2) DEFAULT 0 NULL,
+       MEALS_INC         NUMBER(19, 2) DEFAULT 0 NULL,
+       ACTV_IND          VARCHAR2(1) NOT NULL,
+       VER_NBR           NUMBER(8, 0) DEFAULT 1 NOT NULL,
+       OBJ_ID            VARCHAR2(36) NOT NULL
+    )
+/
+
+ALTER TABLE TRVL_PER_DIEM_T
+    ADD CONSTRAINT TRVL_PER_DIEM_TP1
+PRIMARY KEY (ID)
+/
+
+CREATE SEQUENCE TRVL_PER_DIEM_ID_SEQ
+	START WITH 1
+	INCREMENT BY 1
+/
+
+CREATE TABLE TRVL_TRIP_TYP_T
+    (
+       CODE              		VARCHAR2(3) 		NOT NULL,
+       NM                		VARCHAR2(40) 	NOT NULL,
+       GEN_ENC_IND       		VARCHAR2(1) 		NOT NULL,
+       ENC_BAL_TYP       		VARCHAR2(2) 		NULL,
+       ENC_OBJ_CD        		VARCHAR2(4) 		NULL,
+       CONT_INFO_REQ_IND 		VARCHAR2(1) 		NOT NULL,
+       BLANKET_IND       		VARCHAR2(1) 		NOT NULL,
+       AUTO_TR_LIMIT			NUMBER(19,2)  	NOT NULL,
+       USE_PER_DIEM 			VARCHAR2(1) 		NOT NULL,
+       TA_REQUIRED 			    VARCHAR2(1) 		NOT NULL,
+       PER_DIEM_CALC_METHOD 	VARCHAR2(1) 		NOT NULL,
+       ACTV_IND          		VARCHAR2(1) 		NOT NULL,
+       VER_NBR           		NUMBER(8, 0) 	DEFAULT 1 NOT NULL,
+       OBJ_ID            		VARCHAR2(36) 	NOT NULL
+    )
+/
+
+ALTER TABLE TRVL_TRIP_TYP_T
+    ADD CONSTRAINT TRVL_TRIP_TYP_TP1
+PRIMARY KEY (CODE)
+/
+
+CREATE SEQUENCE TRVL_ID_SEQ
+	START WITH 1
+	INCREMENT BY 1
+/

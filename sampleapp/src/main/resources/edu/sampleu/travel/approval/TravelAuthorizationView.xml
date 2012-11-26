@@ -32,7 +32,7 @@
       </list>
     </property>
   </bean>
-  
+
   <bean id="TravelAuthorization-MainPage" parent="Uif-DocumentPage">
     <property name="items">
       <list merge="true">
@@ -42,12 +42,20 @@
   </bean>
 
   <bean id="TravelAuthorization-Overview" parent="Uif-Disclosure-GridSection" p:headerText="General Trip Information"
-          p:layoutManager.numberOfColumns="4">
+        p:layoutManager.numberOfColumns="4">
     <property name="items">
       <list>
+        <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
+              p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
         <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
-        <bean parent="Uif-InputField" p:propertyName="tripBegin"/>
-        <bean parent="Uif-InputField" p:propertyName="tripEnd"/>
+        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
+            </list>
+          </property>
+        </bean>
         <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
         <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
         <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.ArrayList;
@@ -204,5 +205,15 @@ public class ExpressionFunctions {
 
         return KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), namespaceCode,
                 templateName, permissionDetails, roleQualifiers);
+    }
+
+    /**
+     * Gets the next available number from a sequence
+     *
+     * @param sequenceName name of the sequence to retrieve from
+     * @return Long next sequence value
+     */
+    public static Long sequence(String sequenceName) {
+        return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
     }
 }

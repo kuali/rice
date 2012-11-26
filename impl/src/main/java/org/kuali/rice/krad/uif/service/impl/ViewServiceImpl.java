@@ -121,7 +121,7 @@ public class ViewServiceImpl implements ViewService {
 
         // Validation of the page's beans
         if (KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
-                "validate.data.dictionary.onbuild")) {
+                UifConstants.VALIDATE_VIEWS_ONBUILD)) {
             ValidationController validator = new ValidationController(true, true, true, true, false);
             Log tempLogger = LogFactory.getLog(ViewServiceImpl.class);
             validator.validate(view, tempLogger, false);

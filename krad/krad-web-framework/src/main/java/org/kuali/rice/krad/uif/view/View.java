@@ -413,6 +413,17 @@ public class View extends ContainerBase {
     }
 
     /**
+     * Override sort method to prevent sorting in the case of a single page view, since the items
+     * will get pushed into the configured page and sorted through the page
+     */
+    @Override
+    protected void sortItems(View view, Object model) {
+        if (!singlePageView) {
+            super.sortItems(view, model);
+        }
+    }
+
+    /**
      * Namespace code the view should be associated with
      *
      * <p>

@@ -184,6 +184,7 @@
         <value>edu.sampleu.demo.kitchensink.UifComponentsViewPx10Resources</value>
         <value>edu.sampleu.demo.kitchensink.UifComponentsViewPx11Resources</value>
         <value>edu.sampleu.demo.course.UifStudentDefinitionsResources</value>
+        <value>edu.sampleu.travel.approval.TravelAuthorizationView</value>
       </list>
     </property>
   </bean>

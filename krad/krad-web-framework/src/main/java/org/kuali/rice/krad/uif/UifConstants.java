@@ -46,6 +46,8 @@ public class UifConstants {
     public static final String BLOCKUI_NAVOPTS = "navigation";
     public static final String BLOCKUI_REFRESHOPTS = "refresh";
 
+    public static final String VALIDATE_VIEWS_ONBUILD = "validate.views.onbuild";
+
     public static enum ReadOnlyListTypes {
         DELIMITED, BREAK, OL, UL
     }

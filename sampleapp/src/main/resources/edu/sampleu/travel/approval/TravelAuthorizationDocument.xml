@@ -27,6 +27,7 @@
     <property name="businessRulesClass" value="edu.sampleu.travel.approval.TravelAuthorizationDocumentRule"/>
     <property name="attributes">
       <list>
+        <ref bean="TravelAuthorizationDocument-travelDocumentNumber"/>
         <ref bean="TravelAuthorizationDocument-tripTypeCode"/>
         <ref bean="TravelAuthorizationDocument-tripBegin"/>
         <ref bean="TravelAuthorizationDocument-tripEnd"/>
@@ -39,11 +40,34 @@
     </property>
   </bean>
 
+  <bean id="TravelAuthorizationDocument-travelDocumentNumber"
+        parent="TravelAuthorizationDocument-travelDocumentNumber-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelDocumentNumber-parentBean" parent="AttributeDefinition">
+    <property name="name" value="travelDocumentIdentifier"/>
+    <property name="label" value="TEM Doc #"/>
+    <property name="shortLabel" value="TEM Doc #"/>
+    <property name="maxLength" value="32"/>
+    <property name="summary" value="TEM Doc #"/>
+    <property name="description" value="TEM Doc #"/>
+    <property name="forceUppercase" value="true"/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="32"/>
+    </property>
+  </bean>
+
   <bean id="TravelAuthorizationDocument-tripTypeCode" parent="TravelAuthorizationDocument-tripTypeCode-parentBean"/>
   <bean id="TravelAuthorizationDocument-tripTypeCode-parentBean" abstract="true"
         parent="PrimaryDestination-tripTypeCode">
     <property name="controlField">
-      <bean parent="Uif-DropdownControl"/>
+      <bean parent="Uif-DropdownControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="" p:value=""/>
+            <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Conference"/>
+            <bean parent="Uif-KeyLabelPair" p:key="T" p:value="Team Meeting"/>
+          </list>
+        </property>
+      </bean>
     </property>
     <property name="optionsFinderClass"
               value="edu.sampleu.travel.approval.TripTypeValuesFinder"/>
@@ -59,7 +83,7 @@
     <property name="summary" value="Trip Begin"/>
     <property name="description" value="Trip Begin"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="20"/>
+      <bean parent="Uif-DateControl"/>
     </property>
   </bean>
 
@@ -73,7 +97,7 @@
     <property name="summary" value="Trip End"/>
     <property name="description" value="Trip End"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="20"/>
+      <bean parent="Uif-DateControl"/>
     </property>
   </bean>
 
@@ -87,7 +111,11 @@
   <bean id="TravelAuthorizationDocument-primaryDestinationName"
         parent="TravelAuthorizationDocument-primaryDestinationName-parentBean"/>
   <bean id="TravelAuthorizationDocument-primaryDestinationName-parentBean" abstract="true"
-        parent="PrimaryDestination-primaryDestinationName"/>
+        parent="PrimaryDestination-primaryDestinationName">
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="70"/>
+    </property>
+  </bean>
 
   <bean id="TravelAuthorizationDocument-primaryDestinationCountryState"
         parent="TravelAuthorizationDocument-primaryDestinationCountryState-parentBean"/>

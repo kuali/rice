@@ -15,10 +15,11 @@
  */
 package edu.sampleu.travel.approval;
 
+import edu.sampleu.travel.approval.dataobject.PrimaryDestination;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Sample Travel Transactional Document
@@ -29,9 +30,10 @@ import java.sql.Timestamp;
 @Table(name = "TRVL_AUTH_DOC_T")
 public class TravelAuthorizationDocument extends TransactionalDocumentBase {
 
+    private String travelDocumentIdentifier;
     private String tripTypeCode;
-    private Timestamp tripBegin;
-    private Timestamp tripEnd;
+    private Date tripBegin;
+    private Date tripEnd;
     private String tripDescription;
     private Boolean primaryDestinationIndicator = false;
 
@@ -40,8 +42,18 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     private String primaryDestinationCountryState;
     private String primaryDestinationCounty;
 
+    private PrimaryDestination primaryDestination;
+
     public TravelAuthorizationDocument() {
         super();
+    }
+
+    public String getTravelDocumentIdentifier() {
+        return travelDocumentIdentifier;
+    }
+
+    public void setTravelDocumentIdentifier(String travelDocumentIdentifier) {
+        this.travelDocumentIdentifier = travelDocumentIdentifier;
     }
 
     public String getTripTypeCode() {
@@ -52,19 +64,19 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
         this.tripTypeCode = tripTypeCode;
     }
 
-    public Timestamp getTripBegin() {
+    public Date getTripBegin() {
         return tripBegin;
     }
 
-    public void setTripBegin(Timestamp tripBegin) {
+    public void setTripBegin(Date tripBegin) {
         this.tripBegin = tripBegin;
     }
 
-    public Timestamp getTripEnd() {
+    public Date getTripEnd() {
         return tripEnd;
     }
 
-    public void setTripEnd(Timestamp tripEnd) {
+    public void setTripEnd(Date tripEnd) {
         this.tripEnd = tripEnd;
     }
 
@@ -114,5 +126,13 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
 
     public void setPrimaryDestinationCounty(String primaryDestinationCounty) {
         this.primaryDestinationCounty = primaryDestinationCounty;
+    }
+
+    public PrimaryDestination getPrimaryDestination() {
+        return primaryDestination;
+    }
+
+    public void setPrimaryDestination(PrimaryDestination primaryDestination) {
+        this.primaryDestination = primaryDestination;
     }
 }

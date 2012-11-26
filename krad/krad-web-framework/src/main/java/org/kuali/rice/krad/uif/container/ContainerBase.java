@@ -85,10 +85,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void performInitialization(View view, Object model) {
 		super.performInitialization(view, model);
 
-		// sort items list by the order property
-		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
-                defaultItemPosition);
-		setItems(sortedItems);
+        sortItems(view, model);
 
         if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
                 instructionalMessage == null)) {
@@ -181,6 +178,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         }
 
         return components;
+    }
+
+    /**
+     * Performs sorting of the container items based on the order property
+     *
+     * @param view view instance containing the container
+     * @param model model object containing the view data
+     */
+    protected void sortItems(View view, Object model) {
+        // sort items list by the order property
+        List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
+                defaultItemPosition);
+        setItems(sortedItems);
     }
 
 	/**

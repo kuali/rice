@@ -121,28 +121,26 @@ public class RoleNode extends RequestsNode {
         Predicate p = and(
                 equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
                 equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
-                equal("active", "Y")
-        );
-		DocumentType docType = document.getDocumentType();
-        while ( docType != null ) {
-            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-            Predicate pAttr = and(
-                equal("attributes[documentTypeName]", docType.getName())
-                // KULRICE-8538 -- Check the route node while we're looping through the results below.  If it is added
+                equal("active", "Y"),
+                equal("attributes[routeNodeName]", node.getRouteNodeName())
+                // KULRICE-8538 -- Check the document type while we're looping through the results below.  If it is added
                 // into the predicate, no rows are ever returned.
-                //equal("attributes[routeNodeName]", node.getRouteNodeName())
-            );
+                // equal("attributes[documentTypeName]", docType.getName())
+        );
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(p);
+        List<Responsibility> responsibilities = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build()).getResults();
 
-            builder.setPredicates(p, pAttr);
 
-            List<Responsibility> responsibilities = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build()).getResults();
+        DocumentType docType = document.getDocumentType();
+        while ( docType != null ) {
             // once we find a responsibility, stop, since this overrides any parent
             // responsibilities for this node
             if ( !responsibilities.isEmpty() ) {
                 // if any has required=true - return true
                 for ( Responsibility resp : responsibilities ) {
-                    String routeNodeName = resp.getAttributes().get( KimConstants.AttributeConstants.ROUTE_NODE_NAME);
-                    if (StringUtils.isNotEmpty(routeNodeName) && StringUtils.equals(routeNodeName, node.getRouteNodeName())){
+                    String documentTypeName = resp.getAttributes().get( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
+                    if (StringUtils.isNotEmpty(documentTypeName) && StringUtils.equals(documentTypeName, docType.getName())){
                         if ( Boolean.parseBoolean( resp.getAttributes().get( KimConstants.AttributeConstants.REQUIRED ) ) ) {
                             return resp;
                         }

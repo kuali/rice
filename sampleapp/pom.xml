@@ -113,8 +113,6 @@
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
         <maven.failsafe.includes>**/*IT.java</maven.failsafe.includes>
-        <maven.failsafe.excludes>**/XMLIngesterLegacyIT.java</maven.failsafe.excludes>
-        <maven.failsafe.excludes>**/IdentityPersonRoleWDIT.java</maven.failsafe.excludes>
       </properties>
       <build>
         <plugins>

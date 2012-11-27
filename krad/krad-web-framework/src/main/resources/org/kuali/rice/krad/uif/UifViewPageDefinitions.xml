@@ -28,9 +28,9 @@
   <bean id="Uif-BaseTheme-parentBean" abstract="true" parent="Uif-ViewTheme">
     <property name="cssFiles">
       <list>
-        <!--<value>krad/min/css/krad_@{#ConfigProperties['rice.version']}.min.css</value>-->
+        <value>krad/min/css/krad_@{#ConfigProperties['rice.version']}.min.css</value>
         <!-- For Debugging, uncomment out the values below (and comment out the minimized css above) -->
-        <value>krad/css/global/fss-reset.css</value>
+        <!--value>krad/css/global/fss-reset.css</value>
         <value>krad/css/global/fss-layout.css</value>
         <value>krad/css/global/fss-text.css</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.23.css</value>
@@ -43,14 +43,14 @@
         <value>krad/plugins/rice/spinner/smartspinner.css</value>
         <value>krad/plugins/tooltip/jquery.tools.tooltip.css</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
-        <value>krad/css/global/base.css</value>
+        <value>krad/css/global/base.css</value-->
       </list>
     </property>
     <property name="scriptFiles">
       <list>
-        <!--<value>krad/min/scripts/krad_@{#ConfigProperties['rice.version']}.min.js</value>-->
+        <value>krad/min/scripts/krad_@{#ConfigProperties['rice.version']}.min.js</value>
         <!-- For Debugging, uncomment out the values below (and comment out the minimized js above) -->
-        <value>krad/plugins/jquery/jquery-1.8.0.js</value>
+        <!--value>krad/plugins/jquery/jquery-1.8.0.js</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.23.js</value>
         <value>krad/plugins/jqueryUI/jquery.ui.autocomplete.html.js</value>
         <value>krad/plugins/color/jquery.color.js</value>
@@ -88,7 +88,7 @@
         <value>krad/scripts/krad.request.js</value>
         <value>krad/scripts/krad.response.js</value>
         <value>krad/scripts/krad.actions.js</value>
-        <value>krad/scripts/krad.validate.js</value>
+        <value>krad/scripts/krad.validate.js</value-->
       </list>
     </property>
   </bean>

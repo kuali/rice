@@ -19,6 +19,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -145,7 +146,11 @@ public class ITUtil {
         waitAndClick(selenium, "//img[@alt='doc search']");
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
         assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.selectFrame("iframeportlet");
+        try {
+            selenium.selectFrame("iframeportlet");
+        } catch (NoSuchFrameException nsfe) {
+            // do nothing don't fail on missing frames
+        }
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad(DEFAULT_WAIT_FOR_PAGE_TO_LOAD_TIMEOUT);
     }

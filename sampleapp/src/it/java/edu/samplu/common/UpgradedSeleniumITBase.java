@@ -19,6 +19,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
@@ -227,7 +228,11 @@ public abstract class UpgradedSeleniumITBase {
     }
 
     protected void selectFrame(String frameName) {
-        selenium.selectFrame(frameName);
+        try {
+            selenium.selectFrame(frameName);
+        } catch (NoSuchFrameException nsfe) {
+            // do nothing, don't fail on a missing iframe
+        }
     }
 
     protected void setSpeed(String speed) {

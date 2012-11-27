@@ -93,5 +93,10 @@
         </entry>
       </map>
     </property>
+    <property name="moduleLoadOrder">
+      <list>
+        <value>KR-NS</value>
+      </list>
+    </property>
   </bean>
 </beans>

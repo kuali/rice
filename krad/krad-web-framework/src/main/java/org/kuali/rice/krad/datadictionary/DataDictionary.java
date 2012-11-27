@@ -333,6 +333,29 @@ public class DataDictionary {
     }
 
     /**
+     * Order modules should be loaded into the dictionary
+     *
+     * <p>
+     * Modules are loaded in the order they are found in this list. If not explicity set, they will be loaded in
+     * the order their dictionary file locations are added
+     * </p>
+     *
+     * @return List<String> list of namespace codes indicating the module load order
+     */
+    public List<String> getModuleLoadOrder() {
+        return moduleLoadOrder;
+    }
+
+    /**
+     * Setter for the list of namespace codes indicating the module load order
+     *
+     * @param moduleLoadOrder
+     */
+    public void setModuleLoadOrder(List<String> moduleLoadOrder) {
+        this.moduleLoadOrder = moduleLoadOrder;
+    }
+
+    /**
      * Sets the DataDictionaryMapper
      *
      * @param mapper the datadictionary mapper

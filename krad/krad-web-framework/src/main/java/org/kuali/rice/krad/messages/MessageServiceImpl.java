@@ -173,8 +173,16 @@ public class MessageServiceImpl implements MessageService {
      * @return String configured default locale
      */
     protected String getDefaultLocaleCode() {
-        return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KNS_NAMESPACE,
-                KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.ParameterNames.DEFAULT_LOCALE_CODE);
+        String localeCode = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
+                KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE,
+                KRADConstants.ParameterNames.DEFAULT_LOCALE_CODE);
+
+        // if not configured fall back to english US
+        if (StringUtils.isBlank(localeCode)) {
+            localeCode = "en-US";
+        }
+
+        return localeCode;
     }
 
     /**

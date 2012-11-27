@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.web.form;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -29,8 +28,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -66,7 +67,7 @@ public class UifFormManager implements Serializable {
      *
      * @param form to be added to the session
      */
-    public void addSessionForm(UifFormBase form) {
+    public synchronized void addSessionForm(UifFormBase form) {
         if (form == null || StringUtils.isBlank(form.getFormKey())) {
             throw new RiceIllegalArgumentException("Form or form key was null");
         }
@@ -80,6 +81,20 @@ public class UifFormManager implements Serializable {
         accessedFormKeys.add(form.getFormKey());
 
         // check if we have too many forms and need to remove an old one
+        if (sessionForms.size() > maxNumberOfSessionForms) {
+            // clear all inquiry forms first, temp solution until inquiry forms are not stored in session
+            // TODO: remove once inquiry forms are not required to be in session
+            Set<String> formKeys = new HashSet<String>(sessionForms.keySet());
+            for (String formKey : formKeys) {
+                UifFormBase sessionForm = sessionForms.get(formKey);
+                if ((sessionForm instanceof InquiryForm) && (!formKey.equals(form.getFormKey()))) {
+                    sessionForms.remove(formKey);
+                    accessedFormKeys.remove(formKey);
+                }
+            }
+        }
+
+        // if we still have too many forms clear the oldest form
         if (sessionForms.size() > maxNumberOfSessionForms) {
             // get the oldest form we have
             String removeFormKey = (String) accessedFormKeys.get(0);

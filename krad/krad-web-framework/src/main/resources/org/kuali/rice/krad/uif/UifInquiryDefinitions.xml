@@ -30,7 +30,6 @@
     </property>
     <property name="viewTypeName" value="INQUIRY"/>
     <property name="viewHelperServiceClass" value="org.kuali.rice.krad.inquiry.InquirableImpl"/>
-    <property name="persistFormToSession" value="false"/>
     <property name="presentationControllerClass"
               value="org.kuali.rice.krad.inquiry.InquiryViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.inquiry.InquiryViewAuthorizerBase"/>

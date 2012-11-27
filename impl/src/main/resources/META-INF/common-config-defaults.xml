@@ -414,7 +414,7 @@
 	<param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
   <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
   <param name="reload.data.dictionary.interval" override="false">3000</param>
-  <param name="maxNumberOfSessionForms" override="false">5</param>
+  <param name="maxNumberOfSessionForms" override="false">10</param>
   <param name="krad.schema.classes">META-INF/krad_schemaclasses.xml</param>
 
   <!-- list of resource bundle names (full qualified classnames) for application messages (default namespace

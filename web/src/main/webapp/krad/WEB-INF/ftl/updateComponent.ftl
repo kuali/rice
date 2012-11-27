@@ -29,8 +29,8 @@
         <#-- show added growls -->
         <@krad.script value="${KualiForm.growlScript!}" component=Component/>
 
-        <#-- set focus and perform jump to -->
+        <#-- set focus if configured but do not perform jump -->
         <@krad.script value="performFocusAndJumpTo(${view.currentPage.autoFocus?string}, false, false, '${KualiForm.focusId!}',
-                             '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');" component=Component/>
+                             '', '');" component=Component/>
     </div>
 </html>

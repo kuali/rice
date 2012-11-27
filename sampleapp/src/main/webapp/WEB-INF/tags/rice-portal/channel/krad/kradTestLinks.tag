@@ -21,20 +21,19 @@
    <strong>Screen Element Testing</strong>
    <ul class="chan">
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91" />Uif Components (Kitchen Sink)</a></li>
-     <li><portal:portalLink displayTitle="true" title="Comp Portal" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91" /></li>
-     <li><portal:portalLink displayTitle="true" title="Standard Layout Demo" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-StandardLayout-KNS&methodToCall=start" /></li>
-     <li><portal:portalLink displayTitle="true" title="Validation Framework Demo" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationLayout-KNS&methodToCall=start" /></li>
-     <li><portal:portalLink displayTitle="true" title="ServerSide Constraint Validation Demo" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationServerSide-KNS&methodToCall=start" /></li>
-     <li><portal:portalLink displayTitle="true" title="Uif Layout Test" url="${ConfigProperties.application.url}/kr-krad/uilayouttest?viewId=UifLayoutView_KNS&methodToCall=start" /></li>
-	   <li><portal:portalLink displayTitle="true" title="Test View 1 (old)" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView1_KNS&methodToCall=start" /></li>
-     <li><portal:portalLink displayTitle="true" title="Test View 2 (old)" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2_KNS&methodToCall=start" /></li>
-     <li><portal:portalLink displayTitle="true" title="Incident Report" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2_KNS&methodToCall=foo" /></li>
-     <li><portal:portalLink displayTitle="true" title="Test Open Authorization" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=TestOpenAuthView&methodToCall=start" /></li>
-     <li><portal:portalLink displayTitle="true" title="Configuration Test View" url="${ConfigProperties.application.url}/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView_KNS&methodToCall=start" /></li>
+     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-StandardLayout-KNS&methodToCall=start" />Standard Layout Demo</a></li>
+     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationLayout-KNS&methodToCall=start" />Validation Framework Demo</a></li>
+     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationServerSide-KNS&methodToCall=start" />ServerSide Constraint Validation Demo</a></li>
+     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uilayouttest?viewId=UifLayoutView_KNS&methodToCall=start" />Uif Layout Test</a></li>
+     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2_KNS&methodToCall=foo" />Incident Report</a></li>
+     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView_KNS&methodToCall=start" />Configuration Test View</a></li>
+	   <%--<li><portal:portalLink displayTitle="true" title="Test View 1 (old)" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView1_KNS&methodToCall=start" /></li>--%>
+     <%--<li><portal:portalLink displayTitle="true" title="Test View 2 (old)" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2_KNS&methodToCall=start" /></li>--%>
+     <%--<li><portal:portalLink displayTitle="true" title="Test Open Authorization" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=TestOpenAuthView&methodToCall=start" /></li>--%>
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/dialog-configuration-test?viewId=DialogTestView_KNS&methodToCall=start" />Dialog Test View</a></li>
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections_KNS&methodToCall=start"/>Collections Configuration Test View</a></li>
      <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=RichMessagesView_KNS&methodToCall=start"/>Rich Messages</a></li>
-     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/collegeapp?viewId=Training-CollegeApplicationView_KNS&methodToCall=start"/>Training - Student College Application</a></li>
+     <%--<li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/collegeapp?viewId=Training-CollegeApplicationView_KNS&methodToCall=start"/>Training - Student College Application</a></li>--%>
    </ul>
 
 </div>

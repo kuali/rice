@@ -17,7 +17,7 @@
 
 <td class="content" valign="top">
   <kradChannel:kradTestLinks/>
-  <kradChannel:kradBookStoreApplication/>
+  <%--<kradChannel:kradBookStoreApplication/>--%>
   <kradChannel:kradTravelApplication/>
 </td>
 
@@ -26,6 +26,6 @@
   <kradChannel:kradTravelApplication2/>
 </td>
 
-<td class="content" valign="top">
-  <kradChannel:knsConvert/>
-</td>
+<%--<td class="content" valign="top">--%>
+  <%--<kradChannel:knsConvert/>--%>
+<%--</td>--%>

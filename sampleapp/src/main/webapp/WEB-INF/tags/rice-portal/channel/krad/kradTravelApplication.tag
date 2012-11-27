@@ -29,7 +29,7 @@
     <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (Edit)"
                            url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=maintenanceEdit&number=a14&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Travel Account Lookup"
-                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&lookupCriteria['number']=a*&readOnlyFields=number&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&showMaintenanceLinks=true"/></li>
+                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&showMaintenanceLinks=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Travel Account Lookup Auto Search"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=search&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&lookupCriteria['number']=a*&readOnlyFields=number&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&showMaintenanceLinks=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Travel Account Type Lookup"

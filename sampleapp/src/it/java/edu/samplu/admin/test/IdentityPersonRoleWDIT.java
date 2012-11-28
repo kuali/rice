@@ -50,7 +50,6 @@ public class IdentityPersonRoleWDIT extends WebDriverLegacyITBase{
         for(int i = userCntStart; i < userCnt; i++) {
             id = idBase + String.format(format, i);
             open(EDIT_URL.replace("LTID", id));
-            gotoNestedFrame();
             waitAndTypeByName("document.documentHeader.documentDescription", "Admin permissions for " + id); // don't make unique
 
             selectByName("newAffln.affiliationTypeCode", "Affiliate");

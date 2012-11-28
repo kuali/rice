@@ -600,9 +600,9 @@ public class ITUtil {
         }
     }
 
-    private static String deLinespace(String contents) {
+    protected static String deLinespace(String contents) {
         while (contents.contains("\n\n")) {
-            contents = contents.replace("\n\n", "\n");
+            contents = contents.replaceAll("\n\n", "\n");
         }
         return contents;
     }

@@ -295,6 +295,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
      * Handles simple nested frame content; validates that a frame and nested frame exists before switching to it
      */
     protected void gotoNestedFrame() {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.switchTo().defaultContent();
         if(driver.findElements(By.xpath("//iframe")).size() > 0) {
             WebElement containerFrame = driver.findElement(By.xpath("//iframe"));
@@ -304,6 +305,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
             driver.switchTo().frame(contentFrame);
         }
+        driver.manage().timeouts().implicitlyWait(DEFAULT_WAIT_SEC, TimeUnit.SECONDS);
     }
 
     protected boolean isElementPresent(By by) {
@@ -517,7 +519,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + " " + text + " " + driver.getCurrentUrl());
+            fail(e.getMessage() + " " + by.toString() + " unable to type text '" + text + "' current url " + driver.getCurrentUrl()
+                    + "\n" + ITUtil.deLinespace(driver.getPageSource())
+            );
             e.printStackTrace();
         }
     }
@@ -527,7 +531,9 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         try {
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
-            fail(e.getMessage() + " " + by.toString() + " " + text + "  " + message + " " + driver.getCurrentUrl());
+            fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message + " current url " + driver.getCurrentUrl()
+                    + "\n" + ITUtil.deLinespace(driver.getPageSource())
+            );
             e.printStackTrace();
         }
     }

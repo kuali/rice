@@ -48,6 +48,8 @@ public class UifConstants {
 
     public static final String VALIDATE_VIEWS_ONBUILD = "validate.views.onbuild";
 
+    public static final String MESSAGE_VIEW_ID = "Uif-MessageView";
+
     public static enum ReadOnlyListTypes {
         DELIMITED, BREAK, OL, UL
     }

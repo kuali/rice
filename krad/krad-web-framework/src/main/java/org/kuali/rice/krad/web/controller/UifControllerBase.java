@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
+import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
@@ -691,11 +692,13 @@ public abstract class UifControllerBase {
         DialogManager dm = form.getDialogManager();
         if (!dm.hasDialogBeenAnswered(dialogId)) {
             showDialog(dialogId, form, request, response);
+            
             // throw an exception until showDialog is able to complete request.
             // until then, programmers should check hasDialogBeenAnswered
             throw new RiceRuntimeException("Dialog has not yet been answered by client. "
                     + "Check that hasDialogBeenAnswered(id) returns true.");
         }
+        
         return dm.wasDialogAnswerAffirmative(dialogId);
     }
 
@@ -719,11 +722,13 @@ public abstract class UifControllerBase {
         DialogManager dm = form.getDialogManager();
         if (!dm.hasDialogBeenAnswered(dialogId)) {
             showDialog(dialogId, form, request, response);
+            
             // throw an exception until showDialog is able to complete request.
             // until then, programmers should check hasDialogBeenAnswered
             throw new RiceRuntimeException("Dialog has not yet been answered by client. "
                     + "Check that hasDialogBeenAnswered(id) returns true.");
         }
+        
         return dm.getDialogAnswer(dialogId);
     }
 
@@ -748,51 +753,11 @@ public abstract class UifControllerBase {
         form.setLightboxScript("openLightboxOnLoad('" + dialogId + "');");
         form.getDialogManager().addDialog(dialogId, form.getMethodToCall());
 
-        // respond back to the client directly
-        // without returning back to the controller, but we still want spring mvc to build the view
-        ModelAndView mv = getUIFModelAndView(form);
-        //        UifControllerHelper.postControllerHandle(request, response, this, mv);
-
-        // try rendering view manually
-        // NOTE: this code below is experimental, and does not currently work
-        //        renderView(mv, request, response, myViewName);
-
-        //should never reach this code, but we do for now until the above is fixed
-        //TODO: fix the above
-        return mv;
+        return getUIFModelAndView(form);
     }
 
     /**
-     * Renders the view manually from the controller level instead of returning back to the Spring Dispatcher servlet
-     *
-     * @param mv
-     * @param request
-     * @param response
-     * @param viewName
-     * @throws Exception
-     */
-    public void renderView(ModelAndView mv, HttpServletRequest request, HttpServletResponse response,
-            String viewName) throws Exception {
-
-        ServletContext context = request.getSession().getServletContext();
-        WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(context);
-        viewResolver = (UrlBasedViewResolver) applicationContext.getBean("viewResolver");
-        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(
-                request); // this returns null if not called within DispatcherServlet context!
-
-        org.springframework.web.servlet.View view;
-        if (mv.isReference()) {
-            // We need to resolve the view name.
-            view = viewResolver.resolveViewName(viewName, localeResolver.resolveLocale(request));
-        } else {
-            // No need to lookup: the ModelAndView object contains the actual View object.
-            view = mv.getView();
-        }
-        view.render(mv.getModel(), request, response);
-    }
-
-    /**
-     * Common return point for dialogs.
+     * Common return point for dialogs
      *
      * <p>
      * Determines the user responses to the dialog. Performs dialog management and then redirects to the
@@ -810,6 +775,7 @@ public abstract class UifControllerBase {
     public ModelAndView returnFromLightbox(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         String newMethodToCall = "";
+        
         // Save user responses from dialog
         DialogManager dm = form.getDialogManager();
         String dialogId = dm.getCurrentDialogId();
@@ -883,6 +849,33 @@ public abstract class UifControllerBase {
 
     }
 
+    /**
+     * Builds a message view from the given header and message text then forwards the UIF model and view
+     *
+     * <p>
+     * If an error or other type of interruption occurs during the request processing the controller can
+     * invoke this message to display the message to the user. This will abandon the view that was requested
+     * and display a view with just the message
+     * </p>
+     *
+     * @param form UIF form instance
+     * @param headerText header text for the message view (can be blank)
+     * @param messageText text for the message to display
+     * @return ModelAndView
+     */
+    protected ModelAndView getMessageView(UifFormBase form, String headerText, String messageText) {
+        // get a new message view
+        MessageView messageView = (MessageView) getViewService().getViewById(UifConstants.MESSAGE_VIEW_ID);
+
+        messageView.setHeaderText(headerText);
+        messageView.setMessageText(messageText);
+
+        form.setViewId(UifConstants.MESSAGE_VIEW_ID);
+        form.setView(messageView);
+
+        return getUIFModelAndView(form);
+    }
+
     protected ModelAndView getUIFModelAndView(UifFormBase form) {
         return getUIFModelAndView(form, form.getPageId());
     }
@@ -904,14 +897,6 @@ public abstract class UifControllerBase {
 
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
-    }
-
-    public UrlBasedViewResolver getViewResolver() {
-        return viewResolver;
-    }
-
-    public void setViewResolver(UrlBasedViewResolver viewResolver) {
-        this.viewResolver = viewResolver;
     }
 
 }

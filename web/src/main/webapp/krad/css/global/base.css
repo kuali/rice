@@ -1142,6 +1142,11 @@ li.uif-infoMessageItem:before {
     border: 1px dashed black;
 }
 
+.uif-applicationMessage {
+    font-size:125%;
+    font-weight:bold;
+}
+
 /** Help  *******************************************************************************************/
 .uif-helpImage {
     margin-left: .2em;

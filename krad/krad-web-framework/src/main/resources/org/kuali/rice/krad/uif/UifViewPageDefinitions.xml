@@ -186,6 +186,24 @@
 
   <!-- Common Views -->
 
+  <bean id="Uif-MessageView" parent="Uif-MessageView-parentBean"/>
+  <bean id="Uif-MessageView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.view.MessageView" parent="Uif-FormView">
+    <property name="page">
+      <bean parent="Uif-Page"/>
+    </property>
+    <property name="message">
+      <bean parent="Uif-Message">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>uif-applicationMessage</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="persistFormToSession" value="false"/>
+    <property name="breadcrumbs.render" value="false"/>
+  </bean>
 
   <bean id="Uif-Page" parent="Uif-Page-parentBean"/>
   <bean id="Uif-Page-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">

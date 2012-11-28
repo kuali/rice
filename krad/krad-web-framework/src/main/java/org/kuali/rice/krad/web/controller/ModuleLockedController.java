@@ -19,40 +19,50 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
- * This simple controller loads the module locked view when a user accesses a
- * module which has been locked for maintenance.
+ * Loads the module locked view when a user accesses a module which has been locked for maintenance
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-public class ModuleLockedController {
+public class ModuleLockedController extends UifControllerBase {
+    
+    public static final String MODULE_PARAMETER = "moduleNamespace";
+    
+    @Override
+    protected UifFormBase createInitialForm(HttpServletRequest request) {
+        return new UifFormBase();
+    }
 
     /**
-     * Constant defined to match with method call in moduleLocked.jsp which is
-     * set to a message that is displayed when the module is locked.
+     * Retrieves the module locked message test from a system parameter and then returns the message view
      */
-    public static final String MODULE_LOCKED_MESSAGE = "moduleLockedMessage";
-    public static final String MODULE_PARAMETER = "moduleNamespace";
-
     @RequestMapping(value = "/module-locked")
-    public ModelAndView moduleLocked(@RequestParam(value = MODULE_PARAMETER, required = true) String moduleNamespaceCode) {
-        ModelAndView modelAndView = new ModelAndView("moduleLocked");
+    public ModelAndView moduleLocked(@ModelAttribute("KualiForm") UifFormBase form,
+            @RequestParam(value = MODULE_PARAMETER, required = true) String moduleNamespaceCode) {
         ParameterService parameterSerivce = CoreFrameworkServiceLocator.getParameterService();
+        
         String messageParamComponentCode = KRADConstants.DetailTypes.ALL_DETAIL_TYPE;
         String messageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_MESSAGE_PARM;
-        String lockoutMessage = parameterSerivce.getParameterValueAsString(moduleNamespaceCode, messageParamComponentCode, messageParamName);
+        String lockoutMessage = parameterSerivce.getParameterValueAsString(moduleNamespaceCode,
+                messageParamComponentCode, messageParamName);
 
-        if(StringUtils.isBlank(lockoutMessage)) {
+        if (StringUtils.isBlank(lockoutMessage)) {
             String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
-            lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KNS_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
+            lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KNS_NAMESPACE,
+                    messageParamComponentCode, defaultMessageParamName);
         }
-        modelAndView.addObject(MODULE_LOCKED_MESSAGE, lockoutMessage);
-        return modelAndView;
+        
+        return getMessageView(form, "Module Locked", lockoutMessage);
     }
+
 }

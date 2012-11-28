@@ -291,6 +291,21 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         return user;
     }
 
+    /**
+     * Handles simple nested frame content; validates that a frame and nested frame exists before switching to it
+     */
+    protected void gotoNestedFrame() {
+        driver.switchTo().defaultContent();
+        if(driver.findElements(By.xpath("//iframe")).size() > 0) {
+            WebElement containerFrame = driver.findElement(By.xpath("//iframe"));
+            driver.switchTo().frame(containerFrame);
+        }
+        if(driver.findElements(By.xpath("//iframe")).size() > 0) {
+            WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
+            driver.switchTo().frame(contentFrame);
+        }
+    }
+
     protected boolean isElementPresent(By by) {
         return (driver.findElements(by)).size()>0;
     }
@@ -312,10 +327,14 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     }
 
     protected void selectFrame(String locator) {
-        try {
-            driver.switchTo().frame(locator);
-        } catch (NoSuchFrameException nsfe) {
-            // don't fail
+        if ("iframeportlet".equals(locator)) {
+            gotoNestedFrame();
+        } else {
+            try {
+                driver.switchTo().frame(locator);
+            } catch (NoSuchFrameException nsfe) {
+                // don't fail
+            }
         }
     }
     

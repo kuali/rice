@@ -28,10 +28,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -118,7 +120,6 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
     public void testXMLIngesterSuccessfulFileUpload() throws Exception {
         List<File> fileUploadList = buildFileUploadList();
         gotoMenuLinkLocator();
-        gotoNestedFrame();
         int cnt = 0;
         for(File file : fileUploadList) {
             String path = file.getAbsolutePath().toString();
@@ -132,21 +133,6 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
             assertTextPresent("Ingested xml doc: " + file.getName());
         }
         passed();
-    }
-
-    /**
-     * Handles simple nested frame content; validates that a frame and nested frame exists before switching to it
-     */
-    private void gotoNestedFrame() {
-        driver.switchTo().defaultContent();
-        if(driver.findElements(By.xpath("//iframe")).size() > 0) {
-            WebElement containerFrame = driver.findElement(By.xpath("//iframe"));
-            driver.switchTo().frame(containerFrame);
-        }
-        if(driver.findElements(By.xpath("//iframe")).size() > 0) {
-            WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
-            driver.switchTo().frame(contentFrame);
-        }
     }
 
     /**

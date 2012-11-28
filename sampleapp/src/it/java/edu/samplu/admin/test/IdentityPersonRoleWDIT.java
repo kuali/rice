@@ -31,7 +31,7 @@ public class IdentityPersonRoleWDIT extends WebDriverLegacyITBase{
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" + ITUtil.getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
-    private int userCnt = Integer.valueOf(System.getProperty("test.role.user.cnt", "151"));
+    private int userCnt = Integer.valueOf(System.getProperty("test.role.user.cnt", "176"));
     private int userCntStart = Integer.valueOf(System.getProperty("test.role.user.cnt.start", "0"));
     private String idBase = System.getProperty("test.role.user.base", "lt");
     public static final String ADMIN_ROLE_ID = "63";
@@ -45,19 +45,12 @@ public class IdentityPersonRoleWDIT extends WebDriverLegacyITBase{
     /**
      */
     public void testPersonRole() throws InterruptedException {
-//        String easyFrame = null;
-//        String match = "easyXDM_default";
-//        String source = driver.getPageSource();
-//        if (source.indexOf(match) > -1) {
-//            easyFrame = source.substring(source.indexOf(match, source.indexOf(match) + 20));
-//            easyFrame = easyFrame.substring(0, easyFrame.indexOf("_provider")) + "_provider";
-//        }
-
         String id = "";
         String format = "%0" + (userCnt + "").length() + "d";
         for(int i = userCntStart; i < userCnt; i++) {
             id = idBase + String.format(format, i);
             open(EDIT_URL.replace("LTID", id));
+            gotoNestedFrame();
             waitAndTypeByName("document.documentHeader.documentDescription", "Admin permissions for " + id); // don't make unique
 
             selectByName("newAffln.affiliationTypeCode", "Affiliate");

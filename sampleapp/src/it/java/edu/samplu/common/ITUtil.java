@@ -549,6 +549,7 @@ public class ITUtil {
                 contents.contains("Incident Report") &&
                 !contents.contains("portal.do?channelTitle=Incident%20Report") && // Incident Report link on sampleapp KRAD tab
                 !contents.contains("portal.do?channelTitle=Incident Report") && // Incident Report link on sampleapp KRAD tab IE8
+                !contents.contains("uitest?viewId=Travel-testView2") && 
                 !contents.contains("SeleniumException")) { // selenium timeouts have Incident Report in them
             try {
                 if (contents.indexOf("Incident Feedback") > -1) {

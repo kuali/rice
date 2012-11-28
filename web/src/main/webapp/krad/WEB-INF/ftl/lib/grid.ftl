@@ -34,6 +34,8 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
     <#local columnArray=[]/>
     <#local columnLoopArray=""/>
 
+    <#local firstRow=true/>
+
     <#list 1..numberOfColumns as i>
         <#local columnArray = columnArray + [1] />
     </#list>
@@ -49,8 +51,6 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         <#local loopCounter = loopCounter + 1/>
         <#local columnIndex = (colCount % numberOfColumns)/>
         <#local colCount=colCount + 1/>
-
-        <#local firstRow=(i == 0)/>
 
         <#-- begin table row -->
         <#if (colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)>
@@ -78,7 +78,6 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
             <#local rowCount=rowCount + 1/>
         </#if>
 
-
         <#-- determine cell width by using default or configured width and round off to two decimal places-->
         <#if item.width?has_content>
             <#local cellWidth=item.width />
@@ -94,7 +93,6 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         <#local singleCellRow=(numberOfColumns == 1) || (item.colSpan == numberOfColumns)/>
         <#local renderHeaderColumn=renderHeaderRow || (renderFirstRowHeader && firstRow)
                  || ((renderFirstCellHeader || renderAlternateHeader) && !singleCellRow)/>
-
 
         <#-- build cells for row if value @ columnArray itemIndex = 1 -->
         <#local index = columnArray[columnIndex]?number />
@@ -126,21 +124,20 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
             <#local columnLoopArray = columnLoopArray + item.rowSpan + splitter />
             <#local colCount=colCount + item.colSpan - 1/>
 
-        <#--skip the number of columns if colspan more than 1 and append the rowspan-->
-        <#if (item.colSpan > 1)>
-            <#list 1..item.colSpan - 1 as j>
-                <#local jValue = (columnArray[columnIndex + j]?number)/>
-                <#if (jValue > 1)>
-                    <#local jValue = (jValue -1)/>
-                </#if>
+            <#--skip the number of columns if colspan more than 1 and append the rowspan-->
+            <#if (item.colSpan > 1)>
+                <#list 1..item.colSpan - 1 as j>
+                    <#local jValue = (columnArray[columnIndex + j]?number)/>
+                    <#if (jValue > 1)>
+                        <#local jValue = (jValue -1)/>
+                    </#if>
 
-                <#local columnLoopArray = columnLoopArray + jValue + splitter />
-            </#list>
-        </#if>
-
-            <#else>
-                <#local loopCounter = (loopCounter - 1)/>
-                <#local columnLoopArray = columnLoopArray + (index - 1) + splitter />
+                    <#local columnLoopArray = columnLoopArray + jValue + splitter />
+                </#list>
+            </#if>
+        <#else>
+            <#local loopCounter = (loopCounter - 1)/>
+            <#local columnLoopArray = columnLoopArray + (index - 1) + splitter />
         </#if>
 
         <#-- flip alternating flags -->
@@ -155,6 +152,9 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         <#-- end table row -->
         <#if (colCount % numberOfColumns) == 0>
            </tr>
+
+           <#local firstRow=false/>
+
            <#local columnArray = columnLoopArray?split(splitter) />
            <#local columnLoopArray=""/>
         </#if>

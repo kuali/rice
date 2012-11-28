@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.SpaceField;
+import org.kuali.rice.krad.uif.layout.GridLayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -117,6 +118,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         if (component == null) {
             return;
         }
+        
+        Group group = (Group) component;
 
         // list to hold the generated compare items
         List<Component> comparisonItems = new ArrayList<Component>();
@@ -147,6 +150,11 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
                 comparisonItems.add(compareHeaderField);
             }
+            
+            // if group is using grid layout, make first row a header
+            if (group.getLayoutManager() instanceof GridLayoutManager) {
+                ((GridLayoutManager) group.getLayoutManager()).setRenderFirstRowHeader(true);
+            }
         }
 
         // find the comparable to use for comparing value changes (if
@@ -161,7 +169,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         }
 
         // generate the compare items from the configured group
-        Group group = (Group) component;
         boolean changeIconShowedOnHeader = false;
         for (Component item : group.getItems()) {
             int defaultSuffix = 0;

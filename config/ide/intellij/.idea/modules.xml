@@ -68,6 +68,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" group="rice-krms and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms-api.iml" filepath="$PROJECT_DIR$/rice-krms-api.iml" group="rice-krms and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms-framework.iml" filepath="$PROJECT_DIR$/rice-krms-framework.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-gen.iml" filepath="$PROJECT_DIR$/rice-krms-gen.iml" group="rice-krms and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms-impl.iml" filepath="$PROJECT_DIR$/rice-krms-impl.iml" group="rice-krms and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ksb.iml" filepath="$PROJECT_DIR$/rice-ksb.iml" group="rice-ksb and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ksb-api.iml" filepath="$PROJECT_DIR$/rice-ksb-api.iml" group="rice-ksb and modules" />

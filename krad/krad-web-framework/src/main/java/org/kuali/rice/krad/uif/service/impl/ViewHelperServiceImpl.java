@@ -186,6 +186,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // will not conflict with components on the page when navigation happens
         view.setIdSequence(100000);
         performComponentInitialization(view, model, view);
+
+        // Check to see if the component is part of dialog. If yes and not a DialogGroup
+        // then set the refreshedByAction on the group to true. This will leave the
+        // component in the viewIndex to be updated using an AJAX call
+        // TODO: Figure out a better way to store dialogs only if it is rendered using an ajax request
+        for(Component dialog : view.getDialogs()) {
+                dialog.setRefreshedByAction(true);
+        }
     }
 
     /**

@@ -753,6 +753,13 @@ public abstract class UifControllerBase {
         form.setLightboxScript("openLightboxOnLoad('" + dialogId + "');");
         form.getDialogManager().addDialog(dialogId, form.getMethodToCall());
 
+        // if the dialog is being invoked sever side via ajax set the ajaxReturnType to update-dialog
+        // and set the updateComponentId to the dialogId
+        if(form.isAjaxRequest()) {
+            form.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATEDIALOG.getKey());
+            form.setUpdateComponentId(dialogId);
+        }
+
         return getUIFModelAndView(form);
     }
 

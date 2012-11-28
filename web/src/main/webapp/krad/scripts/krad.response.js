@@ -29,7 +29,7 @@ KradResponse.prototype = {
     // maps return types to handler function names
     handlerMapping: {"update-page": "updatePageHandler", "update-component": "updateComponentHandler",
         "update-view": "updateViewHandler", "redirect": "redirectHandler",
-        "display-lightbox": "displayLightBoxHandler"},
+        "display-lightbox": "displayLightBoxHandler", "update-dialog":"updateDialogHandler"},
 
     // invoked to process the response contents by invoking necessary handlers
     processResponse: function () {
@@ -77,6 +77,21 @@ KradResponse.prototype = {
 
         jQuery(pageInLayout).show();
     },
+
+
+    // finds the dialog content in the returned content and updates the view
+    updateDialogHandler: function (content, dataAttr) {
+        var id = dataAttr.updatecomponentid;
+        var component = jQuery("#" + id + "_update", content);
+
+        // replace component
+        if (jQuery("#" + id).length) {
+            jQuery("#" + id).replaceWith(component.html());
+        }
+
+        runHiddenScripts(id);
+    },
+
 
     // retrieves the component with the matching id from the server and replaces a matching
     // _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label

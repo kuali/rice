@@ -380,6 +380,13 @@ public interface ViewModel extends Serializable {
     public boolean isUpdatePageRequest();
 
     /**
+     * Indicates whether the request is to update a dialog (only applicable for ajax requests)
+     *
+     * @return boolean true if the request is for update dialog, false if not
+     */
+    public boolean isUpdateDialogRequest();
+
+    /**
      * Indicates whether the request is for a non-update of the view (only applicable for ajax requests)
      *
      * <p>

@@ -261,6 +261,22 @@ public class DialogTestViewUifController extends UifControllerBase {
         return getUIFModelAndView(form, "DialogView-Page1");
     }
 
+    //KULRICE-8319
+    @RequestMapping(params = "methodToCall=" + "testExpressionDialog")
+        public ModelAndView testExpressionDialog(@ModelAttribute("KualiForm") UifDialogTestForm form, BindingResult result,
+                HttpServletRequest request, HttpServletResponse response) throws Exception {
+            String dialog4 = "schedulingConfirmDialog";
+            if (!hasDialogBeenAnswered(dialog4,form)){
+             form.setField3("TestVal");
+             return showDialog(dialog4, form, request, response);
+            }
+
+        // clear dialog history so they can press the button again
+        form.getDialogManager().removeDialog(dialog4);
+        // reload page1
+        return getUIFModelAndView(form, "DialogView-Page1");
+        }
+
 
     /**
      * Test method for a controller that invokes a dialog lightbox.

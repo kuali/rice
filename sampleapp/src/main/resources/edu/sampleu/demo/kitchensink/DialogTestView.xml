@@ -38,6 +38,7 @@
               <bean parent="DialogTestView-SampleDialogs"/>
               <bean parent="DialogTestView-MainGroup"/>
               <bean id="myImage" parent="ImageDialog"/>
+              <bean parent="schedulingConfirmDialog-Group"/>
             </list>
           </property>
           <property name="footer">
@@ -86,6 +87,7 @@
         <bean id="myProgressiveDialog" parent="Progressive-DialogGroup"/>
         <bean id="myRegularGroup" parent="DTV-SampleGroup"/>
         <bean id="extendedDialogGroup" parent="DTV-ExtendedDialog"/>
+        <bean id="schedulingConfirmDialog" parent="schedulingConfirmDialog-Group"/>
         <bean id="myHiddenGroupDialog" parent="myHiddenGroup"/>
 <!--
         <bean id="myCheckboxDialog" parent="sampleCheckboxDialog" p:promptText="Select Applicable" />
@@ -127,6 +129,8 @@
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Client Ajax Dialog" p:actionScript="showLightboxComponent('preDefinedDialogTrueFalse');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="doRegularGroupAsDialog" p:actionLabel="Regular Group"
               p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="testExpressionDialog" p:actionLabel="Expression dialog"
+                       p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="doExtendedDialog" p:actionLabel="Extended Dialog"
               p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="doResponseInLightBox" p:actionLabel="Displays Response in LightBox"
@@ -259,6 +263,19 @@
     </property>
   </bean>
 -->
+  <bean id="schedulingConfirmDialog-Group" parent="Uif-DialogGroup">
+    <property name="hidden" value="true"/>
+    <property name="headerText" value="Mark as Ready for Scheduling"/>
+    <property name="promptText" value=""/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-DataField" p:label="Course Offeringsv" p:propertyName="field2" p:fieldLabel.style="font-weight:bold;"/>
+        <bean parent="Uif-MessageField" p:label="Activity Offerings"
+              p:messageText="All contained in the course offerings(@{field3}) " p:fieldLabel.style="font-weight:bold;"/>
+      </list>
+    </property>
+  </bean>
+
   <bean id="ImageDialog" parent="Uif-ImageField" p:hidden="true" p:fieldLabel.render="false"
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
 

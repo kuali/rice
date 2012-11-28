@@ -107,14 +107,28 @@ public class DialogGroup extends Group {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        // move dialogGroup custom properties into the items property.
-        // where they will be rendered by group.jsp
-        List<Component> myItems = new ArrayList<Component>();
-        myItems.add(prompt);
-        myItems.add(explanation);
-        myItems.addAll(getItems());
-        myItems.add(responseInputField);
-        this.setItems(myItems);
+            // move dialogGroup custom properties into the items property.
+            // where they will be rendered by group.jsp
+            List<Component> myItems = new ArrayList<Component>();
+            List<? extends Component> items = getItems();
+
+            // do not add the custom properties if they are already present
+            if(!(items.contains(prompt))){
+                myItems.add(prompt);
+            }
+
+            if(!(items.contains(explanation))){
+                myItems.add(explanation);
+            }
+
+            myItems.addAll(getItems());
+
+            if(!(items.contains(responseInputField))){
+                myItems.add(responseInputField);
+            }
+
+            this.setItems(myItems);
+
     }
 
     /**

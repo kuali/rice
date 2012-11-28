@@ -106,7 +106,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         if (uifForm.isRequestRedirected() || uifForm.isUpdateNoneRequest()) {
             // view wasn't rendered, just set to null and leave previous posted view
             uifForm.setView(null);
-        } else if (uifForm.isUpdateViewRequest()) {
+        } else if (uifForm.isUpdateViewRequest() || uifForm.isUpdateDialogRequest()) {
             // partial refresh on posted view
             View postedView = uifForm.getPostedView();
             if (postedView != null) {

@@ -96,9 +96,9 @@ public class UifControllerHelper {
             // prepare view instance
             prepareViewForRendering(request, form);
 
-            // for component and page refresh need to export the component as a model
+            // for component, page refresh and dialog update need to export the component as a model
             Component component = null;
-            if (form.isUpdateComponentRequest()) {
+            if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest()) {
                 component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
             } else if (form.isUpdatePageRequest()) {
                 component = form.getView().getCurrentPage();
@@ -200,7 +200,7 @@ public class UifControllerHelper {
      */
     public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
-        if (form.isUpdateComponentRequest()) {
+        if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest()) {
             String refreshComponentId = form.getUpdateComponentId();
 
             // get a new instance of the component

@@ -54,11 +54,18 @@
                 <#include "redirect.ftl" parse=true/>
             </div>
 
-        <#elseif KualiForm.ajaxReturnType == "display-lightbox">
+       <#elseif KualiForm.ajaxReturnType == "display-lightbox">
             <div data-returntype="display-lightbox">
                 <#include "updateComponent.ftl" parse=true/>
             </div>
+
+       <#elseif KualiForm.ajaxReturnType == "update-dialog">
+            <div data-returntype="update-dialog" data-updatecomponentid="${Component.id!}">
+                <#include "updateComponent.ftl" parse=true/>
+            </div>
+
         </#if>
+
     <#else>
         <#include "fullView.ftl" parse=true/>
     </#if>

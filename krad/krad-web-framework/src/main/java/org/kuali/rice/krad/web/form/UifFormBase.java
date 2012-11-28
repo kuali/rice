@@ -749,6 +749,15 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateDialogRequest()
+     */
+    @Override
+    public boolean isUpdateDialogRequest() {
+        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+                UifConstants.AjaxReturnTypes.UPDATEDIALOG.getKey());
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdatePageRequest()
      */
     @Override

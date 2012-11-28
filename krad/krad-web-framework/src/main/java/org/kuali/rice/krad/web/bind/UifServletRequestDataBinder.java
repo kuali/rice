@@ -121,7 +121,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         UifFormBase form = (UifFormBase) this.getTarget();
 
         // if doing a partial page update or ajax request with no updating, do not initialize view
-        if (!form.isUpdateComponentRequest() && !form.isUpdateNoneRequest()) {
+        if (!form.isUpdateComponentRequest() && !form.isUpdateNoneRequest() && !form.isUpdateDialogRequest()) {
             View view = null;
 
             // attempt to retrieve a view by unique identifier first

@@ -10,7 +10,9 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/location/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/location/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/location/src/test/resources/META-INF" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/location/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/location/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/location/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

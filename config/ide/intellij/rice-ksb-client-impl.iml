@@ -23,7 +23,9 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

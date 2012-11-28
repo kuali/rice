@@ -22,15 +22,12 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kim/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kim/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kim/src/test/resources/META-INF" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/kim/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/kim/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/kim/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-kim-ldap" />
-    <orderEntry type="module" module-name="rice-kim-ldap" />
-    <orderEntry type="module" module-name="rice-kim-ldap" />
-    <orderEntry type="module" module-name="rice-kim-ldap" />
-    <orderEntry type="module" module-name="rice-kim-ldap" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-core-api" />

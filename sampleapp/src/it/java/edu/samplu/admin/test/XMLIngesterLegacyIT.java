@@ -17,35 +17,43 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.AdminMenuLegacyITBase;
 import edu.samplu.common.ITUtil;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * tests uploads of new users and group
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
 
-    // values set by default for repeatable testing; left as configurable for load tests
-    private List<File> fileUploadList;
-    private int userCnt = Integer.valueOf(System.getProperty("test.xmlingester.user.cnt", "10"));
-    private boolean userPadding = Boolean.valueOf(System.getProperty("test.xmlingester.user.padding", "true"));
-    private String userPrefix = System.getProperty("test.xmlingester.user.prefix", ITUtil.DTS);
-    private String emailDomain = System.getProperty("test.xmlingester.user.email.domain", "@kuali.org");
-    // group default values
-    private String groupId = System.getProperty("test.xmlingester.grp.id", "2203");
-    private String groupNamespace = System.getProperty("test.xmlingester.grp.namespace","KUALI");
-    private String groupName = System.getProperty("test.xmlingester.grp.name", "eDoc.Example1.IUPUI.Workgroup");
-    private String groupDesc = System.getProperty("test.xmlingester.grp.desc", "Edoclite Documentation workgroup");
+    protected final Logger LOG = Logger.getLogger(getClass());
+
+    // File generation
+    private Configuration cfg;
+    private String PROPS_LOCATION = System.getProperty("xmlingester.props.location", null);
+    private String DEFAULT_PROPS_LOCATION = "XML/xmlingester.properties";
+
+    // Templates for File Generation
+    private static final String DIR_TMPL = "/XML/";
+    private static final String TMPL_USER_CONTENT = "SimpleUserContent.ftl";
+    private static final String TMPL_GROUP_CONTENT = "SimpleGroupContent.ftl";
 
     @Rule
     public TemporaryFolder folder= new TemporaryFolder();
@@ -71,103 +79,46 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
 
     @Override
     public void setUp() throws Exception {
-       super.setUp();
+        super.setUp();
         // generated load users and group resources
-       buildFileUploadList();
-
+        cfg = new Configuration();
+        cfg.setTemplateLoader(new ClassTemplateLoader(getClass(), DIR_TMPL));
     }
 
-    private void buildFileUploadList() throws Exception {
-        fileUploadList = new ArrayList<File>();
-        fileUploadList.add(generateLoadUsersFile(userCnt, userPrefix));
-        fileUploadList.add(generateLoadGroupFile(userCnt, userPrefix));
-    }
-
-    /**
-     * Generates a temporary file for given number of users and prefix
-     * 
-     * @param numberOfUsers
-     * @param prefix
-     * @throws Exception
-     */
-    private File generateLoadUsersFile(int numberOfUsers, String prefix) throws Exception {
-        File loadUsersFile = folder.newFile("loadtest-users.xml");
-
-        java.util.Date date= new java.util.Date();
-
-        FileWriter writer = new FileWriter(loadUsersFile);
-        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        writer.write("<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\">\n");
-        writer.write("\t<users xmlns=\"ns:workflow/User\" xsi:schemaLocation=\"ns:workflow/User resource:User\">\n");
-        String count = "";
-        String format = "%0" + (numberOfUsers + "").length() + "d";
-        for(int i = 0; i < numberOfUsers; i++) {
-            if (userPadding) {
-                count = prefix + String.format(format, i);
-            } else {
-                count = prefix + i;
+    private List<File> buildFileUploadList() throws Exception {
+        List<File> fileUploadList = new ArrayList<File>();
+        try {
+            // update properties with timestamp value if includeDTSinPrefix is true
+            Properties props = loadProperties(PROPS_LOCATION, DEFAULT_PROPS_LOCATION);
+            if(props.get("userIncludeDTSinPrefix") != null
+                    && "true".equalsIgnoreCase((String) props.get("userIncludeDTSinPrefix"))) {
+                props.setProperty("userPrefix", "" + props.get("userPrefix") + ITUtil.DTS);
             }
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("\t\t<user><principalId>lt" + count + "</principalId>");
-            stringBuffer.append("<emplId>lt" + count + "emplid</emplId>");
-            stringBuffer.append("<principalName>loadtester" + count + "</principalName>");
-            stringBuffer.append("<givenName>Tester" + count + "</givenName>");
-            stringBuffer.append("<lastName>McLoady" + count + "</lastName>");
-            stringBuffer.append("<emailAddress>loadtester" + count + emailDomain + "</emailAddress>");
-            stringBuffer.append("</user>\n");
-            writer.write(stringBuffer.toString());
-        }
-        writer.write("\t</users>\n</data>\n");
-        writer.close();
-        return loadUsersFile;
-    }
 
-    /**
-     *  Generates a temporary file for a group given number of users and principal name prefix
-     *
-     *
-     * @param numberOfUsers
-     * @param prefix
-     * @return
-     * @throws Exception
-     */
-    private File generateLoadGroupFile(int numberOfUsers, String prefix) throws Exception {
-        File loadGroupFile = folder.newFile("loadtest-group.xml");
-
-        FileWriter writer = new FileWriter(loadGroupFile);
-        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        writer.write("<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\">\n");
-        writer.write("\t<groups xmlns=\"ns:workflow/Group\" xsi:schemaLocation=\"ns:workflow/Group resource:Group\">\n");
-        writer.write("\t\t<group><id>" + groupId + "</id><namespace>" + groupNamespace + "</namespace><description>" + groupDesc + "</description>");
-        writer.write("<name>" + groupName + "</name>");
-        writer.write("<members>");
-        writer.write("<principalName>admin</principalName>");
-        writer.write("<principalName>notsys</principalName>");
-        String count = "";
-        String format = "%0" + (numberOfUsers + "").length() + "d";
-        for(int i = 0; i < numberOfUsers; i++) {
-            if (userPadding) {
-                count = prefix + String.format(format, i);
-            } else {
-                count = prefix + i;
-            }
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("<principalName>loadtester" + count + "</principalName>");
-            writer.write(stringBuffer.toString());
+            // build files and add to array
+            fileUploadList.add(
+                    writeTemplateToFile(
+                            folder.newFile("loadtest-users.xml"), cfg.getTemplate(TMPL_USER_CONTENT), props));
+            fileUploadList.add(
+                    writeTemplateToFile(
+                            folder.newFile("loadtest-group.xml"), cfg.getTemplate(TMPL_GROUP_CONTENT), props));
+        } catch( Exception e) {
+            throw new Exception("Unable to generate files for upload", e);
         }
-        writer.write("\t\t</members>\n\t</group>\n</groups>\n</data>\n");
-        writer.close();
-        return loadGroupFile;
+        return fileUploadList;
     }
 
 
     /**
-     * Based on load user and groups manual tests; load a dynamically generated user and group file into the xml ingester screen
+     * Based on load user and groups manual tests; dynamically generates user and group file
+     * and loads into the xml ingester screen
      *
      */
     @Test
     public void testXMLIngesterSuccessfulFileUpload() throws Exception {
+        List<File> fileUploadList = buildFileUploadList();
         gotoMenuLinkLocator();
+        gotoNestedFrame();
         int cnt = 0;
         for(File file : fileUploadList) {
             String path = file.getAbsolutePath().toString();
@@ -183,4 +134,56 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
         passed();
     }
 
+    /**
+     * Handles simple nested frame content; validates that a frame and nested frame exists before switching to it
+     */
+    private void gotoNestedFrame() {
+        driver.switchTo().defaultContent();
+        if(driver.findElements(By.xpath("//iframe")).size() > 0) {
+            WebElement containerFrame = driver.findElement(By.xpath("//iframe"));
+            driver.switchTo().frame(containerFrame);
+        }
+        if(driver.findElements(By.xpath("//iframe")).size() > 0) {
+            WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
+            driver.switchTo().frame(contentFrame);
+        }
+    }
+
+    /**
+     * Loads properties from user defined properties file or uses resource file
+     *
+     * @return
+     * @throws IOException
+     */
+    private Properties loadProperties(String fileLocation, String resourceLocation) throws IOException {
+        Properties props = new Properties();
+        InputStream in = null;
+        if(fileLocation != null) {
+            in = new FileInputStream(fileLocation);
+        } else {
+            in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
+        }
+        if(in != null) {
+            props.load(in);
+            in.close();
+        }
+        return props;
+    }
+
+    /**
+     * writes processed template  to file
+     *
+     * @param file
+     * @param template
+     * @param props
+     * @return
+     * @throws IOException
+     * @throws TemplateException
+     */
+    private File writeTemplateToFile(File file, Template template, Properties props) throws IOException, TemplateException {
+        String output = FreeMarkerTemplateUtils.processTemplateIntoString(template, props);
+        LOG.debug("Generated File Output: " + output);
+        FileUtils.writeStringToFile(file, output);
+        return file;
+    }
 }

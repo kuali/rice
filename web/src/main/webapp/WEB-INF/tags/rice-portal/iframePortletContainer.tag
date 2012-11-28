@@ -82,7 +82,8 @@
     container: "embedded",
     props: {
       style: {
-        width: "100%"
+        width: "100%",
+        height: window.innerHeight - 250 + "px"  // initial height
       }
     },
     onMessage: function(message, origin) {

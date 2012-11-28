@@ -1144,20 +1144,8 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
     }
 
     // Open the light box
-    if (top == self) {
-        jQuery.fancybox(options);
-        setupLightboxForm();
-    } else {
-        // Remove portal css and add lightbox css for the duration of the lightbox's life
-        parent.jQuery('link[href="/kr-dev/rice-portal/css/portal.css"]').remove();
-        parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/lightbox.css" rel="stylesheet" type="text/css">');
-        _appendCallbackFunctions(options, {afterClose: function () {
-            parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/portal.css" rel="stylesheet" type="text/css">');
-            parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove();
-        }});
-
-        parent.jQuery.fancybox(options);
-    }
+    jQuery.fancybox(options);
+    setupLightboxForm();
 }
 
 /**

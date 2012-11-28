@@ -230,12 +230,14 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
         // loop over permission details, only one of them needs to be authorized
         for (Map<String, String> permissionDetails : permissionDetailList) {
             Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
-            if (getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
-                foundAtLeastOnePermission = true;
-                if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
-                        KewApiConstants.RECALL_PERMISSION, permissionDetails, roleQualifiers)) {
-                    authorizedByPermission = true;
-                    break;
+            if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
+                if (getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
+                    foundAtLeastOnePermission = true;
+                    if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
+                            KewApiConstants.RECALL_PERMISSION, permissionDetails, roleQualifiers)) {
+                        authorizedByPermission = true;
+                        break;
+                    }
                 }
             }
         }

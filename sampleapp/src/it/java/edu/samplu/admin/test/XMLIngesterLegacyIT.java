@@ -84,7 +84,7 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
         super.setUp();
         // generated load users and group resources
         cfg = new Configuration();
-        cfg.setTemplateLoader(new ClassTemplateLoader(getClass(), DIR_TMPL));
+        cfg.setTemplateLoader(new ClassTemplateLoader(getClass().getClassLoader().getClass(), DIR_TMPL));
     }
 
     private List<File> buildFileUploadList() throws Exception {
@@ -136,7 +136,7 @@ public class XMLIngesterLegacyIT extends AdminMenuLegacyITBase {
     }
 
     /**
-     * Loads properties from user defined properties file or uses resource file
+     * Loads properties from user defined properties file, if not available uses resource file
      *
      * @return
      * @throws IOException

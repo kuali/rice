@@ -47,5 +47,5 @@ INSERT INTO KRIM_ROLE_PERM_T (ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, A
 INSERT INTO KRIM_ROLE_PERM_T (ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
   VALUES('KR1001', SYS_GUID(), 1,
     (Select ROLE_ID from KRIM_ROLE_T where ROLE_NM = 'Complete Request Recipient'),
-    (Select PERM_ID from KRIM_PERM_T where NM = 'Edit Kuali ENROUTE Document Node Name PreRoute'), 'Y')
+    (Select PERM_ID from KRIM_PERM_T where NM = 'Edit Kuali ENROUTE Document Route Status Code R'), 'Y')
 /

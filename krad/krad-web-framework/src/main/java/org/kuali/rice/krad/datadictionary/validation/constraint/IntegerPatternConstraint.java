@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "integerPatternConstraint")
+@BeanTag(name = "integerPatternConstraint", parent = "IntegerPatternConstraint")
 public class IntegerPatternConstraint extends ValidDataPatternConstraint {
     protected boolean allowNegative;
     protected boolean onlyNegative;

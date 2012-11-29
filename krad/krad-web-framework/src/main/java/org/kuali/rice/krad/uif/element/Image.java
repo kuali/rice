@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -33,7 +34,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="image")
+@BeanTags({@BeanTag(name = "image", parent = "Uif-Image"),
+        @BeanTag(name = "helpImage", parent = "Uif-HelpImage"),
+        @BeanTag(name = "quickLookupImage", parent = "Uif-QuickLookupImage"),
+        @BeanTag(name = "directInquiryImage", parent = "Uif-DirectInquiryImage")})
 public class Image extends ContentElementBase {
     private static final long serialVersionUID = -3911849875276940507L;
 

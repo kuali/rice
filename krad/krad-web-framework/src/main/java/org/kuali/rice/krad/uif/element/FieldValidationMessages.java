@@ -24,7 +24,7 @@ import org.kuali.rice.krad.uif.view.View;
 /**
  * ValidationMessages for logic and options specific to groups
  */
-@BeanTag(name="fieldValidationMessages")
+@BeanTag(name = "fieldValidationMessages", parent = "Uif-FieldValidationMessages")
 public class FieldValidationMessages extends ValidationMessages{
 
     private boolean useTooltip;

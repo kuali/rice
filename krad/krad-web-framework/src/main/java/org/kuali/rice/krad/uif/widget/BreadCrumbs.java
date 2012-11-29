@@ -34,7 +34,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="breadCrumbs")
+@BeanTag(name = "breadcrumbs", parent = "Uif-Breadcrumbs")
 public class BreadCrumbs extends WidgetBase {
     private static final long serialVersionUID = -2864287914665842251L;
 

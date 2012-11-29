@@ -34,7 +34,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@BeanTag(name = "baseConstraint")
+@BeanTag(name = "constraint")
 public class BaseConstraint implements Constraint {
     protected String messageNamespaceCode;
     protected String messageComponentCode;

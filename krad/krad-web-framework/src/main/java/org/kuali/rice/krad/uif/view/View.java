@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
@@ -79,7 +80,8 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "view")
+@BeanTags({@BeanTag(name = "view", parent = "Uif-View"), @BeanTag(name = "view-knsTheme", parent = "Uif-View-KnsTheme")
+})
 public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
 

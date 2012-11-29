@@ -54,7 +54,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="validationMessages")
+@BeanTag(name = "validationMessages", parent = "Uif-ValidationMessagesBase")
 public class ValidationMessages extends ContentElementBase {
     private static final long serialVersionUID = 780940788435330077L;
 

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tabs;
@@ -32,7 +33,9 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see Group
  */
-@BeanTag(name="tabGroup")
+@BeanTags(
+        {@BeanTag(name = "tabGroup", parent = "Uif-TabGroup"), @BeanTag(name = "tabSection", parent = "Uif-TabSection"),
+                @BeanTag(name = "tabSubSection", parent = "Uif-TabSubSection")})
 public class TabGroup extends Group {
     private static final long serialVersionUID = 3L;
 
@@ -56,8 +59,8 @@ public class TabGroup extends Group {
 
     @Override
     public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model,parent);
-        this.addDataAttribute("type","Uif-TabGroup");
+        super.performFinalize(view, model, parent);
+        this.addDataAttribute("type", "Uif-TabGroup");
     }
 
     /**
@@ -79,7 +82,7 @@ public class TabGroup extends Group {
      *
      * @return the tabsWidget
      */
-    @BeanTagAttribute(name="tabsWidget",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "tabsWidget", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Tabs getTabsWidget() {
         return this.tabsWidget;
     }

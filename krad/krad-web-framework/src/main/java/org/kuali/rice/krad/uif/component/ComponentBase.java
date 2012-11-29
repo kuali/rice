@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -49,6 +50,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "componentBase", parent = "Uif-ComponentBase")
 public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
     private static final long serialVersionUID = -4449335748129894350L;
 

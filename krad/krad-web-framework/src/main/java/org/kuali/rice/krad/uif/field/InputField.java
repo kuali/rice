@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
@@ -79,7 +80,21 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "inputField")
+@BeanTags({@BeanTag(name = "inputField", parent = "Uif-InputField"),
+        @BeanTag(name = "inputField-labelTop", parent = "Uif-InputField-LabelTop"),
+        @BeanTag(name = "inputField-labelRight", parent = "Uif-InputField-LabelRight"),
+        @BeanTag(name = "checkboxInputField", parent = "Uif-CheckboxInputField"),
+        @BeanTag(name = "dialogResponse", parent = "Uif-DialogResponse"),
+        @BeanTag(name = "dialogExplanation", parent = "Uif-DialogExplanation"),
+        @BeanTag(name = "documentNumber", parent = "Uif-DocumentNumber"),
+        @BeanTag(name = "documentStatus", parent = "Uif-DocumentStatus"),
+        @BeanTag(name = "documentInitiatorNetworkId", parent = "Uif-DocumentInitiatorNetworkId"),
+        @BeanTag(name = "documentCreateDate", parent = "Uif-DocumentCreateDate"),
+        @BeanTag(name = "documentTemplateNumber", parent = "Uif-DocumentTemplateNumber"),
+        @BeanTag(name = "documentDescription", parent = "Uif-DocumentDescription"),
+        @BeanTag(name = "documentExplaination", parent = "Uif-DocumentExplaination"),
+        @BeanTag(name = "organizationDocumentNumber", parent = "Uif-OrganizationDocumentNumber"),
+        @BeanTag(name = "selectCollectionItemField", parent = "Uif-SelectCollectionItemField")})
 public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -3703656713706343840L;
 

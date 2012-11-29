@@ -28,7 +28,7 @@ import java.util.ArrayList;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="iFrame")
+@BeanTag(name = "iFrame", parent = "Uif-Iframe")
 public class Iframe extends ContentElementBase {
 	private static final long serialVersionUID = 5797473302619055088L;
 

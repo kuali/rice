@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="spinnerControl")
+@BeanTag(name = "spinnerControl", parent = "Uif-SpinnerControl")
 public class SpinnerControl extends TextControl {
     private static final long serialVersionUID = -8267606288443759880L;
 

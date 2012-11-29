@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -31,7 +32,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="link")
+@BeanTags({@BeanTag(name="link", parent="Uif-Link"), @BeanTag(name = "createNewLink", parent = "Uif-CreateNewLink")})
 public class Link extends ContentElementBase {
     private static final long serialVersionUID = 8989868231938336068L;
 

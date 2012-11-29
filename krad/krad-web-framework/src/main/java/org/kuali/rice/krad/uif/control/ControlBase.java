@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -35,6 +36,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.control.Control
  */
+@BeanTag(name = "controlBase", parent = "Uif-ControlBase")
 public abstract class ControlBase extends ContentElementBase implements Control {
     private static final long serialVersionUID = -7898244978136312663L;
 

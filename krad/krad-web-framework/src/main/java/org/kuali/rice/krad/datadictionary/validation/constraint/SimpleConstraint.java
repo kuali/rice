@@ -18,6 +18,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
  * A simple constraint stores 'basic' constraints for a field.  This constraint is meant to be used as a
@@ -25,7 +26,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "simpleContraint")
+@BeanTags({@BeanTag(name = "simpleContraint", parent = "SimpleConstraint"),
+        @BeanTag(name = "requiredConstraint", parent = "RequiredConstraint")})
 public class SimpleConstraint extends BaseConstraint implements ExistenceConstraint, RangeConstraint, LengthConstraint {
 
     private Boolean required;

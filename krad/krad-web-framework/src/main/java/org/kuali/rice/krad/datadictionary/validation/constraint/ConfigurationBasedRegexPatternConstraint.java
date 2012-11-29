@@ -16,13 +16,27 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "configurationBasedRegexPatternConstraint"),
+        @BeanTag(name = "phoneNumberPatternConstraint", parent = "phoneNumberPatternConstraint"),
+        @BeanTag(name = "timePatternConstraint", parent = "TimePatternConstraint"),
+        @BeanTag(name = "time24HPatternConstraint", parent = "Time24HPatternConstraint"),
+        @BeanTag(name = "urlPatternConstraint", parent = "UrlPatternConstraint"),
+        @BeanTag(name = "noWhitespacePatternConstraint", parent = "NoWhitespacePatternConstraint"),
+        @BeanTag(name = "javaClassPatternConstraint", parent = "JavaClassPatternConstraint"),
+        @BeanTag(name = "emailAddressPatternConstraint", parent = "EmailAddressPatternConstraint"),
+        @BeanTag(name = "timestampPatternConstraint", parent = "TimestampPatternConstraint"),
+        @BeanTag(name = "yearPatternConstraint", parent = "YearPatternConstraint"),
+        @BeanTag(name = "monthPatternConstraint", parent = "MonthPatternConstraint"),
+        @BeanTag(name = "zipcodePatternConstraint", parent = "ZipcodePatternConstraint")})
 public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternConstraint {
     protected String patternTypeKey;
 

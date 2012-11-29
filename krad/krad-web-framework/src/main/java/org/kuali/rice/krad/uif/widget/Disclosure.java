@@ -24,7 +24,7 @@ import org.kuali.rice.krad.uif.component.ClientSideState;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="disclosure")
+@BeanTag(name = "disclosure", parent = "Uif-Disclosure")
 public class Disclosure extends WidgetBase {
     private static final long serialVersionUID = 1238789480161901850L;
 

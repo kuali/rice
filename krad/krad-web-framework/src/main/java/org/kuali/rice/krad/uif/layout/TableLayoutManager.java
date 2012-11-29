@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.layout;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -61,7 +62,7 @@ import java.util.TreeMap;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "tableLayoutManager")
+@BeanTag(name = "tableCollectionLayout", parent = "Uif-TableCollectionLayout")
 public class TableLayoutManager extends GridLayoutManager implements CollectionLayoutManager {
     private static final long serialVersionUID = 3622267585541524208L;
 

@@ -39,7 +39,7 @@ import org.kuali.rice.krad.uif.UifConstants.ViewType;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="inquiryView")
+@BeanTag(name = "inquiryView", parent = "Uif-InquiryView")
 public class InquiryView extends FormView {
     private static final long serialVersionUID = 716926008488403616L;
 

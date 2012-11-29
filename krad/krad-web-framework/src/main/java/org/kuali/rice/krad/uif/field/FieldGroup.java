@@ -18,10 +18,11 @@ package org.kuali.rice.krad.uif.field;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
 
 import java.util.List;
 
@@ -33,110 +34,113 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="fieldGroup")
+@BeanTags({@BeanTag(name = "fieldGroup", parent = "Uif-FieldGroupBase"),
+        @BeanTag(name = "verticalFieldGroup", parent = "Uif-VerticalFieldGroup"),
+        @BeanTag(name = "horizontalFieldGroup", parent = "Uif-HorizontalFieldGroup")})
 public class FieldGroup extends FieldBase {
-	private static final long serialVersionUID = -505654043702442196L;
+    private static final long serialVersionUID = -505654043702442196L;
 
-	private Group group;
+    private Group group;
 
-	public FieldGroup() {
-		super();
-	}
+    public FieldGroup() {
+        super();
+    }
 
-	/**
-	 * The following initialization is performed:
+    /**
+     * The following initialization is performed:
      *
-	 * <ul>
-	 * <li>Set the align on group if empty and the align has been set on the field</li>
-	 * </ul>
-	 *
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
-	 */
-	@Override
-	public void performInitialization(View view, Object model) {
-		super.performInitialization(view, model);
+     * <ul>
+     * <li>Set the align on group if empty and the align has been set on the field</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
 
-		if (StringUtils.isNotBlank(getAlign()) && group != null) {
-			group.setAlign(getAlign());
-		}
-	}
+        if (StringUtils.isNotBlank(getAlign()) && group != null) {
+            group.setAlign(getAlign());
+        }
+    }
 
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
         this.addDataAttribute("parent", parent.getId());
-        if(group != null){
+        if (group != null) {
             this.addDataAttribute("group", group.getId());
         }
 
         setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);
 
-        if(this.getFieldLabel() != null){
+        if (this.getFieldLabel() != null) {
             this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.FIELDSET);
         }
     }
 
     /**
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-	 */
-	@Override
-	public List<Component> getComponentsForLifecycle() {
-		List<Component> components = super.getComponentsForLifecycle();
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
 
-		components.add(group);
+        components.add(group);
 
-		return components;
-	}
+        return components;
+    }
 
-	/**
-	 * <code>Group</code> instance that is contained within in the field
-	 *
-	 * @return Group instance
-	 */
-    @BeanTagAttribute(name="group",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public Group getGroup() {
-		return this.group;
-	}
+    /**
+     * <code>Group</code> instance that is contained within in the field
+     *
+     * @return Group instance
+     */
+    @BeanTagAttribute(name = "group", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Group getGroup() {
+        return this.group;
+    }
 
-	/**
-	 * Setter for the field's nested group
-	 *
-	 * @param group
-	 */
-	public void setGroup(Group group) {
-		this.group = group;
-	}
+    /**
+     * Setter for the field's nested group
+     *
+     * @param group
+     */
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 
-	/**
-	 * List of <code>Component</code> instances contained in the nested group
-	 *
-	 * <p>
-	 * Convenience method for configuration to get the items List from the
-	 * field's nested group
-	 * </p>
-	 *
-	 * @return List<? extends Component> items
-	 */
-    @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
-	public List<? extends Component> getItems() {
-		if (group != null) {
-			return group.getItems();
-		}
+    /**
+     * List of <code>Component</code> instances contained in the nested group
+     *
+     * <p>
+     * Convenience method for configuration to get the items List from the
+     * field's nested group
+     * </p>
+     *
+     * @return List<? extends Component> items
+     */
+    @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    public List<? extends Component> getItems() {
+        if (group != null) {
+            return group.getItems();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Setter for the field's nested group items
-	 *
-	 * <p>
-	 * Convenience method for configuration to set the items List for the
-	 * field's nested group
-	 * </p>
-	 *
-	 * @param items
-	 */
+    /**
+     * Setter for the field's nested group items
+     *
+     * <p>
+     * Convenience method for configuration to set the items List for the
+     * field's nested group
+     * </p>
+     *
+     * @param items
+     */
     public void setItems(List<? extends Component> items) {
         if (group != null) {
             group.setItems(items);

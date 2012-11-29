@@ -76,7 +76,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "remoteFieldsHolder")
+@BeanTag(name = "remotableFieldsPlaceholderConfig", parent = "Uif-RemotableFieldsPlaceholderConfig")
 public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
     private static final long serialVersionUID = -8493923312021633727L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RemoteFieldsHolder.class);

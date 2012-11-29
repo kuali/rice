@@ -33,7 +33,7 @@
     <property name="formClass" value="org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm" />
   </bean>
 
-  <bean id="UifLayoutView_KNS" parent="InitiatedDocumentView">
+  <bean id="InitiatedDocumentView-KNS" parent="InitiatedDocumentView">
     <property name="theme">
       <bean parent="Uif-ClassicKnsTheme"/>
     </property>

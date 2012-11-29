@@ -18,6 +18,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
@@ -25,7 +26,8 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "alphaNumericPatternConstraint")
+@BeanTags({@BeanTag(name = "alphaNumericPatternConstraint", parent="AlphaNumericPatternConstraint"),
+        @BeanTag(name = "alphaNumericWithBasicPunc", parent="AlphaNumericWithBasicPunc")})
 public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     protected boolean lowerCase = false;
     protected boolean upperCase = false;

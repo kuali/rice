@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -54,7 +55,9 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="richTable")
+@BeanTags({@BeanTag(name = "richTable", parent = "Uif-RichTable"),
+        @BeanTag(name = "pagedRichTable", parent = "Uif-PagedRichTable"),
+        @BeanTag(name = "scrollableRichTable", parent = "Uif-ScrollableRichTable")})
 public class RichTable extends WidgetBase {
     private static final long serialVersionUID = 4671589690877390070L;
 
@@ -342,7 +345,7 @@ public class RichTable extends WidgetBase {
                             ", "));
                 }
                 //merge the aoColumnDefs passed in
-                if(!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))){
+                if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))) {
                     String origAoOptions = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS).trim();
                     origAoOptions = StringUtils.removeStart(origAoOptions, "[");
                     origAoOptions = StringUtils.removeEnd(origAoOptions, "]");
@@ -441,7 +444,7 @@ public class RichTable extends WidgetBase {
      *
      * @return empty table message
      */
-    @BeanTagAttribute(name="emptyTableMessage")
+    @BeanTagAttribute(name = "emptyTableMessage")
     public String getEmptyTableMessage() {
         return emptyTableMessage;
     }
@@ -460,7 +463,7 @@ public class RichTable extends WidgetBase {
      *
      * @return the disableTableSort
      */
-    @BeanTagAttribute(name="disableTableSort")
+    @BeanTagAttribute(name = "disableTableSort")
     public boolean isDisableTableSort() {
         return this.disableTableSort;
     }
@@ -479,7 +482,7 @@ public class RichTable extends WidgetBase {
      *
      * @return the showSearchAndExportOptions
      */
-    @BeanTagAttribute(name="showSearchAndExportOptions")
+    @BeanTagAttribute(name = "showSearchAndExportOptions")
     public boolean isShowSearchAndExportOptions() {
         return this.showSearchAndExportOptions;
     }
@@ -500,7 +503,7 @@ public class RichTable extends WidgetBase {
      *
      * @return a set with propertyNames of columns to be hidden
      */
-    @BeanTagAttribute(name="hiddenColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
+    @BeanTagAttribute(name = "hiddenColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getHiddenColumns() {
         return hiddenColumns;
     }
@@ -521,7 +524,7 @@ public class RichTable extends WidgetBase {
      *
      * @return a set of propertyNames with for columns that will be sorted
      */
-    @BeanTagAttribute(name="sortableColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
+    @BeanTagAttribute(name = "sortableColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getSortableColumns() {
         return sortableColumns;
     }
@@ -546,7 +549,7 @@ public class RichTable extends WidgetBase {
      *
      * @return String URL for ajax source
      */
-    @BeanTagAttribute(name="ajaxSource")
+    @BeanTagAttribute(name = "ajaxSource")
     public String getAjaxSource() {
         return ajaxSource;
     }

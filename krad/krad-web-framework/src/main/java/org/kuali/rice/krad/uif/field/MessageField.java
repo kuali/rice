@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -40,7 +41,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="messageField")
+@BeanTags({@BeanTag(name = "messageField", parent = "Uif-MessageField"),
+        @BeanTag(name = "colGroupingField", parent = "Uif-ColGroupingField")})
 public class MessageField extends FieldBase {
     private static final long serialVersionUID = -7045208136391722063L;
 

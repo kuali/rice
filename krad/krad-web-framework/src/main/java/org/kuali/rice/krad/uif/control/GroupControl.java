@@ -28,7 +28,7 @@ import org.kuali.rice.krad.uif.field.InputField;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="groupControl")
+@BeanTag(name = "kimGroupControl", parent = "Uif-KimGroupControl")
 public class GroupControl extends TextControl {
     private static final long serialVersionUID = 5598459655735440981L;
 

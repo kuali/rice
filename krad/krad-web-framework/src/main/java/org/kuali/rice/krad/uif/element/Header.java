@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
@@ -41,7 +41,22 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="header")
+@BeanTags({@BeanTag(name = "header", parent = "Uif-HeaderBase"), @BeanTag(name = "headerOne", parent = "Uif-HeaderOne"),
+        @BeanTag(name = "headerTwo", parent = "Uif-HeaderTwo"),
+        @BeanTag(name = "headerThree", parent = "Uif-HeaderThree"),
+        @BeanTag(name = "headerFour", parent = "Uif-HeaderFour"),
+        @BeanTag(name = "headerFive", parent = "Uif-HeaderFive"),
+        @BeanTag(name = "headerSix", parent = "Uif-HeaderSix"),
+        @BeanTag(name = "viewHeader", parent = "Uif-ViewHeader"),
+        @BeanTag(name = "pageHeader", parent = "Uif-PageHeader"),
+        @BeanTag(name = "sectionHeader", parent = "Uif-SectionHeader"),
+        @BeanTag(name = "subSectionHeader", parent = "Uif-SubSectionHeader"),
+        @BeanTag(name = "subCollectionHeader", parent = "Uif-SubCollectionHeader"),
+        @BeanTag(name = "editablePageHeader", parent = "Uif-EditablePageHeader"),
+        @BeanTag(name = "readOnlyPageHeader", parent = "Uif-ReadOnlyPageHeader"),
+        @BeanTag(name = "imageCaptionHeader", parent = "Uif-ImageCaptionHeader"),
+        @BeanTag(name = "documentViewHeader", parent = "Uif-DocumentViewHeader"),
+        @BeanTag(name = "lookupPageHeader", parent = "Uif-LookupPageHeader")})
 public class Header extends ContentElementBase {
     private static final long serialVersionUID = -6950408292923393244L;
 
@@ -148,7 +163,7 @@ public class Header extends ContentElementBase {
      *
      * @return String header text
      */
-    @BeanTagAttribute(name="headerText")
+    @BeanTagAttribute(name = "headerText")
     public String getHeaderText() {
         return this.headerText;
     }
@@ -167,7 +182,7 @@ public class Header extends ContentElementBase {
      *
      * @return String header level
      */
-    @BeanTagAttribute(name="headerLevel")
+    @BeanTagAttribute(name = "headerLevel")
     public String getHeaderLevel() {
         return this.headerLevel;
     }
@@ -194,7 +209,7 @@ public class Header extends ContentElementBase {
      * @return List<String> list of style classes
      * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
-    @BeanTagAttribute(name="headerTagCssClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "headerTagCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getHeaderTagCssClasses() {
         return this.headerTagCssClasses;
     }
@@ -235,7 +250,7 @@ public class Header extends ContentElementBase {
      * @return String header style
      * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
-    @BeanTagAttribute(name="headerTagStyle")
+    @BeanTagAttribute(name = "headerTagStyle")
     public String getHeaderTagStyle() {
         return this.headerTagStyle;
     }
@@ -258,7 +273,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
-    @BeanTagAttribute(name="upperGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "upperGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getUpperGroup() {
         return upperGroup;
     }
@@ -281,7 +296,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
-    @BeanTagAttribute(name="rightGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "rightGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getRightGroup() {
         return rightGroup;
     }
@@ -304,7 +319,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
-    @BeanTagAttribute(name="lowerGroup",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "lowerGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLowerGroup() {
         return lowerGroup;
     }
@@ -328,7 +343,7 @@ public class Header extends ContentElementBase {
      *
      * @return List<? extends Component> items
      */
-    @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
         if (lowerGroup != null) {
             return lowerGroup.getItems();
@@ -379,15 +394,15 @@ public class Header extends ContentElementBase {
             correctHeaderLevel = true;
         }
         if (!correctHeaderLevel) {
-            String currentValues [] = {"headerLevel =" + getHeaderLevel()};
-            tracer.createError("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label",currentValues);
+            String currentValues[] = {"headerLevel =" + getHeaderLevel()};
+            tracer.createError("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label", currentValues);
         }
 
         // Checks that header text is set
         if (getHeaderText() == null) {
             if (!Validator.checkExpressions(this, "headerText")) {
-                String currentValues [] = {"headertText =" + getHeaderText()};
-                tracer.createWarning("HeaderText should be set",currentValues);
+                String currentValues[] = {"headertText =" + getHeaderText()};
+                tracer.createWarning("HeaderText should be set", currentValues);
             }
         }
 
@@ -402,7 +417,7 @@ public class Header extends ContentElementBase {
      *
      * @return Message with rich message structure, null if no rich message structure
      */
-    @BeanTagAttribute(name="richHeaderMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "richHeaderMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getRichHeaderMessage() {
         return richHeaderMessage;
     }
@@ -425,7 +440,7 @@ public class Header extends ContentElementBase {
      *
      * @return the Label's inlineComponents
      */
-    @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "inlineComponents", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

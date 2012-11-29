@@ -93,4 +93,61 @@
     </property>
   </bean>
 
+  <bean id="Uif-JumpToTopLink" parent="Uif-ActionLink" p:actionScript="jumpToTop();"
+          p:actionLabel="Top">
+      <property name="cssClasses">
+        <list merge="true">
+          <value>uif-jumpToTopLink</value>
+        </list>
+      </property>
+    </bean>
+
+    <bean id="Uif-JumpToBottomLink" parent="Uif-ActionLink" p:actionScript="jumpToBottom();"
+          p:actionLabel="Bottom">
+      <property name="cssClasses">
+        <list merge="true">
+          <value>uif-jumpToBottomLink</value>
+        </list>
+      </property>
+    </bean>
+
+    <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:actionScript="expandDisclosures();"
+          p:actionLabel="Expand All">
+      <property name="cssClasses">
+        <list merge="true">
+          <value>uif-expandDisclosuresButton</value>
+        </list>
+      </property>
+    </bean>
+
+    <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
+          p:actionScript="collapseDisclosures();"
+          p:actionLabel="Collapse All">
+      <property name="cssClasses">
+        <list merge="true">
+          <value>uif-collapseDisclosuresButton</value>
+        </list>
+      </property>
+    </bean>
+
+    <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
+          p:methodToCall="toggleInactiveRecordDisplay" p:actionLabel="show inactive"
+          p:additionalSubmitData="showInactiveRecords:true">
+      <property name="cssClasses">
+        <list merge="true">
+          <value>uif-showInactiveCollectionItemsButton</value>
+        </list>
+      </property>
+    </bean>
+
+    <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
+          p:methodToCall="toggleInactiveRecordDisplay" p:actionLabel="hide inactive"
+          p:additionalSubmitData="showInactiveRecords:true">
+      <property name="cssClasses">
+        <list merge="true">
+          <value>uif-hideInactiveCollectionItemsButton</value>
+        </list>
+      </property>
+    </bean>
+
 </beans>

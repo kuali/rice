@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Label;
@@ -45,6 +46,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "fieldBase", parent = "Uif-FieldBase"),
+    @BeanTag(name = "fieldBase-withLabel", parent = "Uif-FieldBase-withLabel")})
 public class FieldBase extends ComponentBase implements Field {
     private static final long serialVersionUID = -5888414844802862760L;
 

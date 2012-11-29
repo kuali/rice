@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "suggest")
+@BeanTag(name = "suggest", parent = "Uif-Suggest")
 public class Suggest extends WidgetBase {
     private static final long serialVersionUID = 7373706855319347225L;
 

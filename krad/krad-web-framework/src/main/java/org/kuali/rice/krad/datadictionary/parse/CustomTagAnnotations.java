@@ -17,20 +17,39 @@ package org.kuali.rice.krad.datadictionary.parse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.SystemPropertyUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Creates and stores the information defined for the custom schema.  Loads the classes defined as having associated
@@ -44,14 +63,209 @@ public class CustomTagAnnotations {
 
     private static Map<String, Map<String, BeanTagAttributeInfo>> attributeProperties;
     private static Map<String, BeanTagInfo> beanTags;
-    private static ArrayList<Class<?>> customTagClasses;
+    private static List<Class<?>> customTagClasses;
 
     /**
      * Loads the list of class that have an associated custom schema.
      */
-    private static void loadCustomTagClasses() {
-        loadCustomTagClasses(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                "krad.schema.classes"));
+    private static void loadCustomTagClasses(){
+        try{
+            customTagClasses = findTagClasses("org.kuali.rice.krad");
+        }
+        catch(Exception e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static List<Class<?>> findTagClasses(String basePackage) throws IOException, ClassNotFoundException
+    {
+        ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+        MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
+
+        List<Class<?>> classes = new ArrayList<Class<?>>();
+        String resolvedBasePackage =
+                ClassUtils.convertClassNameToResourcePath(SystemPropertyUtils.resolvePlaceholders(basePackage));
+        String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
+                                   resolvedBasePackage + "/" + "**/*.class";
+        Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
+        for (Resource resource : resources) {
+            if (resource.isReadable()) {
+                MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
+                if (metadataReader != null && isBeanTag(metadataReader)) {
+                    classes.add(Class.forName(metadataReader.getClassMetadata().getClassName()));
+                }
+            }
+        }
+        return classes;
+    }
+
+    private static boolean isBeanTag(MetadataReader metadataReader)
+    {
+        try{
+            try{
+                Class c = Class.forName(metadataReader.getClassMetadata().getClassName());
+                if (c.getAnnotation(BeanTag.class) != null || c.getAnnotation(BeanTags.class) != null) {
+                    return true;
+                }
+            }
+            catch(Throwable e){
+                //skip
+            }
+        }
+        catch(Exception e){
+        }
+        return false;
+    }
+
+    public static Document generateSchemaFile(){
+        Map<String, Map<String, BeanTagInfo>> nameTagMap = new HashMap<String, Map<String, BeanTagInfo>>();
+        Map<String, BeanTagInfo> beanMap = CustomTagAnnotations.getBeanTags();
+        BeanTagInfo infos[] = new BeanTagInfo[beanMap.values().size()];
+        infos = beanMap.values().toArray(infos);
+        String tags[] = new String[beanMap.entrySet().size()];
+        try {
+            tags = beanMap.keySet().toArray(tags);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < infos.length; i++) {
+            String name = infos[i].getBeanClass().getName();
+            String tag = tags[i];
+            Map<String, BeanTagInfo> existingTags = nameTagMap.get(name);
+
+            if(existingTags == null){
+                existingTags = new HashMap<String, BeanTagInfo>();
+            }
+
+            if(infos[i].isDefaultTag() || existingTags.isEmpty()){
+                infos[i].setDefaultTag(true);
+                existingTags.put("default", infos[i]);
+            }
+
+            if(infos[i].getParent() != null){
+                existingTags.put(infos[i].getParent(), infos[i]);
+            }
+
+            nameTagMap.put(name, existingTags);
+        }
+
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document;
+            document = builder.newDocument();
+
+            Element schema = document.createElement("xsd:schema");
+            schema.setAttribute("xmlns", "http://www.kuali.org/schema");
+            schema.setAttribute("targetNamespace", "http://www.kuali.org/schema");
+            schema.setAttribute("elementFormDefault", "qualified");
+            schema.setAttribute("attributeFormDefault", "unqualified");
+            schema.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+
+            List<Element> types = new ArrayList<Element>();
+            List<Element> elements = new ArrayList<Element>();
+            Set<String> classKeys = nameTagMap.keySet();
+            for (String className: classKeys) {
+                Map<String, BeanTagInfo> tagMap = nameTagMap.get(className);
+                BeanTagInfo typeInfo = tagMap.get("default");
+                String currentType = typeInfo.getTag();
+
+                Element complexType = document.createElement("xsd:complexType");
+                complexType.setAttribute("name", currentType + "-type");
+                Element sequence = document.createElement("xsd:sequence");
+
+                List<Element> attributeProperties = new ArrayList<Element>();
+                Map<String, BeanTagAttributeInfo> attributes = getAttributes(typeInfo.getBeanClass());
+
+                if(attributes != null && !attributes.isEmpty()){
+                    for(BeanTagAttributeInfo aInfo: attributes.values()){
+                        boolean useAttribute = false;
+                        String attrType = "xsd:element";
+
+                        if(aInfo.getType().equals(BeanTagAttribute.AttributeType.SINGLEVALUE)){
+                            useAttribute = true;
+                            attrType = "xsd:string";
+                        }
+
+                        if(aInfo.getType().equals(BeanTagAttribute.AttributeType.LISTVALUE) ||
+                                aInfo.getType().equals(BeanTagAttribute.AttributeType.SETVALUE)){
+                            useAttribute = true;
+                            attrType = "xsd:anyType";
+                        }
+
+                        if(useAttribute){
+                            Element attribute = document.createElement("xsd:attribute");
+                            attribute.setAttribute("name", aInfo.getName());
+                            //attribute.setAttribute("type", attrType);
+                            attributeProperties.add(attribute);
+                        }
+
+                        Element elementAttribute = document.createElement("xsd:element");
+                        elementAttribute.setAttribute("name", aInfo.getName());
+                        elementAttribute.setAttribute("type", attrType);
+                        sequence.appendChild(elementAttribute);
+                    }
+                }
+
+                complexType.appendChild(sequence);
+
+                Element parentAttribute = document.createElement("xsd:attribute");
+                parentAttribute.setAttribute("name", "parent");
+                parentAttribute.setAttribute("type", "xsd:string");
+                attributeProperties.add(parentAttribute);
+                Element anyAttribute = document.createElement("xsd:anyAttribute");
+                anyAttribute.setAttribute("processContents", "lax");
+                attributeProperties.add(anyAttribute);
+
+                for(Element attribute: attributeProperties){
+                    complexType.appendChild(attribute);
+                }
+
+                types.add(complexType);
+
+                Element defaultElement = document.createElement("xsd:element");
+                defaultElement.setAttribute("name", typeInfo.getTag());
+                defaultElement.setAttribute("type", currentType + "-type");
+                elements.add(defaultElement);
+
+                Set<String> tagKeys = tagMap.keySet();
+                for(String key: tagKeys){
+                    String tag = tagMap.get(key).getTag();
+                    if(!tag.equals(currentType)){
+                        Element element = document.createElement("xsd:element");
+                        element.setAttribute("name", tag);
+                        element.setAttribute("type", currentType + "-type");
+                        elements.add(element);
+                    }
+                }
+            }
+
+            for(Element element: elements){
+                schema.appendChild(element);
+            }
+
+            for(Element type: types){
+                schema.appendChild(type);
+            }
+
+            document.appendChild(schema);
+
+            File file = new File("./krad_schema.xsd");
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+            transformer.transform(new DOMSource(document), new StreamResult(new FileWriter(file)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
     }
 
     /**
@@ -96,17 +310,22 @@ public class CustomTagAnnotations {
     private static Map<String, BeanTagAttributeInfo> getAttributes(Class<?> tagClass) {
         Map<String, BeanTagAttributeInfo> entries = new HashMap<String, BeanTagAttributeInfo>();
 
-        // Search the methods of the class using reflection for the attribute annotation
-        Method methods[] = tagClass.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            BeanTagAttribute attribute = methods[i].getAnnotation(BeanTagAttribute.class);
-            if (attribute != null) {
-                BeanTagAttributeInfo info = new BeanTagAttributeInfo();
-                info.setName(getFieldName(methods[i].getName()));
-                info.setType(attribute.type());
-                validateBeanAttributes(tagClass.getName(), attribute.name(), entries);
-                entries.put(attribute.name(), info);
+        try{
+            // Search the methods of the class using reflection for the attribute annotation
+            Method methods[] = tagClass.getMethods();
+            for (int i = 0; i < methods.length; i++) {
+                BeanTagAttribute attribute = methods[i].getAnnotation(BeanTagAttribute.class);
+                if (attribute != null) {
+                    BeanTagAttributeInfo info = new BeanTagAttributeInfo();
+                    info.setName(getFieldName(methods[i].getName()));
+                    info.setType(attribute.type());
+                    validateBeanAttributes(tagClass.getName(), attribute.name(), entries);
+                    entries.put(attribute.name(), info);
+                }
             }
+        }
+        catch(Throwable e){
+            //skip bad entry
         }
 
         return entries;
@@ -129,13 +348,39 @@ public class CustomTagAnnotations {
 
         // For each class create the bean tag information and its associated attribute properties
         for (int i = 0; i < customTagClasses.size(); i++) {
-            BeanTag annotation = customTagClasses.get(i).getAnnotation(BeanTag.class);
-            BeanTagInfo info = new BeanTagInfo();
-            info.setBeanClass(customTagClasses.get(i));
-            info.setParent(annotation.parent());
-            validateBeanTags(annotation.name());
-            beanTags.put(annotation.name(), info);
-            loadAttributeProperties(annotation.name(), customTagClasses.get(i));
+            BeanTag[] annotations = new BeanTag[1];
+            BeanTag tag = customTagClasses.get(i).getAnnotation(BeanTag.class);
+            if(tag != null){
+                //single tag case
+                annotations[0] = tag;
+            }
+            else{
+                //multi-tag case
+                BeanTags tags = customTagClasses.get(i).getAnnotation(BeanTags.class);
+                if(tags != null){
+                    annotations = tags.value();
+                }
+                else{
+                    //TODO throw exception instead?
+                    continue;
+                }
+            }
+
+            for(int j = 0; j < annotations.length; j++){
+                BeanTag annotation = annotations[j];
+                BeanTagInfo info = new BeanTagInfo();
+                info.setTag(annotation.name());
+
+                if(j == 0){
+                    info.setDefaultTag(true);
+                }
+
+                info.setBeanClass(customTagClasses.get(i));
+                info.setParent(annotation.parent());
+                validateBeanTags(annotation.name());
+                beanTags.put(annotation.name(), info);
+                loadAttributeProperties(annotation.name(), customTagClasses.get(i));
+            }
         }
     }
 

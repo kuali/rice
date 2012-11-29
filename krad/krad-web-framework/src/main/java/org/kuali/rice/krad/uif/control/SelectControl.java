@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
  * Represents a HTML Select control. Provides preset options for the User to
@@ -24,7 +25,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="selectControl")
+@BeanTags({@BeanTag(name = "dropdownControl", parent = "Uif-DropdownControl"),
+        @BeanTag(name = "multiSelectControl", parent = "Uif-MultiSelectControl")})
 public class SelectControl extends MultiValueControlBase implements SizedControl {
     private static final long serialVersionUID = 6443247954759096815L;
 

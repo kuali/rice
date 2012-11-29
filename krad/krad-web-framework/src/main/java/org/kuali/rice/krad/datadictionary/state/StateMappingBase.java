@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -34,7 +35,8 @@ import java.util.Map;
  * @see StateMapping
  * @since 2.2
  */
-@BeanTag(name = "stateMappingBase")
+@BeanTags({@BeanTag(name = "stateMapping", parent = "StateMapping"),
+        @BeanTag(name = "workflowStateMapping", parent = "workflowStateMapping")})
 public class StateMappingBase implements StateMapping {
 
     private Map<String, String> stateNameMessageKeyMap;

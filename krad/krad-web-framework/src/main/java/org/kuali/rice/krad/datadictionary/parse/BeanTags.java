@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.widget;
 
-import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+package org.kuali.rice.krad.datadictionary.parse;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * Widget component for rendering a Tree
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * Created with IntelliJ IDEA.
+ * User: Brian
+ * Date: 11/14/12
+ * Time: 4:30 PM
+ * To change this template use File | Settings | File Templates.
  */
-@BeanTag(name = "tree", parent = "Uif-Tree")
-public class Tree extends WidgetBase {
-    private static final long serialVersionUID = -6852455590809381513L;
-
-    public Tree() {
-        super();
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface BeanTags {
+    BeanTag[] value();
 }

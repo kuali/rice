@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.control;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,45 +29,45 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="radioGroupControl")
+@BeanTags({@BeanTag(name = "verticalRadioControl", parent = "Uif-VerticalRadioControl"),
+        @BeanTag(name = "horizontalRadioControl", parent = "Uif-HorizontalRadioControl")})
 public class RadioGroupControl extends MultiValueControlBase {
-	private static final long serialVersionUID = 8800478332086081970L;
+    private static final long serialVersionUID = 8800478332086081970L;
     private List<String> fieldsetClasses;
 
+    private String delimiter;
 
-	private String delimiter;
-
-	public RadioGroupControl() {
-		super();
+    public RadioGroupControl() {
+        super();
         fieldsetClasses = new ArrayList<String>();
-	}
+    }
 
-	/**
-	 * Delimiter string to be rendered between the radio group options, defaults
-	 * to none
-	 *
-	 * @return String delimiter string
-	 */
-    @BeanTagAttribute(name="delimiter")
-	public String getDelimiter() {
-		return this.delimiter;
-	}
+    /**
+     * Delimiter string to be rendered between the radio group options, defaults
+     * to none
+     *
+     * @return String delimiter string
+     */
+    @BeanTagAttribute(name = "delimiter")
+    public String getDelimiter() {
+        return this.delimiter;
+    }
 
-	/**
-	 * Setter for the string delimiter for each radio option
-	 *
-	 * @param delimiter delimeter to render between options
-	 */
-	public void setDelimiter(String delimiter) {
-		this.delimiter = delimiter;
-	}
+    /**
+     * Setter for the string delimiter for each radio option
+     *
+     * @param delimiter delimeter to render between options
+     */
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
 
     /**
      * Get fieldsetClasses which are the classes that will be applied to this component's fieldset when generated
      *
      * @return css classes for the fieldset
      */
-    @BeanTagAttribute(name="fieldsetClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "fieldsetClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getFieldsetClasses() {
         return fieldsetClasses;
     }

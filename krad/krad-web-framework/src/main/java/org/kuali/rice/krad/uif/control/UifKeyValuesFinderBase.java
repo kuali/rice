@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="uifKeyValuesFinderBase")
+@BeanTag(name="keyValuesFinder")
 public abstract class UifKeyValuesFinderBase extends KeyValuesBase implements UifKeyValuesFinder {
 
     private boolean addBlankOption;

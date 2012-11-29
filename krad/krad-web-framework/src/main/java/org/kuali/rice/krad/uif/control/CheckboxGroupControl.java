@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.control;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="checkboxGroupControl")
+@BeanTags({@BeanTag(name = "verticalCheckboxesControl", parent = "Uif-VerticalCheckboxesControl"),
+        @BeanTag(name = "horizontalCheckboxesControl", parent = "Uif-HorizontalCheckboxesControl")})
 public class CheckboxGroupControl extends MultiValueControlBase {
     private static final long serialVersionUID = 8800478332086081970L;
 
@@ -51,7 +53,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      *
      * @return String delimiter string
      */
-    @BeanTagAttribute(name="delimiter")
+    @BeanTagAttribute(name = "delimiter")
     public String getDelimiter() {
         return this.delimiter;
     }
@@ -70,7 +72,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      *
      * @return fieldset css classes
      */
-    @BeanTagAttribute(name="fieldsetClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "fieldsetClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getFieldsetClasses() {
         return fieldsetClasses;
     }

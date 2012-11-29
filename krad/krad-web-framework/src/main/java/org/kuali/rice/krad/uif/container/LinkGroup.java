@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
  * Special <code>Group</code> that presents a grouping on links, which can
@@ -30,7 +31,9 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="linkGroup")
+@BeanTags({@BeanTag(name = "linkGroup", parent = "Uif-LinkGroup"),
+        @BeanTag(name = "linkSubGroup", parent = "Uif-LinkSubGroup"),
+        @BeanTag(name = "lookupView-resultActions", parent = "Uif-LookupView-ResultActions")})
 public class LinkGroup extends Group {
     private static final long serialVersionUID = -4173031543626881250L;
 
@@ -55,7 +58,7 @@ public class LinkGroup extends Group {
      *
      * @return String group begin delimiter
      */
-    @BeanTagAttribute(name="groupBeginDelimiter")
+    @BeanTagAttribute(name = "groupBeginDelimiter")
     public String getGroupBeginDelimiter() {
         return groupBeginDelimiter;
     }
@@ -81,7 +84,7 @@ public class LinkGroup extends Group {
      *
      * @return String group end delimiter
      */
-    @BeanTagAttribute(name="groupEndDelimiter")
+    @BeanTagAttribute(name = "groupEndDelimiter")
     public String getGroupEndDelimiter() {
         return groupEndDelimiter;
     }
@@ -102,7 +105,7 @@ public class LinkGroup extends Group {
      *
      * @return String link separator
      */
-    @BeanTagAttribute(name="linkSeparator")
+    @BeanTagAttribute(name = "linkSeparator")
     public String getLinkSeparator() {
         return linkSeparator;
     }
@@ -122,7 +125,7 @@ public class LinkGroup extends Group {
      *
      * @return String empty group string
      */
-    @BeanTagAttribute(name="emptyLinkGroupString")
+    @BeanTagAttribute(name = "emptyLinkGroupString")
     public String getEmptyLinkGroupString() {
         return emptyLinkGroupString;
     }

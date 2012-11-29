@@ -23,7 +23,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="datePicker")
+@BeanTag(name = "datePicker", parent = "Uif-DatePicker")
 public class DatePicker extends WidgetBase {
 	private static final long serialVersionUID = -659830874214415990L;
 

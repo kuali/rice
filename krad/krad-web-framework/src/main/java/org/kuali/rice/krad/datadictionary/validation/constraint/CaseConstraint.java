@@ -33,7 +33,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@BeanTag(name = "caseConstriant")
+@BeanTag(name = "caseConstriant", parent = "CaseConstraint")
 public class CaseConstraint extends BaseConstraint {
 
     protected String propertyName;

@@ -23,6 +23,8 @@ package org.kuali.rice.krad.datadictionary.parse;
 public class BeanTagInfo {
     private Class<?> beanClass;
     private String parent;
+    private String tag;
+    private boolean defaultTag;
 
     /**
      * Constructor initalizing global values
@@ -68,5 +70,21 @@ public class BeanTagInfo {
      */
     public String getParent() {
         return this.parent;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public boolean isDefaultTag() {
+        return defaultTag;
+    }
+
+    public void setDefaultTag(boolean defaultTag) {
+        this.defaultTag = defaultTag;
     }
 }

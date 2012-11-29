@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="scrollpane")
+@BeanTag(name = "scrollpane", parent = "Uif-Scrollpane")
 public class Scrollpane  extends WidgetBase {
     private static final long serialVersionUID = 3853028195825084261L;
 

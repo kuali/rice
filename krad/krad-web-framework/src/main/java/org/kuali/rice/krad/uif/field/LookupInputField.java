@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="lookupInputField")
+@BeanTag(name = "lookupCriteriaInputField", parent = "Uif-LookupCriteriaInputField")
 public class LookupInputField extends InputField {
     private static final long serialVersionUID = -8294275596836322699L;
 

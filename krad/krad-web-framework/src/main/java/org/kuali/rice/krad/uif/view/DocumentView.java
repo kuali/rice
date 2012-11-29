@@ -36,7 +36,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="documentView")
+@BeanTag(name = "documentView", parent = "Uif-DocumentView")
 public class DocumentView extends FormView {
 	private static final long serialVersionUID = 2251983409572774175L;
 

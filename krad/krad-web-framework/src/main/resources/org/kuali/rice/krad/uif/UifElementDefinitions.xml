@@ -324,4 +324,21 @@
     </property>
   </bean>
 
+  <bean id="Uif-RequiredInstructionsMessage" parent="Uif-Message" p:messageText="* indicates required field">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-requiredInstructionsMessage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-StateBased-RequiredInstructionsMessage" parent="Uif-Message"
+        p:messageText="* indicates required field.&lt;br&gt;** indicates required for next state.">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-requiredInstructionsMessage</value>
+      </list>
+    </property>
+  </bean>
+
 </beans>

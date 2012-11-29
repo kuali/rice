@@ -44,7 +44,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="attributeQuery")
+@BeanTag(name = "attributeQueryConfig", parent = "Uif-AttributeQueryConfig")
 public class AttributeQuery implements Serializable {
     private static final long serialVersionUID = -4569905665441735255L;
 

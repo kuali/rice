@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +36,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "dataPatternConstraint")
+@BeanTags({@BeanTag(name = "datePatternConstraint", parent = "DatePatternConstraint"),
+        @BeanTag(name = "basicDatePatternConstraint", parent = "BasicDatePatternConstraint")})
 public class DatePatternConstraint extends ValidDataPatternConstraint {
 
     private List<String> allowedFormats;

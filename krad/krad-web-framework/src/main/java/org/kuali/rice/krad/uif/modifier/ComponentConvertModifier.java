@@ -17,10 +17,11 @@ package org.kuali.rice.krad.uif.modifier;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,96 +40,93 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "componentConvertModifier")
+@BeanTags({@BeanTag(name = "componentConverter-modifier", parent = "Uif-ComponentConverter-Modifier"),
+        @BeanTag(name = "checkboxToRadioConverter-modifier", parent = "Uif-CheckboxToRadioConverter-Modifier")})
 public class ComponentConvertModifier extends ComponentModifierBase {
-	private static final long serialVersionUID = -7566547737669924605L;
+    private static final long serialVersionUID = -7566547737669924605L;
 
-	private Class<? extends Component> componentTypeToReplace;
+    private Class<? extends Component> componentTypeToReplace;
 
-	private Component componentReplacementPrototype;
+    private Component componentReplacementPrototype;
 
-	public ComponentConvertModifier() {
-		super();
-	}
+    public ComponentConvertModifier() {
+        super();
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
-	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
-	 */
-	@Override
-	public void performModification(View view, Object model, Component component) {
-		if (component == null) {
-			return;
-		}
+    /**
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performModification(View view, Object model, Component component) {
+        if (component == null) {
+            return;
+        }
 
-		int idSuffix = 0;
-		convertToReplacement(component, idSuffix);
-	}
+        int idSuffix = 0;
+        convertToReplacement(component, idSuffix);
+    }
 
-	/**
-	 * Reads the component properties and looks for types that match the
-	 * configured type to replace. If a match is found, a new instance of the
-	 * replacement component prototype is created and set as the property value.
-	 * The method is then called for each of the component's children
-	 *
-	 * @param component
-	 *            - component instance to inspect properties for
-	 * @param idSuffix
-	 *            - suffix string to use for any generated component
-	 *            replacements
-	 */
-	protected void convertToReplacement(Component component, int idSuffix) {
-		if (component == null) {
-			return;
-		}
+    /**
+     * Reads the component properties and looks for types that match the
+     * configured type to replace. If a match is found, a new instance of the
+     * replacement component prototype is created and set as the property value.
+     * The method is then called for each of the component's children
+     *
+     * @param component - component instance to inspect properties for
+     * @param idSuffix - suffix string to use for any generated component
+     * replacements
+     */
+    protected void convertToReplacement(Component component, int idSuffix) {
+        if (component == null) {
+            return;
+        }
 
-		// check all component properties for the type to replace
-		List<String> componentProperties = ComponentUtils.getComponentPropertyNames(component.getClass());
-		for (String propertyPath : componentProperties) {
-			Object propValue = ObjectPropertyUtils.getPropertyValue(component, propertyPath);
+        // check all component properties for the type to replace
+        List<String> componentProperties = ComponentUtils.getComponentPropertyNames(component.getClass());
+        for (String propertyPath : componentProperties) {
+            Object propValue = ObjectPropertyUtils.getPropertyValue(component, propertyPath);
 
-			if (propValue != null) {
-				if (getComponentTypeToReplace().isAssignableFrom(propValue.getClass())) {
-					// types match, convert the component
-					performConversion(component, propertyPath, idSuffix++);
-				}
-			}
-		}
+            if (propValue != null) {
+                if (getComponentTypeToReplace().isAssignableFrom(propValue.getClass())) {
+                    // types match, convert the component
+                    performConversion(component, propertyPath, idSuffix++);
+                }
+            }
+        }
 
-		// recursively update components
-		for (Component nestedComponent : component.getComponentsForLifecycle()) {
-			convertToReplacement(nestedComponent, idSuffix);
-		}
-	}
+        // recursively update components
+        for (Component nestedComponent : component.getComponentsForLifecycle()) {
+            convertToReplacement(nestedComponent, idSuffix);
+        }
+    }
 
-	/**
-	 * Creates a new instance of the replacement component prototype and sets a
-	 * the property value for the given property name and component instance
-	 *
-	 * @param component
-	 *            - component instance to set property on
-	 * @param componentProperty
-	 *            - property name to set
-	 * @param idSuffix
-	 *            - suffix string to use for the generated component
-	 */
-	protected void performConversion(Component component, String componentProperty, int idSuffix) {
-		// create new instance of replacement component
-		Component componentReplacement = ComponentUtils.copy(getComponentReplacementPrototype(), Integer.toString(idSuffix));
+    /**
+     * Creates a new instance of the replacement component prototype and sets a
+     * the property value for the given property name and component instance
+     *
+     * @param component - component instance to set property on
+     * @param componentProperty - property name to set
+     * @param idSuffix - suffix string to use for the generated component
+     */
+    protected void performConversion(Component component, String componentProperty, int idSuffix) {
+        // create new instance of replacement component
+        Component componentReplacement = ComponentUtils.copy(getComponentReplacementPrototype(), Integer.toString(
+                idSuffix));
 
-		ObjectPropertyUtils.setPropertyValue(component, componentProperty, componentReplacement);
-	}
+        ObjectPropertyUtils.setPropertyValue(component, componentProperty, componentReplacement);
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getSupportedComponents()
-	 */
-	@Override
-	public Set<Class<? extends Component>> getSupportedComponents() {
-		Set<Class<? extends Component>> components = new HashSet<Class<? extends Component>>();
-		components.add(Component.class);
+    /**
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getSupportedComponents()
+     */
+    @Override
+    public Set<Class<? extends Component>> getSupportedComponents() {
+        Set<Class<? extends Component>> components = new HashSet<Class<? extends Component>>();
+        components.add(Component.class);
 
-		return components;
-	}
+        return components;
+    }
 
     /**
      * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#getComponentPrototypes()
@@ -141,48 +139,48 @@ public class ComponentConvertModifier extends ComponentModifierBase {
         return components;
     }
 
-	/**
-	 * Type of component that should be replaced with an instance of the
-	 * component prototype
-	 *
-	 * @return Class<? extends Component> component type to replace
-	 */
-    @BeanTagAttribute(name="componentTypeToReplace")
-	public Class<? extends Component> getComponentTypeToReplace() {
-		return this.componentTypeToReplace;
-	}
+    /**
+     * Type of component that should be replaced with an instance of the
+     * component prototype
+     *
+     * @return Class<? extends Component> component type to replace
+     */
+    @BeanTagAttribute(name = "componentTypeToReplace")
+    public Class<? extends Component> getComponentTypeToReplace() {
+        return this.componentTypeToReplace;
+    }
 
-	/**
-	 * Setter for the component type to replace
-	 *
-	 * @param componentTypeToReplace
-	 */
-	public void setComponentTypeToReplace(Class<? extends Component> componentTypeToReplace) {
-		this.componentTypeToReplace = componentTypeToReplace;
-	}
+    /**
+     * Setter for the component type to replace
+     *
+     * @param componentTypeToReplace
+     */
+    public void setComponentTypeToReplace(Class<? extends Component> componentTypeToReplace) {
+        this.componentTypeToReplace = componentTypeToReplace;
+    }
 
-	/**
-	 * Prototype for the component replacement
-	 *
-	 * <p>
-	 * Each time the type to replace if found a new instance of the component
-	 * prototype will be created and set as the new property value
-	 * </p>
-	 *
-	 * @return
-	 */
-    @BeanTagAttribute(name="componentReplacementPrototype", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public Component getComponentReplacementPrototype() {
-		return this.componentReplacementPrototype;
-	}
+    /**
+     * Prototype for the component replacement
+     *
+     * <p>
+     * Each time the type to replace if found a new instance of the component
+     * prototype will be created and set as the new property value
+     * </p>
+     *
+     * @return
+     */
+    @BeanTagAttribute(name = "componentReplacementPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Component getComponentReplacementPrototype() {
+        return this.componentReplacementPrototype;
+    }
 
-	/**
-	 * Setter for the replacement component prototype
-	 *
-	 * @param componentReplacementPrototype
-	 */
-	public void setComponentReplacementPrototype(Component componentReplacementPrototype) {
-		this.componentReplacementPrototype = componentReplacementPrototype;
-	}
+    /**
+     * Setter for the replacement component prototype
+     *
+     * @param componentReplacementPrototype
+     */
+    public void setComponentReplacementPrototype(Component componentReplacementPrototype) {
+        this.componentReplacementPrototype = componentReplacementPrototype;
+    }
 
 }

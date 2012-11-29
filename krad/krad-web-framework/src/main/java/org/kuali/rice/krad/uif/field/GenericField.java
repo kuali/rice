@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
  * Field whose output is produced by invoking a method or template and has no
@@ -23,7 +24,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="genericField")
+@BeanTags({@BeanTag(name = "genericField", parent = "Uif-CustomTemplateField"),
+        @BeanTag(name = "customTemplateField", parent = "Uif-CustomTemplateField")})
 public class GenericField extends FieldBase {
     private static final long serialVersionUID = -7756170771822430903L;
 

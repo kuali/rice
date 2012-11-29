@@ -23,7 +23,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="fileControl")
+@BeanTag(name = "fileControl", parent = "Uif-FileControl")
 public class FileControl extends ControlBase implements SizedControl {
     private static final long serialVersionUID = -5919326390841646189L;
 

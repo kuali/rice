@@ -17,6 +17,7 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
@@ -26,7 +27,8 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "numericPatternConstraint")
+@BeanTags({@BeanTag(name = "numericPatternConstraint", parent = "NumericPatternConstraint"),
+        @BeanTag(name = "numericWithOperators", parent = "NumericWithOperators")})
 public class NumericPatternConstraint extends AllowCharacterConstraint {
 
     /**

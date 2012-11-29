@@ -24,6 +24,7 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -52,7 +53,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "dataField")
+@BeanTags({@BeanTag(name = "dataField", parent = "Uif-DataField"),
+        @BeanTag(name = "dataField-labelTop", parent = "Uif-DataField-LabelTop"),
+        @BeanTag(name = "dataField-labelRight", parent = "Uif-DataField-LabelRight"),
+        @BeanTag(name = "dataField-withoutLabel", parent = "Uif-DataField-withoutLabel")})
 public class DataField extends FieldBase implements DataBinding, Helpable {
     private static final long serialVersionUID = -4129678891948564724L;
 
@@ -201,7 +205,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * This method is called when the list is readOnly as determined in DataField's performFinalize method.  This method
+     * This method is called when the list is readOnly as determined in DataField's performFinalize method.  This
+     * method
      * should be overridden to perform any additional processing to the values before calling
      * generateReadOnlyListDisplayReplacement.  The default implementation calls it directly with the originalList.
      *
@@ -254,8 +259,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
             if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())
                     || getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
                 generatedHtml = generatedHtml + "<li>" + value.toString() + "</li>";
-            }
-            else{
+            } else {
                 //no matching needed - delimited is always the fallback and break uses same logic
                 generatedHtml = generatedHtml + value.toString() + this.getReadOnlyListDelimiter();
             }
@@ -270,10 +274,9 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
             generatedHtml = StringUtils.removeEnd(generatedHtml, this.getReadOnlyListDelimiter());
         }
 
-        if(StringUtils.isNotBlank(generatedHtml)){
+        if (StringUtils.isNotBlank(generatedHtml)) {
             this.setReadOnlyDisplayReplacement(generatedHtml);
-        }
-        else{
+        } else {
             //this must be done or the ftl will skip and throw error
             this.setReadOnlyDisplayReplacement("&nbsp;");
         }
@@ -873,10 +876,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * <p>When this is not set, the list will default to the delimited list display with a default of comma and space
      * (", ") - if readOnlyListDelimiter is not set as well.  The type can be set as the following:
      * <ul>
-     *     <li>"DELIMITED" - list will be output with delimiters between each item defined by readOnlyListDelimiter</li>
-     *     <li>"BREAK" - list will be output with breaks between each item</li>
-     *     <li>"OL" - list will be output in ordered list format (numbered)</li>
-     *     <li>"UL" - list will be output in unordered list format (bulleted)</li>
+     * <li>"DELIMITED" - list will be output with delimiters between each item defined by readOnlyListDelimiter</li>
+     * <li>"BREAK" - list will be output with breaks between each item</li>
+     * <li>"OL" - list will be output in ordered list format (numbered)</li>
+     * <li>"UL" - list will be output in unordered list format (bulleted)</li>
      * </ul>
      * </p>
      *

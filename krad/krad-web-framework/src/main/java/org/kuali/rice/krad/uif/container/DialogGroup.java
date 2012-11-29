@@ -18,9 +18,9 @@ package org.kuali.rice.krad.uif.container;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
-import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
@@ -60,7 +60,13 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="dialogGroup")
+@BeanTags({@BeanTag(name = "dialogGroup", parent = "Uif-DialogGroup"),
+        @BeanTag(name = "sensitiveData-dialogGroup", parent = "Uif-SensitiveData-DialogGroup"),
+        @BeanTag(name = "ok-cancel-dialogGroup", parent = "Uif-OK-Cancel-DialogGroup"),
+        @BeanTag(name = "yes-no-dialogGroup", parent = "Uif-Yes-No-DialogGroup"),
+        @BeanTag(name = "true-false-dialogGroup", parent = "Uif-True-False-DialogGroup"),
+        @BeanTag(name = "checkbox-dialogGroup", parent = "Uif-Checkbox-DialogGroup"),
+        @BeanTag(name = "radioButton-dialogGroup", parent = "Uif-RadioButton-DialogGroup")})
 public class DialogGroup extends Group {
     private static final long serialVersionUID = 1L;
 
@@ -186,7 +192,7 @@ public class DialogGroup extends Group {
      * @return String containing the prompt text
      */
 
-    @BeanTagAttribute(name="promptText")
+    @BeanTagAttribute(name = "promptText")
     public String getPromptText() {
         return promptText;
     }
@@ -205,7 +211,7 @@ public class DialogGroup extends Group {
      *
      * @return Message - the text element containing the message string
      */
-    @BeanTagAttribute(name="prompt",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "prompt", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MessageField getPrompt() {
         return prompt;
     }
@@ -229,7 +235,7 @@ public class DialogGroup extends Group {
      *
      * @return InputField component
      */
-    @BeanTagAttribute(name="explanation",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "explanation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public InputField getExplanation() {
         return explanation;
     }
@@ -252,7 +258,7 @@ public class DialogGroup extends Group {
      *
      * @return boolean - true if this user input is to be rendered, false if not.
      */
-    @BeanTagAttribute(name="displayExplanation")
+    @BeanTagAttribute(name = "displayExplanation")
     public boolean isDisplayExplanation() {
         return displayExplanation;
     }
@@ -275,7 +281,7 @@ public class DialogGroup extends Group {
      *
      * @return the List of response actions to provide the user.
      */
-    @BeanTagAttribute(name="availableResponses",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "availableResponses", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<KeyValue> getAvailableResponses() {
         return availableResponses;
     }
@@ -300,7 +306,7 @@ public class DialogGroup extends Group {
      *
      * @return InputField component within this dialog
      */
-    @BeanTagAttribute(name="responseInputField",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "responseInputField", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public InputField getResponseInputField() {
         return responseInputField;
     }
@@ -325,7 +331,7 @@ public class DialogGroup extends Group {
      * @return - true if choices left to right
      *         false if choices right to left
      */
-    @BeanTagAttribute(name="reverseButtonOrder")
+    @BeanTagAttribute(name = "reverseButtonOrder")
     public boolean isReverseButtonOrder() {
         return reverseButtonOrder;
     }
@@ -357,7 +363,7 @@ public class DialogGroup extends Group {
      *
      * @return
      */
-    @BeanTagAttribute(name="useAjaxCallForContent")
+    @BeanTagAttribute(name = "useAjaxCallForContent")
     public boolean isUseAjaxCallForContent() {
         return useAjaxCallForContent;
     }

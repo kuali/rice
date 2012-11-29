@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -45,7 +45,35 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="action")
+@BeanTags({@BeanTag(name = "action", parent = "Uif-Action"), @BeanTag(name = "actionImage", parent = "Uif-ActionImage"),
+        @BeanTag(name = "primaryActionButton", parent = "Uif-PrimaryActionButton"),
+        @BeanTag(name = "secondaryActionButton", parent = "Uif-SecondaryActionButton"),
+        @BeanTag(name = "primaryActionButton-small", parent = "Uif-PrimaryActionButton-Small"),
+        @BeanTag(name = "secondaryActionButton-small", parent = "Uif-SecondaryActionButton-Small"),
+        @BeanTag(name = "actionLink", parent = "Uif-ActionLink"),
+        @BeanTag(name = "navigationActionLink", parent = "Uif-NavigationActionLink"),
+        @BeanTag(name = "navigationActionButton", parent = "Uif-NavigationActionButton"),
+        @BeanTag(name = "secondaryNavigationActionButton", parent = "Uif-SecondaryNavigationActionButton"),
+        @BeanTag(name = "helpAction", parent = "Uif-HelpAction"),
+        @BeanTag(name = "saveAction", parent = "Uif-SaveAction"),
+        @BeanTag(name = "closeAction", parent = "Uif-CloseAction"),
+        @BeanTag(name = "cancelAction", parent = "Uif-CancelAction"),
+        @BeanTag(name = "checkFormAction", parent = "Uif-CheckFormAction"),
+        @BeanTag(name = "addLineAction", parent = "Uif-AddLineAction"),
+        @BeanTag(name = "deleteLineAction", parent = "Uif-DeleteLineAction"),
+        @BeanTag(name = "saveLineAction", parent = "Uif-SaveLineAction"),
+        @BeanTag(name = "addBlankLineAction", parent = "Uif-AddBlankLineAction"),
+        @BeanTag(name = "addViaLightBoxAction", parent = "Uif-AddViaLightBoxAction"),
+        @BeanTag(name = "toggleRowDetailsAction", parent = "Uif-ToggleRowDetailsAction"),
+        @BeanTag(name = "expandDetailsAction", parent = "Uif-ExpandDetailsAction"),
+        @BeanTag(name = "expandDetailsImageAction", parent = "Uif-ExpandDetailsImageAction"),
+        @BeanTag(name = "jumpToTopLink", parent = "Uif-JumpToTopLink"),
+        @BeanTag(name = "jumpToBottomLink", parent = "Uif-JumpToBottomLink"),
+        @BeanTag(name = "expandDisclosuresButton", parent = "Uif-ExpandDisclosuresButton"),
+        @BeanTag(name = "collapseDisclosuresButton", parent = "Uif-CollapseDisclosuresButton"),
+        @BeanTag(name = "showInactiveCollectionItemsButton", parent = "Uif-ShowInactiveCollectionItemsButton"),
+        @BeanTag(name = "hideInactiveCollectionItemsButton", parent = "Uif-HideInactiveCollectionItemsButton"),
+        @BeanTag(name = "collectionQuickFinderAction", parent = "Uif-CollectionQuickFinderAction")})
 public class Action extends ContentElementBase {
     private static final long serialVersionUID = 1025672792657238829L;
 
@@ -321,12 +349,10 @@ public class Action extends ContentElementBase {
         if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.SELF.toString())) {
             focusOnIdAfterSubmit = this.getId();
             submitData.put("focusId", focusOnIdAfterSubmit);
-        }
-        else if(focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.NEXT_INPUT.toString())){
+        } else if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.NEXT_INPUT.toString())) {
             focusOnIdAfterSubmit = UifConstants.Order.NEXT_INPUT.toString() + ":" + this.getId();
             submitData.put("focusId", focusOnIdAfterSubmit);
-        }
-        else {
+        } else {
             // Use the id passed in
             submitData.put("focusId", focusOnIdAfterSubmit);
         }
@@ -368,7 +394,7 @@ public class Action extends ContentElementBase {
      *
      * @return String name of method to call
      */
-    @BeanTagAttribute(name="methodToCall")
+    @BeanTagAttribute(name = "methodToCall")
     public String getMethodToCall() {
         return this.methodToCall;
     }
@@ -393,7 +419,7 @@ public class Action extends ContentElementBase {
      *
      * @return String label for action
      */
-    @BeanTagAttribute(name="actionLabel")
+    @BeanTagAttribute(name = "actionLabel")
     public String getActionLabel() {
         return this.actionLabel;
     }
@@ -419,7 +445,7 @@ public class Action extends ContentElementBase {
      *
      * @return Image action image
      */
-    @BeanTagAttribute(name="actionImage",type=BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "actionImage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Image getActionImage() {
         return this.actionImage;
     }
@@ -447,7 +473,7 @@ public class Action extends ContentElementBase {
      * @return String id of page that should be rendered when the action item is
      *         selected
      */
-    @BeanTagAttribute(name="navigateToPageId")
+    @BeanTagAttribute(name = "navigateToPageId")
     public String getNavigateToPageId() {
         return this.navigateToPageId;
     }
@@ -474,7 +500,7 @@ public class Action extends ContentElementBase {
      * @return String action event name
      * @see org.kuali.rice.krad.uif.UifConstants.ActionEvents
      */
-    @BeanTagAttribute(name="actionEvent")
+    @BeanTagAttribute(name = "actionEvent")
     public String getActionEvent() {
         return actionEvent;
     }
@@ -507,7 +533,7 @@ public class Action extends ContentElementBase {
      *
      * @return Map<String, String> additional key/value pairs to submit
      */
-    @BeanTagAttribute(name="additionalSubmitData", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "additionalSubmitData", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalSubmitData() {
         return additionalSubmitData;
     }
@@ -537,7 +563,7 @@ public class Action extends ContentElementBase {
      *
      * @return Map<String, String> action parameters
      */
-    @BeanTagAttribute(name="actionParameters", type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "actionParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getActionParameters() {
         return this.actionParameters;
     }
@@ -594,7 +620,7 @@ public class Action extends ContentElementBase {
     /**
      * @return the jumpToIdAfterSubmit
      */
-    @BeanTagAttribute(name="jumpToIdAfterSubmit")
+    @BeanTagAttribute(name = "jumpToIdAfterSubmit")
     public String getJumpToIdAfterSubmit() {
         return this.jumpToIdAfterSubmit;
     }
@@ -624,7 +650,7 @@ public class Action extends ContentElementBase {
      *
      * @return the jumpToNameAfterSubmit
      */
-    @BeanTagAttribute(name="jumpToNameAfterSubmit")
+    @BeanTagAttribute(name = "jumpToNameAfterSubmit")
     public String getJumpToNameAfterSubmit() {
         return this.jumpToNameAfterSubmit;
     }
@@ -653,7 +679,7 @@ public class Action extends ContentElementBase {
      *
      * @return the focusOnAfterSubmit
      */
-    @BeanTagAttribute(name="focusOnIdAfterSubmit")
+    @BeanTagAttribute(name = "focusOnIdAfterSubmit")
     public String getFocusOnIdAfterSubmit() {
         return this.focusOnIdAfterSubmit;
     }
@@ -670,7 +696,7 @@ public class Action extends ContentElementBase {
      *
      * return true if validation should occur, false otherwise
      */
-    @BeanTagAttribute(name="performClientSideValidation")
+    @BeanTagAttribute(name = "performClientSideValidation")
     public boolean isPerformClientSideValidation() {
         return this.performClientSideValidation;
     }
@@ -698,7 +724,7 @@ public class Action extends ContentElementBase {
      *
      * @return the actionScript
      */
-    @BeanTagAttribute(name="actionScript")
+    @BeanTagAttribute(name = "actionScript")
     public String getActionScript() {
         return this.actionScript;
     }
@@ -723,7 +749,7 @@ public class Action extends ContentElementBase {
     /**
      * @return the blockValidateDirty
      */
-    @BeanTagAttribute(name="performDirtyValidation")
+    @BeanTagAttribute(name = "performDirtyValidation")
     public boolean isPerformDirtyValidation() {
         return performDirtyValidation;
     }
@@ -733,7 +759,7 @@ public class Action extends ContentElementBase {
      *
      * @return boolean true if the action field is disabled, false if not
      */
-    @BeanTagAttribute(name="disabled")
+    @BeanTagAttribute(name = "disabled")
     public boolean isDisabled() {
         return disabled;
     }
@@ -754,7 +780,7 @@ public class Action extends ContentElementBase {
      * @return String disabled reason text
      * @see {@link #isDisabled()}
      */
-    @BeanTagAttribute(name="disabledReason")
+    @BeanTagAttribute(name = "disabledReason")
     public String getDisabledReason() {
         return disabledReason;
     }
@@ -767,7 +793,8 @@ public class Action extends ContentElementBase {
     public void setDisabledReason(String disabledReason) {
         this.disabledReason = disabledReason;
     }
-    @BeanTagAttribute(name="actionImagePlacement")
+
+    @BeanTagAttribute(name = "actionImagePlacement")
     public String getActionImagePlacement() {
         return actionImagePlacement;
     }
@@ -805,7 +832,7 @@ public class Action extends ContentElementBase {
      *
      * @return String script text that will be invoked before form submission
      */
-    @BeanTagAttribute(name="preSubmitCall")
+    @BeanTagAttribute(name = "preSubmitCall")
     public String getPreSubmitCall() {
         return preSubmitCall;
     }
@@ -825,7 +852,7 @@ public class Action extends ContentElementBase {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name="ajaxSubmit")
+    @BeanTagAttribute(name = "ajaxSubmit")
     public boolean isAjaxSubmit() {
         return ajaxSubmit;
     }
@@ -850,7 +877,7 @@ public class Action extends ContentElementBase {
      * @return String return type
      * @see org.kuali.rice.krad.uif.UifConstants.AjaxReturnTypes
      */
-    @BeanTagAttribute(name="ajaxReturnType")
+    @BeanTagAttribute(name = "ajaxReturnType")
     public String getAjaxReturnType() {
         return this.ajaxReturnType;
     }
@@ -869,7 +896,7 @@ public class Action extends ContentElementBase {
      *
      * @return boolean true if response should be rendered in a lightbox, false if not
      */
-    @BeanTagAttribute(name="displayResponseInLightBox")
+    @BeanTagAttribute(name = "displayResponseInLightBox")
     public boolean isDisplayResponseInLightBox() {
         return StringUtils.equals(this.ajaxReturnType, UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey());
     }
@@ -908,7 +935,7 @@ public class Action extends ContentElementBase {
      *
      * @return String containing script to be executed when the action is successful
      */
-    @BeanTagAttribute(name="successCallback")
+    @BeanTagAttribute(name = "successCallback")
     public String getSuccessCallback() {
         return successCallback;
     }
@@ -942,7 +969,7 @@ public class Action extends ContentElementBase {
      *
      * @return String containing script to be executed when the action is successful
      */
-    @BeanTagAttribute(name="errorCallback")
+    @BeanTagAttribute(name = "errorCallback")
     public String getErrorCallback() {
         return errorCallback;
     }
@@ -966,7 +993,7 @@ public class Action extends ContentElementBase {
      *
      * @return String valid component id
      */
-    @BeanTagAttribute(name="refreshId")
+    @BeanTagAttribute(name = "refreshId")
     public String getRefreshId() {
         return refreshId;
     }
@@ -996,7 +1023,7 @@ public class Action extends ContentElementBase {
      * @return String valid property name with an associated DataField
      * @see org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX
      */
-    @BeanTagAttribute(name="refreshPropertyName")
+    @BeanTagAttribute(name = "refreshPropertyName")
     public String getRefreshPropertyName() {
         return refreshPropertyName;
     }
@@ -1015,7 +1042,7 @@ public class Action extends ContentElementBase {
      *
      * @returns String if String is not null, used in place of loading message
      */
-    @BeanTagAttribute(name="loadingMessageText")
+    @BeanTagAttribute(name = "loadingMessageText")
     public String getLoadingMessageText() {
         return loadingMessageText;
     }
@@ -1044,7 +1071,7 @@ public class Action extends ContentElementBase {
      *
      * @return boolean true if blocking should be disabled, false if not
      */
-    @BeanTagAttribute(name="disableBlocking")
+    @BeanTagAttribute(name = "disableBlocking")
     public boolean isDisableBlocking() {
         return disableBlocking;
     }
@@ -1067,14 +1094,15 @@ public class Action extends ContentElementBase {
 
         // Checks that a label or image ui is presence
         if (getActionLabel() == null && getActionImage() == null) {
-            String currentValues [] = {"actionLabel =" + getActionLabel(),"actionImage =" + getActionImage()};
-            tracer.createError("ActionLabel and/or actionImage must be set",currentValues);
+            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
+            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
         }
 
         // Checks that an action is set
         if (getJumpToIdAfterSubmit() != null && getJumpToNameAfterSubmit() != null) {
-            String currentValues [] = {"jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit(),"jumpToNameAfterSubmit =" + getJumpToNameAfterSubmit()};
-            tracer.createWarning("Only 1 jumpTo property should be set",currentValues);
+            String currentValues[] = {"jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit(),
+                    "jumpToNameAfterSubmit =" + getJumpToNameAfterSubmit()};
+            tracer.createWarning("Only 1 jumpTo property should be set", currentValues);
         }
         super.completeValidation(tracer.getCopy());
     }
@@ -1084,7 +1112,7 @@ public class Action extends ContentElementBase {
      *
      * @return true if evaluate on key up, false otherwise
      */
-    @BeanTagAttribute(name="evaluateDisabledOnKeyUp")
+    @BeanTagAttribute(name = "evaluateDisabledOnKeyUp")
     public boolean isEvaluateDisabledOnKeyUp() {
         return evaluateDisabledOnKeyUp;
     }
@@ -1121,7 +1149,7 @@ public class Action extends ContentElementBase {
      *
      * @return the property names to monitor for change to disable this component
      */
-    @BeanTagAttribute(name="disabledWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "disabledWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getDisabledWhenChangedPropertyNames() {
         return disabledWhenChangedPropertyNames;
     }
@@ -1140,7 +1168,7 @@ public class Action extends ContentElementBase {
      *
      * @return the property names to monitor for change to enable this component
      */
-    @BeanTagAttribute(name="enabledWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "enabledWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getEnabledWhenChangedPropertyNames() {
         return enabledWhenChangedPropertyNames;
     }

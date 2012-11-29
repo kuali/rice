@@ -22,7 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  * See http://jqueryui.com/demos/tabs/ for usable options
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="tabs")
+@BeanTag(name = "tabs", parent = "Uif-Tabs")
 public class Tabs extends WidgetBase{
 	private static final long serialVersionUID = 2L;
 

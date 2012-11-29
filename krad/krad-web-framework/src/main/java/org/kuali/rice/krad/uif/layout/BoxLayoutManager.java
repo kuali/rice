@@ -18,12 +18,13 @@ package org.kuali.rice.krad.uif.layout;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,33 +44,35 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="boxLayoutManager")
+@BeanTags({@BeanTag(name = "boxLayout", parent = "Uif-BoxLayoutBase"),
+        @BeanTag(name = "horizontalBoxLayout", parent = "Uif-HorizontalBoxLayout"),
+        @BeanTag(name = "verticalBoxLayout", parent = "Uif-VerticalBoxLayout")})
 public class BoxLayoutManager extends LayoutManagerBase {
-	private static final long serialVersionUID = 4467342272983290044L;
+    private static final long serialVersionUID = 4467342272983290044L;
 
-	private Orientation orientation;
-	private String padding;
+    private Orientation orientation;
+    private String padding;
 
-	private String itemStyle;
+    private String itemStyle;
     private List<String> itemStyleClasses;
 
-	public BoxLayoutManager() {
-		super();
+    public BoxLayoutManager() {
+        super();
 
         itemStyle = "";
-		orientation = Orientation.HORIZONTAL;
+        orientation = Orientation.HORIZONTAL;
         itemStyleClasses = new ArrayList<String>();
-	}
+    }
 
-	/**
+    /**
      * Sets the item span style
      *
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
-	 */
-	@Override
-	public void performFinalize(View view, Object model, Container container) {
-		super.performFinalize(view, model, container);
+     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Container container) {
+        super.performFinalize(view, model, container);
 
         if (StringUtils.isBlank(itemStyle)) {
             itemStyle = "";
@@ -112,78 +115,78 @@ public class BoxLayoutManager extends LayoutManagerBase {
         }
     }
 
-	/**
-	 * Indicates whether the components should be rendered in a horizontal or
-	 * vertical column
-	 *
-	 * @return Orientation orientation configured for layout
-	 */
-    @BeanTagAttribute(name="orientation", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public Orientation getOrientation() {
-		return this.orientation;
-	}
+    /**
+     * Indicates whether the components should be rendered in a horizontal or
+     * vertical column
+     *
+     * @return Orientation orientation configured for layout
+     */
+    @BeanTagAttribute(name = "orientation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Orientation getOrientation() {
+        return this.orientation;
+    }
 
-	/**
-	 * Setter for the orientation for layout
-	 *
-	 * @param orientation
-	 */
-	public void setOrientation(Orientation orientation) {
-		this.orientation = orientation;
-	}
+    /**
+     * Setter for the orientation for layout
+     *
+     * @param orientation
+     */
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
 
-	/**
-	 * Amount of separation between each item
-	 *
-	 * <p>
-	 * For horizontal orientation, this will be the right padding for each item.
-	 * For vertical, it will be the bottom padding for each item. The value can
-	 * be a fixed length (like px) or percentage
-	 * </p>
-	 *
-	 * @return
-	 */
-    @BeanTagAttribute(name="padding")
-	public String getPadding() {
-		return this.padding;
-	}
+    /**
+     * Amount of separation between each item
+     *
+     * <p>
+     * For horizontal orientation, this will be the right padding for each item.
+     * For vertical, it will be the bottom padding for each item. The value can
+     * be a fixed length (like px) or percentage
+     * </p>
+     *
+     * @return
+     */
+    @BeanTagAttribute(name = "padding")
+    public String getPadding() {
+        return this.padding;
+    }
 
-	/**
-	 * Setter for the item padding
-	 *
-	 * @param padding
-	 */
-	public void setPadding(String padding) {
-		this.padding = padding;
-	}
+    /**
+     * Setter for the item padding
+     *
+     * @param padding
+     */
+    public void setPadding(String padding) {
+        this.padding = padding;
+    }
 
-	/**
-	 * Used by the render to set the style on the span element that wraps the
-	 * item. By using a wrapping span the items can be aligned based on the
-	 * orientation and given the correct padding
-	 *
-	 * @return String css style string
-	 */
-    @BeanTagAttribute(name="itemStyle")
-	public String getItemStyle() {
-		return this.itemStyle;
-	}
+    /**
+     * Used by the render to set the style on the span element that wraps the
+     * item. By using a wrapping span the items can be aligned based on the
+     * orientation and given the correct padding
+     *
+     * @return String css style string
+     */
+    @BeanTagAttribute(name = "itemStyle")
+    public String getItemStyle() {
+        return this.itemStyle;
+    }
 
-	/**
-	 * Setter for the span style
-	 *
-	 * @param itemStyle
-	 */
-	public void setItemStyle(String itemStyle) {
-		this.itemStyle = itemStyle;
-	}
+    /**
+     * Setter for the span style
+     *
+     * @param itemStyle
+     */
+    public void setItemStyle(String itemStyle) {
+        this.itemStyle = itemStyle;
+    }
 
     /**
      * List of style classes that should be applied to each span that wraps the item in the layout
      *
      * @return List<String>
      */
-    @BeanTagAttribute(name="itemStyleClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "itemStyleClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getItemStyleClasses() {
         return itemStyleClasses;
     }

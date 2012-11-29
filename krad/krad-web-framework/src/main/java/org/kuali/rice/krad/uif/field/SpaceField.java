@@ -28,7 +28,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="spaceField")
+@BeanTag(name = "spaceField", parent = "Uif-SpaceField")
 public class SpaceField extends FieldBase {
     private static final long serialVersionUID = -4740343801872334348L;
 

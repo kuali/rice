@@ -30,7 +30,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@BeanTag(name = "prerequisiteConstraint")
+@BeanTag(name = "prerequisiteConstraint", parent = "PrerequisiteConstraint")
 public class PrerequisiteConstraint extends BaseConstraint {
     protected String propertyName;
 

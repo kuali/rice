@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
@@ -37,7 +38,15 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "message")
+@BeanTags({@BeanTag(name = "message", parent = "Uif-Message"),
+        @BeanTag(name = "instructionalMessage", parent = "Uif-InstructionalMessage"),
+        @BeanTag(name = "constraintMessage", parent = "Uif-ConstraintMessage"),
+        @BeanTag(name = "requiredMessage", parent = "Uif-RequiredMessage"),
+        @BeanTag(name = "requiredInstructionsMessage", parent = "Uif-RequiredInstructionsMessage"),
+        @BeanTag(name = "stateBased-requiredInstructionsMessage",
+                parent = "Uif-StateBased-RequiredInstructionsMessage"),
+        @BeanTag(name = "dialogPrompt", parent = "Uif-DialogPrompt"),
+        @BeanTag(name = "imageCutineMessage", parent = "Uif-ImageCutineMessage")})
 public class Message extends ContentElementBase {
     private static final long serialVersionUID = 4090058533452450395L;
 

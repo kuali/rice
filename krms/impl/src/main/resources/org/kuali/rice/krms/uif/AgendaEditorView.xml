@@ -103,7 +103,7 @@
       <bean parent="Uif-FooterBase">
         <property name="items">
           <list>
-            <bean parent="Uif-NavigationActionButton" p:methodToCall="addRule" p:actionLabel="Add Rule">
+            <bean parent="Uif-NavigationActionButton" p:methodToCall="addRule" p:actionLabel="Add Rule" p:performDirtyValidation="false">
               <property name="cssClasses">
                 <list merge="true">
                   <value>tree-bar-button</value>
@@ -132,7 +132,7 @@
       <bean parent="Uif-FooterBase">
         <property name="items">
           <list>
-            <bean parent="Uif-NavigationActionButton" p:methodToCall="editRule" p:actionLabel="Update Rule"/>
+            <bean parent="Uif-NavigationActionButton" p:methodToCall="editRule" p:actionLabel="Update Rule" />
             <bean parent="Uif-NavigationActionButton" p:navigateToPageId="AgendaEditorView-Agenda-Page" p:actionLabel="Cancel"/>
           </list>
         </property>
@@ -430,7 +430,7 @@
         -->
 
         <!-- javascript to work around required issue -->
-        <bean parent="Uif-NavigationActionButton" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
+        <bean parent="Uif-NavigationActionButton" p:methodToCall="goToAddRule" p:actionLabel="Add Rule" p:performDirtyValidation="false"
               p:preSubmitCall="var requiredMessage = requiredsSet();
               if (requiredMessage.length > 0) {
                 alert(requiredMessage);

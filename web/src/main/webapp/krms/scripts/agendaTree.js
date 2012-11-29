@@ -64,7 +64,7 @@ function initAgendaTree(componentId) {
                     selectedItemTracker.val(agendaItemId);
                     jq(this.parentNode).addClass('ruleBlockSelected');
                     var disableButtons = jq('input.disableButtons').val();
-                    if (disableButtons == 'false') {
+                    if (disableButtons == 'false' || disableButtons == undefined) {
                         enableTreeButtons(); // disableButtons.js
                     }else{
                         disableTreeButtons();

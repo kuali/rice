@@ -225,6 +225,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     protected void clearText(By by)  throws InterruptedException {
         driver.findElement(by).clear();
     }
+    
+    protected void clearText(String selector) throws InterruptedException {
+        clearText(By.cssSelector(selector));
+    }
 
     protected void clearTextByName(String name) throws InterruptedException {
         clearText(By.name(name));
@@ -346,6 +350,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
     
     protected void selectWindow(String locator) {
         driver.switchTo().window(locator);
+    }
+    
+    protected void close() {
+        driver.close();
     }
 
     protected void testCancelConfirmation() throws InterruptedException {
@@ -504,7 +512,7 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
 
     protected void waitAndClickByXpath(String xpath) throws InterruptedException {
         waitAndClick(By.xpath(xpath));
-    }
+    }    
 
     protected void waitAndClickByName(String name, String message) throws InterruptedException {
         waitAndClick(By.name(name), message);
@@ -536,6 +544,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             );
             e.printStackTrace();
         }
+    }
+    
+    protected void waitAndType(String selector, String text) throws InterruptedException {
+        waitAndType(By.cssSelector(selector), text);
     }
     
     protected void waitAndTypeByXpath(String locator, String text) throws InterruptedException {
@@ -719,6 +731,11 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
             }
         }
     }
+    
+    public String [] getAllWindowTitles() {        
+        return (String[]) driver.getWindowHandles().toArray();
+    }
+    
     
     protected void check(By by)  throws InterruptedException {
         WebElement element =driver.findElement(by);

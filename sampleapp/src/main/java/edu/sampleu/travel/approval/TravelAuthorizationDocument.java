@@ -41,6 +41,16 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     private String primaryDestinationName;
     private String primaryDestinationCountryState;
     private String primaryDestinationCounty;
+    
+    private String field59;
+
+    public String getField59() {
+        return field59;
+    }
+
+    public void setField59(String field59) {
+        this.field59 = field59;
+    }
 
     private PrimaryDestination primaryDestination;
 

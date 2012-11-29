@@ -26,6 +26,10 @@ public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
         super();
     }
 
+    /**
+     *   returns default document type  {@link TravelAuthorizationForm#getDefaultDocumentTypeName()}.
+     *   @return a String
+     */
     @Override
     protected String getDefaultDocumentTypeName() {
         return "TravelAuthorization";

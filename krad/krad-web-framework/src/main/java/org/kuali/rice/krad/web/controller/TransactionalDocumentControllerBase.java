@@ -38,7 +38,11 @@ public abstract class TransactionalDocumentControllerBase extends DocumentContro
     protected static final Logger LOG = Logger.getLogger(TransactionalDocumentControllerBase.class);
 
     /**
-     * Method that will take the current document and call its copy method if Copyable
+     * Method that will take the current document and call its copy method if Copyable.
+     * @param form : a TransactionalDocumentFormBase
+     * @param result : a BindingResult
+     * @throws java.lang.Exception : an exception
+     * @return a ModelAndView object
      */
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_COPY)
     public ModelAndView copy(@ModelAttribute("KualiForm") TransactionalDocumentFormBase form, BindingResult result,

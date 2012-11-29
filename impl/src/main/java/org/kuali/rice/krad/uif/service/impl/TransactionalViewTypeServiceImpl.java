@@ -87,6 +87,7 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
             try {
                 // determine object class based on the document type
                 Document document = documentService.getByDocumentHeaderId(documentNumber);
+
                 if (!documentService.documentExists(documentNumber)) {
                     parameters = new HashMap<String, String>();
                     parameters.put(UifParameters.VIEW_ID, KRADConstants.KRAD_INITIATED_DOCUMENT_VIEW_NAME);
@@ -105,21 +106,26 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
                     throw new RuntimeException(
                             "Could not determine document class for document with id: " + documentNumber);
                 }
+
             } catch (WorkflowException e) {
                 throw new RuntimeException(
                         "Encountered workflow exception while retrieving document with id: " + documentNumber, e);
             }
         }
         else {
+
             if (requestParameters.containsKey(UifParameters.DOCUMENT_CLASS)) {
                 parameters.put(UifParameters.DOCUMENT_CLASS, requestParameters.get(UifParameters.DOCUMENT_CLASS));
-            } else if (requestParameters.containsKey(UifParameters.DOC_TYPE_NAME)) {
+            }
+            else if (requestParameters.containsKey(UifParameters.DOC_TYPE_NAME)) {
                 String docTypeName = requestParameters.get(UifParameters.DOC_TYPE_NAME);
                 Class<?> documentClass = getDocumentDictionaryService().getDocumentClassByName(docTypeName);
+
                 if (documentClass != null) {
                     parameters.put(UifParameters.DOCUMENT_CLASS, documentClass.getName());
                 }
             }
+
         }
 
         if (requestParameters.containsKey(UifParameters.VIEW_NAME)) {
@@ -133,9 +139,11 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
     }
 
     protected DocumentService getDocumentService() {
+
         if (documentService == null) {
             this.documentService = KRADServiceLocatorWeb.getDocumentService();
         }
+
         return this.documentService;
     }
 
@@ -144,9 +152,11 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
     }
 
     public DocumentDictionaryService getDocumentDictionaryService() {
+
         if (documentDictionaryService == null) {
             this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
         }
+
         return documentDictionaryService;
     }
 

@@ -58,6 +58,11 @@
         PARM_NM="MAX_FILE_SIZE_DEFAULT_UPLOAD" PARM_TYP_CD="CONFG"
         VAL="5M" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
+        NMSPC_CD="KR-NS" OBJ_ID="CF90C87BE340C290E0406E0AC31D4F3F"
+        PARM_DESC_TXT="Default message to display when a module is locked"
+        PARM_NM="OLTP_LOCKOUT_DEFAULT_MESSAGE" PARM_TYP_CD="CONFG"
+        VAL="The module you are attempting to access has been locked for maintenance." VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-NS" OBJ_ID="5a5fbe94-846f-102c-8db0-c405cae621f3"
         PARM_DESC_TXT="A semi-colon delimted list of regular expressions that identify &#xa;potentially sensitive data in strings.  These patterns will be matched &#xa;against notes, document explanations, and routing annotations."
         PARM_NM="SENSITIVE_DATA_PATTERNS" PARM_TYP_CD="CONFG"

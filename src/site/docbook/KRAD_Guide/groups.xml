@@ -2226,11 +2226,11 @@ If neither a name nor images are set to be used, the link will be called “Deta
           <listitem>
             <para><emphasis role="bold">groupingPrefix </emphasis>(string) – this will prefix the default title of the group with the string provided (does not affect sort order, sort order will still be based on actual grouping value)</para>
           </listitem>
-          <listitem><emphasis role="bold">groupingTitle </emphasis>(string) – <emphasis role="italic">this is a customized title that MUST include SpringEL for values to group by</emphasis>. #lp should be used to reference values of the line in the expression(s) used. The title can be anything as long as it includes some content that is based on line values. Sorting will be based on the full title in alphabetical order. groupingTitle will <emphasis role="bold">always</emphasis> override the settings of groupingPropertyNames and groupingPrefix.</listitem>
+          <listitem><para><emphasis role="bold">groupingTitle </emphasis>(string) – <emphasis role="italic">this is a customized title that MUST include SpringEL for values to group by</emphasis>. #lp should be used to reference values of the line in the expression(s) used. The title can be anything as long as it includes some content that is based on line values. Sorting will be based on the full title in alphabetical order. groupingTitle will <emphasis role="bold">always</emphasis> override the settings of groupingPropertyNames and groupingPrefix.</para></listitem>
         </itemizedlist>
         <para>By default, when using grouping, the field you are grouping on is not displayed automatically.  This has to be done in the same way you would display other fields of the line, by adding the field you want to show to items (so displaying the grouping field value or not is up to the developer depending on use case).</para>
         <para>To enable grouping simple supply some <emphasis role="bold">groupingPropertyNames</emphasis>.  In this example, lines will be grouped by the values that exist for field1 of the collectionObject. The field1 InputField  is also displayed as field of the collection line (but could be omitted if desired).</para>
-        <programlisting><para>
+        <programlisting>
 &lt;bean id=&quot;Demo-CollectionGrouping-Section1&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
     &lt;property name=&quot;headerText&quot; value=&quot;Basic Grouping&quot;/&gt;
     &lt;property name=&quot;collectionObjectClass&quot;
@@ -2249,7 +2249,7 @@ If neither a name nor images are set to be used, the link will be called “Deta
     &lt;/property&gt;
   &lt;/bean&gt;
 
-</para></programlisting>
+</programlisting>
         <para>Which results in a table that looks like this:<mediaobject>
             <imageobject>
               <imagedata fileref="../images/KRAD_Guide/row_grouping_1.png"/>
@@ -2305,41 +2305,41 @@ If neither a name nor images are set to be used, the link will be called “Deta
 </para>
           </listitem>
           <listitem>
-            <emphasis role="bold">Uif-ColumnCalculationInfo-Sum </emphasis>
+            <para><emphasis role="bold">Uif-ColumnCalculationInfo-Sum </emphasis></para>
           </listitem>
-          <listitem><emphasis role="bold">Uif-ColumnCalculationInfo-Average</emphasis> (default 2 decimal places, but allows you to specify decimal places through calculationFunctionExtraData – described below) </listitem>
+          <listitem><para><emphasis role="bold">Uif-ColumnCalculationInfo-Average</emphasis> (default 2 decimal places, but allows you to specify decimal places through calculationFunctionExtraData – described below) </para></listitem>
           <listitem>
-            <emphasis role="bold">Uif-ColumnCalculationInfo-Max</emphasis>
+            <para><emphasis role="bold">Uif-ColumnCalculationInfo-Max</emphasis></para>
            </listitem>
           <listitem>
-            <emphasis role="bold">Uif-ColumnCalculationInfo-Min</emphasis>
+            <para><emphasis role="bold">Uif-ColumnCalculationInfo-Min</emphasis></para>
           </listitem>
         </itemizedlist>
         <para>By default, KRAD supports sum, average, min, and max, but can easily be expanded with any calculation you want to provide, by creating your own javascript function and ColumnCalculationInfo bean.  Javascript functions referenced by ColumnCalculationInfo must follow this format (“values” must be the first parameter, “yourExtraData” is optional and can be named anything):
 </para>
-        <programlisting><para>
+        <programlisting>
  function yourCalculationFunctionName(values, yourExtraData){
   //do a calculation with the array of values passed
   //return calculation result
 }
-</para></programlisting>
+</programlisting>
         <para>The function’s name is used in ColumnCalculationInfo’s <emphasis role="bold">calculationFuctionName</emphasis> property.  This property must be specified by name only; parenthesis and parameters CANNOT be included.  The framework automatically passes the array of column values to calculate to the function as the first parameter and data specified by the <emphasis role="bold">calculationFunctionExtraData </emphasis>property as the second parameter.  This data can be <emphasis role="bold">any</emphasis> valid javascript data: int, String, object, etc. </para>
         <para>The calculationFunctionExtraData property is meant to provide options to your calculation function, if needed (our average function, for example, uses calculationFunctionExtraData to pass the number of decimal places to be used in the average).
 </para>
         <para>The settable properties available on <emphasis role="bold">Uif-ColumnCalculationInfo</emphasis> are:
 </para>
         <itemizedlist>
-          <listitem><emphasis role="bold">propertyName</emphasis> – must be set. This specifies the column of the collection you are totaling. The field for this propertyName must be one of the fields specified by items of the TableCollection. </listitem>
-          <listitem><emphasis role="bold">showTotal</emphasis> (Boolean) – default true. Whether or not to show the calculation total for the column (this is the total of all values of the collection across all pages)(default is true on KRAD base beans). </listitem>
-          <listitem><emphasis role="bold">showPageTotal </emphasis>(Boolean) – if true, this shows the calculation total for the values of the currently shown page for the column(default is true on KRAD base beans). </listitem>
-          <listitem><emphasis role="bold">showGroupTotal </emphasis>(Boolean) – if true, shows the group calculation total for the values of each group. The TableCollection must be using row grouping functionality for this to work (see TableCollection Row Grouping) (default is false on KRAD base beans). </listitem>
-          <listitem><emphasis role="bold">totalField, pageTotalField, and groupTotalFieldPrototype</emphasis> – the MessageField component used to display the column calculation results. Normally not configured, but can be used to force messageText in the skip client-side scenario (described below) and to modify the label of the calculation field at will. These fields should not be overridden, only their properties set. Example of setting the label on pageTotalField: <programlisting>&lt;property name=&quot;pageTotalField.fieldLabel.labelText&quot; value=&quot;Page Average&quot;/&gt;
-</programlisting></listitem>
-          <listitem><emphasis role="bold">c</emphasis><emphasis role="bold">alculationFunctionName</emphasis> – described above, the js calculation function to use by name. </listitem>
-          <listitem><emphasis role="bold">calculationFunctionExtraData </emphasis>– optional. The additional js data to pass to the js calculation function. </listitem>
-          <listitem><emphasis role="bold">recalculateTotalClientside</emphasis> – if false, the calculation for total (not page or group totals – these are ALWAYS client-side calculations if shown) is not done client side. What this means is the total must come from the server by providing the total to the totalField in this way through SpringEL: <programlisting>&lt;property name=&quot;totalField.messageText&quot; value=&quot;@{#form.serverCalculatedTotal}&quot;/&gt;
-</programlisting></listitem>
-          <listitem><emphasis role="bold">calculateOnKeyUp</emphasis> – if true, fields of this column will perform their calculations on key up (there is a small delay to prevent it from calculating before you are done typing). </listitem>
+          <listitem><para><emphasis role="bold">propertyName</emphasis> – must be set. This specifies the column of the collection you are totaling. The field for this propertyName must be one of the fields specified by items of the TableCollection. </para></listitem>
+          <listitem><para><emphasis role="bold">showTotal</emphasis> (Boolean) – default true. Whether or not to show the calculation total for the column (this is the total of all values of the collection across all pages)(default is true on KRAD base beans). </para></listitem>
+          <listitem><para><emphasis role="bold">showPageTotal </emphasis>(Boolean) – if true, this shows the calculation total for the values of the currently shown page for the column(default is true on KRAD base beans). </para></listitem>
+          <listitem><para><emphasis role="bold">showGroupTotal </emphasis>(Boolean) – if true, shows the group calculation total for the values of each group. The TableCollection must be using row grouping functionality for this to work (see TableCollection Row Grouping) (default is false on KRAD base beans). </para></listitem>
+          <listitem><para><emphasis role="bold">totalField, pageTotalField, and groupTotalFieldPrototype</emphasis> – the MessageField component used to display the column calculation results. Normally not configured, but can be used to force messageText in the skip client-side scenario (described below) and to modify the label of the calculation field at will. These fields should not be overridden, only their properties set. Example of setting the label on pageTotalField: <programlisting>&lt;property name=&quot;pageTotalField.fieldLabel.labelText&quot; value=&quot;Page Average&quot;/&gt;
+</programlisting></para></listitem>
+          <listitem><para><emphasis role="bold">c</emphasis><emphasis role="bold">alculationFunctionName</emphasis> – described above, the js calculation function to use by name. </para></listitem>
+          <listitem><para><emphasis role="bold">calculationFunctionExtraData </emphasis>– optional. The additional js data to pass to the js calculation function. </para></listitem>
+          <listitem><para><emphasis role="bold">recalculateTotalClientside</emphasis> – if false, the calculation for total (not page or group totals – these are ALWAYS client-side calculations if shown) is not done client side. What this means is the total must come from the server by providing the total to the totalField in this way through SpringEL: <programlisting>&lt;property name=&quot;totalField.messageText&quot; value=&quot;@{#form.serverCalculatedTotal}&quot;/&gt;
+</programlisting></para></listitem>
+          <listitem><para><emphasis role="bold">calculateOnKeyUp</emphasis> – if true, fields of this column will perform their calculations on key up (there is a small delay to prevent it from calculating before you are done typing). </para></listitem>
         </itemizedlist>
         <para>The following example has a different calculation for each column of the collection.  Since we do not specify the show properties, our beans, by default, show total and page total.  Note that the columnCalculationInfo propertyNames match the propertyNames of the fields in the collection’s items list.
 </para>

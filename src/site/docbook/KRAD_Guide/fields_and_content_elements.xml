@@ -4241,31 +4241,31 @@ Rich message tags can be also be wrapped within other tags allowing for a variet
 The following areas allow rich message content described by this section:
 </para>
     <itemizedlist>
-      <listitem>Uif-Message component – messageText property</listitem>
-      <listitem>Uif-Label component – labelText property</listitem>
-      <listitem>Uif-InputField – label, instructionalText, and constraintText properties</listitem>
-      <listitem>Uif-CheckboxControl - checkboxLabel</listitem>
-      <listitem>Uif-KeyLabelPair (used by radio and checkbox groups ‘options’ property) – value property</listitem>
-      <listitem>Uif-HeaderBase (and children) – headerText property (support to be added)</listitem>
-      <listitem>Groups (Views, Pages, Sections) – instructionalText, and headerText (support to be added) properties Any validation messages from the server or set up through message configuration (reduced scope no id or component index tag allowed) </listitem>
-      <listitem>Anywhere the Message component is used</listitem>
+      <listitem><para>Uif-Message component – messageText property</para></listitem>
+      <listitem><para>Uif-Label component – labelText property</para></listitem>
+      <listitem><para>Uif-InputField – label, instructionalText, and constraintText properties</para></listitem>
+      <listitem><para>Uif-CheckboxControl - checkboxLabel</para></listitem>
+      <listitem><para>Uif-KeyLabelPair (used by radio and checkbox groups ‘options’ property) – value property</para></listitem>
+      <listitem><para>Uif-HeaderBase (and children) – headerText property (support to be added)</para></listitem>
+      <listitem><para>Groups (Views, Pages, Sections) – instructionalText, and headerText (support to be added) properties Any validation messages from the server or set up through message configuration (reduced scope no id or component index tag allowed) </para></listitem>
+      <listitem><para>Anywhere the Message component is used</para></listitem>
     </itemizedlist>
     <para>The following KRAD rich message tags are supported (&lt; &gt; represents content to set):</para>
     <para><itemizedlist>
-        <listitem>[<emphasis role="bold">id</emphasis>=&lt;component id&gt; property1=value property2=value] - insert component with id specified at that location in the message. You can also set/override properties of the component referenced through by specifying those additional properties (must be separated by spaces). Textual properties must be wrapped in single quotes. </listitem>
-        <listitem>[<emphasis role="bold">n</emphasis>] - insert component at index n from the <emphasis role="bold">inlineComponent</emphasis> list.</listitem>
-        <listitem>[&lt;<emphasis role="bold">html tag</emphasis> and properties&gt;][/&lt;html tag&gt;] - insert html content directly into the message content at that location, without the need to escape the &lt;&gt; characters in xml.</listitem>
-        <listitem>[<emphasis role="bold">color</emphasis>=&lt;html color code/name&gt;][/color] - wrap content in color tags to make text that color in the message. This is the same as wrapping the content in a span with color style set.</listitem>
-        <listitem>[<emphasis role="bold">css</emphasis>=&lt;css classes&gt;][/css] - apply css classes specified to the wrapped content . This is the same as wrapping the content in a span with the class property set.</listitem>
-        <listitem>[<emphasis role="bold">link</emphasis>=&lt;href src&gt;][/link] - an easy way to create an anchor that will open in a new page to the href specified. This is the same as wrapping the content in an a tag with the target set as “_blank”.</listitem>
+        <listitem><para>[<emphasis role="bold">id</emphasis>=&lt;component id&gt; property1=value property2=value] - insert component with id specified at that location in the message. You can also set/override properties of the component referenced through by specifying those additional properties (must be separated by spaces). Textual properties must be wrapped in single quotes. </para></listitem>
+        <listitem><para>[<emphasis role="bold">n</emphasis>] - insert component at index n from the <emphasis role="bold">inlineComponent</emphasis> list.</para></listitem>
+        <listitem><para>[&lt;<emphasis role="bold">html tag</emphasis> and properties&gt;][/&lt;html tag&gt;] - insert html content directly into the message content at that location, without the need to escape the &lt;&gt; characters in xml.</para></listitem>
+        <listitem><para>[<emphasis role="bold">color</emphasis>=&lt;html color code/name&gt;][/color] - wrap content in color tags to make text that color in the message. This is the same as wrapping the content in a span with color style set.</para></listitem>
+        <listitem><para>[<emphasis role="bold">css</emphasis>=&lt;css classes&gt;][/css] - apply css classes specified to the wrapped content . This is the same as wrapping the content in a span with the class property set.</para></listitem>
+        <listitem><para>[<emphasis role="bold">link</emphasis>=&lt;href src&gt;][/link] - an easy way to create an anchor that will open in a new page to the href specified. This is the same as wrapping the content in an a tag with the target set as “_blank”.</para></listitem>
         <listitem>
           <para>[<emphasis role="bold">action</emphasis>=&lt;action settings&gt; data=&lt;extra data&gt;][/action] - create an action link inline without having to specify a component by id or index. The options below MUST be in a comma separated list in the order specified.  Specify 1-4 always in this order – for example, options CANNOT be skipped if you would like to only set methodToCall  and ajaxSubmit, you must still set validateClientSide to its default value (note: this is parallel to how javascript functions with optional parameters are passed). </para>
           <para> The options (in order) are:</para>
           <itemizedlist>
-            <listitem><emphasis role="bold">methodToCall</emphasis>(String)</listitem>
-            <listitem><emphasis role="bold">validateClientSide</emphasis>(boolean) - true if not set</listitem>
-            <listitem><emphasis role="bold">ajaxSubmit</emphasis>(boolean) - true if not set</listitem>
-            <listitem><emphasis role="bold">successCallback</emphasis>(js function or function declaration) - this only works when ajaxSubmit is true</listitem>
+            <listitem><para><emphasis role="bold">methodToCall</emphasis>(String)</para></listitem>
+            <listitem><para><emphasis role="bold">validateClientSide</emphasis>(boolean) - true if not set</para></listitem>
+            <listitem><para><emphasis role="bold">ajaxSubmit</emphasis>(boolean) - true if not set</para></listitem>
+            <listitem><para><emphasis role="bold">successCallback</emphasis>(js function or function declaration) - this only works when ajaxSubmit is true</para></listitem>
           </itemizedlist>
           <para>The tag would look something like this:</para>
           <para> [action=<emphasis role="bold">methodToCall</emphasis>]Action[/action] </para>
@@ -4276,11 +4276,13 @@ The following areas allow rich message content described by this section:
 </para>
           <para>[action=&lt;action settings&gt; <emphasis role="bold">data</emphasis><emphasis role="bold">={key1: &apos;value 1&apos;, key2: value2}</emphasis>]</para>
         </listitem>
-      </itemizedlist><para>Reminder: If the [] characters are needed in message text, they need to be declared with a backslash escape character: “\[“ and “ \]”</para></para>
+      </itemizedlist>
+      <note><para>Reminder: If the [] characters are needed in message text, they need to be declared with a backslash escape character: “\[“ and “ \]”</para></note>
+    </para>
     <section>
       <title>Component Rich Message Tags</title>
-    </section>
-    <para>Note:  These component options cannot be used for validation messages.</para>
+      <para></para>
+      <para>Note:  These component options cannot be used for validation messages.</para>
     <para>Component by id – this example gets the component named Demo-SampleMessageInput, defined elsewhere, by id:</para>
     <para><programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
@@ -4318,7 +4320,9 @@ The following areas allow rich message content described by this section:
           &lt;property name=&quot;messageText&quot;
                     value=&quot;Testing passing data [<emphasis role="bold">action=addErrors,false data={extraInfo: &apos;some data&apos;}</emphasis>]addErrors[/action]&quot;/&gt;
         &lt;/bean&gt;
-</programlisting><para>Action using all available options – calling method “addErrors”, turning off client side validation, ajaxSubmit on, and on success calling the function specified (which shows an alert with “Successful Callback” in it):</para><programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+</programlisting></para>
+      <para>Action using all available options – calling method “addErrors”, turning off client side validation, ajaxSubmit on, and on success calling the function specified (which shows an alert with “Successful Callback” in it):
+      <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
                     value=&quot;Testing custom success callback <emphasis role="bold">[action=addErrors,false,true,function(){alert(&apos;Successful Callback&apos;)}]</emphasis>addErrors<emphasis role="bold">[/action]</emphasis>&quot;/&gt;
         &lt;/bean&gt;
@@ -4326,7 +4330,7 @@ The following areas allow rich message content described by this section:
     </section>
     <section>
       <title>Checkboxes and Radio Control Rich Message Usage</title>
-    </section>
+    
     <para>Example showing usage in CheckboxesControl (RadioControl usage would be very similar):</para>
     <programlisting>…          
 &lt;property name=&quot;control&quot;&gt;
@@ -4362,5 +4366,7 @@ The following areas allow rich message content described by this section:
         &lt;/bean&gt;
 ...</programlisting>
     </section>
+  </section>
+    </section>     
   </section>
 </chapter>

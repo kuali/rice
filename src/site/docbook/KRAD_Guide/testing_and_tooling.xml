@@ -1046,43 +1046,43 @@
           file (properties/rdv-config.properties). It can be ran from the Rice Tools application.
         </para>
         <itemizedlist>
-          <listitem>
+          <listitem><para>
             ricedictionaryvalidator.corefiles - This is a list of default bean files to be loaded during
             validation
-          </listitem>
-          <listitem>
+          </para></listitem>
+          <listitem><para>
             ricedictionaryvalidator.display.method - This is the default setting for the method of
             output when displaying the validations
-          </listitem>
-          <listitem>
+          </para></listitem>
+          <listitem><para>
             ricedictionaryvalidator.display.method.file - This is the default file to save validation
             results to if the output type is file
-          </listitem>
-          <listitem>
+          </para></listitem>
+          <listitem><para>
             ricedictionaryvalidator.display.errors - Display default for whether to display the number
             of errors
-          </listitem>
-          <listitem>
+          </para></listitem>
+          <listitem><para>
             ricedictionaryvalidator.display.warnings - Display default for whether to display the number
             of warnings
-          </listitem>
-          <listitem>
+          </para></listitem>
+          <listitem><para>
             ricedictionaryvalidator.display.errors.messages - Display default for whether to display the
             error messages
-          </listitem>
-          <listitem>
+          </para></listitem>
+          <listitem><para>
             ricedictionaryvalidator.display.warnings.messages - Display default for whether to display
             the
             warning messages
-          </listitem>
-          <listitem>
+          </para></listitem>
+          <listitem><para>
             ricedictionaryvalidator.display.xmlfiles - Display default for whether to display the xml
             files when displaying the error/warning messages
-          </listitem>
-          <listitem>
+          </para></listitem>
+          <listitem><para>
             ricedictionaryvalidator.failonwarning - This is the default for whether the validator should
             fail if warnings are detect instead of just errors
-          </listitem>
+          </para></listitem>
         </itemizedlist>
       </section>
     </section>
@@ -1107,12 +1107,12 @@
         <section>
           <title>Validations Covered</title>
           <itemizedlist>
-            <listitem>
+            <listitem><para>
               Uif Component Beans
-            </listitem>
-            <listitem>
+            </para></listitem>
+            <listitem><para>
               Data Dictionary Beans
-            </listitem>
+            </para></listitem>
           </itemizedlist>
         </section>
         <section>
@@ -1128,7 +1128,7 @@
           <para>
             Validation can be added to beans by adding the method:
           </para>
-          public ArrayList &lt;ErrorReport&gt; DataObject.completeValidation(ValidationTrace)
+          <programlisting>public ArrayList &lt;ErrorReport&gt; DataObject.completeValidation(ValidationTrace)</programlisting>
           <para>
             Within this method first update the ValidationTrace using the line appropriate addBean()
             method and follow by placing any validations that are needed for the data object. When a
@@ -1136,14 +1136,14 @@
             involved in the validation. Next the report can be created by using the following method on
             the ValidationTrace Object.
           </para>
-          tracer.crateError({The Failed Validation},{The created list of involved values})
+          <programlisting>tracer.crateError({The Failed Validation},{The created list of involved values})</programlisting>
           <para>
             Warning reports can be created the same way using the createWarning(...) method. An example
             of a basic report is below (other ways to make reports can be found in the constructors of
             ErrorReport).
           </para>
-          String currentValues[] = {"a = "+ a, "b = "+ b};
-          tracer.createError("Property a must be greater than b", currentValues);
+          <programlisting>String currentValues[] = {"a = "+ a, "b = "+ b};
+          tracer.createError("Property a must be greater than b", currentValues);</programlisting>
           <para>
             If the data object extends another object that has validation too all upon its
             completeValidation() method.
@@ -1328,7 +1328,7 @@
             xsd replace SCHEMANAME with the name of the schema being created (instead of the supporting
             schema name).
           </para>
-          http\://www.kuali.org/SCHEMANAME/schema.xsd = META-INF/SCHEMANAME_schema.xsd
+          <programlisting>http\://www.kuali.org/SCHEMANAME/schema.xsd = META-INF/SCHEMANAME_schema.xsd</programlisting>
         </section>
         <section>
           <title>Class List File</title>

@@ -169,17 +169,17 @@
           the lightbox. Just add a reference to it in the "dialogs" list property in the view definition. A DialogGroup
           provides some additionalproperties for convenience, but any group will do. It should be set to hidden unless
           you want it the group displayed on the main page as well. So the designer has a few options:</para>
-        <itemizedlist><listitem>use a pre-defined KRAD dialog</listitem>
-        <listitem>customize an existing dialog<para>change any of the prompt text, the number of option buttons, the value
+        <itemizedlist><listitem><para>use a pre-defined KRAD dialog</para></listitem>
+          <listitem><para>customize an existing dialogchange any of the prompt text, the number of option buttons, the value
           of the option buttons, adds items to the group, add custom styling,...</para></listitem>
-          <listitem>create your own custom, hidden group</listitem></itemizedlist>
+          <listitem><para>create your own custom, hidden group</para></listitem></itemizedlist>
         <para>Here is the bean definition for a DialogGroup. The dialogGroup is a hidden group with some additional
         properties for convenience.</para>
-        <itemizedlist><listitem>prompt - the  message displayed to the user</listitem>
-        <listitem>explanation - a textarea input to get additional textual response information. (hidden by default)</listitem>
-        <listitem>responseInputField - holds the value chosen by the user</listitem>
-        <listitem>availableResponses - the choices to be displayed in the lightbox (ok/cancel, yes/no/maybe)</listitem>
-        <listitem>reverseButtonOrder - determines the order the responses are displayed</listitem></itemizedlist>
+        <itemizedlist><listitem><para>prompt - the  message displayed to the user</para></listitem>
+          <listitem><para>explanation - a textarea input to get additional textual response information. (hidden by default)</para></listitem>
+          <listitem><para>responseInputField - holds the value chosen by the user</para></listitem>
+          <listitem><para>availableResponses - the choices to be displayed in the lightbox (ok/cancel, yes/no/maybe)</para></listitem>
+          <listitem><para>reverseButtonOrder - determines the order the responses are displayed</para></listitem></itemizedlist>
         <para>The css class "uif-dialogGroup" provides the styling for the lightbox.</para>
         <programlisting>&lt;!-- Dialog Groups --&gt;
   &lt;bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/&gt;
@@ -228,24 +228,25 @@
       <section>
         <title>Managing Dialogs from a Controller</title>
         <para>UifControllerBase contains common methods for managing dialogs. </para>
-        <itemizedlist><listitem>ModelAndView showDialog(dialogId, form, request, response)<para>showDialog returns the conversation back to the client by
+        <itemizedlist><listitem><para>ModelAndView showDialog(dialogId, form, request, response)showDialog returns the conversation back to the client by
         displaying the dialog content in a lightbox.</para></listitem>
-        <listitem>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)<para>Returns whether the dialog has
+          <listitem><para>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)Returns whether the dialog has
           been presented to the user during this conversation.</para></listitem>
-          <listitem>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)<para>Returns whether the dialog has
+          <listitem><para>boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form)Returns whether the dialog has
             already been answered by the user during this conversation. This method also performs hasDialogBeenDisplayed()
             prior to checking the answered status. This method is the preferred choice because it can test for both cases
             of whether the the dialog has been displayed and whether it has been answered.</para></listitem>
-        <listitem>boolean getBooleanDialogResponse(dialogId, form, request, response)
-          <para>If the dialog has already been answered by the user, returns true if user chose affirmative response,
+          <listitem><para>boolean getBooleanDialogResponse(dialogId, form, request, response)
+          If the dialog has already been answered by the user, returns true if user chose affirmative response,
             false if negative response was chosen. Also returns false if the dialog has not been answered.</para></listitem>
-        <listitem>String getStringDialogResponse(dialogId, form, request, response)
-          <para>If the dialog has already been answered by the user, returns the string value of the option chosen by
+          <listitem><para>String getStringDialogResponse(dialogId, form, request, response)
+          If the dialog has already been answered by the user, returns the string value of the option chosen by
           the user</para></listitem></itemizedlist>
         <para>The DialogManager class encapsulates this functionality and provides additional methods for more detailed
           dialog management.</para>
-      </section>boolean getBooleanDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response
+        <para>boolean getBooleanDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
+          HttpServletResponse response</para>
+      </section>
       <section>
         <title>Invoking a Dialog Entirely from the Client</title>
         <para></para>
@@ -255,22 +256,22 @@
         <title>Pre-Defined Dialog Groups</title>
         <para>For convenience, the KRAD UI Framework contains several pre-built dialog groups. </para>
         <itemizedlist>
-          <listitem>Uif-OK-Cancel-DialogGroup<para>A basic dialog with the header text set as
+          <listitem><para>Uif-OK-Cancel-DialogGroup A basic dialog with the header text set as
           "Please Confirm to Continue". The prompt text default is "Would You Like to Continue?". Available responses are
           "OK" and "Cancel"</para></listitem>
-          <listitem>Uif-Yes-No-DialogGroup<para>A basic dialog with the header text set to "Please Select".
+          <listitem><para>Uif-Yes-No-DialogGroup A basic dialog with the header text set to "Please Select".
           The prompt text default is "Would You Like to Continue? Available responses are "Yes" and "No"</para></listitem>
-          <listitem>Uif-True-False-DialogGroup<para>A basic dialog with the header text set to "Please select from the
+          <listitem><para>Uif-True-False-DialogGroup A basic dialog with the header text set to "Please select from the
           values below". The prompt text default is "Would You Like to Continue? Available responses are "True" and "False"
           </para></listitem>
-          <listitem>Uif-SensitiveData-DialogGroup<para>A basic dialog with the header text set to "Warning: Sensitive Data".
+          <listitem><para>Uif-SensitiveData-DialogGroup A basic dialog with the header text set to "Warning: Sensitive Data".
           The prompt text default is ""Potentially sensitive data was found on the document. Do you wish to continue?"
           Available responses are "Yes" and "No"
           </para></listitem>
-          <listitem>Uif-Checkbox-DialogGroup<para>A basic dialog with the checkbox control for the explanation. The
+          <listitem><para>Uif-Checkbox-DialogGroup A basic dialog with the checkbox control for the explanation. The
           default responses are "OK" and "Cancel".</para>
           </listitem>
-          <listitem>Uif-RadioButton-DialogGroup<para>A basic dialog with the radio button control for the explanation.
+          <listitem><para>Uif-RadioButton-DialogGroup A basic dialog with the radio button control for the explanation.
           The default responses are "OK" and "Cancel"</para>
           </listitem>
         </itemizedlist>

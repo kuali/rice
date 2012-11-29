@@ -272,10 +272,6 @@
       hardware or software load balancer could be configured to do
       this.</para>
     </sect2>
-
-    <sect2>
-      <para/>
-    </sect2>
   </sect1>
 
   <sect1>
@@ -2604,8 +2600,6 @@ testXmlAsyncService.invoke("message content");</programlisting>
     </sect2>
     <sect2>
       <title>BasicAuthenticationService</title>
-
-      <sect3>
         <para>The <emphasis role="bold">BasicAuthenticationService</emphasis> allows services published on the
           KSB to be accessed securely with basic authentication.  As an example, here is how the
           <emphasis role="bold">Workflow Document Actions Service</emphasis> could be exposed as a service
@@ -2682,7 +2676,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         </listitem>
         </itemizedlist>
         </para>
-      </sect3>
+      
     </sect2>
   </sect1>
 

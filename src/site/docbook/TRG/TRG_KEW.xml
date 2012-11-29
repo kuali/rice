@@ -18,9 +18,9 @@
 -->
 <chapter xml:id="TRG_KEW" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>KEW</title>
-    <sect1>
+    <section>
         <title>What is Kuali Enterprise Workflow?</title>
-        <sect2>
+        <section>
             <title>What is workflow, in general?</title>
             <para><emphasis role="italic">Workflow</emphasis> is a very general term and means
                 different things in different contexts. For example, it may mean the sequence of
@@ -37,8 +37,8 @@
                 automatic approval for leave requests. This is a business rule detail that workflow
                 executes by automatically routing these types of requests past the approval
                 steps.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>What is Kuali Enterprise Workflow, in particular?</title>
             <para>The Kuali Enterprise Workflow (KEW) product revolves around routing and approval
                 of documents. It is a stand-alone <emphasis role="italic">workflow engine</emphasis>
@@ -75,8 +75,8 @@
                 for all the stages that a document goes through. For example, an external
                 application may use a KEW workflow for routing and approval of documents, and that
                 application may take action at each change in state of a routed document.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>What problems or functions does KEW solve? </title>
             <para>The primary benefit of KEW workflow is the correct routing for approval of
                 documents. It enforces your business-specific rules about who needs to approve what
@@ -127,8 +127,8 @@
                 the workflow above those groups. This allows groups to manage their own internal
                 controls and structures, while still being subject to higher-level institutional
                 controls.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>What problems does KEW NOT solve?</title>
             <para>KEW is not a general-purpose application builder. For complex applications, you
                 need to develop applications separately and then integrate them with KEW. For simple
@@ -148,8 +148,8 @@
                 However, integration with these hierarchies and structures can be accomplished using
                 KEW, and leveraging such hierarchies for routing and approval is a very common need
                 for many applications.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>With which applications can KEW integrate?</title>
             <para>Nearly anything, in theory. In the current version of KEW, any application can
                 access KEW if it can:<itemizedlist>
@@ -167,8 +167,8 @@
                     </listitem>
                 </itemizedlist></para>
             <para>(The recommended cross-platform integration method is over web services.)</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title> Can I use KEW without building an entire application?</title>
             <para>Yes, absolutely! </para>
             <para>KEW is an incredibly powerful platform for routing and approval for enterprise
@@ -178,11 +178,11 @@
                 do all of your work within KEW, and most of that work is in developing your form
                 configurations. If needed, the eDocLite process can also hook into a post-processor
                 to take an action once a document's approvals are complete.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Steps to Building a KEW Application</title>
-        <sect2>
+        <section>
             <title>Preface</title>
             <para>In its simplest form, KEW is merely a set of services that can be used to submit
                 documents to a workflow engine and then interact with those documents as the
@@ -195,8 +195,8 @@
                 an application which leverages KEW. However, it is by no means exhaustive and is
                 simply meant to get you started and give you ideas as you embark upon development of
                 your own applications that use Kuali Enterprise Workflow.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Initial Steps - Determine the Routing Rules</title>
             <para>Determine to whom you want to route the document and when it should be routed. For
                 example, in the <emphasis role="bold">Travel Request Sample Workflow Client
@@ -225,8 +225,8 @@
                         </para>
                     </listitem>
                 </orderedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Configure the Process Definition</title>
             <para>In KEW, process definitions are attached to <emphasis role="bold">Document
                     Types</emphasis>. The Document Type allows for configuration of various pieces
@@ -432,8 +432,8 @@
         &lt;/rule>
     &lt;/rules>
 &lt;/data></programlisting>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Client PlugIn Steps</title>
             <para>Your plugin should contain Java classes that correspond to the attributes defined
                 in the XML configuration file. The Travel Request Sample Client contains two
@@ -567,8 +567,8 @@ public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, Str
     }
     return errors;
 }</programlisting>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Build PostProcessor and Services</title>
             <para>The PostProcessor class should implement the interface:</para>
             <programlisting>org.kuali.rice.kew.postprocessor.PostProcessorRemote</programlisting>
@@ -580,17 +580,17 @@ public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, Str
                 travel document in the Travel database. The KualiPostProcessor in this case is the
                 standard PostProcessor used on all documents that are built on the KNS
                 framework.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Package PlugIn</title>
             <para>Depending on how the application has been developed (i.e. embedded workflow engine
                 vs. using the engine as a remote service) it may be necessary to package components
                 like the PostProcessor into a plug-in. See the Workflow PlugIn Guide for details on
                 how to do this.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Client Web Application Steps</title>
-            <sect3>
+            <section>
                 <title>Build the Web Application</title>
                 <para>Begin to build a Kuali Enterprise Workflow the same as you build any other
                     Java-enabled web application. You build it with all the business logic for the
@@ -598,8 +598,8 @@ public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, Str
                     services.</para>
                 <para>As an example, the Travel Request Client Web Application uses Struts, Spring, and
                     OJB.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Build the Service that Connects to the Workflow Engine</title>
                 <para>For the rest of this section, this guide refers to the Java application
                     communicating with the Kuali Enterprise Workflow as the <emphasis role="italic"
@@ -666,8 +666,8 @@ private List getAccountAttributes(TravelDocument travelDocument) {
     return accountAttributes;
 }
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Build the Action Class with Workflow Lifecycle Methods</title>
                 <para>In the Travel Request Sample Client, the <emphasis role="bold"
                         >WorkflowDocHandlerAction</emphasis> struts action class calls the workflow
@@ -693,34 +693,34 @@ private List getAccountAttributes(TravelDocument travelDocument) {
                 <programlisting>String principalId = getUserSession(request).getPrincipalId();
 WorkflowDocument document = new WorkflowDocument(principalId, docId);
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Package the Web Application</title>
                 <para>Package the Client Application (client web application) for deployment the way
                     you normally package web applications. The Travel Request Sample Web Application
                     does this with an Ant build script. The <emphasis role="italic">dist</emphasis>
                     step of the<emphasis role="italic"> build.xml</emphasis> script builds the
                         <emphasis role="italic">SampleWorkflowClient.war</emphasis> file.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Final Steps</title>
-            <sect3>
+            <section>
                 <title>Deploy the PlugIn</title>
                 <para>Deploy the plugin to your workflow installation. Copy the plugin directory
                     structure to your application plugins directory. Please see the Workflow Plugin
                     Guide for more information.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Deploy the Client Web Application</title>
                 <para>Deploy the Client Web Application to your Application server the way you
                     normally deploy web applications.</para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>KEW Configuration</title>
-        <sect2>
+        <section>
             <title>KEW Integration Options</title>
             <para>The following integration options are available to applications integrating with KEW:<itemizedlist>
                     <listitem>
@@ -921,12 +921,12 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                     </tbody>
                 </tgroup>
             </table></para>                
-            <sect3>
+            <section>
                 <title>Standalone Server</title>
                 <para>To effectively use any of the KEW integration modes besides bundled, a
                     Standalone Rice Server will need to be deployed.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Embedded Deployment Diagram</title>
                 <para>Here is a diagram illustrating what a sample embedded deployment might look
                     look.</para>
@@ -941,11 +941,11 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                             </mediaobject>
                     </figure>
                 </para>
-            </sect3>
-        </sect2>    
-        <sect2>
+            </section>
+        </section>    
+        <section>
             <title>Bundling the KEW Application</title>
-            <sect3>
+            <section>
                 <title>web.xml</title>
                 <para><emphasis role="bold">Bundled</emphasis> mode is the same as <emphasis
                         role="italic">embedded</emphasis> mode except that the client application
@@ -1091,8 +1091,8 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                 <para><emphasis role="bold">org.kuali.rice.kew.edl.EDLServlet</emphasis> - The
                     servlet used to interact with eDocLite documents. See eDocLite documentation for
                     more information.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Bundled Deployment Diagram</title>
                 <figure>
                     <title>Bundled deployment diagram</title>
@@ -1102,9 +1102,9 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                         </imageobject>
                     </mediaobject>
                     </figure>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Using the Remote Java Client</title>
             <para>Along with the previous embedded configurations, KEW also allows for Remote Java
                 Clients, which communicate with KEW services that are available on the service bus.
@@ -1115,8 +1115,8 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                 <para>Limitations of Remote KEW Java Clients: </para>
                 <para>At present, KNS-enabled Java clients cannot be used as Remote KEW Java Clients. </para>
             </caution>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Using the Thin Java Client</title>
             <para>In addition to the embedded configurations discussed previously, KEW also provides
                 a thin java client which can be used to talk directly to two KEW services exposed on
@@ -1151,7 +1151,7 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                 secured to provide access to only those callers with authorized digital signatures
                 (note that secure access is required for the KIM services). In order to configure
                 the thin client, the following configuration properties need to be defined.</para>
-            <sect3>
+            <section>
                 <title>Required Thin Client Configuration Properties</title>
                 <para>
                     <table frame="none">
@@ -1207,8 +1207,8 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                 </para>
                 <note><para>It is simplest to use an identical keystore file and configuration in your thin client
                         application to that on your standalone server.</para></note>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Optional Thin Client Configuration Properties</title>
                 <para>
                     <table frame="none">
@@ -1239,8 +1239,8 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Thin Client Spring Configuration</title>
                 <para>Here is the Spring configuration for a thin client in <emphasis role="bold"
                         >ThinClientSpring.xml</emphasis>:</para>
@@ -1273,8 +1273,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;/bean>
 &lt;/beans>  
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Endpoint URLs</title>
                 <para>Since KEW and KIM use the KSB to expose their services, the endpoint URLs are
                     the same as those exported by the KSB.</para>
@@ -1288,8 +1288,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 &lt;param name=
 "group.javaservice.endpoint">http://yourlocalip/kr-dev/remoting/kimGroupService&lt;/param>
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Thin Client Deployment Diagram</title>
                 <para>Here is a diagram showing what a thin client deployment might look
                     like.</para>
@@ -1301,9 +1301,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </imageobject>
                     </mediaobject>
                 </figure>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Picture of an Enterprise Deployment</title>
             <para>As can be seen from the various integration options described, a KEW Enterprise
                 Deployment (and Kuali Rice in general) might very well be a distributed environment
@@ -1318,8 +1318,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     </imageobject>
                 </mediaobject>
             </figure>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KEW Core Parameters</title>
             <para>The display below includes those basic set of parameters for <emphasis role="bold"
                     >rice-config.xml</emphasis> as the minimal parameters to startup the Rice
@@ -1366,8 +1366,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             <programlisting>&lt;param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter&lt;/param>
 &lt;param name="filtermapping.login.1">/*&lt;/param>
 </programlisting>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>KEW Configuration Properties</title>
             <para>
                 <table frame="none">
@@ -1573,7 +1573,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     </tgroup>
                 </table>
             </para>
-            <sect3>
+            <section>
                 <title>The ‘embedded.server’ Parameter</title>
                 <para>If embedded.server parameter is enabled (set to true), then two additional
                     features will be loaded when KEW is started:<orderedlist>
@@ -1588,8 +1588,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     (as configured by the data.xml.* properties).</para>
                 <para>The Email Reminders will handle sending Daily and Weekly batch emails for
                     users that have their preferences set accordingly.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>The ‘datasource.platform’ Parameter</title>
                 <para>KEW requires and uses the database platform implementation in order to
                     function. These may be be implemented differently for each support database
@@ -1606,8 +1606,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             <para>org.kuali.rice.core.database.platform.MySQLPlatform </para>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Custom Servlet Filters</title>
                 <para>When running a Standalone Rice Server, you may want to implement your own
                     filters for authentication purposes. The system comes with a special filter that
@@ -1658,9 +1658,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 
 &lt;param name="filtermapping.compressionfilter.3">/*&lt;/param>
 </programlisting>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Email Configuration</title>
             <para>KEW can send emails to notify users about items in their Action List (depending on
                 user preferences). Email in KEW uses the JavaMail library. In order to configure
@@ -1724,8 +1724,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 Parameter to the email address you want the KEW emails sent from. If the
                 FROM_ADDRESS parameter doesn’t exist or isn’t set, it will default to
                 “admin@localhost”.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Periodic Email Reminders</title>
             <para>KEW can send emails on a nightly or weekly basis to remind users about items in
                 their Action List (depending on user preferences). The following set of parameters
@@ -1779,8 +1779,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Workflow Preferences Configuration</title>
             <para>Workflow users have the ability to update their preferences by going to the “User
                 Preferences” page. The default values for many of these preferences can now be
@@ -1817,8 +1817,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 &lt;param name="userOptions.default.delegatorFilterOnActionList" >Secondary Delegators on Action List Page&lt;/param>
 &lt;param name="userOptions.default.primaryDelegatorFilterOnActionList" >Primary Delegates on Action List Page&lt;/param>
 </programlisting>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Outbox Configuration</title>
             <para>The <emphasis role="bold">Outbox</emphasis> is a standard feature on the <emphasis
                     role="bold">Action List</emphasis> and is visible to the user in the UI by
@@ -1859,12 +1859,12 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Implementing KEW at your institution</title>
             <para>In addition to the previous discussion of KEW configuration, there are a few other
                 aspects relevant to implementing KEW at your institution.</para>
-            <sect3>
+            <section>
                 <title>Bootstrap data</title>
                 <para>Because the operation of parts of KEW is dependent on a set of Document Types
                     and Attributes being available within the system, there is some bootstrap XML
@@ -1936,31 +1936,31 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                                 configuration (as mentioned above) </para>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>KEW Administration Guide</title>
         <para>This guide provides information on administering a Kuali Enterprise Workflow (KEW)
             installation. Out of the box, KEW comes with a default setup that works well in
             development and test environments. However, when moving to a production environment,
             this setup requires adjustments. This document discusses basic administration as well as
             instructions for working with some of KEW’s administration tools.</para>
-        <sect2>
+        <section>
             <title>Configuration Overview</title>
             <para>You configure KEW primarily through the <emphasis role="bold"
                     >workflow.xml</emphasis> file. Please see the KEW Configuration Parameters guide
                 for more information on initial configuration of a KEW installation.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Application Constants</title>
             <para>Application Constants are the configuration elements in KEW. Each constant is
                 modifiable at system runtime; any changes take effect immediately in KEW.
                 Application Constants are stored in a cluster-safe cache and propagated across all
                 machines when change occurs. For more information about Application Constants,
                 please refer to Application Constants.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Production Environments</title>
             <para>When rolling KEW out into a production environment, there are application
                 constants which you may need to change:<itemizedlist>
@@ -2026,15 +2026,15 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             exception routing. </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>XML Ingestion</title>
             <para>KEW relies on XML for data population and routing configuration. <emphasis
                     role="bold">XML Ingester</emphasis> is available from the <emphasis role="bold"
                     >Administrator</emphasis> channel in the portal. This allows import of various
                 KEW components from XML, such as DocumentTypes, RuleAttributes, Rules, Workgroups,
                 and more.</para>
-            <sect3>
+            <section>
                 <title>Uploading an eDocLite form</title>
                 <para>To upload XML, go to <emphasis role="italic">Ingester UI</emphasis> and select
                     the XML file that you want to import:</para>
@@ -2054,16 +2054,16 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </imageobject>
                     </mediaobject>
                 </figure>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Message Queue Administration</title>
             <para>The Message Queue is the main scheduling mechanism in KEW. You use it to schedule
                 documents for asynchronous routing and to queue arbitrary units of work. When KEW
                 places a document into exception routing, it may become stuck after a series of
                 failed attempts. You can use the Route Queue UI to resolve this issue, as well as to
                 fix new entries, if needed.</para>
-            <sect3>
+            <section>
                 <title>Examining the Message Queue</title>
                 <para>The main Message Queue screen:</para>
                 <figure>
@@ -2145,8 +2145,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     </itemizedlist></para>
                 <para>Once a message entry has been successfully processed, it is deleted from the
                     queue.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Diagnosing and Fixing Problems</title>
                 <para>Sometimes it is necessary to manually edit a route queue entry that is
                         <emphasis>halted inside of the queue</emphasis>. This situation
@@ -2184,12 +2184,12 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <para>Use the Queue Status dropdown list to change the status of the entry. You may
                     also want to set the Retry Count to zero to allow you to diagnose the problem
                     before the document goes into exception routing.</para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>KEW System Parameters</title>
-        <sect2>
+        <section>
             <title>System Parameters Covered</title>
             <para>
                 <table frame="none">
@@ -2690,9 +2690,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Defining Workflow Processes Using Document Types</title>
         <para>A Document Type is an object that brings workflow components together into a cohesive
             unit (routing configuration). One of its primary responsibilities is to define the
@@ -2736,7 +2736,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <para>Inheritance </para>
                 </listitem>
             </itemizedlist></para>
-        <sect2>
+        <section>
             <title>Common Fields in Document Type XML Definition</title>
             <para>
                 <table frame="none">
@@ -2953,10 +2953,10 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Document Types</title>
-            <sect3>
+            <section>
                 <title>Document Type Examples</title>
                 <para><emphasis role="bold">BlanketApproveTest</emphasis></para>
                 <programlisting>&lt;documentType>
@@ -5007,9 +5007,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             SuperUser's approval. </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Document Type Policies</title>
             <para>Current Document Type polices:<itemizedlist>
                     <listitem>
@@ -5087,14 +5087,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;/policies>
 &lt;/documentType>
 </programlisting>
-            <sect3>
+            <section>
                 <title>DISAPPROVE</title>
                 <para>The <emphasis role="bold">DISAPPROVE</emphasis> policy determines whether a
                     document will discontinue routing (transactions). When a document has been
                     disapproved, the document initiator and previous approvers will receive notice
                     of this disapproval action.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>DEFAULT_APPROVE</title>
                 <para>The <emphasis role="bold">DEFAULT_APPROVE</emphasis> policy determines whether
                     a document will continue processing with or without any approval requests. If a
@@ -5102,8 +5102,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     Then, the document will continue to route to the exception workgroup associated
                     with the last route node or to the workgroup defined in the <emphasis
                         role="bold">defaultExceptionWorkgroupname</emphasis>.</para>
-            </sect3>
-            <sect3 id="policies.documentStatusPolicy" xreflabel="Document Type Policies: DOCUMENT_STATUS_POLICY">
+            </section>
+            <section xml:id="policies.documentStatusPolicy" xreflabel="Document Type Policies: DOCUMENT_STATUS_POLICY">
                 <title>DOCUMENT_STATUS_POLICY</title>
                 <para>The <emphasis role="bold">DOCUMENT_STATUS_POLICY</emphasis> policy sets whether
                     to display the KEW Route Status, the Application Document Status, or Both in the
@@ -5151,55 +5151,55 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <para>In the process definition section, automatic status updates may be assigned to
                     occur on route node transition.  Please see the section on the routePaths in this
                     guide.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>INITIATOR_MUST_ROUTE</title>
                 <para>The <emphasis role="bold">INITIATOR_MUST_ROUTE</emphasis> policy sets the rule
                     that the user who initiates the document must route it.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>INITIATOR_MUST_SAVE</title>
                 <para>The <emphasis role="bold">INITIATOR_MUST_SAVE</emphasis> policy sets the rule
                     that the user who initiated the document will be the only one authorized to
                         <emphasis role="bold">save</emphasis> the document.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>INITIATOR_MUST_CANCEL</title>
                 <para>The <emphasis role="bold">INITIATOR_MUST_CANCEL</emphasis> policy sets the
                     rule that the user who initiated the document will be the only one authorized to
                         <emphasis role="bold">cancel</emphasis> the document.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>INITIATOR_MUST_BLANKET_APPROVE</title>
                 <para>The <emphasis role="bold">INITIATOR_MUST_BLANKET_APPROVE</emphasis> policy
                     sets the rule that the user who initiated the document is the only one
                     authorized to <emphasis role="bold">blanket approve</emphasis> the
                     document.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>LOOK_FUTURE</title>
                 <para>The <emphasis role="bold">LOOK_FUTURE</emphasis> policy determines whether the
                     document can be brought into a simulated route from the route log. This policy
                     simulates where the document would end up if it completed the route.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>SEND_NOTIFICATION_ON_SU_APPROVE</title>
                 <para>The <emphasis role="bold">SEND_NOTIFICATION_ON_SU_APPROVE</emphasis> policy
                     indicates to KEW that it is to send a notification on SuperUser approval.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>SUPPORTS_QUICK_INITIATE</title>
                 <para>The <emphasis role="bold">SUPPORTS_QUICK_INITIATE</emphasis> policy indicates
                     whether the Document Type is displayed on the Quick Links, so that users can
                     quickly initiate instances of the document.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>NOTIFY_ON_SAVE</title>
                 <para>The <emphasis role="bold">NOTIFY_ON_SAVE</emphasis> policy indicates whether a
                     notification should be sent in when a save action is applied to this Document
                     Type.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>blanketApprovePolicy</title>
                 <para>The <emphasis role="bold">blanketApprovePolicy</emphasis> policy indicates who
                     can <emphasis role="bold">blanket approve</emphasis> a workflow document. Its
@@ -5225,8 +5225,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;blanketApprovePolicy>NONE&lt;/blanketApprovePolicy>
 &lt;/documentType>
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>ALLOW_SU_POST_PROCESSOR_OVERIDE</title>
                 <para>There is currently the ability to override the "Perform Post Processor Logic"
                     on the "Super User Action on Action Requests" page. This functionality is
@@ -5250,8 +5250,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;/policy>
 &lt;/policies>
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Recall From Routing</title>
                 <para>Three Document Type policies affect Recall behavior. These policies are defined in the respective the DocumentType XML.
                     
@@ -5289,10 +5289,10 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;/recipients>
 &lt;/policy>                    
                 </programlisting>
-            </sect3>
+            </section>
 
 
-          <sect3>
+          <section>
             <title>ALLOW_SU_FINAL_APPROVAL</title>
             <para>Setting this policy to false disallows Super User approval on final nodes of the document.</para>
             <programlisting>&lt;policies>
@@ -5302,10 +5302,10 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
               &lt;/policy>
               &lt;/policies>
             </programlisting>
-          </sect3>
+          </section>
 
 
-          <sect3>
+          <section>
             <title>SEND_NOTIFICATION_ON_SU_DISAPPROVE</title>
             <para>By default, acknowledgedments are not sent on Super User Disapproval like they are for normal Disapprove actions.
                   This policy can be used to enable sending of acknowledgements upon Super User Disapproval.</para>
@@ -5316,16 +5316,16 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
               &lt;/policy>
               &lt;/policies>
             </programlisting>
-          </sect3>
+          </section>
 
 
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Inheritance</title>
             <para>Document Types can specify a parent Document Type. This allows them to be included
                 in a Document Type hierarchy from which certain behavior can be inherited from their
                 parent Document Type.</para>
-            <sect3>
+            <section>
                 <title>Inheritable Fields</title>
                 <para>These fields are inherited:<itemizedlist>
                         <listitem>
@@ -5383,8 +5383,8 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                                 it's all or nothing. </para>
                         </listitem>
                     </orderedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Document Type hierarchy and the Rules Engine</title>
                 <para>The Rules Engine follows these rules to determine its rule evaluation set for
                     a Document Type at a particular node:<orderedlist>
@@ -5407,10 +5407,10 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             <para>The final rule evaluation set includes all of these rules. </para>
                         </listitem>
                     </orderedlist></para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1  >
+            </section>
+        </section>
+    </section>
+    <section  >
         <title>Defining Workflow Processes Using PeopleFlow - a new feature in KEW</title>
         <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept included in the
             original Coeus. For all intents and purposes it's a prioritized list of people to send
@@ -5433,13 +5433,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             information on KRMS.    </para>
         <para>You can define a PeopleFlow (simple workflow) via a maintenance document.  See the KEW
             Users' Guide for additional details on defining a PeopleFlow.</para>
-        <sect2>
+        <section>
             <title>Technical Information about PeopleFlow</title>
             <para>(decide what needs to go here -- architecture, data model, api, troubleshooting,
                 etc.?)</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>KEW Routing Components and Configuration Guide</title>
         <para>KEW has several components that you can use to configure routing. Typically a single
             application will write a set of these components for reuse across multiple Document
@@ -5515,11 +5515,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     &lt;/documentTypes>
 &lt;/data>
 </programlisting>
-        <sect2>
+        <section>
             <title>Configuration Steps</title>
             <para>Let's go through the configuration step-by-step and explain what all the pieces
                 mean:</para>
-            <sect3>
+            <section>
                 <title>DocumentTypeName Definition</title>
                 <programlisting>&lt;name>YOURSERVICE-DOCS.RuleDocument&lt;/name>
 &lt;parent>YOURSERVICE-DOCS&lt;/parent>
@@ -5558,15 +5558,15 @@ document.routeDocument("user inputted annotation");
                                 they search for an eDoc using DocSearch. </para>
                         </listitem>
                     </itemizedlist></para>                
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>PostProcessor Class</title>
                 <programlisting>&lt;postProcessorName>your.package.routetemplate.RulePostProcessor&lt;/postProcessorName></programlisting>
                 <para>The element above determines which class to use for the PostProcessor for this
                     particular Document Type. This component receives event notifications as eDocs
                     travel through routing.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Managed Workgroups</title>
                 <programlisting>&lt;superUserWorkgroupName>WorkflowAdmin&lt;/superUserWorkgroupName>
 &lt;blanketApproveWorkgroupName>WorkgroupBlanketApprovers&lt;/blanketApproveWorkgroupName>
@@ -5593,14 +5593,14 @@ document.routeDocument("user inputted annotation");
                                 also define Exception Workgroups with a route node. </para>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>docHandler</title>
                 <programlisting>&lt;docHandler>https://yourlocalIP/en-prd/Rule.do?methodToCall=docHandler&lt;/docHandler></programlisting>
                 <para>The docHandler tells KEW where to forward users when they click an eDoc link.
                     See Document Search for more information. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>notificationFromAddress</title>
                 <programlisting>&lt;notificationFromAddress>...@yourEmailServerIP&lt;/notificationFromAddress></programlisting>
                 <para>When KEW sends an email notification to a user regarding a document of this
@@ -5609,14 +5609,14 @@ document.routeDocument("user inputted annotation");
                     and this allows their responses to go to an appropriate address for the Document
                     Type. This is an optional element. If it is not defined here, KEW uses the
                     default From address. See the Installation Guide for more detail.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>active</title>
                 <programlisting>&lt;active>true&lt;/active></programlisting>
                 <para>Use active to define the activeness of a Document Type. KEW does not allow
                     anyone to create eDocs of an inactive Document Type.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>routePaths</title>
                 <programlisting>&lt;routePaths>
     &lt;routePath>
@@ -5647,8 +5647,8 @@ document.routeDocument("user inputted annotation");
                 </programlisting>
                 <para>This section only defines the path the eDocs will travel, and optionally the
                     application document status transitions. The nodes themselves are defined below.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Node Definition XML</title>
                 <programlisting>&lt;routeNodes>
     &lt;start name="Adhoc Routing">
@@ -5720,8 +5720,8 @@ document.routeDocument("user inputted annotation");
                 <programlisting>&lt;routeModule>package.your.ARouteModule&lt;/routeModule></programlisting>
                 <para>KEW contacts the route module when the document enters that route node and the
                     route module returns Action Requests for KEW to deliver.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Rule Attributes</title>
                 <para>If the application integrating with KEW is using Rules to contain the routing
                     data and <emphasis role="bold">RuleAttributes</emphasis> for document
@@ -5751,8 +5751,8 @@ document.routeDocument("user inputted annotation");
                     behavior is determined in a Java class. There are also RuleAttributes made
                     entirely from XML, but programming attributes is outside the scope of this
                     Guide. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Rule Templates</title>
                 <para>Finally, we need to tie the <emphasis role="bold">RuleAttribute</emphasis> to
                     the Document Type. This is done using the <emphasis role="bold"
@@ -5855,14 +5855,14 @@ document.routeDocument("user inputted annotation");
     &lt;/documentTypes>
 &lt;/data>
 </programlisting>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Routing Rules</title>
             <para>There is a separate User Guide on how to use the Rule UI. This will show you how
                 to create a Rule as well as modify and delete.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>InitiatorRoleAttribute</title>
             <para><emphasis role="italic">InitiatorRoleAttribute</emphasis> is a RoleAttribute that
                 exposes an INITIATOR abstract role that resolves to the initiator of the
@@ -5896,8 +5896,8 @@ document.routeDocument("user inputted annotation");
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>RoutedByUserRoleAttribute</title>
             <para><emphasis role="italic">RoutedByUserRoleAttribute</emphasis> is a RoleAttribute
                 that exposes the user who routed the document.</para>
@@ -5930,8 +5930,8 @@ document.routeDocument("user inputted annotation");
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>NoOpNode</title>
             <para><emphasis role="italic">NoOpNode </emphasis> is a SimpleNode implementation that
                 is a code structure example, but has no functionality.</para>
@@ -5964,8 +5964,8 @@ document.routeDocument("user inputted annotation");
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>RequestActivationNode</title>
             <para><emphasis role="italic">RequestActivationNode</emphasis> is a SimpleNode that
                 activates any requests on it. It returns true when there are no more requests that
@@ -6007,8 +6007,8 @@ document.routeDocument("user inputted annotation");
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>NetworkIdRoleAttribute</title>
             <para><emphasis role="italic">NetworkIdRoleAttribute</emphasis> is a RoleAttribute that
                 routes the request to a NetworkID specified in the document content.</para>
@@ -6041,14 +6041,14 @@ document.routeDocument("user inputted annotation");
                     </tgroup>
                 </table>
             </para>
-        <sect3><title>Using NetworkIdRoleAttribute for Dynamic Routing</title>
+        <section><title>Using NetworkIdRoleAttribute for Dynamic Routing</title>
           <para>The RoleAttribute component in KEW allows for routing to a dynamically generated list of principals
             or groups. However, in order to do this a Java class which implements the RoleAttribute interface must be
             created. This is fairly simple for Java applications, but it can be painful when integrating with non-Java
             applications.</para>
           <para>Thankfully, the NetworkIdRoleAttribute class is an implementation of RoleAttribute which is provided
             out of the box.  This allows users to specify in XML format who the document should be routed to.</para>
-          <sect4>
+          <section>
             <title>Setting up a Document Type to use NetworkIdRoleAttribute</title>
             <para>There is some KEW setup involved in order to utilize this functionality.  The following steps assume
               an existing Document Type is already in place:</para>
@@ -6213,8 +6213,8 @@ document.routeDocument("user inputted annotation");
                 </itemizedlist>
               </listitem>
             </orderedlist>
-          </sect4>
-          <sect4>
+          </section>
+          <section>
           <title>Using the KEW API to Route the Document</title>
           <para>Once the document type has been set up, the KEW api can be used to set the appropriate XML on the
             document.  Many of the operations include the ability to pass a DocumentContentUpdate.  In this example,
@@ -6226,10 +6226,10 @@ document.routeDocument("user inputted annotation");
     &lt;myNetworkId>dev3&lt;/myNetworkId>
     ...
 &lt;/NetworkIdRoleAttribute></programlisting>
-          </sect4>
-        </sect3>
-        </sect2>
-        <sect2>
+          </section>
+        </section>
+        </section>
+        <section>
             <title>UniversityIdRoleAttribute</title>
             <para><emphasis role="italic">UniversityIdRoleAttribute</emphasis> is a RoleAttribute
                 that routes requests to an Empl ID specified in the document content.</para>
@@ -6262,8 +6262,8 @@ document.routeDocument("user inputted annotation");
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>SetVarNode</title>
             <para><emphasis role="italic">SetVarNode</emphasis> is a SimpleNode that allows you to
                 set document variables.</para>
@@ -6311,14 +6311,14 @@ document.routeDocument("user inputted annotation");
                     </tgroup>
                 </table>
             </para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Routing Configuration using KIM Responsibilities</title>
         <para>In addition to routing workflow based on users and workgroups using routing rules, you
             can also route workflow based on KIM responsibilities. This allows you to utilize group
             membership and role assignments to manage who is permitted to perform approvals.</para>
-        <sect2>
+        <section>
             <title>Route Node Definition</title>
             <para>In review, you define a rule-based routing node with XML similar to:</para>
             <programlisting>&lt;requests name="Rule routing Route Level">
@@ -6335,12 +6335,12 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
 &lt;/qualifierResolverClass>
     &lt;activationType>P&lt;/activationType>
 &lt;/role>           </programlisting>
-            <sect3>
+            <section>
                 <title>Node Name</title>
                 <para>You name the routing node with the name attribute, just like for a rule-based
                     routing node.</para>
-            </sect3>    
-            <sect3>
+            </section>    
+            <section>
                 <title>Qualifier Resolver</title>
                 <para>The qualifier resolver finds any qualifiers that need to be used while
                     matching the responsibility. You can specify it in either of two ways:<itemizedlist>
@@ -6355,8 +6355,8 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                                 provides the fully-qualified name of the Java class to use </para>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Other Options</title>
                 <para>You can specify <emphasis role="bold"
                         >&lt;responsibilityTemplateName>name&lt;/responsibilityTemplateName></emphasis>
@@ -6368,9 +6368,9 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                     the responsibility. This option is usually not used since all of the
                     responsibilities provided with KIM use a name space of <emphasis role="bold"
                         >KR-WKFLW</emphasis>.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Matching Routing Nodes to Responsibilities</title>
             <para>The KIM responsibility template <emphasis role="bold">Review</emphasis> defines
                 two details:<itemizedlist>
@@ -6389,11 +6389,11 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                 the way up to the top of the hierarchy). The list of people who gets the request
                 consists of anyone who has been assigned a role with any of the matching
                 responsibilities.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Using the Workflow Document API</title>
-        <sect2>
+        <section>
             <title>Overview</title>
             <para>This document explains features of the workflow document API. There are two
                 interfaces in KEW that allow you to create a document for delivery through workflow.
@@ -6402,8 +6402,8 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                 sending ad hoc requests. The <emphasis role="bold">WorkflowInfo</emphasis> interface
                 is actually a convenience class for client applications that query workflow. Both
                 classes assist with implementing connections to KEW. </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>WorkflowDocument</title>
             <para>The process for this section of the API involves creating the initial <emphasis
                     role="bold">WorkflowDocument</emphasis> using a constructor to create a new
@@ -6424,8 +6424,8 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                 class is available in the Java documentation found at <link
                     xlink:href="https://test.kuali.org/rice/rice-api-1.0-javadocs/org/kuali/rice/kew/service/WorkflowDocument.html"
                     >https://test.kuali.org/rice/rice-api-1.0-javadocs/org/kuali/rice/kew/service/WorkflowDocument.html</link>. </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>WorkflowInfo</title>
             <para>This class is the second client interface to KEW. The first time this object is
                 initialized, the client configuration is accessed to determine how to connect to
@@ -6438,11 +6438,11 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                 available in the Java documentation found at <link
                     xlink:href="https://test.kuali.org/rice/rice-api-1.0-javadocs/org/kuali/rice/kew/service/WorkflowInfo.html"
                     >https://test.kuali.org/rice/rice-api-1.0-javadocs/org/kuali/rice/kew/service/WorkflowInfo.html</link>.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Creating an eDocLite Application</title>
-        <sect2>
+        <section>
             <title>Overview</title>
             <para>eDocLite is a simple, form-based system that is built into Kuali Enterprise
                 Workflow (KEW). It facilitates rapid development and implementation of simple
@@ -6485,10 +6485,10 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                     </mediaobject>
             </figure>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Components</title>
-            <sect3>
+            <section>
                 <title>Field Definitions</title>
                 <para>You need to define eDocLite fields to capture data that is passed to the
                     server for storage. </para>
@@ -6632,8 +6632,8 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                                 several fields are involved in making the routing decision.) </para>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>XSLT Style Sheet</title>
                 <para>The next section of the EDL XML file is the XSLT style sheet. It renders the
                     EDL that the browser will present and contains logic to determine how data is
@@ -6866,9 +6866,9 @@ EDL EDoclite Example
                         >$isPastInitiated</emphasis> is passed as a parameter to widgets_render so
                     that the html <emphasis role="italic">readOnly</emphasis> attribute is generated
                     when the form is past the initiator’s node.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Lazy importing of EDL Styles</title>
             <para>You can configure Rice to lazily import an eDocLite style into the database on
                 demand by setting a custom configuration parameter.<itemizedlist>
@@ -6907,7 +6907,7 @@ EDL EDoclite Example
             <para>If you wanted to override that file, you could define your own parameter in your
                 Rice XML configuration file using the above example as a template, but removing the
                 override="false" attribute.</para>
-            <sect3>
+            <section>
                 <title>Document Type</title>
                 <para>A <emphasis role="italic">document type</emphasis> defines the workflow
                     process for an eDocLite. You can create hierarchies where Child document types
@@ -6981,8 +6981,8 @@ EDL EDoclite Example
                         >postProcessor</emphasis>, for each Child document type.</para>
                 <para>A brief explanation of elements that are not intuitive is below. You can find
                     additional element explanations by reading the Document Type Guide.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Parent DocType</title>
                 <para><emphasis role="bold">postProcessorName</emphasis> - Use the default, as shown
                     above, unless special processing is needed. </para>
@@ -6997,8 +6997,8 @@ EDL EDoclite Example
                         role="italic">false</emphasis> to disable this feature. </para>
                 <para><emphasis role="bold">routingVersion</emphasis> - Use the default, as shown
                     above. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Child DocType</title>
                 <para><emphasis role="bold">name</emphasis> - The name value must exactly match the
                     value in the <emphasis role="italic">EDL Association</emphasis> document type
@@ -7076,8 +7076,8 @@ EDL EDoclite Example
                         >ruleTemplate</emphasis> name is the same as the <emphasis role="italic"
                         >request</emphasis> name. These field values do NOT need to be the same.
                     They are simply identifiers. </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Rule Attributes</title>
                 <para>The RuleAttribute is a mechanism that can relate directly to an edl field.
                     Most rule attributes are of the xml rule attribute type. This type uses an xpath
@@ -7095,8 +7095,8 @@ EDL EDoclite Example
                     carry the extra syntax 'attributeName='. For example the eld definition for
                     campus looks like this: </para>
                 <programlisting>&lt;fieldDef name="campus" title="Campus" workflowType="ALL"></programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Rule Routing</title>
                 <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
@@ -7131,8 +7131,8 @@ EDL EDoclite Example
                 <para>Rule attributes can have a different types such a searchable, but this type
                     does not have to do with routing. Instead it relates to additional columns that
                     are displayed in doc search for a particular doc type.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Ingestion Order</title>
                 <para>Many components can go in at any time, but it is advisable to follow a pattern
                     to minimize the conflicts that can occur. A few pieces are co-dependent.<orderedlist>
@@ -7173,17 +7173,17 @@ EDL EDoclite Example
                             <para>Anything else - Like optional custom Email Stylesheet </para>
                         </listitem>
                     </orderedlist></para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Customizing Document Search</title>
         <para>Each document carries an XML payload that describes metadata. You can specify pieces
             of that metadata to be indexed and searched on. This area focuses on the interface for
             searching through that data. For each <emphasis role="bold">Document Search</emphasis>
             page, you must setup the XML configuration files to define the search criteria and
             result fields. </para>
-        <sect2>
+        <section>
             <title>Custom Search Screen</title>
             <para>As an example of customizing a Document Search screen, we’ll use a customized
                     <emphasis role="bold">Offer Request</emphasis> screen:</para>
@@ -7194,7 +7194,7 @@ EDL EDoclite Example
                     </imageobject>
                 </mediaobject>
             </figure>
-            <sect3>
+            <section>
                 <title>What are custom document search attributes? </title>
                 <para>Custom document search attributes are associated with a document type. They
                     specify which pieces of document data will be made searchable for documents of
@@ -7233,9 +7233,9 @@ EDL EDoclite Example
                     DocumentSearchAttributes is responsible for drawing input fields on the Document
                     Search form and collecting data for the query, as opposed to analyzing data for
                     routing evaluation (done by XMLRuleAttributes).</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Hide Search Fields and Result Columns</title>
             <para>In a search configuration, the <emphasis role="bold">&lt;visibility></emphasis>
                 tag lets you configure search criteria to be included or excluded from the entry of
@@ -7243,22 +7243,22 @@ EDL EDoclite Example
                     >&lt;visibility></emphasis> tag on all field(s) and column(s) in the Document
                 Search results except for <emphasis role="bold">Document Id</emphasis> and <emphasis
                     role="bold">Route Log</emphasis>, which must always be visible.</para>
-            <sect3>
+            <section>
                 <title>Hide a result column</title>
                 <programlisting>&lt;visibility>
     &lt;column visible="false"/>
 
 &lt;/visibility>
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Hide a search field</title>
                 <programlisting>&lt;visibility>
     &lt;field visible="false"/>
 &lt;/visibility>
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Field and column visibility based on workgroup membership</title>
                 <para>Use code like this in the XML file to display column(s) and field(s) based on
                     the user's workgroup:</para>
@@ -7274,8 +7274,8 @@ EDL EDoclite Example
                 <para>The example above indicates that the field and column only display for users
                     who are a member of the workgroup, <emphasis role="italic"
                         >WorkflowAdmin</emphasis>.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Configure visibility for both field and column</title>
                 <para>A shortcut to configure the visibility for both fields and columns is the
                         <emphasis role="bold">&lt;fieldAndColumn></emphasis> tag. A
@@ -7286,8 +7286,8 @@ EDL EDoclite Example
     &lt;/fieldAndColumn>
 &lt;/visibility>
 </programlisting>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>No field visibility</title>
                 <para>Declaring <emphasis role="bold">&lt;type></emphasis> as hidden is equivalent
                     to setting visibility to false. An example of <emphasis role="bold"
@@ -7324,9 +7324,9 @@ EDL EDoclite Example
 
 &lt;/searchingConfig>
 </programlisting>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Configure Lookup Function</title>
             <para>To make a lookupable available on the Document Search screen, you can use the
                     <emphasis role="bold">&lt;quickfinder></emphasis> tag in the attribute
@@ -7403,8 +7403,8 @@ EDL EDoclite Example
                     </imageobject>
                 </mediaobject>
             </figure>
-        </sect2>
-        <sect2 id="documentSearch.applicationDocumentStatus" xreflabel="Customizing Document Search: Application Document Status">
+        </section>
+        <section xml:id="documentSearch.applicationDocumentStatus" xreflabel="Customizing Document Search: Application Document Status">
         <title>Application Document Status</title>
         <para>If the &lt;validApplicationStatuses> configuration is specified in the document type
             definition, then setting the Document Type on the Document Search page will display a
@@ -7425,8 +7425,8 @@ EDL EDoclite Example
             Validated</emphasis> and then searching.
         </para>
         <para>Please see <xref linkend="policies.documentStatusPolicy"/> for configuration details.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Define Keyword Search</title>
             <para>XMLSearchableAttributeStdFloatRang is an XML searchable attribute that enhances
                 the keyword search function. It provides multiple searchable elements for a user to
@@ -7500,10 +7500,10 @@ EDL EDoclite Example
                                 Either way, KEW will force a range search. </para>
                         </listitem>
                     </orderedlist></para></caution>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Custom Search Criteria Processing</title>
-            <sect3>
+            <section>
                 <title>URL Parameter Options</title>
                 <para>You can modify the search criteria and the display of the search screen by
                     passing in URL parameters. Only use this method when the configuration desired
@@ -7511,12 +7511,12 @@ EDL EDoclite Example
                         >required</emphasis>. If a particular piece of the search criteria is
                         <emphasis role="italic">required</emphasis>, please see the section below
                     titled, Using a Custom Search Criteria Processor.</para>
-                <sect4>
+                <section>
                     <title>Force the link to display the Detailed Search screen</title>
                     <para>Use the parameter <emphasis role="bold">isAdvancedSearch</emphasis> and
                         set the value to <emphasis role="bold">YES</emphasis>.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Show or Hide All Criteria and/or the Workflow Header Bar</title>
                     <para>The default value of each of these parameters must be set to true to show
                         both the criteria and the header bar. <itemizedlist>
@@ -7532,8 +7532,8 @@ EDL EDoclite Example
                                         <emphasis role="italic">false</emphasis>. </para>
                             </listitem>
                         </itemizedlist></para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Passing in Common Search Criteria Values</title>
                     <para>Common search criteria fields can be populated by supplying their values in the URL query parameters.  For example, the following URL specifies a search on <emphasis role="bold">KualiNotification</emphasis> documents with initiator <emphasis role="bold">user1</emphasis>:</para>
                     <programlisting>http://yourlocalip:8080/DocumentSearch.do?documentTypeName=KualiNotification&amp;initiatorPrincipalName=user1</programlisting>
@@ -7575,8 +7575,8 @@ EDL EDoclite Example
                     </itemizedlist>
                     <para>For a comprehensive list of search criteria fields, consult the
                           <programlisting>org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo</programlisting> class.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>The CURRENT_USER variable</title>
                     <para>In addition to literal field values, the 'CURRENT_USER' special token is dynamically replaced with an identifier for the currently authenticated user when the search is executed.  This value can be supplied in any field (typically a field that takes a principal name or id).  Several variants allow embedding different types of user ids:</para>
                     <itemizedlist>
@@ -7601,8 +7601,8 @@ EDL EDoclite Example
                     </itemizedlist>                        
                       <para>Example:</para>
                       <programlisting>http://yourlocalip:8080/DocumentSearch.do?documentTypeName=KualiNotification&amp;initiatorPrincipalName=CURRENT_USER</programlisting>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Passing in Searchable Attribute Values</title>
                     <para>Searchable attributes can be specified via URL parameters by prefixing the searchable
                           attribute field name with <emphasis role="bold">documentAttribute.</emphasis>.</para>
@@ -7611,9 +7611,9 @@ EDL EDoclite Example
                             >firstname</emphasis> and <emphasis role="italic"
                         >lastname</emphasis>:</para>
                     <programlisting>http://yourlocalip:8080/DocumentSearch.do?documentAttribute.firstname=John&amp;documentAttribute.lastname=Smith</programlisting>
-                </sect4>
-            </sect3>
-            <sect3>
+                </section>
+            </section>
+            <section>
                 <title>Using a Custom Search Criteria Processor</title>
                 <para>The best way to do custom criteria processing is to implement a custom class
                     that extends the class <emphasis role="bold"
@@ -7632,7 +7632,7 @@ EDL EDoclite Example
                     objects, a custom processor class could implement dynamic hiding and showing of
                     specific criteria fields based on ordinary user’s data or search field
                     data.</para>
-                <sect4>
+                <section>
                     <title>Show or Hide All Criteria and/or the Workflow Header Bar</title>
                     <para>Here are some helpful methods that you may override from the <emphasis
                             role="bold">DocumentSearchCriteriaProcessor</emphasis> class file to
@@ -7659,8 +7659,8 @@ EDL EDoclite Example
                                     value is <emphasis role="italic">true</emphasis>). </para>
                             </listitem>
                         </itemizedlist></para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Hiding Specific Fields or Criteria Using Field Key Values</title>
                     <para>The DocumentSearchCriteriaProcessor class has methods that allow classes
                         to extend from it for basic field display. This is based on static string
@@ -7773,10 +7773,10 @@ EDL EDoclite Example
     }
 }
 </programlisting>
-                </sect4>
-            </sect3>
-        </sect2>
-        <sect2>
+                </section>
+            </section>
+        </section>
+        <section>
             <title>Custom Search Generation</title>
             <para>The best way to do custom search generation or processing is to implement a custom
                 class that extends the class <emphasis role="bold"
@@ -7791,14 +7791,14 @@ EDL EDoclite Example
                 search. Also, the <emphasis role="bold">DocumentSearchGenerator</emphasis> class has
                 helper methods that may be used to get the WorkflowUser object of the user
                 performing the search. </para>
-            <sect3>
+            <section>
                 <title>Implementing a Custom Result Set Limit</title>
                 <para>To implement a custom result set limit, simply override the method <emphasis
                         role="bold">getDocumentSearchResultSetLimit()</emphasis> from the <emphasis
                         role="bold">StandardDocumentSearchGenerator</emphasis> class.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Custom Search Results</title>
             <para>You can create a Custom Search Result table using an XML rule attribute of the
                 type <emphasis role="bold"
@@ -7838,7 +7838,7 @@ EDL EDoclite Example
                     role="bold">Route Log</emphasis> are always shown in the farthest left and right
                 columns of the Search Result table. These fields cannot be hidden. You can add both
                 columns a second time in the XML search result attributes if needed.</para>
-            <sect3>
+            <section>
                 <title>Custom XML Document Search Result Processor Attribute</title>
                 <para>An example of a custom XML result processor: </para>
                 <programlisting>&lt;ruleAttribute>
@@ -8024,16 +8024,16 @@ EDL EDoclite Example
                         </tgroup>
                     </table>
                 </para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Custom Document Search Result Processor Class File</title>
                 <para>You may also use a custom Document Search Result Processor by extending the
                     class <emphasis role="bold"
                         >org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor</emphasis>
                     and overriding individual methods.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Differences between SearchableAttribute and RuleAttribute</title>
             <itemizedlist>
                 <listitem>
@@ -8051,8 +8051,8 @@ EDL EDoclite Example
                         xmlDocumentContent is for RuleAttribute. </para>
                 </listitem>
             </itemizedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Document Security</title>
             <para>Kuali Enterprise Workflow provides a declarative mechanism to facilitate
                 Document-level security for these three screens:<itemizedlist>
@@ -8066,8 +8066,8 @@ EDL EDoclite Example
                         <para>Doc Handler Redirection </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Overview</title>
             <orderedlist>
                 <listitem>
@@ -8099,8 +8099,8 @@ EDL EDoclite Example
                     </para>
                 </listitem>
             </orderedlist>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Security Definition</title>
             <para>You can define the security constraints in the Document Type XML. Here's a sample
             of the XML format:</para>
@@ -8165,12 +8165,12 @@ EDL EDoclite Example
                         <para>The user has the STAFF role </para>
                     </listitem>
                 </itemizedlist></para>
-            <sect3>
+            <section>
                 <title>&lt;initiator></title>
                 <para>Validates that the authenticated user is or isn't the initiator of the
                     document.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>&lt;routeLogAuthenticated></title>
                 <para>Validates that the authenticated user is or isn't <emphasis role="italic"
                         >Route Log Authenticated</emphasis>.</para>
@@ -8190,8 +8190,8 @@ EDL EDoclite Example
                 <para><emphasis role="italic">Route Log Authenticated</emphasis> checks for security
                     but <emphasis role="bold">does not</emphasis> simulate or check future
                     requests.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>&lt;securityAttribute></title>
                 <para>Validates based on a custom-defined class. Class must have implemented the
                         <emphasis role="italic">SecurityAttribute</emphasis> interface class. There
@@ -8226,8 +8226,8 @@ EDL EDoclite Example
 </programlisting>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>&lt;searchableAttribute></title>
                 <para>Validate that the authenticated User ID of the given idType is equivalent to
                     the searchable attribute field with the given name.</para>
@@ -8245,13 +8245,13 @@ EDL EDoclite Example
                             <para>workflowid </para>
                         </listitem>
                     </itemizedlist></para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>&lt;group></title>
                 <para>Validate that the authenticated user is a member of the workgroup with the
                     given name.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>&lt;role></title>
                 <para>Validate that the authenticated user has the given role. The existence and
                     names of these roles are determined by your setup in KEW. (You can create these
@@ -8298,9 +8298,9 @@ EDL EDoclite Example
                         <emphasis role="bold">allowed=false</emphasis>, then if the individual has
                     the given disallowed role but none of the allowed roles, he or she fails the
                     security check.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Order of Evaluation</title>
             <para>The security constraints are evaluated in the following order. If any single
                 constraint passes, it bypasses evaluating the remaining constraints.<orderedlist>
@@ -8323,11 +8323,11 @@ EDL EDoclite Example
                         <para>Route log authenticated </para>
                     </listitem>
                 </orderedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Security - Warning Messages</title>
             <para>These security scenarios generate security warning messages:</para>
-            <sect3>
+            <section>
                 <title>Document Search</title>
                 <itemizedlist>
                     <listitem>
@@ -8350,8 +8350,8 @@ EDL EDoclite Example
                             purpose. Please refine your search." </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Route Log and Doc Handler</title>
                 <itemizedlist>
                     <listitem>
@@ -8361,18 +8361,18 @@ EDL EDoclite Example
                             access this portion of the application." </para>
                     </listitem>
                 </itemizedlist>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Service Layer</title>
             <para>In an out-of-the-box installation of KEW, Document Security is handled by
                 org.kuali.rice.kew.doctype.DocumentSecurityServiceImpl, which implements the
                 org.kuali.rice.kew.doctype.DocumentSecurityService service interface.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Action List Configuration Guide</title>
-        <sect2>
+        <section>
             <title>Outbox Configuration</title>
             <para>The <emphasis role="bold">Outbox</emphasis> is a standard feature on the <emphasis
                     role="bold">Action List</emphasis> and is visible to the user in the UI by
@@ -8416,9 +8416,9 @@ EDL EDoclite Example
                     </listitem>
             </itemizedlist>
             </para></note>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Email Customization</title>
         <para>KEW provides default email template for Action List notification messages that are
             sent. However, it is also possible to customize this either globally or on a Document
@@ -8434,7 +8434,7 @@ EDL EDoclite Example
         <para>To accomplish this, you must write a <emphasis role="italic"
                 >CustomEmailAttribute</emphasis> and configure it on the appropriate <emphasis
                 role="italic">DocumentType</emphasis>.</para>
-        <sect2>
+        <section>
             <title>Configure a CustomEmailAttribute</title>
             <para>The <emphasis role="italic">CustomEmailAttribute</emphasis> interface provides two
                 methods for adding custom content to both the subject and the body.</para>
@@ -8452,7 +8452,7 @@ public String getCustomEmailBody();
             <para>Once you have implemented the CustomEmailAttribute, you need to make it available
                 to the KEW engine (either deployed in a plugin or available on the classpath when
                 running embedded KEW).</para>
-            <sect3>
+            <section>
                 <title>Document Type Configuration</title>
                 <para>Once you make the email attribute component available to KEW, you need to
                     configure it on the Document Type.</para>
@@ -8493,11 +8493,11 @@ public String getCustomEmailBody();
 </programlisting>
                 <para>These should be ingested using the XML Ingester. See Importing Files to KEW
                     for more information on using the XML Ingester.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Create a Custom XSLT Style Sheet</title>
-            <sect3>
+            <section>
                 <title>Global Email Customization</title>
                 <para>A more convenient way to customize email content declaratively is to replace
                     the global email XSLT style sheet in Rice. Do this by ingesting an XSLT style
@@ -8628,8 +8628,8 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
                 <para>The global style sheet should handle all email content requests. You can use
                     the standard <emphasis role="italic">include</emphasis> syntax to import an
                     existing style sheet that may implement defaults.</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>DocumentType-Specific Email Customization</title>
                 <para>You can also customize immediate reminder email content on a per-DocumentType
                     basis. To do so, define a custom email style sheet name on the DocumentType
@@ -8646,12 +8646,12 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
 </programlisting>
                 <para>Then, upload a corresponding style sheet with a matching name, as
                     above.</para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>Document Link</title>
-        <sect2>
+        <section>
             <title>Document Link Features</title>
             <para>KEW provides an option for linking documents and BOs that are functionally
                 related. The link between related documents is created and removed in a double link
@@ -8660,8 +8660,8 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
                 feature will garuantee that searching for linked documents can be done from either
                 side of the link. Using this option, client applications can link documents by using
                 document link API.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Document Link API</title>
             <para>Document link API is exposed to the client through WorkflowDocument interface,
                 below is the summary of the api: <orderedlist>
@@ -8691,8 +8691,8 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
                             WorkflowException </para>
                     </listitem>
                 </orderedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Document Link API Example</title>
             <para>It is pretty straightforward to use this api, below are some examples:<orderedlist>
                     <listitem>
@@ -8714,25 +8714,25 @@ doc.addLinkedDocument(testDocLinkVO);                                           
                         <programlisting>doc.removeLinkedDocument(testDocLinkVO);</programlisting>
                     </listitem>
                 </orderedlist></para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Reporting Guide</title>
-        <sect2>
+        <section>
             <title>Reporting Features</title>
             <para>KEW provides various options for reporting on and simulation of routing scenarios.
                 There is a GUI for performing these reporting functions as well as an API that you
                 can use to run routing reports against the system.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>The Routing Report Screen</title>
             <para>From the Rice main menu there is a link to the <emphasis role="bold">Routing
                     Report</emphasis> screen. From this set of screens you can enter various
                 criteria for running reports against the routing engine. The output of this
                 reporting is a simulated view of the <emphasis role="bold">Route Log</emphasis>,
                 displaying the result of the report.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>The Report APIs</title>
             <para>The KEW client API also provides facilities for running reports against the
                 routing engine. At the core of KEW is a <emphasis role="bold">Simulation
@@ -8742,8 +8742,8 @@ doc.addLinkedDocument(testDocLinkVO);                                           
             <programlisting>public DocumentDetailVO routingReport(ReportCriteriaVO reportCriteria) throws WorkflowException;</programlisting>
             <para>This method takes the report criteria and returns the results of the routing
                 report.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Report Criteria</title>
             <para>The routing report operates under two basic modes:<orderedlist>
                     <listitem>
@@ -8761,7 +8761,7 @@ doc.addLinkedDocument(testDocLinkVO);                                           
                 document will go in future route nodes. For example, to run a simulation against an
                 existing document to determine to whom it will route in the future, execute this
                 code:</para>
-            <sect3>
+            <section>
                 <title>Routing Report against a Document</title>
                 <programlisting>WorkflowInfo info = new WorkflowInfo();
 RoutingReportCriteriaVO criteria = new ReportCriteriaVO(new Long(1234));
@@ -8776,8 +8776,8 @@ DocumentDetailVO results = info.routingReport(criteria);
                     request for a particular user. For example, to stop the report simulation at a
                     node or when Rice generates a certain user's request, configure the report
                     criteria like this:</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Terminate Report at Node or User</title>
                 <programlisting>WorkflowInfo info = new WorkflowInfo();
 
@@ -8797,8 +8797,8 @@ DocumentDetailVO results = info.routingReport(criteria);
                     criteria need to be configured with the valid node names (or rule templates)
                     against which the report should be run. For example, to run a Document Type
                     report, you can invoke the routing report this way:</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Report against a Document Type</title>
                 <programlisting>WorkflowInfo info = new WorkflowInfo();
 RouteReportCriteriaVO criteria = new ReportCriteriaVO("MyDocumentType");
@@ -8823,9 +8823,9 @@ DocumentDetailVO results = info.routingReport(criteria);
                 <programlisting>criteria.setRuleTemplateNames(new String[] { "MyRuleTemplate" });</programlisting>
                 <para>As above, this is primarily useful for determining who will have requests
                     generated to them from the KEW rule system.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>Interpreting Report Results</title>
             <para>As we've seen, the object returned by the Routing Report is an instance of
                 DocumentDetailVO. This object extends RouteHeaderVO and provides three more pieces
@@ -8850,11 +8850,11 @@ DocumentDetailVO results = info.routingReport(criteria);
                     role="bold">MyRuleTemplate</emphasis> rule template, this array contains all of
                 the Action Requests that were generated to users or workgroups during the report
                 simulation.</para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Workflow Plugin Guide</title>
-        <sect2>
+        <section>
             <title>Overview</title>
             <para>Kuali Enterprise Workflow (KEW) has a plugin framework that allows you to load
                 code into the core system without requiring changes to the KEW source code or
@@ -8872,8 +8872,8 @@ DocumentDetailVO results = info.routingReport(criteria);
                         <para>An application plugin for installation of routing components </para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Application Plugin</title>
             <para>Use an application plugin to deploy an application area's routing components into
                 Workflow. These routing components might include:<itemizedlist>
@@ -8900,8 +8900,8 @@ DocumentDetailVO results = info.routingReport(criteria);
             <para>Application plugins are hot-deployable, so a restart of the server is not required
                 when they are added or modified. The core system searches for plugins in a directory
                 configured in the application configuration (see KEW Module Configuration).</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Plugin Layout</title>
             <para>You build the plugin as a set of files and directories. You then zip this
                 structure and place it in the appropriate Workflow plugin space. For application
@@ -8939,8 +8939,8 @@ META-INF/
                     </listitem>
                 </itemizedlist>
             </para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Plugin Configuration</title>
             <para>Application plugins usually provide a subset of the functionality that an
                 institutional plugin provides, since the institutional plugin can provide core
@@ -8953,7 +8953,7 @@ META-INF/
                         <para>Transaction and DataSource Configuration </para>
                     </listitem>
                 </orderedlist></para>
-            <sect3>
+            <section>
                 <title>Plugin XML Configuration</title>
                 <para>The XML configuration is defined in a file called workflow.xml. The format of
                     this file is relatively simple. An example workflow.xml file:</para>
@@ -8967,8 +8967,8 @@ META-INF/
 &lt;/plug-in>
 </programlisting>
                 <para>We'll explain each of these elements in more detail below:</para>
-            </sect3>
-            <sect3>
+            </section>
+            <section>
                 <title>Plugin Parameters</title>
                 <para>The parameter configuration uses XML as the syntax. These parameters are
                     placed into a configuration context for the plugin. The configuration inherits
@@ -8976,7 +8976,7 @@ META-INF/
                     hierarchy is core -> institutional plugin -> application plugins.</para>
                 <para>A plugin can access its configuration using this code:</para>
                 <programlisting>org.kuali.rice.Config config = org.kuali.rice.Core.getCurrentContextConfig();</programlisting>
-                <sect4>
+                <section>
                     <title>Plugin Listeners</title>
                     <para>You can define one or more listeners that implement the interface
                             <emphasis role="bold"
@@ -8995,8 +8995,8 @@ META-INF/
                     <para>It is legal to define more than one plugin listener. Plugin listeners are
                         started in the order in which they appear in the configuration file (and
                         stopped in reverse order).</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Resource Loader</title>
                     <para>A plugin can define an instance of <emphasis role="bold"
                             >org.kuali.rice.resourceloader.ResourceLoader</emphasis> to handle the
@@ -9014,8 +9014,8 @@ META-INF/
                         sufficient for most application plugins.</para>
                     <para>For more information on configuring service overrides in a plugin, see the
                         Overriding Services with a ResourceLoader section below.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Configuring an Extra Classpath</title>
                     <para>Sometimes it is desirable to be able to point in a plugin to classes or
                         library directories outside of the plugin space. This can be particularly
@@ -9043,9 +9043,9 @@ META-INF/
                             >lib</emphasis> directories. The classloader always looks in the default
                         locations first, and then defers to the extra classpath if it cannot locate
                         the class or resource.</para>
-                </sect4>
-            </sect3>
-            <sect3>
+                </section>
+            </section>
+            <section>
                 <title>Transaction and DataSource Configuration</title>
                 <para>The easiest method to configure Datasources and Transactions is through the
                     Spring Framework. Here is a snippet of Spring XML that shows how to wire up a
@@ -9078,9 +9078,9 @@ META-INF/
                     Spring services or by fetching it directly from the Spring context. </para>
                 <para>You can find more information on configuring Rice DataSources and
                     TransactionManagers in Datasource and JTA Configuration.</para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </section>
+        </section>
+        <section>
             <title>OJB Configuration within a Plugin</title>
             <para>If your plugin needs to use OJB, there are a few other configuration steps that
                 you need to take. First, in your Spring file, add the following line to allow Spring
@@ -9142,8 +9142,8 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
             <para>This provides OJB with the <emphasis role="bold"
                     >javax.transaction.TransactionManager</emphasis> that was injected into your
                 JtaOjbConfigurer, as in the example above.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Overriding Services with a ResourceLoader</title>
             <para>For a service override, you need to define a custom ResourceLoader implementation
                 and configure it in your workflow.xml plugin configuration file. The
@@ -9184,7 +9184,7 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
 </programlisting>
             <para>In the next section, we'll look at some of the services commonly overridden in an
                 institutional plugin</para>
-            <sect3>
+            <section>
                 <title>Commonly Overridden Services</title>
                 <para>In theory, you can override any service defined in the <emphasis role="bold"
                         >org/kuali/workflow/resources/KewSpringBeans.xml</emphasis> file in the
@@ -9235,7 +9235,7 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                         </tgroup>
                     </table>
                 </para>
-                <sect4>
+                <section>
                     <title>User Service</title>
                     <para>The Workflow core uses the UserService to resolve and search for users.
                         The UserService could be as simple as a static set of users or as complex
@@ -9255,8 +9255,8 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                         users for improved performance and implements an XML import for mass user
                         import. Institutions usually override the default user service with an
                         implementation that integrates with their own user repository.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>IdentityHelper Service</title>
                     <para>The IdentityHelper service helps to interact with the KIM identity
                         management services in the system. IdentityHelpers are identified in one of
@@ -9273,8 +9273,8 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                         </orderedlist></para>
                     <para>Both of these object variables are implemented in KEW in the
                         IdentityHelperServiceImpl file.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Email Service</title>
                     <para>The Email service is used to send emails from KEW. You can configure the
                         default implementation when you configure KEW (see KEW Configuration).
@@ -9283,8 +9283,8 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                     <para>For example, you could override this service if you need to make a secure
                         and authorized SSL connection with an SMTP server because of security
                         policies.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Notification Service</title>
                     <para>The Notification service is responsible for notifying users when they
                         receive Action Items in their Action List.</para>
@@ -9292,8 +9292,8 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                         to the user according to the individual user’s preferences. A custom
                         implementation might also notify other (external) systems in addition to
                         sending the email.</para>
-                </sect4>
-                <sect4>
+                </section>
+                <section>
                     <title>Encryption Service</title>
                     <para>The Encryption service is responsible for encrypting document
                         content.</para>
@@ -9303,9 +9303,9 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                         the document content is encrypted using that key. If it is not set, then
                         document content will not be encrypted and will be stored in the database in
                         plain text.</para>
-                </sect4>
-            </sect3>
-            <sect3>
+                </section>
+            </section>
+            <section>
                 <title>Plugin Shared Space</title>
                 <para>All plugins also load certain classes from a shared space. The shared space
                     contains certain classes that link with certain libraries that might exist in
@@ -9316,12 +9316,12 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                     important because some of these classes link with libraries like Spring or OJB
                     and since the plugin needs its own copy of these libraries, it needs to ensure
                     that it doesn't retrieve these classes from any classloader but it's own.</para>
-            </sect3>
-        </sect2>
-    </sect1>
-    <sect1>
+            </section>
+        </section>
+    </section>
+    <section>
         <title>KEW Usage of the Kuali Service Bus</title>
-        <sect2>
+        <section>
             <title>General Usage</title>
             <para>The Kuali Enterprise Workflow engine makes use of both synchronous service
                 endpoints and asynchronous messaging features from the Kuali Service Bus.</para>
@@ -9354,8 +9354,8 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                 different types of services. One is used for performing workflow document actions
                 (such as creating, approving, disapproving, etc.). The other is used to perform
                 various query or read-only operations against the workflow system.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>Implications of using “Synchronous” KSB messaging with KEW</title>
             <para>For general information on synchronous messaging and its implications in the KSB,
                 please read “Implications of synchronous vs. asynchronous Message Deliver” in the
@@ -9370,6 +9370,6 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                 type of program, routing exceptions will need to be manually caught. If it’s desired
                 to place a document into exception status from here, there are methods on the KEW
                 APIs to do this manually.</para>
-        </sect2>
-    </sect1>
+        </section>
+    </section>
 </chapter>

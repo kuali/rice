@@ -16,12 +16,16 @@
 
 
 --
---     KULRICE-6855: Travel Account Maintenance document routes to exception
+-- KULRICE-6842: Don't allow requests for null principals or null groups or null principal types
+-- or null roles.
 --
 
-alter table TRV_ACCT drop column ACCT_TYPE;
+ALTER TABLE `KRIM_GRP_MBR_T`
+MODIFY COLUMN `GRP_ID` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+MODIFY COLUMN `MBR_ID` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+MODIFY COLUMN `MBR_TYP_CD` CHAR(1) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL;
 
-
-insert into KRMS_CNTXT_T
-(CNTXT_ID, NMSPC_CD, NM, TYP_ID, ACTV, VER_NBR)
-values ('trav-acct-test-ctxt','KR-SAP', 'Travel Account', 'T4', 'Y', 1);
+ALTER TABLE `KRIM_ROLE_MBR_T`
+MODIFY COLUMN `ROLE_ID` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+MODIFY COLUMN `MBR_ID` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+MODIFY COLUMN `MBR_TYP_CD` CHAR(1) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL;

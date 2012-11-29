@@ -48,7 +48,7 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name="maintenanceView")
+@BeanTag(name="maintenanceView", parent="Uif-MaintenanceView")
 public class MaintenanceDocumentView extends DocumentView {
     private static final long serialVersionUID = -3382802967703882341L;
 

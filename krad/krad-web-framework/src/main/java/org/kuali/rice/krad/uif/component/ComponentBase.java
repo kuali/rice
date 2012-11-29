@@ -1728,6 +1728,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(
                     this.getAdditionalComponentsToRefresh());
         }
+
         return additionalComponentsToRefreshJs;
     }
 

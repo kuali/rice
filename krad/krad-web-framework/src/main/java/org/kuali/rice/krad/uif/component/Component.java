@@ -927,6 +927,7 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
 
     /**
      * Returns a list of componentIds which will be also be refreshed when this component is refreshed
+     *
      * <p>
      * This will be a comma separated list of componentIds that need to be refreshed when a refresh
      * condition has been set on this component.

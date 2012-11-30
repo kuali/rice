@@ -243,9 +243,9 @@
     <property name="items">
       <list>
         <bean parent="Uif-JumpToBottomLink" id="UifCompView-Header2"/>
-        <bean id="ActionLinkField_JumpToField3" parent="Uif-ActionLink" p:actionScript="jumpToElementByName('field80');"/>
-        <bean id="ActionLinkField_FocusOnField79" parent="Uif-ActionLink" p:actionScript="focusOnElementByName('field79');"/>
-        <bean id="ActionLinkField_FocusOnIdTest123" parent="Uif-ActionLink" p:actionScript="focusOnElementById('Test123');"/>
+        <bean id="ActionLinkField_JumpToField119" parent="Uif-ActionLink" p:actionScript="jumpToElementByName('field119');"/>
+        <bean id="ActionLinkField_FocusOnField107" parent="Uif-ActionLink" p:actionScript="focusOnElementByName('field107');"/>
+        <bean id="ActionLinkField_FocusOnIdMyDate" parent="Uif-ActionLink" p:actionScript="focusOnElementById('myDate_control');"/>
       </list>
     </property>
   </bean>

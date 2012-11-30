@@ -24,12 +24,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Determines what actions are applicable to the given document, irrespective of user
- * or other state.  These initial actions are used as inputs for further filtering depending
- * on context.
- * @see DocumentPresentationController
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
+* Document presentation controller implementation for transactional documents.
+*
+* <p>
+* Determines what actions are applicable to the given document, irrespective of user
+* or other state.  These initial actions are used as inputs for further filtering depending
+* on context.
+* </p>
+*
+* @see DocumentPresentationController
+* @author Kuali Rice Team (rice.collab@kuali.org)
+*/
 public class TransactionalDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements TransactionalDocumentPresentationController {
     private static Log LOG = LogFactory.getLog(TransactionalDocumentPresentationControllerBase.class);
 

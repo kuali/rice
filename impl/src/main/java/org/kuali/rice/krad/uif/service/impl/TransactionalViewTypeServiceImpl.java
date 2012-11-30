@@ -32,11 +32,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Type service implementation for transactional views
+ * Type service implementation for transactional views.
  *
  * <p>
  * Indexes views on document class and view name. Can retrieve views by document type,
- * document type and view name, document class, document class and view name, or document id
+ * document type and view name, document class, document class and view name, or document id.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -46,16 +46,30 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
     private DocumentDictionaryService documentDictionaryService;
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewTypeService#getViewTypeName()
-     */
+    * Determines the view type name.
+    *
+    * <p>
+    * The view type name is specific for each type of transactional
+    * document and manually set.
+    * </p>
+    *
+    * @return String
+    */
     public UifConstants.ViewType getViewTypeName() {
         return UifConstants.ViewType.TRANSACTIONAL;
     }
 
     /**
-     *
-     * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromViewConfiguration(org.springframework.beans.PropertyValues)
-     */
+    * Get the document class and view name.
+    *
+    * <p>
+    * Extracts the view name and document class name from
+    * the PropertyValues.
+    * </p>
+    *
+    * @param propertyValues - collection including document class and view name
+    * @return Map<String, String>
+    */
     public Map<String, String> getParametersFromViewConfiguration(PropertyValues propertyValues) {
         Map<String, String> parameters = new HashMap<String, String>();
 
@@ -70,12 +84,17 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
     }
 
     /**
-     * Check for document id in request parameters, if given retrieve document
-     * instance to get the document class. Otherwise check for document class or
-     * document type parameters for creating a new document view
-     *
-     * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromRequest(java.util.Map)
-     */
+    * Determines the view type name.
+    *
+    * <p>
+    * Check for document id in request parameters, if given retrieve document
+    * instance to get the document class. Otherwise check for document class or
+    * document type parameters for creating a new document view.
+    # </p>
+    *
+    * @param requestParameters - collection including document class and view name
+    * @return Map<String, String> - document class name, view name
+    */
     @Override
     public Map<String, String> getParametersFromRequest(Map<String, String> requestParameters) {
         Map<String, String> parameters = new HashMap<String, String>();
@@ -138,6 +157,15 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
         return parameters;
     }
 
+    /**
+    * Returns the document service.
+    *
+    * <p>
+    * Gets the document service.
+    * </p>
+    *
+    * @return DocumentService - document service
+    */
     protected DocumentService getDocumentService() {
 
         if (documentService == null) {
@@ -147,10 +175,28 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
         return this.documentService;
     }
 
+    /**
+    * Initializes the document service .
+    *
+    * <p>
+    * Sets the document service.
+    * </p>
+    *
+    * @param documentService - document service
+    */
     public void setDocumentService(DocumentService documentService) {
         this.documentService = documentService;
     }
 
+    /**
+    * Returns the document dictionary service.
+    *
+    * <p>
+    * Gets the document dictionary service.
+    * </p>
+    *
+    * @return DocumentDictionaryService - document dictionary service
+    */
     public DocumentDictionaryService getDocumentDictionaryService() {
 
         if (documentDictionaryService == null) {
@@ -160,6 +206,15 @@ public class TransactionalViewTypeServiceImpl implements ViewTypeService {
         return documentDictionaryService;
     }
 
+    /**
+     * Initializes the document dictionary service.
+     *
+     * <p>
+     * Sets the document dictionary service.
+     * </p>
+     *
+     * @param documentDictionaryService - document dictionary service
+     */
     public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
         this.documentDictionaryService = documentDictionaryService;
     }

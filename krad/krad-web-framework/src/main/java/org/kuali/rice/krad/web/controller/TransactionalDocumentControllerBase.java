@@ -29,21 +29,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Controller for <code>TransactionalDocumentView</code> screens which operate on
- * <code>TransactionalDocument</code> instances
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
+* Controller for <code>TransactionalDocumentView</code> screens which operate on
+* <code>TransactionalDocument</code> instances.
+*
+* <p>
+*    Provides controller implementations for transactional document actions including: doc handler
+*    (retrieve from doc search and action list), save, route (and other KEW actions), and copy.
+* </p>
+*
+* @see DocumentControllerBase
+* @author Kuali Rice Team (rice.collab@kuali.org)
+*/
 public abstract class TransactionalDocumentControllerBase extends DocumentControllerBase {
     protected static final Logger LOG = Logger.getLogger(TransactionalDocumentControllerBase.class);
 
     /**
-     * Method that will take the current document and call its copy method if Copyable.
-     * @param form : a TransactionalDocumentFormBase
-     * @param result : a BindingResult
-     * @throws java.lang.Exception : an exception
-     * @return a ModelAndView object
-     */
+    * Method to call copy.
+    *
+    * <p>
+    *     Method that will take the current document and call its copy method if Copyable.
+    * </p>
+    *
+    * @param form : a TransactionalDocumentFormBase
+    * @param result : a BindingResult
+    * @throws java.lang.Exception : an exception
+    * @return a ModelAndView object
+    */
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_COPY)
     public ModelAndView copy(@ModelAttribute("KualiForm") TransactionalDocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -18,6 +18,13 @@ package edu.sampleu.travel.approval;
 import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
 
 /**
+ * Transactional doc form implementation for the travel authorization document.
+ *
+ * <p>
+ *   Holds properties necessary to determine the {@code View} instance that
+ *   will be used to render the UI for the travel authorization document.
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
@@ -27,8 +34,15 @@ public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
     }
 
     /**
-     *   returns default document type  {@link TravelAuthorizationForm#getDefaultDocumentTypeName()}.
-     *   @return a String
+     * Determines the default type name.
+     *
+     * <p>
+     * The default document type name is specific for each type of KRAD transactional
+     * document and manually set.
+     * </p>
+     *
+     * @link TravelAuthorizationForm#getDefaultDocumentTypeName()
+     * @return String - default document type name
      */
     @Override
     protected String getDefaultDocumentTypeName() {

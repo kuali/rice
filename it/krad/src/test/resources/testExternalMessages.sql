@@ -22,7 +22,7 @@ insert into krad_msg_t values ('TEST', 'TestMessagesMessageKey', 'testMessageKey
 insert into krad_msg_t values ('TEST', 'TestMessagesMessageKey', 'testMessageKey2', 'en-US', '33333336', 1, null, 'ext key p2 value');
 insert into krad_msg_t values ('TEST', 'TestMessagesListMessageKey', 'testListMessageKey', 'en-US', '33333337', 1, null, 'ext list key value');
 insert into krad_msg_t values ('TEST', 'TestMessagesMapMessageKey', 'testMapMessageKey', 'en-US', '33333338', 1, null, 'ext map key value');
-insert into krad_msg_t values ('TEST', 'TestMessagesExpressionMerge', '#property1', 'en-US', '33333339', 1, null, 'Value \'{0}\' is invalid');
+insert into krad_msg_t values ('TEST', 'TestMessagesExpressionMerge', '#property1', 'en-US', '33333339', 1, null, 'Value ''{0}'' is invalid');
 insert into krad_msg_t values ('TEST', 'TestMessagesExpressionMerge', '#property2', 'en-US', '33333340', 1, null, 'The {0} code should not equal {1}');
 insert into krad_msg_t values ('TEST', 'TestMessagesKeyExprMerge', 'testMessageKey1', 'en-US', '33333341', 1, null, 'Expr {0} then expr {1}');
 insert into krad_msg_t values ('TEST', 'TestMessagesOptions', '#summer.value', 'en-US', '33333342', 1, null, 'Ext Summer');

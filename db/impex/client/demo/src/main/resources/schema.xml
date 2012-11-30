@@ -3916,7 +3916,6 @@
     <table name="TRV_ACCT">
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
         <column name="ACCT_NAME" size="50" type="VARCHAR"/>
-        <column name="ACCT_TYPE" size="100" type="VARCHAR"/>
         <column name="ACCT_FO_ID" size="14" type="DECIMAL"/>
         <column name="OBJ_ID" size="36" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>

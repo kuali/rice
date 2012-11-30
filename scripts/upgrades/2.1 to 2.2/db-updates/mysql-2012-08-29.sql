@@ -35,4 +35,4 @@ CREATE TABLE krad_msg_t
 	PRIMARY KEY (nmspc_cd,cmpnt_cd,msg_key,loc),
 	UNIQUE krad_msg_tc0(obj_id)
 )
-/
+;

@@ -21,4 +21,4 @@
 
 INSERT INTO KRCR_PARM_T VALUES ('KR-NS', 'All', 'DEFAULT_LOCALE_CODE', uuid(), 1, 'CONFG', 'en-US',
 'The locale code that should be used within the application when otherwise not specified.', 'A', 'KUALI')
-/
+;

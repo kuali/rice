@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DocumentAttachment;
@@ -285,7 +286,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 String clazz = xmlDocument.getDocumentElement().getAttribute(MAINTAINABLE_IMPL_CLASS);
                 if (isOldMaintainableInDocument(xmlDocument)) {
                     oldMaintainableObject = (Maintainable) Class.forName(clazz).newInstance();
-                    Object dataObject = getDataObjectFromXML(OLD_MAINTAINABLE_TAG_NAME);
+                    Object dataObject = getDataObjectFromXML(OLD_MAINTAINABLE_TAG_NAME, null);
 
                     String oldMaintenanceAction = getMaintenanceAction(xmlDocument, OLD_MAINTAINABLE_TAG_NAME);
                     oldMaintainableObject.setMaintenanceAction(oldMaintenanceAction);
@@ -294,7 +295,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                     oldMaintainableObject.setDataObjectClass(dataObject.getClass());
                 }
                 newMaintainableObject = (Maintainable) Class.forName(clazz).newInstance();
-                Object bo = getDataObjectFromXML(NEW_MAINTAINABLE_TAG_NAME);
+                Object bo = getDataObjectFromXML(NEW_MAINTAINABLE_TAG_NAME, null);
                 newMaintainableObject.setDataObject(bo);
                 newMaintainableObject.setDataObjectClass(bo.getClass());
 
@@ -377,10 +378,38 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * a
      * business object.
      */
-    protected Object getDataObjectFromXML(String maintainableTagName) {
-        String maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">",
+    protected Object getDataObjectFromXML(String maintainableTagName, String modifiedXMLContent) {
+        String maintXml = "";
+        if (StringUtils.isBlank(modifiedXMLContent)) {
+            maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">",
                 "</" + maintainableTagName + ">");
-        return KRADServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
+        } else {
+            maintXml = modifiedXMLContent;
+        }
+        try {
+            return KRADServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
+        } catch (Exception e) {
+            Throwable exceptionCause = e.getCause();
+            String nonexistentField = "";
+            if (exceptionCause.getClass().getName().contains("CannotResolveClassException")) {
+                nonexistentField = StringUtils.substringAfter(exceptionCause.getMessage(), ": ");
+                LOG.warn( "Attempting to remove nonexistent field from XML document content.  Nonexistent field: " + nonexistentField);
+                String fieldContents = StringUtils.substringBetween(maintXml, "<" + nonexistentField + ">", "</" + nonexistentField + ">");
+                String wholeVar =   "<" + nonexistentField + ">" +  fieldContents + "</" + nonexistentField + ">";
+                String newMaintXml = StringUtils.remove(maintXml, wholeVar);
+                if (newMaintXml.length() != maintXml.length()) {
+                    return getDataObjectFromXML(maintainableTagName, newMaintXml);
+                } else {
+                    GlobalVariables.getMessageMap()
+                            .putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.UNABLE_TO_GET_DATA_FROM_XML, nonexistentField);
+                    throw new WorkflowRuntimeException("Failed to get data object from XML.", e);
+                }
+            } else {
+                GlobalVariables.getMessageMap()
+                        .putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.UNABLE_TO_GET_DATA_FROM_XML, nonexistentField);
+                throw new WorkflowRuntimeException("Failed to get data object from XML.", e);
+            }
+        }
     }
 
     /**

@@ -126,6 +126,7 @@ public final class RiceKeyConstants {
 
     public static final String WARNING_MAINTENANCE_LOCKED = "warning.maintenance.locked";
     public static final String ERROR_VERSION_MISMATCH = "error.version.mismatch";
+    public static final String UNABLE_TO_GET_DATA_FROM_XML = "unable.to.get.data.from.xml";
 
     public static final String MESSAGE_CANCELLED = "message.cancelled";
     public static final String MESSAGE_RELOADED = "message.document.reloaded";

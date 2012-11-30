@@ -143,11 +143,11 @@ public class RichTable extends WidgetBase {
         LayoutManager layoutManager = collectionGroup.getLayoutManager();
 
         if (layoutManager instanceof TableLayoutManager) {
-
             List<String> totalColumns = ((TableLayoutManager) layoutManager).getColumnsToCalculate();
 
             if (totalColumns.size() > 0) {
                 String array = "[";
+
                 for (String i : totalColumns) {
                     array = array + i + ",";
                 }

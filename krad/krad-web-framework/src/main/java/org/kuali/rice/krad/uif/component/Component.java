@@ -22,7 +22,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -355,6 +354,77 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setRequired(Boolean required);
 
     /**
+     * Horizontal alignment of the component within its container
+     *
+     * <p>
+     * All components belong to a <code>Container</code> and are placed using a
+     * <code>LayoutManager</code>. This property specifies how the component
+     * should be aligned horizontally within the container. During the finalize
+     * phase the CSS text-align style will be created for the align setting.
+     * </p>
+     *
+     * @return String horizontal align
+     * @see org.kuali.rice.krad.uif.CssConstants.TextAligns
+     */
+    public String getAlign();
+
+    /**
+     * Sets the components horizontal alignment
+     *
+     * @param align
+     */
+    public void setAlign(String align);
+
+    /**
+     * Vertical alignment of the component within its container
+     *
+     * <p>
+     * All components belong to a <code>Container</code> and are placed using a
+     * <code>LayoutManager</code>. This property specifies how the component
+     * should be aligned vertically within the container. During the finalize
+     * phase the CSS vertical-align style will be created for the valign
+     * setting.
+     * </p>
+     *
+     * @return String vertical align
+     * @see org.kuali.rice.krad.uif.CssConstants.VerticalAligns
+     */
+    public String getValign();
+
+    /**
+     * Setter for the component's vertical align
+     *
+     * @param valign
+     */
+    public void setValign(String valign);
+
+    /**
+     * Width the component should take up in the container
+     *
+     * <p>
+     * All components belong to a <code>Container</code> and are placed using a
+     * <code>LayoutManager</code>. This property specifies a width the component
+     * should take up in the Container. This is not applicable for all layout
+     * managers. During the finalize phase the CSS width style will be created
+     * for the width setting.
+     * </p>
+     *
+     * <p>
+     * e.g. '30%', '55px'
+     * </p>
+     *
+     * @return String width string
+     */
+    public String getWidth();
+
+    /**
+     * Setter for the components width
+     *
+     * @param width
+     */
+    public void setWidth(String width);
+
+    /**
      * CSS style string to be applied to the component
      *
      * <p>
@@ -487,6 +557,40 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * @param cssClass the name of the class to add
      */
     public void addCellCssClass(String cssClass);
+
+    /**
+     * CSS style string to be applied to the cell containing the component (only applies within
+     * table based layouts)
+     *
+     * <p>
+     * e.g. 'align: right;'
+     * </p>
+     *
+     * @return String css style string
+     */
+    public String getCellStyle();
+
+    /**
+     * Setter for the cell style attribute
+     *
+     * @param cellStyle
+     */
+    public void setCellStyle(String cellStyle);
+
+    /**
+     * Width setting for the cell containing the component (only applies within table based
+     * layouts)
+     *
+     * @return String width ('25%', '155px')
+     */
+    public String getCellWidth();
+
+    /**
+     * Setter for the containing cell width
+     *
+     * @param cellWidth
+     */
+    public void setCellWidth(String cellWidth);
 
     /**
      * Context map for the component

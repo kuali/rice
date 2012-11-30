@@ -94,10 +94,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String valign;
     private String width;
 
-    //optional table-backed layout options
+    // optional table-backed layout options
     private int colSpan;
     private int rowSpan;
     private List<String> cellCssClasses;
+    private String cellStyle;
+    private String cellWidth;
 
     private String style;
     private List<String> cssClasses;
@@ -172,6 +174,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         refreshWhenChangedPropertyNames = new ArrayList<String>();
         additionalComponentsToRefresh = new ArrayList<String>();
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
+        cellCssClasses = new ArrayList<String>();
         cssClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
         templateOptions = new HashMap<String, String>();
@@ -543,16 +546,35 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Horizontal alignment of the component within its container
-     * <p>
-     * All components belong to a <code>Container</code> and are placed using a
-     * <code>LayoutManager</code>. This property specifies how the component
-     * should be aligned horizontally within the container. During the finalize
-     * phase the CSS text-align style will be created for the align setting.
-     * </p>
-     *
-     * @return String horizontal align
-     * @see org.kuali.rice.krad.uif.CssConstants.TextAligns
+     * @see Component#getCellStyle()
+     */
+    public String getCellStyle() {
+        return cellStyle;
+    }
+
+    /**
+     * @see Component#setCellStyle(java.lang.String)
+     */
+    public void setCellStyle(String cellStyle) {
+        this.cellStyle = cellStyle;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getCellWidth()
+     */
+    public String getCellWidth() {
+        return cellWidth;
+    }
+
+    /**
+     * @see Component#setCellWidth(java.lang.String)
+     */
+    public void setCellWidth(String cellWidth) {
+        this.cellWidth = cellWidth;
+    }
+
+    /**
+     * @see Component#getAlign()
      */
     @BeanTagAttribute(name = "align")
     public String getAlign() {
@@ -560,27 +582,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Sets the components horizontal alignment
-     *
-     * @param align
+     * @see Component#setAlign(java.lang.String)
      */
     public void setAlign(String align) {
         this.align = align;
     }
 
     /**
-     * Vertical alignment of the component within its container
-     *
-     * <p>
-     * All components belong to a <code>Container</code> and are placed using a
-     * <code>LayoutManager</code>. This property specifies how the component
-     * should be aligned vertically within the container. During the finalize
-     * phase the CSS vertical-align style will be created for the valign
-     * setting.
-     * </p>
-     *
-     * @return String vertical align
-     * @see org.kuali.rice.krad.uif.CssConstants.VerticalAligns
+     * @see Component#getValign()
      */
     @BeanTagAttribute(name = "valign")
     public String getValign() {
@@ -588,28 +597,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the component's vertical align
-     *
-     * @param valign
+     * @see Component#setValign(java.lang.String)
      */
     public void setValign(String valign) {
         this.valign = valign;
     }
 
     /**
-     * Width the component should take up in the container
-     * <p>
-     * All components belong to a <code>Container</code> and are placed using a
-     * <code>LayoutManager</code>. This property specifies a width the component
-     * should take up in the Container. This is not applicable for all layout
-     * managers. During the finalize phase the CSS width style will be created
-     * for the width setting.
-     * </p>
-     * <p>
-     * e.g. '30%', '55px'
-     * </p>
-     *
-     * @return String width string
+     * @see Component#getWidth()
      */
     @BeanTagAttribute(name = "width")
     public String getWidth() {
@@ -617,9 +612,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Setter for the components width
-     *
-     * @param width
+     * @see Component#setWidth(java.lang.String)
      */
     public void setWidth(String width) {
         this.width = width;

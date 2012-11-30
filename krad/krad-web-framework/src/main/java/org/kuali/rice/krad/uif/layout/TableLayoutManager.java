@@ -516,9 +516,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         if (collectionGroup.isHighlightNewItems() && ((UifFormBase) model).isAddedCollectionItem(currentLine)) {
             getRowCssClasses().add(collectionGroup.getNewItemsCssClass());
-        } else if (isAddLine
-                && collectionGroup.isRenderAddLine()
-                && !collectionGroup.isReadOnly()
+        } else if (isAddLine && collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()
                 && !isSeparateAddLine()) {
             getRowCssClasses().add(collectionGroup.getAddItemCssClass());
             this.addStyleClass("uif-hasAddLine");
@@ -562,10 +560,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             headerAdded = true;
         }
 
-        // set label field rendered to true on line fields
+        // set label field rendered to true on line fields and adjust cell properties
         for (Field field : lineFields) {
             field.setLabelRendered(true);
             field.setFieldLabel(null);
+
+            setCellAttributes(field);
         }
 
         int rowCount = calculateNumberOfRows(lineFields);
@@ -580,19 +580,28 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             Component sequenceField = null;
             if (!isAddLine) {
                 sequenceField = ComponentUtils.copy(getSequenceFieldPrototype(), idSuffix);
+
                 //Ignore in validation processing
                 sequenceField.addDataAttribute(UifConstants.DataAttributes.VIGNORE, "yes");
+
                 if (generateAutoSequence && (sequenceField instanceof MessageField)) {
                     ((MessageField) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
                 }
             } else {
                 sequenceField = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
+                
+                // adjusting add line label to match sequence prototype cells attributes
+                sequenceField.setCellWidth(getSequenceFieldPrototype().getCellWidth());
+                sequenceField.setCellStyle(getSequenceFieldPrototype().getCellStyle());
             }
+
             sequenceField.setRowSpan(rowSpan);
 
             if (sequenceField instanceof DataBinding) {
                 ((DataBinding) sequenceField).getBindingInfo().setBindByNamePrefix(bindingPath);
             }
+
+            setCellAttributes(sequenceField);
 
             ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex, idSuffix);
             dataFields.add(sequenceField);
@@ -609,7 +618,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             CollectionLayoutUtils.prepareSelectFieldForLine(selectField, collectionGroup, bindingPath, currentLine);
 
             ComponentUtils.updateContextForLine(selectField, currentLine, lineIndex, idSuffix);
+            setCellAttributes(selectField);
+
             dataFields.add(selectField);
+
             extraColumns++;
 
             if (renderActions) {
@@ -634,7 +646,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             // current lineField's colSpan.
             // Only insert if ActionField has to be placed at the end. Else the specification of actionColumnIndex should
             // take care of putting it in the right location
-            insertActionField = (cellPosition != 0 && lineFields.size() != numberOfDataColumns) && renderActions && renderActionsLast && ((cellPosition % numberOfDataColumns) == 0);
+            insertActionField = (cellPosition != 0 && lineFields.size() != numberOfDataColumns) && renderActions
+                    && renderActionsLast && ((cellPosition % numberOfDataColumns) == 0);
 
             cellPosition += lineField.getColSpan();
             columnNumber++;
@@ -689,7 +702,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     }
                 }
             }
-
         }
 
         if (lineFields.size() == numberOfDataColumns && renderActions && renderActionsLast) {
@@ -721,6 +733,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex, idSuffix);
         lineActionsField.setRowSpan(rowSpan);
         lineActionsField.setItems(actions);
+
+        setCellAttributes(lineActionsField);
 
         dataFields.add(lineActionsField);
     }
@@ -795,7 +809,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             // current lineField's colSpan.
             // Only Insert if ActionField has to be placed at the end. Else the specification of actionColumnIndex
             // should take care of putting it in the right location
-            insertActionHeader = (cellPosition != 0 && lineFields.size() != numberOfDataColumns && renderActions && renderActionsLast && ((cellPosition % numberOfDataColumns) == 0));
+            insertActionHeader = (cellPosition != 0 && lineFields.size() != numberOfDataColumns && renderActions
+                    && renderActionsLast && ((cellPosition % numberOfDataColumns) == 0));
 
             if ( insertActionHeader) {
                 addActionHeader(rowCount, cellPosition);
@@ -849,14 +864,18 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         headerLabel.setRowSpan(field.getRowSpan());
         headerLabel.setColSpan(field.getColSpan());
 
-        //copy cell css classes for this label
-        headerLabel.setCellCssClasses(field.getCellCssClasses());
-
         if ((field.getRequired() != null) && field.getRequired().booleanValue()) {
             headerLabel.getRequiredMessage().setRender(!field.isReadOnly());
         } else {
             headerLabel.getRequiredMessage().setRender(false);
         }
+
+        setCellAttributes(field);
+
+        // copy cell attributes from the field to the label
+        headerLabel.setCellCssClasses(field.getCellCssClasses());
+        headerLabel.setCellStyle(field.getCellStyle());
+        headerLabel.setCellWidth(field.getCellWidth());
 
         headerLabels.add(headerLabel);
     }

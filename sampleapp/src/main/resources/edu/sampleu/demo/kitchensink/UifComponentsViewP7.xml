@@ -54,8 +54,9 @@
      <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list2" />
      <property name="layoutManager.sequencePropertyName" value="field1" />
+     <property name="layoutManager.sequenceFieldPrototype.width" value="10%" />
+     <property name="layoutManager.actionFieldPrototype.width" value="10%" />
      <property name="layoutManager.actionColumnPlacement" value="LEFT" />
-     <property name="layoutManager.richTable.render" value="true" />
      <property name="collectionLookup.render" value="true"/>
      <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="collectionLookup.fieldConversions" value="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
@@ -67,10 +68,10 @@
      </property>
      <property name="items">
        <list>
-         <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" />
-         <bean parent="Uif-InputField" p:propertyName="field2" p:required="true" p:readOnly="true"/>
-         <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" />
-         <bean parent="Uif-InputField" p:propertyName="field4" p:required="true">
+         <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" p:width="20%"/>
+         <bean parent="Uif-InputField" p:propertyName="field2" p:required="true" p:readOnly="true" p:width="20%"/>
+         <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:width="20%"/>
+         <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" p:width="20%">
            <property name="mustOccurConstraints">
              <list>
                <bean parent="MustOccurConstraint">

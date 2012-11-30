@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.CssConstants;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
@@ -70,6 +73,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * <ul>
      * <li>If suppressLineWrapping is true, sets the number of columns to the
      * container's items list size</li>
+     * <li>Adjust the cell attributes for the container items</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
@@ -81,6 +85,44 @@ public class GridLayoutManager extends LayoutManagerBase {
 
         if (suppressLineWrapping) {
             numberOfColumns = container.getItems().size();
+        }
+
+        for (Component component : container.getItems()) {
+            setCellAttributes(component);
+        }
+    }
+
+    /**
+     * Moves the width, align, and valign settings of the component to the corresponding cell properties (if not
+     * already configured)
+     * 
+     * @param component instance to adjust settings for
+     */
+    protected void setCellAttributes(Component component) {
+        if (StringUtils.isNotBlank(component.getWidth()) && StringUtils.isBlank(component.getCellWidth())) {
+            component.setCellWidth(component.getWidth());
+            component.setWidth("");
+        }
+
+        if (StringUtils.isNotBlank(component.getAlign()) && !StringUtils.contains(component.getCellStyle(),
+                CssConstants.TEXT_ALIGN)) {
+            if (component.getCellStyle() == null) {
+                component.setCellStyle("");
+            }
+
+            component.setCellStyle(component.getCellStyle() + CssConstants.TEXT_ALIGN + component.getAlign() + ";");
+            component.setAlign("");
+        }
+
+        if (StringUtils.isNotBlank(component.getValign()) && !StringUtils.contains(component.getCellStyle(),
+                CssConstants.VERTICAL_ALIGN)) {
+            if (component.getCellStyle() == null) {
+                component.setCellStyle("");
+            }
+
+            component.setCellStyle(
+                    component.getCellStyle() + CssConstants.VERTICAL_ALIGN + component.getValign() + ";");
+            component.setValign("");
         }
     }
 

@@ -79,8 +79,8 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         </#if>
 
         <#-- determine cell width by using default or configured width and round off to two decimal places-->
-        <#if item.width?has_content>
-            <#local cellWidth=item.width />
+        <#if item.cellWidth?has_content>
+            <#local cellWidth=item.cellWidth />
         <#elseif applyDefaultCellWidths>
             <#local width= (defaultCellWidth * item.colSpan)?number?string("0.##") />
             <#local cellWidth="${width}%"/>
@@ -102,6 +102,11 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
             <#local cellClassAttr="class=\"${item.cellStyleClassesAsString}\""/>
         </#if>
 
+        <#local cellStyleAttr=""/>
+        <#if item.cellStyle?has_content>
+            <#local cellStyleAttr="style=\"${item.cellStyle}\""/>
+        </#if>
+
         <#if (index == 1)>
             <#if renderHeaderColumn>
                 <#if renderHeaderRow || (renderFirstRowHeader && firstRow)>
@@ -111,12 +116,12 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
                 </#if>
 
                 <th scope="${headerScope}" ${cellWidth!} colspan="${item.colSpan}"
-                    rowspan="${item.rowSpan}" ${cellClassAttr}>
+                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}>
                     <@template component=item/>
                 </th>
             <#else>
                 <td role="presentation" ${cellWidth!} colspan="${item.colSpan}"
-                    rowspan="${item.rowSpan}" ${cellClassAttr}>
+                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}>
                     <@template component=item/>
                 </td>
             </#if>

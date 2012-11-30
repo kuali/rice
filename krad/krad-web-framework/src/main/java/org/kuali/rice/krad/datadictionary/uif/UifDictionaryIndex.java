@@ -283,9 +283,11 @@ public class UifDictionaryIndex implements Runnable {
         viewPools = new HashMap<String, UifViewPool>();
 
         int threads = THREADS;
+
         if (poolSizeSet) {
             threads = threadPoolSize;
         }
+
         ExecutorService executor = Executors.newFixedThreadPool(threads);
 
         String[] beanNames = ddBeans.getBeanNamesForType(View.class);

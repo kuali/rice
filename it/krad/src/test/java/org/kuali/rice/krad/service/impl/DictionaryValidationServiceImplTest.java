@@ -76,7 +76,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase {
 
     @Before
     public void setUp() throws Exception {
-        //super.setUp();
+        super.setUp();
 
         context = new ClassPathXmlApplicationContext("classpath:DictionaryValidationServiceSpringBeans.xml");
 

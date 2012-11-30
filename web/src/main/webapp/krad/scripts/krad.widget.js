@@ -213,6 +213,11 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                     data['actionParameters[returnTarget]'] = 'iframeportlet';
                 }
 
+                var jsonViewState = getSerializedViewState();
+                if (jsonViewState) {
+                    jQuery.extend(data, {clientViewState:jsonViewState});
+                }
+
                 // TODO: we need a fix here so dirty fields don't get cleared out
                 // if refreshing the page on return from lookup need to clear dirty fields else
                 // a warning is given

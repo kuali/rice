@@ -167,12 +167,8 @@ KradRequest.prototype = {
             jQuery.extend(data, this.additionalData);
         }
 
-        var viewState = jQuery(document).data(kradVariables.VIEW_STATE);
-        if (!jQuery.isEmptyObject(viewState)) {
-            var jsonViewState = jQuery.toJSON(viewState);
-
-            // change double quotes to single because escaping causes problems on URL
-            jsonViewState = jsonViewState.replace(/"/g, "'");
+        var jsonViewState = getSerializedViewState();
+        if (jsonViewState) {
             jQuery.extend(data, {clientViewState: jsonViewState});
         }
 
@@ -265,6 +261,11 @@ KradRequest.prototype = {
         // start the loading indicator (will be removed on page load)
         if (!this.disableBlocking) {
             showLoading(this.loadingMessage);
+        }
+
+        var jsonViewState = getSerializedViewState();
+        if (jsonViewState) {
+            writeHiddenToForm("clientViewState", jsonViewState);
         }
 
         // submit

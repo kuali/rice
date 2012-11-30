@@ -291,6 +291,23 @@ function getComponentState(componentId, key) {
     return "";
 }
 
+/**
+ * Returns the current view state as a JSON string for posting
+ */
+function getSerializedViewState() {
+    var jsonViewState = "";
+
+    var viewState = jQuery(document).data(kradVariables.VIEW_STATE);
+    if (!jQuery.isEmptyObject(viewState)) {
+        var jsonViewState = jQuery.toJSON(viewState);
+
+        // change double quotes to single because escaping causes problems on URL
+        jsonViewState = jsonViewState.replace(/"/g, "'");
+    }
+
+    return jsonViewState;
+}
+
 // gets the the label for field with the corresponding id
 function getLabel(id) {
     var label = jQuery("#" + id + "_label");

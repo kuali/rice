@@ -94,7 +94,6 @@ public class UifFormBase implements ViewModel {
 
     @SessionTransient
     protected Map<String, String> actionParameters;
-    @SessionTransient
     protected Map<String, Object> clientStateForSyncing;
     @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
@@ -413,6 +412,15 @@ public class UifFormBase implements ViewModel {
     @Override
     public Map<String, Object> getClientStateForSyncing() {
         return clientStateForSyncing;
+    }
+
+    /**
+     * Setter for the client state
+     *
+     * @param clientStateForSyncing
+     */
+    public void setClientStateForSyncing(Map<String, Object> clientStateForSyncing) {
+        this.clientStateForSyncing = clientStateForSyncing;
     }
 
     /**

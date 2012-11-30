@@ -153,7 +153,6 @@
                 <jsSourceFile>plugins/jqueryUI/jquery.ui.autocomplete.html.js</jsSourceFile>
                 <jsSourceFile>plugins/color/jquery.color.js</jsSourceFile>
                 <jsSourceFile>plugins/cookie/jquery.cookie.js</jsSourceFile>
-                <jsSourceFile>plugins/postmsg/jquery.ba-postmessage.js</jsSourceFile>
                 <jsSourceFile>plugins/jgrowl/jquery.jgrowl.js</jsSourceFile>
                 <jsSourceFile>plugins/blockUI/jquery.blockUI.js</jsSourceFile>
                 <jsSourceFile>plugins/watermark/jquery.watermark.js</jsSourceFile>

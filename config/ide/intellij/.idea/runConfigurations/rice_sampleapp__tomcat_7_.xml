@@ -52,7 +52,9 @@
       </SHUTDOWN>
     </ConfigurationWrapper>
     <method>
-      <option name="BuildArtifacts" enabled="true" />
+      <option name="BuildArtifacts" enabled="true">
+        <artifact name="rice-sampleapp:war exploded" />
+      </option>
       <option name="Maven.BeforeRunTask" enabled="false" file="$PROJECT_DIR$/../../../web/pom.xml" goal="com.samaxes.maven:maven-minify-plugin:1.3.5:minify" />
     </method>
   </configuration>

@@ -162,7 +162,11 @@ public class DocumentTypeXmlExporter implements XmlExporter {
                 DocumentTypePolicy policy = (DocumentTypePolicy) iterator.next();
                 Element policyElement = renderer.renderElement(policiesElement, POLICY);
                 renderer.renderTextElement(policyElement, NAME, policy.getPolicyName());
-                renderer.renderBooleanElement(policyElement, VALUE, policy.getPolicyValue(), false);
+                if (StringUtils.isNotEmpty(policy.getPolicyStringValue())) {
+                    renderer.renderTextElement(policyElement, STRING_VALUE, policy.getPolicyStringValue());
+                }  else {
+                    renderer.renderBooleanElement(policyElement, VALUE, policy.getPolicyValue(), false);
+                }
             }
         }
     }

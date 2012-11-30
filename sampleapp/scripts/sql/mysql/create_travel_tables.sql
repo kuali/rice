@@ -14,19 +14,25 @@
 -- limitations under the License.
 --
 
-CREATE TABLE TRV_ACCT
-(
-      ACCT_NUM VARCHAR(10)
-        , ACCT_NAME VARCHAR(50)
-        , ACCT_TYPE VARCHAR(100)
-        , ACCT_FO_ID DECIMAL(14)
-    
-    , CONSTRAINT TRV_ACCTP1 PRIMARY KEY(ACCT_NUM)
-
-
-
-) ENGINE InnoDB CHARACTER SET utf8 COLLATE utf8_bin
+# -----------------------------------------------------------------------
+# TRV_ACCT
+# -----------------------------------------------------------------------
+drop table if exists TRV_ACCT
 /
+
+CREATE TABLE TRV_ACCT (
+  ACCT_NUM varchar(10) NOT NULL,
+  ACCT_NAME varchar(50),
+  ACCT_TYPE varchar(100),
+  ACCT_FO_ID decimal(14,0),
+  OBJ_ID varchar(36),
+  VER_NBR decimal(8,0) DEFAULT 0,
+  SUB_ACCT varchar(10),
+  SUB_ACCT_NAME varchar(50),
+  CREATE_DT datetime,
+  SUBSIDIZED_PCT float,
+  PRIMARY KEY (ACCT_NUM)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
 
 # -----------------------------------------------------------------------
 # TRV_ACCT_EXT

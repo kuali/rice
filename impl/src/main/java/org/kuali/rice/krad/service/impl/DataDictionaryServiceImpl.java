@@ -192,13 +192,11 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         Pattern regex = null;
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
-        if (attributeDefinition != null) {
-//            if (attributeDefinition.hasValidationPattern()) {
-//                regex = attributeDefinition.getValidationPattern().getRegexPattern();
-//            } else {
-//                // workaround for existing calls which don't bother checking for null return values
-                regex = Pattern.compile(".*");
-//            }
+        if (attributeDefinition != null && (attributeDefinition.getValidationPattern() != null)) {
+            regex = attributeDefinition.getValidationPattern().getRegexPattern();
+        } else {
+            // workaround for existing calls which don't bother checking for null return values
+            regex = Pattern.compile(".*");
         }
 
         return regex;

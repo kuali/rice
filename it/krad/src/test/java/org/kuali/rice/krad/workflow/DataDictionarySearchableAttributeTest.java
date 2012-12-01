@@ -54,7 +54,6 @@ import static org.junit.Assert.*;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 
     @Override

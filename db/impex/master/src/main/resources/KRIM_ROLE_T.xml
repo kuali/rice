@@ -7,11 +7,6 @@
         OBJ_ID="5ADF18B6D4847954E0404F8189D85002" ROLE_ID="1"
         ROLE_NM="User" VER_NBR="1"/>
     <KRIM_ROLE_T ACTV_IND="Y"
-        DESC_TXT="This role is used for no login guest users."
-        KIM_TYP_ID="1" LAST_UPDT_DT="20120929165400" NMSPC_CD="KUALI"
-        OBJ_ID="CADAFF9BD4F54598E040F90A05B96699" ROLE_ID="101"
-        ROLE_NM="GuestRole" VER_NBR="1"/>
-    <KRIM_ROLE_T ACTV_IND="Y"
         DESC_TXT="This role derives its members from users with that have received an action request for a given document."
         KIM_TYP_ID="42" LAST_UPDT_DT="20081114141017"
         NMSPC_CD="KR-WKFLW" OBJ_ID="5BABFACC4F62A8EEE0404F8189D8770F"
@@ -81,6 +76,11 @@
         KIM_TYP_ID="76" LAST_UPDT_DT="20120412212324"
         NMSPC_CD="KR-WKFLW" OBJ_ID="BD82F716EFEFF706E0402E0AA9D70A27"
         ROLE_ID="99" ROLE_NM="Document Router" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role is used for no login guest users."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20121130172357" NMSPC_CD="KUALI"
+        OBJ_ID="CFBAA6F5F0D25D07E0406E0AC31D229B" ROLE_ID="KR1000"
+        ROLE_NM="GuestRole" VER_NBR="1"/>
     <KRIM_ROLE_T ACTV_IND="Y" DESC_TXT="Test role for the sample app"
         KIM_TYP_ID="1" LAST_UPDT_DT="20121106173421" NMSPC_CD="KR-SAP"
         OBJ_ID="CDD8032915D1BF1FE040F90A05B94313" ROLE_ID="KRSAP10003"

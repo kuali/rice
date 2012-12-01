@@ -239,14 +239,14 @@ table {
 	margin-bottom:10px;
 }
 .caution {
-	background-color:#FFFFCC;
-	border-color:#FC0;
-	background-image:url(img/icon-warning.png);
+	background-color: #FFFFCC;
+	border-color: #FC0;
+	background-image: url(img/icon-warning.png);
 }
 .tip {
-	background-color:#EBF1F1;
-	border-color:#CCC;
-	background-image:url(img/icon-warning.png);
+		background-color:#ecffff;
+	border-color:#8edad9;
+	background-image:url(img/icon-info.png);
 }
 .note {
 	background-color:#ecffff;
@@ -258,7 +258,7 @@ table {
 	border-color:#ffc6c6;
 	background-image:url(img/icons-error.png);
 }
-.note h3.title, .caution h3.title, .warning h3.title {
+.note h3.title, .caution h3.title, .warning h3.title, .tip h3.title {
 	margin:0px;
 	padding:0px;
 	line-height:30px;

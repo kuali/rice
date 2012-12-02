@@ -2269,7 +2269,7 @@ If neither a name nor images are set to be used, the link will be called “Deta
 </programlisting>
         <para>Which results in a table that looks like this (this table also has column totaling turned on, this is covered in the next section):<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/row_grouping_2.png"/>
+              <imagedata fileref="../images/KRAD_Guide/row_grouping_2.png"/>
             </imageobject>
           </mediaobject></para>
         <para>By supplying a groupingPrefix to use for the grouping row title (set on the <emphasis role="bold">layoutManager</emphasis> of the Uif-TableCollectionSection)<programlisting>…
@@ -2279,7 +2279,7 @@ If neither a name nor images are set to be used, the link will be called “Deta
 </programlisting></para>
         <para>Which results in a table that looks like this:<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/row_grouping_3.png"/>
+              <imagedata fileref="../images/KRAD_Guide/row_grouping_3.png"/>
             </imageobject>
           </mediaobject></para>
         <para>And by supplying a <emphasis role="bold">groupingTitle</emphasis> (note that SpringEL is REQUIRED to be used in the groupingTitle property, if used)
@@ -2290,7 +2290,7 @@ If neither a name nor images are set to be used, the link will be called “Deta
 </programlisting>
         <para>Which results in a table that looks like this:<mediaobject>
             <imageobject>
-              <imagedata fileref="../images/row_grouping_4.png"/>
+              <imagedata fileref="../images/KRAD_Guide/row_grouping_4.png"/>
             </imageobject>
           </mediaobject></para>
       </section>

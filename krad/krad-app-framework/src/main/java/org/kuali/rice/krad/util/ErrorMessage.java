@@ -55,7 +55,16 @@ public class ErrorMessage implements Serializable {
      */
     public ErrorMessage(String errorKey, String... messageParameters) {
         if (StringUtils.isBlank(errorKey)) {
-            throw new IllegalArgumentException("invalid (blank) errorKey");
+            StringBuilder builder = null;
+            if (messageParameters != null && messageParameters.length > 0) {
+                builder = new StringBuilder("  Message parameters are: ");
+                for (String param: messageParameters) {
+                    builder.append(param).append("\n");
+                }
+            } else {
+                builder = new StringBuilder("  Message parameters were null or empty.");
+            }
+            throw new IllegalArgumentException("invalid (blank) errorKey." + builder.toString());
         }
 
         setErrorKey(errorKey);

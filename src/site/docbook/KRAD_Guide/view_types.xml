@@ -1407,4 +1407,100 @@
       </para>
     </section>
   </section>
+  
+  <section>
+    <title>Message View Type</title>
+    <section>
+      <title>Message View</title>
+      <para>The Message View is a simple view for displaying an application message, such as an
+        error or other interruption that is encountered during processing of a request. </para>
+      <para>This view type provides two custom properties. The <code>messageText</code> property
+        holds the text for the message to display. In addtion, the <code>message</code> property
+        holds the message component that will be used to render the message. This component can be
+        used to alter the default CSS properties and other configuration if necessary. Other common
+        view properties, such as footer, can be specified if desired. Usually however this view
+        simply displays a message.</para>
+      <para>The base bean definition for the message view has an id of <code>Uif-MessageView
+        </code>and is shown below:</para>
+      <para>
+        <programlisting>  &lt;bean id="Uif-MessageView" parent="Uif-MessageView-parentBean"/>
+  &lt;bean id="Uif-MessageView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.view.MessageView" parent="Uif-FormView">
+    &lt;property name="page">
+      &lt;bean parent="Uif-Page"/>
+    &lt;/property>
+    &lt;property name="message">
+      &lt;bean parent="Uif-Message">
+        &lt;property name="cssClasses">
+          &lt;list merge="true">
+            &lt;value>uif-applicationMessage&lt;/value>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/property>
+    &lt;property name="persistFormToSession" value="false"/>
+    &lt;property name="breadcrumbs.render" value="false"/>
+  &lt;/bean></programlisting>
+      </para>
+      <para>Like any bean definition in the UIF, this default can be overridden. For example it
+        might be useful to add actions to the view footer.</para>
+      <para>The message view is different from other view types in how it is used. We don't request
+        a message view from a URL, but instead it is given in response to another request. For
+        example, one use of the message view within KRAD is for locked modules. A module can be
+        locked for maintenance through the System Parameters table. When a module is locked, no
+        views associated with that module can be accessed unless the user has been granted
+        permission (through KIM) to do so. If the user does not have permission they are given an
+        error stating the given module is locked. </para>
+      <para>To enforce the module locked checking an interceptor is used to determine the module for
+        a request and check its locked status. If the module is locked, the request is then
+        redirected to the module locked controller which will display the message view with the
+        module locked message.</para>
+      <para>In this case, we could create a view definition that extends Uif-MessageView and sets
+        the message text with the module locked message. Then instead of returning the view that was
+        requested, return the view for our custom message view. However this would be a bit
+        inconvenient to do for every such message we have in the application. Therefore KRAD allows
+        you to call a helper method on <code>UifControllerBase</code> that will get an instance of
+        the default message view, and set the custom message text through code. The following
+        demonistrates using the helper method for the module locked example: </para>
+      <para>
+        <programlisting>    /**
+     * Retrieves the module locked message test from a system parameter and then returns the message view
+     */
+    @RequestMapping(value = "/module-locked")
+    public ModelAndView moduleLocked(@ModelAttribute("KualiForm") UifFormBase form,
+            @RequestParam(value = MODULE_PARAMETER, required = true) String moduleNamespaceCode) {
+        ParameterService parameterSerivce = CoreFrameworkServiceLocator.getParameterService();
+        
+        String messageParamComponentCode = KRADConstants.DetailTypes.ALL_DETAIL_TYPE;
+        String messageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_MESSAGE_PARM;
+        String lockoutMessage = parameterSerivce.getParameterValueAsString(moduleNamespaceCode,
+                messageParamComponentCode, messageParamName);
+
+        if (StringUtils.isBlank(lockoutMessage)) {
+            String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
+            lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KNS_NAMESPACE,
+                    messageParamComponentCode, defaultMessageParamName);
+        }
+        
+        return getMessageView(form, "Module Locked", lockoutMessage);
+    }</programlisting>
+      </para>
+      
+      <para>Notice the return call. This is invoked the helper method named
+          <code>getMessageView</code> which takes as parameters the UIF form instance, view header
+        (can be blank), and the message text. As stated above this constructs the message view and
+        performs the standard <code>getUifModelAndView</code> return. The following screenshot shows
+        the resulting message view.</para>
+      
+      <figure>
+        <title>Message View</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/messageView.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      
+    </section>
+  </section>
 </chapter>

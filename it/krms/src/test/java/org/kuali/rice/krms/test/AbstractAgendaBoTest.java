@@ -86,6 +86,8 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
     private ActionBoService actionBoService;
     private FunctionBoServiceImpl functionBoService;
 
+    private static String lastTestClass = null;
+
     /**
      *
      * Setting it up so that KRMS tables are not reset between test methods to make it run much faster
@@ -95,7 +97,11 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
     protected List<String> getPerTestTablesNotToClear() {
         List<String> tablesNotToClear = super.getPerTestTablesNotToClear();
 
-        tablesNotToClear.add("KRMS_.*");
+        // HACK: clear KRMS tables for first test method run, but not subsequent methods in the same class
+        if (getClass().getName().equals(lastTestClass)) { //
+            tablesNotToClear.add("KRMS_.*");
+        }
+        lastTestClass = getClass().getName();
 
         return tablesNotToClear;
     }
@@ -345,7 +351,8 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
 
     private RuleDefinition createRuleDefinition3(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
 
-        FunctionDefinition gcdFunction = functionBoService.getFunctionByNameAndNamespace("gcd", contextDefinition.getNamespace());
+        FunctionDefinition gcdFunction = functionBoService.getFunctionByNameAndNamespace("gcd",
+                contextDefinition.getNamespace());
 
         if (null == gcdFunction) {
             // better configure a custom fuction for this

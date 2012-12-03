@@ -113,7 +113,7 @@ class DocumentSearchCriteriaTranslatorTest extends DocumentSearchTestBase {
         crit = documentSearchCriteriaTranslator.translateFieldsToCriteria(fields);
 
         assertNotNull("documentSearchCriteriaTranslator.getApplicationDocumentStatuses is NULL! expecting Approval In Progress and Submitted", crit.getApplicationDocumentStatuses())
-        assertTrue(crit.getApplicationDocumentStatuses().contains("Approval In Progress"), "https://jira.kuali.org/browse/KULRICE-8555");
+        assertTrue( "https://jira.kuali.org/browse/KULRICE-8555", crit.getApplicationDocumentStatuses().contains("Approval In Progress"));
         assertTrue(crit.getApplicationDocumentStatuses().contains("Submitted"));
     }
 

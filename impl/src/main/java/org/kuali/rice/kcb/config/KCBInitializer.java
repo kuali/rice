@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kcb.config;
 
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.JobDetail;
@@ -22,6 +23,7 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.listeners.SchedulerListenerSupport;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -40,10 +42,8 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
     private Trigger messageProcessingTrigger;
     private JobDetail messageProcessingJobDetail;
     protected Scheduler scheduler;
-    
-	/**
-     * @see org.springframework.beans.factory.BeanFactoryAware#setBeanFactory(org.springframework.beans.factory.BeanFactory)
-     */
+
+    @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
     }
@@ -66,18 +66,31 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
         this.messageProcessingJobDetail = messageProcessingJobDetail;
     }
 
-    /**
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         GlobalKCBServiceLocator.init(beanFactory);
         // kill the reference, our job is done
         beanFactory = null;
 
-        Scheduler scheduler = getScheduler()==null?KSBServiceLocator.getScheduler():getScheduler();
-        scheduler.addJob(messageProcessingJobDetail, true);
-
-        addTriggerToScheduler(messageProcessingTrigger);
+        final Scheduler scheduler = getScheduler() == null ? KSBServiceLocator.getScheduler():getScheduler();
+        if (scheduler.isStarted()) {
+            scheduler.addJob(messageProcessingJobDetail, true);
+            addTriggerToScheduler(messageProcessingTrigger);
+        } else {
+            //delay adding the job until after the scheduler is fully started.  This prevents a timing issue with quartz startup
+            scheduler.addSchedulerListener(new SchedulerListenerSupport() {
+                @Override
+                public void schedulerStarted() {
+                    try {
+                        scheduler.addJob(messageProcessingJobDetail, true);
+                        addTriggerToScheduler(messageProcessingTrigger);
+                    } catch (SchedulerException e) {
+                        throw new RiceRuntimeException("cannot add jobs to scheduler", e);
+                    }
+                }
+            });
+        }
     }
     
     private void addTriggerToScheduler(Trigger trigger) throws SchedulerException {
@@ -93,6 +106,7 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
 		}
 	}
 
+    @Override
     public void destroy() throws Exception {
         // prevent anything from accessing our services after the module has been destroyed/shutdown
         // our module's lifecycle is tied to the Spring context lifecycle for now

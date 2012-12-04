@@ -290,8 +290,7 @@
     <property name="templateOptions">
       <map>
         <entry key="min" value="0"/>
-        <entry key="stepInc" value="1"/>
-        <entry key="pageInc" value="1"/>
+        <entry key="step" value="1"/>
       </map>
     </property>
   </bean>

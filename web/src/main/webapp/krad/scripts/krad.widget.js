@@ -948,7 +948,7 @@ function createReorderer(divId, options) {
  * @param options - options for the spinner
  */
 function createSpinner(id, options) {
-    jQuery("#" + id).spinit(options);
+    jQuery("#" + id).spinner(options);
 }
 
 /**

@@ -18,9 +18,11 @@ package org.kuali.rice.krad.maintenance;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DocumentAttachment;
@@ -72,6 +74,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -286,7 +289,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 String clazz = xmlDocument.getDocumentElement().getAttribute(MAINTAINABLE_IMPL_CLASS);
                 if (isOldMaintainableInDocument(xmlDocument)) {
                     oldMaintainableObject = (Maintainable) Class.forName(clazz).newInstance();
-                    Object dataObject = getDataObjectFromXML(OLD_MAINTAINABLE_TAG_NAME, null);
+                    Object dataObject = getDataObjectFromXML(OLD_MAINTAINABLE_TAG_NAME);
 
                     String oldMaintenanceAction = getMaintenanceAction(xmlDocument, OLD_MAINTAINABLE_TAG_NAME);
                     oldMaintainableObject.setMaintenanceAction(oldMaintenanceAction);
@@ -295,7 +298,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                     oldMaintainableObject.setDataObjectClass(dataObject.getClass());
                 }
                 newMaintainableObject = (Maintainable) Class.forName(clazz).newInstance();
-                Object bo = getDataObjectFromXML(NEW_MAINTAINABLE_TAG_NAME, null);
+                Object bo = getDataObjectFromXML(NEW_MAINTAINABLE_TAG_NAME);
                 newMaintainableObject.setDataObject(bo);
                 newMaintainableObject.setDataObjectClass(bo.getClass());
 
@@ -378,38 +381,66 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * a
      * business object.
      */
-    protected Object getDataObjectFromXML(String maintainableTagName, String modifiedXMLContent) {
-        String maintXml = "";
-        if (StringUtils.isBlank(modifiedXMLContent)) {
-            maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">",
+    protected Object getDataObjectFromXML(String maintainableTagName) {
+        String maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">",
                 "</" + maintainableTagName + ">");
-        } else {
-            maintXml = modifiedXMLContent;
-        }
-        try {
-            return KRADServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
-        } catch (Exception e) {
-            Throwable exceptionCause = e.getCause();
-            String nonexistentField = "";
-            if (exceptionCause.getClass().getName().contains("CannotResolveClassException")) {
-                nonexistentField = StringUtils.substringAfter(exceptionCause.getMessage(), ": ");
-                LOG.warn( "Attempting to remove nonexistent field from XML document content.  Nonexistent field: " + nonexistentField);
-                String fieldContents = StringUtils.substringBetween(maintXml, "<" + nonexistentField + ">", "</" + nonexistentField + ">");
-                String wholeVar =   "<" + nonexistentField + ">" +  fieldContents + "</" + nonexistentField + ">";
-                String newMaintXml = StringUtils.remove(maintXml, wholeVar);
-                if (newMaintXml.length() != maintXml.length()) {
-                    return getDataObjectFromXML(maintainableTagName, newMaintXml);
-                } else {
-                    GlobalVariables.getMessageMap()
-                            .putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.UNABLE_TO_GET_DATA_FROM_XML, nonexistentField);
-                    throw new WorkflowRuntimeException("Failed to get data object from XML.", e);
+
+        boolean ignoreMissingFields = false;
+        String classAndDocTypeNames = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.Config.IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE);
+        if (!StringUtils.isEmpty(classAndDocTypeNames)) {
+            String classNameOnXML = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + "><", ">");
+            String classNamesNoSpaces = removeSpacesAround(classAndDocTypeNames);
+            List<String> classAndDocTypeNamesList = Arrays.asList(org.apache.commons.lang.StringUtils.split(classNamesNoSpaces, ","));
+            String originalDocTypeId = getDocumentHeader().getWorkflowDocument().getDocumentTypeId();
+            DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(originalDocTypeId);
+
+            while (docType != null && !ignoreMissingFields) {
+                for(String classNameOrDocTypeName : classAndDocTypeNamesList){
+                    if (docType.getName().equalsIgnoreCase(classNameOrDocTypeName) ||
+                        classNameOnXML.equalsIgnoreCase(classNameOrDocTypeName)) {
+                            ignoreMissingFields = true;
+                            break;
+                    }
                 }
-            } else {
-                GlobalVariables.getMessageMap()
-                        .putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.UNABLE_TO_GET_DATA_FROM_XML, nonexistentField);
-                throw new WorkflowRuntimeException("Failed to get data object from XML.", e);
+                docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(docType.getParentId());
             }
         }
+        if (!ignoreMissingFields) {
+            return KRADServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
+        } else {
+            return KRADServiceLocator.getXmlObjectSerializerIgnoreMissingFieldsService().fromXml(maintXml);
+        }
+    }
+
+    /**
+     * Removes the spaces around the elements on a csv list of elements.
+     * <p>
+     * A null input will return a null output.
+     * </p>
+     *
+     * @param csv a list of elements in csv format e.g. foo, bar, baz
+     * @return a list of elements in csv format without spaces e.g. foo,bar,baz
+     */
+    private String removeSpacesAround(String csv) {
+        if (csv == null) {
+            return null;
+        }
+
+        final StringBuilder result = new StringBuilder();
+        for (final String value : csv.split(",")) {
+            if (!"".equals(value.trim())) {
+                result.append(value.trim());
+                result.append(",");
+            }
+        }
+
+        //remove trailing comma
+        int i = result.lastIndexOf(",");
+        if (i != -1) {
+            result.deleteCharAt(i);
+        }
+
+        return result.toString();
     }
 
     /**

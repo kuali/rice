@@ -241,7 +241,7 @@
     <param name="rice.krad.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
 
     <param name="kns.editable.properties.history.size" override="false">20</param>
-    
+
     <!-- Reloading Dictionary Config -->
     <param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
     <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
@@ -414,8 +414,9 @@
 	<param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
   <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
   <param name="reload.data.dictionary.interval" override="false">3000</param>
-	
-	<!-- KCB -->
+  <param name="rice.krad.bos.ignoreMissingFieldsOnDeserialize" override="false"></param>
+
+  <!-- KCB -->
 	<param name="rice.kcb.struts.config.files" override="false">/kcb/WEB-INF/struts-config.xml</param>
 	<param name="kcb.url" override="false">${application.url}/kcb</param>
 	<param name="rice.kcb.set.soap.services.as.default" override="false">true</param>

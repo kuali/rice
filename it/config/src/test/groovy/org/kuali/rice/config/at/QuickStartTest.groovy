@@ -24,6 +24,7 @@ import static org.junit.Assert.*
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
 import org.junit.Ignore
 import org.junit.BeforeClass
+import groovy.sql.Sql
 
 /**
  * Test for the quickstart archetype.  Executes maven commands.
@@ -99,8 +100,21 @@ class QuickStartTest {
     def getDatasourceUrl() { config.getProperty("datasource.url") }
     def getDatasourceUsername() { config.getProperty("datasource.username") }
     def getDatasourcePassword() { config.getProperty("datasource.password") }
+    def getDatasourceDriver() { config.getProperty("datasource.driver.name") }
     def getJettyPort() { config.getProperty("unittest.jetty.server1.port") }
     def getArchetypeVersion() { config.getProperty("rice.version") }
+
+    //this is a hack to fix the quartz tables...  once an embedded db is supported we should use that.
+    def fixQuartzTriggerTable() {
+        def sql = Sql.newInstance( getDatasourceUrl(), getDatasourceUsername(), getDatasourcePassword(), getDatasourceDriver() )
+        sql.execute("DELETE FROM KRSB_QRTZ_LOCKS")
+
+        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('CALENDAR_ACCESS')")
+        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('JOB_ACCESS')")
+        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('MISFIRE_ACCESS')")
+        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('STATE_ACCESS')")
+        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('TRIGGER_ACCESS')")
+    }
 
     private OutputAwareMvnContext createStandardContext() {
         return new OutputAwareMvnContextImpl(
@@ -201,6 +215,9 @@ class QuickStartTest {
         properties["goals"] = "clean install -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
         context.projectProperties = properties
         context.properties = properties.keySet() as List
+
+        //fixme: remove when we support embedded db
+        fixQuartzTriggerTable();
 
         executeMaven(context)
 

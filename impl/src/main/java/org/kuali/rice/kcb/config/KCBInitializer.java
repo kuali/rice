@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kcb.config;
 
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.JobDetail;
@@ -23,7 +22,6 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.quartz.listeners.SchedulerListenerSupport;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -73,24 +71,10 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
         // kill the reference, our job is done
         beanFactory = null;
 
-        final Scheduler scheduler = getScheduler() == null ? KSBServiceLocator.getScheduler():getScheduler();
-        if (scheduler.isStarted()) {
-            scheduler.addJob(messageProcessingJobDetail, true);
-            addTriggerToScheduler(messageProcessingTrigger);
-        } else {
-            //delay adding the job until after the scheduler is fully started.  This prevents a timing issue with quartz startup
-            scheduler.addSchedulerListener(new SchedulerListenerSupport() {
-                @Override
-                public void schedulerStarted() {
-                    try {
-                        scheduler.addJob(messageProcessingJobDetail, true);
-                        addTriggerToScheduler(messageProcessingTrigger);
-                    } catch (SchedulerException e) {
-                        throw new RiceRuntimeException("cannot add jobs to scheduler", e);
-                    }
-                }
-            });
-        }
+        Scheduler scheduler = getScheduler()==null?KSBServiceLocator.getScheduler():getScheduler();
+        scheduler.addJob(messageProcessingJobDetail, true);
+
+        addTriggerToScheduler(messageProcessingTrigger);
     }
     
     private void addTriggerToScheduler(Trigger trigger) throws SchedulerException {

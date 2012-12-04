@@ -28,6 +28,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>internal-tools</module>
+    <module>config</module>
     <module>core</module>
     <module>krad</module>
     <module>ksb</module>
@@ -41,7 +42,6 @@
     <module>krms</module>
     <module>remote</module>
     <module>vc</module>
-    <module>config</module>
   </modules>
   <properties>
     <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->

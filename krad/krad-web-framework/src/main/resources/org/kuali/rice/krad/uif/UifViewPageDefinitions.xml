@@ -33,15 +33,13 @@
         <!--value>krad/css/global/fss-reset.css</value>
         <value>krad/css/global/fss-layout.css</value>
         <value>krad/css/global/fss-text.css</value>
-        <value>krad/plugins/jqueryUI/jquery-ui-1.8.23.css</value>
+        <value>krad/plugins/jqueryUI/jquery-ui-1.9.2.css</value>
         <value>krad/plugins/jgrowl/jquery.jgrowl.css</value>
         <value>krad/plugins/rice/datatables/jquery.dataTables.css</value>
         <value>krad/plugins/rice/datatables/TableTools.css</value>
         <value>krad/plugins/fancybox/jquery.fancybox.css</value>
         <value>krad/plugins/rice/textpopout/popoutTextarea.css</value>
         <value>krad/plugins/rice/menu/tabs.css</value>
-        <value>krad/plugins/rice/spinner/smartspinner.css</value>
-        <value>krad/plugins/tooltip/jquery.tools.tooltip.css</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
         <value>krad/css/global/base.css</value-->
       </list>
@@ -50,8 +48,8 @@
       <list>
         <value>krad/min/scripts/krad_@{#ConfigProperties['rice.version']}.min.js</value>
         <!-- For Debugging, uncomment out the values below (and comment out the minimized js above) -->
-        <!--value>krad/plugins/jquery/jquery-1.8.0.js</value>
-        <value>krad/plugins/jqueryUI/jquery-ui-1.8.23.js</value>
+        <!--value>krad/plugins/jquery/jquery-1.8.3.js</value>
+        <value>krad/plugins/jqueryUI/jquery-ui-1.9.2.js</value>
         <value>krad/plugins/jqueryUI/jquery.ui.autocomplete.html.js</value>
         <value>krad/plugins/color/jquery.color.js</value>
         <value>krad/plugins/cookie/jquery.cookie.js</value>
@@ -59,9 +57,7 @@
         <value>krad/plugins/blockUI/jquery.blockUI.js</value>
         <value>krad/plugins/watermark/jquery.watermark.js</value>
         <value>krad/plugins/validate/jquery.validate.js</value>
-        <value>krad/plugins/tooltip/jquery.tools.min.js</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.js</value>
-        <value>krad/plugins/rice/spinner/smartspinner.js</value>
         <value>krad/plugins/rice/menu/krad.navigationMenu.js</value>
         <value>krad/plugins/rice/textpopout/krad.textareaPopout.js</value>
         <value>krad/plugins/dirtyform/jquery.dirtyform.js</value>
@@ -80,6 +76,7 @@
         <value>krad/plugins/json/jquery.json-2.2.js</value>
         <value>krad/plugins/infusion/infusion-1.4.js</value>
         <value>krad/plugins/infusion/infusion.reorderer.js</value>
+        <value>krad/plugins/prettify/prettify.js</value>
         <value>krad/scripts/krad.variables.js</value>
         <value>krad/scripts/krad.message.js</value>
         <value>krad/scripts/krad.widget.js</value>

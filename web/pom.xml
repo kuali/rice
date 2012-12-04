@@ -133,23 +133,21 @@
               <cssSourceFiles>
                 <cssSourceFile>css/global/fss-reset-global.css</cssSourceFile>
                 <cssSourceFile>css/global/fss-text.css</cssSourceFile>
-                <cssSourceFile>plugins/jqueryUI/jquery-ui-1.8.23.css</cssSourceFile>
+                <cssSourceFile>plugins/jqueryUI/jquery-ui-1.9.2.css</cssSourceFile>
                 <cssSourceFile>plugins/jgrowl/jquery.jgrowl.css</cssSourceFile>
                 <cssSourceFile>plugins/rice/datatables/jquery.dataTables.css</cssSourceFile>
                 <cssSourceFile>plugins/rice/datatables/TableTools.css</cssSourceFile>
                 <cssSourceFile>plugins/fancybox/jquery.fancybox.css</cssSourceFile>
                 <cssSourceFile>plugins/rice/textpopout/popoutTextarea.css</cssSourceFile>
                 <cssSourceFile>plugins/rice/menu/tabs.css</cssSourceFile>
-                <cssSourceFile>plugins/rice/spinner/smartspinner.css</cssSourceFile>
-                <cssSourceFile>plugins/tooltip/jquery.tools.tooltip.css</cssSourceFile>
                 <cssSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.css</cssSourceFile>
                 <cssSourceFile>css/global/base.css</cssSourceFile>
                 <cssSourceFile>css/global/fss-layout.css</cssSourceFile>
               </cssSourceFiles>
               <jsSourceDir>krad</jsSourceDir>
               <jsSourceFiles>
-                <jsSourceFile>plugins/jquery/jquery-1.8.0.js</jsSourceFile>
-                <jsSourceFile>plugins/jqueryUI/jquery-ui-1.8.23.js</jsSourceFile>
+                <jsSourceFile>plugins/jquery/jquery-1.8.3.js</jsSourceFile>
+                <jsSourceFile>plugins/jqueryUI/jquery-ui-1.9.2.js</jsSourceFile>
                 <jsSourceFile>plugins/jqueryUI/jquery.ui.autocomplete.html.js</jsSourceFile>
                 <jsSourceFile>plugins/color/jquery.color.js</jsSourceFile>
                 <jsSourceFile>plugins/cookie/jquery.cookie.js</jsSourceFile>
@@ -157,8 +155,6 @@
                 <jsSourceFile>plugins/blockUI/jquery.blockUI.js</jsSourceFile>
                 <jsSourceFile>plugins/watermark/jquery.watermark.js</jsSourceFile>
                 <jsSourceFile>plugins/validate/jquery.validate.js</jsSourceFile>
-                <jsSourceFile>plugins/tooltip/jquery.tools.min.js</jsSourceFile>
-                <jsSourceFile>plugins/rice/spinner/smartspinner.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/menu/krad.navigationMenu.js</jsSourceFile>
                 <jsSourceFile>plugins/rice/textpopout/krad.textareaPopout.js</jsSourceFile>
                 <jsSourceFile>plugins/dirtyform/jquery.dirtyform.js</jsSourceFile>

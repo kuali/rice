@@ -118,7 +118,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 			}
 			nameBuilder.setDefaultName(EntityName.Builder.create(defaultEntity.getName()));
 			if (StringUtils.isBlank(defaultEntity.getName().getCompositeName())) {
-				String formattedName = defaultEntity.getName().getLastName() + ", " + defaultEntity.getName().getFirstName() + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName());
+				String formattedName = (defaultEntity.getName().getLastName() + ", " + defaultEntity.getName().getFirstName() + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName())).trim();
 				nameBuilder.getDefaultName().setCompositeName(formattedName);
 			}
 			return nameBuilder.build();

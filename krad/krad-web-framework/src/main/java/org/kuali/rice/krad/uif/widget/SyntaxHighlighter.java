@@ -26,8 +26,7 @@ import java.io.Serializable;
  *
  * <p>
  * The widget renders a div with a header. In the div the source code text will be added in pre tags with the
- * specified plugin class that is needed for the plugin to alter the text. An onDocumentReadyScript listener is needed
- * on the page to call the plugin's prettyPrint() function. This is set on the page definition.
+ * specified plugin class that is needed for the plugin to alter the text.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -24,12 +24,14 @@ Create pre tags containing the text to highlight adding the css class used by th
 
     <div>
         <h3>${widget.sourceCodeHeader}</h3>
-        <div class="codeSnippet">
+        <div>
             <pre class="${widget.pluginCssClass}">
                 ${widget.sourceCode}
             </pre>
         </div>
     </div>
+
+    <@krad.script value="prettyPrint();" />
 </#macro>
 
 

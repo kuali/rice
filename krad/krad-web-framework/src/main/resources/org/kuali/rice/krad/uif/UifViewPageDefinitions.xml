@@ -212,7 +212,6 @@
         <value>uif-page</value>
       </list>
     </property>
-    <property name="onDocumentReadyScript" value="prettyPrint();"/>
     <property name="validationMessages">
       <bean parent="Uif-PageValidationMessages"/>
     </property>

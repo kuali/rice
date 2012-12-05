@@ -103,7 +103,8 @@ public class DialogGroup extends Group {
      * The following actions are performed:
      *
      * <ul>
-     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection</li>
+     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection if they
+     * are not already present</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
@@ -113,28 +114,27 @@ public class DialogGroup extends Group {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-            // move dialogGroup custom properties into the items property.
-            // where they will be rendered by group.jsp
-            List<Component> myItems = new ArrayList<Component>();
-            List<? extends Component> items = getItems();
+        // move dialogGroup custom properties into the items property.
+        // where they will be rendered by group.jsp
+        List<Component> newItems = new ArrayList<Component>();
+        List<? extends Component> items = getItems();
 
-            // do not add the custom properties if they are already present
-            if(!(items.contains(prompt))){
-                myItems.add(prompt);
-            }
+        // do not add the custom properties if they are already present
+        if (!(items.contains(prompt))) {
+            newItems.add(prompt);
+        }
 
-            if(!(items.contains(explanation))){
-                myItems.add(explanation);
-            }
+        if (!(items.contains(explanation))) {
+            newItems.add(explanation);
+        }
 
-            myItems.addAll(getItems());
+        newItems.addAll(getItems());
 
-            if(!(items.contains(responseInputField))){
-                myItems.add(responseInputField);
-            }
+        if (!(items.contains(responseInputField))) {
+            newItems.add(responseInputField);
+        }
 
-            this.setItems(myItems);
-
+        this.setItems(newItems);
     }
 
     /**

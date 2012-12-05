@@ -108,7 +108,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      * </p>
      *
      * <p>
-     * Note the view is not initialized for Ajax requests that perform partial page updates or no
+     * Note the view is not initialized for Ajax requests that perform partial page updates or dialog updates or no
      * updates at all
      * </p>
      *

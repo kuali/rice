@@ -269,7 +269,7 @@
     <property name="promptText" value=""/>
     <property name="items">
       <list>
-        <bean parent="Uif-DataField" p:label="Course Offeringsv" p:propertyName="field2" p:fieldLabel.style="font-weight:bold;"/>
+        <bean parent="Uif-DataField" p:label="Course Offerings" p:propertyName="field2" p:fieldLabel.style="font-weight:bold;"/>
         <bean parent="Uif-MessageField" p:label="Activity Offerings"
               p:messageText="All contained in the course offerings(@{field3}) " p:fieldLabel.style="font-weight:bold;"/>
       </list>

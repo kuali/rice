@@ -106,14 +106,22 @@ class QuickStartTest {
 
     //this is a hack to fix the quartz tables...  once an embedded db is supported we should use that.
     def fixQuartzTriggerTable() {
-        def sql = Sql.newInstance( getDatasourceUrl(), getDatasourceUsername(), getDatasourcePassword(), getDatasourceDriver() )
-        sql.execute("DELETE FROM KRSB_QRTZ_LOCKS")
+        def sql = null;
 
-        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('CALENDAR_ACCESS')")
-        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('JOB_ACCESS')")
-        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('MISFIRE_ACCESS')")
-        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('STATE_ACCESS')")
-        sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('TRIGGER_ACCESS')")
+        try {
+            sql = Sql.newInstance( getDatasourceUrl(), getDatasourceUsername(), getDatasourcePassword(), getDatasourceDriver() )
+            sql.execute("DELETE FROM KRSB_QRTZ_LOCKS")
+
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('CALENDAR_ACCESS')")
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('JOB_ACCESS')")
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('MISFIRE_ACCESS')")
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('STATE_ACCESS')")
+            sql.execute("INSERT INTO KRSB_QRTZ_LOCKS (LOCK_NAME) VALUES ('TRIGGER_ACCESS')")
+        } finally {
+            if (sql != null) {
+                sql.close();
+            }
+        }
     }
 
     private OutputAwareMvnContext createStandardContext() {

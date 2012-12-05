@@ -328,6 +328,10 @@ public abstract class WebDriverLegacyITBase { //implements com.saucelabs.common.
         return isElementPresent(By.xpath(locator));
     }
     
+    protected boolean isElementPresentByLinkText(String locator) {
+        return isElementPresent(By.linkText(locator));
+    }
+    
     protected void open(String url) {
         driver.get(url);
     }

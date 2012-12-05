@@ -295,6 +295,14 @@
     </property>
   </bean>
 
+  <bean id="Uif-SyntaxHighlighter" parent="Uif-SyntaxHighlighter-parentBean"/>
+  <bean id="Uif-SyntaxHighlighter-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.SyntaxHighlighter" scope="prototype"
+        parent="Uif-WidgetBase">
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/syntaxHighlighter.ftl"/>
+    <property name="templateName" value="uif_syntaxHighlighter"/>
+    <property name="pluginCssClass" value="prettyprint linenums prettyprinted"/>
+  </bean>
+
   <bean id="Uif-Tooltip" parent="Uif-Tooltip-parentBean"/>
   <bean id="Uif-Tooltip-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tooltip" scope="prototype">
     <property name="onMouseHover" value="true"/>

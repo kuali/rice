@@ -98,6 +98,21 @@
 
   <!--
   ********************************************************************************************************************
+                                           UIF Comp - Syntax Highlighter
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-SyntaxHighlighter" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-SyntaxHighlighter" p:sourceCode='@{sourceCodeField}'
+              p:sourceCodeHeader="Test code highlight">
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
                                            UIF Comp - Attribute Security
   ********************************************************************************************************************
   -->

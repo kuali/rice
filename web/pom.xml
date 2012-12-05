@@ -141,6 +141,7 @@
                 <cssSourceFile>plugins/rice/textpopout/popoutTextarea.css</cssSourceFile>
                 <cssSourceFile>plugins/rice/menu/tabs.css</cssSourceFile>
                 <cssSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.css</cssSourceFile>
+                <cssSourceFile>plugins/prettify/prettify.css</cssSourceFile>
                 <cssSourceFile>css/global/base.css</cssSourceFile>
                 <cssSourceFile>css/global/fss-layout.css</cssSourceFile>
               </cssSourceFiles>
@@ -172,6 +173,7 @@
                 <jsSourceFile>plugins/json/jquery.json-2.2.js</jsSourceFile>
                 <jsSourceFile>plugins/infusion/infusion-1.4.js</jsSourceFile>
                 <jsSourceFile>plugins/infusion/infusion.reorderer.js</jsSourceFile>
+                <jsSourceFile>plugins/prettify/prettify.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.message.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.widget.js</jsSourceFile>

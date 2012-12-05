@@ -41,6 +41,7 @@
         <value>krad/plugins/rice/textpopout/popoutTextarea.css</value>
         <value>krad/plugins/rice/menu/tabs.css</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
+        <value>krad/plugins/prettify/prettify.css</value>
         <value>krad/css/global/base.css</value-->
       </list>
     </property>
@@ -211,6 +212,7 @@
         <value>uif-page</value>
       </list>
     </property>
+    <property name="onDocumentReadyScript" value="prettyPrint();"/>
     <property name="validationMessages">
       <bean parent="Uif-PageValidationMessages"/>
     </property>

@@ -235,10 +235,20 @@ public class UifComponentsTestForm extends UifFormBase {
     private Map<String, Object> remoteFieldValuesMap;
     private Map<String, Object> remoteFieldValuesMap2;
 
+    private String sourceCodeField;
+
     public UifComponentsTestForm() {
         super();
 
         uiTestObject = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
+
+        sourceCodeField = "&lt;bean parent=\"Uif-PrimaryActionButton\" p:actionLabel=\"Save\" p:methodToCall=\"performSave\"&gt;\n"
+                + "&#32;&#32;&lt;property name=\"actionImage\"&gt;\n"
+                + "&#32;&#32;&#32;&#32;&lt;bean parent=\"Uif-Image\"\n"
+                + "&#32;&#32;&#32;&#32;&#32;&#32;p:source=\"@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif\"\n"
+                + "&#32;&#32;&#32;&#32;&#32;&#32;p:actionImageLocation=\"RIGHT\"/&gt;\n"
+                + "&#32;&#32;&lt;/property&gt;\n"
+                + "&lt;/bean&gt;";
 
         list1.add(new UITestObject("5", "6", "7", "8"));
         UITestObject obj1 = new UITestObject("1", "2", "3", "4");
@@ -2484,5 +2494,13 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setDateList(List<Date> dateList) {
         this.dateList = dateList;
+    }
+
+    public String getSourceCodeField() {
+        return sourceCodeField;
+    }
+
+    public void setSourceCodeField(String sourceCodeField) {
+        this.sourceCodeField = sourceCodeField;
     }
 }

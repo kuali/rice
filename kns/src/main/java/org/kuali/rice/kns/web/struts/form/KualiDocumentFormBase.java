@@ -196,7 +196,10 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
          	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
-         	 		Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KRADConstants.SYSTEM_USER);
+                    Person person = GlobalVariables.getUserSession().getPerson();
+                    if (ObjectUtils.isNull(person)) {
+                        person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KRADConstants.SYSTEM_USER);
+                    }
          	 		workflowDocument = KRADServiceLocatorWeb.getWorkflowDocumentService().loadWorkflowDocument(getDocument().getDocumentNumber(), person);
          	 	 	sessionDocumentService.addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
          	 	 	if (workflowDocument == null)

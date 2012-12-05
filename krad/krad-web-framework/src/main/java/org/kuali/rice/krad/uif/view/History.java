@@ -251,12 +251,6 @@ public class History implements Serializable {
      */
     public void buildHistoryFromParameterString(String parameterString) {
         if (StringUtils.isNotEmpty(parameterString)) {
-            try {
-                parameterString = URLDecoder.decode(parameterString, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException("Unable to get history from parameter string", e);
-            }
-
             historyEntries = new ArrayList<HistoryEntry>();
             if (appendPassedHistory) {
                 String[] historyTokens = StringUtils.splitByWholeSeparator(parameterString, ENTRY_TOKEN);

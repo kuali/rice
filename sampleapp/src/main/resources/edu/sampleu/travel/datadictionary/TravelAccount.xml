@@ -83,9 +83,9 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Travel Account Number"/>
     <property name="maxLength" value="10"/>
-    <property name="constraintText" value="Must be 10 digits"/>
+    <property name="constraintText" value="Must not be more than 10 characters"/>
     <property name="validCharactersConstraint">
-      <bean parent="NumericPatternConstraint"/>
+      <bean parent="AlphaNumericPatternConstraint"/>
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>

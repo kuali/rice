@@ -174,6 +174,7 @@
                 <jsSourceFile>plugins/infusion/infusion-1.4.js</jsSourceFile>
                 <jsSourceFile>plugins/infusion/infusion.reorderer.js</jsSourceFile>
                 <jsSourceFile>plugins/prettify/prettify.js</jsSourceFile>
+                <jsSourceFile>plugins/globalize/globalize.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.message.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.widget.js</jsSourceFile>

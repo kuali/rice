@@ -728,6 +728,45 @@
             <bean parent="Uif-SpinnerControl"/>
           </property>
         </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field132">
+          <property name="control">
+            <bean parent="Uif-SpinnerControl">
+              <property name="spinner">
+                <bean parent="Uif-Spinner">
+                  <property name="templateOptions">
+                  <map merge="true">
+                    <entry key="start" value="5"/>
+                    <entry key="step" value="25"/>
+                    <entry key="max" value="2500"/>
+                    <entry key="numberFormat" value="C"/>
+                    <entry key="culture" value="en-GB"/>
+                  </map>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field133">
+          <property name="control">
+            <bean parent="Uif-SpinnerControl">
+              <property name="spinner">
+                <bean parent="Uif-Spinner">
+                  <property name="templateOptions">
+                    <map merge="true">
+                      <entry key="start" value="0.01"/>
+                      <entry key="step" value="0.01"/>
+                      <entry key="numberFormat" value="n"/>
+                      <entry key="culture" value="en-EN"/>
+                    </map>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

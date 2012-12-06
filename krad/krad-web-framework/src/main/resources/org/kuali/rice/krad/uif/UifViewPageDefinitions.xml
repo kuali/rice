@@ -78,6 +78,7 @@
         <value>krad/plugins/infusion/infusion-1.4.js</value>
         <value>krad/plugins/infusion/infusion.reorderer.js</value>
         <value>krad/plugins/prettify/prettify.js</value>
+        <value>krad/plugins/globalize/globalize.js</value>
         <value>krad/scripts/krad.variables.js</value>
         <value>krad/scripts/krad.message.js</value>
         <value>krad/scripts/krad.widget.js</value>

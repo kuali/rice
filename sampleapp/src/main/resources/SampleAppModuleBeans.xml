@@ -139,7 +139,6 @@
         <value>classpath:edu/sampleu/demo/kitchensink/TrainingApplicationView.xml</value>
         <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationDocument.xml</value>
         <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationView.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/BugTestView.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->

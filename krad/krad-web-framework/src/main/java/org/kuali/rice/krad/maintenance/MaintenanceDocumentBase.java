@@ -862,12 +862,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         // Make sure the business object's version number matches that of the database's copy.
         if (newMaintainableObject != null) {
-            if (KRADServiceLocator.getPersistenceStructureService()
-                    .isPersistable(newMaintainableObject.getDataObject().getClass())) {
+            if (newMaintainableObject.isLockable()) {
                 PersistableBusinessObject pbObject = KRADServiceLocator.getBusinessObjectService()
-                        .retrieve((PersistableBusinessObject) newMaintainableObject.getDataObject());
+                        .retrieve(newMaintainableObject.getPersistableBusinessObject());
                 Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
-                Long newObjectVerNbr = ((PersistableBusinessObject) newMaintainableObject.getDataObject()).getVersionNumber();
+                Long newObjectVerNbr = newMaintainableObject.getPersistableBusinessObject().getVersionNumber();
                 if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
                     GlobalVariables.getMessageMap()
                             .putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_VERSION_MISMATCH);

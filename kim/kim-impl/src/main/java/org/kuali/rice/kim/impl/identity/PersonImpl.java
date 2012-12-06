@@ -265,7 +265,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			EntityEmployment employmentInformation = entity.getEmployment();
 			if ( employmentInformation != null ) {
 				employeeStatusCode = unNullify( employmentInformation.getEmployeeStatus() != null ? employmentInformation.getEmployeeStatus().getCode() : null);
-				employeeTypeCode = unNullify( employmentInformation.getEmployeeType() != null ? employmentInformation.getEmployeeStatus().getCode() : null);
+				employeeTypeCode = unNullify( employmentInformation.getEmployeeType() != null ? employmentInformation.getEmployeeType().getCode() : null);
 				primaryDepartmentCode = unNullify( employmentInformation.getPrimaryDepartmentCode() );
 				employeeId = unNullify( employmentInformation.getEmployeeId() );
 				if ( employmentInformation.getBaseSalaryAmount() != null ) {

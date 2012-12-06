@@ -156,9 +156,11 @@ class QuickStartTest {
     private executeMaven(context) {
         try {
             new OutputAwareMvnExecutor().execute(context)
-        } finally {
-            //println context.stdOutWriter
-            //println context.stdErrWriter
+        } catch (Throwable t) {
+            //debugging info
+            println context.stdOutWriter
+            System.err.println context.stdErrWriter
+            throw t;
         }
     }
 

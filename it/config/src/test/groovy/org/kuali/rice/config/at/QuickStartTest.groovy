@@ -78,7 +78,7 @@ class QuickStartTest {
      */
     @After
     void removeTargetDir() {
-        if (!targetDir.exists()) {
+        if (targetDir != null || !targetDir.exists()) {
             return
         }
 
@@ -220,7 +220,7 @@ class QuickStartTest {
         properties["datasource_password"] = getDatasourcePassword()
 
         //turn on integration tests, set jetty.port for integration test run
-        properties["goals"] = "clean install -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
+        properties["goals"] = "clean install -X -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
         context.projectProperties = properties
         context.properties = properties.keySet() as List
 

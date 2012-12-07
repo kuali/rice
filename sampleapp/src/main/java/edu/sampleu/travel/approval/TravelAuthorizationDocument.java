@@ -41,8 +41,8 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     private Date tripEnd;
     private String tripDescription;
     private Boolean primaryDestinationIndicator = false;
-
     private Integer primaryDestinationId;
+    private Integer travelerDetailId;
     private String primaryDestinationName;
     private String primaryDestinationCountryState;
     private String primaryDestinationCounty;
@@ -207,6 +207,32 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
      */
     public void setPrimaryDestinationId(Integer primaryDestinationId) {
         this.primaryDestinationId = primaryDestinationId;
+    }
+
+    /**
+     * Returns the traveler detail id.
+     *
+     * <p>
+     * Gets the primary key for the traveler.
+     * </p>
+     *
+     * @return Integer - traveler detail id
+     */
+    public Integer getTravelerDetailId() {
+        return travelerDetailId;
+    }
+
+    /**
+     * Initializes the traveler detail id.
+     *
+     * <p>
+     * Sets the traveler detail id.
+     * </p>
+     *
+     * @param travelerDetailId1 - integer of primary destination id
+     */
+    public void setTravelerDetailId(Integer travelerDetailId1) {
+        this.travelerDetailId = travelerDetailId;
     }
 
     /**

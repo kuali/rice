@@ -47,7 +47,7 @@
     <field-descriptor name="documentNumber" primarykey="true" column="FDOC_NBR" jdbc-type="VARCHAR"/>
     <field-descriptor name="travelDocumentIdentifier" column="TRVL_ID" jdbc-type="VARCHAR"/>
     <!--<field-descriptor name="temProfileId" column="TEM_PROFILE_ID" jdbc-type="INTEGER"/>-->
-    <!--<field-descriptor name="travelerDetailId" column="TRAVELER_DTL_ID" jdbc-type="INTEGER"/>-->
+    <field-descriptor name="travelerDetailId" column="TRAVELER_DTL_ID" jdbc-type="INTEGER"/>
     <field-descriptor name="tripTypeCode" column="TRIP_TYP_CD" jdbc-type="VARCHAR"/>
     <field-descriptor name="tripBegin" column="TRIP_BGN_DT" jdbc-type="DATE"/>
     <field-descriptor name="tripEnd" column="TRIP_END_DT" jdbc-type="DATE"/>
@@ -75,10 +75,10 @@
       <foreignkey field-ref="documentNumber"/>
     </reference-descriptor>
 
-    <!--<reference-descriptor name="traveler" class-ref="edu.sampleu.travel.approval.dataobject.TravelerDetail"-->
-                          <!--auto-retrieve="true" auto-update="object" auto-delete="object">-->
-      <!--<foreignkey field-ref="travelerDetailId"/>-->
-    <!--</reference-descriptor>-->
+    <reference-descriptor name="traveler" class-ref="edu.sampleu.travel.approval.dataobject.TravelerDetail"
+                          auto-retrieve="true" auto-update="object" auto-delete="object">
+      <foreignkey field-ref="travelerDetailId"/>
+    </reference-descriptor>
 
     <!--<reference-descriptor name="tripType" class-ref="edu.sampleu.travel.approval.dataobject.TripType"-->
                           <!--auto-retrieve="true" auto-update="none" auto-delete="none">-->
@@ -132,41 +132,41 @@
     <!--</collection-descriptor>-->
   </class-descriptor>
 
-  <!--<class-descriptor class="edu.sampleu.travel.approval.dataobject.TravelerDetail" table="TRVL_TRAVELER_DTL_T">-->
-    <!--<field-descriptor name="id" primarykey="true" sequence-name="TRVL_TRAVELER_DTL_ID_SEQ" autoincrement="true"-->
-                      <!--column="id" jdbc-type="INTEGER"/>-->
-    <!--<field-descriptor name="documentNumber" column="DOC_NBR" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="principalId" column="EMP_PRINCIPAL_ID" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="customerNumber" column="CUST_NBR" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="firstName" column="FIRST_NM" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="lastName" column="LAST_NM" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="streetAddressLine1" column="ADDR_LINE_1" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="streetAddressLine2" column="ADDR_LINE_2" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="cityName" column="CITY_NM" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="stateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="zipCode" column="POSTAL_CD" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="countryCode" column="COUNTRY_CD" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="emailAddress" column="EMAIL_ADDR" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="phoneNumber" column="PHONE_NBR" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="liabilityInsurance" column="LIABILITY_INSURANCE" jdbc-type="VARCHAR"-->
-                      <!--conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>-->
+  <class-descriptor class="edu.sampleu.travel.approval.dataobject.TravelerDetail" table="TRVL_TRAVELER_DTL_T">
+    <field-descriptor name="id" primarykey="true" sequence-name="TRVL_TRAVELER_DTL_ID_SEQ" autoincrement="true"
+                      column="id" jdbc-type="INTEGER"/>
+    <field-descriptor name="documentNumber" column="DOC_NBR" jdbc-type="VARCHAR"/>
+    <field-descriptor name="principalId" column="EMP_PRINCIPAL_ID" jdbc-type="VARCHAR"/>
+    <field-descriptor name="customerNumber" column="CUST_NBR" jdbc-type="VARCHAR"/>
+    <field-descriptor name="firstName" column="FIRST_NM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="lastName" column="LAST_NM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="streetAddressLine1" column="ADDR_LINE_1" jdbc-type="VARCHAR"/>
+    <field-descriptor name="streetAddressLine2" column="ADDR_LINE_2" jdbc-type="VARCHAR"/>
+    <field-descriptor name="cityName" column="CITY_NM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="stateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR"/>
+    <field-descriptor name="zipCode" column="POSTAL_CD" jdbc-type="VARCHAR"/>
+    <field-descriptor name="countryCode" column="COUNTRY_CD" jdbc-type="VARCHAR"/>
+    <field-descriptor name="emailAddress" column="EMAIL_ADDR" jdbc-type="VARCHAR"/>
+    <field-descriptor name="phoneNumber" column="PHONE_NBR" jdbc-type="VARCHAR"/>
+    <field-descriptor name="liabilityInsurance" column="LIABILITY_INSURANCE" jdbc-type="VARCHAR"
+                      conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <!--<field-descriptor name="travelerTypeCode" column="TRAVELER_TYP_CD" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="citizenship" column="CITIZENSHIP" jdbc-type="VARCHAR"/>-->
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR"/>
+    <field-descriptor name="citizenship" column="CITIZENSHIP" jdbc-type="VARCHAR"/>
     <!--<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR"-->
                       <!--conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>-->
-    <!--<field-descriptor name="versionNumber" locking="true" column="VER_NBR" jdbc-type="BIGINT"/>-->
-    <!--<reference-descriptor name="travelerType" class-ref="edu.sampleu.travel.approval.dataobject.TravelerType"-->
-                          <!--auto-retrieve="true" auto-update="none" auto-delete="none">-->
-      <!--<foreignkey field-ref="travelerTypeCode"/>-->
-    <!--</reference-descriptor>-->
-    <!--<collection-descriptor name="emergencyContacts"-->
-                           <!--element-class-ref="edu.sampleu.travel.approval.dataobject.TravelerDetailEmergencyContact"-->
-                           <!--collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"-->
-                           <!--auto-retrieve="true" auto-update="object" auto-delete="true">-->
-      <!--<inverse-foreignkey field-ref="travelerDetailId"/>-->
-    <!--</collection-descriptor>-->
-  <!--</class-descriptor>-->
+    <field-descriptor name="versionNumber" locking="true" column="VER_NBR" jdbc-type="BIGINT"/>
+   <!-- <reference-descriptor name="travelerType" class-ref="edu.sampleu.travel.approval.dataobject.TravelerType"
+                          auto-retrieve="true" auto-update="none" auto-delete="none">
+      <foreignkey field-ref="travelerTypeCode"/>
+    </reference-descriptor>
+    <collection-descriptor name="emergencyContacts"
+                           element-class-ref="edu.sampleu.travel.approval.dataobject.TravelerDetailEmergencyContact"
+                           collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+                           auto-retrieve="true" auto-update="object" auto-delete="true">
+      <inverse-foreignkey field-ref="travelerDetailId"/>
+    </collection-descriptor>-->
+  </class-descriptor>
 
   <!--<class-descriptor class="edu.sampleu.travel.approval.dataobject.TravelerType" table="TRVL_TRAVELER_TYP_T">-->
     <!--<field-descriptor name="code" primarykey="true" column="CODE" jdbc-type="VARCHAR"/>-->

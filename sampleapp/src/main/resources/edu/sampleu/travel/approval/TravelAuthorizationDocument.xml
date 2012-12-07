@@ -158,4 +158,11 @@
     </property>
   </bean>
 
+  <bean id="TravelAuthorizationDocument-travelerDetailId"
+        parent="TravelAuthorizationDocument-travelerDetailId-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetailId-parentBean" abstract="true" parent="TravelerDetail-id">
+    <property name="name" value="travelerDetailId"/>
+    <property name="required" value="false"/>
+  </bean>
+
 </beans>

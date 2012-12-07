@@ -65,7 +65,6 @@
         <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerInfo.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/travel/datadictionary/PrimaryDestination.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountInfo.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml</value>
@@ -139,6 +138,9 @@
         <value>classpath:edu/sampleu/demo/kitchensink/TrainingApplicationView.xml</value>
         <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationDocument.xml</value>
         <value>classpath:edu/sampleu/travel/approval/TravelAuthorizationView.xml</value>
+        <value>classpath:edu/sampleu/travel/approval/TravelerDetailLookup.xml</value>
+        <value>classpath:edu/sampleu/travel/approval/dataDictionary/TravelerDetail.xml</value>
+        <value>classpath:edu/sampleu/travel/approval/dataDictionary/PrimaryDestination.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->

@@ -83,3 +83,22 @@ INSERT INTO TRV_ACCT_TYPE (ACCT_TYPE,ACCT_TYPE_NAME)
   VALUES ('IAT',' Income Account Type')
 /
 
+INSERT INTO trvl_traveler_dtl_t (id, EMP_PRINCIPAL_ID, CUST_NBR, FIRST_NM,
+LAST_NM, ADDR_LINE_1, ADDR_LINE_2, CITY_NM, POSTAL_STATE_CD, POSTAL_CD,
+COUNTRY_CD, EMAIL_ADDR, PHONE_NBR, LIABILITY_INSURANCE, TRAVELER_TYP_CD, ACTV_IN)
+VALUES (10000, 'earl', '101', 'Earl', 'Jones', '101 Waverider St.', 'Apt 104', 'Huntington Beach',
+'CA', '92649', 'US', 'earl@kuali.org', '949 494-3712', 'true', 'EMP', 'true')
+/
+
+INSERT INTO trvl_traveler_dtl_t (id, EMP_PRINCIPAL_ID, CUST_NBR, FIRST_NM, LAST_NM, ADDR_LINE_1
+, CITY_NM, POSTAL_STATE_CD, POSTAL_CD, COUNTRY_CD, EMAIL_ADDR, PHONE_NBR, LIABILITY_INSURANCE,
+ TRAVELER_TYP_CD, ACTV_IN)
+ VALUES (10001, 'edna', '102', 'Edna', 'Smith', '1331 Sussex Place', 'North Tustin', 'CA', '92705', 'US',
+ 'edna@kuali.org', '714 633-9013', 'true', 'EMP', 'true')
+ /
+
+INSERT INTO trvl_trip_typ_t (CODE, NM) VALUES ('EMP', 'Employee')
+/
+INSERT INTO trvl_trip_typ_t(CODE, NM) VALUES ('NON', 'Non-Employee')
+/
+

@@ -36,30 +36,186 @@
   <bean id="TravelAuthorization-MainPage" parent="Uif-DocumentPage">
     <property name="items">
       <list merge="true">
-        <bean parent="TravelAuthorization-TravelerDetail"/>
-        <bean parent="TravelAuthorization-TripDetail"/>
+        <bean parent="TravelAuthorization-TripOverview"/>
+        <bean parent="TravelAuthorization-TravelAdvances"/>
+        <ref bean="TravelAuthorization-EmergencyContactInformation"/>
+        <ref bean="TravelAuthorization-SpecialCircumstances"/>
+        <ref bean="TravelAuthorization-GroupTravel"/>
+        <ref bean="TravelAuthorization-Expenses"/>
+        <ref bean="TravelAuthorization-TripDetailEstimateTotal"/>
+        <ref bean="TravelAuthorization-SummaryByObjectCode"/>
+        <ref bean="TravelAuthorization-AssignAccounts"/>
+        <ref bean="TravelAuthorization-GeneralLedgerPendingEntries"/>
+        <ref bean="TravelAuthorization-ViewRelatedDocuments"/>
       </list>
     </property>
   </bean>
-  
- 
-  <bean id="TravelAuthorization-TravelerDetail"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Traveler Detail">
+
+  <!-- Trip Overview -->
+  <bean id="TravelAuthorization-TripOverview"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Trip Overview">
     <property name="items">
     <list>
-      <ref bean="TravelAuthorization-TravelerDetail-PrimaryTraveler"/>
-      <ref bean="TravelAuthorization-TravelerDetail-EmergencyContact"/>
-      <ref bean="TravelAuthorization-TravelerDetail-OtherTravelers"/>
+      <ref bean="TravelAuthorization-TripOverview-TravelerSection"/>
+      <ref bean="TravelAuthorization-TripOverview-TripInformationSection"/>
     </list>
     </property>
   </bean>
 
-  <bean id="TravelAuthorization-TravelerDetail-PrimaryTraveler" parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="Primary Traveler">
+  <bean id="TravelAuthorization-TripOverview-TravelerSection" parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="Traveler Section">
     <property name="items">
       <list>
-        <ref bean="lookups1"/>
+        <!--<bean parent="Uif-InputField" p:propertyName="travelerDetailId"/>-->
+        <bean parent="Uif-InputField" p:propertyName="travelerDetailId">
+          <property name="id" value="quickfinder2"/> <!-- changing this will break tests -->
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinderByScript"/>
+          </property>
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.approval.dataobject.TravelerDetail"/>
+          <property name="quickfinder.fieldConversions">
+            <map>
+              <entry key="id" value="travelerDetailId"/>
+              <entry key="firstName" value="travelerFirstName"/>
+            </map>
+          </property>
+          <!--<property name="quickfinder.lookupParameters" value="principalId:name"/>-->
+        </bean>
+        <!--<bean parent="Uif-InputField" p:propertyName="travelerFirstName"/>-->
       </list>
     </property>
   </bean>
+
+  <bean id="TravelAuthorization-TripOverview-TripInformationSection" parent="Uif-Disclosure-GridSubSection" p:headerText="Trip Information Section"
+        p:layoutManager.numberOfColumns="4">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
+              p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
+        <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
+        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCounty"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Travel Advances -->
+  <bean id="TravelAuthorization-TravelAdvances"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Travel Advances">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Emergency Contact Information -->
+  <bean id="TravelAuthorization-EmergencyContactInformation"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Emergency Contact Information">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Special Circumstances -->
+  <bean id="TravelAuthorization-SpecialCircumstances"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Special Circumstances">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Group Travel -->
+  <bean id="TravelAuthorization-GroupTravel"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Group Travel">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Expenses -->
+  <bean id="TravelAuthorization-Expenses"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Expenses">
+    <property name="items">
+      <list>
+        <ref bean="TravelAuthorization-Expenses-EstimatedExpenses"/>
+        <ref bean="TravelAuthorization-Expenses-ImportedExpenses"/>
+        <ref bean="TravelAuthorization-Expenses-ReconciledExpenses"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-Expenses-EstimatedExpenses" parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="Estimated Expenses">
+    <property name="items">
+      <list>
+        <!--<bean parent="Uif-InputField" p:propertyName="travelerDetailId"/>-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-Expenses-ImportedExpenses" parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="Imported Expenses">
+    <property name="items">
+      <list>
+        <!--<bean parent="Uif-InputField" p:propertyName="travelerDetailId"/>-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorization-Expenses-ReconciledExpenses" parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="Reconciled Expenses">
+    <property name="items">
+      <list>
+        <!--<bean parent="Uif-InputField" p:propertyName="travelerDetailId"/>-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Trip Detail Estimate Total -->
+  <bean id="TravelAuthorization-TripDetailEstimateTotal"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Trip Detail Estimate Total">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Summary by Object Code -->
+  <bean id="TravelAuthorization-SummaryByObjectCode"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Summary by Object Code">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Summary by Assign Accounts -->
+  <bean id="TravelAuthorization-AssignAccounts"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Assign Accounts">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <!-- General Ledger Pending Entries -->
+  <bean id="TravelAuthorization-GeneralLedgerPendingEntries"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="General Ledger Pending Entries">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <!-- View Related Documents -->
+  <bean id="TravelAuthorization-ViewRelatedDocuments"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="View Related Documents">
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+
+
 
   <bean id="TravelAuthorization-TravelerDetail-EmergencyContact" parent="Uif-Disclosure-GridSubSection" p:headerText="Emergency Contact"
         p:layoutManager.numberOfColumns="4">
@@ -130,20 +286,5 @@
     </property>
   </bean>
 
-  <bean id="TravelAuthorization-Traveler-Lookup" parent="Uif-VerticalBoxGroup">
-    <property name="items">
-    <list>
-      <bean parent="GenericTextField" p:readOnly="true" p:propertyName="field59" p:defaultValue="a2">
-        <property name="inquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
-        <property name="inquiry.inquiryParameters">
-          <map>
-            <entry key="field59" value="number" />
-          </map>
-        </property>
-      </bean>
-    </list>
-    </property>
-
-  </bean>
 
 </beans>

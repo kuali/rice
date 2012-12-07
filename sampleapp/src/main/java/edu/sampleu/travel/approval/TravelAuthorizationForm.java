@@ -29,6 +29,8 @@ import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
  */
 public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
 
+    private String travelerFirstName;
+
     public TravelAuthorizationForm() {
         super();
     }
@@ -47,5 +49,13 @@ public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
     @Override
     protected String getDefaultDocumentTypeName() {
         return "TravelAuthorization";
+    }
+
+    public void setTravelerFirstName(String travelerFirstName) {
+        this.travelerFirstName = travelerFirstName;
+    }
+
+    public String getTravelerFirstName() {
+        return travelerFirstName;
     }
 }

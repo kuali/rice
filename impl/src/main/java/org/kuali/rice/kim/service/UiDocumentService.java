@@ -142,8 +142,10 @@ public interface UiDocumentService {
 	public String getMemberIdByName(MemberType memberType, String memberNamespaceCode, String memberName);
 
 	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);
-	
-	public RoleMemberBo getRoleMember(String roleMemberId);
+
+    public void setMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);
+
+    public RoleMemberBo getRoleMember(String roleMemberId);
 	
 	public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues);
 	

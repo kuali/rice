@@ -487,8 +487,13 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     protected KimDocumentRoleMember getRoleMemberForDelegation(
-    		List<KimDocumentRoleMember> roleMembers, RoleDocumentDelegationMember delegationMember){
-    	if(roleMembers==null || delegationMember==null || delegationMember.getRoleMemberId()==null) { return null; }
+    		List<KimDocumentRoleMember> roleMembers, RoleDocumentDelegationMember delegationMember, List<KimDocumentRoleMember> modifiedRoleMembers) {
+    	if((roleMembers==null && modifiedRoleMembers==null) || delegationMember==null || delegationMember.getRoleMemberId()==null) { return null; }
+        for(KimDocumentRoleMember roleMember: modifiedRoleMembers){
+            if(delegationMember.getRoleMemberId().equals(roleMember.getRoleMemberId())) {
+                return roleMember;
+            }
+        }
     	for(KimDocumentRoleMember roleMember: roleMembers){
     		if(delegationMember.getRoleMemberId().equals(roleMember.getRoleMemberId())) {
                 return roleMember;
@@ -497,8 +502,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return null;
     }
 
-    protected boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers,
-    		List<RoleDocumentDelegationMember> delegationMembers, KimType kimType, List<KimDocumentRoleMember> nonModifiedroleMembers){
+    protected boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> modifiedRoleMembers,
+    		List<RoleDocumentDelegationMember> delegationMembers, KimType kimType, List<KimDocumentRoleMember> nonModifiedRoleMembers){
 		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 		boolean valid;
 		int memberCounter = 0;
@@ -519,7 +524,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 				validationErrors.addAll(
 						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
 			}
-			roleMember = getRoleMemberForDelegation(nonModifiedroleMembers, delegationMember);
+			roleMember = getRoleMemberForDelegation(nonModifiedRoleMembers, delegationMember, modifiedRoleMembers);
 			if(roleMember==null){
 				valid = false;
 				GlobalVariables.getMessageMap().putError("document.delegationMembers["+memberCounter+"]", RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});

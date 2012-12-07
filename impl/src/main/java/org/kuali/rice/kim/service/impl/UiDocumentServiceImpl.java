@@ -412,7 +412,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						if (StringUtils.equals(member.getMemberId(), identityManagementPersonDocument.getPrincipalId()))
 						{
 						    member.setDelegationTypeCode(delegation.getDelegationTypeCode());
-                            identityManagementPersonDocument.getDelegationMembers().add(member);
+						    identityManagementPersonDocument.getDelegationMembers().add(member);
 						}
 					}
 				}
@@ -1651,8 +1651,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
             for(RoleDocumentDelegation delegation: identityManagementRoleDocument.getDelegations()){
                 if(CollectionUtils.isNotEmpty(delegation.getMembers())){
+                    RoleMemberBo roleMember;
                     for(RoleDocumentDelegationMember member: delegation.getMembers()){
                         member.setDelegationTypeCode(delegation.getDelegationTypeCode());
+                        if (StringUtils.isEmpty(member.getRoleMemberName())) {
+                            roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
+                            if(roleMember!=null){
+                                member.setRoleMemberName(getMemberName(roleMember.getType(), roleMember.getMemberId()));
+                                member.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getType(), roleMember.getMemberId()));
+                            }
+                        }
+                        member.setEdit(true);
                         identityManagementRoleDocument.getDelegationMembers().add(member);
                     }
                 }

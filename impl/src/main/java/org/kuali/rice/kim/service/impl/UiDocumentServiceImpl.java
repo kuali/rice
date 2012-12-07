@@ -1720,7 +1720,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         }
     }
 
-    public List<KimDocumentRoleMember> loadRoleMembers(
+    protected List<KimDocumentRoleMember> loadRoleMembers(
             IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> members){
         List<KimDocumentRoleMember> pndMembers = new ArrayList<KimDocumentRoleMember>();
         KimDocumentRoleMember pndMember;

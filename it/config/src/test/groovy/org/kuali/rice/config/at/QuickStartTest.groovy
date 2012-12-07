@@ -39,7 +39,7 @@ class QuickStartTest {
      * determines the basedir for generating projects
      */
     @BeforeClass
-    static void setupBaseDir() {
+    public static void setupBaseDir() {
         basedir = System.getProperty("basedir")
         if (basedir == null) {
             final String userDir = System.getProperty("user.dir")
@@ -51,9 +51,12 @@ class QuickStartTest {
      * creates the directory to generate the projects in
      */
     @Before
-    void createTargetDir() {
+    public void createTargetDir() {
         targetDir = new File(basedir + "/target/projects")
         if (!targetDir.exists()) {
+            targetDir.mkdir()
+        } else {
+            removeTargetDir()
             targetDir.mkdir()
         }
         //println targetDir
@@ -63,7 +66,7 @@ class QuickStartTest {
      * parses the test config
      */
     @Before
-    void setConfig() {
+    public void setConfig() {
         config = new JAXBConfigImpl("classpath:META-INF/config-test-config.xml")
         config.parseConfig()
 
@@ -77,8 +80,8 @@ class QuickStartTest {
      * deletes the directory to generate the projects in
      */
     @After
-    void removeTargetDir() {
-        if (targetDir != null || !targetDir.exists()) {
+    public void removeTargetDir() {
+        if (targetDir == null || !targetDir.exists()) {
             return
         }
 

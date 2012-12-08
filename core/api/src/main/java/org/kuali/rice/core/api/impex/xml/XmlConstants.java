@@ -57,6 +57,7 @@ public final class XmlConstants {
     public static final String SHORT_LABEL = "shortLabel";
     public static final String KEY = "key";
     public static final String VALUE = "value";
+    public static final String STRING_VALUE = "stringValue";
     public static final String ACTIVE= "active";
     public static final String TYPE = "type";
 

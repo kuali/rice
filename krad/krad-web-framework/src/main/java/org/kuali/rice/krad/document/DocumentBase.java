@@ -706,6 +706,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         methodToCalls.add(KRADConstants.ROUTE_METHOD);
         methodToCalls.add(KRADConstants.APPROVE_METHOD);
         methodToCalls.add(KRADConstants.DISAPPROVE_METHOD);
+        methodToCalls.add(KRADConstants.ACKNOWLEDGE_METHOD);
         return methodToCalls;
     }
 

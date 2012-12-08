@@ -30,6 +30,7 @@ public class KRADServiceLocator {
     public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
     public static final String APPLICATION_ENTITY_MANAGER_FACTORY = "kradApplicationEntityManagerFactory";
     public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
+    public static final String XML_OBJECT_SERIALIZER_IGNORE_MISSING_FIELDS_SERVICE = "xmlObjectSerializerIgnoreMissingFieldsService";
     public static final String SERIALIZER_SERVICE = "businessObjectSerializerService";
     public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
     public static final String KEY_VALUES_SERVICE = "keyValuesService";
@@ -72,6 +73,10 @@ public class KRADServiceLocator {
 
     public static XmlObjectSerializerService getXmlObjectSerializerService() {
         return getService(XML_OBJECT_SERIALIZER_SERVICE);
+    }
+
+    public static XmlObjectSerializerService getXmlObjectSerializerIgnoreMissingFieldsService() {
+        return getService(XML_OBJECT_SERIALIZER_IGNORE_MISSING_FIELDS_SERVICE);
     }
 
     public static BusinessObjectSerializerService getBusinessObjectSerializerService() {

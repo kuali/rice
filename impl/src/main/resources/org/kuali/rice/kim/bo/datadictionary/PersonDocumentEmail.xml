@@ -18,7 +18,7 @@
 -->
   <bean id="DocEmail" parent="DocEmail-parentBean"/>
 
-  <bean id="DocEmail-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentEmail" p:titleAttribute="emailTypeCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocEmail-inquiryDefinition" p:lookupDefinition-ref="DocEmail-lookupDefinition">
+  <bean id="DocEmail-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentEmail" p:titleAttribute="emailTypeCode" p:objectLabel="Person Email" p:inquiryDefinition-ref="DocEmail-inquiryDefinition" p:lookupDefinition-ref="DocEmail-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocEmail-emailAddress"/>

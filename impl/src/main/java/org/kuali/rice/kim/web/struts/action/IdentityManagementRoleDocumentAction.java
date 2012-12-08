@@ -155,10 +155,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         setKimType(roleDocumentForm.getRoleDocument().getRoleTypeId(), roleDocumentForm);
 
-        Role role = KimApiServiceLocator.getRoleService().getRole(roleDocumentForm.getRoleDocument().getRoleId());
-        getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
-
         getUiDocumentService().setDelegationMembersInDocument(roleDocumentForm.getRoleDocument());
+        getUiDocumentService().setMembersInDocument(roleDocumentForm.getRoleDocument());
+
         roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
         roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
 

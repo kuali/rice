@@ -27,6 +27,7 @@ import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.commons.beanutils.converters.LongConverter;
 import org.apache.commons.beanutils.converters.ShortConverter;
 import org.apache.commons.collections.iterators.IteratorEnumeration;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
 import org.kuali.rice.core.api.config.ConfigurationException;
@@ -34,6 +35,9 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
 
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -46,6 +50,9 @@ import java.util.Map;
 
 public class KualiActionServlet extends ActionServlet {
     private static final Logger LOG = Logger.getLogger(KualiActionServlet.class);
+    
+    // KULRICE-8176: KFS Notes/Attachments Tab Functionality for Note Text Error - Visible/Special characters, spaces, or tabs
+    private String parameterEncoding = "";
 
     /**
      * <p>Initialize other global characteristics of the controller servlet.</p>
@@ -88,6 +95,8 @@ public class KualiActionServlet extends ActionServlet {
             ConvertUtils.register(new ShortConverter(null), Short.class);
         }
 
+        // KULRICE-8176: KFS Notes/Attachments Tab Functionality for Note Text Error - Visible/Special characters, spaces, or tabs
+        parameterEncoding = getServletConfig().getInitParameter("PARAMETER_ENCODING");
     }
 
     KualiActionServletConfig serverConfigOverride = null;
@@ -174,4 +183,18 @@ public class KualiActionServlet extends ActionServlet {
         }
     }
 
+    /**
+     *  KULRICE-8176: KFS Notes/Attachments Tab Functionality for Note Text Error - Visible/Special characters, spaces, or tabs
+     * 
+     * @see org.apache.struts.action.ActionServlet#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+     @Override
+     protected void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+         if (StringUtils.isNotBlank(parameterEncoding)) {
+                 request.setCharacterEncoding(parameterEncoding);
+                 response.setCharacterEncoding(parameterEncoding);
+         }
+    
+         super.process(request, response);
+     }
 }

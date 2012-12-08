@@ -18,7 +18,7 @@
 -->
   <bean id="DocPrivacy" parent="DocPrivacy-parentBean"/>
 
-  <bean id="DocPrivacy-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy" p:titleAttribute="suppressName" p:objectLabel="Names" p:inquiryDefinition-ref="DocPrivacy-inquiryDefinition" p:lookupDefinition-ref="DocPrivacy-lookupDefinition">
+  <bean id="DocPrivacy-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy" p:titleAttribute="suppressName" p:objectLabel="Person Privacy" p:inquiryDefinition-ref="DocPrivacy-inquiryDefinition" p:lookupDefinition-ref="DocPrivacy-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocPrivacy-suppressName"/>

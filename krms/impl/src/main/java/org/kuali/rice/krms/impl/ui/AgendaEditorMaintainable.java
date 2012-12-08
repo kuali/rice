@@ -429,6 +429,16 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     }
 
     @Override
+    public boolean isLockable() {
+        return true;
+    }
+
+    @Override
+    public PersistableBusinessObject getPersistableBusinessObject() {
+        return ((AgendaEditor) getDataObject()).getAgenda();
+    }
+
+    @Override
     protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         AgendaEditor agendaEditor = getAgendaEditor(model);
         if (addLine instanceof ActionBo) {

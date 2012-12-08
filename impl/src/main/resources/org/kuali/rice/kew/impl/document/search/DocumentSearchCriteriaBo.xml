@@ -30,7 +30,7 @@
       <ref bean="DocumentSearchCriteria-lookupDefinition"/>
     </property>
     <property name="titleAttribute" value="documentId"/>
-    <property name="objectLabel" value="Document"/>
+    <property name="objectLabel" value="Document Search Criteria"/>
     <property name="attributes">
       <list>
         <ref bean="DocumentSearchCriteria-documentTypeName"/>

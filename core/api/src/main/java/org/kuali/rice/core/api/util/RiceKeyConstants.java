@@ -64,6 +64,10 @@ public final class RiceKeyConstants {
     public static final String ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE = "error.adhoc.invalid.workgroupNamespaceCode";
     public static final String ERROR_UNAUTHORIZED_ADHOC_WORKGROUP_ID = "error.adhoc.unauthorized.workgroup";
     public static final String MESSAGE_ADHOC_ANNOTATION = "message.adhoc.annotation";
+    
+    //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
+    public static final String ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE_MISSING="error.adhoc.invalid.workgroup.namespace.missing";
+    public static final String ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE= "error.adhoc.invalid.workgroup.namespace";
 
     public static final String ERROR_SECURE_FIELD = "error.secureField";
     public static final String ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT = "error.send.note.notification.recipient";
@@ -126,6 +130,7 @@ public final class RiceKeyConstants {
 
     public static final String WARNING_MAINTENANCE_LOCKED = "warning.maintenance.locked";
     public static final String ERROR_VERSION_MISMATCH = "error.version.mismatch";
+    public static final String UNABLE_TO_GET_DATA_FROM_XML = "unable.to.get.data.from.xml";
 
     public static final String MESSAGE_CANCELLED = "message.cancelled";
     public static final String MESSAGE_RELOADED = "message.document.reloaded";

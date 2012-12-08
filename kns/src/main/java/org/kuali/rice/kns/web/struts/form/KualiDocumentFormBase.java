@@ -46,6 +46,8 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.kns.web.ui.HeaderField;
@@ -57,7 +59,6 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.service.SessionDocumentService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
@@ -189,13 +190,16 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             // populate workflowDocument in documentHeader, if needed
         	// KULRICE-4444 Obtain Document Header using the Workflow Service to minimize overhead
             try {
-                SessionDocumentService sessionDocumentService = KRADServiceLocatorWeb.getSessionDocumentService();
+                SessionDocumentService sessionDocumentService = KNSServiceLocator.getSessionDocumentService();
             	workflowDocument = sessionDocumentService.getDocumentFromSession( GlobalVariables.getUserSession(), getDocument().getDocumentNumber());
          	 	if ( workflowDocument == null)
          	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
-         	 		Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KRADConstants.SYSTEM_USER);
+                    Person person = GlobalVariables.getUserSession().getPerson();
+                    if (ObjectUtils.isNull(person)) {
+                        person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KRADConstants.SYSTEM_USER);
+                    }
          	 		workflowDocument = KRADServiceLocatorWeb.getWorkflowDocumentService().loadWorkflowDocument(getDocument().getDocumentNumber(), person);
          	 	 	sessionDocumentService.addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
          	 	 	if (workflowDocument == null)

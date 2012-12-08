@@ -361,7 +361,7 @@ public class KualiDocumentActionBase extends KualiAction {
             createDocument(kualiDocumentFormBase);
         } else {
             LOG.error("docHandler called with invalid parameters");
-            throw new IllegalStateException("docHandler called with invalid parameters");
+            throw new IllegalArgumentException("docHandler called with invalid parameters");
         }
 
         // attach any extra JS from the data dictionary

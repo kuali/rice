@@ -108,6 +108,10 @@ public final class KRADPropertyConstants {
     public static final String POSTAL_STATE_CODE = "postalStateCode";
     public static final String POSTAL_CODE = "postalCode";
     
+    //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
+    public static final String RECIPIENT_NAMESPACE_CODE = "recipientNamespaceCode";
+    public static final String RECIPIENT_NAME="recipientName";
+    
 	private KRADPropertyConstants() {
 		throw new UnsupportedOperationException("do not call");
 	}

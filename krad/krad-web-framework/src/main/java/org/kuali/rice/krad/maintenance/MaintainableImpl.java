@@ -145,6 +145,31 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     /**
+     * Persistable business objects are lockable
+     *
+     * @see org.kuali.rice.krad.maintenance.Maintainable#isLockable
+     */
+    @Override
+    public boolean isLockable() {
+        return KRADServiceLocator.getPersistenceStructureService().isPersistable(getDataObject().getClass());
+    }
+
+    /**
+     * Returns the data object if its persistable, null otherwise
+     *
+     * @see org.kuali.rice.krad.maintenance.Maintainable#getPersistableBusinessObject
+     */
+    @Override
+    public PersistableBusinessObject getPersistableBusinessObject() {
+        if (KRADServiceLocator.getPersistenceStructureService().isPersistable(getDataObject().getClass())) {
+            return (PersistableBusinessObject) getDataObject();
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#getMaintenanceAction
      */
     @Override

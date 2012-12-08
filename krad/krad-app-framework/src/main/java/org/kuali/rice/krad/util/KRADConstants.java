@@ -616,6 +616,7 @@ public final class KRADConstants {
         public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.krad.illegalBusinessObjectsForSave";
         public static final String COMPONENT_PUBLISHING_ENABLED = "rice.krad.componentPublishing.enabled";
         public static final String COMPONENT_PUBLISHING_DELAY = "rice.krad.componentPublishing.delay";
+        public static final String IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE = "rice.krad.bos.ignoreMissingFieldsOnDeserialize";
 
         private Config() {
             throw new UnsupportedOperationException("do not call");

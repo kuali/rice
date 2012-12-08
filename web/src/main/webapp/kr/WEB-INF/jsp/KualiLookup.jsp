@@ -150,6 +150,9 @@
 					</c:if>	
 					
 					<c:if test="${KualiForm.formKey!=''}">
+						<!-- KULRICE-8092: Enter key won't return values in Parameter Component in IE-->
+						<input name="" type="t" value="" style="display:none"/>
+						
 						<c:if test="${!empty KualiForm.backLocation}"><a
 							href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" />'  title="cancel"><img
 							src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" class="tinybutton" alt="cancel" title="cancel"

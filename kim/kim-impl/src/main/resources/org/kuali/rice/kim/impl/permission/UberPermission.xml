@@ -21,7 +21,7 @@
   <bean id="UberPermissionImpl-parentBean" abstract="true" parent="BusinessObjectEntry" 
         p:businessObjectClass="org.kuali.rice.kim.impl.permission.UberPermissionBo"
         p:titleAttribute="id"
-        p:objectLabel="Permission"
+        p:objectLabel="Uber Permission"
         p:inquiryDefinition-ref="UberPermissionImpl-inquiryDefinition" 
         p:lookupDefinition-ref="UberPermissionImpl-lookupDefinition">
     <property name="attributes">

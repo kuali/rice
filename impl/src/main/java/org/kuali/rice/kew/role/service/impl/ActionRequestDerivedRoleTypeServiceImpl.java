@@ -44,6 +44,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
+    private static final String COMPLETE_REQUEST_RECIPIENT_ROLE_NAME = "Complete Request Recipient";
 
     @Override
     protected List<String> getRequiredAttributes() {
@@ -134,6 +135,15 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 					}
 					return false;
 				}
+                if (COMPLETE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+                    for ( ActionRequest ar : actionRequests ) {
+                        if ( ar.getActionRequested().getCode().equals( KewApiConstants.ACTION_REQUEST_COMPLETE_REQ )
+                                && ar.getStatus().getCode().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
 			}
 			return false;
 		} catch (RiceIllegalArgumentException e) {

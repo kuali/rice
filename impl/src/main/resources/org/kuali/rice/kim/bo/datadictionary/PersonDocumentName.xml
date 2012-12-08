@@ -18,7 +18,7 @@
 -->
   <bean id="DocName" parent="DocName-parentBean"/>
 
-  <bean id="DocName-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentName" p:titleAttribute="nameCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocName-inquiryDefinition" p:lookupDefinition-ref="DocName-lookupDefinition">
+  <bean id="DocName-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentName" p:titleAttribute="nameCode" p:objectLabel="Person Name" p:inquiryDefinition-ref="DocName-inquiryDefinition" p:lookupDefinition-ref="DocName-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocName-firstName"/>

@@ -25,17 +25,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.RiceUtilities;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.ServiceBusAdminService;
 
 
 /**
@@ -45,14 +49,33 @@ import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
  */
 public class ServiceBusAction extends KSBAction {
 
-	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+    private static final QName SERVICE_BUS_ADMIN_SERVICE_QUEUE = new QName(
+            KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0, "serviceBusAdminService");
+    private static final Logger LOG = Logger.getLogger(ServiceBusAction.class);
+
+    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 		return mapping.findForward("basic");
 	}
 
 	public ActionForward refreshServiceBus(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
-		KsbApiServiceLocator.getServiceBus().synchronize();
+
+        String applicationId = ConfigContext.getCurrentContextConfig().getProperty(
+                CoreConstants.Config.APPLICATION_ID);
+
+        List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(SERVICE_BUS_ADMIN_SERVICE_QUEUE, applicationId);
+        if (endpoints.isEmpty()) {
+            KsbApiServiceLocator.getServiceBus().synchronize();
+        } else {
+            for (Endpoint endpoint : endpoints) {
+                ServiceBusAdminService serviceBusAdminService = (ServiceBusAdminService) endpoint.getService();
+                LOG.info("Calling " + endpoint.getServiceConfiguration().getEndpointUrl() + " on " +
+                    endpoint.getServiceConfiguration().getInstanceId());
+
+                serviceBusAdminService.clearServiceBusCache();
+            }
+        }
 		return mapping.findForward("basic");
 	}
 

@@ -21,7 +21,7 @@
 
   <bean id="DocPhone" parent="DocPhone-parentBean"/>
 
-  <bean id="DocPhone-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentPhone" p:titleAttribute="phoneTypeCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocPhone-inquiryDefinition" p:lookupDefinition-ref="DocPhone-lookupDefinition">
+  <bean id="DocPhone-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentPhone" p:titleAttribute="phoneTypeCode" p:objectLabel="Person Phone" p:inquiryDefinition-ref="DocPhone-inquiryDefinition" p:lookupDefinition-ref="DocPhone-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocPhone-extensionNumber"/>

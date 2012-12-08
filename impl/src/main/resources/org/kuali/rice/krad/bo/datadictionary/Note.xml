@@ -108,7 +108,8 @@
     <property name="shortLabel" value="Note Text"/>
     <property name="maxLength" value="800"/>
     <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+      <!-- KULRICE-8176: KFS Notes or Attachments Tab Functionality for Note Text Error - Visible or Special characters, spaces, or tabs -->
+      <bean parent="UTF8AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="required" value="true"/>
     <property name="control">

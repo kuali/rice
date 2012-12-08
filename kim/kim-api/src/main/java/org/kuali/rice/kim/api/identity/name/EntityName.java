@@ -487,7 +487,7 @@ public final class EntityName extends AbstractDataTransferObject
         @Override
         public String getCompositeNameUnmasked() {
         	if(this.compositeName == null) {
-        		setCompositeName(getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName()));
+        		setCompositeName((getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName())).trim());
         	}
             return this.compositeName;
         }

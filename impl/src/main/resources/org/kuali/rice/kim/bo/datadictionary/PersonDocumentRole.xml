@@ -18,7 +18,7 @@
 -->
   <bean id="DocRole" parent="DocRole-parentBean"/>
 
-  <bean id="DocRole-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentRole" p:titleAttribute="roleId" p:objectLabel="Names" p:inquiryDefinition-ref="DocRole-inquiryDefinition" p:lookupDefinition-ref="DocRole-lookupDefinition">
+  <bean id="DocRole-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentRole" p:titleAttribute="roleId" p:objectLabel="Person Role" p:inquiryDefinition-ref="DocRole-inquiryDefinition" p:lookupDefinition-ref="DocRole-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocRole-roleId"/>

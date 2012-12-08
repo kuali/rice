@@ -21,7 +21,7 @@
   <bean id="ResponsibilityImpl-parentBean" abstract="true" parent="BusinessObjectEntry" 
         p:businessObjectClass="org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo"
         p:titleAttribute="id"
-        p:objectLabel="Responsibility"
+        p:objectLabel="Uber Responsibility"
         p:inquiryDefinition-ref="ResponsibilityImpl-inquiryDefinition" 
         p:lookupDefinition-ref="ResponsibilityImpl-lookupDefinition">
     <property name="attributes">

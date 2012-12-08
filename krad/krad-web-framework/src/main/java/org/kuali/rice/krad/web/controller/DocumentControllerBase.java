@@ -125,7 +125,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             createDocument(form);
         } else {
             LOG.error("docHandler called with invalid parameters");
-            throw new IllegalStateException("docHandler called with invalid parameters");
+            throw new IllegalArgumentException("docHandler called with invalid parameters");
         }
 
         // TODO: authorization on document actions

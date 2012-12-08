@@ -411,8 +411,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					for(RoleDocumentDelegationMember member: delegation.getMembers()){
 						if (StringUtils.equals(member.getMemberId(), identityManagementPersonDocument.getPrincipalId()))
 						{
-							member.setDelegationTypeCode(delegation.getDelegationTypeCode());
-							identityManagementPersonDocument.getDelegationMembers().add(member);
+						    member.setDelegationTypeCode(delegation.getDelegationTypeCode());
+						    identityManagementPersonDocument.getDelegationMembers().add(member);
 						}
 					}
 				}
@@ -1647,18 +1647,27 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementRoleDocument.setMembers(members);
     }
 
-	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument){
-		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
-			for(RoleDocumentDelegation delegation: identityManagementRoleDocument.getDelegations()){
-				if(CollectionUtils.isNotEmpty(delegation.getMembers())){
-					for(RoleDocumentDelegationMember member: delegation.getMembers()){
-						member.setDelegationTypeCode(delegation.getDelegationTypeCode());
-						identityManagementRoleDocument.getDelegationMembers().add(member);
-					}
-				}
-			}
-		}
-	}
+    public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument){
+        if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
+            for(RoleDocumentDelegation delegation: identityManagementRoleDocument.getDelegations()){
+                if(CollectionUtils.isNotEmpty(delegation.getMembers())){
+                    RoleMemberBo roleMember;
+                    for(RoleDocumentDelegationMember member: delegation.getMembers()){
+                        member.setDelegationTypeCode(delegation.getDelegationTypeCode());
+                        if (StringUtils.isEmpty(member.getRoleMemberName())) {
+                            roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
+                            if(roleMember!=null){
+                                member.setRoleMemberName(getMemberName(roleMember.getType(), roleMember.getMemberId()));
+                                member.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getType(), roleMember.getMemberId()));
+                            }
+                        }
+                        member.setEdit(true);
+                        identityManagementRoleDocument.getDelegationMembers().add(member);
+                    }
+                }
+            }
+        }
+    }
 
 	protected List<KimDocumentRoleResponsibility> loadResponsibilities(List<RoleResponsibilityBo> roleResponsibilities){
 		List<KimDocumentRoleResponsibility> documentRoleResponsibilities = new ArrayList<KimDocumentRoleResponsibility>();
@@ -1693,6 +1702,32 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return documentRolePermissions;
 	}
+
+    public void setMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument){
+        if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
+            Map<String, String> criteria = new HashMap<String, String>();
+            criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, identityManagementRoleDocument.getRoleId());
+            RoleBo roleBo = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
+            List<RoleMemberBo> members = roleBo.getMembers();
+            List<RoleMemberBo> membersToRemove = new ArrayList<RoleMemberBo>();
+            boolean found = false;
+            for(KimDocumentRoleMember modifiedMember : identityManagementRoleDocument.getModifiedMembers() ) {
+                for(RoleMemberBo member : members) {
+                    if (modifiedMember.getRoleMemberId().equals(member.getId())) {
+                        membersToRemove.add(member);
+                        found = true;
+                    }
+                    if (found) break;
+                }
+            }
+            for(RoleMemberBo memberToRemove : membersToRemove ) {
+                members.remove(memberToRemove);
+            }
+
+            identityManagementRoleDocument.setMembers(loadRoleMembers(identityManagementRoleDocument, members));
+            loadMemberRoleRspActions(identityManagementRoleDocument);
+        }
+    }
 
     protected List<KimDocumentRoleMember> loadRoleMembers(
             IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> members){

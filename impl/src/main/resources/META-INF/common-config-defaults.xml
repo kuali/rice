@@ -429,6 +429,8 @@
 
   <param name="krad.ehcache.config.location" override="false">classpath:org/kuali/rice/krad/config/krad.ehcache.xml</param>
 
+  <param name="rice.krad.bos.ignoreMissingFieldsOnDeserialize" override="false"></param>
+
 	<!-- KCB -->
 	<param name="rice.kcb.struts.config.files" override="false">/kcb/WEB-INF/struts-config.xml</param>
 	<param name="kcb.url" override="false">${application.url}/kcb</param>

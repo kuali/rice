@@ -26,6 +26,8 @@ import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory;
 import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -136,11 +138,12 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         }
         renderer.renderBooleanElement(docTypeElement, ACTIVE, documentType.getActive(), true);
         exportPolicies(docTypeElement, documentType.getDocumentTypePolicies());
-      exportAttributes(docTypeElement, documentType.getDocumentTypeAttributes());
-      exportSecurity(docTypeElement, documentType.getDocumentTypeSecurityXml());
+        exportAttributes(docTypeElement, documentType.getDocumentTypeAttributes());
+        exportSecurity(docTypeElement, documentType.getDocumentTypeSecurityXml());
       	if (!StringUtils.isBlank(documentType.getRoutingVersion())) {
       		renderer.renderTextElement(docTypeElement, ROUTING_VERSION, documentType.getRoutingVersion());
       	}
+      	exportApplicationStatusCategories(docTypeElement, documentType);
       	ProcessDefinitionBo process = null;
       	if (documentType.getProcesses().size() > 0) {
       	    process = (ProcessDefinitionBo)documentType.getProcesses().get(0);
@@ -159,7 +162,11 @@ public class DocumentTypeXmlExporter implements XmlExporter {
                 DocumentTypePolicy policy = (DocumentTypePolicy) iterator.next();
                 Element policyElement = renderer.renderElement(policiesElement, POLICY);
                 renderer.renderTextElement(policyElement, NAME, policy.getPolicyName());
-                renderer.renderBooleanElement(policyElement, VALUE, policy.getPolicyValue(), false);
+                if (StringUtils.isNotEmpty(policy.getPolicyStringValue())) {
+                    renderer.renderTextElement(policyElement, STRING_VALUE, policy.getPolicyStringValue());
+                }  else {
+                    renderer.renderBooleanElement(policyElement, VALUE, policy.getPolicyValue(), false);
+                }
             }
         }
     }
@@ -187,6 +194,33 @@ public class DocumentTypeXmlExporter implements XmlExporter {
           throw new WorkflowRuntimeException("Error parsing doctype security XML.");
         }
       }
+    }
+
+    private void exportApplicationStatusCategories(Element parent, DocumentType documentType) {
+        List<ApplicationDocumentStatusCategory> appDocStatCategories = documentType.getApplicationStatusCategories();
+        List<ApplicationDocumentStatus> appDocStats = documentType.getValidApplicationStatuses();
+
+        if (!appDocStatCategories.isEmpty()) {
+            Element appDocStatCategoriesElement = renderer.renderElement(parent, APP_DOC_STATUSES);
+            for (Iterator iterator = appDocStatCategories.iterator(); iterator.hasNext();) {
+                ApplicationDocumentStatusCategory appDocStatCategory = (ApplicationDocumentStatusCategory) iterator.next();
+                Element appStatusCatElement = renderer.renderElement(appDocStatCategoriesElement, CATEGORY);
+                appStatusCatElement.setAttribute(NAME, appDocStatCategory.getCategoryName().trim());
+                for (Iterator iterator2 = appDocStats.iterator(); iterator2.hasNext();) {
+                    ApplicationDocumentStatus appDocStat = (ApplicationDocumentStatus) iterator2.next();
+                    if  (StringUtils.equals(appDocStat.getCategoryName(), appDocStatCategory.getCategoryName())) {
+                        renderer.renderTextElement(appStatusCatElement, STATUS, appDocStat.getStatusName());
+                    }
+                }
+            }
+
+            for (Iterator iterator = appDocStats.iterator(); iterator.hasNext();) {
+                ApplicationDocumentStatus appDocStat = (ApplicationDocumentStatus) iterator.next();
+                if  (StringUtils.isEmpty(appDocStat.getCategoryName())) {
+                    renderer.renderTextElement(appDocStatCategoriesElement, STATUS, appDocStat.getStatusName());
+                }
+            }
+        }
     }
 
     private void exportRouteData(Element parent, DocumentType documentType, List flattenedNodes, boolean hasDefaultExceptionWorkgroup) {

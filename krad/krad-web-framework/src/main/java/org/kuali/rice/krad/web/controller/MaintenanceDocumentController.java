@@ -99,7 +99,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             createDocument(form);
         } else {
             LOG.error("docHandler called with invalid parameters");
-            throw new IllegalStateException("docHandler called with invalid parameters");
+            throw new IllegalArgumentException("docHandler called with invalid parameters");
         }
         // * end copy/paste from the base
 
@@ -125,7 +125,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             setupMaintenance(form, request, KRADConstants.MAINTENANCE_NEW_ACTION);
         } else {
             LOG.error("We should never have gotten to here");
-            throw new IllegalStateException("docHandler called with invalid parameters");
+            throw new IllegalArgumentException("docHandler called with invalid parameters");
         }
 
         return getUIFModelAndView(form);

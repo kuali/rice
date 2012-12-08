@@ -18,6 +18,7 @@ package org.kuali.rice.kim.impl.responsibility;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -25,6 +26,9 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
@@ -72,12 +76,25 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
         Predicate p = and(
             equal("template.namespaceCode", KewApiConstants.KEW_NAMESPACE ),
             equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
-            equal("attributes[documentTypeName]", resp.getDocumentTypeName()),
-            equal("attributes[routeNodeName]", resp.getRouteNodeName())
+            equal("attributes[documentTypeName]", resp.getDocumentTypeName())
+            // KULRICE-8538 -- Check the route node by looping through the results below.  If it is added
+            // into the predicate, no rows are ever returned.
+            //equal("attributes[routeNodeName]", resp.getRouteNodeName())
         );
         builder.setPredicates(p);
         ResponsibilityQueryResults results = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build());
-		return results.getResults().isEmpty();
+        List<Responsibility> responsibilities = new ArrayList<Responsibility>();
+
+        if ( !results.getResults().isEmpty() ) {
+            for ( Responsibility responsibility : results.getResults() ) {
+                String routeNodeName = responsibility.getAttributes().get( KimConstants.AttributeConstants.ROUTE_NODE_NAME);
+                if (StringUtils.isNotEmpty(routeNodeName) && StringUtils.equals(routeNodeName, resp.getRouteNodeName())){
+                    responsibilities.add(responsibility);
+                }
+            }
+        }
+
+		return responsibilities.isEmpty();
 	}
 
     protected boolean validateNamespaceCodeAndName(String namespaceCode,String name){

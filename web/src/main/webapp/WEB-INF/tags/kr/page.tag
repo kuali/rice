@@ -134,6 +134,9 @@ jQuery(function(){
       </c:forEach>
     </c:otherwise>
   </c:choose>
+  
+    <%-- KULRICE-8176: KFS Notes/Attachments Tab Functionality for Note Text Error - Visible/Special characters, spaces, or tab --%>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <c:choose>
 	<c:when test="${lookup}" >

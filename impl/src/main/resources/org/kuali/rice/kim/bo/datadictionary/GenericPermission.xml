@@ -18,7 +18,7 @@
 -->
   <bean id="GenericPermissionBo" parent="GenericPermissionBo-parentBean"/>
 
-  <bean id="GenericPermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.GenericPermissionBo" p:titleAttribute="id" p:objectLabel="Permission" p:inquiryDefinition-ref="GenericPermissionBo-inquiryDefinition" p:lookupDefinition-ref="GenericPermissionBo-lookupDefinition">
+  <bean id="GenericPermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.GenericPermissionBo" p:titleAttribute="id" p:objectLabel="Generic Permission" p:inquiryDefinition-ref="GenericPermissionBo-inquiryDefinition" p:lookupDefinition-ref="GenericPermissionBo-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="GenericPermissionBo-id"/>

@@ -32,7 +32,8 @@
 		
 					<p>&nbsp;</p>
 				</td>
-				<td width="20"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20" height="20"/></td>
+				<!-- KULRICE-8093: Horizontal scrolling for maintenance documents with errors listed  -->
+				<td width="21"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20" height="20"/></td>
 			</tr>
 		</table>
 	</c:otherwise>

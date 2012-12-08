@@ -21,7 +21,7 @@
   <bean id="DocumentRouteHeaderValue-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" />
     <property name="titleAttribute" value="documentId" />
-    <property name="objectLabel" value="Document" />
+    <property name="objectLabel" value="Document Route Header" />
      <property name="relationships" >
       <list>
         <bean parent="RelationshipDefinition">

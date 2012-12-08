@@ -18,7 +18,7 @@
 -->
   <bean id="DocExternalId" parent="DocExternalId-parentBean"/>
 
-  <bean id="DocExternalId-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentExternalId" p:titleAttribute="externalIdentifierTypeCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocExternalId-inquiryDefinition" p:lookupDefinition-ref="DocExternalId-lookupDefinition">
+  <bean id="DocExternalId-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentExternalId" p:titleAttribute="externalIdentifierTypeCode" p:objectLabel="Person External Id" p:inquiryDefinition-ref="DocExternalId-inquiryDefinition" p:lookupDefinition-ref="DocExternalId-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocExternalId-externalId"/>

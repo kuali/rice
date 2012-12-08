@@ -18,7 +18,7 @@
 -->
   <bean id="GroupDocumentMember" parent="GroupDocumentMember-parentBean"/>
 
-  <bean id="GroupDocumentMember-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.GroupDocumentMember" p:titleAttribute="groupMemberId" p:objectLabel="Names" p:inquiryDefinition-ref="GroupDocumentMember-inquiryDefinition" p:lookupDefinition-ref="GroupDocumentMember-lookupDefinition">
+  <bean id="GroupDocumentMember-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.GroupDocumentMember" p:titleAttribute="groupMemberId" p:objectLabel="Group Member" p:inquiryDefinition-ref="GroupDocumentMember-inquiryDefinition" p:lookupDefinition-ref="GroupDocumentMember-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="GroupDocumentMember-groupMemberId"/>

@@ -439,9 +439,12 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
             try {
                 Group group = getGroupService().getGroupByNamespaceCodeAndName(workgroup.getRecipientNamespaceCode(),
                         workgroup.getRecipientName());
+                
                 if (group == null || !group.isActive()) {
-                    GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                    //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
+                    GlobalVariables.getMessageMap().putError(KRADPropertyConstants.RECIPIENT_NAME,
                             RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+                    GlobalVariables.getMessageMap().putError(KRADPropertyConstants.RECIPIENT_NAMESPACE_CODE, RiceKeyConstants.ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE);
                 } else {
                     org.kuali.rice.kew.api.document.WorkflowDocumentService
                             wds = KewApiServiceLocator.getWorkflowDocumentService();
@@ -456,8 +459,12 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
                             if (!getPermissionService().isAuthorizedByTemplate(principalId,
                                     KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION,
                                     permissionDetails, new HashMap<String, String>())) {
-                                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                                
+                                //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
+                                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.RECIPIENT_NAME,
                                         RiceKeyConstants.ERROR_UNAUTHORIZED_ADHOC_WORKGROUP_ID);
+                                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.RECIPIENT_NAMESPACE_CODE, RiceKeyConstants.ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE);
+                                
                                 break;
                             }
                         }
@@ -465,13 +472,23 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
                 }
             } catch (Exception e) {
                 LOG.error("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup)", e);
-
-                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                
+                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.RECIPIENT_NAME,
                         RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+                
+                //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
+                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.RECIPIENT_NAMESPACE_CODE, RiceKeyConstants.ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE);
             }
         } else {
-            GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+            //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
+            if(workgroup.getRecipientNamespaceCode()==null) {
+                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.RECIPIENT_NAMESPACE_CODE, RiceKeyConstants.ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE_MISSING);
+            }
+            
+            if(workgroup.getRecipientName()==null) {
+                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.RECIPIENT_NAME,
                     RiceKeyConstants.ERROR_MISSING_ADHOC_WORKGROUP_ID);
+            }
         }
 
         // drop the error path keys off now

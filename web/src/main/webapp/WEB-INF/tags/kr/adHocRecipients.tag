@@ -115,13 +115,15 @@
                       attributeEntry="${DataDictionary.AdHocRouteWorkgroup.attributes.actionRequested}"
                       scope="col"
                       />
+                  
+                  <%-- KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks  --%>
                   <kul:htmlAttributeHeaderCell
                       attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.namespaceCode}"
-                      scope="col"
+                      scope="col" forceRequired="true"
                       />
                   <kul:htmlAttributeHeaderCell
                       attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.groupName}"
-                      scope="col"
+                      scope="col" forceRequired="true"
                       />
                   <kul:htmlAttributeHeaderCell
                       literalLabel="Actions"

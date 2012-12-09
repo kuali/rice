@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.core.api.util.KeyValue;
-
+import org.kuali.rice.krad.uif.view.View;
 import java.util.List;
 
 /**
@@ -47,4 +47,14 @@ public interface MultiValueControl {
      * @param options
      */
     public void setOptions(List<KeyValue> options);
+
+    /**
+     * Sets the richOptions based on options.
+     *
+     * <p>Use caution - any existing rich options will be replaced with the options</p>
+     *
+     * @param view  - the view
+     * @param model - the model
+     */
+    public void replaceRichOptionsWithOptions(View view, Object model);
 }

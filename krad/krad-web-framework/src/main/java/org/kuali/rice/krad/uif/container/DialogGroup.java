@@ -178,8 +178,10 @@ public class DialogGroup extends Group {
                 List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
                 Collections.reverse(buttonList);
                 multiValueControl.setOptions(buttonList);
+                multiValueControl.replaceRichOptionsWithOptions(view, model);
             } else {
                 multiValueControl.setOptions(availableResponses);
+                multiValueControl.replaceRichOptionsWithOptions(view, model);
             }
         }
     }

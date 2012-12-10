@@ -142,10 +142,10 @@
                     Oriented Architecture. This means applications make use of Rice services with
                     well-defined APIs to business functionality. Access to the services is provided
                     with the Kuali Service Bus (KSB) which provides interoperability for Rice and
-                    the other Kuali projects. In addition the Rice services are exposed via SOAP
+                    the other Kuali projects. In addition, the Rice services are exposed via SOAP
                     (Simple Object Access Protocol) Web Services allowing access from non Kuali
                     based applications. Rice comes with reference implementations for all services.
-                    However implementations can easily be changed to meet the needs of the
+                    However, implementations can easily be changed to meet the needs of the
                     implementing institution. The SOA architecture is depicted in Figure 1.</para>
                 <para><figure><title>Figure 1</title>
                     <mediaobject>
@@ -774,7 +774,7 @@
             <para>
                 <itemizedlist>
                     <listitem>
-                        <para>New “Roles”  (Role =” “) to describe: <itemizedlist>
+                        <para>New “Roles”  (Role =" ") to describe: <itemizedlist>
                                 <listitem>
                                     <para>the type of widget ("menu," "treeitem," "slider," and
                                         "progressmeter") </para>
@@ -819,22 +819,29 @@
                     </listitem>
                     <listitem>
                         <para>Apply appropriate ARIA roles.  There are dozens more <link
-                                xlink:href="http://www.w3.org/TR/wai-aria/roles#alert">ARIA
-                                roles</link>, but here are a few examples, to convey the idea:  <itemizedlist>
+                                xlink:href="http://www.w3.org/TR/wai-aria/roles#roles_categorization"
+                                >ARIA roles</link>, but here are a few examples, to convey the
+                            idea:  <itemizedlist>
                                 <listitem>
-                                    <para>Widget roles:  button, checkbox, dialog, link, radio, tab,
-                                        tooltip, treeitem</para>
+                                    <para><link
+                                            xlink:href="http://www.w3.org/TR/wai-aria/roles#widget_roles"
+                                            >Widget roles</link>:  button, checkbox, dialog, link,
+                                        radio, tab, tooltip, treeitem</para>
                                 </listitem>
                                 <listitem>
-                                    <para>Document structure roles: document, group, heading,
-                                        presentation, region</para>
+                                    <para><link
+                                            xlink:href="http://www.w3.org/TR/wai-aria/roles#document_structure_roles"
+                                            >Document structure roles</link>: document, group,
+                                        heading, presentation, region</para>
                                 </listitem>
                                 <listitem>
-                                    <para>Landmark roles: application, banner, form, main, menu,
-                                        navigation, search </para>
+                                    <para><link
+                                            xlink:href="http://www.w3.org/TR/wai-aria/roles#landmark_roles"
+                                            >Landmark roles</link>: application, banner, form, main,
+                                        menu, navigation, search </para>
                                 </listitem>
                             </itemizedlist></para>
-                            <note><para>Assigning the role=’presentation’ to any native markup means that the semantics of the markup
+                            <note><para>Assigning the role="presentation" to any native markup means that the semantics of the markup
                                 will not be conveyed to assistive technologies (it is for visual
                                 presentation only).  This can be useful, for example, when a table
                                 is used for layout purposes (when the table row/column structure is

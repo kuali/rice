@@ -13,6 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+@font-face {
+    font-family: 'oswaldregular';
+    src: url('fonts/oswald-regular-webfont.eot');
+    src: url('fonts/oswald-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/oswald-regular-webfont.woff') format('woff'),
+         url('fonts/oswald-regular-webfont.ttf') format('truetype'),
+         url('fonts/oswald-regular-webfont.svg#oswaldregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 @charset "UTF-8";
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -47,10 +60,12 @@ a {
 	margin: 5px 0 5px 0;
 }
 h1.uif-headerText {
-	font-family: "Arial Narrow";
-	font-weight: bold;
-	font-size: 1.8em;
+	font-family: oswaldregular, Arial, Helvetica, sans-serif;
+	font-weight:;
+	font-size: 2em;
 	padding-left: 15px;
+	letter-spacing: .04em;
+	font-weight:normal;
 }
 .uif-documentView .uif-viewHeader h1.uif-headerText {
 	margin: 0 0 0 15px;

@@ -316,7 +316,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     /**
      * Setter for disableButtons. Set to true when the Agenda is submitted
      *
-     * @param disableButtons the cutPropositionId to set
+     * @param disableButtons
      */
     public void setDisableButtons(boolean disableButtons) {
         this.disableButtons = disableButtons;
@@ -335,4 +335,11 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
         getPersistenceService().refreshAllNonUpdatingReferences(this.getAgenda());
     }
 
+    /**
+     * @see org.kuali.rice.krad.bo.BusinessObject#refresh()
+     */
+    @Override
+    public void refresh() {
+        getPersistenceService().retrieveNonKeyFields(this.getAgenda());
+    }
 }

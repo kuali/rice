@@ -897,13 +897,19 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         // If Overflow is greater than 0 then calculate the col span for the last item in the overflowed row
-        if(items.size() % getNumberOfDataColumns() > 0){
+        if (items.size() % getNumberOfDataColumns() > 0) {
             //get the last line item
-            Field field = items.get(items.size()-1);
-            field.setColSpan(1+(numberOfDataColumns-(items.size()%numberOfDataColumns)));
-            rowCount = ((items.size()/getNumberOfDataColumns())+1);
-        } else{
-            rowCount = items.size()/getNumberOfDataColumns();
+            Field field = items.get(items.size() - 1);
+
+            int colSize = 0;
+            for (Field f : items) {
+                colSize += f.getColSpan();
+            }
+
+            field.setColSpan(1 + (numberOfDataColumns - (colSize % numberOfDataColumns)));
+            rowCount = ((items.size() / getNumberOfDataColumns()) + 1);
+        } else {
+            rowCount = items.size() / getNumberOfDataColumns();
         }
         return rowCount;
     }

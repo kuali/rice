@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
@@ -251,6 +252,14 @@ public class History implements Serializable {
      */
     public void buildHistoryFromParameterString(String parameterString) {
         if (StringUtils.isNotEmpty(parameterString)) {
+            try {
+                if (!parameterString.contains(URLEncoder.encode(EncryptionService.ENCRYPTION_POST_PREFIX,"UTF-8"))) {
+                    parameterString = URLDecoder.decode(parameterString, "UTF-8");
+                }
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("Unable to get history from parameter string", e);
+            }
+
             historyEntries = new ArrayList<HistoryEntry>();
             if (appendPassedHistory) {
                 String[] historyTokens = StringUtils.splitByWholeSeparator(parameterString, ENTRY_TOKEN);

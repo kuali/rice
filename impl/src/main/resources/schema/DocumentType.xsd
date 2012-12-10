@@ -583,6 +583,10 @@ Definitions are applied to the names in the routeNodes section.
       		 A modifiable configuration parameter in the system.
       		</documentation>
       	</annotation>
+        <unique name="same_xpath_context_unique">
+          <selector xpath="*"/>
+          <field xpath="@name"/>
+        </unique>
       </element>
 	</sequence>
   </complexType>

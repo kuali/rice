@@ -1,0 +1,92 @@
+<!--
+  ~ Copyright 2006-2012 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- SampleAppView defaults -->
+  <bean id="KradSampleAppView" parent="Uif-FormView">
+    <property name="additionalCssFiles">
+      <list>
+        <value>css/krad/kradSampleApp.css</value>
+      </list>
+    </property>
+    <property name="additionalScriptFiles">
+      <list>
+        <value>scripts/krad/kradSampleApp.js</value>
+      </list>
+    </property>
+    <property name="breadcrumbs.render" value="false"/>
+    <property name="applicationHeader">
+      <bean parent="Uif-HeaderBase" p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl"
+              p:templateName="demo_kradappheader"/>
+    </property>
+    <property name="applicationFooter">
+      <bean parent="Uif-GroupBase" p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl"
+              p:templateName="demo_kradappfooter"/>
+    </property>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page"/>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <!-- ComponentLibraryView defaults -->
+
+  <bean id="ComponentLibraryView" class="org.kuali.rice.krad.demo.uif.components.ComponentLibraryView"
+         parent="KradSampleAppView">
+     <property name="detailsGroup">
+       <bean id="Demo-DetailsGroup" parent="Uif-VerticalBoxGroup">
+         <property name="cssClasses" value="demo-detailsGroup"/>
+       </bean>
+     </property>
+     <property name="exhibit">
+       <bean id="Demo-Exhibit" parent="ComponentLibraryExhibit">
+         <property name="cssClasses">
+           <list merge="true">
+             <value>demo-componentExhibit</value>
+           </list>
+         </property>
+       </bean>
+     </property>
+
+   </bean>
+
+   <bean id="ComponentLibraryDemoGroup" parent="Uif-VerticalBoxSection"/>
+
+   <bean id="ComponentLibraryNavigation"></bean>
+
+   <bean id="ComponentLibraryExhibit" class="org.kuali.rice.krad.demo.uif.components.ComponentExhibit"
+           p:templateName="uif_exhibit" p:template="/WEB-INF/ftl/krad/componentExhibit.ftl">
+     <property name="sourceCodeViewer">
+       <ref bean="ComponentLibraryCodeViewer"/>
+     </property>
+     <property name="tabGroup">
+       <ref bean="ComponentLibraryTabGroup"/>
+     </property>
+   </bean>
+
+   <bean id="ComponentLibraryCodeViewer" parent="Uif-SyntaxHighlighter"
+         p:sourceCodeHeader="Get the Code"/>
+
+   <bean id="ComponentLibraryTabGroup" parent="Uif-TabGroup">
+     <property name="tabsWidget.position" value="RIGHT"/>
+   </bean>
+
+</beans>

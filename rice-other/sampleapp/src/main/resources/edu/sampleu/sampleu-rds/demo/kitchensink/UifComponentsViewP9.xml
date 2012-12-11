@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <group componentSecurity.viewAuthz="true" headertext="Secure Group View" id="UifCompView-SecureGroupView"
+         instructionalText="Viewing of group is secured by a KIM permission."
+         parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1">
+        <control>
+          <textControl parent="Uif-TextControl" size="5"/>
+        </control>
+      </inputField>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2">
+        <control>
+          <textControl parent="Uif-TextControl" size="21"/>
+        </control>
+      </inputField>
+    </items>
+  </group>
+  <group componentSecurity.editAuthz="true" headertext="Secure Group Edit" id="UifCompView-SecureGroupEdit"
+         instructionalText="Editing of group is secured by a KIM permission."
+         parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field3">
+        <control>
+          <textControl parent="Uif-TextControl" size="5"/>
+        </control>
+      </inputField>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field4">
+        <control>
+          <textControl parent="Uif-TextControl" size="21"/>
+        </control>
+      </inputField>
+    </items>
+  </group>
+  <group headertext="Secure Fields" id="UifCompView-SecureFields"
+         instructionalText="Viewing of field 2 and edit of field 3 is secured by a KIM permission."
+         parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field5">
+        <control>
+          <textControl parent="Uif-TextControl" size="5"/>
+        </control>
+      </inputField>
+      <inputField componentSecurity.viewAuthz="true" label="Field 2" parent="Uif-InputField" propertyName="field6">
+        <control>
+          <textControl parent="Uif-TextControl" size="21"/>
+        </control>
+      </inputField>
+      <inputField componentSecurity.editAuthz="true" label="Field 3" parent="Uif-InputField" propertyName="field7">
+        <control>
+          <textControl parent="Uif-TextControl" size="21"/>
+        </control>
+      </inputField>
+    </items>
+  </group>
+  <group headertext="Secure Field Groups" id="UifCompView-SecureFieldGroups"
+         instructionalText="Viewing of the second field group and editing of the third field group is secured by a KIM permission"
+         parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <fieldGroup parent="Uif-HorizontalFieldGroup">
+        <items>
+          <inputField label="Field 1" parent="Uif-InputField" propertyName="field8">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+          <inputField label="Field 2" parent="Uif-InputField" propertyName="field9">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+        </items>
+      </fieldGroup>
+      <fieldGroup componentSecurity.viewAuthz="true" id="UifCompView-SecureFieldGroup1"
+                  parent="Uif-HorizontalFieldGroup">
+        <items>
+          <inputField label="Field 3" parent="Uif-InputField" propertyName="field10">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+          <inputField label="Field 4" parent="Uif-InputField" propertyName="field11">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+        </items>
+      </fieldGroup>
+      <fieldGroup componentSecurity.editAuthz="true" id="UifCompView-SecureFieldGroup2"
+                  parent="Uif-HorizontalFieldGroup">
+        <items>
+          <inputField label="Field 5" parent="Uif-InputField" propertyName="field12">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+          <inputField label="Field 6" parent="Uif-InputField" propertyName="field13">
+            <control>
+              <textControl parent="Uif-TextControl" size="5"/>
+            </control>
+          </inputField>
+        </items>
+      </fieldGroup>
+    </items>
+  </group>
+  <group headertext="Secure Actions" id="UifCompView-SecureActions"
+         instructionalText="Ability to perform the Save action is secured by a KIM permission."
+         parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <action actionLabel="Close" methodToCall="close" parent="Uif-PrimaryActionButton"/>
+      <action actionEvent="save" actionLabel="Save" componentSecurity.performActionAuthz="true" methodToCall="save"
+              parent="Uif-PrimaryActionButton"/>
+    </items>
+  </group>
+  <group headertext="Secure Widgets" id="UifCompView-SecureWidgets"
+         instructionalText="Ability to use quickfinder is secured by a KIM permission."
+         parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field14"
+                  quickfinder.componentSecurity.viewAuthz="true"
+                  quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                  quickfinder.fieldConversions="number:field60" quickfinder.id="UifCompView-SecureWidget"/>
+    </items>
+  </group>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   componentSecurity.viewLineAuthz="true" headertext="Secure Line View" id="UifCompView-SecureLineView"
+                   instructionalText="Ability to view a collection line is controlled by a KIM permission."
+                   layoutManager.numberOfColumns="4" layoutManager.richTable.render="false"
+                   layoutManager.sequencePropertyName="field1" parent="Uif-Disclosure-TableCollectionSection"
+                   propertyName="list1">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+                   componentSecurity.editLineAuthz="true" headertext="Secure Line Edit" id="UifCompView-SecureLineEdit"
+                   instructionalText="Ability to edit a collection line is controlled by a KIM permission."
+                   layoutManager.numberOfColumns="4" layoutManager.richTable.render="false"
+                   layoutManager.sequencePropertyName="field1" parent="Uif-Disclosure-TableCollectionSection"
+                   propertyName="list2">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Secure Line Fields"
+                   id="UifCompView-SecureLineFields"
+                   instructionalText="Ability to view field 2 or edit field 3 is controlled by a KIM permission."
+                   layoutManager.numberOfColumns="4" layoutManager.richTable.render="false"
+                   layoutManager.sequencePropertyName="field1" parent="Uif-Disclosure-TableCollectionSection"
+                   propertyName="list3">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField componentSecurity.viewInLineAuthz="true" label="Field 2" parent="Uif-InputField" propertyName="field2"
+                  required="true"/>
+      <inputField componentSecurity.editInLineAuthz="true" label="Field 3" parent="Uif-InputField" propertyName="field3"
+                  required="true"/>
+      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+  </collectionGroup>
+  <collectionGroup collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject" headertext="Secure Line Actions"
+                   id="UifCompView-SecureLineActions"
+                   instructionalText="Ability to perform the line delete action is controlled by a KIM permission."
+                   layoutManager.numberOfColumns="4" layoutManager.richTable.render="false"
+                   layoutManager.sequencePropertyName="field1" parent="Uif-Disclosure-TableCollectionSection"
+                   propertyName="list4">
+    <items>
+      <inputField label="Field 1" parent="Uif-InputField" propertyName="field1" required="true"/>
+      <inputField label="Field 2" parent="Uif-InputField" propertyName="field2" required="true"/>
+      <inputField label="Field 3" parent="Uif-InputField" propertyName="field3" required="true"/>
+      <inputField label="Field 4" parent="Uif-InputField" propertyName="field4" required="true"/>
+    </items>
+    <lineActions>
+      <action actionEvent="delete" actionLabel="delete" componentSecurity.performLineActionAuthz="true"
+              methodToCall="deleteLine" parent="Uif-SecondaryActionButton-Small"/>
+    </lineActions>
+  </collectionGroup>
+</spring:beans>

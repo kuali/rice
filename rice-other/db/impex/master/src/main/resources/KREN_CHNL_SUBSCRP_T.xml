@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KREN_CHNL_SUBSCRP_T CHNL_ID="1" CHNL_SUBSCRP_ID="1" PRNCPL_ID="testuser4"/>
+    <KREN_CHNL_SUBSCRP_T CHNL_ID="1" CHNL_SUBSCRP_ID="1000" PRNCPL_ID="admin"/>
+</dataset>

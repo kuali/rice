@@ -1,0 +1,59 @@
+/**
+ * Copyright 2005-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package edu.samplu.common;
+
+import org.junit.Test;
+import org.openqa.selenium.By;
+
+/**
+ * @deprecated use WebDriverITBase
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public abstract class MainMenuLookupLegacyITBase extends MenuLegacyITBase {
+    @Override
+    protected String getCreateNewLinkLocator() {
+        return "Create New";
+    }
+
+    @Override
+    protected String getMenuLinkLocator() {
+        return "Main Menu";
+    }
+
+    /**
+     * Override to execute assertions once a looked-up item's edit action is clicked.
+     */
+    public abstract void lookupAssertions();
+
+    @Test
+    public void testLookUp() throws Exception {
+        waitAndClickByLinkText(getLinkLocator());
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        // Mixed capitalization
+        waitAndClick(By.xpath("//button[contains(text(),'Search')]"));
+        waitAndClickByLinkText("edit", "edit button not present does user " + user + " have permission?");
+        checkForIncidentReport("submit");
+        assertTextPresent("ubmit");
+        assertTextPresent("ave");
+        assertTextPresent("pprove");
+        assertTextPresent("lose");
+        assertTextPresent("ancel");
+        lookupAssertions();
+        waitAndClick(By.xpath("//a[contains(text(), 'Cancel')]"));
+        passed();
+    }
+}

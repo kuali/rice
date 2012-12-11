@@ -1,0 +1,834 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+    <file url="file://$PROJECT_DIR$/../../../serviceregistry/overlays" />
+    <file url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../sampleapp" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../serviceregistry" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../standalone" />
+    <file type="web" url="file://$PROJECT_DIR$/../../../web" />
+    <type id="Osmorc" />
+  </component>
+  <component name="IdProvider" IDEtalkID="A852111713F178A034A16367BA05A747" />
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" />
+    <option name="OPTION_SCOPE" value="protected" />
+    <option name="OPTION_HIERARCHY" value="true" />
+    <option name="OPTION_NAVIGATOR" value="true" />
+    <option name="OPTION_INDEX" value="true" />
+    <option name="OPTION_SEPARATE_INDEX" value="true" />
+    <option name="OPTION_DOCUMENT_TAG_USE" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
+    <option name="OPTION_DEPRECATED_LIST" value="true" />
+    <option name="OTHER_OPTIONS" value="" />
+    <option name="HEAP_SIZE" />
+    <option name="LOCALE" />
+    <option name="OPEN_IN_BROWSER" value="true" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../../../pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="NullableNotNullManager">
+    <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
+    <option name="myDefaultNotNull" value="org.jetbrains.annotations.NotNull" />
+    <option name="myNullables">
+      <value>
+        <list size="3">
+          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
+          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
+          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
+        </list>
+      </value>
+    </option>
+    <option name="myNotNulls">
+      <value>
+        <list size="3">
+          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
+          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
+          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
+        </list>
+      </value>
+    </option>
+  </component>
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$/../../..">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../client-contrib">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../..">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../checkstyle">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../deploy">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../core">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../core-service">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../core-service/impl">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../core-service/web">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../db">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../db/impex/client">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../development-tools">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../dist">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../edl">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../impl">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../it">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../it/core">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../it/internal-tools">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../it/kew">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../it/kim">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../it/krad">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../it/krms">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../it/ksb">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../ken">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../kew/api">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../kew/framework">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../kew/impl">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../kim">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../kim/kim-framework">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../kns">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../krad">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../krms">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../krms/api">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../krms/framework">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../ksb">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../ksb/client-impl">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../location">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../location/framework">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../location/impl">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../sampleapp">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../standalone">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../web">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
+</project>
+

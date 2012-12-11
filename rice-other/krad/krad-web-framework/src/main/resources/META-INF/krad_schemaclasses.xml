@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<customSchema>
+  <class>org.kuali.rice.krad.uif.element.Action</class>
+  <class>org.kuali.rice.krad.uif.field.ActionField</class>
+  <class>org.kuali.rice.krad.uif.element.ActionSecurity</class>
+  <class>org.kuali.rice.krad.uif.container.ActiveCollectionFilter</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint</class>
+  <class>org.kuali.rice.krad.datadictionary.AttributeDefinition</class>
+  <class>org.kuali.rice.krad.uif.field.AttributeQuery</class>
+  <class>org.kuali.rice.krad.datadictionary.AttributeSecurity</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint</class>
+  <class>org.kuali.rice.krad.uif.component.BindingInfo</class>
+  <class>org.kuali.rice.krad.uif.widget.BlockUI</class>
+  <class>org.kuali.rice.krad.uif.layout.BoxLayoutManager</class>
+  <class>org.kuali.rice.krad.uif.widget.BreadCrumbs</class>
+  <class>org.kuali.rice.krad.datadictionary.BusinessObjectEntry</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.CharsetPatternConstraint</class>
+  <class>org.kuali.rice.krad.uif.control.CheckboxControl</class>
+  <class>org.kuali.rice.krad.uif.container.CollectionGroup</class>
+  <class>org.kuali.rice.krad.uif.container.CollectionGroupSecurity</class>
+  <class>org.kuali.rice.krad.uif.util.ColumnCalculationInfo</class>
+  <class>org.kuali.rice.krad.uif.modifier.ComparableInfo</class>
+  <class>org.kuali.rice.krad.uif.modifier.CompareFieldCreateModifier</class>
+  <class>org.kuali.rice.krad.uif.modifier.ComponentConvertModifier</class>
+  <class>org.kuali.rice.krad.uif.component.ComponentSecurity</class>
+  <class>org.kuali.rice.krad.uif.field.DataField</class>
+  <class>org.kuali.rice.krad.datadictionary.DataObjectEntry</class>
+  <class>org.kuali.rice.krad.uif.element.DataTable</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint</class>
+  <class>org.kuali.rice.krad.uif.widget.DatePicker</class>
+  <class>org.kuali.rice.krad.uif.container.DialogGroup</class>
+  <class>org.kuali.rice.krad.uif.widget.Disclosure</class>
+  <class>org.kuali.rice.krad.datadictionary.DocumentValuePathGroup</class>
+  <class>org.kuali.rice.krad.uif.view.DocumentView</class>
+  <class>org.kuali.rice.krad.uif.container.ELCollectionFilter</class>
+  <class>org.kuali.rice.krad.datadictionary.ExternalizableAttributeDefinitionProxy</class>
+  <class>org.kuali.rice.krad.uif.field.FieldGroup</class>
+  <class>org.kuali.rice.krad.uif.field.FieldSecurity</class>
+  <class>org.kuali.rice.krad.uif.element.FieldValidationMessages</class>
+  <class>org.kuali.rice.krad.uif.control.FileControl</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint</class>
+  <class>org.kuali.rice.krad.uif.view.FormView</class>
+  <class>org.kuali.rice.krad.uif.field.GenericField</class>
+  <class>org.kuali.rice.krad.uif.layout.GridLayoutManager</class>
+  <class>org.kuali.rice.krad.uif.container.Group</class>
+  <class>org.kuali.rice.krad.uif.control.GroupControl</class>
+  <class>org.kuali.rice.krad.uif.element.GroupValidationMessages</class>
+  <class>org.kuali.rice.krad.uif.widget.Growls</class>
+  <class>org.kuali.rice.krad.uif.element.Header</class>
+  <class>org.kuali.rice.krad.uif.widget.Help</class>
+  <class>org.kuali.rice.krad.datadictionary.HelpDefinition</class>
+  <class>org.kuali.rice.krad.uif.control.HiddenControl</class>
+  <class>org.kuali.rice.krad.uif.view.History</class>
+  <class>org.kuali.rice.krad.uif.element.Iframe</class>
+  <class>org.kuali.rice.krad.uif.element.Image</class>
+  <class>org.kuali.rice.krad.uif.field.ImageField</class>
+  <class>org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition</class>
+  <class>org.kuali.rice.krad.uif.field.InputField</class>
+  <class>org.kuali.rice.krad.uif.widget.Inquiry</class>
+  <class>org.kuali.rice.krad.uif.view.InquiryView</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.IntegerPatternConstraint</class>
+  <class>org.kuali.rice.krad.uif.element.Label</class>
+  <class>org.kuali.rice.krad.uif.modifier.LabelSeparateModifier</class>
+  <class>org.kuali.rice.krad.uif.widget.LightBox</class>
+  <class>org.kuali.rice.krad.uif.element.Link</class>
+  <class>org.kuali.rice.krad.uif.field.LinkField</class>
+  <class>org.kuali.rice.krad.uif.container.LinkGroup</class>
+  <class>org.kuali.rice.krad.uif.field.LookupInputField</class>
+  <class>org.kuali.rice.krad.uif.view.LookupView</class>
+  <class>org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter</class>
+  <class>org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry</class>
+  <class>org.kuali.rice.krad.uif.view.MaintenanceDocumentView</class>
+  <class>org.kuali.rice.krad.datadictionary.mask.Mask</class>
+  <class>org.kuali.rice.krad.datadictionary.mask.MaskFormatterLiteral</class>
+  <class>org.kuali.rice.krad.datadictionary.mask.MaskFormatterSubString</class>
+  <class>org.kuali.rice.krad.uif.element.Message</class>
+  <class>org.kuali.rice.krad.uif.field.MessageField</class>
+  <class>org.kuali.rice.krad.uif.component.MethodInvokerConfig</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint</class>
+  <class>org.kuali.rice.krad.uif.container.NavigationGroup</class>
+  <class>org.kuali.rice.krad.uif.container.NodePrototype</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint</class>
+  <class>org.kuali.rice.krad.uif.container.PageGroup</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint</class>
+  <class>org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition</class>
+  <class>org.kuali.rice.krad.uif.component.PropertyReplacer</class>
+  <class>org.kuali.rice.krad.uif.widget.QuickFinder</class>
+  <class>org.kuali.rice.krad.uif.control.RadioGroupControl</class>
+  <class>org.kuali.rice.krad.datadictionary.ReferenceDefinition</class>
+  <class>org.kuali.rice.krad.datadictionary.relationshipDefinition</class>
+  <class>org.kuali.rice.krad.uif.field.RemoteFieldsHolder</class>
+  <class>org.kuali.rice.krad.uif.widget.Reorderer</class>
+  <class>org.kuali.rice.krad.uif.container.ReorderingGroup</class>
+  <class>org.kuali.rice.krad.uif.widget.RichTable</class>
+  <class>org.kuali.rice.krad.datadictionary.RoutingAttribute</class>
+  <class>org.kuali.rice.krad.datadictionary.RoutingTypeDefinition</class>
+  <class>org.kuali.rice.krad.uif.widget.Scrollpane</class>
+  <class>org.kuali.rice.krad.datadictionary.SearchingAttribute</class>
+  <class>org.kuali.rice.krad.datadictionary.SearchingTypeDefinition</class>
+  <class>org.kuali.rice.krad.uif.control.SelectControl</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint</class>
+  <class>org.kuali.rice.krad.uif.element.Space</class>
+  <class>org.kuali.rice.krad.uif.field.SpaceField</class>
+  <class>org.kuali.rice.krad.uif.widget.Spinner</class>
+  <class>org.kuali.rice.krad.uif.control.SpinnerControl</class>
+  <class>org.kuali.rice.krad.uif.layout.StackedLayoutManager</class>
+  <class>org.kuali.rice.krad.datadictionary.state.StateMappingBase</class>
+  <class>org.kuali.rice.krad.uif.widget.Suggest</class>
+  <class>org.kuali.rice.krad.datadictionary.SupportAttributeDefinition</class>
+  <class>org.kuali.rice.krad.uif.container.TabGroup</class>
+  <class>org.kuali.rice.krad.uif.layout.TableLayoutManager</class>
+  <class>org.kuali.rice.krad.uif.widget.Tabs</class>
+  <class>org.kuali.rice.krad.uif.control.TextAreaControl</class>
+  <class>org.kuali.rice.krad.uif.control.TextControl</class>
+  <class>org.kuali.rice.krad.uif.widget.Tooltip</class>
+  <class>org.kuali.rice.krad.uif.widget.Tree</class>
+  <class>org.kuali.rice.krad.uif.container.TreeGroup</class>
+  <class>org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase</class>
+  <class>org.kuali.rice.krad.uif.control.UserControl</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint</class>
+  <class>org.kuali.rice.krad.uif.element.ValidationMessages</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint</class>
+  <class>org.kuali.rice.krad.uif.view.View</class>
+  <class>org.kuali.rice.krad.uif.view.ViewAuthorizerBase</class>
+  <class>org.kuali.rice.krad.uif.view.ViewPresentationControllerBase</class>
+  <class>org.kuali.rice.krad.uif.view.ViewTheme</class>
+  <class>org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint</class>
+  <class>org.kuali.rice.krad.datadictionary.WorkflowAttributeMetadata</class>
+  <class>org.kuali.rice.krad.datadictionary.WorkflowAttributes</class>
+  <class>org.kuali.rice.krad.datadictionary.WorkflowProperties</class>
+  <class>org.kuali.rice.krad.datadictionary.WorkflowProperty</class>
+  <class>org.kuali.rice.krad.datadictionary.WorkflowPropertyGroup</class>
+  <class>org.kuali.rice.krad.uif.control.CheckboxGroupControl</class>
+  <class>org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry</class>
+</customSchema>

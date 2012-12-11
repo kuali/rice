@@ -1,0 +1,163 @@
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2006-2012 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <formView entryPageId="Demo-StateBasedValidation-Server-Page1"
+            formClass="edu.sampleu.demo.kitchensink.UifComponentsTestForm"
+            headertext="State-based Validation Server-side Test View" id="Demo-StateBasedValidation-Server"
+            parent="Uif-FormView" validateClientSide="false"
+            viewHelperServiceClass="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl">
+    <stateMapping>
+      <stateMappingBase parent="StateMapping">
+        <states>
+          <value>state1</value>
+          <value>state2</value>
+          <value>state3</value>
+          <value>state4</value>
+          <value>state5</value>
+        </states>
+        <stateNameMessageKeyMap>
+          <entry key="state1" value="demo.state1"/>
+          <entry key="state2" value="demo.state2"/>
+          <entry key="state3" value="demo.state3"/>
+          <entry key="state4" value="demo.state4"/>
+          <entry key="state5" value="demo.state5"/>
+        </stateNameMessageKeyMap>
+      </stateMappingBase>
+    </stateMapping>
+    <footer>
+      <group parent="Uif-FormFooter"/>
+    </footer>
+    <items>
+      <ref bean="Demo-StateBasedValidation-Server-Page1"/>
+    </items>
+  </formView>
+  <pageGroup id="Demo-StateBasedValidation-Server-Page1" parent="Uif-Page">
+    <items>
+      <group parent="Uif-VerticalBoxSection">
+        <items>
+          <action actionLabel="Change to State 2" methodToCall="gotoState2" parent="Uif-PrimaryActionButton"/>
+          <action actionLabel="Change to State 3" methodToCall="gotoState3" parent="Uif-PrimaryActionButton"/>
+          <action actionLabel="Change to State 4" methodToCall="gotoState4" parent="Uif-PrimaryActionButton"/>
+          <action parent="Uif-CheckFormAction"/>
+          <message parent="Uif-StateBased-RequiredInstructionsMessage"/>
+          <inputField label="State" parent="Uif-InputField-LabelTop" propertyName="state" readOnly="true"/>
+          <inputField constraintText="Required                                         for state2 only" label="Field 1"
+                      parent="Uif-InputField-LabelTop" propertyName="field1">
+            <simpleConstraint>
+              <simpleContraint parent="SimpleConstraint" required="true" states="state2"/>
+            </simpleConstraint>
+          </inputField>
+          <inputField constraintText="Required                   for state2 and after" label="Field 2"
+                      parent="Uif-InputField-LabelTop" propertyName="field2">
+            <simpleConstraint>
+              <simpleContraint parent="SimpleConstraint" required="true" states="state2+"/>
+            </simpleConstraint>
+          </inputField>
+          <inputField constraintText="Required               for state1 through state2" label="Field 3"
+                      parent="Uif-InputField-LabelTop" propertyName="field3">
+            <simpleConstraint>
+              <simpleContraint parent="SimpleConstraint" required="true" states="state1&gt;state2"/>
+            </simpleConstraint>
+          </inputField>
+          <inputField constraintText="Required                                   for state1 and state3" label="Field 4"
+                      parent="Uif-InputField-LabelTop" propertyName="field4">
+            <simpleConstraint>
+              <simpleContraint parent="SimpleConstraint" required="true" states="state1,state3"/>
+            </simpleConstraint>
+          </inputField>
+          <inputField
+                  constraintText="For state 1 and 2 max 50 characters, for state 3 max 25 characters, for                     state4 and after 15 characters"
+                  label="Field 5" parent="Uif-InputField-LabelTop" propertyName="field5">
+            <simpleConstraint>
+              <simpleContraint maxLength="50" parent="SimpleConstraint" states="state1&gt;state2">
+                <constraintStateOverrides>
+                  <simpleContraint maxLength="25" parent="SimpleConstraint" states="state3"/>
+                  <simpleContraint maxLength="15" parent="SimpleConstraint" states="state4+"/>
+                </constraintStateOverrides>
+              </simpleContraint>
+            </simpleConstraint>
+          </inputField>
+          <inputField constraintText="Alpha only, state4 and after only upperCase allowed" label="Field 6"
+                      parent="Uif-InputField-LabelTop" propertyName="field6">
+            <validCharactersConstraint>
+              <alphaPatternConstraint parent="AlphaPatternConstraint" states="state1&gt;state3">
+                <constraintStateOverrides>
+                  <alphaPatternConstraint parent="AlphaPatternConstraint" states="state4+" upperCase="true"/>
+                </constraintStateOverrides>
+              </alphaPatternConstraint>
+            </validCharactersConstraint>
+          </inputField>
+          <inputField
+                  constraintText="AlphaNumeric only, state3 and after                                         only Numeric allowed"
+                  label="Field 8" parent="Uif-InputField-LabelTop" propertyName="field7">
+            <validCharactersConstraint>
+              <alphaNumericPatternConstraint parent="AlphaNumericPatternConstraint" states="state1&gt;state2">
+                <constraintStateOverrides>
+                  <numericPatternConstraint parent="NumericPatternConstraint" states="state3+"/>
+                </constraintStateOverrides>
+              </alphaNumericPatternConstraint>
+            </validCharactersConstraint>
+          </inputField>
+        </items>
+      </group>
+    </items>
+  </pageGroup>
+  <formView id="Demo-StateBasedValidation-Server-KNS" parent="Demo-StateBasedValidation-Server">
+    <theme>
+      <viewTheme parent="Uif-ClassicKnsTheme"/>
+    </theme>
+  </formView>
+  <formView headertext="State-based Validation client-side Test View" id="Demo-StateBasedValidation-Client"
+            parent="Demo-StateBasedValidation-Server" validateClientSide="true"/>
+  <formView headertext="State-based Validation client-side Test View" id="Demo-StateBasedValidation-Client-KNS"
+            parent="Demo-StateBasedValidation-Server-KNS" validateClientSide="true"/>
+  <formView headertext="State-based Validation Custom client-side Test View" id="Demo-StateBasedValidation-ClientCustom"
+            instructionalText="Demonstration of custom client side validation settings: when in                           either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after                           client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"
+            parent="Demo-StateBasedValidation-Server" validateClientSide="true">
+    <stateMapping.customClientSideValidationStates>
+      <entry key="state1" value="state3"/>
+      <entry key="state2" value="state3"/>
+    </stateMapping.customClientSideValidationStates>
+  </formView>
+  <formView headertext="State-based Validation Custom client-side Test View"
+            id="Demo-StateBasedValidation-ClientCustom-KNS"
+            instructionalText="Demonstration of custom client side validation settings: when in                     either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after                     client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"
+            parent="Demo-StateBasedValidation-Server-KNS" validateClientSide="true">
+    <stateMapping.customClientSideValidationStates>
+      <entry key="state1" value="state3"/>
+      <entry key="state2" value="state3"/>
+    </stateMapping.customClientSideValidationStates>
+  </formView>
+</spring:beans>

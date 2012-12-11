@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<spring:beans xmlns="http://www.kuali.org/schema" xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.kuali.org/schema http://www.kuali.org/krad/schema.xsd">
+  <group headertext="Button/Link Levels" id="Demo-ButtonLevels" parent="Uif-HorizontalBoxSection">
+    <items>
+      <group headertext="Primary" parent="Uif-VerticalBoxSubSection">
+        <items>
+          <action actionLabel="Normal" actionScript="alert('You clicked a button');" parent="Uif-PrimaryActionButton"/>
+          <action actionLabel="Normal" actionScript="alert('You clicked a button');" disabled="true"
+                  parent="Uif-PrimaryActionButton"/>
+          <action actionLabel="Small" actionScript="alert('You clicked a button');"
+                  parent="Uif-PrimaryActionButton-Small"/>
+          <action actionLabel="Small" actionScript="alert('You clicked a button');" disabled="true"
+                  parent="Uif-PrimaryActionButton-Small"/>
+        </items>
+      </group>
+      <group headertext="Secondary" parent="Uif-VerticalBoxSubSection">
+        <items>
+          <action actionLabel="Normal" actionScript="alert('You clicked a button');"
+                  parent="Uif-SecondaryActionButton"/>
+          <action actionLabel="Normal" actionScript="alert('You clicked a button');" disabled="true"
+                  parent="Uif-SecondaryActionButton"/>
+          <action actionLabel="Small" actionScript="alert('You clicked a button');"
+                  parent="Uif-SecondaryActionButton-Small"/>
+          <action actionLabel="Small" actionScript="alert('You clicked a button');" disabled="true"
+                  parent="Uif-SecondaryActionButton-Small"/>
+        </items>
+      </group>
+      <group headertext="Links" parent="Uif-VerticalBoxSubSection">
+        <items>
+          <action actionLabel="Action link" actionScript="alert('You clicked a link');" parent="Uif-ActionLink"/>
+        </items>
+      </group>
+    </items>
+  </group>
+  <group headertext="H3 Header Title" id="Demo-HeaderLevels" parent="Uif-VerticalBoxSection">
+    <items>
+      <group headertext="H4 Header Title" parent="Uif-VerticalBoxSubSection">
+        <items>
+          <group headertext="H5 Header Title" parent="Uif-VerticalBoxGroup">
+            <header>
+              <header parent="Uif-HeaderFive"/>
+            </header>
+            <items>
+              <group headertext="H6 Header Title" parent="Uif-VerticalBoxGroup">
+                <header>
+                  <header parent="Uif-HeaderSix"/>
+                </header>
+              </group>
+            </items>
+          </group>
+        </items>
+      </group>
+    </items>
+  </group>
+  <group headertext="H3 Header Title" id="Demo-Disclosure-HeaderLevels" parent="Uif-Disclosure-VerticalBoxSection">
+    <items>
+      <group headertext="H4 Header Title" parent="Uif-Disclosure-VerticalBoxSubSection">
+        <items>
+          <group disclosure.render="true" headertext="H5 Header Title" parent="Uif-VerticalBoxGroup">
+            <cssClasses merge="true">
+              <value>uif-disclosure</value>
+            </cssClasses>
+            <header>
+              <header parent="Uif-HeaderFive"/>
+            </header>
+            <items>
+              <group disclosure.render="true" headertext="H6 Header Title" parent="Uif-VerticalBoxGroup">
+                <cssClasses merge="true">
+                  <value>uif-disclosure</value>
+                </cssClasses>
+                <header>
+                  <header parent="Uif-HeaderSix"/>
+                </header>
+              </group>
+            </items>
+          </group>
+        </items>
+      </group>
+    </items>
+  </group>
+  <group headertext="Header Groups Demo" id="Demo-HeaderGroups" parent="Uif-VerticalBoxSection">
+    <header.upperGroup>
+      <group parent="Uif-HeaderUpperGroup">
+        <items>
+          <message messageText="Upper Group" parent="Uif-Message"/>
+        </items>
+      </group>
+    </header.upperGroup>
+    <header.rightGroup>
+      <group parent="Uif-HeaderRightGroup">
+        <items>
+          <message messageText="Right Group" parent="Uif-Message"/>
+        </items>
+      </group>
+    </header.rightGroup>
+    <header.lowerGroup>
+      <group parent="Uif-HeaderLowerGroup">
+        <items>
+          <message messageText="Lower Group" parent="Uif-Message"/>
+        </items>
+      </group>
+    </header.lowerGroup>
+  </group>
+</spring:beans>

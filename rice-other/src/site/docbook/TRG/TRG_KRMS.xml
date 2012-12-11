@@ -1,0 +1,968 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<chapter xml:id="TRG_KRMS" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <title>KRMS</title>
+    <sect1>
+        <title>KRMS Overview</title>
+        <sect2>
+            <title>What is a Rule Management System, in general?</title>
+            <para>Wikipedia defines a business rule management system, in general, as follows: "a
+                    <link xlink:href="http://en.wikipedia.org/wiki/Computer_software">software</link> system used to define, deploy, execute, monitor and maintain
+                the variety and complexity of decision logic that is used by operational systems
+                within an organization or enterprise. This logic, also referred to as <link xlink:href="http://en.wikipedia.org/wiki/Business_rule">business rules</link>,
+                includes policies, requirements, and conditional statements that are used to
+                determine the tactical actions that take place in applications and systems." </para>
+            <para>A key aspect of a rules management system is that it enables rules to be defined
+                and maintained separately from application code. This modularity has the potential
+                to reduce application maintenance costs, enable increased automation and application
+                flexibility, and to enable business analysts and business process experts who are
+                not developers and who reside outside of the IT organizations in the business
+                departments themselves, to be more directly involved in creating and managing their
+                rules. </para>
+            <para>A rules management system in general includes a repository of decision logic and a
+                rules engine that can be executed by applications in a run-time environment. Again
+                from wikipedia: "... provides the ability to: register, define, classify, and manage
+                all the rules, verify consistency of rules definitions (”Gold-level customers are
+                eligible for free shipping when order quantity &gt; 10” and “maximum order quantity
+                for Silver-level customers = 15” ), define the relationships between different
+                rules, and relate some of these rules to IT applications that are affected or need
+                to enforce one or more of the rules."</para>
+        </sect2>
+        <sect2>
+            <title>What is Kuali's Rule Management System (KRMS), in particular?</title>
+            <para>Kuali's Rule Management System (KRMS) supports the creation, maintenance, storage
+                and retrieval of business rules and agendas (ordered sets of business rules) within
+                business contexts (e.g., for a particular department or for a particular
+                university-wide process). </para>
+            <para>KRMS enables you to define a set of rules within a particular business unit or for
+                a particular set of applications.  These business rules test for certain conditions
+                and define the set of actions that result when conditions are met.  KRMS enables you
+                to call and use this logic from any application, without having to re-write and
+                manage all the rules' logic within the application.  </para>
+            <para>Integration with organizational hierarchies and structures can be accomplished
+                today using KEW for routing and approval, and KEW also has a legacy rule system of
+                its own that can be used to make routing decisions.  But before KRMS, managing
+                general customizable business logic such as "if the transaction date is in the
+                future OR the transaction date is less than the account activation date then flag
+                the transaction for review" was the responsibility of the applications themselves.
+                KRMS now offers a way to manage this type of logic externally in a repository that
+                allows for business analysts to change it without having to modify application
+                code.</para>
+            <para>Because KRMS is a general-purpose business rules management system, you can use it
+                for many things, for example, you can define a rule to specify that when an account
+                is closed, a continuation account must be specified. You can also define rules to
+                manage your organizational hierarchies and internal structures. You can define
+                compound propositional logic, for example, "Must meet": <itemizedlist>
+                    <listitem>
+                        <para>P1 - 12 credits of FirstYearScience (CLU set)</para>
+                        <para> AND</para>
+                    </listitem>
+                    <listitem>
+                        <para>P2 - Completed CALC101 with grade &gt;= B+</para>
+                        <para> AND</para>
+                    </listitem>
+                    <listitem>
+                        <para>p3 - Average of B+ on last 12 credits</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para> </para>
+        </sect2>
+        <sect2>
+            <title>What problems or functions does KRMS solve?</title>
+            <para/>
+            <para>KRMS gives business applications a powerful tool to externalize logic in places
+                where customization will often be needed.  This lowers the costs of adopting and
+                administering the application by reducing the need for changes to the software
+                itself, and allows the application to more fluidly reflect the institution's desired
+                business processes.  </para>
+            <para>There are a wide variety of actions that KRMS rules can be used to govern:</para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Workflow Action rules  -  e.g. route an approval request</para>
+                    </listitem>
+                    <listitem>
+                        <para>Notification rules  -  e.g. send a notification to these people</para>
+                    </listitem>
+                    <listitem>
+                        <para>Validation rules  -  e.g. display this validation error message</para>
+                    </listitem>
+                    <listitem>
+                        <para>Questionnaire rules  -  e.g. administer this questionaire</para>
+                    </listitem>
+                    <listitem>
+                        <para>Custom-developed actions</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>For example, calling a KRMS set of rules (an agenda) from your application can
+                result in routing a document to a PeopleFlow*, which is a new feature in KEW in Rice
+                2.0, or to any other action you define in KRMS. </para>
+            <para>* Essentially, it's like a mini people-based workflow that doesn't require you to
+                specify a KEW node in the document type for each role, group or individual who might
+                need to approve or be notified.</para>
+            <para> </para>
+        </sect2>
+        <sect2>
+            <title>What problems does KRMS not address?</title>
+            <para>Some rule engines are built upon special algorithms that allow for <link
+                    xlink:href="http://en.wikipedia.org/wiki/Forward_chaining">forward</link> or
+                    <link xlink:href="http://en.wikipedia.org/wiki/Backward_chaining">backward
+                    chaining</link> (one example is <link
+                    xlink:href="http://en.wikipedia.org/wiki/Rete_algorithm">Rete</link>) that make
+                them suitable for efficiently evaluating highly complex systems of what are known as
+                production rules. The default engine implementation for KRMS is not designed upon
+                such an algorithm, and it does not support either forward or backward
+                chaining.</para>
+            
+        </sect2>
+        <sect2>
+            <title>With which types of applications can KRMS integrate?</title>
+            <para>Any Rice-based application can use KRMS.  </para>
+            
+        </sect2>
+        <sect2>
+            <title>Can I use KRMS without building a Rice application?</title>
+            <para>The project has aspirations to increase Rice's modularity, and some strides have
+                been made, but at the time of this writing the answer is no.</para>
+            
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KRMS Concepts</title>
+        <sect2>
+            <title>Namespaces, Contexts, Agendas, Rules and Propositions</title>
+            <para>Namespaces are the top level container in KRMS. They contain Contexts, KRMS Types,
+                and all things related to Terms.  There isn't a namespace entity in the KRMS schema,
+                they are specified via namespace code fields on the applicable child
+                entities.</para>
+            <para xmlns:xi="http://www.w3.org/2001/XInclude">Rules in KRMS are placed into ordered
+                sets called Agendas. The order of the Rules in an Agenda determines the sequencing:
+                which rule gets evaluated first, second and so on. The Agenda also enables you to
+                include conditional branching logic between Rules. </para>
+            <para xmlns:xi="http://www.w3.org/2001/XInclude">In turn, Agendas are are created in
+                Contexts, which may represent any categories of rules that are relevant within your
+                institution. For example, they will frequently correspond to document types, but
+                they could be more finely grained to encompass only a certain kind of rule that you
+                might run, e.g. you might have a context called "Proposal Validations".  In some
+                university environments, the following might be relevant contexts: Awards,
+                Proposals, IRB reviews, Course co-requisites, Course pre-requisites, Student plan
+                evaluations, and so on. </para>
+            <para xmlns:xi="http://www.w3.org/2001/XInclude">Each Context contains its own agendas,
+                and each Agenda contains its own rules. Rules aren't shared across agendas (though
+                you can copy/paste, they become unique Rule instances), and Agendas aren't shared
+                across Contexts. There is no Context hierarchy, that is, Agendas and Rules can't be
+                inherited across contexts within any sort of hierarchy. </para>
+            <para>The following diagram outlines the hierarchy of entities in KRMS (note that some
+                entities are omitted) <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRMS_conceptual_hierarchy.png" scalefit="1"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>You'll also note that many of the entities in the above diagram are KRMS Types.
+                In most cases (the notable exception is Context) what that means is that you can
+                develop and integrate custom implementations of the engine objects associated with
+                those entities.  These include:</para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Agendas with custom selection and execution code</para>
+                    </listitem>
+                    <listitem>
+                        <para>Actions with custom execution code</para>
+                    </listitem>
+                    <listitem>
+                        <para>Rules with custom evaluation and Action triggering code</para>
+                    </listitem>
+                    <listitem>
+                        <para>Propositions with custom evaluation code</para>
+                    </listitem>
+                    <listitem>
+                        <para>Term Resolvers with custom value resolution code</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <sect3>
+                <title>Propositions</title>
+                <para>Rules consist of propositions, and KRMS supports the following three main
+                    types of propositions:</para>
+                <orderedlist>
+                    <listitem>
+                        <para>Simple Propositions - a proposition of the form lhs op rhs where
+                            lhs=left-hand side, rhs=right-hand side, and op=operator</para>
+                    </listitem>
+                    <listitem>
+                        <para>Compound Propositions - a proposition consisting of more than one
+                            simple proposition and a boolean algebra operator (AND, OR) between each
+                            of the simple propositions</para>
+                    </listitem>
+                    <listitem>
+                        <para>Custom Propositions - a proposition which can optionally be
+                            parameterized by some set of values.  Evaluation logic is implemented
+                            "by hand" and returns true or false.</para>
+                    </listitem>
+                </orderedlist>
+                <para>The data model is designed in such a way to support each of these.</para>
+                <para>Next we'll look at each of the proposition tables in detail.</para>
+                <sect4>
+                    <title>Proposition - krms_prop_t</title>
+                    <para>Every proposition in the repository will have an entry in this table.
+                        Propositions are reference by a rule or another proposition (in the case of
+                        compound propositions). Propositions are never re-used across multiple
+                        rules.</para>
+                    <para>Here is a summary of the non-common data elements in this proposition
+                        table:
+                    </para>
+                    <table frame="none">
+                        <title>Non-common data elements in the proposition table</title>
+                        <tgroup cols="3">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="4.0*"/>
+                         <thead>
+                            <row>
+                                <entry>Column</entry>
+                                <entry>Description</entry>
+                            </row> 
+                         </thead>
+                        <tbody>
+                            <row>
+                                <entry> prop_id </entry>
+                                <entry> A generated primary key identifier for
+                                    the proposition </entry>
+                            </row>
+                            <row>
+                                <entry> desc_txt </entry>
+                                <entry> A plain-text description of the
+                                    proposition </entry>
+                            </row>
+                            <row>
+                                <entry> typ_id </entry>
+                                <entry> Defines the PropositionType for the
+                                    proposition. Defined in the krms_typ_t table. </entry>
+                            </row>
+                            <row>
+                                <entry> dscrm_typ_cd </entry>
+                                <entry> Discriminator type code which defines
+                                    if the proposition is compound or simple. Valid values are C and
+                                    S. </entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </sect4>
+                <sect4>
+                    <title>Proposition Parameters - krms_prop_parm_t</title>
+                    <para>Each proposition can have zero or more parameters. The proposition
+                        parameter is the primary data element used to define the proposition. These
+                        parameters will be one of the following three types:</para>
+                    <orderedlist>
+                        <listitem>
+                            <para>Constant Values <itemizedlist>
+                                    <listitem>
+                                        <para>numbers</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>strings</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>dates</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>etc.</para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>Terms <itemizedlist>
+                                    <listitem>
+                                        <para>data available in the execution environment and/or
+                                            resolved by a term resolver</para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>Functions <itemizedlist>
+                                    <listitem>
+                                        <para>resolve to a value</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>could themselves take parameters of their own</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>typically defined externally to KRMS and then plugged
+                                            in via a custom term resolver</para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>Operators <itemizedlist>
+                                    <listitem>
+                                        <para>one of a set of built-in "functions"</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>The full set of (currently) supported operators are as
+                                            follows: <itemizedlist>
+                                                <listitem>
+                                                  <para>=</para>
+                                                </listitem>
+                                                <listitem>
+                                                  <para>!=</para>
+                                                </listitem>
+                                                <listitem>
+                                                  <para>&gt;</para>
+                                                </listitem>
+                                                <listitem>
+                                                  <para>&lt;</para>
+                                                </listitem>
+                                                <listitem>
+                                                  <para>&gt;=</para>
+                                                </listitem>
+                                                <listitem>
+                                                  <para>&lt;=</para>
+                                                </listitem>
+                                            </itemizedlist></para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                    </orderedlist>
+                    <para>To that end, the proposition parameter list should be modeled as a list in
+                            <link xlink:href="http://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation</link> (RPN). This allows for arbitrary nesting
+                        of parameters, which may have parameters of their own. However, this
+                        requires that each function explicitly define the number of arguments that
+                        it expects. This will be specified when the function is defined, so the
+                        proposition system can assume this is available. This requirement does
+                        prohibit the use of functions that have a variable arity since the model
+                        currently does not have anyway to group parameters. So this will currently
+                        be unsupported.</para>
+                    <para>Examples of proposition parameter lists defined using RPN are as
+                        follows:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>[campusCode, "BL", =] <emphasis role="italic">equivalent
+                                    to</emphasis> campusCode="BL"</para>
+                        </listitem>
+                        <listitem>
+                            <para>[totalDollarAmount, availableAmount, &gt;] <emphasis role="italic">equivalent to</emphasis> totalDollarAmount &gt;
+                                availableAmount</para>
+                        </listitem>
+                        <listitem>
+                            <para>[award, getTotalDollarAmountForAward, award,
+                                getAvailableAmountForAward, &gt;] <emphasis role="italic">equivalent
+                                    to</emphasis> getTotalDollarAmount(award) &gt;
+                                getAvailableAmountForAward(award)</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>In the cases above the following are constants:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>"BL"</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>The following are terms:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>campusCode</para>
+                        </listitem>
+                        <listitem>
+                            <para>totalDollarAmount</para>
+                        </listitem>
+                        <listitem>
+                            <para>availableAmount</para>
+                        </listitem>
+                        <listitem>
+                            <para>award</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>The following are functions:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>getTotalDollarAmountForAward</para>
+                        </listitem>
+                        <listitem>
+                            <para>getAvailableAmountForAward</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>And the following are operators:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>=</para>
+                        </listitem>
+                        <listitem>
+                            <para>&gt;</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>Here is a summary of the non-common data elements in this proposition
+                        parameter table:</para>
+                
+                 
+                        <table frame="none">
+                            <title>Non-common data elements in the proposition parameter table</title>
+                            <tgroup cols="3">
+                                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                                <colspec colname="c2" colnum="2" colwidth="4.0*"/>
+                                <thead>
+                                    <row>
+                                        <entry>Column</entry>
+                                        <entry>Description</entry>
+                                    </row> 
+                                </thead>
+                               
+                        <tbody>
+                            <row>
+                                <entry> prop_parm_id </entry>
+                                <entry> A generated primary key identifier for
+                                    the proposition parameter </entry>
+                            </row>
+                            <row>
+                                <entry> prop_id </entry>
+                                <entry> The proposition which this parameter
+                                    applies to </entry>
+                            </row>
+                            <row>
+                                <entry> parm_val </entry>
+                                <entry> the value of the parameter </entry>
+                            </row>
+                            <row>
+                                <entry> parm_typ_cd </entry>
+                                <entry> Indicates whether the parameter value
+                                    represents a constant, term, or function. Valid values are C, T,
+                                    F, O </entry>
+                            </row>
+                            <row>
+                                <entry> seq_no </entry>
+                                <entry> Defines the order of the parameter
+                                    within the larger parameter list. </entry>
+                            </row>
+                        </tbody>
+                   </tgroup>
+                 </table> 
+                
+                </sect4>
+            </sect3>
+        </sect2>
+        <!-- Commenting out until content is added
+        <sect2>
+            <title>Types, Terms, Term resolvers, Term specifications, Term Parameters, and
+                Categories </title>
+            <para>(add information here)</para>
+        </sect2> -->
+    </sect1>
+    <sect1>
+        <title>KRMS Administration Guide</title>
+        <para>(work in progress - content tdb.  The below preface is patterned after the KEW TRG -
+            what will admins need to administer for KRMS?  I've put in some placeholder
+            content-topics for a TOC skeleton.)</para>
+        <para>This guide provides information on administering a Kuali Rules Management System
+            (KRMS) installation. Out of the box, KRMS comes with a default setup that works well in
+            development and test environments. However, when moving to a production environment,
+            this setup requires adjustments. This document discusses basic administration as well as
+            instructions for working with some of KRMS’ administration tools.</para>
+        <sect2>
+            <title>Initial Set up tasks</title>
+            <para>In this section we cover the types of tasks you'll need to do as a one-time setup
+                at your institute in order for you and others to be able to define KRMS agendas for
+                use by applications.</para>
+            <sect3>
+                <title>What do I have to install so that people can use KRMS?</title>
+                <para/>
+            </sect3>
+            <sect3>
+                <title>What do I have to create or customize so that people can work with business
+                    contexts, agendas, and rules?</title>
+                <para>Below are the constructs you will need to point to or create for your
+                    institute:</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Use existing Namespaces or set up Namespaces for KRMS </para>
+                    </listitem>
+                    <listitem>
+                        <para>Use an existing Agenda Type service or set up an Agenda Type service
+                            for KRMS </para>
+                    </listitem>
+                    <listitem>
+                        <para>Use existing Types or set up Types for KRMS </para>
+                    </listitem>
+                    <listitem>
+                        <para>Use existing Contexts or configure new Contexts for KRMS </para>
+                    </listitem>
+                    <listitem>
+                        <para>Specify Terms</para>
+                    </listitem>
+                    <listitem>
+                        <para>Create Term Resolvers</para>
+                    </listitem>
+                    <listitem>
+                        <para>Create Parameterized Terms</para>
+                    </listitem>
+                </itemizedlist>
+                <para>Below are the instructions for doing these tasks.</para>
+                <sect4>
+                    <title>Point to or Set up Namespaces</title>
+                    <para>You can use existing Namespaces or set up Namespaces specifically for KRMS
+                        (include information on how to do both of these).</para>
+                </sect4>
+                <sect4>
+                    <title>Point to or Set up an Agenda Type service for KRMS</title>
+                    <para>You can use an existing Agenda Type service or set up an Agenda Type
+                        service specifically for KRMS (include information on how to do both of
+                        these).</para>
+                    <para>For example, below is a code snippet for setting up the Agenda Type
+                        service:</para>
+                    <para>
+                        <programlisting>&lt;bean id="campusAgendaTypeService"
+      class="edu.sampleu.krms.impl.CampusAgendaTypeService">
+    &lt;property name="configurationService" ref="configurationService"/>
+&lt;/bean>                                                   </programlisting>
+                    </para>
+                </sect4>
+                <sect4>
+                    <title>Point to or Set up the Types for KRMS</title>
+                    <para>You can use existing Types or set up Types for KRMS (include information
+                        on how to do both of these).</para>
+                    <para>Below is example SQL Server code to insert the Type into the Agenda Type
+                        service -- be sure to replace the content of the 2nd parenthetical
+                        expressions in each of the following examples with your defined
+                        values:</para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>First,  add the Type(s) itself: </para>
+                                <para>insert into krms_typ_t (typ_id, nm, nmspc_cd, srvc_nm, actv,
+                                    ver_nbr) values (<emphasis role="italic">'T6', 'Campus Agenda',
+                                        'KRMS_TEST', 'campusAgendaTypeService', 'Y',
+                                    1</emphasis>);</para>
+                            </listitem>
+                            <listitem>
+                                <para>Next, add the campus attribute(s) to the Campus Agenda Type: </para>
+                                <para>insert into krms_attr_defn_t (ATTR_DEFN_ID, NM, NMSPC_CD, LBL,
+                                    CMPNT_NM, DESC_TXT) values (<emphasis role="italic">'Q9901',
+                                        'Campus', 'KRMS_TEST', 'campus label', null, 'the campus
+                                        which this agenda is valid for'</emphasis>); </para>
+                                <para>insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID,
+                                    ATTR_DEFN_ID) values (<emphasis role="italic">'T6A', 1, 'T6',
+                                        'Q9901'</emphasis>);</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </sect4>
+                <sect4>
+                    <title>Point to or Set up Contexts for KRMS</title>
+                    <para>You can use existing Contexts or configure new Contexts for KRMS. There is
+                        graphical user interface support for configuring a new Context, through a
+                        maintenance page. For example, in the Rice demo / sample application, on the
+                        Main menu page, under KRMS Rules, select the Context Lookup. </para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png" scalefit="1"/>
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>You can search for existing Contexts or create a new one. To create a new
+                        one, select "Create New" at the top right on the context lookup page:</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-Context-lookup-page.png" scalefit="1"/>
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>The resulting Context Maintenance screen enables you to define a new
+                        Context. The Context ID must be unique:</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-Context-maintenance-page.png" scalefit="1"/>
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>After creating your Context(s), you must 1) set "CampusAgendaType" as
+                        valid*,  2) set "Route to PeopleFlow" action as valid* for them, and 3) make
+                        the Type(s) you created valid for your Context(s).  See the following
+                        examples, and replace the content of each of the 2nd parenthetical
+                        expressions with your defined values:</para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>insert into krms_cntxt_vld_agenda_t (cntxt_vld_agenda_id,
+                                    cntxt_id, agenda_typ_id, ver_nbr) values (<emphasis role="italic">'agendaid', 'contextid', 'agendatypeid',
+                                        version#</emphasis>);</para>
+                            </listitem>
+                            <listitem>
+                                <para>insert into krms_cntxt_vld_actn_t (cntxt_vld_actn_id,
+                                    cntxt_id, actn_typ_id, ver_nbr) values (<emphasis role="italic">'agendaid', 'contextid', 'agendatypeid',
+                                        version#</emphasis>);</para>
+                            </listitem>
+                            <listitem>
+                                <para>insert into krms_cntxt_vld_agenda_t (cntxt_vld_agenda_id,
+                                    cntxt_id, agenda_typ_id, ver_nbr) values (<emphasis role="italic">''agendaid', 'contextid', 'agendatypeid',
+                                        version#</emphasis>);    </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </sect4>
+                <sect4>
+                    <title>Specify the Terms for KRMS</title>
+                    <para>You can point to existing terms or specify new terms for KRMS (include
+                        information on how to do both of these).</para>
+                    <para>To specify newTerms, you will probably want to first create term
+                        categories.   See the following examples, and replace the content of each of
+                        the 2nd parenthetical expressions with your defined values:</para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>Example - Generic Workflow Properties</para>
+                            </listitem>
+                            <listitem>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para>insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd, ver_nbr)
+                                            values (<emphasis role="italic">'CAT02', 'Workflow Document
+                                                Properties', 'KR-SAP', '1'</emphasis>);</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </listitem>    
+                            <listitem>
+                                <para>Example - Travel Account Properties</para>
+                            </listitem>
+                            <listitem>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para>insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd, ver_nbr)
+                                            values (<emphasis role="italic">'CAT03', 'Travel Account
+                                                Properties', 'KR-SAP', '1'</emphasis>);</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </listitem>    
+                        </itemizedlist>
+                    </para>
+                    <para>And next, you can use existing Terms or configure new Terms for KRMS.
+                        There is graphical user interface support for configuring a new Term,
+                        through a maintenance page. For example, in the Rice demo / sample
+                        application, on the Main menu page, under KRMS Rules, select the Term
+                        Specification Lookup and, after completing that, select the Term Lookup. </para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png" scalefit="1"/>
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>You can search for existing Term Specifications and Terms or create new
+                        ones. To create a new one, select "Create New" at the top right on the term
+                        specification lookup page or copy and then  modify an existing one.  See
+                        example Term Specification Lookup screen below:</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-term-specification-lookup-screen.png" scalefit="1"/>
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>If you copy an existing term specification, be sure to give it a new and
+                        unique name before you change and save or submit it.  Below is a view of the
+                        term specification screen showing the types of attributes you can associate
+                        with it.</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png" scalefit="1"/>
+                            </imageobject>
+                        </inlinemediaobject></para>
+                    <para>After creating your term specifications (your categories of terms), you
+                        can use the Term Lookup screen to add or create new terms.  See the example
+                        Term Lookup screen below:</para>
+                    <para>
+                        <figure>
+                            <title>Term Lookup screen example</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-term-lookup-screen.png" scalefit="1"/>
+                            </imageobject>
+                    </mediaobject>
+                    </figure>
+                    </para>
+                    <para>If you copy an existing term, be sure to change the name to a new and
+                        unique term before you save or submit it.  Below is a view of the term
+                        specification screen showing the types of attributes you can associate with
+                        it.</para>
+                    <para>
+                    <figure>
+                        <title>Term specification screen example</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png" scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                    </para>
+                </sect4>
+                <!-- Commenting out until content is added
+                <sect4>
+                    <title>Create Term Resolvers</title>
+                    <para>(Need to document this)</para>
+                    
+                </sect4>
+                <sect4>
+                    <title>Create Parameterized Terms</title>
+                    <para>(Need to document this)</para>
+                </sect4>
+                -->
+            </sect3>
+            <!-- Commenting out, there is inaccurate info that needs to be corrected in here
+            <sect3>
+                <title>Do I have to define permissions or approval processes so that people can
+                    create and maintain KRMS agendas and rules?</title>
+                <para>The answer is yes.  To set up Permissions for creating and maintaining
+                    agendas, you can use the maintenance screens for identities and for
+                    role/group/permission/responsibility-type that are available on the
+                    Administration tab in the Kuali Rice portal:</para>
+                <para><itemizedlist xml:id="internal-source-marker_0.6076412396925063">
+                        <listitem>
+                            <para>First, in the Kuali Rice portal, go to the Administration tab, and
+                                in the Identity category, select "Permission".  Create a new
+                                permission:  give it a unique name and select the namespace you'd
+                                like to associate it with.  For example, give it the name 'Maintain
+                                KRMS Agenda' and select the appropriate namespace.</para>
+                            <para><inlinemediaobject>
+                                    <imageobject>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -Identity-permission-creation-screen.png" scalefit="1"/>
+                                    </imageobject>
+                                </inlinemediaobject></para>
+                        </listitem>
+                        <listitem>
+                            <para>Next, add that permission to a role that your agenda-maintaining
+                                user has.  You can do that through the Kuali Rice portal, by going
+                                to the Administration tab, and in the Identity category, select
+                                "Role".  You can search for the role you just created (in the
+                                example above,  'Maintain KRMS Agenda', and select to edit
+                                it.</para>
+                            <para>Add the individuals you would like to this role, so that they will
+                                have the permissions needed to create and maintain agendas and
+                                rules.</para>
+                            <para><inlinemediaobject>
+                                    <imageobject>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -role-maintenance-edit-screen.png" scalefit="1"/>
+                                    </imageobject>
+                                </inlinemediaobject></para>
+                        </listitem>
+                    </itemizedlist>Alternatively, you could set up these permissions via code - see
+                    SQL server code examples below: </para>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>insert into krim_role_perm_id_s values (null);</para>
+                        </listitem>
+                        <listitem>
+                            <para>insert into krim_role_perm_t (role_perm_id, role_id, perm_id,
+                                actv_ind, ver_nbr, obj_id) values ((select max(id) from
+                                krim_role_perm_id_s), &lt;YOUR_ROLE_ID>, &lt;YOUR_PERMISSION_ID>,
+                                'Y', 1, uuid());</para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+            </sect3> -->
+            <!--
+            <sect3>
+                <title>(Other? Anything we have to do to setup integration/interaction with KEW?
+                    KIM? KEN? KOM? PeopleFlow? with other service bus?)</title>
+                <para/>
+            </sect3>
+            -->
+        </sect2>
+        <!--
+        <sect2>
+            <title>Ongoing Maintenance tasks</title>
+            <para>(add information here)</para>
+        </sect2>
+        <sect2>
+            <title>Troubleshooting and diagnostics</title>
+            <para>(add information here)</para>
+        </sect2>
+        <sect2>
+            <title>Optimizing performance</title>
+            <para>Content TBD.  For example, would logging alternatives affect performance?  Are
+                there selectable levels of KRMS execution logging?  Etc., etc..</para>
+        </sect2>
+        -->
+    </sect1>
+    <!--
+    <sect1>
+        <title>KRMS Developer tasks</title>
+        <para>(work in progress - content tdb. I've put in some placeholder content-topics for a TOC
+            skeleton.)</para>
+        <para>KRMS takes advantage of several of the capabilities that KRAD makes available to all
+            application developers. This section provides information about developing KRMS
+            constructs and integrating within applications and/or workflows. It assumes you or
+            someone else has already done the initial set up tasks described in the KRMS
+            Administration Guide section above.</para>
+        <sect2>
+            <title>How do I integrate KRMS into an application?</title>
+            <sect3>
+                <title>Calling a KRMS agenda from within an application</title>
+                <para>The following shows how to call a KRMS agenda (an ordered set of rules,
+                    defined for a particular business context) from within an application: (put the
+                    xml code example information here).</para>
+            </sect3>
+            <sect3>
+                <title>Calling a PeopleFlow from within a KRMS agenda</title>
+                <para>Calling a KRMS set of rules (an agenda) from your application can result in a
+                    call to a full-blown KEW workflow or to a lighter-weight PeopleFlow, which is a
+                    new feature in KEW in Rice 2.0, or to any other action you define in KRMS. </para>
+                <para>PeopleFlow gives you a new type of request activation strategy called
+                    "priority-parallel" to activate requests generated from a PeopleFlow in the
+                    appropriate order. Essentially, it's like a mini people-based workflow that
+                    doesn't require you to specify a KEW node in the document type for each
+                    individual who might need to approve or be notified. You can define "Stops" in a
+                    PeopleFlow, where everything in the same stop proceeds in parallel, but all must
+                    be done within the stop before proceeding to the next stop. </para>
+                <para>The same PeopleFlow that defines a routing order among a set of persons,
+                    groups or roles can be called by KRMS rules, with the KRMS rules defining which
+                    type of action request to pass to the PeopleFlow (for example, an "approval" or
+                    a "notification" action). </para>
+                <para>You can define a PeopleFlow (simple workflow) via a simple maintenance
+                    document. You can  invoke the KRMS rule engine from an application and any
+                    PeopleFlows that get selected during rule execution will be called. In this way,
+                    you can integrate business rules across your applications and workflows.   Or
+                    you can call/execute a PeopleFlow from a KEW workflow node directly.</para>
+                <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept in Coeus. For
+                    all intents and purposes it's a prioritized list of people to send action
+                    requests to. You can use a new type of request activitation strategy called
+                    "priority-parallel" to activate requests generated from a PeopleFlow in the
+                    appropriate order, so essentially it's like a mini people-based workflow that
+                    doesn't require you to specify a KEW node in the document type for each
+                    individual who might need to approve.</para>
+                <para>(Add code snippets here showing how to call a PeopleFlow as an action from
+                    within an agenda and showing how to call the same PeopleFlow as a notification
+                    from within an agenda.)</para>
+                <para>For information on how to create a PeopleFlow, see the KEW Technical Guide
+                    (TRG).</para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>How do I integrate KRMS into a KEW workflow?  </title>
+            <para>The following shows how to call a KRMS agenda (an ordered set of rules, defined
+                for a particular business context) from a KEW node: (put the xml code example
+                information here).</para>
+            <para>KRMS can also be configured on the document type as part of a standard "requests"
+                node. It uses an "executor" in order to collect and present facts to the rules
+                engine and perform the execution.</para>
+            <para>
+                <programlisting>
+&lt;requests name="InvokeMeSomeRules">
+     &lt;rulesEngine executorName="NameOfExecutor"/>
+&lt;/requests>
+</programlisting>
+            </para>
+            
+        </sect2>
+        <sect2>
+            <title>Is there anything I should be aware of to optimize performance?</title>
+            <para/>
+        </sect2>
+        <sect2>
+            <title>Debugging &amp; deployment - FAQs</title>
+            <para/>
+        </sect2> 
+    </sect1> -->
+<!--
+    <sect1>
+        <title>KRMS reference information</title>
+        <para/>
+        <sect2>
+            <title>KRMS Data model</title>
+            <para>There are many data elements which are common across many of the tables in the
+                KRMS data model. They include the following:</para>
+            <informaltable class="confluenceTable">
+                <tbody>
+                    <tr>
+                        <th rowspan="1" colspan="1"> Column Name </th>
+                        <th rowspan="1" colspan="1"> Description </th>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"> typ_id </td>
+                        <td rowspan="1" colspan="1"> An identifier which points to the krms_typ_t
+                            table and helps to define the type of particular item. See documentation
+                            on the krms_typ_t table for more information. </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"> attr_defn_id </td>
+                        <td rowspan="1" colspan="1"> An identifier which points to the
+                            krms_attr_defn_t table. </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"> attr_val </td>
+                        <td rowspan="1" colspan="1"> For tables which have an attr_defn_id and
+                            define a piece of attribute data, this represents the actual value for
+                            the attribute that the record defines </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"> nmspc_cd </td>
+                        <td rowspan="1" colspan="1"> The namespace code under which the particular
+                            record is defined. </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"> nm </td>
+                        <td rowspan="1" colspan="1"> The name of the record. Generally, a record
+                            with both nmspc_cd and nm columns can be uniquely identified by the
+                            combination of the two. </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"> actv_ind </td>
+                        <td rowspan="1" colspan="1"> Active indicator. If set to 'Y' then the record
+                            is active, if set to 'N' then it is inactive. </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"> obj_id </td>
+                        <td rowspan="1" colspan="1"> A globally unique identifier for the record.
+                            Generally generated by a GUID or UUID algorithm. </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1" colspan="1"> ver_nbr </td>
+                        <td rowspan="1" colspan="1"> The version number for the record. Used when
+                            making optimistic locking checks. </td>
+                    </tr>
+                </tbody>
+            </informaltable>
+            <para>The UML diagram below shows the KRMS data model:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/krms-ruleModel-20b.png" scalefit="1"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+        </sect2>
+        <sect2>
+            <title>KRMS Architecture diagrams</title>
+            <para>Below is a high-level view of how KRMS fits within Rice and applications'
+                architecture:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/krms-architecture.png" scalefit="1" width="" contentwidth="640"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+        </sect2>
+        <sect2>
+            <title>KRMS API</title>
+            <para>(add information here)</para>
+        </sect2>
+        <sect2>
+            <title>KRMS Execution log</title>
+            <para>Below is a diagram of the KRMS execution log.  (Add how this could be
+                used?)</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRMS_Execution_Log_Class_Diagram.png" scalefit="1"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+        </sect2>
+        <sect2>
+            <title>(Other?)</title>
+            <para/>
+        </sect2>
+    </sect1> -->
+</chapter>

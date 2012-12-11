@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>Welcome to the Rice ${project.version} Documentation Portal</title>
+    </info>
+    <para><emphasis role="bold">Released: ${docbook.build.timestamp}</emphasis></para>
+    <para>Here you will find links to documentation for the Rice ${project.version} release as well as general resources and information about the Kuali Rice project.</para>
+    <sect1 xml:id="download" xreflabel="Download">
+        <title>Download</title>
+        <itemizedlist>
+            <listitem><para><link xlink:show="new" xlink:href="http://kuali.org/rice/download">Download Kuali Rice ${project.version}</link></para></listitem>
+            <listitem>
+                <para>Maven Repository - <link
+                        xlink:show="new" xlink:href="http://nexus.kuali.org/content/groups/public/"
+                        >http://nexus.kuali.org/content/groups/public/</link></para>
+            </listitem>
+            <listitem>
+                <para>From Kuali svn repository - <link
+                        xlink:show="new" xlink:href="http://svn.kuali.org/repos/rice/tags/rice-${project.version}"
+                    >http://svn.kuali.org/repos/rice/tags/rice-${project.version}</link></para>
+            </listitem>
+        </itemizedlist>        
+    </sect1>
+    <sect1>
+        <title>Release Documentation</title>
+        <para>Some of the documentation listed below has not been updated to reflect changes for
+            ${project.version}. If you find a problem, please <link xlink:show="new" xlink:href="UG.html#reporting_rice_jira">report
+                in Jira</link> and set the component to Documentation. Indicate the guide and
+            section that has the problem in the Jira. Thanks for your help in improving the
+            documentation!</para>
+        <para>
+            <orderedlist>
+                <listitem>
+                    <para><emphasis role="bold">Release Notes</emphasis> (<link xlink:show="new"
+                            xlink:href="release-notes.html">HTML</link> / <link xlink:show="new"
+                            xlink:href="../pdf/release-notes.pdf">PDF</link> ) - list of changes </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Installation Guide</emphasis> (<link
+                            xlink:show="new" xlink:href="IG.html">HTML</link> /<link xlink:show="new" xlink:href="../pdf/IG.pdf"
+                            >PDF</link> ) - How to install Kuali Rice (for technical administrators
+                        and developers)</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Introduction to Rice</emphasis> (<link
+                            xlink:show="new" xlink:href="Intro_To_Rice.html">HTML</link> /<link
+                            xlink:show="new" xlink:href="../pdf/Intro_To_Rice.pdf">PDF</link> ) - Introduction to
+                        Rice Concepts and Architecture</para>
+                </listitem>
+                <listitem>
+                <para><emphasis role="bold">KRAD Guide</emphasis> (<link
+                    xlink:show="new" xlink:href="KRAD_Guide.html">HTML</link> /<link
+                        xlink:show="new" xlink:href="../pdf/KRAD_Guide.pdf">PDF</link> ) - Manual on how to get started and use KRAD, Rice's primary development framework</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:show="new"
+                            xlink:href="UG.html">HTML</link> / <link xlink:show="new"
+                            xlink:href="../pdf/UG.pdf">PDF</link> ) - How to use a feature </para>
+                </listitem>
+<!--            TODO: Flesh out this guide    
+                <listitem>
+                    <para><emphasis role="bold">Client Developer Guide</emphasis> (<link xlink:show="new" xlink:href="CDG.html"
+                        >HTML</link> / <link xlink:show="new" xlink:href="../pdf/CDG.pdf">PDF</link> ) -
+                        How to build client applications that take advantage of the feature
+                        programmatically (for application programmers)</para>
+                </listitem>
+-->                
+                <listitem>
+                    <para><emphasis role="bold">Technical Guide</emphasis> (<link
+                            xlink:show="new" xlink:href="TRG.html">HTML</link> / <link xlink:show="new" xlink:href="../pdf/TRG.pdf"
+                            >PDF</link> ) - Technical Reference for Developers </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold"><link
+                                xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html"
+                                >Javadocs</link></emphasis> - Api Reference for Developers</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold"><link
+                        xlink:show="new" xlink:href="Help.html"
+                        >Online Help</link></emphasis></para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Database Diagrams</emphasis> </para>
+                    <itemizedlist>
+                        <para>* When using Internet Explorer, we recommend viewing the PDF files
+                            since the size of the diagrams may be illegible in IE.</para>
+
+                        <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
+<!-- TODO: regenerate and add back in
+                        <listitem>
+                            <para><link xlink:show="new" xlink:href="../html/schema-spy/index.html">Schema Spy</link></para>
+                        </listitem>
+
+
+                        <listitem>
+                            <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>
+                        </listitem>
+-->
+                        <listitem>
+                            <para>Rice KREN (KEN): <link xlink:show="new" xlink:href="../db_diagrams/rice-kren.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-kren.pdf"
+                                    >pdf</link></para>
+                        </listitem>
+                        <listitem>
+                            <para>Rice KREW (KEW): <link xlink:show="new" xlink:href="../db_diagrams/rice-krew.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-krew.pdf"
+                                    >pdf</link></para>
+                        </listitem>
+                        <listitem>
+                            <para>Rice KRIM (KIM): <link xlink:show="new" xlink:href="../db_diagrams/rice-krim.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-krim.pdf"
+                                    >pdf</link></para>
+                        </listitem>
+                        <listitem>
+                            <para>Rice KRNS (KNS): <link xlink:show="new" xlink:href="../db_diagrams/rice-krns.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-krns.pdf"
+                                    >pdf</link></para>
+                        </listitem>
+                        <listitem>
+                          <para>Rice KRSB (KSB): <link xlink:show="new" xlink:href="../db_diagrams/rice-krsb.png"
+                                  >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-krsb.pdf"
+                                  >pdf</link></para>
+                        </listitem>
+                        <listitem>
+                          <para>Rice KRMS: <link xlink:show="new" xlink:href="../db_diagrams/rice-krms.png"
+                                  >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-krms.pdf"
+                                  >pdf</link></para>
+                        </listitem>
+                      <listitem>
+                        <para>Rice KRCR (Core): <link xlink:show="new" xlink:href="../db_diagrams/rice-krcr.png"
+                                >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-krcr.pdf"
+                                >pdf</link></para>
+                      </listitem>
+                      <listitem>
+                        <para>Rice KRLC (Location): <link xlink:show="new" xlink:href="../db_diagrams/rice-krlc.png"
+                                >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-krlc.pdf"
+                                >pdf</link></para>
+                      </listitem>
+                    </itemizedlist>
+                </listitem>
+            </orderedlist>
+        </para>
+        
+    </sect1>
+    <sect1>
+        <title>Collaboration Tools</title>
+        <itemizedlist>
+            <listitem>
+                <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/Home">Kuali Rice Development
+                        Wiki</link> - information about the Rice project, developer documentation, and more</para>
+            </listitem>
+            <listitem>
+                <para><link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE">Issue
+                    Tracking</link></para>
+            </listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://ci.rice.kuali.org/">Continuous Integration</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://svn.kuali.org/repos/rice/">Source Code Repository</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://fisheye.kuali.org/browse/rice">FishEye</link></para></listitem>
+        </itemizedlist>
+    </sect1>
+    <sect1>
+        <title>Getting Involved</title>
+        <itemizedlist>
+            <listitem><para><link xlink:show="new" xlink:href="http://kuali.org/kis/projectTeams/team/111">Joining the Mailing List</link> - Create a KIS account or Login to add or remove yourself from this group</para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/Collaboration">Collaborate</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/CONTRIB/Home">Contribute</link></para></listitem>
+            <listitem><para>Visit Kuali Rice Website - <link xlink:show="new" xlink:href="http://kuali.org/rice">http://kuali.org/rice</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://kuali.org/kd/">Attend Kuali Days</link></para></listitem>
+        </itemizedlist>
+    </sect1>
+
+</article>

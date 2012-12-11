@@ -1,0 +1,290 @@
+/**
+ * Copyright 2005-2012 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.krad.uif;
+
+/**
+ * General constants used within the User Interface Framework
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class UifConstants {
+    public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
+    public static final String DEFAULT_MODEL_NAME = "KualiForm";
+    public static final String COMPONENT_MODEL_NAME = "Component";
+    public static final String DEFAULT_VIEW_NAME = "default";
+    public static final String COMPONENT_ID_PREFIX = "u";
+
+    // uncomment for freemarker testing
+    public static final String SPRING_VIEW_ID = "/krad/WEB-INF/ftl/uifRender";
+    public static final String SPRING_REDIRECT_ID = "/krad/WEB-INF/ftl/redirect";
+    public static final String REDIRECT_PREFIX = "redirect:";
+
+    public static final String EL_PLACEHOLDER_PREFIX = "@{";
+    public static final String EL_PLACEHOLDER_SUFFIX = "}";
+    public static final String NO_BIND_ADJUST_PREFIX = "#form.";
+    public static final String DEFAULT_PATH_BIND_ADJUST_PREFIX = "#dp.";
+    public static final String FIELD_PATH_BIND_ADJUST_PREFIX = "#fp.";
+    public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
+    public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
+
+    public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
+    public static final String REQUEST_FORM = "requestForm";
+
+    public static final String BLOCKUI_NAVOPTS = "navigation";
+    public static final String BLOCKUI_REFRESHOPTS = "refresh";
+
+    public static final String VALIDATE_VIEWS_ONBUILD = "validate.views.onbuild";
+
+    public static final String MESSAGE_VIEW_ID = "Uif-MessageView";
+
+    public static enum ReadOnlyListTypes {
+        DELIMITED, BREAK, OL, UL
+    }
+
+    public static enum Position {
+        BOTTOM, LEFT, RIGHT, TOP
+    }
+
+    public static enum Order {
+        FIRST, LINE_FIRST, NEXT_INPUT, SELF
+    }
+
+    public static enum NavigationType {
+        VERTICAL_MENU, HORIZONTAL_TABS
+    }
+
+    public static enum Orientation {
+        HORIZONTAL, VERTICAL
+    }
+
+    public static enum ViewType {
+        DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT, TRANSACTIONAL;
+    }
+
+    public static enum ControlType {
+        CHECKBOX, CHECKBOXGROUP, FILE, GROUP, HIDDEN, RADIOGROUP, SELECT,
+        TEXTAREA, TEXT, USER
+    }
+
+    public static enum WorkflowAction {
+        SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE, COMPLETE
+    }
+
+    /**
+     * Enum of return types. Used to return the type of response being sent by the server to the client.
+     */
+    public enum AjaxReturnTypes {
+        UPDATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"),
+        UPDATEVIEW("update-view"), UPDATECOLLECTION("update-collection"),
+        UPDATENONE("update-none"), DISPLAYLIGHTBOX("display-lightbox"),
+        UPDATEDIALOG("update-dialog");
+
+        private String key;
+
+        AjaxReturnTypes(String key) {
+            this.key = key;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+    }
+
+    public static class MethodToCallNames {
+        public static final String NAVIGATE = "navigate";
+        public static final String START = "start";
+        public static final String SAVE = "save";
+        public static final String SEARCH = "search";
+        public static final String CLOSE = "close";
+        public static final String ADD_LINE = "addLine";
+        public static final String DELETE_LINE = "deleteLine";
+        public static final String REFRESH = "refresh";
+        public static final String CANCEL = "cancel";
+    }
+
+    public static class ActionEvents {
+        public static final String ADD_LINE = "addLine";
+        public static final String ADD_BLANK_LINE = "addBlankLine";
+    }
+
+    public static class LayoutComponentOptions {
+        public static final String COLUMN_SPAN = "colSpan";
+        public static final String ROW_SPAN = "rowSpan";
+    }
+
+    public static class IdSuffixes {
+        public static final String ADD_LINE = "_add";
+        public static final String CONTROL = "_control";
+        public static final String ATTRIBUTE = "_attribute";
+        public static final String COMPARE = "_comp";
+        public static final String CONSTRAINT = "_constraint";
+        public static final String DIRECT_INQUIRY = "_directinquiry";
+        public static final String ERRORS = "_errors";
+        public static final String INSTRUCTIONAL = "_instructional";
+        public static final String LINE = "_line";
+        public static final String LABEL = "_label";
+        public static final String FIELDSET = "_fieldset";
+        public static final String SUB = "_sub";
+        public static final String SUGGEST = "_suggest";
+        public static final String QUICK_FINDER = "_quickfinder";
+        public static final String SPAN = "_span";
+    }
+
+    public static class ViewPhases {
+        public static final String INITIALIZE = "INITIALIZE";
+        public static final String APPLY_MODEL = "APPLY_MODEL";
+        public static final String FINALIZE = "FINALIZE";
+    }
+
+    public static class ViewStatus {
+        public static final String CREATED = "C";
+        public static final String INITIALIZED = "I";
+        public static final String FINAL = "F";
+    }
+
+    public static class ContextVariableNames {
+        public static final String COLLECTION_GROUP = "collectionGroup";
+        public static final String CONFIG_PROPERTIES = "ConfigProperties";
+        public static final String COMPONENT = "component";
+        public static final String CONSTANTS = "Constants";
+        public static final String DOCUMENT_ENTRY = "DocumentEntry";
+        public static final String INDEX = "index";
+        public static final String IS_ADD_LINE = "isAddLine";
+        public static final String LINE = "line";
+        public static final String LINE_SUFFIX = "lineSuffix";
+        public static final String READONLY_LINE = "readOnlyLine";
+        public static final String MANAGER = "manager";
+        public static final String NODE = "node";
+        public static final String NODE_PATH = "nodePath";
+        public static final String PARENT = "parent";
+        public static final String THEME_IMAGES = "ThemeImages";
+        public static final String UIF_CONSTANTS = "UifConstants";
+        public static final String VIEW = "view";
+        public static final String VIEW_HELPER = "ViewHelper";
+        public static final String PARENT_LINE = "parentLine";
+    }
+
+    public static class TableToolsKeys {
+        public static final String AASORTING = "aaSorting";
+        public static final String BAUTO_TYPE = "bAutoType";
+        public static final String SDOM = "sDom";
+        public static final String LANGUAGE = "oLanguage";
+        public static final String EMPTY_TABLE = "sEmptyTable";
+        public static final String AO_COLUMNS = "aoColumns";
+        public static final String AO_COLUMN_DEFS = "aoColumnDefs";
+        public static final String SORT_SKIP_ROWS = "aiSortingSkipRows";
+        public static final String SORT_DATA_TYPE = "sSortDataType";
+        public static final String SORTABLE = "bSortable";
+        public static final String TARGETS = "aTargets";
+        public static final String VISIBLE = "bVisible";
+        public static final String SORT_TYPE = "sType";
+        public static final String TABLE_SORT = "bSort";
+        public static final String SAJAX_SOURCE = "sAjaxSource";
+        public static final String FOOTER_CALLBACK = "fnFooterCallback";
+    }
+
+    public static class TableToolsValues {
+        public static final String DOM_TEXT = "dom-text";
+        public static final String DOM_SELECT = "dom-select";
+        public static final String DOM_CHECK = "dom-checkbox";
+        public static final String DOM_RADIO = "dom-radio";
+        public static final String NUMERIC = "numeric";
+        public static final String STRING = "string";
+        public static final String DATE = "kuali_date";
+        public static final String PERCENT = "kuali_percent";
+        public static final String CURRENCY = "kuali_currency";
+        public static final String TIMESTAMP = "kuali_timestamp";
+        public static final String FALSE = "false";
+
+        public static final int ADD_ROW_DEFAULT_INDEX = 0;
+    }
+
+    public static class ReordererOptionKeys {
+        public static final String SELECTORS = "selectors";
+        public static final String MOVABLES = "movables";
+    }
+
+    public static class TitleAppendTypes {
+        public static final String DASH = "dash";
+        public static final String PARENTHESIS = "parenthesis";
+        public static final String REPLACE = "replace";
+        public static final String NONE = "none";
+    }
+
+    public static class UrlParams {
+        public static final String ACTION_EVENT = "actionEvent";
+        public static final String SHOW_HISTORY = "showHistory";
+        public static final String SHOW_HOME = "showHome";
+        public static final String FORM_KEY = "formKey";
+        public static final String PAGE_ID = "pageId";
+        public static final String HISTORY = "history";
+        public static final String LAST_FORM_KEY = "lastFormKey";
+    }
+
+    public static class Messages {
+        public static final String VALIDATION_MSG_KEY_PREFIX = "validation.";
+        public static final String STATE_PREFIX = "validation.statePrefix";
+    }
+
+    public static class MessageKeys {
+        public static final String QUERY_DATA_NOT_FOUND = "query.dataNotFound";
+    }
+
+    public static class ClientSideVariables {
+        public static final String KRAD_IMAGE_LOCATION = "kradImageLocation";
+        public static final String KRAD_URL = "kradUrl";
+    }
+
+    public static class RefreshCallerTypes {
+        public static final String LOOKUP = "LOOKUP";
+        public static final String MULTI_VALUE_LOOKUP = "MULTI_VALUE_LOOKUP";
+        public static final String QUESTION = "QUESTION";
+    }
+
+    public static final class DataAttributes {
+        public static final String SERVER_MESSAGES = "server-messages";
+        public static final String VALIDATION_MESSAGES = "validationMessages";
+        public static final String SUMMARIZE = "summarize";
+        public static final String DISPLAY_MESSAGES = "displayMessages";
+        public static final String COLLAPSE_FIELD_MESSAGES = "collapseFieldMessages";
+        public static final String DISPLAY_LABEL = "displayLabel";
+        public static final String HAS_OWN_MESSAGES = "hasOwnMessages";
+        public static final String PAGE_LEVEL = "pageLevel";
+        public static final String FORCE_SHOW = "forceShow";
+        public static final String SECTIONS = "sections";
+        public static final String ORDER = "order";
+        public static final String SERVER_ERRORS = "serverErrors";
+        public static final String SERVER_WARNINGS = "serverWarnings";
+        public static final String SERVER_INFO = "serverInfo";
+        public static final String VIGNORE = "vignore";
+    }
+
+    public static final class CaseConstraintOperators {
+        public static final String HAS_VALUE = "has_value";
+        public static final String EQUALS = "equals";
+        public static final String GREATER_THAN_EQUAL = "greater_than_equal";
+        public static final String LESS_THAN_EQUAL = "less_than_equal";
+        public static final String NOT_EQUAL = "not_equal";
+        public static final String NOT_EQUALS = "not_equals";
+        public static final String GREATER_THAN = "greater_than";
+        public static final String LESS_THAN = "less_than";
+    }
+
+}

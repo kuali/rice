@@ -834,6 +834,92 @@ fieldset[data-type="InputSet"]{
     clear: none;
 }
 
+.ui-tabs-vertical {
+    width: 85.5em;
+}
+
+.ui-tabs-nav li.ui-state-active.ui-state-hover{
+}
+
+.ui-tabs-vertical .ui-tabs-nav li a {
+    display: block;
+}
+
+.ui-tabs-vertical .ui-tabs-panel {
+    padding: 1em !important;
+    float: right;
+    width: 70em;
+}
+
+.ui-tabs-vertical-right .ui-tabs-nav {
+    padding: .2em .2em .2em .1em;
+    float: right;
+    width: 13em;
+    margin-left: 0;
+}
+
+.ui-tabs-vertical-right .ui-tabs-nav li {
+    clear: left;
+    width: 100%;
+    border-bottom-width: 1px !important;
+    border-bottom: 1px solid black !important;
+    border-left-width: 0 !important;
+    margin: 0 0 .2em -1px;
+}
+
+.ui-tabs-vertical-right .ui-tabs-nav li.ui-state-active {
+    padding-bottom: 0;
+    padding-left: .1em;
+    border-right-width: 1px;
+    margin-left: -2px;
+}
+
+.ui-tabs-vertical-left .ui-tabs-panel{
+    clear: none !important;
+}
+
+.ui-tabs-vertical-left .ui-tabs-nav {
+    padding: .2em .1em .2em .2em;
+    float: left;
+    width: 13em;
+    margin: 0;
+}
+
+.ui-tabs-vertical-left .ui-tabs-nav li {
+    clear: left;
+    width: 100%;
+    border-bottom-width: 1px !important;
+    border-bottom: 1px solid black !important;
+    border-right-width: 0 !important;
+    margin: 0 -1px .2em 0;
+}
+
+.ui-tabs-vertical-left .ui-tabs-nav li.ui-state-active {
+    padding-bottom: 0;
+    padding-right: .1em;
+    border-right-width: 1px;
+    border-right-width: 1px;
+}
+
+.ui-tabs-bottom .ui-tabs-nav {
+    clear: left;
+    padding: 0 .2em .2em .2em;
+}
+
+.ui-tabs-bottom .ui-tabs-nav li {
+    top: auto;
+    bottom: 0;
+    margin: 0 .2em 1px 0;
+    border-bottom: 1px solid black !important;
+    border-top: 0 none !important;
+}
+
+.ui-tabs-bottom .ui-tabs-nav li.ui-state-active {
+    margin-top: -1px;
+    padding-top: 1px;
+}
+
+
 /** Navigation Menu ************************************************************************************/
 
 .uif-navigation {
@@ -1197,4 +1283,66 @@ li.uif-infoMessageItem:before {
 
 .overlay-fixed{
     opacity: 0.4 !important;
+}
+
+/***** Syntax Highlighter *********************************************************************/
+.uif-syntaxHighlighter li{
+    list-style: decimal outside none;
+}
+
+.uif-syntaxHighlighter pre {
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px 4px 4px 4px;
+    display: block;
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0 0 10px;
+    padding: 9.5px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+.uif-syntaxHighlighter pre.prettyprint {
+    margin-bottom: 20px;
+}
+.uif-syntaxHighlighter pre code {
+    background-color: transparent;
+    border: 0 none;
+    color: inherit;
+    padding: 0;
+}
+
+/*.uif-syntaxHighlighter .prettyprint {
+    background-color: #F7F7F9;
+    border: 1px solid #E1E1E8;
+    padding: 8px;
+}*/
+.uif-syntaxHighlighter .prettyprint.linenums {
+    box-shadow: 40px 0 0 #FBFBFC inset, 41px 0 0 #ECECF0 inset;
+}
+.uif-syntaxHighlighter ol.linenums {
+    margin: 0 0 0 33px;
+}
+.uif-syntaxHighlighter ol.linenums li {
+    color: #BEBEC5;
+    line-height: 20px;
+    padding-left: 12px;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+
+.uif-syntaxHighlighter .prettyprint.linenums {
+    box-shadow: 40px 0 0 #F6F6F6 inset, 41px 0 0 #E5E5E5 inset;
+}
+
+ol.linenums li:nth-of-type(2n+1) {
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+.prettyprint {
+    font-size: 0.8em;
+}
+.prettyprint {
+    background-color: #F6F6F6;
+    border: 1px solid #CCCCCC;
+    padding-right: 0;
 }

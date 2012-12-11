@@ -22,7 +22,7 @@ Create pre tags containing the text to highlight adding the css class used by th
 -->
 <#macro uif_syntaxHighlighter widget >
 
-    <div>
+    <div class="uif-syntaxHighlighter">
         <h3>${widget.sourceCodeHeader}</h3>
         <div>
             <pre class="${widget.pluginCssClass}">

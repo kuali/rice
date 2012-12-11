@@ -296,6 +296,7 @@
               <bean parent="UifCompView-TextAreas"/>
             </list>
           </property>
+          <property name="tabsWidget.position" value="BOTTOM"/>
         </bean>
 
         <bean id="UifCompView-OtherField2" parent="Uif-TreeSection">

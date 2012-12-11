@@ -478,7 +478,8 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 	color: #000;
 }
 
-.ui-tabs-nav li.ui-state-active, .tab-navigation-block li.ui-state-active {
+.ui-tabs-nav li.ui-state-active, .tab-navigation-block li.ui-state-active,
+.ui-tabs-nav li.ui-state-active.ui-state-hover{
 	background: #fff;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;

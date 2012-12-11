@@ -289,7 +289,7 @@ public class FieldBase extends ComponentBase implements Field {
      *
      * @return Position position of label
      */
-    @BeanTagAttribute(name="labelPlacment",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name="labelPlacement",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Position getLabelPlacement() {
         return this.labelPlacement;
     }

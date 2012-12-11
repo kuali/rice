@@ -174,7 +174,7 @@ public class CustomTagAnnotations {
 
                 Element complexType = document.createElement("xsd:complexType");
                 complexType.setAttribute("name", currentType + "-type");
-                Element sequence = document.createElement("xsd:sequence");
+                Element sequence = document.createElement("xsd:all");
 
                 List<Element> attributeProperties = new ArrayList<Element>();
                 Map<String, BeanTagAttributeInfo> attributes = getAttributes(typeInfo.getBeanClass());
@@ -182,11 +182,15 @@ public class CustomTagAnnotations {
                 if(attributes != null && !attributes.isEmpty()){
                     for(BeanTagAttributeInfo aInfo: attributes.values()){
                         boolean useAttribute = false;
-                        String attrType = "xsd:element";
+                        String attrType = "xsd:anyType";
 
                         if(aInfo.getType().equals(BeanTagAttribute.AttributeType.SINGLEVALUE)){
                             useAttribute = true;
                             attrType = "xsd:string";
+                        }
+
+                        if(aInfo.getType().equals(BeanTagAttribute.AttributeType.SINGLEBEAN)){
+                            useAttribute = true;
                         }
 
                         if(aInfo.getType().equals(BeanTagAttribute.AttributeType.LISTVALUE) ||
@@ -205,6 +209,7 @@ public class CustomTagAnnotations {
                         Element elementAttribute = document.createElement("xsd:element");
                         elementAttribute.setAttribute("name", aInfo.getName());
                         elementAttribute.setAttribute("type", attrType);
+                        elementAttribute.setAttribute("minOccurs", "0");
                         sequence.appendChild(elementAttribute);
                     }
                 }
@@ -216,7 +221,7 @@ public class CustomTagAnnotations {
                 parentAttribute.setAttribute("type", "xsd:string");
                 attributeProperties.add(parentAttribute);
                 Element anyAttribute = document.createElement("xsd:anyAttribute");
-                anyAttribute.setAttribute("processContents", "lax");
+                anyAttribute.setAttribute("processContents", "skip");
                 attributeProperties.add(anyAttribute);
 
                 for(Element attribute: attributeProperties){

@@ -43,5 +43,6 @@
   <context:component-scan base-package="org.kuali.rice.krms"/>
   <context:component-scan base-package="org.kuali.rice.core.web"/>
   <context:component-scan base-package="org.kuali.rice.kew.impl.peopleflow"/>
+  <context:component-scan base-package="org.kuali.rice.krad.demo.uif.controller"/>
 
 </beans>

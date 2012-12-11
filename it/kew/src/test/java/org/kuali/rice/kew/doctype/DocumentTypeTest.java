@@ -73,7 +73,7 @@ public class DocumentTypeTest extends KEWTestCase {
         }
     }
     @Test public void testDuplicateNodeNameInRoutePath() throws Exception {
-        loadXmlFile("DoctypeConfig_duplicateNodes.xml");
+        loadXmlFile("DocTypeConfig_duplicateNodes.xml");
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestDoubleNodeDocumentType");
         document.setTitle("");
         document.route("");

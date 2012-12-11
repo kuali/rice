@@ -159,9 +159,17 @@
   </bean>
 
   <bean id="TravelAuthorizationDocument-travelerDetailId"
-        parent="TravelAuthorizationDocument-travelerDetailId-parentBean"/>
+                 parent="TravelAuthorizationDocument-travelerDetailId-parentBean"/>
   <bean id="TravelAuthorizationDocument-travelerDetailId-parentBean" abstract="true" parent="TravelerDetail-id">
     <property name="name" value="travelerDetailId"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.firstName"
+        parent="TravelAuthorizationDocument-travelerDetail.firstName-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.firstName-parentBean" abstract="true"
+        parent="TravelerDetail-firstName">
+    <property name="name" value="travelerDetail.firstName"/>
     <property name="required" value="false"/>
   </bean>
 

@@ -54,10 +54,10 @@
   <!-- Trip Overview -->
   <bean id="TravelAuthorization-TripOverview"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Trip Overview">
     <property name="items">
-    <list>
-      <ref bean="TravelAuthorization-TripOverview-TravelerSection"/>
-      <ref bean="TravelAuthorization-TripOverview-TripInformationSection"/>
-    </list>
+      <list>
+        <ref bean="TravelAuthorization-TripOverview-TravelerSection"/>
+        <ref bean="TravelAuthorization-TripOverview-TripInformationSection"/>
+      </list>
     </property>
   </bean>
 

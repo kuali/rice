@@ -16,6 +16,7 @@
 package edu.sampleu.travel.approval;
 
 import edu.sampleu.travel.approval.dataobject.PrimaryDestination;
+import edu.sampleu.travel.approval.dataobject.TravelerDetail;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 import javax.persistence.*;
@@ -42,10 +43,13 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     private String tripDescription;
     private Boolean primaryDestinationIndicator = false;
     private Integer primaryDestinationId;
-    private Integer travelerDetailId;
     private String primaryDestinationName;
     private String primaryDestinationCountryState;
     private String primaryDestinationCounty;
+
+    // Traveler section
+    private Integer travelerDetailId;
+    private TravelerDetail travelerDetail;
 
     private PrimaryDestination primaryDestination;
 
@@ -229,10 +233,37 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
      * Sets the traveler detail id.
      * </p>
      *
-     * @param travelerDetailId1 - integer of primary destination id
+     * @param travelerDetailId - integer of primary destination id
      */
-    public void setTravelerDetailId(Integer travelerDetailId1) {
+    public void setTravelerDetailId(Integer travelerDetailId) {
         this.travelerDetailId = travelerDetailId;
+    }
+
+    /**
+     * Returns the nested traveler detail.
+     *
+     * <p>
+     * Gets the traveler detail object.
+     * </p>
+     *
+     * @return TravelerDetail - traveler detail
+     */
+
+    public TravelerDetail getTravelerDetail() {
+        return travelerDetail;
+    }
+
+    /**
+     * Initializes the nested traveler detail object.
+     *
+     * <p>
+     * Sets the traveler detail.
+     * </p>
+     *
+     * @param travelerDetail - traveler detail object
+     */
+    public void setTravelerDetail(TravelerDetail travelerDetail) {
+        this.travelerDetail = travelerDetail;
     }
 
     /**

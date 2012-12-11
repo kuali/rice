@@ -46,7 +46,7 @@
   </bean>
 
   <bean id="DocName-middleName" parent="DocName-middleName-parentBean"/>
-  <bean id="DocName-middleName-parentBean" parent="AttributeDefinition" abstract="true" p:name="middleName" p:forceUppercase="true" p:label="Middle Name" p:shortLabel="Middle Name" p:maxLength="40" p:required="true">
+  <bean id="DocName-middleName-parentBean" parent="AttributeDefinition" abstract="true" p:name="middleName" p:forceUppercase="true" p:label="Middle Name" p:shortLabel="Middle Name" p:maxLength="40" p:required="false">
     <property name="validationPattern">
 
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="40" />

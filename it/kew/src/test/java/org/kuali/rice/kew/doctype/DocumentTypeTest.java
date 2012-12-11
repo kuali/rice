@@ -67,7 +67,7 @@ public class DocumentTypeTest extends KEWTestCase {
      */
     @Test public void testDuplicateNodeName() throws Exception {
         try {
-            loadXmlFile("DoctypeConfig_loadDupliateNodes.xml");
+            loadXmlFile("DocTypeConfig_loadDupliateNodes.xml");
             fail("loadXmlFile should have thrown routing exception");
         } catch (Exception e) {
         }
@@ -88,7 +88,7 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
     }
     @Test public void testNestedDuplicateNodeNameInRoutePath() throws Exception {
-        loadXmlFile("DoctypeConfig_nestedNodes.xml");
+        loadXmlFile("DocTypeConfig_nestedNodes.xml");
         // Path 1
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestDoubleNodeDocumentType");
         document.setTitle("");

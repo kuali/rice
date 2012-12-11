@@ -47,14 +47,4 @@ public interface MultiValueControl {
      * @param options
      */
     public void setOptions(List<KeyValue> options);
-
-    /**
-     * Sets the richOptions based on options.
-     *
-     * <p>Use caution - any existing rich options will be replaced with the options</p>
-     *
-     * @param view  - the view
-     * @param model - the model
-     */
-    public void replaceRichOptionsWithOptions(View view, Object model);
 }

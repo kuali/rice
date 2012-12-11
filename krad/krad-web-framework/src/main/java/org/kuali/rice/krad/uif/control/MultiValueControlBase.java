@@ -173,27 +173,4 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     public void setRichOptions(List<KeyMessage> richOptions) {
         this.richOptions = richOptions;
     }
-
-    /**
-     * Sets the richOptions based on options.
-     *
-     * <p>Use caution - any existing rich options will be replaced with the options</p>
-     *
-     * @param view  - the view
-     * @param model - the model
-     */
-    public void replaceRichOptionsWithOptions(View view, Object model) {
-        richOptions = new ArrayList<KeyMessage>();
-
-        for (KeyValue option : options) {
-            Message message = ComponentFactory.getMessage();
-            view.assignComponentIds(message);
-            message.setMessageText(option.getValue());
-            message.setInlineComponents(inlineComponents);
-            message.setGenerateSpan(false);
-
-            view.getViewHelperService().performComponentInitialization(view, model, message);
-            richOptions.add(new KeyMessage(option.getKey(), option.getValue(), message));
-        }
-    }
 }

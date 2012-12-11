@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
@@ -83,6 +84,37 @@ public class DialogGroup extends Group {
 
     public DialogGroup() {
         super();
+    }
+
+    /**
+     * Process rich message content that may be in the options, by creating and initializing the richOptions
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        // set the messageTest to the promptText
+        prompt.setMessageText(promptText);
+
+        // hide or show explanation
+        explanation.setRender(displayExplanation);
+
+        // add options to checkbox
+        if (responseInputField.getControl() != null && responseInputField.getControl() instanceof MultiValueControl) {
+            MultiValueControl multiValueControl = (MultiValueControl) responseInputField.getControl();
+
+            if (reverseButtonOrder) {
+                // reverse the button order (without changing original list)
+                List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
+                Collections.reverse(buttonList);
+                multiValueControl.setOptions(buttonList);
+            } else {
+                multiValueControl.setOptions(availableResponses);
+            }
+        }
     }
 
     /**
@@ -163,26 +195,6 @@ public class DialogGroup extends Group {
             setProgressiveRenderViaAJAX(useAjaxCallForContent);
             setProgressiveRender("");
             setRender(false);
-        }
-        // set the messageTest to the promptText
-        prompt.setMessageText(promptText);
-
-        // hide or show explanation
-        explanation.setRender(displayExplanation);
-
-        // add options to checkbox
-        if (responseInputField.getControl() != null && responseInputField.getControl() instanceof MultiValueControl) {
-            MultiValueControl multiValueControl = (MultiValueControl) responseInputField.getControl();
-            if (reverseButtonOrder) {
-                // reverse the button order (without changing original list)
-                List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
-                Collections.reverse(buttonList);
-                multiValueControl.setOptions(buttonList);
-                multiValueControl.replaceRichOptionsWithOptions(view, model);
-            } else {
-                multiValueControl.setOptions(availableResponses);
-                multiValueControl.replaceRichOptionsWithOptions(view, model);
-            }
         }
     }
 

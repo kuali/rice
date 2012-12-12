@@ -61,25 +61,45 @@
     </property>
   </bean>
 
-  <bean id="TravelAuthorization-TripOverview-TravelerSection" parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="Traveler Section">
+  <bean id="TravelAuthorization-TripOverview-TravelerSection" parent="Uif-Disclosure-GridSubSection" p:headerText="Traveler Section"
+        p:layoutManager.numberOfColumns="4">
     <property name="items">
       <list>
-        <!--<bean parent="Uif-InputField" p:propertyName="travelerDetailId"/>-->
-        <bean parent="Uif-InputField" p:propertyName="travelerDetailId">
-          <property name="id" value="quickfinder2"/> <!-- changing this will break tests -->
-          <property name="quickfinder">
-            <bean parent="Uif-QuickFinderByScript"/>
-          </property>
+        <bean parent="Uif-InputField" p:label="Traveler Lookup" p:colSpan="3" p:propertyName="travelerDetailId">
+          <property name="id" value="quickfinder"/>
           <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.approval.dataobject.TravelerDetail"/>
           <property name="quickfinder.fieldConversions">
             <map>
               <entry key="id" value="travelerDetailId"/>
-              <entry key="firstName" value="travelerFirstName"/>
+              <entry key="principalId" value="travelerDetail.principalId"/>
+              <entry key="firstName" value="travelerDetail.firstName"/>
+              <entry key="lastName" value="travelerDetail.lastName"/>
+              <entry key="streetAddressLine1" value="travelerDetail.streetAddressLine1"/>
+              <entry key="streetAddressLine2" value="travelerDetail.streetAddressLine2"/>
+              <entry key="cityName" value="travelerDetail.cityName"/>
+              <entry key="stateCode" value="travelerDetail.stateCode"/>
+              <entry key="countryCode" value="travelerDetail.countryCode"/>
+              <entry key="zipCode" value="travelerDetail.zipCode"/>
+              <entry key="emailAddress" value="travelerDetail.emailAddress"/>
+              <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
             </map>
           </property>
-          <!--<property name="quickfinder.lookupParameters" value="principalId:name"/>-->
+          <property name="control">
+            <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
+          </property>
         </bean>
-        <!--<bean parent="Uif-InputField" p:propertyName="travelerFirstName"/>-->
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.principalId"/>
+        <bean parent="Uif-MessageField" p:label="Principal Name" p:messageText=""/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.firstName"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.lastName"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine1"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine2"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.cityName"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.stateCode"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.countryCode"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.emailAddress"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.phoneNumber"/>
       </list>
     </property>
   </bean>

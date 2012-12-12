@@ -162,6 +162,33 @@
                  parent="TravelAuthorizationDocument-travelerDetailId-parentBean"/>
   <bean id="TravelAuthorizationDocument-travelerDetailId-parentBean" abstract="true" parent="TravelerDetail-id">
     <property name="name" value="travelerDetailId"/>
+    <property name="label" value="Id" />
+    <property name="shortLabel" value="Id" />
+    <property name="maxLength" value="32" />
+    <property name="required" value="true" />
+    <property name="summary" value="Id" />
+    <property name="description" value="Id" />
+    <!--<property name="control">-->
+      <!--<bean parent="HiddenControlDefinition" />-->
+    <!--</property>-->
+    <!--<property name="validationPattern">-->
+      <!--<bean parent="NumericValidationPattern" />-->
+    <!--</property>-->
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.principalId"
+        parent="TravelAuthorizationDocument-travelerDetail.principalId-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.principalId-parentBean" abstract="true"
+        parent="TravelerDetail-principalId">
+    <property name="name" value="travelerDetail.principalId"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.principalName"
+        parent="TravelAuthorizationDocument-travelerDetail.principalName-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.principalName-parentBean" abstract="true"
+        parent="TravelerDetail-principalName">
+    <property name="name" value="travelerDetail.principalName"/>
     <property name="required" value="false"/>
   </bean>
 
@@ -173,4 +200,75 @@
     <property name="required" value="false"/>
   </bean>
 
+  <bean id="TravelAuthorizationDocument-travelerDetail.lastName"
+                 parent="TravelAuthorizationDocument-travelerDetail.lastName-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.lastName-parentBean" abstract="true"
+        parent="TravelerDetail-lastName">
+    <property name="name" value="travelerDetail.lastName"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.streetAddressLine1"
+        parent="TravelAuthorizationDocument-travelerDetail.streetAddressLine1-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.streetAddressLine1-parentBean" abstract="true"
+        parent="TravelerDetail-streetAddressLine1">
+    <property name="name" value="travelerDetail.streetAddressLine1"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.streetAddressLine2"
+        parent="TravelAuthorizationDocument-travelerDetail.streetAddressLine2-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.streetAddressLine2-parentBean" abstract="true"
+        parent="TravelerDetail-streetAddressLine2">
+    <property name="name" value="travelerDetail.streetAddressLine2"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.cityName"
+        parent="TravelAuthorizationDocument-travelerDetail.cityName-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.cityName-parentBean" abstract="true"
+        parent="TravelerDetail-cityName">
+    <property name="name" value="travelerDetail.cityName"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.stateCode"
+        parent="TravelAuthorizationDocument-travelerDetail.stateCode-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.stateCode-parentBean" abstract="true"
+        parent="TravelerDetail-stateCode">
+    <property name="name" value="travelerDetail.stateCode"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.countryCode"
+        parent="TravelAuthorizationDocument-travelerDetail.countryCode-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.countryCode-parentBean" abstract="true"
+        parent="TravelerDetail-countryCode">
+    <property name="name" value="travelerDetail.countryCode"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.zipCode"
+                 parent="TravelAuthorizationDocument-travelerDetail.zipCode-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.zipCode-parentBean" abstract="true"
+        parent="TravelerDetail-zipCode">
+    <property name="name" value="travelerDetail.zipCode"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.emailAddress"
+        parent="TravelAuthorizationDocument-travelerDetail.emailAddress-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.emailAddress-parentBean" abstract="true"
+        parent="TravelerDetail-emailAddress">
+    <property name="name" value="travelerDetail.emailAddress"/>
+    <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-travelerDetail.phoneNumber"
+        parent="TravelAuthorizationDocument-travelerDetail.phoneNumber-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.phoneNumber-parentBean" abstract="true"
+        parent="TravelerDetail-phoneNumber">
+    <property name="name" value="travelerDetail.phoneNumber"/>
+    <property name="required" value="false"/>
+  </bean>
 </beans>

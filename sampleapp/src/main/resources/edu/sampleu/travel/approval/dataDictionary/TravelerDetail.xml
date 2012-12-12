@@ -33,6 +33,7 @@
         <ref bean="TravelerDetail-id" />
         <ref bean="TravelerDetail-documentNumber" />
         <ref bean="TravelerDetail-principalId" />
+        <ref bean="TravelerDetail-principalName" />
         <ref bean="TravelerDetail-firstName" />
         <ref bean="TravelerDetail-lastName" />
         <ref bean="TravelerDetail-streetAddressLine1" />
@@ -112,6 +113,19 @@
     <property name="maxLength" value="255" />
     <property name="summary" value="Principal Id" />
     <property name="description" value="Principal Id" />
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="20" />
+    </property>
+  </bean>
+
+  <bean id="TravelerDetail-principalName" parent="TravelerDetail-principalName-parentBean" />
+  <bean id="TravelerDetail-principalName-parentBean" parent="AttributeDefinition">
+    <property name="name" value="principalName" />
+    <property name="label" value="Principal Name" />
+    <property name="shortLabel" value="Principal Name" />
+    <property name="maxLength" value="255" />
+    <property name="summary" value="Principal Name" />
+    <property name="description" value="Principal Name" />
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20" />
     </property>

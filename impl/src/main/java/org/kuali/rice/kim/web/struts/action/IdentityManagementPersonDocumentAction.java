@@ -306,17 +306,32 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         		&& newGroup.getNamespaceCode() == null 
         		&& newGroup.getGroupId() != null) {
         	Group tempGroup = KimApiServiceLocator.getGroupService().getGroup(newGroup.getGroupId());
+            if (tempGroup == null) {
+                GlobalVariables.getMessageMap().putError("newGroup.groupId",
+                    RiceKeyConstants.ERROR_ASSIGN_GROUP_INVALID,
+                    new String[] { newGroup.getGroupId(),""});
+                return mapping.findForward(RiceConstants.MAPPING_BASIC);
+            }
         	newGroup.setGroupName(tempGroup.getName());
 	        newGroup.setNamespaceCode(tempGroup.getNamespaceCode());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
-        } else if (newGroup.getGroupName() != null 
-        		&& newGroup.getNamespaceCode() != null 
-        		&& newGroup.getGroupId() == null) {
-        	Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
-                    newGroup.getNamespaceCode(), newGroup.getGroupName());
-        	newGroup.setGroupId(tempGroup.getId());
-	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
+        } else if (StringUtils.isBlank(newGroup.getGroupName())
+                 || StringUtils.isBlank(newGroup.getNamespaceCode())) {
+                 GlobalVariables.getMessageMap().putError("newGroup.groupName",
+                      RiceKeyConstants.ERROR_ASSIGN_GROUP_INVALID,
+                      new String[] { newGroup.getNamespaceCode(), newGroup.getGroupName()});
+                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
+        Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
+            newGroup.getNamespaceCode(), newGroup.getGroupName());
+        if (tempGroup == null) {
+            GlobalVariables.getMessageMap().putError("newGroup.groupName",
+                    RiceKeyConstants.ERROR_ASSIGN_GROUP_INVALID,
+                    new String[] { newGroup.getNamespaceCode(), newGroup.getGroupName()});
+            return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+        newGroup.setGroupId(tempGroup.getId());
+	    newGroup.setKimTypeId(tempGroup.getKimTypeId());
         if (getKualiRuleService().applyRules(new AddGroupEvent("",personDocumentForm.getPersonDocument(), newGroup))) {
 	        Group group = getGroupService().getGroup(newGroup.getGroupId());
 	        newGroup.setGroupName(group.getName());

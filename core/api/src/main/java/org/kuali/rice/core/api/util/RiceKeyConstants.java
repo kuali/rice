@@ -179,6 +179,7 @@ public final class RiceKeyConstants {
     public static final String ERROR_EXIST_PRINCIPAL_NAME = "error.exist.principalName";
     public static final String ERROR_ASSIGN_ROLE = "error.assign.role";
     public static final String ERROR_ASSIGN_GROUP = "error.assign.group";
+    public static final String ERROR_ASSIGN_GROUP_INVALID = "error.assign.group.invalid";
     public static final String ERROR_ASSIGN_PERMISSION = "error.assign.perimssion";
     public static final String ERROR_ASSIGN_RESPONSIBILITY = "error.assign.responsibility";
     public static final String ERROR_POPULATE_GROUP = "error.populate.group";

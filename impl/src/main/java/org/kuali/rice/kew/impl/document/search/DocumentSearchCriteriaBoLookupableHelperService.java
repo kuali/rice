@@ -232,7 +232,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             if (parameterName.contains(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
                 String[] value = parameters.get(parameterName);
                 if (ArrayUtils.isNotEmpty(value)) {
-                    documentAttributeFieldValues.put(parameterName, StringUtils.join(value, " " + SearchOperator.OR.op() + " "));
+                    if ( parameters.containsKey(parameterName + KRADConstants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION)) {
+                        documentAttributeFieldValues.put(parameterName, "Y");
+                    }   else {
+                        documentAttributeFieldValues.put(parameterName, StringUtils.join(value, " " + SearchOperator.OR.op() + " "));
+                    }
                 }
             }
         }

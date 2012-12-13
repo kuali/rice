@@ -1,0 +1,128 @@
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- TextControl demo -->
+  <bean id="Demo-TextControl-View" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-TextControl-Group1"/>
+        <ref bean="Demo-TextControl-Group2"/>
+        <ref bean="Demo-TextControl-Group3"/>
+        <ref bean="Demo-TextControl-Group4"/>
+        <ref bean="Demo-TextControl-Group5"/>
+        <ref bean="Demo-TextControl-Group6"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Default -->
+  <bean id="Demo-TextControl-Group1" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TextControl-Group1 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-TextControl-Group1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- TextControl with a set size -->
+  <bean id="Demo-TextControl-Group2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TextControl-Group2 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="60"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-TextControl-Group2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- TextControl with textExpand set-->
+  <bean id="Demo-TextControl-Group3" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TextControl-Group3 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:textExpand="true"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-TextControl-Group3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Disabled TextControl-->
+  <bean id="Demo-TextControl-Group4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TextControl-Group4 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="true"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-TextControl-Group4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Uppercase TextControl input value-->
+  <bean id="Demo-TextControl-Group5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TextControl-Group5 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2" p:uppercaseValue="true">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-TextControl-Group5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Watermark text -->
+  <bean id="Demo-TextControl-Group6" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TextControl-Group6 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:watermarkText="watermark text"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-TextControl-Group6 end-->
+      </list>
+    </property>
+  </bean>
+
+</beans>

@@ -145,7 +145,8 @@
         <!-- KRAD sample app - component library -->
         <value>classpath:org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoInputField.xml</value>
-
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTextAreaControl.xml</value>
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
 
@@ -195,6 +196,8 @@
 
         <!-- KRAD sample app - component library -->
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextAreaControlResources</value>
       </list>
     </property>
   </bean>

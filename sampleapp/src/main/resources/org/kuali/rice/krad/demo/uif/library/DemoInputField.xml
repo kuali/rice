@@ -25,34 +25,34 @@
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoInputField.xml"/>
     <property name="demoGroups">
       <list>
-        <ref bean="Demo-InputField-Group1"/>
-        <ref bean="Demo-InputField-Group2"/>
+        <ref bean="Demo-InputField-Example1"/>
+        <ref bean="Demo-InputField-Example2"/>
       </list>
     </property>
   </bean>
 
   <!-- Default -->
-  <bean id="Demo-InputField-Group1"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-InputField-Example1"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-InputField-Group1 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField1"/>
-        <!-- ex:Demo-InputField-Group1 end-->
+        <!-- ex:Demo-InputField-Example1 start-->
+        <bean parent="Uif-InputField" p:label="InputField 1" p:propertyName="inputField1"/>
+        <!-- ex:Demo-InputField-Example1 end-->
       </list>
     </property>
   </bean>
 
   <!-- Alt. Control -->
-  <bean id="Demo-InputField-Group2"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-InputField-Example2"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-InputField-Group2 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField2">
+        <!-- ex:Demo-InputField-Example2 start-->
+        <bean parent="Uif-InputField" p:label="InputField 2" p:propertyName="inputField2">
           <property name="control">
             <bean parent="Uif-TextAreaControl"/>
           </property>
         </bean>
-        <!-- ex:Demo-InputField-Group2 end-->
+        <!-- ex:Demo-InputField-Example2 end-->
       </list>
     </property>
   </bean>

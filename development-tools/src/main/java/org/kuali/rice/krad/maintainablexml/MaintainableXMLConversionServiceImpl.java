@@ -56,7 +56,7 @@ public class MaintainableXMLConversionServiceImpl {
 
     private Map<String, String> classNameRuleMap;
 	private Map<String, Map<String, String>> classPropertyRuleMap;
-
+    private Map<String, String> dateRuleMap;
 	public MaintainableXMLConversionServiceImpl() {
 	}
 
@@ -83,7 +83,6 @@ public class MaintainableXMLConversionServiceImpl {
 
         try {
             xml = upgradeBONotes(xml);
-
             if (classNameRuleMap == null) {
                 setRuleMaps();
             }
@@ -91,11 +90,15 @@ public class MaintainableXMLConversionServiceImpl {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document document = db.parse(new InputSource(new StringReader(xml)));
+
+            removePersonObjects(document);
+
             for(Node childNode = document.getFirstChild(); childNode != null;) {
                 Node nextChild = childNode.getNextSibling();
                 transformClassNode(document, childNode);
                 childNode = nextChild;
             }
+
             TransformerFactory transFactory = TransformerFactory.newInstance();
             Transformer trans = transFactory.newTransformer();
             trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -131,6 +134,21 @@ public class MaintainableXMLConversionServiceImpl {
             oldXML = oldXML.replaceFirst(">", ">\n<notes>\n" + notesXml + "\n</notes>");
         }
         return oldXML;
+    }
+
+    public void removePersonObjects( Document doc ) {
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        XPathExpression personProperties = null;
+        try {
+            personProperties = xpath.compile("//*[@class='org.kuali.rice.kim.impl.identity.PersonImpl']");
+            NodeList matchingNodes = (NodeList)personProperties.evaluate( doc, XPathConstants.NODESET );
+            for(int i = 0; i < matchingNodes.getLength(); i++) {
+                Node tempNode = matchingNodes.item(i);
+                tempNode.getParentNode().removeChild(tempNode);
+            }
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
     }
 
     private void transformClassNode(Document document, Node node) throws ClassNotFoundException, XPathExpressionException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
@@ -221,6 +239,17 @@ public class MaintainableXMLConversionServiceImpl {
 					continue;
 				}
 			}
+
+            if(dateRuleMap != null && dateRuleMap.containsKey(propertyName)) {
+                String newDateValue = dateRuleMap.get(propertyName);
+                if(StringUtils.isNotBlank(newDateValue)) {
+                    if ( childNode.getTextContent().length() == 10 ) {
+                        childNode.setTextContent( childNode.getTextContent() + " " + newDateValue );
+
+                    }
+                }
+            }
+
             if (currentClass != null) {
                 if (childNode.hasChildNodes() && !(Collection.class.isAssignableFrom(currentClass) || Map.class
                         .isAssignableFrom(currentClass))) {
@@ -280,6 +309,15 @@ public class MaintainableXMLConversionServiceImpl {
 				}
 				classPropertyRuleMap.put(classText, propertyRuleMap);
 			}
+
+            // Get the Date rules
+            XPathExpression dateFieldNames = xpath.compile("//*[@name='maint_doc_date_changes']/pattern");
+            NodeList DateNamesList = (NodeList) dateFieldNames.evaluate(doc, XPathConstants.NODESET);
+            for (int s = 0; s < DateNamesList.getLength(); s++) {
+                String matchText = xpath.evaluate("match/text()", DateNamesList.item(s));
+                String replaceText = xpath.evaluate("replacement/text()", DateNamesList.item(s));
+                dateRuleMap.put(matchText, replaceText);
+            }
 		} catch (Exception e) {
 			System.out.println("Error parsing rule xml file. Please check file. : " + e.getMessage());
 			e.printStackTrace();
@@ -289,8 +327,9 @@ public class MaintainableXMLConversionServiceImpl {
 	private void setupConfigurationMaps() {
 		classNameRuleMap = new HashMap<String, String>();
 		classPropertyRuleMap = new HashMap<String, Map<String,String>>();
-		
-		// Pre-populate the class property rules with some defaults which apply to every BO
+        dateRuleMap = new HashMap<String, String>();
+
+        // Pre-populate the class property rules with some defaults which apply to every BO
 		Map<String, String> defaultPropertyRules = new HashMap<String, String>();
 		defaultPropertyRules.put("boNotes", "");
 		defaultPropertyRules.put("autoIncrementSet", "");

@@ -284,4 +284,27 @@
       </pattern>
     </pattern>
   </rule>
+
+  <!-- Rules for any changes Dates from the format YYYY-MM-DD to other format.  The
+       text in the replacement section will be added to the end of the date.
+       i.e 2010-05-09  will become 2010-05-09 00:00:00.0
+  -->
+  <rule name="maint_doc_date_changes">
+    <pattern>
+      <match>fromDateValue</match>
+      <replacement>00:00:00.0</replacement>
+    </pattern>
+    <pattern>
+      <match>toDateValue</match>
+      <replacement>00:00:00.0</replacement>
+    </pattern>
+    <pattern>
+      <match>activeFromDate</match>
+      <replacement>00:00:00 GMT-08:00</replacement>
+    </pattern>
+    <pattern>
+      <match>activeToDate</match>
+      <replacement>00:00:00 GMT-08:00</replacement>
+    </pattern>
+  </rule>
 </rules>

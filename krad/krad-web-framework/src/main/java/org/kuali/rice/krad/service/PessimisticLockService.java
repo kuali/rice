@@ -86,6 +86,15 @@ public interface PessimisticLockService {
      * found for the given documentNumber
      */
     public List<PessimisticLock> getPessimisticLocksForDocument(String documentNumber);
+
+    /**
+     * Return all locks associated with the given session id
+     *
+     * @param sessionId - the session id
+     * @return an empty list of no locks are found or the list of {@link PessimisticLock} objects
+     * found for the given sessionId
+     */
+    public List<PessimisticLock> getPessimisticLocksForSession(String sessionId);
     
     /**
      * This method is used to identify who is an admin user for {@link PessimisticLock} objects

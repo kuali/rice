@@ -20,6 +20,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -69,6 +70,9 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     
     @Column(name="DOC_HDR_ID")
     private String documentNumber; // foreign key to document
+
+    @Column(name="SESN_ID")
+    private String sessionId;
     
     @Transient
     private Person ownedByUser;
@@ -76,7 +80,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     
     /**
      * This constructs an empty lock using the logged in user and default lock descriptor type
-     * but will NOT assign a document number.  Use another constructor.
+     * but will NOT assign a document number or session id.  Use another constructor.
      * @deprecated
      */
     @Deprecated
@@ -85,11 +89,12 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     /**
      * This constructs a lock object using the logged in user and given lock type
      */
-    public PessimisticLock(String documentNumber, String lockDescriptor, Person user) {
+    public PessimisticLock(String documentNumber, String lockDescriptor, Person user, UserSession userSession) {
         this.documentNumber = documentNumber;
         this.ownedByPrincipalIdentifier = user.getPrincipalId();
         this.lockDescriptor = lockDescriptor;  
         this.generatedTimestamp = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
+        this.sessionId = userSession.getKualiSessionId();
     }
     
     public boolean isOwnedByUser(Person user) {
@@ -165,6 +170,21 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
     }
+
+    /**
+     * @return the sessionId
+     */
+    public String getSessionId() {
+        return this.sessionId;
+    }
+
+    /**
+     * @param sessionId the sessionId to set
+     */
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
 
     /**
      * @return the ownedByUser

@@ -140,7 +140,8 @@
 		<field-descriptor name="ownedByPrincipalIdentifier" column="PRNCPL_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="generatedTimestamp" column="GNRT_DT" jdbc-type="TIMESTAMP" />
 		<field-descriptor name="lockDescriptor" column="LOCK_DESC_TXT" jdbc-type="VARCHAR" />
-	</class-descriptor>
+    <field-descriptor name="sessionId" column="SESN_ID" jdbc-type="VARCHAR" />
+  </class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krad.bo.Note" table="KRNS_NTE_T">
 		<field-descriptor name="noteIdentifier" column="NTE_ID" jdbc-type="BIGINT" primarykey="true" indexed="true" autoincrement="true"

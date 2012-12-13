@@ -40,6 +40,7 @@ import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KRADTestCase;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,10 +60,13 @@ import static org.junit.Assert.*;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PessimisticLockServiceTest extends KRADTestCase {
 
+    String sessionId = "ad4d6c83-4d0f-4309-a528-c2f81ec00396";
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession("quickstart"));
+        GlobalVariables.getUserSession().setKualiSessionId(sessionId);
     }
 
     /**
@@ -74,10 +78,10 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1111, '4f6bc9e2-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'employee')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1112, '5add9cba-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1235', {d '2007-10-01'}, 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1113, '69e42b8e-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-08-01'}, 'fred')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1114, '76504650-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred')")
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1111, '4f6bc9e2-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'employee', 'aa5d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1112, '5add9cba-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1235', {d '2007-10-01'}, 'frank', 'dd4d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1113, '69e42b8e-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-08-01'}, 'fred', 'ad4d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1114, '76504650-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred', 'ad4d6c83-4d0f-4309-a528-c2f81ec00396')")
                     }
             )
     @Test
@@ -196,10 +200,10 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1111, 'fbcb0362-7dfb-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1112, '055bef4a-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-10-01'}, 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1113, '0e0144ec-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-10-01'}, 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1114, '1891526c-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred')")
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1111, 'fbcb0362-7dfb-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran', 'aa5d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1112, '055bef4a-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-10-01'}, 'frank', 'dd5d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1113, '0e0144ec-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-10-01'}, 'frank', 'dd5d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1114, '1891526c-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred', 'ab4d6c83-4d0f-4309-a528-c2f81ec00396')")
                     }
             )
     @Test
@@ -216,6 +220,33 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     }
 
     /**
+     * This method tests retrieving {@link PessimisticLock} objects by session id
+     *
+     * @throws Exception
+     */
+    @UnitTestData(
+            sqlStatements = {
+                    @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1111, '24c40cd2-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran', 'ad4d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1112, '32602e8e-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1235', {d '2007-10-01'}, 'fran', 'bc5d6c66-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1113, '3acfc1ce-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-10-01'}, 'fran', 'ad4d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1114, '463cc642-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fran', 'bc5d6c66-4d0f-4309-a528-c2f81ec00396')")
+            }
+    )
+    @Test
+    public void testGetPessimisticLocksForSession() throws Exception {
+        List<PessimisticLock> locks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForSession(sessionId);
+        assertEquals("Should return 2 locks for session " + sessionId, 2, locks.size());
+
+        ArrayList<String> documentNumbers = new ArrayList<String>();
+        for (PessimisticLock lock : locks) {
+            documentNumbers.add(lock.getDocumentNumber());
+        }
+        assertTrue("Locks should contain a lock for document number 1234 but contained " + documentNumbers, documentNumbers.contains("1234"));
+        assertTrue("Locks should contain a lock for document number 1236 but contained " + documentNumbers, documentNumbers.contains("1236"));
+    }
+
+    /**
      * This method tests releasing {@link PessimisticLock} objects for a specific user
      *
      * @throws Exception
@@ -223,14 +254,14 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1111, '24c40cd2-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1112, '32602e8e-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1235', {d '2007-10-01'}, 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1113, '3acfc1ce-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-10-01'}, 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1114, '463cc642-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1115, '4e66c4b2-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1234', {d '2007-07-01'}, 'fran')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1116, '55d99b02-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1235', {d '2007-10-01'}, 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1117, '5e47fb26-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1236', {d '2007-10-01'}, 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1118, '65c366d8-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1237', {d '2007-08-01'}, 'fred')")
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1111, '24c40cd2-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran', 'ad4d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1112, '32602e8e-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1235', {d '2007-10-01'}, 'frank', 'bc5d6c66-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1113, '3acfc1ce-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-10-01'}, 'frank', 'bc5d6c66-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1114, '463cc642-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred', 'dd5d6c66-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1115, '4e66c4b2-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1234', {d '2007-07-01'}, 'fran', 'ad4d6c83-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1116, '55d99b02-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1235', {d '2007-10-01'}, 'frank', 'bc5d6c66-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1117, '5e47fb26-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1236', {d '2007-10-01'}, 'frank', 'bc5d6c66-4d0f-4309-a528-c2f81ec00396')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1118, '65c366d8-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1237', {d '2007-08-01'}, 'fred', 'dd5d6c66-4d0f-4309-a528-c2f81ec00396')")
                     }
             )
     @Test
@@ -272,7 +303,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1111, '73f340de-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran')")
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID,SESN_ID) VALUES (1111, '73f340de-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran', 'ad4d6c83-4d0f-4309-a528-c2f81ec00396')")
                     }
             )
     @Test

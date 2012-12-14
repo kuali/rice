@@ -412,6 +412,14 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField{
     margin-right: 0px;
 }
 
+.uif-listLayout ul li{
+    list-style: disc inside none;
+}
+
+.uif-listLayout ol li{
+    list-style: decimal inside none;
+}
+
 /** Collection styles *******************************************************************************/
 
 table.uif-tableCollectionLayout {
@@ -1346,3 +1354,8 @@ ol.linenums li:nth-of-type(2n+1) {
     border: 1px solid #CCCCCC;
     padding-right: 0;
 }
+
+/*
+.ui-accordion-content{
+    height: auto !important;
+}*/

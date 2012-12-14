@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,3 +13,338 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/*********** General styles *****************************************************/
+
+.demo-sampleAppView {
+    min-height: 600px;
+}
+
+/*********** Component Library styles *****************************************************/
+
+.demo-componentLibView {
+    margin-left: auto;
+    margin-right: auto;
+    width: 940px;
+    margin-top: -7px;
+    padding-top: 56px;
+}
+
+.demo-componentLibView .demo-sampleAppPage {
+    padding-top: 15px;
+}
+
+.demo-componentLibView .demo-sampleAppPage > .uif-pageHeader > h2 {
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+.demo-componentLibView .demo-sampleAppPage > div > .uif-syntaxHighlighter h3 {
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+.demo-componentLibView .demo-sampleAppPage > div > .uif-syntaxHighlighter ol {
+    font-size: 12px;
+}
+
+.demo-detailsGroup {
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.demo-detailsGroup p {
+    margin-bottom: 1em;
+}
+
+.demo-componentLibView .uif-viewContentWrapper {
+    margin-left: -20px;
+}
+
+.demo-componentLibView > .uif-viewContentWrapper > #Uif-Navigation {
+    float: left;
+    margin-left: 20px;
+    width: 220px;
+    background-image: url("../../images/krad/navShadow.png");
+    background-position: right top;
+    background-repeat: no-repeat;
+    min-height: 500px;
+    padding-bottom: 24px;
+    padding-top: 40px;
+}
+
+.demo-componentLibView > .uif-viewContentWrapper > .uif-pageContentWrapper {
+    float: left;
+    margin-left: 20px;
+    width: 700px;
+}
+
+.demo-componentLibNav .ui-accordion-header {
+
+    background-image: url("../../images/krad/sprite-navIcons.png"), url("../../images/krad/navDivider.png");
+    background-position: left top;
+    background-repeat: no-repeat, no-repeat;
+    background-color: transparent;
+    border: medium none;
+    color: #666666;
+    cursor: pointer;
+    padding-bottom: 4px;
+    padding-left: 24px;
+    padding-top: 6.5px;
+    border: none;
+    border-radius: 0px;
+    text-decoration: none;
+}
+
+/*********** Component Library Navigation *****************************************************/
+
+.demo-componentLibNav {
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-size: 15px;
+}
+
+.demo-componentLibNav .ui-accordion-header:hover {
+    text-decoration: none;
+}
+
+[data-tabfor='ComponentLibrary-Nav-Elements'] > .ui-accordion-header {
+    background-position: 0 -258px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-Controls'] > .ui-accordion-header {
+    background-position: 0 -192px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-Fields'] > .ui-accordion-header {
+    background-position: 0 -324px, 0 0;
+}
+
+.demo-componentLibNav-subList {
+    padding: 0 !important;
+    background: none;
+}
+
+.demo-componentLibNav-subList > ul {
+    background-image: url("../../images/krad/navDivider.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    margin: 0;
+}
+
+.demo-componentLibNav-subList > ul > li {
+    list-style-image: url("../../images/krad/navBullet.png");
+    list-style-type: none;
+    margin-left: 36px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.demo-componentLibNav-subList a {
+    color: #666666;
+    vertical-align: middle;
+}
+
+/*********** Component Details Section/tabs *****************************************************/
+
+.demo-componentDetailsTabs > div.ui-tabs > ul {
+    margin: 0;
+    padding: 0;
+}
+
+.demo-componentDetailsTabs > div.ui-tabs > ul > li {
+    border: none;
+    background-color: transparent !important;
+    padding: 0;
+    margin: 0 40px 0 0;
+}
+
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-active {
+    background: transparent;
+    border-bottom: 3px solid #CCC !important;
+    margin-bottom: -3px;
+}
+
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-default > a {
+    padding: 0;
+    font-size: 18px;
+    color: #999;
+}
+
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-active > a,
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-active.ui-state-hover > a {
+    background: transparent !important;
+    color: black;
+}
+
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-hover > a,
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-hover,
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-focus > a,
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-focus {
+    color: #999;
+    background: transparent !important;
+}
+
+.demo-componentDetailsTabs >  div.ui-tabs > .ui-tabs-panel {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1px solid #CCC;
+    padding: 12px 0 0 0;
+}
+
+/*********** Application Header *****************************************************/
+
+.demo-appHeader {
+    background-color: black;
+    height: 56px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+    display: none;
+}
+
+.demo-brand {
+    float: left;
+}
+
+.demo-brandLogo {
+    width: 170px;
+    height: 69px;
+    background-image: url(../../images/krad/logo.png);
+    position: absolute;
+    top: 0px;
+}
+
+.demo-headerFooterContainer {
+    width: 940px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.demo-appNavigation {
+    float: right;
+}
+
+.demo-appHeader .demo-appNavigation > li {
+    float: left;
+    text-transform: uppercase;
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-size: 15px;
+}
+
+.demo-appHeader .demo-appNavigation > li > a {
+    padding-top: 17px;
+    padding-right: 21px;
+    padding-bottom: 17px;
+    padding-left: 21px;
+    color: #999;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    display: block;
+    text-decoration: none;
+}
+
+.demo-appHeader .demo-appNavigation > li > a:hover,
+.demo-appHeader .demo-appNavigation > li > a:focus,
+.demo-appHeader .demo-appNavigation > li > a.active {
+    color: white;
+    text-decoration: none;
+}
+
+/*********** Application Footer *****************************************************/
+
+.demo-appFooter {
+    background: none repeat scroll 0 0 #000000;
+    color: #FFFFFF;
+    height: 64px;
+    font-family: 'Conv_Cabin-Regular', sans-serif;
+    font-size: 16px;
+    display: none;
+}
+
+.demo-appFooter .demo-foundationInfo {
+    background-image: url("../../images/krad/logo-kuali.png");
+    background-position: 0 14px;
+    background-repeat: no-repeat;
+    padding-bottom: 22px;
+    padding-left: 40px;
+    padding-top: 22px;
+}
+
+.demo-appFooter a {
+    color: #999999;
+}
+
+.demo-appFooter a:hover {
+    color: #FFFFFF;
+}
+
+.demo-thirdTier {
+    background: linear-gradient(to bottom, #780126 0%, #A30234 100%) repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    font-family: 'Conv_Cabin-Regular', sans-serif;
+    font-size: 15px;
+    display: none;
+}
+
+.demo-thirdTier h2 {
+    font-size: 27px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: normal;
+}
+
+.demo-kradDescription {
+    width: 420px;
+    float: left;
+    margin-right: 20px;
+}
+
+.demo-kradDescription .demo-blurb {
+    color: #CCC;
+}
+
+.demo-testimonials {
+    width: 240px;
+    float: left;
+    margin-right: 20px;
+}
+
+.demo-testimonials > div {
+    font-style: italic;
+}
+
+.demo-thirdTier ul li {
+    margin-bottom: 12px;
+}
+
+.demo-thirdTier ul li {
+    border-bottom: 1px dotted #A45971;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.demo-tweets {
+    width: 240px;
+    float: left;
+}
+
+.demo-tweets a {
+    color: #888888 !important;
+}
+
+.demo-thirdTier .tweet_list, .demo-thirdTier .tweet_even {
+    background-color: transparent;
+}
+
+.demo-tweets > div, .demo-testimonials > div {
+    color: #CCC;
+}
+
+

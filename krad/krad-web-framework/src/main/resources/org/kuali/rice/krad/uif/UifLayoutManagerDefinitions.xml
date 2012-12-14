@@ -90,6 +90,29 @@
     <property name="numberOfColumns" value="6"/>
   </bean>
 
+  <!-- List Layout Managers (html list) -->
+  <bean id="Uif-ListLayout" abstract="true" parent="Uif-ListLayout-parentBean"/>
+    <bean id="Uif-ListLayout-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.ListLayoutManager"
+          scope="prototype">
+      <property name="template" value="/krad/WEB-INF/ftl/layout/list.ftl"/>
+      <property name="templateName" value="uif_list"/>
+      <property name="cssClasses">
+        <list>
+          <value>uif-listLayout</value>
+        </list>
+      </property>
+    </bean>
+
+  <bean id="Uif-OrderedListLayout" parent="Uif-OrderedListLayout-parentBean"/>
+  <bean id="Uif-OrderedListLayout-parentBean" abstract="true" parent="Uif-ListLayout">
+    <property name="orderedList" value="true"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-orderedListLayout</value>
+      </list>
+    </property>
+  </bean>
+
   <!--Collection Layout Managers-->
 
   <!--Table Collection Layout Managers-->

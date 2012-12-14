@@ -868,6 +868,22 @@ function createTree(divId, options) {
     });
 }
 
+function createAccordion(id, options, active){
+    if(active == false){
+        active = "false";
+    }
+
+    options = options || {};
+    options = jQuery.extend({
+        active: active,
+        heightStyle: "content",
+        collapsible: true
+    }, options);
+
+    jQuery("#" + id + " > ul").accordion(options);
+    //jQuery("#id > ul").accordion("option", "active", active);
+}
+
 // Creates tabs for the tabs div id specified, this div is created by tabGroup
 function createTabs(id, options, position) {
     var tabs = jQuery("#" + id + "_tabs").tabs(options);

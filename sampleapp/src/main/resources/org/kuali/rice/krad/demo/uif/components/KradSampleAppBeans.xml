@@ -22,28 +22,41 @@
 
   <!-- SampleAppView defaults -->
   <bean id="KradSampleAppView" parent="Uif-FormView">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-sampleAppView</value>
+      </list>
+    </property>
     <property name="additionalCssFiles">
       <list>
+        <value>css/krad/jquery.tweet.css</value>
         <value>css/krad/kradSampleApp.css</value>
       </list>
     </property>
     <property name="additionalScriptFiles">
       <list>
+        <value>scripts/krad/jquery.tweet.js</value>
         <value>scripts/krad/kradSampleApp.js</value>
       </list>
     </property>
     <property name="breadcrumbs.render" value="false"/>
     <property name="applicationHeader">
       <bean parent="Uif-HeaderBase" p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl"
-              p:templateName="demo_kradappheader"/>
+            p:templateName="demo_kradappheader"/>
     </property>
     <property name="applicationFooter">
       <bean parent="Uif-GroupBase" p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl"
-              p:templateName="demo_kradappfooter"/>
+            p:templateName="demo_kradappfooter"/>
     </property>
     <property name="singlePageView" value="true"/>
     <property name="page">
-      <bean parent="Uif-Page"/>
+      <bean parent="Uif-Page">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>demo-sampleAppPage</value>
+          </list>
+        </property>
+      </bean>
     </property>
     <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
   </bean>
@@ -51,43 +64,119 @@
   <!-- ComponentLibraryView defaults -->
 
   <bean id="ComponentLibraryView" class="org.kuali.rice.krad.demo.uif.components.ComponentLibraryView"
-         parent="KradSampleAppView">
-     <property name="detailsGroup">
-       <bean id="Demo-DetailsGroup" parent="Uif-VerticalBoxGroup">
-         <property name="cssClasses" value="demo-detailsGroup"/>
-       </bean>
-     </property>
-     <property name="exhibit">
-       <bean id="Demo-Exhibit" parent="ComponentLibraryExhibit">
-         <property name="cssClasses">
-           <list merge="true">
-             <value>demo-componentExhibit</value>
-           </list>
-         </property>
-       </bean>
-     </property>
+        parent="KradSampleAppView">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-componentLibView</value>
+      </list>
+    </property>
+    <property name="detailsGroup">
+      <bean id="Demo-DetailsGroup" parent="Uif-VerticalBoxGroup">
+        <property name="cssClasses" value="demo-detailsGroup"/>
+      </bean>
+    </property>
+    <property name="exhibit">
+      <bean id="Demo-Exhibit" parent="ComponentLibraryExhibit">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>demo-componentExhibit</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="navigation">
+      <bean parent="Uif-AccordionGroup">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>demo-componentLibNav</value>
+          </list>
+        </property>
+        <property name="items">
+          <list>
+            <ref bean="ComponentLibrary-Nav-Elements"/>
+            <ref bean="ComponentLibrary-Nav-Controls"/>
+            <ref bean="ComponentLibrary-Nav-Fields"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
 
-   </bean>
+  <bean id="ComponentLibrary-Nav" parent="Uif-ListSection" p:header.render="false">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-componentLibNav-subList</value>
+      </list>
+    </property>
+  </bean>
 
-   <bean id="ComponentLibraryDemoGroup" parent="Uif-VerticalBoxSection"/>
+  <bean id="ComponentLibrary-Nav-Elements" p:headerText="Elements" parent="ComponentLibrary-Nav">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-navElements</value>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Action"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Action-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Header"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Header-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Image"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Image-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
 
-   <bean id="ComponentLibraryNavigation"></bean>
+  <bean id="ComponentLibrary-Nav-Controls" p:headerText="Controls" parent="ComponentLibrary-Nav">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-navControls</value>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Text"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Text-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Text Area"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextArea-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
 
-   <bean id="ComponentLibraryExhibit" class="org.kuali.rice.krad.demo.uif.components.ComponentExhibit"
-           p:templateName="uif_exhibit" p:template="/WEB-INF/ftl/krad/componentExhibit.ftl">
-     <property name="sourceCodeViewer">
-       <ref bean="ComponentLibraryCodeViewer"/>
-     </property>
-     <property name="tabGroup">
-       <ref bean="ComponentLibraryTabGroup"/>
-     </property>
-   </bean>
+  <bean id="ComponentLibrary-Nav-Fields" p:headerText="Fields" parent="ComponentLibrary-Nav">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-navFields</value>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Action Field"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionField-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Input Field"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InputField-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
 
-   <bean id="ComponentLibraryCodeViewer" parent="Uif-SyntaxHighlighter"
-         p:sourceCodeHeader="Get the Code"/>
+  <bean id="ComponentLibraryDemoGroup" parent="Uif-VerticalBoxSection"/>
 
-   <bean id="ComponentLibraryTabGroup" parent="Uif-TabGroup">
-     <property name="tabsWidget.position" value="RIGHT"/>
-   </bean>
+  <bean id="ComponentLibraryExhibit" class="org.kuali.rice.krad.demo.uif.components.ComponentExhibit"
+        p:templateName="uif_exhibit" p:template="/WEB-INF/ftl/krad/componentExhibit.ftl">
+    <property name="sourceCodeViewer">
+      <ref bean="ComponentLibraryCodeViewer"/>
+    </property>
+    <property name="tabGroup">
+      <ref bean="ComponentLibraryTabGroup"/>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibraryCodeViewer" parent="Uif-SyntaxHighlighter"
+        p:sourceCodeHeader="Get the Code"/>
+
+  <bean id="ComponentLibraryTabGroup" parent="Uif-TabGroup">
+    <property name="tabsWidget.position" value="RIGHT"/>
+  </bean>
 
 </beans>

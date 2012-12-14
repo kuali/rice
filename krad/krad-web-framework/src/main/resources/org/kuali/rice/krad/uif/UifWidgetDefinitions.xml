@@ -36,6 +36,14 @@
     <property name="templateName" value="uif_tabs"/>
   </bean>
 
+  <bean id="Uif-Accordion" parent="Uif-Accordion-parentBean"/>
+  <bean id="Uif-Accordion-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Accordion" scope="prototype"
+        parent="Uif-WidgetBase">
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/accordion.ftl"/>
+    <property name="templateName" value="uif_accordion"/>
+    <property name="active" value="false"/>
+  </bean>
+
   <bean id="Uif-DatePicker" parent="Uif-DatePicker-parentBean"/>
   <bean id="Uif-DatePicker-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.DatePicker"
         scope="prototype" parent="Uif-WidgetBase">

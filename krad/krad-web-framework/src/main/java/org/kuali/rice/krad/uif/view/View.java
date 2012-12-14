@@ -119,7 +119,7 @@ public class View extends ContainerBase {
     @RequestParameter
     private String currentPageId;
 
-    private NavigationGroup navigation;
+    private Group navigation;
 
     private Class<?> formClass;
     private String defaultBindingObjectPath;
@@ -620,7 +620,7 @@ public class View extends ContainerBase {
      * @return NavigationGroup
      */
     @BeanTagAttribute(name = "navigation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public NavigationGroup getNavigation() {
+    public Group getNavigation() {
         return this.navigation;
     }
 
@@ -629,7 +629,7 @@ public class View extends ContainerBase {
      *
      * @param navigation
      */
-    public void setNavigation(NavigationGroup navigation) {
+    public void setNavigation(Group navigation) {
         this.navigation = navigation;
     }
 

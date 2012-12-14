@@ -266,6 +266,157 @@
     <property name="disclosure.render" value="true"/>
   </bean>
 
+  <!-- List Groups -->
+  <bean id="Uif-ListGroup" parent="Uif-ListGroup-parentBean"/>
+  <bean id="Uif-ListGroup-parentBean" abstract="true" parent="Uif-GroupBase" scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-listGroup</value>
+      </list>
+    </property>
+    <property name="layoutManager">
+      <bean parent="Uif-ListLayout"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-ListSection" parent="Uif-ListSection-parentBean"/>
+  <bean id="Uif-ListSection-parentBean" abstract="true" parent="Uif-ListGroup" scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-listSection</value>
+      </list>
+    </property>
+    <property name="header">
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-ListSubSection" parent="Uif-ListSubSection-parentBean"/>
+  <bean id="Uif-ListSubSection-parentBean" abstract="true" parent="Uif-ListGroup" scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-listSubSection</value>
+      </list>
+    </property>
+    <property name="header">
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
+  </bean>
+
+  <!--Disclosure versions -->
+
+  <bean id="Uif-Disclosure-ListSection" parent="Uif-Disclosure-ListSection-parentBean"/>
+  <bean id="Uif-Disclosure-ListSection-parentBean" abstract="true" parent="Uif-ListSection" scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+
+  </bean>
+
+  <bean id="Uif-Disclosure-ListSubSection" parent="Uif-Disclosure-ListSubSection-parentBean"/>
+  <bean id="Uif-Disclosure-ListSubSection-parentBean" abstract="true" parent="Uif-ListSubSection" scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+  </bean>
+
+  <!-- List Groups -->
+<!--  <bean id="Üif-AccordionNavigation" parent="AccordionNavigationGroup"/>
+  <bean id="Uif-AccordionNavigation-parentBean" abstract="true" parent="Uif-NavigationGroupBase"
+          class="org.kuali.rice.krad.uif.container.AccordionGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/ftl/components/group/accordionGroup.ftl"/>
+      <property name="templateName" value="uif_accordionGroup"/>
+      <property name="cssClasses">
+        <list merge="true">
+          <value>uif-accordionGroup</value>
+        </list>
+      </property>
+      <property name="accordionWidget">
+        <bean parent="Uif-Accordion"/>
+      </property>
+    </bean>-->
+
+  <bean id="Uif-AccordionGroup" parent="Uif-AccordionGroup-parentBean"/>
+  <bean id="Uif-AccordionGroup-parentBean" abstract="true" parent="Uif-GroupBase"
+        class="org.kuali.rice.krad.uif.container.AccordionGroup" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/accordionGroup.ftl"/>
+    <property name="templateName" value="uif_accordionGroup"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-accordionGroup</value>
+      </list>
+    </property>
+    <property name="accordionWidget">
+      <bean parent="Uif-Accordion"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-AccordionSection" parent="Uif-AccordionSection-parentBean"/>
+  <bean id="Uif-AccordionSection-parentBean" abstract="true" parent="Uif-AccordionGroup" scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-accordionSection</value>
+      </list>
+    </property>
+    <property name="header">
+      <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-AccordionSubSection" parent="Uif-AccordionSubSection-parentBean"/>
+  <bean id="Uif-AccordionSubSection-parentBean" abstract="true" parent="Uif-AccordionGroup" scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-accordionSubSection</value>
+      </list>
+    </property>
+    <property name="header">
+      <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
+  </bean>
+
+  <!--Disclosure versions -->
+
+  <bean id="Uif-Disclosure-AccordionSection" parent="Uif-Disclosure-AccordionSection-parentBean"/>
+  <bean id="Uif-Disclosure-AccordionSection-parentBean" abstract="true" parent="Uif-AccordionSection" scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+
+  </bean>
+
+  <bean id="Uif-Disclosure-AccordionSubSection" parent="Uif-Disclosure-AccordionSubSection-parentBean"/>
+  <bean id="Uif-Disclosure-AccordionSubSection-parentBean" abstract="true" parent="Uif-AccordionSubSection"
+        scope="prototype">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+  </bean>
+
   <!-- Tab Group and Sections -->
 
   <bean id="Uif-TabGroup" parent="Uif-TabGroup-parentBean"/>

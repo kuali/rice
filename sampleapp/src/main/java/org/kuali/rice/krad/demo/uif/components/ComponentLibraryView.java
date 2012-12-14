@@ -78,6 +78,7 @@ public class ComponentLibraryView extends FormView {
         Header descriptionHeader = (Header)ComponentFactory.getNewComponentInstance("Uif-SubSectionHeader");
         descriptionHeader.setHeaderLevel("H3");
         descriptionHeader.setHeaderText("Description");
+        descriptionHeader.setRender(false);
         descriptionGroup.setHeader(descriptionHeader);
         
         //Description message
@@ -96,6 +97,7 @@ public class ComponentLibraryView extends FormView {
         Header usageHeader = (Header)ComponentFactory.getNewComponentInstance("Uif-SubSectionHeader");
         usageHeader.setHeaderLevel("H3");
         usageHeader.setHeaderText("Usage");
+        usageHeader.setRender(false);
         usageGroup.setHeader(usageHeader);
         
         //Usage message
@@ -111,6 +113,7 @@ public class ComponentLibraryView extends FormView {
         Group propertiesGroup = ComponentFactory.getVerticalBoxGroup();
 
         tabGroup.setItems(tabItems);
+        tabGroup.addStyleClass("demo-componentDetailsTabs");
 
         //Add tabGroup to detailsGroup
         List<Component> detailsItems = new ArrayList<Component>();

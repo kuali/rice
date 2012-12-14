@@ -778,7 +778,7 @@ public class Action extends ContentElementBase {
      * on the action field (button)
      *
      * @return String disabled reason text
-     * @see {@link #isDisabled()}
+     * @see #isDisabled()
      */
     @BeanTagAttribute(name = "disabledReason")
     public String getDisabledReason() {

@@ -126,7 +126,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     }
 
     /**
-     * @see Control#getTabIndex()
+     * @see org.kuali.rice.krad.uif.control.Control#getTabIndex()
      */
     @BeanTagAttribute(name="tabIndex")
     public int getTabIndex() {
@@ -134,14 +134,14 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     }
 
     /**
-     * @see Control#setTabIndex(int)
+     * @see org.kuali.rice.krad.uif.control.Control#setTabIndex(int)
      */
     public void setTabIndex(int tabIndex) {
         this.tabIndex = tabIndex;
     }
 
     /**
-     * @see Control#isDisabled()
+     * @see org.kuali.rice.krad.uif.control.Control#isDisabled()
      */
     @BeanTagAttribute(name="disabled")
     public boolean isDisabled() {
@@ -149,14 +149,14 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     }
 
     /**
-     * @see Control#setDisabled(boolean)
+     * @see org.kuali.rice.krad.uif.control.Control#setDisabled(boolean)
      */
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
 
     /**
-     * @see Control#getDisabledReason()
+     * @see org.kuali.rice.krad.uif.control.Control#getDisabledReason()
      */
     @BeanTagAttribute(name="disabledReason")
     public String getDisabledReason() {
@@ -164,7 +164,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     }
 
     /**
-     * @see Control#setDisabledReason(java.lang.String)
+     * @see org.kuali.rice.krad.uif.control.Control#setDisabledReason(java.lang.String)
      */
     public void setDisabledReason(String disabledReason) {
         this.disabledReason = disabledReason;

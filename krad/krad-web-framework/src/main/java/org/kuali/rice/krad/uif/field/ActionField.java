@@ -374,7 +374,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @return
      * @see org.kuali.rice.krad.uif.element.Action#getSuccessCallback()
      */
     @BeanTagAttribute(name = "successCallback")
@@ -391,7 +390,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @return
      * @see org.kuali.rice.krad.uif.element.Action#getErrorCallback()
      */
     @BeanTagAttribute(name = "errorCallback")

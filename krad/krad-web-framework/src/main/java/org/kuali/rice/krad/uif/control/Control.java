@@ -72,7 +72,7 @@ public interface Control extends ContentElement {
      * on the control
      *
      * @return String disabled reason text
-     * @see {@link #isDisabled()}
+     * @see #isDisabled()
      */
     public String getDisabledReason();
 

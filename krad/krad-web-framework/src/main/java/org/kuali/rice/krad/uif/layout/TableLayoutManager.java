@@ -1794,7 +1794,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Get the groupingPrefix.  The groupingPrefix is used to prefix the generated title (not used when
      * groupingTitle is set directly) when using groupingPropertyNames.
      *
-     * @return
+     * @return String
      */
     @BeanTagAttribute(name = "groupingPrefix")
     public String getGroupingPrefix() {

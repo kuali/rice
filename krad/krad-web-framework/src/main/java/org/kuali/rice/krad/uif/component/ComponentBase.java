@@ -190,7 +190,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * <li></li>
      * </ul>
      *
-     * @see Component#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see org.kuali.rice.krad.uif.component.Component#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     public void performInitialization(View view, Object model) {
 
@@ -204,7 +204,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * render status</li>
      * </ul>
      *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object,
      *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performApplyModel(View view, Object model, Component parent) {
@@ -231,7 +231,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
      *
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object,
      *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
@@ -512,14 +512,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setCellCssClasses(java.util.List)
+     * @see org.kuali.rice.krad.uif.component.Component#setCellCssClasses(java.util.List)
      */
     public void setCellCssClasses(List<String> cellCssClasses) {
         this.cellCssClasses = cellCssClasses;
     }
 
     /**
-     * @see Component#addCellCssClass(String)
+     * @see org.kuali.rice.krad.uif.component.Component#addCellCssClass(String)
      */
     public void addCellCssClass(String cssClass) {
         if (this.cellCssClasses == null){
@@ -546,14 +546,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#getCellStyle()
+     * @see org.kuali.rice.krad.uif.component.Component#getCellStyle()
      */
     public String getCellStyle() {
         return cellStyle;
     }
 
     /**
-     * @see Component#setCellStyle(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setCellStyle(java.lang.String)
      */
     public void setCellStyle(String cellStyle) {
         this.cellStyle = cellStyle;
@@ -567,14 +567,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setCellWidth(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setCellWidth(java.lang.String)
      */
     public void setCellWidth(String cellWidth) {
         this.cellWidth = cellWidth;
     }
 
     /**
-     * @see Component#getAlign()
+     * @see org.kuali.rice.krad.uif.component.Component#getAlign()
      */
     @BeanTagAttribute(name = "align")
     public String getAlign() {
@@ -582,14 +582,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setAlign(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setAlign(java.lang.String)
      */
     public void setAlign(String align) {
         this.align = align;
     }
 
     /**
-     * @see Component#getValign()
+     * @see org.kuali.rice.krad.uif.component.Component#getValign()
      */
     @BeanTagAttribute(name = "valign")
     public String getValign() {
@@ -597,14 +597,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setValign(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setValign(java.lang.String)
      */
     public void setValign(String valign) {
         this.valign = valign;
     }
 
     /**
-     * @see Component#getWidth()
+     * @see org.kuali.rice.krad.uif.component.Component#getWidth()
      */
     @BeanTagAttribute(name = "width")
     public String getWidth() {
@@ -612,7 +612,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setWidth(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setWidth(java.lang.String)
      */
     public void setWidth(String width) {
         this.width = width;
@@ -763,7 +763,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#isDisableSessionPersistence()
+     * @see org.kuali.rice.krad.uif.component.Component#isDisableSessionPersistence()
      */
     @BeanTagAttribute(name = "disableSessionPersistence")
     public boolean isDisableSessionPersistence() {
@@ -771,14 +771,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setDisableSessionPersistence(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setDisableSessionPersistence(boolean)
      */
     public void setDisableSessionPersistence(boolean disableSessionPersistence) {
         this.disableSessionPersistence = disableSessionPersistence;
     }
 
     /**
-     * @see Component#isForceSessionPersistence()
+     * @see org.kuali.rice.krad.uif.component.Component#isForceSessionPersistence()
      */
     @BeanTagAttribute(name = "forceSessionPersistence")
     public boolean isForceSessionPersistence() {
@@ -786,14 +786,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setForceSessionPersistence(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setForceSessionPersistence(boolean)
      */
     public void setForceSessionPersistence(boolean forceSessionPersistence) {
         this.forceSessionPersistence = forceSessionPersistence;
     }
 
     /**
-     * @see Component#getComponentSecurity()
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentSecurity()
      */
     @BeanTagAttribute(name = "componentSecurity", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ComponentSecurity getComponentSecurity() {
@@ -801,7 +801,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setComponentSecurity(org.kuali.rice.krad.uif.component.ComponentSecurity)
+     * @see org.kuali.rice.krad.uif.component.Component#setComponentSecurity(org.kuali.rice.krad.uif.component.ComponentSecurity)
      */
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
         this.componentSecurity = componentSecurity;
@@ -1463,7 +1463,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#getRefreshWhenChangedPropertyNames()
+     * @see org.kuali.rice.krad.uif.component.Component#getRefreshWhenChangedPropertyNames()
      */
     @BeanTagAttribute(name = "refreshWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getRefreshWhenChangedPropertyNames() {
@@ -1471,14 +1471,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setRefreshWhenChangedPropertyNames(java.util.List<java.lang.String>)
+     * @see org.kuali.rice.krad.uif.component.Component#setRefreshWhenChangedPropertyNames(java.util.List<java.lang.String>)
      */
     public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
         this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames;
     }
 
     /**
-     * @see Component#getAdditionalComponentsToRefresh()
+     * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefresh()
      */
     @BeanTagAttribute(name = "additionalComponentsToRefresh", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalComponentsToRefresh() {
@@ -1486,21 +1486,21 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setAdditionalComponentsToRefresh(java.util.List<java.lang.String>)
+     * @see org.kuali.rice.krad.uif.component.Component#setAdditionalComponentsToRefresh(java.util.List<java.lang.String>)
      */
     public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh) {
         this.additionalComponentsToRefresh = additionalComponentsToRefresh;
     }
 
     /**
-     * @see Component#isRefreshedByAction()
+     * @see org.kuali.rice.krad.uif.component.Component#isRefreshedByAction()
      */
     public boolean isRefreshedByAction() {
         return refreshedByAction;
     }
 
     /**
-     * @see Component#setRefreshedByAction(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setRefreshedByAction(boolean)
      */
     public void setRefreshedByAction(boolean refreshedByAction) {
         this.refreshedByAction = refreshedByAction;
@@ -1545,7 +1545,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#isResetDataOnRefresh()
+     * @see  org.kuali.rice.krad.uif.component.Component#isResetDataOnRefresh()
      */
     @BeanTagAttribute(name = "resetDataOnRefresh")
     public boolean isResetDataOnRefresh() {
@@ -1553,7 +1553,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see Component#setResetDataOnRefresh(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setResetDataOnRefresh(boolean)
      */
     public void setResetDataOnRefresh(boolean resetDataOnRefresh) {
         this.resetDataOnRefresh = resetDataOnRefresh;

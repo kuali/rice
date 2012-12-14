@@ -65,6 +65,7 @@
 
 #ComponentLibraryTabGroup_tabs > div.ui-tabs-panel{
     min-height: 250px;
+    overflow: auto;
 }
 
 /*********** Component Library Navigation *****************************************************/

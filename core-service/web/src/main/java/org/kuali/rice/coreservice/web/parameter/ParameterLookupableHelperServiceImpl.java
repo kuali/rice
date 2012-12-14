@@ -88,8 +88,9 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             Iterator<ParameterBo> resultsIter = results.iterator();
             while (resultsIter.hasNext()) {
                 ParameterBo result = resultsIter.next();
-                if (!pattern.matcher(result.getComponent().getName()).matches()) {
-                    resultsIter.remove();
+                if ((result.getComponent() == null ) ||
+                    (!pattern.matcher(result.getComponent().getName()).matches())) {
+                        resultsIter.remove();
                 }
             }
         }

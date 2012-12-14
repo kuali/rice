@@ -43,9 +43,20 @@
 
 /** Component Exhibit *********************************************************************/
 
+#ComponentLibraryTabGroup_tabs{
+    width: 100%;
+}
+
 #ComponentLibraryTabGroup_tabs > div.ui-tabs-panel{
     min-height: 250px;
     overflow: auto;
+    width: 70%;
+}
+
+#ComponentLibraryTabGroup_tabList{
+    width: 25%;
+    font-family: Conv_Cabin-Regular,sans-serif;
+    font-size: 12px;
 }
 
 /**** Source code viewer *********************************************************/

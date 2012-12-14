@@ -41,6 +41,15 @@
     margin-bottom: 10px;
 }
 
+/** Component Exhibit *********************************************************************/
+
+#ComponentLibraryTabGroup_tabs > div.ui-tabs-panel{
+    min-height: 250px;
+    overflow: auto;
+}
+
+/**** Source code viewer *********************************************************/
+
 .demo-componentLibView .demo-sampleAppPage > div > .uif-syntaxHighlighter h3 {
     font-family: Conv_Cabin-Regular, sans-serif;
     font-size: 18px;
@@ -53,20 +62,6 @@
     font-size: 12px;
 }
 
-.demo-detailsGroup {
-    font-family: Conv_Cabin-Regular, sans-serif;
-    font-size: 14px;
-    color: #333;
-}
-
-.demo-detailsGroup p {
-    margin-bottom: 1em;
-}
-
-#ComponentLibraryTabGroup_tabs > div.ui-tabs-panel{
-    min-height: 250px;
-    overflow: auto;
-}
 
 /*********** Component Library Navigation *****************************************************/
 
@@ -156,6 +151,16 @@
 }
 
 /*********** Component Details Section/tabs *****************************************************/
+
+.demo-detailsGroup {
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.demo-detailsGroup p {
+    margin-bottom: 1em;
+}
 
 .demo-componentDetailsTabs > div.ui-tabs > ul {
     margin: 0;

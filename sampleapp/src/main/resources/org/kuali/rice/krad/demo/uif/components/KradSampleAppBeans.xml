@@ -137,9 +137,9 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Text"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Text-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Text Area"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextArea-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextAreaControl-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

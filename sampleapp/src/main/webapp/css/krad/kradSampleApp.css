@@ -63,6 +63,12 @@
     margin-bottom: 1em;
 }
 
+#ComponentLibraryTabGroup_tabs > div.ui-tabs-panel{
+    min-height: 250px;
+}
+
+/*********** Component Library Navigation *****************************************************/
+
 .demo-componentLibView .uif-viewContentWrapper {
     margin-left: -20px;
 }
@@ -101,8 +107,6 @@
     border-radius: 0px;
     text-decoration: none;
 }
-
-/*********** Component Library Navigation *****************************************************/
 
 .demo-componentLibNav {
     font-family: Conv_Cabin-Regular, sans-serif;

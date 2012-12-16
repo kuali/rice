@@ -557,7 +557,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * the <code>AttributeDefinition</code>
      * </p>
      *
-     * @return
+     * @return String
      */
     @BeanTagAttribute(name = "dictionaryObjectEntry")
     public String getDictionaryObjectEntry() {

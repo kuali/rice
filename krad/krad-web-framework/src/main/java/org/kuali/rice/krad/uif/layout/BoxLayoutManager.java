@@ -144,7 +144,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      * be a fixed length (like px) or percentage
      * </p>
      *
-     * @return
+     * @return String
      */
     @BeanTagAttribute(name = "padding")
     public String getPadding() {

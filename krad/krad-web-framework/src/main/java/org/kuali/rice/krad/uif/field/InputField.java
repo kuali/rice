@@ -1114,10 +1114,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
     /**
      * Gets the DataType of this InputField, note that DataType set to be date
-     * when this field is using a date picker with a TextControl and hasnt otherwise been
+     * when this field is using a date picker with a TextControl and has not otherwise been
      * explicitly set.
      *
-     * @return
+     * @return DataType
      */
     @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {

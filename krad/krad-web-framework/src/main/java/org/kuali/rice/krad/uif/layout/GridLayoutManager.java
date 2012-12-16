@@ -149,7 +149,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * separate).
      * </p>
      *
-     * @return
+     * @return int
      */
     @BeanTagAttribute(name = "numberOfColumns")
     public int getNumberOfColumns() {

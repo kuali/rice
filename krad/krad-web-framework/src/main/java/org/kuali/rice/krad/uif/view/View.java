@@ -1632,7 +1632,7 @@ public class View extends ContainerBase {
     /**
      * The theme which contains stylesheets for this view
      *
-     * @return
+     * @return ViewTheme
      */
     @BeanTagAttribute(name = "theme", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ViewTheme getTheme() {

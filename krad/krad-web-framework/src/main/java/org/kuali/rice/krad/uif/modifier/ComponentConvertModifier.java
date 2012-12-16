@@ -167,7 +167,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
      * prototype will be created and set as the new property value
      * </p>
      *
-     * @return
+     * @return Component
      */
     @BeanTagAttribute(name = "componentReplacementPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Component getComponentReplacementPrototype() {

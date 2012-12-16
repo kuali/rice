@@ -631,7 +631,7 @@ public class QuickFinder extends WidgetBase {
     /**
      * TODO: not implemented currently
      *
-     * @return
+     * @return Boolean
      */
     @BeanTagAttribute(name = "supplementalActionsEnabled")
     public Boolean getSupplementalActionsEnabled() {
@@ -645,7 +645,7 @@ public class QuickFinder extends WidgetBase {
     /**
      * TODO: not implemented currently
      *
-     * @return
+     * @return Boolean
      */
     @BeanTagAttribute(name = "disabledSearchButtons")
     public Boolean getDisableSearchButtons() {
@@ -659,7 +659,7 @@ public class QuickFinder extends WidgetBase {
     /**
      * TODO: not implemented currently
      *
-     * @return
+     * @return Boolean
      */
     @BeanTagAttribute(name = "headerBarEnabled")
     public Boolean getHeaderBarEnabled() {

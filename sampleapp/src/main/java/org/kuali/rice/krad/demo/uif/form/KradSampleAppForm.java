@@ -22,7 +22,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KradSampleAppForm extends UifFormBase{
+public class KradSampleAppForm extends UifFormBase {
     private static final long serialVersionUID = -7525378097732916418L;
     private String themeName;
 
@@ -31,6 +31,10 @@ public class KradSampleAppForm extends UifFormBase{
     //InputField
     private String inputField1;
     private String inputField2;
+    private String inputField3;
+    private String inputField4;
+    private String inputField5;
+    private String inputField6;
 
     public KradSampleAppForm() {
         super();
@@ -44,7 +48,9 @@ public class KradSampleAppForm extends UifFormBase{
         this.themeName = themeName;
     }
 
-    /** Below are basic getters and setters for this data object - no javadoc needed **/
+    /**
+     * Below are basic getters and setters for this data object - no javadoc needed *
+     */
 
     public String getInputField1() {
         return inputField1;
@@ -60,5 +66,38 @@ public class KradSampleAppForm extends UifFormBase{
 
     public void setInputField2(String inputField2) {
         this.inputField2 = inputField2;
+    }
+
+    public String getInputField3() {
+
+        return inputField3;
+    }
+
+    public void setInputField3(String inputField3) {
+        this.inputField3 = inputField3;
+    }
+
+    public String getInputField4() {
+        return inputField4;
+    }
+
+    public void setInputField4(String inputField4) {
+        this.inputField4 = inputField4;
+    }
+
+    public String getInputField5() {
+        return inputField5;
+    }
+
+    public void setInputField5(String inputField5) {
+        this.inputField5 = inputField5;
+    }
+
+    public String getInputField6() {
+        return inputField6;
+    }
+
+    public void setInputField6(String inputField6) {
+        this.inputField6 = inputField6;
     }
 }

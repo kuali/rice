@@ -830,7 +830,7 @@ Apache Maven 3.0.4 (r1232337; 2012-01-17 03:44:56-0500)
             such as Jetty. The Rice project provides a sample Jetty Server that can be used for your
             project. The next section will cover this in more detail.</para>
     </section>
-    <section><title> New Project Setup </title><para>Now let’s look at creating a new Rice enabled project. To do this, we will use a tool from the
+    <section xml:id="new_project_setup"><title> New Project Setup </title><para>Now let’s look at creating a new Rice enabled project. To do this, we will use a tool from the
             Rice project that performs most of the initial bootstrapping. The tool is included
             within the Rice project.  Therefore, we need to start by downloading the Rice 2.0
             release. The Rice distribution can be downloaded at:</para><para><link xlink:href="http://kuali.org/download"

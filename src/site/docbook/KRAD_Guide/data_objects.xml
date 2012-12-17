@@ -291,7 +291,7 @@
                 features provided need to be implemented by the application.</para></tip>
         <para>We make use of OJB with XML that provides the mapping metadata. Generally each
             application module has one or more files that contain this XML. These files are picked
-            up through the module configuration (see ‘New Project Setup’):
+            up through the module configuration (see <command xlink:role="http://docbook.org/xlink/role/olink" xlink:href="getting_started#new_project_setup">‘New Project Setup’</command>):
             <programlisting>&lt;bean id="sampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     ... 
     &lt;property name="databaseRepositoryFilePaths">

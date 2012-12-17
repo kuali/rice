@@ -176,6 +176,30 @@
         <bootstrap.spring.file>classpath:SampleAppStandaloneBeans.xml</bootstrap.spring.file>
       </properties>
     </profile>
+    <profile>
+      <id>default-profile</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <file>
+          <exists>${java.home}/../lib/tools.jar</exists>
+        </file>
+      </activation>
+      <properties>
+        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+      </properties>
+    </profile>
+    <profile>
+      <id>mac-profile</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <file>
+          <exists>${java.home}/../Classes/classes.jar</exists>
+        </file>
+      </activation>
+      <properties>
+        <toolsjar>${java.home}/../Classes/classes.jar</toolsjar>
+      </properties>
+    </profile>
  </profiles>
 
   <dependencies>
@@ -273,6 +297,13 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun</groupId>
+      <artifactId>tools</artifactId>
+      <scope>system</scope>
+      <systemPath>${toolsjar}</systemPath>
     </dependency>
 
   </dependencies>

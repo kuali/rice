@@ -555,7 +555,7 @@ public class Formatter implements Serializable {
                 return true;
             if (String.class.isAssignableFrom(compType)) {
             	// begin Kuali Foundation modification
-                return StringUtils.isEmpty(((String[]) obj)[0]);
+                return StringUtils.isBlank(((String[]) obj)[0]);
                 // end Kuali Foundation modification
             }
         }

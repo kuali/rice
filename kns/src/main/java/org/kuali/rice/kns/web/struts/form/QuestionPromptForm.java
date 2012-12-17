@@ -155,7 +155,7 @@ public class QuestionPromptForm extends KualiForm {
             }
            
             // KULRICE-8077: PO Quote Limitation of Only 9 Vendors
-            String questionId = request.getParameter(KRADConstants.QUESTION_IMPL_ATTRIBUTE_NAME);
+            String questionId = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
             String questionTextAttributeName = KRADConstants.QUESTION_TEXT_ATTRIBUTE_NAME + questionId;
             
             if (GlobalVariables.getUserSession().retrieveObject(questionTextAttributeName)!=null) {

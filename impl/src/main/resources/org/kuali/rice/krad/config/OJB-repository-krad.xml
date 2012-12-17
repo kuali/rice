@@ -107,15 +107,16 @@
     <field-descriptor name="explanation" column="EXPLANATION" jdbc-type="VARCHAR"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.krad.document.authorization.PessimisticLock" table="KRNS_PESSIMISTIC_LOCK_T">
-    <field-descriptor name="id" column="PESSIMISTIC_LOCK_ID" jdbc-type="BIGINT" primarykey="true" indexed="true"
-                      autoincrement="true" sequence-name="KRNS_LOCK_S"/>
-    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
-    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
-    <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR"/>
-    <field-descriptor name="ownedByPrincipalIdentifier" column="PRNCPL_ID" jdbc-type="VARCHAR"/>
-    <field-descriptor name="generatedTimestamp" column="GNRT_DT" jdbc-type="TIMESTAMP"/>
-    <field-descriptor name="lockDescriptor" column="LOCK_DESC_TXT" jdbc-type="VARCHAR"/>
+	<class-descriptor class="org.kuali.rice.krad.document.authorization.PessimisticLock" table="KRNS_PESSIMISTIC_LOCK_T">
+		<field-descriptor name="id" column="PESSIMISTIC_LOCK_ID" jdbc-type="BIGINT" primarykey="true" indexed="true"  autoincrement="true"
+			sequence-name="KRNS_LOCK_S" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="ownedByPrincipalIdentifier" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="generatedTimestamp" column="GNRT_DT" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="lockDescriptor" column="LOCK_DESC_TXT" jdbc-type="VARCHAR" />
+    <field-descriptor name="sessionId" column="SESN_ID" jdbc-type="VARCHAR" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.krad.bo.Note" table="KRNS_NTE_T">

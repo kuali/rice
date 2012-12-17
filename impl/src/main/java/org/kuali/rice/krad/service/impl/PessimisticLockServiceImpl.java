@@ -24,6 +24,7 @@ import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
@@ -114,7 +115,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(java.lang.String, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, Person user) {
-        PessimisticLock lock = new PessimisticLock(documentNumber, lockDescriptor, user);
+        PessimisticLock lock = new PessimisticLock(documentNumber, lockDescriptor, user, GlobalVariables.getUserSession());
         lock = save(lock);
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Generated new lock: " + lock);
@@ -125,10 +126,18 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#getPessimisticLocksForDocument(java.lang.String)
      */
-    @SuppressWarnings("unchecked")
     public List<PessimisticLock> getPessimisticLocksForDocument(String documentNumber) {
         Map fieldValues = new HashMap();
         fieldValues.put(KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber);
+        return (List<PessimisticLock>) getBusinessObjectService().findMatching(PessimisticLock.class, fieldValues);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.PessimisticLockService#getPessimisticLocksForSession(java.lang.String)
+     */
+    public List<PessimisticLock> getPessimisticLocksForSession(String sessionId) {
+        Map fieldValues = new HashMap();
+        fieldValues.put(KRADPropertyConstants.SESSION_ID, sessionId);
         return (List<PessimisticLock>) getBusinessObjectService().findMatching(PessimisticLock.class, fieldValues);
     }
 
@@ -422,7 +431,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @param currentEditMode -
      *            current set of edit modes the user has assigned to them
      * @return an adjusted edit mode map where 'entry type' edit modes have been removed or replaced using the
-     *         {@link #getEntryEditModeReplacementMode()} method
+     *         {@link #getEntryEditModeReplacementMode} method
      */
     protected Map getEditModeWithEditableModesRemoved(Map currentEditMode) {
         Map editModeMap = new HashMap();

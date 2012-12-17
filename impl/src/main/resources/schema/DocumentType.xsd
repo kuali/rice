@@ -437,7 +437,7 @@
       		</documentation>
       	</annotation>
       </element>
-      <element name="stringValue" type="c:ShortStringType" minOccurs="0">
+      <element name="stringValue" type="dt:MediumStringType" minOccurs="0">
       	<annotation>
       		<documentation>
       		 A single policy. If this policy doesn't exist the parents policy will be used if no policy is available a
@@ -448,6 +448,14 @@
       <element ref="dt:recipients" minOccurs="0" maxOccurs="unbounded"/>
     </sequence>
   </complexType>
+
+  <simpleType name="MediumStringType">
+      <restriction base="string">
+          <minLength value="0"/>
+          <maxLength value="1024"/>
+          <whiteSpace value="collapse"/>
+      </restriction>
+  </simpleType>
 
   <complexType name="RoleIdentifier">
     <annotation>
@@ -583,6 +591,10 @@ Definitions are applied to the names in the routeNodes section.
       		 A modifiable configuration parameter in the system.
       		</documentation>
       	</annotation>
+        <unique name="same_xpath_context_unique">
+          <selector xpath="*"/>
+          <field xpath="@name"/>
+        </unique>
       </element>
 	</sequence>
   </complexType>

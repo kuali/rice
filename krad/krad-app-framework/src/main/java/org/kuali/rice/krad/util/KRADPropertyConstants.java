@@ -89,6 +89,7 @@ public final class KRADPropertyConstants {
 	public static final String OWNED_BY_PRINCIPAL_ID = "ownedByPrincipalIdentifier";
 	public static final String OWNED_BY_USER = "ownedByUser";
 	public static final String PERCENT = "percent";
+    public static final String SESSION_ID = "sessionId";
 	public static final String TWO_DIGIT_TEXT_CODE = "twoDigitTextCode";
 	public static final String TYPE = "type";
 	public static final String UNIVERSAL_USER = "person";

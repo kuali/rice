@@ -19,35 +19,15 @@
  */
 package org.kuali.rice.krad.maintainablexml;
 
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
-import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 /**
  * Used to upgrade the maintenance document xml stored in krns_maint_doc_t.doc_cntnt
@@ -58,10 +38,6 @@ import org.xml.sax.InputSource;
 
 public class FileConverter {
 
-    private ArrayList<ArrayList<String>> classNameRules;
-    private ArrayList<ArrayList<String>> packageNameRules;
-    private ArrayList<ArrayList<String>> maintImplRules;
-    private ArrayList<ArrayList> classPropertyRules;
     private JdbcTemplate jdbcTemplate;
     private int totalDocs = 0;
 
@@ -77,16 +53,13 @@ public class FileConverter {
 
         final EncryptionService encryptService = new EncryptionService((String) settingsMap.get("encryption.key"));
 
-        if (classNameRules == null) {
-            setRuleMaps();
-        }
-
         String docSQL = "SELECT DOC_HDR_ID, DOC_CNTNT FROM krns_maint_doc_t ";
 
         // If user entered range add the sql parameters and filter results because DOC_HDR_ID is a varchar field.
         if (hasRangeParameters) {
             docSQL = docSQL.concat(" WHERE DOC_HDR_ID >= '" + fromRange + "' AND DOC_HDR_ID <= '" + toRange + "'");
         }
+        System.out.println("SQL to run:"  + docSQL);
 
         jdbcTemplate = new JdbcTemplate(getDataSource(settingsMap));
         jdbcTemplate.query(docSQL, new RowCallbackHandler() {
@@ -143,220 +116,36 @@ public class FileConverter {
     public void processDocumentRow(String docId, String docCntnt, EncryptionService encryptServ, String runMode) {
         System.out.println(docId);
         try {
-            String oldXml = encryptServ.decrypt(docCntnt);
+            String oldXml = docCntnt;
+            if (encryptServ.isEnabled()) {
+                oldXml = encryptServ.decrypt(docCntnt);
+            }
             if ("2".equals(runMode)) {
                 System.out.println("------ ORIGINAL DOC XML --------");
                 System.out.println(oldXml);
                 System.out.println("--------------------------------");
             }
-            String newXML = upgradeXML(oldXml);
+
+            MaintainableXMLConversionServiceImpl maintainableXMLConversionServiceImpl = new MaintainableXMLConversionServiceImpl();
+            String newXML = maintainableXMLConversionServiceImpl.transformMaintainableXML(oldXml);
+
             if ("2".equals(runMode)) {
                 System.out.println("******* UPGRADED DOC XML ********");
                 System.out.println(newXML);
                 System.out.println("*********************************\n");
             }
             if ("1".equals(runMode)) {
-                jdbcTemplate.update("update krns_maint_doc_t set DOC_CNTNT = ? where DOC_HDR_ID = ?",
+                 if (encryptServ.isEnabled()) {
+                    jdbcTemplate.update("update krns_maint_doc_t set DOC_CNTNT = ? where DOC_HDR_ID = ?",
                         new Object[]{encryptServ.encrypt(newXML), docId});
+                 } else {
+                     jdbcTemplate.update("update krns_maint_doc_t set DOC_CNTNT = ? where DOC_HDR_ID = ?",
+                             new Object[]{newXML, docId});
+                 }
             }
             totalDocs++;
         } catch (Exception ex) {
             Logger.getLogger(FileConverter.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
-        }
-    }
-
-    /**
-     * Upgrades the xml using the rule maps executing the following actions :
-     * 1. Replace class names from rules. 2. Upgrade BO notes 3. Update class property names from rules
-     * 4. Set MaintainableImplClass name from rules.
-     *
-     * @param oldXML - the old xml that must be upgraded
-     * @return the upgraded xml string
-     * @throws Exception
-     */
-    public String upgradeXML(String oldXML) throws Exception {
-
-        // Replace class names
-        for (ArrayList<String> rule : classNameRules) {
-            oldXML = oldXML.replaceAll(rule.get(0), rule.get(1));
-        }
-
-        // Replace package names
-        for (ArrayList<String> rule : packageNameRules) {
-            oldXML = oldXML.replaceAll(rule.get(0), rule.get(1));
-        }
-
-        // Upgrade Bo notes
-        oldXML = upgradeBONotes(oldXML);
-
-        // Replace or remove the property names of the classes
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        InputSource is = new InputSource(new StringReader(oldXML));
-        Document doc = db.parse(is);
-        doc.getDocumentElement().normalize();
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        for (ArrayList rule : classPropertyRules) {
-            ArrayList<ArrayList<String>> propertyRules = (ArrayList<ArrayList<String>>)rule.get(1);
-            for (ArrayList<String> propertyRule : propertyRules) {
-                XPathExpression exprMaintainableObject = xpath.compile("//" + rule.get(0) + "/" + propertyRule.get(0));
-                NodeList propertyNodeList = (NodeList) exprMaintainableObject.evaluate(doc, XPathConstants.NODESET);
-                for (int s = 0; s < propertyNodeList.getLength(); s++) {
-                    if (propertyRule.get(1).equals("")) {
-                        propertyNodeList.item(s).getParentNode().removeChild(propertyNodeList.item(s));
-                    } else {
-                        doc.renameNode(propertyNodeList.item(s), null, propertyRule.get(1));
-                    }
-                }
-            }
-        }
-
-        // Replace MaintainableImplClass names
-        for (ArrayList<String> rule : maintImplRules) {
-            // Only do replace for files containing the maintainable object class
-            if (oldXML.contains(rule.get(0))) {
-                String maintImpl = rule.get(1);
-                XPathExpression exprMaintainableTest = xpath.compile(
-                        "//maintainableDocumentContents/newMaintainableObject/" + rule.get(0));
-                NodeList exprMaintainableTestList = (NodeList) exprMaintainableTest.evaluate(doc,
-                        XPathConstants.NODESET);
-                if (exprMaintainableTestList.getLength() > 0) {
-                    XPathExpression exprMaintainableObject = xpath.compile("//maintainableDocumentContents");
-                    NodeList exprMaintainableNodeList = (NodeList) exprMaintainableObject.evaluate(doc,
-                            XPathConstants.NODESET);
-                    if (exprMaintainableNodeList.getLength() > 0) {
-                        ((Element) exprMaintainableNodeList.item(0)).setAttribute("maintainableImplClass", maintImpl);
-                    }
-                }
-            }
-
-        }
-
-        // Dom to string
-
-        doc.getDocumentElement().normalize();
-
-        TransformerFactory transFactory = TransformerFactory.newInstance();
-        Transformer trans = transFactory.newTransformer();
-        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-        StringWriter sw = new StringWriter();
-        StreamResult result = new StreamResult(sw);
-        DOMSource source = new DOMSource(doc);
-        trans.transform(source, result);
-        // Remove empty lines where properties has been removed
-        oldXML = sw.toString().replaceAll("(?m)^\\s+\\n", "");
-
-        return oldXML;
-    }
-
-    /**
-     * Upgrades the old Bo notes tag that was part of the maintainable to the new notes tag.
-     *
-     * @param oldXML - the xml to upgrade
-     * @throws Exception
-     * @return String
-     */
-    private String upgradeBONotes(String oldXML) throws Exception {
-        // Get the old bo note xml
-        String notesXml = StringUtils.substringBetween(oldXML, "<boNotes>", "</boNotes>");
-        if (notesXml != null) {
-            notesXml = notesXml.replace("org.kuali.rice.kns.bo.Note", "org.kuali.rice.krad.bo.Note");
-            notesXml = "<org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl>\n"
-                    + notesXml
-                    + "\n</org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl>";
-            oldXML = oldXML.replaceFirst(">", ">\n<notes>\n" + notesXml + "\n</notes>");
-        }
-        return oldXML;
-    }
-
-    /**
-     * Reads the rule xml and sets up the rule maps that will be used to transform the xml
-     */
-    public void setRuleMaps() {
-        classNameRules = new ArrayList();
-        packageNameRules = new ArrayList();
-        classPropertyRules = new ArrayList();
-        maintImplRules = new ArrayList();
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-
-            Document doc = db.parse(getClass().getResourceAsStream(
-                    "/org/kuali/rice/devtools/krad/maintainablexml/MaintainableXMLUpgradeRules.xml"));
-            doc.getDocumentElement().normalize();
-            XPath xpath = XPathFactory.newInstance().newXPath();
-
-            // Get the moved classes rules
-
-            XPathExpression exprClassNames = xpath.compile("//*[@name='maint_doc_classname_changes']/pattern");
-            NodeList classNamesList = (NodeList) exprClassNames.evaluate(doc, XPathConstants.NODESET);
-            for (int s = 0; s < classNamesList.getLength(); s++) {
-                String matchText = xpath.evaluate("match/text()", classNamesList.item(s));
-                String replaceText = xpath.evaluate("replacement/text()", classNamesList.item(s));
-                ArrayList<String> rule = new ArrayList();
-                rule.add(matchText);
-                rule.add(replaceText);
-                classNameRules.add(rule);
-            }
-
-            // Get the package change rules
-
-            XPathExpression exprPackageNames = xpath.compile("//*[@name='maint_doc_moved_packages']/pattern");
-            NodeList packageNamesList = (NodeList) exprPackageNames.evaluate(doc, XPathConstants.NODESET);
-            for (int s = 0; s < packageNamesList.getLength(); s++) {
-                String matchText = xpath.evaluate("match/text()", packageNamesList.item(s));
-                String replaceText = xpath.evaluate("replacement/text()", packageNamesList.item(s));
-                ArrayList<String> rule = new ArrayList<String>();
-                rule.add(matchText);
-                rule.add(replaceText);
-                packageNameRules.add(rule);
-            }
-
-            // Get the property changed rules
-
-            XPathExpression exprClassProperties = xpath.compile(
-                    "//*[@name='maint_doc_changed_class_properties']/pattern");
-            XPathExpression exprClassPropertiesPatterns = xpath.compile("pattern");
-            NodeList propertyClassList = (NodeList) exprClassProperties.evaluate(doc, XPathConstants.NODESET);
-            for (int s = 0; s < propertyClassList.getLength(); s++) {
-                String classText = xpath.evaluate("class/text()", propertyClassList.item(s));
-                // Use Lists in stead of maps to keep the order of rules
-                ArrayList propertyRules = new ArrayList();
-                NodeList classPropertiesPatterns = (NodeList) exprClassPropertiesPatterns.evaluate(
-                        propertyClassList.item(s), XPathConstants.NODESET);
-                for (int c = 0; c < classPropertiesPatterns.getLength(); c++) {
-                    String matchText = xpath.evaluate("match/text()", classPropertiesPatterns.item(c));
-                    String replaceText = xpath.evaluate("replacement/text()", classPropertiesPatterns.item(c));
-                    ArrayList<String> propertyRule = new ArrayList<String>();
-                    propertyRule.add(matchText);
-                    propertyRule.add(replaceText);
-                    propertyRules.add(propertyRule);
-                }
-//                classPropertyRuleMap.put(classText, propertyRules);
-                ArrayList classRule = new ArrayList();
-                classRule.add(classText);
-                classRule.add(propertyRules);
-                classPropertyRules.add(classRule);
-            }
-
-            // Get the maint impl class rule
-
-            XPathExpression exprMaintImpl = xpath.compile("//*[@name='maint_doc_impl_classes']/pattern");
-            NodeList maintImplList = (NodeList) exprMaintImpl.evaluate(doc, XPathConstants.NODESET);
-            for (int s = 0; s < maintImplList.getLength(); s++) {
-                String maintainableText = xpath.evaluate("maintainable/text()", maintImplList.item(s));
-                String maintainableImplText = xpath.evaluate("maintainableImpl/text()", maintImplList.item(s));
-                ArrayList<String> rule = new ArrayList<String>();
-                rule.add(maintainableText);
-                rule.add(maintainableImplText);
-                maintImplRules.add(rule);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error parsing rule xml file. Please check file. : " + e.getMessage());
             System.exit(1);
         }
     }

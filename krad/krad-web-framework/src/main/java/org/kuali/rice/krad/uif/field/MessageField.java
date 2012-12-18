@@ -104,7 +104,7 @@ public class MessageField extends FieldBase {
     }
 
     /**
-     * Nested @{link org.kuali.rice.krad.uif.element.Message} component wrapped in the field
+     * Nested {@link org.kuali.rice.krad.uif.element.Message} component wrapped in the field
      *
      * @return Message instance
      */

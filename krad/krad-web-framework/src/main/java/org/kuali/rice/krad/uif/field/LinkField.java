@@ -94,7 +94,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     * Returns the <code>Link<code/> field.
+     * Returns the <code>Link</code> field.
      *
      * @return The Link field
      */
@@ -104,7 +104,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     * Setter for the <code>Link<code/>  component.
+     * Setter for the <code>Link</code>  component.
      *
      * @param link
      */
@@ -113,7 +113,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     * Returns the label of the <code>Link<code/> field that will be used to render the label of the link.
+     * Returns the label of the <code>Link</code> field that will be used to render the label of the link.
      *
      * @return The link label
      */
@@ -123,7 +123,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     * Setter for the link label. Sets the value on the <code>Link<code/> field.
+     * Setter for the link label. Sets the value on the <code>Link</code> field.
      *
      * @param linkLabel
      */
@@ -132,7 +132,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     * Returns the target of the <code>Link<code/> field that will be used to specify where to open the href.
+     * Returns the target of the <code>Link</code> field that will be used to specify where to open the href.
      *
      * @return The target
      */
@@ -142,7 +142,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     * Setter for the link target. Sets the value on the <code>Link<code/> field.
+     * Setter for the link target. Sets the value on the <code>Link</code> field.
      *
      * @param target
      */
@@ -151,7 +151,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     * Returns the href text of the <code>Link<code/> field.
+     * Returns the href text of the <code>Link</code> field.
      *
      * @return The href text
      */
@@ -161,7 +161,7 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     * Setter for the hrefText. Sets the value on the <code>Link<code/> field.
+     * Setter for the hrefText. Sets the value on the <code>Link</code> field.
      *
      * @param hrefText
      */

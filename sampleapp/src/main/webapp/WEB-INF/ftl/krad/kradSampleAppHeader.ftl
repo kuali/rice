@@ -29,7 +29,8 @@
             <div>
                 <ul class="demo-appNavigation">
                     <li><a id="Demo-HomeLink" href="index.html">Home</a></li>
-                    <li><a id="Demo-LibraryLink" href="library.html">Library</a></li>
+                    <li><a id="Demo-LibraryLink"
+                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=ComponentLibraryHome&amp;methodToCall=start">Library</a></li>
                     <li><a id="Demo-DemoLink" href="demo.html">Demo</a></li>
                     <li><a id="Demo-DownloadLink" href="download.html">Download</a></li>
                 </ul>

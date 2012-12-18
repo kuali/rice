@@ -61,6 +61,60 @@
     <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
   </bean>
 
+
+
+  <!-- ComponentLibraryHome defs -->
+
+  <bean id="ComponentLibraryHome" parent="KradSampleAppView">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-componentLibView</value>
+        <value>demo-componentLibHome</value>
+      </list>
+    </property>
+    <property name="navigation">
+      <ref bean="ComponentLibrary-AccordionNav"/>
+    </property>
+    <property name="page.headerText" value="Component Library"/>
+    <property name="page.items">
+      <list>
+        <ref bean="ComponentLibraryHome-New"/>
+        <bean id="ComponentLibraryHome-Elements" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-Controls" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-Fields" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-Containers" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-LayoutManagers" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-Widgets" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-Navigation" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-CollectionFeatures" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-Validation" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-ClientResponsiveness" parent="Uif-VerticalBoxSection"/>
+        <bean id="ComponentLibraryHome-GeneralFeatures" parent="Uif-VerticalBoxSection"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibraryHome-New" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-ListGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Image Field"
+                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ImageField-View&amp;methodToCall=start"/>
+              <bean parent="Uif-Link" p:linkText="Link Field"
+                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkField-View&amp;methodToCall=start"/>
+              <bean parent="Uif-Link" p:linkText="Message Field"
+                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageField-View&amp;methodToCall=start"/>
+              <bean parent="Uif-Link" p:linkText="Text Area"
+                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextAreaControl-View&amp;methodToCall=start"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
   <!-- ComponentLibraryView defaults -->
 
   <bean id="ComponentLibraryView" class="org.kuali.rice.krad.demo.uif.components.ComponentLibraryView"
@@ -87,28 +141,30 @@
       </bean>
     </property>
     <property name="navigation">
-      <bean parent="Uif-AccordionGroup">
-        <property name="cssClasses">
-          <list merge="true">
-            <value>demo-componentLibNav</value>
-          </list>
-        </property>
-        <property name="items">
-          <list>
-            <ref bean="ComponentLibrary-Nav-Elements"/>
-            <ref bean="ComponentLibrary-Nav-Controls"/>
-            <ref bean="ComponentLibrary-Nav-Fields"/>
-            <ref bean="ComponentLibrary-Nav-Containers"/>
-            <ref bean="ComponentLibrary-Nav-LayoutManagers"/>
-            <ref bean="ComponentLibrary-Nav-Widgets"/>
-            <ref bean="ComponentLibrary-Nav-Navigation"/>
-            <ref bean="ComponentLibrary-Nav-CollectionFeatures"/>
-            <ref bean="ComponentLibrary-Nav-Validation"/>
-            <ref bean="ComponentLibrary-Nav-ClientResponsiveness"/>
-            <ref bean="ComponentLibrary-Nav-GeneralFeatures"/>
-          </list>
-        </property>
-      </bean>
+      <ref bean="ComponentLibrary-AccordionNav"/>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibrary-AccordionNav" parent="Uif-AccordionGroup">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-componentLibNav</value>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <ref bean="ComponentLibrary-Nav-Elements"/>
+        <ref bean="ComponentLibrary-Nav-Controls"/>
+        <ref bean="ComponentLibrary-Nav-Fields"/>
+        <ref bean="ComponentLibrary-Nav-Containers"/>
+        <ref bean="ComponentLibrary-Nav-LayoutManagers"/>
+        <ref bean="ComponentLibrary-Nav-Widgets"/>
+        <ref bean="ComponentLibrary-Nav-Navigation"/>
+        <ref bean="ComponentLibrary-Nav-CollectionFeatures"/>
+        <ref bean="ComponentLibrary-Nav-Validation"/>
+        <ref bean="ComponentLibrary-Nav-ClientResponsiveness"/>
+        <ref bean="ComponentLibrary-Nav-GeneralFeatures"/>
+      </list>
     </property>
   </bean>
 
@@ -246,7 +302,8 @@
     </property>
   </bean>
 
-  <bean id="ComponentLibrary-Nav-ClientResponsiveness" p:headerText="Client Responsiveness" parent="ComponentLibrary-Nav">
+  <bean id="ComponentLibrary-Nav-ClientResponsiveness" p:headerText="Client Responsiveness"
+        parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Progressive Disclosure"

@@ -37,7 +37,7 @@ function setupExhibitHandlers() {
 function linkSelection() {
 
     var viewDiv = jQuery("div.uif-view");
-    if (jQuery(viewDiv).is(".demo-componentLibView")) {
+    if (jQuery(viewDiv).is(".demo-componentLibView")  || jQuery(viewDiv).is(".demo-componentLibHome")) {
         var url = window.location.href;
         var link = jQuery("#Uif-Navigation").find("a[href='" + url + "']");
         if (link.length) {

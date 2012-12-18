@@ -19,6 +19,46 @@
     min-height: 600px;
 }
 
+/*********** Component Library home *******************************************************/
+
+.demo-componentLibHome .demo-sampleAppPage{
+    padding-top: 15px;
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-size: 14px;
+}
+
+.demo-componentLibHome .demo-sampleAppPage h2, div#ComponentLibraryHome .demo-sampleAppPage h3{
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-weight: normal;
+}
+
+.demo-componentLibHome .demo-sampleAppPage .uif-instructionalMessage{
+    font-size: 1em;
+}
+
+.demo-componentLibHome .demo-sampleAppPage ul.uif-listLayout{
+    margin-left: 1em;
+}
+
+.demo-componentLibHome .demo-sampleAppPage ul.uif-listLayout li{
+    list-style: disc inside;
+}
+
+.demo-componentLibHome .demo-sampleAppPage h3{
+    background-image: url("../../images/krad/sprite-navIcons.png");
+    background-position: left top;
+    background-repeat: no-repeat, no-repeat;
+    background-color: transparent;
+    padding-left: 24px;
+    padding-top: 5px;
+}
+
+.demo-componentLibHome .demo-sampleAppPage div#ComponentLibraryHome-New h3{
+    background-image: none;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+
 /*********** Component Library styles *****************************************************/
 
 .demo-componentLibView {
@@ -122,47 +162,58 @@
     text-decoration: none;
 }
 
-[data-tabfor='ComponentLibrary-Nav-Elements'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-Elements'] > .ui-accordion-header,
+div#ComponentLibraryHome-Elements h3{
     background-position: 0 -258px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-Controls'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-Controls'] > .ui-accordion-header,
+div#ComponentLibraryHome-Controls h3{
     background-position: 0 -192px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-Fields'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-Fields'] > .ui-accordion-header,
+div#ComponentLibraryHome-Fields h3{
     background-position: 0 -324px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-Containers'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-Containers'] > .ui-accordion-header,
+div#ComponentLibraryHome-Containers h3{
     background-position: 0 -126px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-LayoutManagers'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-LayoutManagers'] > .ui-accordion-header,
+div#ComponentLibraryHome-LayoutManagers h3{
     background-position: 0 -456px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-Widgets'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-Widgets'] > .ui-accordion-header,
+div#ComponentLibraryHome-Widgets h3{
     background-position: 0 -654px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-Navigation'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-Navigation'] > .ui-accordion-header,
+div#ComponentLibraryHome-Navigation h3{
     background-position: 0 -522px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-CollectionFeatures'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-CollectionFeatures'] > .ui-accordion-header,
+div#ComponentLibraryHome-CollectionFeatures h3{
     background-position: 0 -60px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-Validation'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-Validation'] > .ui-accordion-header,
+div#ComponentLibraryHome-Validation h3{
     background-position: 0 -588px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-ClientResponsiveness'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-ClientResponsiveness'] > .ui-accordion-header,
+div#ComponentLibraryHome-ClientResponsiveness h3{
     background-position: 0 6px, 0 0;
 }
 
-[data-tabfor='ComponentLibrary-Nav-GeneralFeatures'] > .ui-accordion-header {
+[data-tabfor='ComponentLibrary-Nav-GeneralFeatures'] > .ui-accordion-header,
+div#ComponentLibraryHome-GeneralFeatures h3{
     background-position: 0 -390px, 0 0;
 }
 

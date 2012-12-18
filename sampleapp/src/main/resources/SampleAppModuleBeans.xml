@@ -151,6 +151,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoRadioControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSelectControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoImageField.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLinkField.xml</value>
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
 
@@ -202,6 +203,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.PropertiesDescription</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextAreaControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCheckboxControlResources</value>

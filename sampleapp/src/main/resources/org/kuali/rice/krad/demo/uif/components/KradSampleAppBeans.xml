@@ -160,6 +160,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InputField-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Image Field"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ImageField-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Link Field"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkField-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

@@ -65,6 +65,8 @@
 
   <bean id="ComponentLibraryView" class="org.kuali.rice.krad.demo.uif.components.ComponentLibraryView"
         parent="KradSampleAppView">
+    <property name="rootJavadocAddress" value="http://site.kuali.org/rice/2.2.0/apidocs/"/>
+    <property name="rootDocBookAddress" value="http://site.origin.kuali.org/rice/2.2.0/reference/html/KRAD_Guide.html"/>
     <property name="cssClasses">
       <list merge="true">
         <value>demo-componentLibView</value>

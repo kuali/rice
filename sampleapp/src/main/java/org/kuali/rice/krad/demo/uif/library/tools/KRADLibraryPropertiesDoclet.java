@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.library.tools;
 
-import com.sun.javadoc.AnnotationDesc;
+/*import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ProgramElementDoc;
@@ -28,13 +28,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.util.Vector;
+import java.util.Vector;*/
 
 /**
  * A JavaDoc tools doclet class that generates a properties file containing information about
  * any @BeanTag classes @BeanTagAttribute properties
  */
 public class KRADLibraryPropertiesDoclet {
+/*
 
     // TODO : remove hard coded arguments
     public static void main(String[] args) {
@@ -43,22 +44,26 @@ public class KRADLibraryPropertiesDoclet {
                 "org.kuali.rice.krad.uif"});
     }
 
-    /**
+    */
+/**
      * The method that will be called by the JavaDoc tool when executing this doclet
      *
      * @param root - the RootDoc containing all the class information as specified by the javadoc call arguments
      * @return boolean
-     */
+     *//*
+
     public static boolean start(RootDoc root) {
         storeToPropertyFile(root);
         return true;
     }
 
-    /**
+    */
+/**
      * Writes all BeanTag properties to a propties file with their getter javadoc description
      *
      * @param root- the RootDoc containing all the class information as specified by the javadoc call arguments
-     */
+     *//*
+
     private static void storeToPropertyFile(RootDoc root) {
         ClassDoc[] classes = root.classes();
         SortedProperties prop = new SortedProperties();
@@ -109,13 +114,15 @@ public class KRADLibraryPropertiesDoclet {
         }
     }
 
-    /**
+    */
+/**
      * Returns the javadoc text for a method, when it is a @see comment the referenced methods documentation will
      * be returned
      *
      * @param method
      * @return String
-     */
+     *//*
+
     private static String getDocText(MethodDoc method, RootDoc root) {
 
         if (method.commentText() != null && !method.commentText().equals("")) {
@@ -145,13 +152,15 @@ public class KRADLibraryPropertiesDoclet {
         return "";
     }
 
-    /**
+    */
+/**
      * Finds the no arguments method's MethodDoc on a class with a specified name
      *
      * @param classDoc
      * @param methodName
      * @return MethodDoc
-     */
+     *//*
+
     private static MethodDoc getNoParamMethodFromClassDocByName(ClassDoc classDoc, String methodName) {
         MethodDoc[] methods = classDoc.methods();
 
@@ -164,13 +173,15 @@ public class KRADLibraryPropertiesDoclet {
         return null;
     }
 
-    /**
+    */
+/**
      * Checks if a specific ClassDoc or MethodDoc is annotated with the specified annotations
      *
      * @param elementDoc
      * @param tagString
      * @return
-     */
+     *//*
+
     private static boolean isAnnotatedWith(ProgramElementDoc elementDoc, String... tagString) {
         AnnotationDesc[] annotations = elementDoc.annotations();
 
@@ -184,9 +195,11 @@ public class KRADLibraryPropertiesDoclet {
         return false;
     }
 
-    /**
+    */
+/**
      * This class keeps properties sorted in order to make the file easier to read
-     */
+     *//*
+
     static class SortedProperties extends Properties {
 
         public Enumeration keys() {
@@ -201,5 +214,6 @@ public class KRADLibraryPropertiesDoclet {
         }
 
     }
+*/
 
 }

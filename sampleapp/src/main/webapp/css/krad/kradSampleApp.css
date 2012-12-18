@@ -42,19 +42,19 @@
 
 /** Component Exhibit *********************************************************************/
 
-#ComponentLibraryTabGroup_tabs{
+#ComponentLibraryTabGroup_tabs {
     width: 100%;
 }
 
-#ComponentLibraryTabGroup_tabs > div.ui-tabs-panel{
+#ComponentLibraryTabGroup_tabs > div.ui-tabs-panel {
     min-height: 250px;
     overflow: auto;
     width: 70%;
 }
 
-#ComponentLibraryTabGroup_tabList{
+#ComponentLibraryTabGroup_tabList {
     width: 25%;
-    font-family: Conv_Cabin-Regular,sans-serif;
+    font-family: Conv_Cabin-Regular, sans-serif;
     font-size: 12px;
 }
 
@@ -71,7 +71,6 @@
 .demo-componentLibView .demo-sampleAppPage > div > .uif-syntaxHighlighter ol {
     font-size: 12px;
 }
-
 
 /*********** Component Library Navigation *****************************************************/
 
@@ -170,6 +169,15 @@
 
 .demo-detailsGroup p {
     margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.demo-detailsGroup h3, .demo-detailsGroup h4 {
+    font-family: Conv_Cabin-Regular, sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .demo-componentDetailsTabs > div.ui-tabs > ul {
@@ -216,6 +224,67 @@
     border-bottom: none;
     border-top: 1px solid #CCC;
     padding: 12px 0 0 0;
+}
+
+/*********** Documentation tab *************************************************************/
+
+.demo-docLinks {
+    background-color: #F6F6F6;
+    border: 1px solid #CCCCCC;
+    display: block;
+    float: right;
+    height: 4em;
+    margin: 0 0 1em 1em;
+    padding: 1em;
+    width: 11em;
+}
+
+a.demo-documentationLink {
+    display: block;
+}
+
+.demo-schemaIdDocTable {
+    border-collapse: collapse;
+}
+
+.demo-schemaIdDocTable th {
+    font-weight: bold;
+    background-color: #F6F6F6;
+    border: 1px solid #CCCCCC;
+}
+
+.demo-schemaIdDocTable td {
+    border: 1px solid #CCCCCC;
+}
+
+.demo-propertyItem {
+    position: relative;
+}
+
+.demo-propertyName {
+    background-color: #F6F6F6;
+    padding: 5px 0 5px 5px;
+    border: 1px solid #CCCCCC;
+    font-size: 1.1em;
+}
+
+.demo-propertyType {
+    font-style: italic;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 6px;
+}
+
+.demo-propertyType a {
+    color: #A30234;
+    text-decoration: underline;
+}
+
+.demo-propertyDesc {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: .8em;
 }
 
 /*********** Application Header *****************************************************/
@@ -306,7 +375,15 @@
 }
 
 .demo-thirdTier {
-    background: linear-gradient(to bottom, #780126 0%, #A30234 100%) repeat scroll 0 0 transparent;
+    background: #780126;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzc4MDEyNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhMzAyMzQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #780126 0%, #a30234 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #780126), color-stop(100%, #a30234));
+    background: -webkit-linear-gradient(top, #780126 0%, #a30234 100%);
+    background: -o-linear-gradient(top, #780126 0%, #a30234 100%);
+    background: -ms-linear-gradient(top, #780126 0%, #a30234 100%);
+    background: linear-gradient(to bottom, #780126 0%, #a30234 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#780126', endColorstr = '#a30234', GradientType = 0);
     color: #FFFFFF;
     font-family: 'Conv_Cabin-Regular', sans-serif;
     font-size: 15px;

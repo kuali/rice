@@ -198,6 +198,7 @@
         <value>edu.sampleu.travel.approval.TravelAuthorizationView</value>
 
         <!-- KRAD sample app - component library -->
+        <value>org.kuali.rice.krad.demo.uif.library.resources.PropertiesDescription</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextAreaControlResources</value>

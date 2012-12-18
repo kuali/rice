@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.demo.uif.form;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -35,7 +38,12 @@ public class KradSampleAppForm extends UifFormBase {
     private String inputField4;
     private String inputField5;
     private String inputField6;
-    
+
+    private String testPersonId;
+    private Person testPerson;
+
+    private String testGroupId;
+
     //MessageField
     private String messageField1;
 
@@ -113,4 +121,41 @@ public class KradSampleAppForm extends UifFormBase {
     public void setMessageField1(String messageField1) {
         this.messageField1 = messageField1;
     }
+
+    public String getTestPersonId() {
+        return testPersonId;
+    }
+
+    public void setTestPersonId(String testPersonId) {
+        this.testPersonId = testPersonId;
+    }
+
+    public Person getTestPerson() {
+        if ((testPerson == null) || !StringUtils.equals(testPerson.getPrincipalId(), getTestPersonId())) {
+            testPerson = KimApiServiceLocator.getPersonService().getPerson(getTestPersonId());
+
+            if (testPerson == null) {
+                try {
+                    testPerson = KimApiServiceLocator.getPersonService().getPersonImplementationClass().newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return testPerson;
+    }
+
+    public void setTestPerson(Person testPerson) {
+        this.testPerson = testPerson;
+    }
+
+    public String getTestGroupId() {
+        return testGroupId;
+    }
+
+    public void setTestGroupId(String testGroupId) {
+        this.testGroupId = testGroupId;
+    }
+
 }

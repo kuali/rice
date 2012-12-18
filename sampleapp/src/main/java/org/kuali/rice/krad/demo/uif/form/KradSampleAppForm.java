@@ -35,9 +35,14 @@ public class KradSampleAppForm extends UifFormBase {
     private String inputField4;
     private String inputField5;
     private String inputField6;
+    
+    //MessageField
+    private String messageField1;
 
     public KradSampleAppForm() {
         super();
+
+        messageField1 = "fruits";
     }
 
     public String getThemeName() {
@@ -99,5 +104,13 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setInputField6(String inputField6) {
         this.inputField6 = inputField6;
+    }
+
+    public String getMessageField1() {
+        return messageField1;
+    }
+
+    public void setMessageField1(String messageField1) {
+        this.messageField1 = messageField1;
     }
 }

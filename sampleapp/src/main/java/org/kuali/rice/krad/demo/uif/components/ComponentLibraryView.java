@@ -357,8 +357,8 @@ public class ComponentLibraryView extends FormView {
     /**
      * Gets the property name from the method by stripping get/is and making the first letter lowercase
      *
-     * @param method
-     * @return
+     * @param method the Method object
+     * @return the property name for the Method passed in
      */
     private String getPropName(Method method) {
         String name = method.getName();

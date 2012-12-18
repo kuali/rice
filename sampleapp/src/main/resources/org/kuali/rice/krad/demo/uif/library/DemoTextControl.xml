@@ -23,6 +23,8 @@
   <!-- TextControl demo -->
   <bean id="Demo-TextControl-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.TextControl"/>
+    <property name="docBookAnchor" value="d7339e5500"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-TextControl-Example1"/>

@@ -23,6 +23,8 @@
   <!-- KIMUserControl demo -->
   <bean id="Demo-KIMUserControl-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoKIMUserControl.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.UserControl"/>
+    <property name="docBookAnchor" value="d7339e5871"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-KIMUserControl-Example1"/>

@@ -23,6 +23,8 @@
   <!-- RadioControl demo -->
   <bean id="Demo-RadioControl-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoRadioControl.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.RadioGroupControl"/>
+    <property name="docBookAnchor" value="d7339e5814"/>
     <property name="demoGroups">
       <list>
 

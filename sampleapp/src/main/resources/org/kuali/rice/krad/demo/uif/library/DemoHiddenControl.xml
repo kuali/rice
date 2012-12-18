@@ -23,6 +23,8 @@
   <!-- HiddenControl demo -->
   <bean id="Demo-HiddenControl-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoHiddenControl.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.HiddenControl"/>
+    <property name="docBookAnchor" value="d7339e5479"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-HiddenControl-Example1"/>

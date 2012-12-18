@@ -23,6 +23,8 @@
   <!-- CheckBoxControl demo -->
   <bean id="Demo-CheckboxControl-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCheckboxControl.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.CheckboxControl"/>
+    <property name="docBookAnchor" value="d7339e5431"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CheckboxControl-Example1"/>

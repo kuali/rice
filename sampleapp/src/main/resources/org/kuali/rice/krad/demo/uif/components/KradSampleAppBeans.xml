@@ -146,10 +146,26 @@
     </property>
     <property name="items">
       <list>
+        <bean parent="Uif-Link" p:linkText="Checkbox"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CheckboxControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="File"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FileControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="KIM Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-KIMGroupControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="KIM User"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-KIMUserControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Radio"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RadioControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Select"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SelectControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Spinner"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SpinnerControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Text"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextControl-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Text Area"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextAreaControl-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Hidden"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-HiddenControl-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

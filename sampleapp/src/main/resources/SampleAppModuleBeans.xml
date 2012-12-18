@@ -150,9 +150,14 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCheckboxControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoRadioControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSelectControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoFileControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSpinnerControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoImageField.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLinkField.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMessageField.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoKIMUserControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoKIMGroupControl.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoHiddenControl.xml</value>
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
 
@@ -211,6 +216,11 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCheckboxControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoRadioControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSelectControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoFileControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSpinnerControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoKIMUserControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoKIMGroupControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoHiddenControlResources</value>
       </list>
     </property>
   </bean>

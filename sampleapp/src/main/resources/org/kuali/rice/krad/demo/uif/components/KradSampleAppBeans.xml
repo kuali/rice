@@ -98,6 +98,14 @@
             <ref bean="ComponentLibrary-Nav-Elements"/>
             <ref bean="ComponentLibrary-Nav-Controls"/>
             <ref bean="ComponentLibrary-Nav-Fields"/>
+            <ref bean="ComponentLibrary-Nav-Containers"/>
+            <ref bean="ComponentLibrary-Nav-LayoutManagers"/>
+            <ref bean="ComponentLibrary-Nav-Widgets"/>
+            <ref bean="ComponentLibrary-Nav-Navigation"/>
+            <ref bean="ComponentLibrary-Nav-CollectionFeatures"/>
+            <ref bean="ComponentLibrary-Nav-Validation"/>
+            <ref bean="ComponentLibrary-Nav-ClientResponsiveness"/>
+            <ref bean="ComponentLibrary-Nav-GeneralFeatures"/>
           </list>
         </property>
       </bean>
@@ -167,6 +175,79 @@
       </list>
     </property>
   </bean>
+
+  <bean id="ComponentLibrary-Nav-Containers" p:headerText="Containers" parent="ComponentLibrary-Nav">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Link Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkGroup-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibrary-Nav-LayoutManagers" p:headerText="Layout Managers" parent="ComponentLibrary-Nav">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Grid Layout"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayout-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibrary-Nav-Widgets" p:headerText="Widgets" parent="ComponentLibrary-Nav">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Breadcrumbs"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibrary-Nav-Navigation" p:headerText="Navigation" parent="ComponentLibrary-Nav">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Left Menu"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LeftMenu-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibrary-Nav-CollectionFeatures" p:headerText="Collection Features" parent="ComponentLibrary-Nav">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Add/Delete Line"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AddDeleteLine-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibrary-Nav-Validation" p:headerText="Validation" parent="ComponentLibrary-Nav">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Simple Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SimpleConstraint-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibrary-Nav-ClientResponsiveness" p:headerText="Client Responsiveness" parent="ComponentLibrary-Nav">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Progressive Disclosure"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressiveDisclosure-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ComponentLibrary-Nav-GeneralFeatures" p:headerText="General Features" parent="ComponentLibrary-Nav">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Incedent Page"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncedentPage-View&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
+
 
   <bean id="ComponentLibraryDemoGroup" parent="Uif-VerticalBoxSection"/>
 

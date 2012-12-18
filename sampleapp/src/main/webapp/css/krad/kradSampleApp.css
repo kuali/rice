@@ -134,6 +134,38 @@
     background-position: 0 -324px, 0 0;
 }
 
+[data-tabfor='ComponentLibrary-Nav-Containers'] > .ui-accordion-header {
+    background-position: 0 -126px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-LayoutManagers'] > .ui-accordion-header {
+    background-position: 0 -456px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-Widgets'] > .ui-accordion-header {
+    background-position: 0 -654px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-Navigation'] > .ui-accordion-header {
+    background-position: 0 -522px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-CollectionFeatures'] > .ui-accordion-header {
+    background-position: 0 -60px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-Validation'] > .ui-accordion-header {
+    background-position: 0 -588px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-ClientResponsiveness'] > .ui-accordion-header {
+    background-position: 0 6px, 0 0;
+}
+
+[data-tabfor='ComponentLibrary-Nav-GeneralFeatures'] > .ui-accordion-header {
+    background-position: 0 -390px, 0 0;
+}
+
 .demo-componentLibNav-subList {
     padding: 0 !important;
     background: none;

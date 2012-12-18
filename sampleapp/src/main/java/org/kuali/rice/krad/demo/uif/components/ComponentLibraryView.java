@@ -154,6 +154,12 @@ public class ComponentLibraryView extends FormView {
         this.getPage().setItems(pageItems);
     }
 
+    /**
+     * Builds out the documentation tab content by auto-generating the content for properties and documentation and
+     * adds it to the tabItems list
+     *
+     * @param tabItems list of tab items for component details
+     */
     private void processDocumentationTab(List<Component> tabItems) {
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
@@ -162,12 +168,14 @@ public class ComponentLibraryView extends FormView {
             Class<?> componentClass = Class.forName(javaFullClassPath);
             Method methodsArray[] = componentClass.getMethods();
 
+            //get top level documentation for this class
             String classMessage = messageService.getMessageText("KR-SAP", null, javaFullClassPath);
 
             if (classMessage == null) {
                 classMessage = "NO DOCUMENTATION AVAILABLE... we are working on it!";
             }
 
+            //scrub class message of @link and @code
             classMessage = classMessage.replaceAll("\\{[@#]link (.*?)\\}", "<i>$1</i>");
             classMessage = classMessage.replaceAll("\\{[@#]code (.*?)\\}", "<i>$1</i>");
 
@@ -191,6 +199,7 @@ public class ComponentLibraryView extends FormView {
                 schemaTable = "";
             }
 
+            //build documentation links from javadoc address and docbook address/anchor
             String docLinkDiv = "<div class='demo-docLinks'> "
                     + "<label>Additional Resources:</label><a class='demo-documentationLink'"
                     + " href='"
@@ -204,8 +213,9 @@ public class ComponentLibraryView extends FormView {
                     + "' target='_blank'>KRAD Guide</a>"
                     + "</div>";
 
+            //initialize the documentation content
             String documentationMessageContent = "<H3>" + this.getComponentName() + " Developer Documentation</H3>" +
-                    docLinkDiv + classMessage + schemaTable;
+                    docLinkDiv + classMessage + "<H3>Preconfigured KRAD Schema Names & Bean ids</H3>" + schemaTable;
 
             List<String> propertyDescriptions = new ArrayList<String>();
             Map<String, List<String>> inheritedProperties = new HashMap<String, List<String>>();
@@ -285,7 +295,6 @@ public class ComponentLibraryView extends FormView {
             documentationMessageContent =
                     documentationMessageContent + "<H3>Properties</H3><div class='demo-propertiesContent'>";
             for (String desc : propertyDescriptions) {
-                //todo sort alphabetically here?
                 documentationMessageContent = documentationMessageContent + desc;
             }
             documentationMessageContent = documentationMessageContent + "</div>";
@@ -306,11 +315,13 @@ public class ComponentLibraryView extends FormView {
 
             //create the inherited properties disclosures
             if (!inheritedProperties.isEmpty()) {
+
+                //todo sort alphabetically here?
                 for (String className : inheritedProperties.keySet()) {
                     String messageContent = "";
                     List<String> inheritedPropertyDescriptions = inheritedProperties.get(className);
+
                     for (String desc : inheritedPropertyDescriptions) {
-                        //todo sort alphabetically here?
                         messageContent = messageContent + desc;
                     }
 
@@ -343,6 +354,12 @@ public class ComponentLibraryView extends FormView {
         }
     }
 
+    /**
+     * Gets the property name from the method by stripping get/is and making the first letter lowercase
+     *
+     * @param method
+     * @return
+     */
     private String getPropName(Method method) {
         String name = method.getName();
 
@@ -357,6 +374,11 @@ public class ComponentLibraryView extends FormView {
         return name;
     }
 
+    /**
+     * Process xml source code to be consumed by the exhibit component
+     *
+     * @param sourceCode list of sourceCode to be filled in, in order the group exhibit examples appear
+     */
     private void processXmlSource(List<String> sourceCode) {
         Map<String, String> idSourceMap = new HashMap<String, String>();
         if (xmlFilePath != null) {

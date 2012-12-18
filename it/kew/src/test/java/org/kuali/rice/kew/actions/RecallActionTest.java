@@ -17,6 +17,8 @@ package org.kuali.rice.kew.actions;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
+import org.kuali.rice.coreservice.api.parameter.Parameter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -35,6 +37,7 @@ import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -311,6 +314,24 @@ public class RecallActionTest extends KEWTestCase {
         KimApiServiceLocator.getPermissionService().updatePermission(pb.build());
     }
 
+    // setter for Kim Priority Parameter (used for useKimPermission method call)
+    protected void setKimPriorityOnDocumentTypeParameterValue(String parameterValue) {
+        if(CoreFrameworkServiceLocator.getParameterService().parameterExists(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND)) {
+            Parameter kimPriorityOverDocTypePolicyParameter = CoreFrameworkServiceLocator.getParameterService().getParameter(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+            Parameter.Builder b = Parameter.Builder.create(kimPriorityOverDocTypePolicyParameter);
+            b.setValue(parameterValue);
+            CoreFrameworkServiceLocator.getParameterService().updateParameter(b.build());
+        }
+    }
+
+    protected String getKimPriorityOnDocumentTypeParameterValue() {
+        if(CoreFrameworkServiceLocator.getParameterService().parameterExists(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND)) {
+            return CoreFrameworkServiceLocator.getParameterService().getParameter(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND).getValue();
+        }
+        return null;
+    }
+
+
     /**
      * Tests that a new permission can be configured with the Recall Permission template and that matching works correctly
      * against the new permission
@@ -337,6 +358,8 @@ public class RecallActionTest extends KEWTestCase {
     }
 
     @Test public void testRecallPermissionTemplate() throws Exception {
+        String origKimParamValue = getKimPriorityOnDocumentTypeParameterValue();
+        setKimPriorityOnDocumentTypeParameterValue("Y");
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
         document.route("");
 
@@ -387,6 +410,7 @@ public class RecallActionTest extends KEWTestCase {
         // now technical admins can recall by virtue of having the recall permission on this doc
         assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
         assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+        setKimPriorityOnDocumentTypeParameterValue(origKimParamValue);
     }
 
     @Test public void testRecallToActionListAsInitiatorAfterApprovals() throws Exception {
@@ -436,18 +460,24 @@ public class RecallActionTest extends KEWTestCase {
      * Recall permission to the Document Router derived role, is NOT sufficient to enable recall.
      */
     @Test public void testRoutePermissionAssignmentInsufficientForRouterToRecallDoc() throws Exception {
+        String origKimParamValue = getKimPriorityOnDocumentTypeParameterValue();
+        setKimPriorityOnDocumentTypeParameterValue("Y");
         assignRoutePermissionToTechAdmin();
         // recall as 'admin' (Tech Admin) user
         testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC, false);
+        setKimPriorityOnDocumentTypeParameterValue(origKimParamValue);
     }
     /**
      * Tests that simply assigning the recall permission to the Document Router derived role *without* assigning the
      * Route Document permission to the Technical Admin role, is NOT sufficient to enable recall.
      */
     @Test public void testRecallPermissionAssignmentInsufficientForRouterToRecallDoc() throws Exception {
+        String origKimParamValue = getKimPriorityOnDocumentTypeParameterValue();
+        setKimPriorityOnDocumentTypeParameterValue("Y");
         assignRecallPermissionToDocumentRouters();
         // recall as 'admin' (Tech Admin) user
         testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC, false);
+        setKimPriorityOnDocumentTypeParameterValue(origKimParamValue);
     }
     /**
      * Tests that we can use the Route Document derived role to assign Recall permission to document routers.

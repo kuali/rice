@@ -224,7 +224,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
         }
 
         boolean foundAtLeastOnePermission = false;
-        boolean authorizedByPermission = false;
+        boolean authorizedByPermission = true;
         boolean principalIsInitiator = StringUtils.equals(initiatorPrincipalId, principalId);
 
         // loop over permission details, only one of them needs to be authorized
@@ -235,13 +235,14 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
                     foundAtLeastOnePermission = true;
                     if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
                             KewApiConstants.RECALL_PERMISSION, permissionDetails, roleQualifiers)) {
-                        authorizedByPermission = true;
-                        break;
+                        return true;
                     }
                 }
             }
         }
-
+        if (foundAtLeastOnePermission) {
+            return false;
+        }
         // alternative could be to only authorize initiator if the permission is omitted
         // (i.e. exclude initiator if the initiator does not have the recall permission)
         return authorizedByPermission;

@@ -36,12 +36,9 @@
 
 /*********** Home styles *******************************************************/
 .demo-sampleAppHomeView {
-    /*    margin-left: auto;
-   margin-right: auto;
-   width: 940px;*/
     margin-top: -7px;
+    margin-bottom: -8px;
     padding-top: 56px;
-
 }
 
 .demo-sampleAppHomeView .uif-pageHeader {
@@ -64,17 +61,17 @@
     color: #FFFFFF;
 }
 
-.demo-sampleAppHome-splashContent, .demo-sampleAppHome-detailsSection, .demo-sampleAppHome-contactSection {
+.demo-sampleAppHome-splashContent, .demo-sampleAppHome-detailsSection, .demo-sampleAppHome-contactContent {
     margin-left: auto;
     margin-right: auto;
     width: 940px;
 }
 
-.demo-sampleAppHome-splashContent{
+.demo-sampleAppHome-splashContent {
     height: 300px;
 }
 
-.demo-sampleAppHome-splashContent h3{
+.demo-sampleAppHome-splashContent h3 {
     padding-top: 30px;
     margin-bottom: 20px;
     font-size: 2em;
@@ -82,11 +79,35 @@
     width: 430px;
 }
 
-.demo-sampleAppHome-splashContent .uif-instructionalMessage{
+.demo-sampleAppHome-splashContent .uif-instructionalMessage {
     width: 430px;
 }
 
-.demo-mainGraphic{
+.demo-tryItButton {
+    font-size: 1.1em;
+    border-radius: 4px;
+    padding: 9px 14px;
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #faa732;
+    *background-color: #f89406;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
+    background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
+    background-image: -o-linear-gradient(top, #fbb450, #f89406);
+    background-image: linear-gradient(to bottom, #fbb450, #f89406);
+    background-image: -moz-linear-gradient(top, #fbb450, #f89406);
+    background-repeat: repeat-x;
+    border-color: #f89406 #f89406 #ad6704;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr = '#fffbb450', endColorstr = '#fff89406', GradientType = 0);
+    filter: progid:dximagetransform.microsoft.gradient(enabled = false);
+}
+
+.demo-tryItButton:hover, .demo-tryItButton:focus {
+    background: #f89406 none;
+}
+
+.demo-mainGraphic {
     background-image: url("../../images/krad/splashGraphic1.png");
     height: 299px;
     margin-left: 465px;
@@ -95,26 +116,26 @@
     width: 475px;
 }
 
-.demo-sampleAppHome-detailsSection h3{
+.demo-sampleAppHome-detailsSection h3 {
     margin-top: 20px;
 }
 
-.demo-sampleAppHome-detailsSection .uif-boxLayoutVerticalItem{
+.demo-sampleAppHome-detailsSection .uif-boxLayoutVerticalItem {
     margin-bottom: 0;
 }
 
-.demo-sampleAppHome-sellingPoint{
+.demo-sampleAppHome-sellingPoint {
     width: 300px;
     margin-bottom: 0;
 }
 
-.demo-sampleAppHome-sellingPoint h4{
+.demo-sampleAppHome-sellingPoint h4 {
     color: #9F0132;
     font-size: 1.3em;
-    margin-bottom: .8em;
+    margin-bottom: .6em;
 }
 
-.demo-sampleAppHome-sellingPoint .uif-instructionalMessage{
+.demo-sampleAppHome-sellingPoint .uif-instructionalMessage {
     font-size: 1em;
     margin-bottom: 0;
     padding-left: 64px;
@@ -124,34 +145,109 @@
 
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point1 .uif-instructionalMessage{
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point1 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image1.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point2 .uif-instructionalMessage{
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point2 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image2.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point3 .uif-instructionalMessage{
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point3 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image3.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point4 .uif-instructionalMessage{
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point4 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image4.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point5 .uif-instructionalMessage{
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point5 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image5.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point6 .uif-instructionalMessage{
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point6 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image6.png");
 }
 
-.demo-sampleAppHome-contactSection{
+.demo-sampleAppHome-contactWrapper {
     background-image: url(../../images/krad/sectionShadow.png);
     background-repeat: no-repeat;
     background-position: center top;
+    background-color: #F6F6F6;
+    padding-bottom: 10px;
+}
+
+.demo-sampleAppHome-contactWrapper {
+    margin: 0;
+    padding: 0;
+    height: 160px;
+    margin-top: 25px;
+}
+
+.demo-sampleAppHome-contactContent {
+    position: relative;
+}
+
+.demo-sampleAppHome-contactContent h3 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.demo-sampleAppHome-contactContent .uif-instructionalMessage {
+    width: 700px;
+}
+
+.demo-sampleAppHome-contactContent #KradSampleAppHome-ContactLinks {
+    position: absolute;
+    top: 10px;
+    right: 0;
+}
+
+.demo-sampleAppHome-contactContent .uif-listGroup {
+    width: 220px;
+}
+
+.demo-sampleAppHome-contactContent .uif-listGroup a {
+    color: #333333;
+}
+
+.demo-sampleAppHome-contactContent .uif-listGroup a:hover {
+    color: #940026;
+}
+
+.demo-sampleAppHome-contactContent .uif-listGroup ul li {
+    border-bottom: 1px dotted #CCCCCC;
+    margin: 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.demo-sampleAppHome-contactContent .uif-listGroup ul li a {
+    background-image: url("../../images/krad/sprite-stayInTouch.png");
+    background-position: left top;
+    background-repeat: no-repeat;
+    padding-left: 22px;
+    padding-top: 8px;
+}
+
+.demo-sampleAppHome-contactContent a#KradSampleAppHome-UserGroupLink {
+    background-position: 0 -190px;
+}
+
+.demo-sampleAppHome-contactContent a#KradSampleAppHome-KualiGroupsLink {
+    background-position: 0 -190px;
+}
+
+.demo-sampleAppHome-contactContent a#KradSampleAppHome-TweetLink {
+    background-position: 0 -126px;
+}
+
+.demo-sampleAppHome-contactContent a#KradSampleAppHome-BugLink {
+    background-position: 0 8px;
+}
+
+.demo-sampleAppHome-contactContent a#KradSampleAppHome-CollabLink {
+    background-position: 0 -58px;
 }
 
 /*********** Component Library home *******************************************************/

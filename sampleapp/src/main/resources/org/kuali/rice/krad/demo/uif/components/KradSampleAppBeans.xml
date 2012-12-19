@@ -71,14 +71,14 @@
     </property>
     <property name="page.items">
       <list>
-        <ref bean="KradSampleAppHome-Splash"/>
+        <ref bean="KradSampleAppHome-SplashWrapper"/>
         <ref bean="KradSampleAppHome-Details"/>
-        <ref bean="KradSampleAppHome-Contact"/>
+        <ref bean="KradSampleAppHome-ContactWrapper"/>
       </list>
     </property>
   </bean>
 
-  <bean id="KradSampleAppHome-Splash" parent="Uif-VerticalBoxGroup">
+  <bean id="KradSampleAppHome-SplashWrapper" parent="Uif-VerticalBoxGroup">
     <property name="cssClasses">
       <list merge="true">
         <value>demo-sampleAppHome-splashWrapper</value>
@@ -100,8 +100,9 @@
     <property name="items">
       <list>
         <bean id="KradSampleAppHome-MainGraphicPlaceholder" parent="Uif-VerticalBoxGroup"
-                      p:cssClasses="demo-mainGraphic"/>
-        <bean id="KradSampleAppHome-TryItButton" parent="Uif-Action" p:cssClasses="demo-tryItButton"/>
+              p:cssClasses="demo-mainGraphic"/>
+        <bean id="KradSampleAppHome-TryItButton" parent="Uif-Action" p:cssClasses="demo-tryItButton"
+              p:actionScript="document.location=jQuery('#Demo-LibraryLink').attr('href'); return false;"/>
       </list>
     </property>
   </bean>
@@ -144,10 +145,23 @@
     </property>
   </bean>
 
-  <bean id="KradSampleAppHome-Contact" parent="Uif-VerticalBoxSection">
+  <bean id="KradSampleAppHome-ContactWrapper" parent="Uif-VerticalBoxGroup">
     <property name="cssClasses">
       <list merge="true">
-        <value>demo-sampleAppHome-contactSection</value>
+        <value>demo-sampleAppHome-contactWrapper</value>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <ref bean="KradSampleAppHome-ContactContent"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="KradSampleAppHome-ContactContent" parent="Uif-VerticalBoxSection">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-sampleAppHome-contactContent</value>
       </list>
     </property>
     <property name="items">
@@ -156,15 +170,15 @@
 
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="KRAD User Group"
+              <bean id="KradSampleAppHome-UserGroupLink" parent="Uif-Link" p:linkText="KRAD User Group"
                     p:href="https://groups.google.com/a/kuali.org/forum/?fromgroups#!forum/rice.usergroup.krad"/>
-              <bean parent="Uif-Link" p:linkText="Kuali Discussion Groups"
+              <bean id="KradSampleAppHome-KualiGroupsLink" parent="Uif-Link" p:linkText="Kuali Discussion Groups"
                     p:href="https://groups.google.com/a/kuali.org/groups/dir"/>
-              <bean parent="Uif-Link" p:linkText="Follow our tweets"
+              <bean id="KradSampleAppHome-TweetLink" parent="Uif-Link" p:linkText="Follow our tweets"
                     p:href="https://twitter.com/kuali"/>
-              <bean parent="Uif-Link" p:linkText="Report a bug"
+              <bean id="KradSampleAppHome-BugLink" parent="Uif-Link" p:linkText="Report a bug"
                     p:href="http://jira.kuali.org/"/>
-              <bean parent="Uif-Link" p:linkText="Collaborate with us"
+              <bean id="KradSampleAppHome-CollabLink" parent="Uif-Link" p:linkText="Collaborate with us"
                     p:href="http://www.kuali.org/join/how"/>
             </list>
           </property>

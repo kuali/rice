@@ -24,7 +24,7 @@
   <bean id="Demo-LinkGroup-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoLinkGroup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.LinkGroup"/>
-    <property name="docBookAnchor" value=""/>
+    <property name="docBookAnchor" value="d7339e8496"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-LinkGroup-Example1"/>

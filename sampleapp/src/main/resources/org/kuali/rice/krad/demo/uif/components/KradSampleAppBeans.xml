@@ -361,6 +361,8 @@
   <bean id="ComponentLibrary-Nav-Containers" p:headerText="Containers" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
+        <bean parent="Uif-Link" p:linkText="Accordion Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AccordionGroup-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Link Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkGroup-View&amp;methodToCall=start"/>
       </list>

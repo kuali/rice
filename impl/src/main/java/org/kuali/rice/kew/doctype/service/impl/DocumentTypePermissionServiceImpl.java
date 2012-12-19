@@ -224,13 +224,13 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
         }
 
         boolean foundAtLeastOnePermission = false;
-        boolean authorizedByPermission = true;
+        boolean authorizedByPermission = false;
         boolean principalIsInitiator = StringUtils.equals(initiatorPrincipalId, principalId);
 
         // loop over permission details, only one of them needs to be authorized
         for (Map<String, String> permissionDetails : permissionDetailList) {
             Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
-            if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails, true)) {
+            if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails, false)) {
                 if (getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
                     foundAtLeastOnePermission = true;
                     if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,

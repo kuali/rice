@@ -20,17 +20,20 @@
 <div class="demo-appHeader">
     <div>
         <div class="demo-headerFooterContainer">
-        <a href="index.html" class="demo-brand">
-            <div class="demo-brandLogo">
-            <#--Image placeholder-->
-            </div>
-        </a>
+            <a href="index.html" class="demo-brand">
+                <div class="demo-brandLogo">
+                <#--Image placeholder-->
+                </div>
+            </a>
 
             <div>
                 <ul class="demo-appNavigation">
-                    <li><a id="Demo-HomeLink" href="index.html">Home</a></li>
+                    <li><a id="Demo-HomeLink"
+                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start">Home</a>
+                    </li>
                     <li><a id="Demo-LibraryLink"
-                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=ComponentLibraryHome&amp;methodToCall=start">Library</a></li>
+                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=ComponentLibraryHome&amp;methodToCall=start">Library</a>
+                    </li>
                     <li><a id="Demo-DemoLink" href="demo.html">Demo</a></li>
                     <li><a id="Demo-DownloadLink" href="download.html">Download</a></li>
                 </ul>

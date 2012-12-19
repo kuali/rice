@@ -49,7 +49,7 @@ function linkSelection() {
 
         jQuery("a#Demo-LibraryLink").addClass("active");
     }
-    else if (jQuery(viewDiv).is(".demo-homeView")) {
+    else if (jQuery(viewDiv).is(".demo-sampleAppHomeView")) {
         jQuery("a#Demo-HomeLink").addClass("active");
     }
     else if (jQuery(viewDiv).is(".demo-demoView")) {

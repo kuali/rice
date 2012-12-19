@@ -9,6 +9,10 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../web/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../web/src/main/groovy" />
+          <root url="file://$MODULE_DIR$/../../../web/src/main/resources" />
+        </sourceRoots>
       </configuration>
       <facet type="struts" name="Struts">
         <configuration>
@@ -25,6 +29,10 @@
         <fileset id="fileset1" name="Xml Application Context" removed="false">
           <file>file://$MODULE_DIR$/../../../web/src/main/webapp/WEB-INF/krad-servlet.xml</file>
         </fileset>
+        <fileset id="web: kradguest servlet context" profiles="" autodetected="true" />
+        <fileset id="MVC notification servlet context" profiles="" autodetected="true" />
+        <fileset id="MVC kcb servlet context" profiles="" autodetected="true" />
+        <fileset id="web: krad servlet context" profiles="" autodetected="true" />
       </configuration>
     </facet>
   </component>

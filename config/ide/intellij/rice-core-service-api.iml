@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../core-service/api/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../core-service/api/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../core-service/api">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../core-service/api/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core-service/api/target/generated-test-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core-service/api/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core-service/api/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core-service/api/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core-service/api/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core-service/api/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core-service/api/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core-service/api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core-service/api/target/test-classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/target/generated-test-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core-service/api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="groovy-1.8.5" level="application" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />

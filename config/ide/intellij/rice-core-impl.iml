@@ -4,30 +4,31 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/CommonSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/config/CORESpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/CommonOJBSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/main/resources/org/kuali/rice/core/CommonSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/main/resources/org/kuali/rice/core/config/CORESpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/main/resources/org/kuali/rice/core/CommonOJBSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../core/impl/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../core/impl/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../core/impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/core/impl">
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="groovy-1.8.5" level="application" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />

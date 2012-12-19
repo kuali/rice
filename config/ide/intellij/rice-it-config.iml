@@ -3,12 +3,12 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../it/config/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/config/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../it/config">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/config/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/config/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/config/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/config/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/config/src/test/resources/META-INF" isTestSource="true" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/it/config">
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/config/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/config/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/config/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/config/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/config/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/config/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -170,6 +170,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.kuali.maven.common:maven-kuali-common:1.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-utils:3.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-interpolation:1.15" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: mysql:mysql-connector-java:5.1.18" level="project" />
   </component>
 </module>
 

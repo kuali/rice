@@ -29,7 +29,6 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.security.HttpClientHeaderDigitalSigner;
 import org.kuali.rice.ksb.security.SignatureVerifyingInputStream;
 import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;

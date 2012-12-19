@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.ksb.impl.bus;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.ChecksumUtils;
 import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.ksb.api.bus.Endpoint;
@@ -29,13 +27,6 @@ import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 
 import javax.xml.namespace.QName;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
 
 public final class LocalService {
 	

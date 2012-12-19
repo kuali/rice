@@ -2,22 +2,11 @@
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$/../../.." charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../client-contrib" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../.." charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../archetype" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../archetype/quickstart" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../checkstyle" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../deploy" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core-service" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core-service/api" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core-service/framework" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core-service/impl" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core-service/web" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core/api" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core/framework" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core/impl" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../core/web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../db/impex" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../db/impex/client" charset="UTF-8" />
@@ -30,26 +19,6 @@
     <file url="file://$PROJECT_DIR$/../../../db/sql" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../development-tools" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../dist" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../edl" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../edl/framework" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../edl/impl" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../impl" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/config" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/core" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/edl" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/impl" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/internal-tools" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/kcb" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/ken" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/kew" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/kim" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/krad" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/krms" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/ksb" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/location" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/remote" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../it/vc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../ken" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../ken/api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../kew" charset="UTF-8" />
@@ -80,6 +49,37 @@
     <file url="file://$PROJECT_DIR$/../../../location/framework" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../location/impl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../location/web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/client-contrib" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core-service/api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core-service/framework" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core-service/impl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core-service/web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core/api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core/framework" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core/impl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/core/web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/edl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/edl/framework" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/edl/impl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/impl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/config" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/edl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/impl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/internal-tools" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/kcb" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/ken" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/kew" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/kim" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/krad" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/krms" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/ksb" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/location" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/remote" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/it/vc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../sampleapp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../serviceregistry" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../standalone" charset="UTF-8" />

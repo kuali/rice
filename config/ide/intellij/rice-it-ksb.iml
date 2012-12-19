@@ -4,7 +4,7 @@
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../../it/ksb/src/test/clients/TestClient1/WEB-INF/web.xml" />
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/clients/TestClient1/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/../../../it/ksb/src/test/clients/TestClient1" relative="/" />
@@ -17,7 +17,7 @@
     <facet type="web" name="Web2">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../../it/ksb/src/test/clients/TestClient2/WEB-INF/web.xml" />
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/clients/TestClient2/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/../../../it/ksb/src/test/clients/TestClient2" relative="/" />
@@ -30,27 +30,26 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../it/ksb/src/test/resources/KSBTestHarnessNoJtaSpring.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/ksb/src/test/resources/KSBTestHarnessSpring.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/ksb/src/test/resources/org/kuali/rice/ksb/testclient1/resources/TestClient1SpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/ksb/src/test/resources/org/kuali/rice/ksb/testclient2/resources/TestClient2SpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/KSBTestHarnessNoJtaSpring.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/KSBTestHarnessSpring.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/org/kuali/rice/ksb/testclient1/resources/TestClient1SpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/org/kuali/rice/ksb/testclient2/resources/TestClient2SpringBeans.xml</file>
         </fileset>
+        <fileset id="web: application context" profiles="" autodetected="true" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../it/ksb/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/ksb/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../it/ksb">
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ksb/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ksb/target/generated-test-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/ksb/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/ksb/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/ksb/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/ksb/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ksb/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/ksb/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ksb/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

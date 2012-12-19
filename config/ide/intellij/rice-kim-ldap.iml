@@ -14,15 +14,13 @@
     <output-test url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../kim/kim-ldap">
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

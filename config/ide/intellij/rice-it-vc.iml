@@ -4,7 +4,7 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../it/vc/src/test/resources/VCTestHarnessSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/test/resources/VCTestHarnessSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -12,12 +12,13 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../it/vc/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/vc/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../it/vc">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/vc/src/main" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/vc/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/vc/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/vc/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/vc/target" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/it/vc">
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/vc/target/generated-test-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/vc/src/test/resources/META-INF" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/vc/target/generated-sources/groovy-stubs" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

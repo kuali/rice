@@ -358,8 +358,6 @@ public class RecallActionTest extends KEWTestCase {
     }
 
     @Test public void testRecallPermissionTemplate() throws Exception {
-        String origKimParamValue = getKimPriorityOnDocumentTypeParameterValue();
-        setKimPriorityOnDocumentTypeParameterValue("Y");
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
         document.route("");
 
@@ -410,7 +408,6 @@ public class RecallActionTest extends KEWTestCase {
         // now technical admins can recall by virtue of having the recall permission on this doc
         assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
         assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
-        setKimPriorityOnDocumentTypeParameterValue(origKimParamValue);
     }
 
     @Test public void testRecallToActionListAsInitiatorAfterApprovals() throws Exception {
@@ -460,24 +457,18 @@ public class RecallActionTest extends KEWTestCase {
      * Recall permission to the Document Router derived role, is NOT sufficient to enable recall.
      */
     @Test public void testRoutePermissionAssignmentInsufficientForRouterToRecallDoc() throws Exception {
-        String origKimParamValue = getKimPriorityOnDocumentTypeParameterValue();
-        setKimPriorityOnDocumentTypeParameterValue("Y");
         assignRoutePermissionToTechAdmin();
         // recall as 'admin' (Tech Admin) user
         testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC, false);
-        setKimPriorityOnDocumentTypeParameterValue(origKimParamValue);
     }
     /**
      * Tests that simply assigning the recall permission to the Document Router derived role *without* assigning the
      * Route Document permission to the Technical Admin role, is NOT sufficient to enable recall.
      */
     @Test public void testRecallPermissionAssignmentInsufficientForRouterToRecallDoc() throws Exception {
-        String origKimParamValue = getKimPriorityOnDocumentTypeParameterValue();
-        setKimPriorityOnDocumentTypeParameterValue("Y");
         assignRecallPermissionToDocumentRouters();
         // recall as 'admin' (Tech Admin) user
         testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC, false);
-        setKimPriorityOnDocumentTypeParameterValue(origKimParamValue);
     }
     /**
      * Tests that we can use the Route Document derived role to assign Recall permission to document routers.

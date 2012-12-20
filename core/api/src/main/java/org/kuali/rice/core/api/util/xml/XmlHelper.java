@@ -183,6 +183,10 @@ public final class XmlHelper {
             if ("getClass".equals(name)) {
                 continue;
             }
+            // The post processor could be in another server and we would be unable to retrieve it.
+            if ("getPostProcessor".equals(name)) {
+                continue;
+            }
             if (!name.startsWith("get") || method.getParameterTypes().length > 0) {
                 continue;
             }

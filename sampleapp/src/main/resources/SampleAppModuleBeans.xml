@@ -160,6 +160,7 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoHiddenControl.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoLinkGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAccordionGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoActionField.xml</value>
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
 
@@ -226,6 +227,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoHiddenControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAccordionGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoActionFieldResources</value>
       </list>
     </property>
   </bean>

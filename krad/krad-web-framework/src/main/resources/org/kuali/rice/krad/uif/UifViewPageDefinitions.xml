@@ -28,7 +28,7 @@
   <bean id="Uif-BaseTheme-parentBean" abstract="true" parent="Uif-ViewTheme">
     <property name="cssFiles">
       <list>
-        <<value>krad/min/css/krad_@{#ConfigProperties['rice.version']}.min.css</value>
+        <value>krad/min/css/krad_@{#ConfigProperties['rice.version']}.min.css</value>
         <!-- For Debugging, uncomment out the values below (and comment out the minimized css above) -->
 <!--        <value>krad/css/global/fss-reset.css</value>
         <value>krad/css/global/fss-layout.css</value>

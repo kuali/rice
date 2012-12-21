@@ -38,6 +38,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
@@ -49,7 +50,6 @@ import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
@@ -638,7 +638,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 applicationId = CoreConfigHelper.getApplicationId();
             }
             if(documentType.getRegenerateActionRequestsOnChange().getPolicyValue()) {
-                DocumentRefreshQueue documentRequeuer = MessageServiceNames.getDocumentRequeuerService(applicationId,
+                DocumentRefreshQueue documentRequeuer = KewApiServiceLocator.getDocumentRequeuerService(applicationId,
                         documentId, cacheWait);
                 documentRequeuer.refreshDocument(documentId);
             }

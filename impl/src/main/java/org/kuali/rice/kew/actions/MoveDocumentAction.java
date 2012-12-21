@@ -24,6 +24,7 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
 import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
@@ -31,7 +32,6 @@ import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -123,8 +123,9 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 targetNodeNames.add(determineFutureNodeName(startNodeInstance, movePoint));
 
         	    final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
-        	    DocumentOrchestrationQueue orchestrationQueue = MessageServiceNames.getDocumentOrchestrationQueue(
-                        routeHeader);
+                String applicationId = routeHeader.getDocumentType().getApplicationId();
+                DocumentOrchestrationQueue orchestrationQueue = KewApiServiceLocator.getDocumentOrchestrationQueue(
+                        routeHeader.getDocumentId(), applicationId);
                 org.kuali.rice.kew.api.document.OrchestrationConfig orchestrationConfig =
                     org.kuali.rice.kew.api.document.OrchestrationConfig.create(actionTaken.getActionTakenId(), targetNodeNames);
                 DocumentProcessingOptions options = DocumentProcessingOptions.create(true, shouldIndex, false);

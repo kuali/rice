@@ -52,7 +52,6 @@ import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
@@ -729,7 +728,9 @@ public class DocumentOperationAction extends KewKualiAction {
 	public ActionForward queueDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
-            DocumentProcessingQueue documentProcessingQueue = MessageServiceNames.getDocumentProcessingQueue(docForm.getRouteHeader());
+            DocumentRouteHeaderValue document = docForm.getRouteHeader();
+            String applicationId = document.getDocumentType().getApplicationId();
+            DocumentProcessingQueue documentProcessingQueue = KewApiServiceLocator.getDocumentProcessingQueue(document.getDocumentId(), applicationId);
 			documentProcessingQueue.process(docForm.getDocumentId());
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Document was successfully queued"));
@@ -753,7 +754,8 @@ public class DocumentOperationAction extends KewKualiAction {
 	public ActionForward queueDocumentRefresh(ActionMapping mapping, ActionForm form, HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		DocumentRefreshQueue docRequeue = MessageServiceNames.getDocumentRequeuerService(docForm.getRouteHeader().getDocumentType().getApplicationId(), docForm.getRouteHeader().getDocumentId(), 0);
+		DocumentRefreshQueue docRequeue = KewApiServiceLocator.getDocumentRequeuerService(
+		    docForm.getRouteHeader().getDocumentType().getApplicationId(), docForm.getRouteHeader().getDocumentId(), 0);
 		docRequeue.refreshDocument(docForm.getRouteHeader().getDocumentId());
 		ActionMessages messages = new ActionMessages();
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Document Requeuer was successfully scheduled"));
@@ -772,8 +774,10 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-			DocumentOrchestrationQueue blanketApprove = MessageServiceNames.getDocumentOrchestrationQueue(
-                    docForm.getRouteHeader());
+			DocumentRouteHeaderValue document = docForm.getRouteHeader();
+            String applicationId = document.getDocumentType().getApplicationId();
+            DocumentOrchestrationQueue blanketApprove = KewApiServiceLocator.getDocumentOrchestrationQueue(
+                    document.getDocumentId(), applicationId);
             OrchestrationConfig orchestrationConfig = OrchestrationConfig.create(docForm.getBlanketApproveActionTakenId(), nodeNames);
             DocumentProcessingOptions options = DocumentProcessingOptions.createDefault();
 			blanketApprove.orchestrateDocument(docForm.getRouteHeader().getDocumentId(), principalId,
@@ -798,8 +802,10 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-            DocumentOrchestrationQueue orchestrationQueue = MessageServiceNames.getDocumentOrchestrationQueue(
-                    docForm.getRouteHeader());
+            DocumentRouteHeaderValue document = docForm.getRouteHeader();
+            String applicationId = document.getDocumentType().getApplicationId();
+            DocumentOrchestrationQueue orchestrationQueue = KewApiServiceLocator.getDocumentOrchestrationQueue(
+                    document.getDocumentId(), applicationId);
             OrchestrationConfig orchestrationConfig = OrchestrationConfig.create(docForm.getBlanketApproveActionTakenId(), nodeNames);
             DocumentProcessingOptions options = DocumentProcessingOptions.create(true, true, false);
             orchestrationQueue.orchestrateDocument(docForm.getDocumentId(), principalId, orchestrationConfig, options);
@@ -819,7 +825,10 @@ public class DocumentOperationAction extends KewKualiAction {
 			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(docForm.getActionInvocationUser());
 			ActionInvocation invocation = ActionInvocation.create(ActionType.fromCode(
                     docForm.getActionInvocationActionCode()), docForm.getActionInvocationActionItemId());
-			ActionInvocationQueue actionInvocationQueue = MessageServiceNames.getActionInvocationProcessorService(docForm.getRouteHeader());
+            DocumentRouteHeaderValue document = docForm.getRouteHeader();
+            String applicationId = document.getDocumentType().getApplicationId();
+			ActionInvocationQueue actionInvocationQueue = KewApiServiceLocator.getActionInvocationProcessorService(
+			    document.getDocumentId(), applicationId);
 			actionInvocationQueue.invokeAction(principalId, docForm.getRouteHeader().getDocumentId(), invocation);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Action Invocation Processor was successfully scheduled"));

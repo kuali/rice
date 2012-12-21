@@ -27,7 +27,7 @@
     <property name="lookupDefinition">
       <ref bean="Campus-lookupDefinition"/>
     </property>
-    <property name="titleAttribute" value="campusCode"/>
+    <property name="titleAttribute" value="code"/>
     <property name="objectLabel" value="Campus"/>
     <property name="attributes">
       <list>

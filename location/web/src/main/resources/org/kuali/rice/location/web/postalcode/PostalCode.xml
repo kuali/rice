@@ -28,7 +28,7 @@
     <property name="lookupDefinition">
       <ref bean="PostalCode-lookupDefinition"/>
     </property>
-    <property name="titleAttribute" value="postalCode"/>
+    <property name="titleAttribute" value="code"/>
     <property name="objectLabel" value="Postal Code"/>
     <property name="attributes">
       <list>

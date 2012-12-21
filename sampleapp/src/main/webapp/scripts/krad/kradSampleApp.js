@@ -17,21 +17,22 @@ jQuery(function () {
     jQuery(".demo-appHeader, .demo-appFooter, .demo-thirdTier").show();
     jQuery(".demo-tweets > div").tweet({
         avatar_size:16,
-        count:4,
-        username:["kuali", "kuali_feeds"],
+        count:3,
+        username:"kuali",
         loading_text:"Loading tweets..."
     }).bind("loaded", function () {
                 jQuery(this).find("a").attr("target", "_blank");
             });
     linkSelection();
+    handleTabSwap("select#Demo-LargeExampleDropdown_control");
 });
 
 function setupExhibitHandlers() {
-    jQuery("#ComponentLibraryTabGroup_tabList a").on("click", function () {
-        var tabIndex = jQuery(this).parent("li").index();
+    jQuery( "#ComponentLibraryTabGroup_tabs" ).on( "tabsactivate", function( event, ui ) {
+        var tabIndex = ui.newTab.index();
         var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
         jQuery("div.uif-syntaxHighlighter:first > div > pre").replaceWith(jQuery(source)[0].outerHTML);
-    });
+    } );
 }
 
 function linkSelection() {
@@ -58,5 +59,12 @@ function linkSelection() {
     else if (jQuery(viewDiv).is(".demo-downloadView")) {
         jQuery("a#Demo-DownloadLink").addClass("active");
     }
+}
+
+function handleTabSwap(control){
+    var tab = jQuery(control).val();
+    var tabNum = parseInt(tab);
+
+    jQuery("#ComponentLibraryTabGroup_tabs").tabs( "option", "active", tabNum );
 }
 

@@ -28,6 +28,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 public class KradSampleAppForm extends UifFormBase {
     private static final long serialVersionUID = -7525378097732916418L;
     private String themeName;
+    private String exampleShown;
 
     //Fields separated by demonstration type below:
 
@@ -59,6 +60,14 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setThemeName(String themeName) {
         this.themeName = themeName;
+    }
+
+    public String getExampleShown() {
+        return exampleShown;
+    }
+
+    public void setExampleShown(String exampleShown) {
+        this.exampleShown = exampleShown;
     }
 
     /**

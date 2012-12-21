@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.krad.demo.uif.controller;
 
-import edu.sampleu.demo.kitchensink.UifComponentsTestForm;
 import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.view.ViewTheme;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -27,14 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-/**
- * Created with IntelliJ IDEA.
- * User: Brian
- * Date: 12/5/12
- * Time: 2:16 PM
- * To change this template use File | Settings | File Templates.
- */
 
 /**
  * Basic controller for the KRAD sample application
@@ -54,7 +48,25 @@ public class KradSampleAppController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        //TODO TBD
+        //TODO tbd
         return super.start(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=changeTheme")
+    public ModelAndView changeTheme(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        changeTheme(form);
+        return getUIFModelAndView(form);
+    }
+
+    private void changeTheme(UifFormBase form){
+        String theme = ((KradSampleAppForm)form).getThemeName();
+        if(theme != null){
+            ViewTheme newTheme = (ViewTheme)(KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(theme));
+            if(newTheme != null){
+                form.getPostedView().setTheme(newTheme);
+                form.getView().setTheme(newTheme);
+            }
+        }
     }
 }

@@ -25,6 +25,7 @@
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoInputField.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.InputField"/>
     <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="exampleSize" value="LARGE"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-InputField-Example1"/>

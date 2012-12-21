@@ -15,13 +15,6 @@
  */
 /*********** General styles *****************************************************/
 
-/*@font-face {
-    font-family: "Conv_Cabin-Regular";
-    font-style: normal;
-    font-weight: normal;
-    src: local("☺"), url("../fonts/Cabin-Regular.woff") format("woff"), url("../fonts/Cabin-Regular.ttf") format("truetype"), url("../fonts/Cabin-Regular.svg") format("svg");
-}*/
-
 .demo-sampleAppView {
     min-height: 600px;
 }
@@ -32,6 +25,10 @@
 
 .demo-sampleAppPage {
     margin-right: 0;
+}
+
+.ui-accordion-header-icon{
+    display: none;
 }
 
 /*********** Home styles *******************************************************/
@@ -46,12 +43,12 @@
 }
 
 .demo-sampleAppHomeView .demo-sampleAppPage {
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
 }
 
 .demo-sampleAppHomeView h2, .demo-sampleAppHomeView h3 {
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: normal;
     font-size: 1.7em;
 }
@@ -222,44 +219,16 @@
     padding-bottom: 4px;
 }
 
-.demo-sampleAppHome-contactContent .uif-listGroup ul li a {
-    background-image: url("../../images/krad/sprite-stayInTouch.png");
-    background-position: left top;
-    background-repeat: no-repeat;
-    padding-left: 22px;
-    padding-top: 8px;
-}
-
-.demo-sampleAppHome-contactContent a#KradSampleAppHome-UserGroupLink {
-    background-position: 0 -190px;
-}
-
-.demo-sampleAppHome-contactContent a#KradSampleAppHome-KualiGroupsLink {
-    background-position: 0 -190px;
-}
-
-.demo-sampleAppHome-contactContent a#KradSampleAppHome-TweetLink {
-    background-position: 0 -126px;
-}
-
-.demo-sampleAppHome-contactContent a#KradSampleAppHome-BugLink {
-    background-position: 0 8px;
-}
-
-.demo-sampleAppHome-contactContent a#KradSampleAppHome-CollabLink {
-    background-position: 0 -58px;
-}
-
 /*********** Component Library home *******************************************************/
 
 .demo-componentLibHome .demo-sampleAppPage {
     padding-top: 15px;
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
 }
 
 .demo-componentLibHome .demo-sampleAppPage h2, div#ComponentLibraryHome .demo-sampleAppPage h3 {
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: normal;
 }
 
@@ -292,6 +261,10 @@
 
 /*********** Component Library styles *****************************************************/
 
+.demo-componentLibView .uif-viewHeader{
+    display: none;
+}
+
 .demo-componentLibView {
     margin-left: auto;
     margin-right: auto;
@@ -304,8 +277,13 @@
     padding-top: 15px;
 }
 
+.demo-componentLibView .demo-sampleAppPage > .uif-pageHeader select{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+}
+
 .demo-componentLibView .demo-sampleAppPage > .uif-pageHeader > h2 {
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 24px;
     font-weight: normal;
     margin-bottom: 10px;
@@ -325,14 +303,22 @@
 
 #ComponentLibraryTabGroup_tabList {
     width: 25%;
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 12px;
+}
+
+.demo-noTabs > div.ui-tabs > ul.ui-tabs-nav{
+    display: none;
+}
+
+.demo-noTabs > div.ui-tabs > div.ui-tabs-panel{
+    width: 680px !important;
 }
 
 /**** Source code viewer *********************************************************/
 
 .demo-componentLibView .demo-sampleAppPage > div > .uif-syntaxHighlighter h3 {
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 18px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -385,7 +371,7 @@
 }
 
 .demo-componentLibNav {
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 15px;
 }
 
@@ -476,9 +462,17 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 /*********** Component Details Section/tabs *****************************************************/
 
 .demo-detailsGroup {
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     color: #333;
+}
+
+.demo-detailsGroup a{
+    color: #A30234 !important;
+}
+
+.demo-detailsGroup a:hover{
+    color: #A30234 !important;
 }
 
 .demo-detailsGroup p {
@@ -487,57 +481,70 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 }
 
 .demo-detailsGroup h3, .demo-detailsGroup h4 {
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 18px;
     font-weight: normal;
     margin-bottom: 10px;
     margin-top: 10px;
+    background: none;
 }
 
+h3 img.uif-disclosure-image[alt="collapse"]{
+    background: url("../../images/krad/collapse-black.png") no-repeat scroll 0 0 transparent;
+}
+
+h3 img.uif-disclosure-image[alt="expand"]{
+    background: url("../../images/krad/expand-black.png") no-repeat scroll 0 0 transparent;
+}
+
+/**** All tab styles are done with important because difficulty to override from themes ***/
+
 .demo-componentDetailsTabs > div.ui-tabs > ul {
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .demo-componentDetailsTabs > div.ui-tabs > ul > li {
-    border: none;
-    background-color: transparent !important;
-    padding: 0;
-    margin: 0 40px 0 0;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 40px 0 0 !important;
+    box-shadow: none !important;
 }
 
 .demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-active {
-    background: transparent;
+    background: transparent !important;
     border-bottom: 3px solid #CCC !important;
-    margin-bottom: -3px;
+    margin-bottom: -3px !important;
 }
 
 .demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-default > a {
-    padding: 0;
-    font-size: 18px;
-    color: #999;
-}
-
-.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-active > a,
-.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-active.ui-state-hover > a {
-    background: transparent !important;
-    color: black;
+    padding: 0 !important;
+    font-size: 18px !important;
+    color: #999 !important;
+    text-shadow: none !important;
 }
 
 .demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-hover > a,
 .demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-hover,
 .demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-focus > a,
 .demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-focus {
-    color: #999;
+    color: #999 !important;
     background: transparent !important;
 }
 
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-active > a,
+.demo-componentDetailsTabs > div.ui-tabs > ul > li.ui-state-active.ui-state-hover > a {
+    background: transparent !important;
+    color: black !important;
+}
+
 .demo-componentDetailsTabs >  div.ui-tabs > .ui-tabs-panel {
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-    border-top: 1px solid #CCC;
-    padding: 12px 0 0 0;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    border-top: 1px solid #CCC !important;
+    padding: 12px 0 0 0 !important;
 }
 
 /*********** Documentation tab *************************************************************/
@@ -638,7 +645,7 @@ a.demo-documentationLink {
 .demo-appHeader .demo-appNavigation > li {
     float: left;
     text-transform: uppercase;
-    font-family: Conv_Cabin-Regular, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 15px;
 }
 
@@ -666,7 +673,7 @@ a.demo-documentationLink {
     background: none repeat scroll 0 0 #000000;
     color: #FFFFFF;
     height: 64px;
-    font-family: 'Conv_Cabin-Regular', sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 16px;
     display: none;
 }
@@ -699,7 +706,7 @@ a.demo-documentationLink {
     background: linear-gradient(to bottom, #780126 0%, #a30234 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#780126', endColorstr = '#a30234', GradientType = 0);
     color: #FFFFFF;
-    font-family: 'Conv_Cabin-Regular', sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 15px;
     display: none;
 }
@@ -721,14 +728,38 @@ a.demo-documentationLink {
     color: #CCC;
 }
 
-.demo-testimonials {
+.demo-thirdTier .demo-contactInfo ul li a {
+    background-image: url("../../images/krad/sprite-stayInTouch.png");
+    background-position: left top;
+    background-repeat: no-repeat;
+    padding-left: 22px;
+    padding-top: 8px;
+}
+
+.demo-thirdTier a#KradSampleAppHome-UserGroupLink {
+    background-position: 0 -190px;
+}
+
+.demo-thirdTier a#KradSampleAppHome-KualiGroupsLink {
+    background-position: 0 -190px;
+}
+
+.demo-thirdTier a#KradSampleAppHome-TweetLink {
+    background-position: 0 -126px;
+}
+
+.demo-thirdTier a#KradSampleAppHome-BugLink {
+    background-position: 0 8px;
+}
+
+.demo-thirdTier a#KradSampleAppHome-CollabLink {
+    background-position: 0 -58px;
+}
+
+.demo-contactInfo {
     width: 240px;
     float: left;
     margin-right: 20px;
-}
-
-.demo-testimonials > div {
-    font-style: italic;
 }
 
 .demo-thirdTier ul li {
@@ -737,17 +768,22 @@ a.demo-documentationLink {
 
 .demo-thirdTier ul li {
     border-bottom: 1px dotted #A45971;
-    padding-bottom: 4px;
-    padding-top: 4px;
+    padding-bottom: 8px;
+    padding-top: 0;
+}
+
+.demo-thirdTier a {
+    color: lightGray !important;
 }
 
 .demo-tweets {
     width: 240px;
     float: left;
+
 }
 
-.demo-tweets a {
-    color: #888888 !important;
+.tweet_text{
+    color: #888888;
 }
 
 .demo-thirdTier .tweet_list, .demo-thirdTier .tweet_even {

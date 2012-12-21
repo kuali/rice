@@ -17,6 +17,9 @@ package org.kuali.rice.krad.demo.uif.components;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.kuali.rice.core.api.util.AbstractKeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -25,13 +28,16 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.TabGroup;
+import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.springframework.util.StringUtils;
 
+import javax.swing.text.StyleContext;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -61,6 +67,13 @@ public class ComponentLibraryView extends FormView {
     private String xmlFilePath;
     private String description;
     private String usage;
+    private String largeExampleFieldId;
+
+    public static enum ExampleSize{
+        SMALL, LARGE;
+    }
+
+    private ExampleSize exampleSize;
 
     private Group detailsGroup;
 
@@ -126,7 +139,9 @@ public class ComponentLibraryView extends FormView {
             processDocumentationTab(tabItems);
         }
 
+        //set tabGroup items
         tabGroup.setItems(tabItems);
+
         tabGroup.addStyleClass("demo-componentDetailsTabs");
 
         //Add tabGroup to detailsGroup
@@ -145,6 +160,27 @@ public class ComponentLibraryView extends FormView {
         //setup exhibit
         exhibit.setDemoSourceCode(sourceCode);
         exhibit.setDemoGroups(this.getDemoGroups());
+
+        if(this.getExampleSize() != null && this.getExampleSize().equals(ExampleSize.LARGE)){
+            exhibit.getTabGroup().addStyleClass("demo-noTabs");
+            Group headerRightGroup = view.getPage().getHeader().getRightGroup();
+            for(Component item: headerRightGroup.getItems()){
+                if(item instanceof InputField && ((InputField) item).getControl() instanceof MultiValueControl
+                        && item.getId().equals(this.getLargeExampleFieldId())){
+                    //List<ConcreteKeyValue> keyValues = new ArrayList<ConcreteKeyValue>();
+                    List<KeyValue> values = new ArrayList<KeyValue>();
+                    int i = 0;
+                    for(Group demoGroup: demoGroups){
+                        values.add(new ConcreteKeyValue(String.valueOf(i), demoGroup.getHeader().getHeaderText()));
+                        i++;
+                    }
+
+                    //values.addAll(keyValues);
+                    ((MultiValueControl) ((InputField) item).getControl()).setOptions(values);
+                    item.setRender(true);
+                }
+            }
+        }
 
         //Add detailsGroup and exhibit to page
         List<Component> pageItems = new ArrayList<Component>();
@@ -689,5 +725,21 @@ public class ComponentLibraryView extends FormView {
      */
     public void setDocBookAnchor(String docBookAnchor) {
         this.docBookAnchor = docBookAnchor;
+    }
+
+    public ExampleSize getExampleSize() {
+        return exampleSize;
+    }
+
+    public void setExampleSize(ExampleSize exampleSize) {
+        this.exampleSize = exampleSize;
+    }
+
+    public String getLargeExampleFieldId() {
+        return largeExampleFieldId;
+    }
+
+    public void setLargeExampleFieldId(String largeExampleFieldId) {
+        this.largeExampleFieldId = largeExampleFieldId;
     }
 }

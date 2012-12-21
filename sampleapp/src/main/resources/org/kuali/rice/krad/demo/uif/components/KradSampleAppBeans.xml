@@ -245,10 +245,21 @@
         parent="KradSampleAppView">
     <property name="rootJavadocAddress" value="http://site.kuali.org/rice/2.2.0/apidocs/"/>
     <property name="rootDocBookAddress" value="http://site.origin.kuali.org/rice/2.2.0/reference/html/KRAD_Guide.html"/>
+    <property name="largeExampleFieldId" value="Demo-LargeExampleDropdown"/>
     <property name="cssClasses">
       <list merge="true">
         <value>demo-componentLibView</value>
       </list>
+    </property>
+    <property name="page.header.rightGroup">
+      <bean parent="Uif-HorizontalBoxGroup">
+        <property name="items">
+          <list>
+            <ref bean="Demo-ThemeChanger"/>
+            <ref bean="Demo-LargeExampleDropdown"/>
+          </list>
+        </property>
+      </bean>
     </property>
     <property name="detailsGroup">
       <bean id="Demo-DetailsGroup" parent="Uif-VerticalBoxGroup">
@@ -267,6 +278,29 @@
     <property name="navigation">
       <ref bean="ComponentLibrary-AccordionNav"/>
     </property>
+  </bean>
+
+  <bean id="Demo-ThemeChanger" parent="Uif-InputField" p:propertyName="themeName">
+    <property name="control">
+      <bean parent="Uif-DropdownControl">
+        <property name="onChangeScript" value="nonAjaxSubmitForm('changeTheme')"/>
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="Uif-KradTheme" p:value="KRAD Theme"/>
+            <bean parent="Uif-KeyLabelPair" p:key="Uif-ClassicKnsTheme" p:value="KNS Theme"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Demo-LargeExampleDropdown" parent="Uif-InputField" p:propertyName="exampleShown">
+    <property name="control">
+      <bean parent="Uif-DropdownControl">
+        <property name="onChangeScript" value="handleTabSwap(this)"/>
+      </bean>
+    </property>
+    <property name="render" value="false"/>
   </bean>
 
   <bean id="ComponentLibrary-AccordionNav" parent="Uif-AccordionGroup">

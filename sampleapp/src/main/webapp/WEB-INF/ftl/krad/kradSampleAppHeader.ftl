@@ -35,7 +35,7 @@
                            href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=ComponentLibraryHome&amp;methodToCall=start">Library</a>
                     </li>
                     <li><a id="Demo-DemoLink" href="demo.html">Demo</a></li>
-                    <li><a id="Demo-DownloadLink" href="download.html">Download</a></li>
+                    <li><a id="Demo-DownloadLink" href="http://kuali.org/download/rice">Download</a></li>
                 </ul>
             </div>
         </div>

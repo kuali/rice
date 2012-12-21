@@ -55,9 +55,9 @@ public class EmailStyleHelper {
         }
 
         Node node = result.getNode();
-        
+
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Email document: " + XmlJotter.jotNode(document));
+            LOG.debug("Email to be sent: " + XmlJotter.jotNode(node));
         }
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

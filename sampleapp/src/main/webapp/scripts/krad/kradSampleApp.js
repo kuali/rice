@@ -53,11 +53,8 @@ function linkSelection() {
     else if (jQuery(viewDiv).is(".demo-sampleAppHomeView")) {
         jQuery("a#Demo-HomeLink").addClass("active");
     }
-    else if (jQuery(viewDiv).is(".demo-demoView")) {
+    else{
         jQuery("a#Demo-DemoLink").addClass("active");
-    }
-    else if (jQuery(viewDiv).is(".demo-downloadView")) {
-        jQuery("a#Demo-DownloadLink").addClass("active");
     }
 }
 

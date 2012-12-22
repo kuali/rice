@@ -34,7 +34,8 @@
                     <li><a id="Demo-LibraryLink"
                            href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=ComponentLibraryHome&amp;methodToCall=start">Library</a>
                     </li>
-                    <li><a id="Demo-DemoLink" href="demo.html">Demo</a></li>
+                    <li><a id="Demo-DemoLink"
+                           href="${ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppDemo&amp;methodToCall=start">Demo</a></li>
                     <li><a id="Demo-DownloadLink" href="http://kuali.org/download/rice">Download</a></li>
                 </ul>
             </div>

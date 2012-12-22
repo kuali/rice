@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 /*********** General styles *****************************************************/
+.uif-view {
+    padding-top: 56px;
+}
 
 .demo-sampleAppView {
     min-height: 600px;
 }
 
-.uif-pageContentWrapper {
+.demo-sampleAppView .uif-pageContentWrapper {
     margin-left: 0;
 }
 
@@ -27,7 +30,7 @@
     margin-right: 0;
 }
 
-.ui-accordion-header-icon{
+.ui-accordion-header-icon {
     display: none;
 }
 
@@ -35,7 +38,6 @@
 .demo-sampleAppHomeView {
     margin-top: -7px;
     margin-bottom: -8px;
-    padding-top: 56px;
 }
 
 .demo-sampleAppHomeView .uif-pageHeader {
@@ -43,12 +45,12 @@
 }
 
 .demo-sampleAppHomeView .demo-sampleAppPage {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
 }
 
 .demo-sampleAppHomeView h2, .demo-sampleAppHomeView h3 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
     font-size: 1.7em;
 }
@@ -58,7 +60,7 @@
     color: #FFFFFF;
 }
 
-.demo-sampleAppHome-splashContent, .demo-sampleAppHome-detailsSection, .demo-sampleAppHome-contactContent {
+.demo-sampleAppHome-splashContent, .demo-sampleAppHome-detailsSection, .demo-sampleAppHome-testimonialsContent {
     margin-left: auto;
     margin-right: auto;
     width: 940px;
@@ -166,7 +168,7 @@
     background-image: url("../../images/krad/sellingPoints-image6.png");
 }
 
-.demo-sampleAppHome-contactWrapper {
+.demo-sampleAppHome-testimonialsWrapper {
     background-image: url(../../images/krad/sectionShadow.png);
     background-repeat: no-repeat;
     background-position: center top;
@@ -174,61 +176,40 @@
     padding-bottom: 10px;
 }
 
-.demo-sampleAppHome-contactWrapper {
+.demo-sampleAppHome-testimonialsWrapper {
     margin: 0;
     padding: 0;
     height: 160px;
     margin-top: 25px;
 }
 
-.demo-sampleAppHome-contactContent {
+.demo-sampleAppHome-testimonialsContent {
     position: relative;
 }
 
-.demo-sampleAppHome-contactContent h3 {
+.demo-sampleAppHome-testimonialsContent h3 {
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
-.demo-sampleAppHome-contactContent .uif-instructionalMessage {
-    width: 700px;
-}
-
-.demo-sampleAppHome-contactContent #KradSampleAppHome-ContactLinks {
-    position: absolute;
-    top: 10px;
-    right: 0;
-}
-
-.demo-sampleAppHome-contactContent .uif-listGroup {
-    width: 220px;
-}
-
-.demo-sampleAppHome-contactContent .uif-listGroup a {
-    color: #333333;
-}
-
-.demo-sampleAppHome-contactContent .uif-listGroup a:hover {
-    color: #940026;
-}
-
-.demo-sampleAppHome-contactContent .uif-listGroup ul li {
+.demo-sampleAppHome-testimonialsContent .uif-listGroup ul li {
     border-bottom: 1px dotted #CCCCCC;
     margin: 0;
     padding-top: 4px;
     padding-bottom: 4px;
+    font-style: italic;
 }
 
 /*********** Component Library home *******************************************************/
 
 .demo-componentLibHome .demo-sampleAppPage {
     padding-top: 15px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
 }
 
 .demo-componentLibHome .demo-sampleAppPage h2, div#ComponentLibraryHome .demo-sampleAppPage h3 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
 }
 
@@ -261,7 +242,7 @@
 
 /*********** Component Library styles *****************************************************/
 
-.demo-componentLibView .uif-viewHeader{
+.demo-componentLibView .uif-viewHeader {
     display: none;
 }
 
@@ -270,20 +251,19 @@
     margin-right: auto;
     width: 940px;
     margin-top: -7px;
-    padding-top: 56px;
 }
 
 .demo-componentLibView .demo-sampleAppPage {
     padding-top: 15px;
 }
 
-.demo-componentLibView .demo-sampleAppPage > .uif-pageHeader select{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+.demo-componentLibView .demo-sampleAppPage > .uif-pageHeader select {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
 }
 
 .demo-componentLibView .demo-sampleAppPage > .uif-pageHeader > h2 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 24px;
     font-weight: normal;
     margin-bottom: 10px;
@@ -303,22 +283,22 @@
 
 #ComponentLibraryTabGroup_tabList {
     width: 25%;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 12px;
 }
 
-.demo-noTabs > div.ui-tabs > ul.ui-tabs-nav{
+.demo-noTabs > div.ui-tabs > ul.ui-tabs-nav {
     display: none;
 }
 
-.demo-noTabs > div.ui-tabs > div.ui-tabs-panel{
+.demo-noTabs > div.ui-tabs > div.ui-tabs-panel {
     width: 680px !important;
 }
 
 /**** Source code viewer *********************************************************/
 
 .demo-componentLibView .demo-sampleAppPage > div > .uif-syntaxHighlighter h3 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 18px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -371,7 +351,7 @@
 }
 
 .demo-componentLibNav {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
 }
 
@@ -462,16 +442,16 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 /*********** Component Details Section/tabs *****************************************************/
 
 .demo-detailsGroup {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     color: #333;
 }
 
-.demo-detailsGroup a{
+.demo-detailsGroup a {
     color: #A30234 !important;
 }
 
-.demo-detailsGroup a:hover{
+.demo-detailsGroup a:hover {
     color: #A30234 !important;
 }
 
@@ -481,7 +461,7 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 }
 
 .demo-detailsGroup h3, .demo-detailsGroup h4 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 18px;
     font-weight: normal;
     margin-bottom: 10px;
@@ -489,11 +469,11 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
     background: none;
 }
 
-h3 img.uif-disclosure-image[alt="collapse"]{
+.demo-detailsGroup h3 img.uif-disclosure-image[alt="collapse"] {
     background: url("../../images/krad/collapse-black.png") no-repeat scroll 0 0 transparent;
 }
 
-h3 img.uif-disclosure-image[alt="expand"]{
+.demo-detailsGroup h3 img.uif-disclosure-image[alt="expand"] {
     background: url("../../images/krad/expand-black.png") no-repeat scroll 0 0 transparent;
 }
 
@@ -645,7 +625,7 @@ a.demo-documentationLink {
 .demo-appHeader .demo-appNavigation > li {
     float: left;
     text-transform: uppercase;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
 }
 
@@ -673,7 +653,7 @@ a.demo-documentationLink {
     background: none repeat scroll 0 0 #000000;
     color: #FFFFFF;
     height: 64px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     display: none;
 }
@@ -706,7 +686,7 @@ a.demo-documentationLink {
     background: linear-gradient(to bottom, #780126 0%, #a30234 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#780126', endColorstr = '#a30234', GradientType = 0);
     color: #FFFFFF;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     display: none;
 }
@@ -782,7 +762,7 @@ a.demo-documentationLink {
 
 }
 
-.tweet_text{
+.tweet_text {
     color: #888888;
 }
 
@@ -790,8 +770,72 @@ a.demo-documentationLink {
     background-color: transparent;
 }
 
-.demo-tweets > div, .demo-testimonials > div {
+.demo-tweets > div {
     color: #CCC;
 }
 
+/*********** Demo view styles **********************************************************************/
+.demo-kradSampleAppDemo {
+    margin-left: auto;
+    margin-right: auto;
+    width: 940px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+    color: #333333;
+}
 
+.demo-kradSampleAppDemo a{
+    color: #A30234;
+    font-weight: bold;
+}
+
+.demo-kradSampleAppDemo h2 {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.7em;
+}
+
+.demo-kradSampleAppDemo .uif-instructionalMessage {
+    max-width: 940px;
+    font-size: 1em;
+}
+
+.demo-demoRow {
+    margin-bottom: 10px;
+    margin-left: -20px;
+}
+
+.demo-demoGroup {
+    background-color: #F6F6F6;
+    background-position: 0 6px;
+    background-repeat: no-repeat;
+    border: 1px solid #E5E5E5;
+    border-radius: 3px 3px 3px 3px;
+    min-height: 80px;
+    padding: 6px 6px 6px 76px;
+    width: 215px;
+    margin-left: 20px;
+    margin-right: 0;
+}
+
+.demo-demoGroup .uif-boxLayoutVerticalItem {
+    margin-bottom: 0;
+}
+
+div#KradSampleAppDemo-Row1-Demo1{
+    background-image: url("../../images/krad/demo-inquiry.png");
+}
+
+div#KradSampleAppDemo-Row1-Demo2{
+    background-image: url("../../images/krad/demo-new.png");
+}
+
+div#KradSampleAppDemo-Row1-Demo3{
+    background-image: url("../../images/krad/demo-edit.png");
+}
+
+div#KradSampleAppDemo-Row2-Demo1, div#KradSampleAppDemo-Row2-Demo2, div#KradSampleAppDemo-Row2-Demo3{
+    background-image: url("../../images/krad/demo-lookup.png");
+}

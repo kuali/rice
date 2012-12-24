@@ -178,7 +178,7 @@ public class KewApiServiceLocator {
         return (DocumentRefreshQueue) getServiceAsynchronously(DOCUMENT_REFRESH_QUEUE, documentId, applicationId);
     }
 
-    public static Object getDelayedServiceAsynchronously(QName serviceName, String documentId, long waitTime, String applicationId) {
+    private static Object getDelayedServiceAsynchronously(QName serviceName, String documentId, long waitTime, String applicationId) {
         return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, applicationId, null, (documentId == null ? null : documentId.toString()), null, waitTime);
     }
 

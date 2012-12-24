@@ -61,7 +61,6 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -467,8 +466,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 				continue;
 			}
 			KEWServiceLocator.getActionListService().deleteActionItem(actionItem, true);
-			ActionInvocationQueue actionInvocQueue = MessageServiceNames.getActionInvocationProcessorService(
-					KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()));
+            DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
+            String applicationId = document.getDocumentType().getApplicationId();
+			ActionInvocationQueue actionInvocQueue = KewApiServiceLocator.getActionInvocationProcessorService(
+                    document.getDocumentId(), applicationId);
 			actionInvocQueue.invokeAction(principalId, actionItem.getDocumentId(), invocation);
 //			ActionInvocationQueueImpl.queueActionInvocation(user, actionItem.getDocumentId(), invocation);
 		}

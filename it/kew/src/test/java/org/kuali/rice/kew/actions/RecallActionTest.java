@@ -17,6 +17,8 @@ package org.kuali.rice.kew.actions;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
+import org.kuali.rice.coreservice.api.parameter.Parameter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -35,6 +37,7 @@ import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -310,6 +313,24 @@ public class RecallActionTest extends KEWTestCase {
         pb.setActive(false);
         KimApiServiceLocator.getPermissionService().updatePermission(pb.build());
     }
+
+    // setter for Kim Priority Parameter (used for useKimPermission method call)
+    protected void setKimPriorityOnDocumentTypeParameterValue(String parameterValue) {
+        if(CoreFrameworkServiceLocator.getParameterService().parameterExists(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND)) {
+            Parameter kimPriorityOverDocTypePolicyParameter = CoreFrameworkServiceLocator.getParameterService().getParameter(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+            Parameter.Builder b = Parameter.Builder.create(kimPriorityOverDocTypePolicyParameter);
+            b.setValue(parameterValue);
+            CoreFrameworkServiceLocator.getParameterService().updateParameter(b.build());
+        }
+    }
+
+    protected String getKimPriorityOnDocumentTypeParameterValue() {
+        if(CoreFrameworkServiceLocator.getParameterService().parameterExists(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND)) {
+            return CoreFrameworkServiceLocator.getParameterService().getParameter(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND).getValue();
+        }
+        return null;
+    }
+
 
     /**
      * Tests that a new permission can be configured with the Recall Permission template and that matching works correctly

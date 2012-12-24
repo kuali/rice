@@ -427,7 +427,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                             break;
                     }
                 }
-                docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(docType.getParentId());
+                if (!StringUtils.isEmpty(docType.getParentId())) {
+                    docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(docType.getParentId());
+                } else {
+                    docType = null;
+                }
             }
         }
         if (!ignoreMissingFields) {

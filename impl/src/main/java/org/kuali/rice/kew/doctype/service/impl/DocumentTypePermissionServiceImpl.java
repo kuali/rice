@@ -76,7 +76,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		final Boolean result;
 
 			Map<String, String> permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
-			if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
+			if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, true)) {
 				result = getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
                         KewApiConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new HashMap<String, String>());
 			} else {
@@ -92,7 +92,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		
 		Boolean result = Boolean.TRUE;
 			Map<String, String> permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
-			if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
+			if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, true)) {
 				List<String> principalIds = getGroupService().getMemberPrincipalIds(groupId);
 				// if any member of the group is not allowed to receive the request, then the group may not receive it
 				for (String principalId : principalIds) {
@@ -187,7 +187,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
                 // loop over permission details, only one of them needs to be authorized
                 for (Map<String, String> permissionDetails : permissionDetailList) {
                     Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
-                    if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.CANCEL_PERMISSION, permissionDetails)) {
+                    if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.CANCEL_PERMISSION, permissionDetails, true)) {
 						foundAtLeastOnePermission = true;
 					if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
                             KewApiConstants.CANCEL_PERMISSION, permissionDetails, roleQualifiers)) {
@@ -230,18 +230,19 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
         // loop over permission details, only one of them needs to be authorized
         for (Map<String, String> permissionDetails : permissionDetailList) {
             Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
-            if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
+            if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails, false)) {
                 if (getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
                     foundAtLeastOnePermission = true;
                     if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
                             KewApiConstants.RECALL_PERMISSION, permissionDetails, roleQualifiers)) {
-                        authorizedByPermission = true;
-                        break;
+                        return true;
                     }
                 }
             }
         }
-
+        if (foundAtLeastOnePermission) {
+            return false;
+        }
         // alternative could be to only authorize initiator if the permission is omitted
         // (i.e. exclude initiator if the initiator does not have the recall permission)
         return authorizedByPermission;
@@ -252,7 +253,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentType(documentType);
 		
 		Map<String, String> permissionDetails = buildDocumentTypePermissionDetails(documentType);
-		if (useKimPermission(KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE, KewApiConstants.INITIATE_PERMISSION, permissionDetails)) {
+		if (useKimPermission(KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE, KewApiConstants.INITIATE_PERMISSION, permissionDetails, true)) {
 			return getPermissionService().isAuthorizedByTemplate(principalId, KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE,
                     KewApiConstants.INITIATE_PERMISSION, permissionDetails, new HashMap<String, String>());
     }
@@ -278,7 +279,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 				LOG.debug("Permission details values: " + permissionDetails);
 				LOG.debug("Role qualifiers values: " + roleQualifiers);
 			}
-			if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.ROUTE_PERMISSION, permissionDetails)) {
+			if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.ROUTE_PERMISSION, permissionDetails, true)) {
 				return getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
                         KewApiConstants.ROUTE_PERMISSION, permissionDetails, roleQualifiers);
 			}
@@ -312,7 +313,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			LOG.debug("Role qualifiers values: " + roleQualifiers);
 		}
 
-		if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.ADD_MESSAGE_TO_ROUTE_LOG, permissionDetails)) {
+		if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.ADD_MESSAGE_TO_ROUTE_LOG, permissionDetails, false)) {
 			return getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
                     KewApiConstants.ADD_MESSAGE_TO_ROUTE_LOG, permissionDetails, roleQualifiers);
 		}
@@ -334,7 +335,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
             // loop over permission details, only one of them needs to be authorized
             for (Map<String, String> permissionDetails : permissionDetailList) {
                 Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
-                if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.SAVE_PERMISSION, permissionDetails)) {
+                if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.SAVE_PERMISSION, permissionDetails, true)) {
 					foundAtLeastOnePermission = true;
 					if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
                             KewApiConstants.SAVE_PERMISSION, permissionDetails, roleQualifiers)) {
@@ -483,8 +484,11 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
         return details;
     }
 
-	protected boolean useKimPermission(String namespace, String permissionTemplateName, Map<String, String> permissionDetails) {
-		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+	protected boolean useKimPermission(String namespace, String permissionTemplateName, Map<String, String> permissionDetails, boolean checkKimPriorityInd) {
+        Boolean b = true;
+	    if (checkKimPriorityInd) {
+		    b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		}
 		if (b == null || b) {
 			return getPermissionService().isPermissionDefinedByTemplate(namespace, permissionTemplateName,
                     permissionDetails);

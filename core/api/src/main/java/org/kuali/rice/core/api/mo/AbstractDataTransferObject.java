@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * All model object's that are Jaxb annotated should extend this class.
@@ -52,8 +55,14 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
         super();
     }
 
-    @Override
-    public int hashCode() {
+    /**
+     * compute or return the memoized hashcode for this immutable class, excluding the named fields.
+     * @param excludedFields the names of fields to exclude when computing the hashcode.
+     * @return the hashcode value
+     * @see #equalsExcludeFields(Object, java.util.Collection)
+     * @see #getDefaultHashCodeEqualsExcludeFields()
+     */
+    protected final int hashCodeExcludeFields(Collection<String> excludedFields) {
         //using DCL idiom to cache hashCodes.  Hashcodes on immutable objects never change.  They can be safely cached.
         //see effective java 2nd ed. pg. 71
         Integer h = _hashCode;
@@ -61,7 +70,7 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
             synchronized (this) {
                 h = _hashCode;
                 if (h == null) {
-                    _hashCode = h = Integer.valueOf(HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE));
+                    _hashCode = h = Integer.valueOf(HashCodeBuilder.reflectionHashCode(this, excludedFields));
                 }
             }
         }
@@ -70,8 +79,26 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
     }
 
     @Override
+    public int hashCode() {
+        return hashCodeExcludeFields(Constants.hashCodeEqualsExclude);
+    }
+
+    /**
+     * Indicates whether the obj parameter is equal to this object.  Uses {@link org.apache.commons.lang.builder.EqualsBuilder#reflectionEquals(Object, Object, java.util.Collection)}
+     * and takes the names of fields to exclude from comparison.
+     * @param obj the other object to compare to
+     * @param excludedFields the names of fields to exclude when computing the hashcode.
+     * @return if equal
+     * @see #hashCodeExcludeFields(java.util.Collection)
+     * @see #getDefaultHashCodeEqualsExcludeFields()
+     */
+    protected final boolean equalsExcludeFields(Object obj, Collection<String> excludedFields) {
+        return EqualsBuilder.reflectionEquals(obj, this, excludedFields);
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+        return equalsExcludeFields(obj, Constants.hashCodeEqualsExclude);
     }
 
     @Override
@@ -141,6 +168,12 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
      * Defines some internal constants used on this class.
      */
     protected static class Constants {
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS, "_hashCode", "_toString" };
+        final static Collection<String> hashCodeEqualsExclude = Collections.unmodifiableCollection(
+                Arrays.asList(CoreConstants.CommonElements.FUTURE_ELEMENTS, "_hashCode", "_toString")
+        );
+    }
+
+    protected static final Collection<String> getDefaultHashCodeEqualsExcludeFields() {
+        return Constants.hashCodeEqualsExclude;
     }
 }

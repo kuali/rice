@@ -25,11 +25,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -60,7 +60,7 @@ public class DocumentRefreshQueueTest extends KEWTestCase {
        }
 
        DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
-       DocumentRefreshQueue documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getApplicationId(), documentH.getDocumentId(), 0);
+       DocumentRefreshQueue documentRequeuer = KewApiServiceLocator.getDocumentRequeuerService(documentH.getDocumentType().getApplicationId(), documentH.getDocumentId(), 0);
        documentRequeuer.refreshDocument(document.getDocumentId());
 
        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());

@@ -5011,6 +5011,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         </section>
         <section>
             <title>Document Type Policies</title>
+            <para>Document Type Policies affect workflow routing behavior.</para>
             <para>Current Document Type polices:<itemizedlist>
                     <listitem>
                         <para>DISAPPROVE </para>

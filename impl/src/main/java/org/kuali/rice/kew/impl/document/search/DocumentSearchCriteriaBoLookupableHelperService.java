@@ -534,16 +534,18 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     protected HtmlData.AnchorHtmlData generateInitiatorUrl(Person person) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
-        if (isRouteLogPopup()) {
-            link.setTarget("_blank");
-        }
-        else {
-            link.setTarget("_self");
-        }
-        link.setDisplayText("Initiator Inquiry for User with ID:" + person.getPrincipalId());
-        String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KIM_URL) + "/" +
+        if (person != null)  {
+            if (isRouteLogPopup()) {
+                link.setTarget("_blank");
+            }
+            else {
+                link.setTarget("_self");
+            }
+            link.setDisplayText("Initiator Inquiry for User with ID:" + person.getPrincipalId());
+            String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KIM_URL) + "/" +
                 "identityManagementPersonInquiry.do?principalId=" + person.getPrincipalId();
-        link.setHref(url);
+            link.setHref(url);
+        }
         return link;
     }
 

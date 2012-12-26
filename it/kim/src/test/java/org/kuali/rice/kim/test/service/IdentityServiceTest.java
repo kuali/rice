@@ -69,6 +69,12 @@ public class IdentityServiceTest extends KIMTestCase {
 	}
 
     @Test
+    public void testGetPrincipalNotFound() {
+        Principal principal = identityService.getPrincipal("DoesNotExist");
+        assertNull("principal should not be found", principal);
+    }
+
+    @Test
     public void testGetPrincipals() {
         List<String> principalIds = new ArrayList<String>();
         principalIds.add("KULUSER");
@@ -83,6 +89,12 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertNotNull("principal must not be null", principal);
 		assertEquals("Principal ID did not match expected result","KULUSER", principal.getPrincipalId());
 	}
+
+    @Test
+    public void testGetPrincipalByPrincipalNameNotFound() {
+        Principal principal = identityService.getPrincipalByPrincipalName("DoesNotExist");
+        assertNull("principal should not be found", principal);
+    }
 	
 	@Test
 	public void testGetDefaultEntityByPrincipalId() {

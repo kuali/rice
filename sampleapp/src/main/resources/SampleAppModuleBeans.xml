@@ -141,6 +141,7 @@
         <value>classpath:edu/sampleu/travel/approval/TravelerDetailLookup.xml</value>
         <value>classpath:edu/sampleu/travel/approval/dataDictionary/TravelerDetail.xml</value>
         <value>classpath:edu/sampleu/travel/approval/dataDictionary/PrimaryDestination.xml</value>
+        <value>classpath:edu/sampleu/travel/approval/PrimaryDestinationLookup.xml</value>
 
         <!-- KRAD sample app - component library -->
         <value>classpath:org/kuali/rice/krad/demo/uif/components/KradSampleAppBeans.xml</value>

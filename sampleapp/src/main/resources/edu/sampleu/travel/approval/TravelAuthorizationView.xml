@@ -82,6 +82,7 @@
               <entry key="zipCode" value="travelerDetail.zipCode"/>
               <entry key="emailAddress" value="travelerDetail.emailAddress"/>
               <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
+              <entry key="liabilityInsurance" value="travelerDetail.liabilityInsurance"/>
             </map>
           </property>
           <property name="control">
@@ -100,6 +101,11 @@
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.emailAddress"/>
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.phoneNumber"/>
+        <bean parent="Uif-InputField" p:propertyName="travelerDetail.liabilityInsurance" p:colSpan="3">
+          <property name="control">
+            <bean parent="Uif-CheckboxControl" p:readOnly="true"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -108,21 +114,30 @@
         p:layoutManager.numberOfColumns="4">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
-              p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
-        <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
-            </list>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:fieldLabel.requiredMessagePlacement="LEFT" p:constraintText="mm/dd/yyyy"/>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:fieldLabel.requiredMessagePlacement="LEFT" p:constraintText="mm/dd/yyyy"/>
+
+        <bean parent="Uif-InputField" p:label="Primary Destination Lookup" p:required="true" p:propertyName="primaryDestinationId" p:colSpan="3">
+          <property name="id" value="quickfinder"/>
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.approval.dataobject.PrimaryDestination"/>
+          <property name="quickfinder.fieldConversions">
+            <map>
+              <entry key="id" value="primaryDestinationId"/>
+              <entry key="primaryDestinationName" value="primaryDestination.primaryDestinationName"/>
+              <entry key="county" value="primaryDestination.county"/>
+              <entry key="countryStateName" value="primaryDestination.countryStateName"/>
+              <entry key="tripTypeCode" value="primaryDestination.tripTypeCode"/>
+            </map>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCounty"/>
+        <bean parent="Uif-DataField" p:propertyName="primaryDestination.primaryDestinationName"/>
+        <bean parent="Uif-DataField" p:propertyName="primaryDestination.tripTypeCode"/>
+        <bean parent="Uif-DataField" p:propertyName="primaryDestination.countryStateName"/>
+        <bean parent="Uif-DataField" p:propertyName="primaryDestination.county"/>
+        <bean parent="Uif-InputField" p:propertyName="tripDescription" p:colSpan="3"/>
       </list>
     </property>
   </bean>
@@ -243,19 +258,6 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
               p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
-        <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
-            </list>
-          </property>
-        </bean>
-        <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCounty"/>
       </list>
     </property>
   </bean>
@@ -266,19 +268,6 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
               p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
-        <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
-            </list>
-          </property>
-        </bean>
-        <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCounty"/>
       </list>
     </property>
   </bean>
@@ -289,19 +278,6 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="travelDocumentIdentifier" p:readOnly="true"
               p:defaultValue="@{#sequence('TRVL_ID_SEQ')}"/>
-        <bean parent="Uif-InputField" p:propertyName="tripTypeCode"/>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Trip Dates">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:constraintText="mm/dd/yyyy"/>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:constraintText="mm/dd/yyyy"/>
-            </list>
-          </property>
-        </bean>
-        <bean parent="Uif-InputField" p:propertyName="tripDescription"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationName"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCountryState"/>
-        <bean parent="Uif-InputField" p:propertyName="primaryDestinationCounty"/>
       </list>
     </property>
   </bean>

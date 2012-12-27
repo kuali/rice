@@ -34,32 +34,13 @@ import java.util.LinkedHashMap;
 @Table(name="TRVL_PER_DIEM_T")
 public class PrimaryDestination extends PersistableBusinessObjectBase {
 
-    @Id
-    @GeneratedValue(generator="TEM_PER_DIEM_ID_SEQ")
-    @SequenceGenerator(name="TEM_PER_DIEM_ID_SEQ",sequenceName="TEM_PER_DIEM_ID_SEQ", allocationSize=5)
-    @Column(name="id",nullable=false)
     private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name="trip_typ_cd")
     private TripType tripType;
-
-    @Column(name="trip_typ_cd",length=3,nullable=false)
     private String tripTypeCode;
-
-    @Column(name="COUNTRY",length=100, nullable=false)
     private String countryState;
-
-    @Column(name="COUNTRY_NM",length=100, nullable=false)
     private String countryStateName;
-
-    @Column(name="COUNTY_CD",length=100, nullable=false)
     private String county;
-
-    @Column(name="PRI_DEST",length=100, nullable=false)
     private String primaryDestinationName;
-
-    @Column(name="ACTV_IND",nullable=false,length=1)
     private Boolean active = Boolean.TRUE;
 
     public Integer getId() {

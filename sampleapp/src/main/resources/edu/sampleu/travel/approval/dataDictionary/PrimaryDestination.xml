@@ -20,15 +20,19 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
   <bean id="PrimaryDestination" parent="PrimaryDestination-parentBean"/>
-  <bean id="PrimaryDestination-parentBean" abstract="true" parent="DataObjectEntry">
+  <bean id="PrimaryDestination-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="dataObjectClass" value="edu.sampleu.travel.approval.dataobject.PrimaryDestination"/>
+    <property name="lookupDefinition">
+      <ref bean="PrimaryDestination-lookupDefinition"/>
+    </property>
+    <property name="inquiryDefinition" ref="PrimaryDestination-inquiryDefinition" />
     <property name="titleAttribute" value="id"/>
     <property name="objectLabel" value="PrimaryDestination"/>
     <property name="attributes">
       <list>
         <ref bean="PrimaryDestination-id"/>
         <ref bean="PrimaryDestination-tripTypeCode"/>
-        <ref bean="PrimaryDestination-countryState"/>
+        <ref bean="PrimaryDestination-countryStateName"/>
         <ref bean="PrimaryDestination-county"/>
         <ref bean="PrimaryDestination-primaryDestinationName"/>
         <ref bean="PrimaryDestination-active"/>
@@ -80,13 +84,23 @@
     <property name="summary" value="Trip Type Code"/>
     <property name="description" value="Trip Type Code"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="3"/>
+      <bean parent="Uif-DropdownControl" p:readOnly="true" >
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="" p:value=""/>
+            <bean parent="Uif-KeyLabelPair" p:key="BLN" p:value="In-State Blanket"/>
+            <bean parent="Uif-KeyLabelPair" p:key="IN" p:value="In-State"/>
+            <bean parent="Uif-KeyLabelPair" p:key="INT" p:value="International"/>
+            <bean parent="Uif-KeyLabelPair" p:key="OUT" p:value="Out of State"/>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 
-  <bean id="PrimaryDestination-countryState" parent="PrimaryDestination-countryState-parentBean"/>
-  <bean id="PrimaryDestination-countryState-parentBean" parent="AttributeDefinition">
-    <property name="name" value="countryState"/>
+  <bean id="PrimaryDestination-countryStateName" parent="PrimaryDestination-countryStateName-parentBean"/>
+  <bean id="PrimaryDestination-countryStateName-parentBean" parent="AttributeDefinition">
+    <property name="name" value="countryStateName"/>
     <property name="label" value="Country State"/>
     <property name="shortLabel" value="Country State"/>
     <property name="maxLength" value="100"/>
@@ -97,9 +111,10 @@
       <bean parent="Uif-DropdownControl">
         <property name="options">
           <list>
-            <bean parent="Uif-KeyLabelPair" p:key="" p:value=""/>
-            <bean parent="Uif-KeyLabelPair" p:key="IN" p:value="Indiana"/>
-            <bean parent="Uif-KeyLabelPair" p:key="OH" p:value="Ohio"/>
+            <bean parent="Uif-KeyLabelPair" p:key="California" p:value="California"/>
+            <bean parent="Uif-KeyLabelPair" p:key="Colorado" p:value="Colorado"/>
+            <bean parent="Uif-KeyLabelPair" p:key="Indiana" p:value="Indiana"/>
+            <bean parent="Uif-KeyLabelPair" p:key="Ohio" p:value="Ohio"/>
           </list>
         </property>
       </bean>
@@ -111,7 +126,7 @@
     <property name="name" value="county"/>
     <property name="label" value="County"/>
     <property name="shortLabel" value="County"/>
-    <property name="maxLength" value="100"/>
+    <property name="maxLength" value="200"/>
     <property name="required" value="false"/>
     <property name="summary" value="County"/>
     <property name="description" value="County"/>
@@ -153,4 +168,58 @@
     <property name="description" value="Version Number"/>
   </bean>
 
+  <bean id="PrimaryDestination-inquiryDefinition" parent="PrimaryDestination-inquiryDefinition-parentBean" />
+  <bean id="PrimaryDestination-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="title" value="Per Diem Inquiry"/>
+    <property name="inquirySections">
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Primary Destination Inquiry"/>
+          <property name="numberOfColumns" value="1"/>
+          <property name="inquiryFields">
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="id" />
+              <bean parent="FieldDefinition" p:attributeName="tripTypeCode" />
+              <bean parent="FieldDefinition" p:attributeName="countryState" />
+              <bean parent="FieldDefinition" p:attributeName="county" />
+              <bean parent="FieldDefinition" p:attributeName="primaryDestinationName" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="PrimaryDestination-lookupDefinition" parent="PrimaryDestination-lookupDefinition-parentBean" />
+  <bean id="PrimaryDestination-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="title" value="Primary Destination Lookup" />
+    <property name="defaultSort">
+      <bean parent="SortDefinition">
+        <property name="attributeNames">
+          <list>
+            <value>tripTypeCode</value>
+            <value>countryStateName</value>
+            <value>county</value>
+            <value>primaryDestinationName</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="lookupFields"><list>
+      <bean parent="FieldDefinition" p:attributeName="tripTypeCode" />
+      <bean parent="FieldDefinition" p:attributeName="countryStateName" p:required="true" />
+      <bean parent="FieldDefinition" p:attributeName="county" />
+      <bean parent="FieldDefinition" p:attributeName="primaryDestinationName" />
+    </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="tripTypeCode" />
+        <bean parent="FieldDefinition" p:attributeName="countryStateName" />
+        <bean parent="FieldDefinition" p:attributeName="county" />
+        <bean parent="FieldDefinition" p:attributeName="primaryDestinationName" />
+        <bean parent="FieldDefinition" p:attributeName="active" />
+      </list>
+    </property>
+  </bean>
 </beans>

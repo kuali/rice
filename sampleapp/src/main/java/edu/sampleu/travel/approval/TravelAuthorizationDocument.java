@@ -17,10 +17,12 @@ package edu.sampleu.travel.approval;
 
 import edu.sampleu.travel.approval.dataobject.PrimaryDestination;
 import edu.sampleu.travel.approval.dataobject.TravelerDetail;
+import edu.sampleu.travel.approval.dataobject.TravelAdvance;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Travel authorization transactional document.
@@ -37,21 +39,21 @@ import java.util.Date;
 public class TravelAuthorizationDocument extends TransactionalDocumentBase {
 
     private String travelDocumentIdentifier;
-    private String tripTypeCode;
     private Date tripBegin;
     private Date tripEnd;
     private String tripDescription;
-    private Boolean primaryDestinationIndicator = false;
-    private Integer primaryDestinationId;
-    private String primaryDestinationName;
-    private String primaryDestinationCountryState;
-    private String primaryDestinationCounty;
+    private String tripTypeCode;
 
     // Traveler section
     private Integer travelerDetailId;
     private TravelerDetail travelerDetail;
 
+    // Primary Destination section
+    private Integer primaryDestinationId;
     private PrimaryDestination primaryDestination;
+    
+    // Travel Advance 
+    private List<TravelAdvance> travelAdvanceList ;
 
     public TravelAuthorizationDocument() {
         super();
@@ -81,32 +83,6 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
      */
     public void setTravelDocumentIdentifier(String travelDocumentIdentifier) {
         this.travelDocumentIdentifier = travelDocumentIdentifier;
-    }
-
-    /**
-     * Returns the trip type code.
-     *
-     * <p>
-     * Gets the trip type code.
-     * </p>
-     *
-     * @return String - trip type code
-     */
-    public String getTripTypeCode() {
-        return tripTypeCode;
-    }
-
-    /**
-     * Initializes the trip type code.
-     *
-     * <p>
-     * Sets the trip type code.
-     * </p>
-     *
-     * @param tripTypeCode - trip type code
-     */
-    public void setTripTypeCode(String tripTypeCode) {
-        this.tripTypeCode = tripTypeCode;
     }
 
     /**
@@ -185,6 +161,32 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
      */
     public void setTripDescription(String tripDescription) {
         this.tripDescription = tripDescription;
+    }
+
+    /**
+     * Initializes the trip type.
+     *
+     * <p>
+     * Sets the trip type.
+     * </p>
+     *
+     * @param tripTypeCode - trip type
+     */
+    public void setTripTypeCode(String tripTypeCode) {
+        this.tripTypeCode = tripTypeCode;
+    }
+
+    /**
+     * Returns the trip type.
+     *
+     * <p>
+     * Gets the trip type.
+     * </p>
+     *
+     * @return String - trip type
+     */
+    public String getTripTypeCode() {
+        return tripTypeCode;
     }
 
     /**
@@ -267,110 +269,6 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     }
 
     /**
-     * Returns whether the destination is indicated.
-     *
-     * <p>
-     * Gets the primary destination indicator flag.
-     * </p>
-     *
-     * @return Boolean - primary destination indicator flag
-     */
-    public Boolean getPrimaryDestinationIndicator() {
-        return primaryDestinationIndicator;
-    }
-
-    /**
-     * Initializes the primary destination flag.
-     *
-     * <p>
-     * Sets the flag whether a primary destination is indicated.
-     * </p>
-     *
-     * @param primaryDestinationIndicator - primary destination indicator
-     */
-    public void setPrimaryDestinationIndicator(Boolean primaryDestinationIndicator) {
-        this.primaryDestinationIndicator = primaryDestinationIndicator;
-    }
-
-    /**
-     * Returns primary destination name.
-     *
-     * <p>
-     * Gets the name of the primary destination
-     * </p>
-     *
-     * @return String - primary destination name
-     */
-    public String getPrimaryDestinationName() {
-        return primaryDestinationName;
-    }
-
-    /**
-     * Initializes the primary destination name.
-     *
-     * <p>
-     *    Sets the name for the primary destination.
-     * </p>
-     *
-     * @param primaryDestinationName - primary destination name
-     */
-    public void setPrimaryDestinationName(String primaryDestinationName) {
-        this.primaryDestinationName = primaryDestinationName;
-    }
-
-    /**
-     * Returns primary destination state.
-     *
-     * <p>
-     * Gets the state of the primary destination
-     * </p>
-     *
-     * @return String - primary destination state
-     */
-    public String getPrimaryDestinationCountryState() {
-        return primaryDestinationCountryState;
-    }
-
-    /**
-     * Initializes the primary destination state.
-     *
-     * <p>
-     * Sets the state for the primary destination.
-     * </p>
-     *
-     * @param primaryDestinationCountryState - primary destination state
-     */
-    public void setPrimaryDestinationCountryState(String primaryDestinationCountryState) {
-        this.primaryDestinationCountryState = primaryDestinationCountryState;
-    }
-
-    /**
-     * Returns primary destination county.
-     *
-     * <p>
-     * Gets the county of the primary destination
-     * </p>
-     *
-     * @return String - primary destination county
-     */
-    public String getPrimaryDestinationCounty() {
-        return primaryDestinationCounty;
-    }
-
-    /**
-     * Initializes the primary destination county.
-     *
-     * <p>
-     * Sets the county for the primary destination.
-     * </p>
-     *
-     * @param primaryDestinationCounty - primary destination county
-     */
-    public void setPrimaryDestinationCounty(String primaryDestinationCounty) {
-        this.primaryDestinationCounty = primaryDestinationCounty;
-    }
-
-    /**
      * Returns primary destination.
      *
      * <p>
@@ -395,4 +293,35 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     public void setPrimaryDestination(PrimaryDestination primaryDestination) {
         this.primaryDestination = primaryDestination;
     }
+
+    /**
+     * Returns travel advance collection.
+     *
+     * <p>
+     * Gets the travel advance collection.
+     * </p>
+     *
+     * @return List<TravelAdvance> - travel advance collection
+     */
+    public List<TravelAdvance> getTravelAdvanceList() {
+        return travelAdvanceList;
+    }
+
+    /**
+     * Initializes travel advance collection.
+     *
+     * <p>
+     * Sets the travel advance collection.
+     * </p>
+     *
+     * @param travelAdvanceList - travel advance collection
+     */
+    public void setTravelAdvanceList(List<TravelAdvance> travelAdvanceList) {
+        this.travelAdvanceList = travelAdvanceList;
+    }
+
+
+
+
+
 }

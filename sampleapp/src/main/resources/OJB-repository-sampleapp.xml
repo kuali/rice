@@ -123,13 +123,13 @@
       <!--<inverse-foreignkey field-ref="documentNumber"/>-->
     <!--</collection-descriptor>-->
 
-    <!--<collection-descriptor name="travelAdvances" proxy="true"-->
-                           <!--element-class-ref="edu.sampleu.travel.approval.dataobject.TravelAdvance"-->
-                           <!--collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"-->
-                           <!--auto-retrieve="true" auto-update="object" auto-delete="object">-->
-      <!--<orderby name="financialDocumentLineNumber" sort="ASC"/>-->
-      <!--<inverse-foreignkey field-ref="documentNumber"/>-->
-    <!--</collection-descriptor>-->
+    <collection-descriptor name="travelAdvances" proxy="true"
+                           element-class-ref="edu.sampleu.travel.approval.dataobject.TravelAdvance"
+                           collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+                           auto-retrieve="true" auto-update="object" auto-delete="object">
+      <orderby name="financialDocumentLineNumber" sort="ASC"/>
+      <inverse-foreignkey field-ref="documentNumber"/>
+    </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="edu.sampleu.travel.approval.dataobject.TravelerDetail" table="TRVL_TRAVELER_DTL_T">
@@ -227,7 +227,7 @@
     <field-descriptor name="tripTypeCode" column="TRIP_TYP_CD" jdbc-type="VARCHAR"/>
     <field-descriptor name="countryState" column="COUNTRY" jdbc-type="VARCHAR"/>
     <field-descriptor name="countryStateName" column="COUNTRY_NM" jdbc-type="VARCHAR"/>
-    <field-descriptor name="county" column="COUNTY_CD" jdbc-type="VARCHAR"/>
+    <field-descriptor name="county" column="COUNTY_NM" jdbc-type="VARCHAR"/>
     <field-descriptor name="primaryDestinationName" column="PRI_DEST" jdbc-type="VARCHAR"/>
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR"
                       conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
@@ -384,30 +384,30 @@
     <!--</collection-descriptor>-->
   <!--</class-descriptor>-->
 
-  <!--<class-descriptor class="edu.sampleu.travel.approval.dataobject.TravelAdvance" table="TRVL_ADV_T">-->
-    <!--<field-descriptor name="id" primarykey="true" sequence-name="TEM_TRVL_ADV_ID_SEQ" autoincrement="true" column="id"-->
-                      <!--jdbc-type="INTEGER"/>-->
-    <!--<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR"/>-->
+  <class-descriptor class="edu.sampleu.travel.approval.dataobject.TravelAdvance" table="TRVL_ADV_T">
+    <field-descriptor name="id" primarykey="true" sequence-name="TEM_TRVL_ADV_ID_SEQ" autoincrement="true" column="id"
+                      jdbc-type="INTEGER"/>
+    <field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR"/>
     <!--<field-descriptor name="financialDocumentLineNumber" column="FDOC_LINE_NBR" jdbc-type="INTEGER"/>-->
-    <!--<field-descriptor name="travelAdvanceRequested" column="TVL_ADV_REQ" jdbc-type="DECIMAL"-->
-                      <!--conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>-->
+    <field-descriptor name="travelAdvanceRequested" column="TVL_ADV_REQ" jdbc-type="DECIMAL"
+                      conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
     <!--<field-descriptor name="arCustomerId" column="AR_CUST_ID" jdbc-type="VARCHAR"/>-->
     <!--<field-descriptor name="arInvoiceDocNumber" column="AR_INV_DOC_NBR" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="dueDate" column="DUE_DT" jdbc-type="DATE"/>-->
-    <!--<field-descriptor name="paymentMethod" column="PYMT_MTHD" jdbc-type="VARCHAR"/>-->
+    <field-descriptor name="dueDate" column="DUE_DT" jdbc-type="DATE"/>
+    <field-descriptor name="paymentMethod" column="PYMT_MTHD" jdbc-type="VARCHAR"/>
     <!--<field-descriptor name="chartOfAccountsCode" column="FIN_COA_CD" jdbc-type="VARCHAR"/>-->
     <!--<field-descriptor name="accountNumber" column="ACCOUNT_NBR" jdbc-type="VARCHAR"/>-->
     <!--<field-descriptor name="subAccountNumber" column="SUB_ACCT_NBR" jdbc-type="VARCHAR"/>-->
     <!--<field-descriptor name="financialObjectCode" column="FIN_OBJECT_CD" jdbc-type="VARCHAR"/>-->
     <!--<field-descriptor name="financialSubObjectCode" column="FIN_SUB_OBJ_CD" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="advancePaymentReasonCode" column="ADV_PMNT_RSN_CD" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="travelAdvancePolicy" column="TRVL_ADV_PLCY" jdbc-type="VARCHAR"-->
-                      <!--conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>-->
-    <!--<field-descriptor name="additionalJustification" column="ADD_JUST" jdbc-type="VARCHAR"/>-->
+    <field-descriptor name="advancePaymentReasonCode" column="ADV_PMNT_RSN_CD" jdbc-type="VARCHAR"/>
+    <field-descriptor name="travelAdvancePolicy" column="TRVL_ADV_PLCY" jdbc-type="VARCHAR"
+                      conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
+    <field-descriptor name="additionalJustification" column="ADD_JUST" jdbc-type="VARCHAR"/>
     <!--<field-descriptor name="taxRamificationNotificationDate" column="TAX_RAM_NTF_DT" jdbc-type="DATE"/>-->
-    <!--<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="versionNumber" locking="true" column="VER_NBR" jdbc-type="BIGINT"/>-->
-  <!--</class-descriptor>-->
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR"/>
+    <field-descriptor name="versionNumber" locking="true" column="VER_NBR" jdbc-type="BIGINT"/>
+  </class-descriptor>
 
   <class-descriptor class="edu.sampleu.travel.document.TravelDocument2" table="TRV_DOC_2">
     <field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"/>

@@ -428,19 +428,3 @@ CREATE TABLE IF NOT EXISTS TRVL_AUTH_DOC_T
   )
 /
 
-CREATE TABLE IF NOT EXISTS TRVL_PER_DIEM_ID_SEQ
-(
-	id NUMBER(19) not null auto_increment, primary key (id)
-) ENGINE MyISAM
-/
-
-ALTER TABLE TRVL_PER_DIEM_ID_SEQ auto_increment = 1000
-/
-
-
-
-CREATE TABLE IF NOT EXISTS TRVL_ID_SEQ
-(
-	id NUMBER(19) not null auto_increment, primary key (id)
-) ENGINE MyISAM
-/

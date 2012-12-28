@@ -451,28 +451,6 @@ CREATE TABLE IF NOT EXISTS TRVL_ID_SEQ
 ) ENGINE MyISAM
 /
 
-  delimiter $$
-
-CREATE TABLE `trvl_per_diem_t` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `TRIP_TYP_CD` varchar(45) COLLATE utf8_bin DEFAULT NULL,
-  `COUNTRY` varchar(45) COLLATE utf8_bin DEFAULT NULL,
-  `COUNTRY_NM` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `COUNTY_NM` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `PRI_DEST` varchar(45) COLLATE utf8_bin DEFAULT NULL,
-  `ACTV_IND` varchar(45) COLLATE utf8_bin DEFAULT NULL,
-  `OBJ_ID` varchar(45) COLLATE utf8_bin DEFAULT NULL,
-  `VER_NBR` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin$$
-
-
-UPDATE `rice`.`trvl_per_diem_t` SET `COUNTRY`='CA', `COUNTY_NM`='Orange County' WHERE `id`='1';
-INSERT INTO `rice`.`trvl_per_diem_t` (`id`, `TRIP_TYP_CD`, `COUNTRY`, `COUNTRY_NM`, `COUNTY_NM`, `PRI_DEST`, `ACTV_IND`) VALUES (2, 'IN', 'CA', 'California', 'San Diego County', 'San Diego', '1');
-INSERT INTO `rice`.`trvl_per_diem_t` (`id`, `TRIP_TYP_CD`, `COUNTRY`, `COUNTRY_NM`, `COUNTY_NM`, `PRI_DEST`, `ACTV_IND`) VALUES (3, 'IN', 'CA', 'California', 'Orange County', 'Laguna Beach', '1');
-INSERT INTO `rice`.`trvl_per_diem_t` (`id`, `TRIP_TYP_CD`, `COUNTRY`, `COUNTRY_NM`, `COUNTY_NM`, `PRI_DEST`, `ACTV_IND`) VALUES (4, 'IN', 'CO', 'Colorado', 'Larimer County', 'Fort Collins', '1');
-
-
 
 
 

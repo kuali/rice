@@ -146,6 +146,7 @@
   <bean id="TravelAuthorization-TravelAdvances"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Travel Advances">
     <property name="items">
       <list>
+        <ref bean="Collections-TravelAdvance"/>
       </list>
     </property>
   </bean>
@@ -282,5 +283,21 @@
     </property>
   </bean>
 
+  <bean id="Collections-TravelAdvance" parent="Uif-Disclosure-StackedCollectionSubSection">
+    <property name="headerText" value="Travel Advances" />
+    <property name="collectionObjectClass" value="edu.sampleu.travel.approval.dataobject.TravelAdvance" />
+    <property name="propertyName" value="travelAdvanceList" />
+    <property name="addLinePropertyName" value="travelAdvanceList"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:label="Advance Requested" p:propertyName="travelAdvanceRequested" p:required="true" />
+        <bean parent="Uif-InputField" p:label="Due Date" p:propertyName="dueDate" p:required="true"/>
+        <bean parent="Uif-InputField" p:label="Payment Method" p:propertyName="paymentMethod" />
+        <bean parent="Uif-InputField" p:label="Reason" p:propertyName="advancePaymentReasonCode" />
+        <bean parent="Uif-InputField" p:label="Travel Policy Acceptance" p:propertyName="travelAdvancePolicy" />
+        <bean parent="Uif-InputField" p:label="Additional Justification" p:propertyName="additionalJustification" />
+      </list>
+    </property>
+  </bean>
 
 </beans>

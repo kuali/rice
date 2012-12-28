@@ -249,7 +249,6 @@ public class TravelAdvance extends PersistableBusinessObjectBase {
         map.put("id", this.id);
         map.put("documentNumber", this.documentNumber);
         map.put("travelAdvanceRequested", this.travelAdvanceRequested);
-        map.put("travelAdvanceRequested", this.travelAdvanceRequested);
         map.put("dueDate", this.dueDate);
         map.put("paymentMethod", this.paymentMethod);
         map.put("advancePaymentReasonCode", this.advancePaymentReasonCode);

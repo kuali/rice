@@ -146,7 +146,7 @@
   <bean id="TravelAuthorization-TravelAdvances"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Travel Advances">
     <property name="items">
       <list>
-        <ref bean="Collections-TravelAdvance"/>
+        <!--<ref bean="Collections-TravelAdvance"/>-->
       </list>
     </property>
   </bean>

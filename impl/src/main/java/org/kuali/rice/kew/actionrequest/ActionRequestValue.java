@@ -251,9 +251,17 @@ public class ActionRequestValue implements Serializable {
 
     public String getDisplayName() {
     	if (isUserRequest()) {
-    	    return getPerson().getName();
+            Person person = getPerson();
+            if ( person != null ) {
+    	        return person.getName();
+            }
     	} else if (isGroupRequest()) {
-    		return getGroup().getName();
+            Group group = getGroup();
+            if ( group != null ) {
+    		    return group.getName();
+            } else {
+                return getGroupId();
+            }
     	} else if (isRoleRequest()) {
     		return getRoleName();
     	}

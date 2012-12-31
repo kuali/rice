@@ -99,6 +99,20 @@ INSERT INTO trvl_traveler_dtl_t (id, EMP_PRINCIPAL_ID, CUST_NBR, FIRST_NM, LAST_
 
 INSERT INTO trvl_trip_typ_t (CODE, NM) VALUES ('EMP', 'Employee')
 /
+
 INSERT INTO trvl_trip_typ_t(CODE, NM) VALUES ('NON', 'Non-Employee')
 /
+
+INSERT INTO trvl_per_diem_t (id, TRIP_TYP_CD,COUNTRY,COUNTRY_NM,COUNTY_NM,PRI_DEST,ACTV_IND) VALUES
+(2, 'IN', 'CA', 'California', 'San Diego County', 'San Diego', '1')
+/
+
+INSERT INTO trvl_per_diem_t (id, TRIP_TYP_CD,COUNTRY,COUNTRY_NM,COUNTY_NM,PRI_DEST,ACTV_IND) VALUES
+(3, 'IN', 'CA', 'California', 'Orange County', 'Laguna Beach', '1')
+/
+
+INSERT INTO trvl_per_diem_t (id, TRIP_TYP_CD,COUNTRY,COUNTRY_NM,COUNTY_NM,PRI_DEST,ACTV_IND) VALUES
+(4, 'IN', 'CO', 'Colorado', 'Larimer County', 'Fort Collins', '1')
+/
+
 

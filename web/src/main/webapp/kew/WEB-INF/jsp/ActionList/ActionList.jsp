@@ -96,7 +96,7 @@
 		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-preferences.gif" property="methodToCall.viewPreferences" styleClass="tinybutton" alt="preferences" title="preferences" />
       </div>
       <div style="float:left; width:52px">
-		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-refresh.gif" property="methodToCall.start" styleClass="tinybutton" alt="refresh" title="refresh" />
+		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-refresh.gif" property="methodToCall.refresh" styleClass="tinybutton" alt="refresh" title="refresh" />
       </div>
       <div style="float:left; width:39px">
 		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-filter.gif" property="methodToCall.viewFilter" styleClass="tinybutton" alt="filter" title="filter" />

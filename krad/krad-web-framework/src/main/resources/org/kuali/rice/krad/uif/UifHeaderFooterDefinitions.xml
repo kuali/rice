@@ -22,9 +22,13 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Overrideable global application header and footer -->
+  <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"/>
+  <bean id="Uif-GlobalApplicationHeader-parentBean" abstract="true" parent="Uif-HeaderBase"
+        p:render="false"/>
 
-  <bean id="Uif-GlobalApplicationHeader" parent="Uif-HeaderBase" p:render="false"/>
-  <bean id="Uif-GlobalApplicationFooter" parent="Uif-GroupBase" p:render="false"/>
+  <bean id="Uif-GlobalApplicationFooter" parent="Uif-GlobalApplicationFooter-parentBean"/>
+  <bean id="Uif-GlobalApplicationFooter-parentBean" abstract="true" parent="Uif-GroupBase"
+        p:render="false"/>
 
   <!-- Base Headers -->
 

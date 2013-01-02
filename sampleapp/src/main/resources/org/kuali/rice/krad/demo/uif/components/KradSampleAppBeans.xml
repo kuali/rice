@@ -20,12 +20,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-<!-- Work in progress
-
- <bean id="Uif-GlobalApplicationHeader" parent="Uif-HeaderBase" p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl"
+  <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"
+        p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
         p:templateName="demo_kradappheader"/>
 
-  <bean id="Uif-GlobalApplicationFooter" parent="Uif-GroupBase" p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl"
+  <bean id="Uif-GlobalApplicationFooter" parent="Uif-GlobalApplicationFooter-parentBean"
+        p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl" p:render="@{!renderedInLightBox}"
         p:templateName="demo_kradappfooter"/>
 
   <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean">
@@ -41,7 +41,13 @@
         <value>scripts/krad/kradSampleApp.js</value>
       </list>
     </property>
-  </bean>-->
+    <property name="breadcrumbs.homewardPathList">
+      <list>
+        <bean parent="Uif-HistoryEntry" p:title="Home"
+              p:url="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start"/>
+      </list>
+    </property>
+  </bean>
 
   <!-- SampleAppView defaults -->
   <bean id="KradSampleAppView" parent="Uif-FormView">
@@ -50,26 +56,6 @@
       <list merge="true">
         <value>demo-sampleAppView</value>
       </list>
-    </property>
-    <property name="additionalCssFiles">
-      <list>
-        <value>css/krad/jquery.tweet.css</value>
-        <value>css/krad/kradSampleApp.css</value>
-      </list>
-    </property>
-    <property name="additionalScriptFiles">
-      <list>
-        <value>scripts/krad/jquery.tweet.js</value>
-        <value>scripts/krad/kradSampleApp.js</value>
-      </list>
-    </property>
-    <property name="applicationHeader">
-      <bean parent="Uif-HeaderBase" p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl"
-                  p:templateName="demo_kradappheader"/>
-    </property>
-    <property name="applicationFooter">
-      <bean parent="Uif-GroupBase" p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl"
-            p:templateName="demo_kradappfooter"/>
     </property>
     <property name="singlePageView" value="true"/>
     <property name="page">

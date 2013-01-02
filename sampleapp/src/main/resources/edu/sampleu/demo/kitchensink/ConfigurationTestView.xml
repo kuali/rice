@@ -45,7 +45,7 @@
       <bean parent="Uif-KradTheme"/>
     </property>
     <property name="additionalCssFiles">
-      <list>
+      <list merge="true">
         <value>css/sampleapp.css</value>
       </list>
     </property>

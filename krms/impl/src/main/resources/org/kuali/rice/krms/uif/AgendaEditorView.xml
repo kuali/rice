@@ -52,7 +52,7 @@
 
   <bean id="Editor-MaintenanceView" parent="Uif-MaintenanceView">
     <property name="additionalScriptFiles">
-      <list>
+      <list merge="true">
         <value>krms/scripts/ruleTree.js</value>
         <value>krms/scripts/agendaTree.js</value>
         <value>krms/scripts/requiredAlerts.js</value>
@@ -62,7 +62,7 @@
       </list>
     </property>
     <property name="additionalCssFiles">
-      <list>
+      <list merge="true">
         <value>krms/css/agendaTree.css</value>
         <value>krms/css/disableButtons.css</value>
       </list>

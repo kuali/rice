@@ -41,7 +41,7 @@
       <bean parent="Uif-FooterBase"/>
     </property>
     <property name="additionalCssFiles">
-      <list>
+      <list merge="true">
         <value>/css/course-offering.css</value>
       </list>
     </property>

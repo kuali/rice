@@ -144,27 +144,27 @@
 
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point1 .uif-instructionalMessage {
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point2 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image1.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point2 .uif-instructionalMessage {
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point1 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image2.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point3 .uif-instructionalMessage {
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point4 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image3.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point4 .uif-instructionalMessage {
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point3 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image4.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point5 .uif-instructionalMessage {
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point6 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image5.png");
 }
 
-.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point6 .uif-instructionalMessage {
+.demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point5 .uif-instructionalMessage {
     background-image: url("../../images/krad/sellingPoints-image6.png");
 }
 

@@ -83,6 +83,7 @@
               <entry key="emailAddress" value="travelerDetail.emailAddress"/>
               <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
               <entry key="liabilityInsurance" value="travelerDetail.liabilityInsurance"/>
+              <entry key="citizenship" value="travelerDetail.citizenship"/>
             </map>
           </property>
           <property name="control">
@@ -155,9 +156,21 @@
   <bean id="TravelAuthorization-EmergencyContactInformation"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Emergency Contact Information">
     <property name="items">
       <list>
+        <bean id="TravelAuthorization-EmergencyContactInformation-EmergencyContactInformation" parent="Uif-Disclosure-GridSubSection" p:headerText="Emergency Contact Information"
+              p:layoutManager.numberOfColumns="4">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:required="true" p:colSpan="3" p:propertyName="cellPhoneNumber"/>
+              <bean parent="Uif-DataField" p:propertyName="travelerDetail.citizenship" p:colSpan="3"/>
+              <bean parent="Uif-InputField" p:propertyName="transportationModeCode" p:width="auto" p:colSpan="3"/>
+              <bean parent="Uif-InputField" p:required="true" p:propertyName="regionFamiliarity" p:width="auto" p:colSpan="3"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
+
 
   <!-- Special Circumstances -->
   <bean id="TravelAuthorization-SpecialCircumstances"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Special Circumstances">
@@ -189,7 +202,7 @@
   <bean id="TravelAuthorization-Expenses-EstimatedExpenses" parent="Uif-Disclosure-VerticalBoxSubSection" p:headerText="Estimated Expenses">
     <property name="items">
       <list>
-        <!--<bean parent="Uif-InputField" p:propertyName="travelerDetailId"/>-->
+
       </list>
     </property>
   </bean>

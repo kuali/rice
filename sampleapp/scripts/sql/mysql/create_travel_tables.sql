@@ -414,6 +414,7 @@ CREATE TABLE IF NOT EXISTS TRVL_AUTH_DOC_T
      CELL_PH_NUM             VARCHAR(20) NULL,
      RGN_FAMIL               VARCHAR(255) NULL,
      CTZN_CNTRY_CD           VARCHAR(255) NULL,
+     TRPT_MODE_CD            VARCHAR(20) NULL,
      FDOC_NXT_EXP_NBR        DECIMAL(7, 0) NULL,
      VER_NBR                 DECIMAL(8, 0) DEFAULT 1 NOT NULL,
      OBJ_ID                  VARCHAR(36) NOT NULL,

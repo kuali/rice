@@ -63,9 +63,10 @@
                       <!--conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>-->
     <!--<field-descriptor name="perDiemAdjustment" column="PER_DIEM_ADJ" jdbc-type="DECIMAL"-->
                       <!--conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>-->
-    <!--<field-descriptor name="cellPhoneNumber" column="CELL_PH_NUM" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="regionFamiliarity" column="RGN_FAMIL" jdbc-type="VARCHAR"/>-->
-    <!--<field-descriptor name="citizenshipCountryCode" column="CTZN_CNTRY_CD" jdbc-type="VARCHAR"/>-->
+    <field-descriptor name="cellPhoneNumber" column="CELL_PH_NUM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="regionFamiliarity" column="RGN_FAMIL" jdbc-type="VARCHAR"/>
+    <field-descriptor name="citizenshipCountryCode" column="CTZN_CNTRY_CD" jdbc-type="VARCHAR"/>
+    <field-descriptor name="transportationModeCode" column="TRPT_MODE_CD" jdbc-type="VARCHAR"/>
     <!--<field-descriptor name="nextSourceLineNumber" column="FDOC_NXT_EXP_NBR" jdbc-type="INTEGER"/>-->
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR"/>
     <field-descriptor name="versionNumber" locking="true" column="VER_NBR" jdbc-type="BIGINT"/>
@@ -91,13 +92,6 @@
       <foreignkey field-ref="primaryDestinationId"/>
     </reference-descriptor>
 
-    <!--<collection-descriptor name="transportationModes" proxy="true"-->
-                           <!--element-class-ref="edu.sampleu.travel.approval.dataobject.TransportationModeDetail"-->
-                           <!--collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"-->
-                           <!--auto-retrieve="true" auto-update="object" auto-delete="object">-->
-      <!--<orderby name="transportationModeCode" sort="ASC"/>-->
-      <!--<inverse-foreignkey field-ref="documentNumber"/>-->
-    <!--</collection-descriptor>-->
 
     <!--<collection-descriptor name="perDiemExpenses" proxy="true"-->
                            <!--element-class-ref="edu.sampleu.travel.approval.dataobject.PerDiemExpense"-->

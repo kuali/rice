@@ -31,6 +31,9 @@
         <ref bean="TravelAuthorizationDocument-tripBegin"/>
         <ref bean="TravelAuthorizationDocument-tripEnd"/>
         <ref bean="TravelAuthorizationDocument-tripDescription"/>
+        <ref bean="TravelAuthorizationDocument-cellPhoneNumber"/>
+        <ref bean="TravelAuthorizationDocument-transportationModeCode"/>
+        <ref bean="TravelAuthorizationDocument-regionFamiliarity"/>
       </list>
     </property>
   </bean>
@@ -166,6 +169,14 @@
     <property name="required" value="false"/>
   </bean>
 
+  <bean id="TravelAuthorizationDocument-travelerDetail.citizenship"
+        parent="TravelAuthorizationDocument-travelerDetail.citizenship-parentBean"/>
+  <bean id="TravelAuthorizationDocument-travelerDetail.citizenship-parentBean" abstract="true"
+        parent="TravelerDetail-citizenship">
+    <property name="name" value="travelerDetail.citizenship"/>
+    <property name="required" value="false"/>
+  </bean>
+
   <bean id="TravelAuthorizationDocument-tripBegin" parent="TravelAuthorizationDocument-tripBegin-parentBean"/>
   <bean id="TravelAuthorizationDocument-tripBegin-parentBean" parent="AttributeDefinition">
     <property name="name" value="tripBegin"/>
@@ -268,6 +279,63 @@
     <property name="summary" value="Business Purpose"/>
     <property name="description" value="Business Purpose"/>
     <property name="required" value="true"/>
+    <property name="controlField">
+      <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="60"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-cellPhoneNumber"
+                 parent="TravelAuthorizationDocument-cellPhoneNumber-parentBean"/>
+  <bean id="TravelAuthorizationDocument-cellPhoneNumber-parentBean" parent="AttributeDefinition">
+    <property name="name" value="cellPhoneNumber"/>
+    <property name="label" value="Traveler's Cell or Other Contact Number During Trip"/>
+    <property name="shortLabel" value="Cell #"/>
+    <property name="maxLength" value="20"/>
+    <property name="summary" value="Traveler's Cell or Other Contact Number During Trip"/>
+    <property name="description" value="Traveler's Cell or Other Contact Number During Trip"/>
+    <property name="forceUppercase" value="true"/>
+    <property name="controlField">
+      <bean p:required="true" parent="Uif-TextControl" p:size="20"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-transportationModeCode"
+        parent="TravelAuthorizationDocument-transportationModeCode-parentBean"/>
+  <bean id="TravelAuthorizationDocument-transportationModeCode-parentBean" parent="AttributeDefinition">
+    <property name="name" value="transportationModeCode"/>
+    <property name="label" value="Modes of Transportation while out-of-country"/>
+    <property name="shortLabel" value="Transportation Modes"/>
+    <property name="summary" value="Modes of Transportation while out-of-country"/>
+    <property name="description" value="Modes of Transportation while out-of-country"/>
+    <property name="controlField">
+      <bean parent="Uif-VerticalCheckboxesControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="P" p:value="Personal Vehicle"/>
+            <bean parent="Uif-KeyLabelPair" p:key="W" p:value="Walking/Hiking"/>
+            <bean parent="Uif-KeyLabelPair" p:key="B" p:value="Bus"/>
+            <bean parent="Uif-KeyLabelPair" p:key="R" p:value="Rental Vehicle"/>
+            <bean parent="Uif-KeyLabelPair" p:key="S" p:value="Ship/Ferry/Boat"/>
+            <bean parent="Uif-KeyLabelPair" p:key="T" p:value="Train"/>
+            <bean parent="Uif-KeyLabelPair" p:key="D" p:value="Rental Vehicle w/Driver"/>
+            <bean parent="Uif-KeyLabelPair" p:key="O" p:value="Other"/>
+            <bean parent="Uif-KeyLabelPair" p:key="H" p:value="Host Vehicle"/>
+            <bean parent="Uif-KeyLabelPair" p:key="A" p:value="Airplane"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-regionFamiliarity"
+        parent="TravelAuthorizationDocument-regionFamiliarity-parentBean"/>
+  <bean id="TravelAuthorizationDocument-regionFamiliarity-parentBean" parent="AttributeDefinition">
+    <property name="name" value="regionFamiliarity"/>
+    <property name="label" value="Region Familiarity"/>
+    <property name="shortLabel" value="Region Familiarity"/>
+    <property name="maxLength" value="255"/>
+    <property name="summary" value="Region Familiarity"/>
+    <property name="description" value="Region Familiarity"/>
     <property name="controlField">
       <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="60"/>
     </property>

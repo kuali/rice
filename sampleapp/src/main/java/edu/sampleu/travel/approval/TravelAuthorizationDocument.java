@@ -55,6 +55,12 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     // Travel Advance 
     private List<TravelAdvance> travelAdvanceList ;
 
+    // Emergency Contact
+    private String cellPhoneNumber;
+    private String regionFamiliarity;
+    private String citizenshipCountryCode;
+    private String transportationModeCode;
+
     public TravelAuthorizationDocument() {
         super();
     }
@@ -320,8 +326,107 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
         this.travelAdvanceList = travelAdvanceList;
     }
 
+    /**
+     * Returns the cell phone number.
+     *
+     * <p>
+     * Gets the emergency contact cell phone number.
+     * </p>
+     *
+     * @return String - cell phone number
+     */
+    public String getCellPhoneNumber() {
+        return cellPhoneNumber;
+    }
 
+    /**
+     * Initializes the cell phone number.
+     *
+     * <p>
+     * Sets the emergency contact cell phone number.
+     * </p>
+     *
+     * @param cellPhoneNumber - string of the cell phone number
+     */
+    public void setTravelerDetailId(String cellPhoneNumber) {
+        this.cellPhoneNumber = cellPhoneNumber;
+    }
 
+    /**
+     * Returns the region familiarity.
+     *
+     * <p>
+     * Gets the emergency contact region familiarity.
+     * </p>
+     *
+     * @return String - region familiarity
+     */
+    public String getRegionFamiliarity() {
+        return regionFamiliarity;
+    }
 
+    /**
+     * Initializes the region familiarity.
+     *
+     * <p>
+     * Sets the emergency contact region familiarity.
+     * </p>
+     *
+     * @param regionFamiliarity - string of the region familiarity
+     */
+    public void setRegionFamiliarity(String regionFamiliarity) {
+        this.regionFamiliarity = regionFamiliarity;
+    }
 
+    /**
+     * Returns the citizenship country code.
+     *
+     * <p>
+     * Gets the emergency contact citizenship country code.
+     * </p>
+     *
+     * @return String - citizenship country code
+     */
+    public String getCitizenshipCountryCode() {
+        return citizenshipCountryCode;
+    }
+
+    /**
+     * Initializes the citizenship country code.
+     *
+     * <p>
+     * Sets the emergency contact citizenship country code.
+     * </p>
+     *
+     * @param citizenshipCountryCode - string of the citizenship country code
+     */
+    public void setCitizenshipCountryCode(String citizenshipCountryCode) {
+        this.citizenshipCountryCode = citizenshipCountryCode;
+    }
+
+    /**
+     * Returns the transportation mode code.
+     *
+     * <p>
+     * Gets the emergency contact transportation mode cpde.
+     * </p>
+     *
+     * @return String - transportation mode code
+     */
+    public String getTransportationModeCode() {
+        return transportationModeCode;
+    }
+
+    /**
+     * Initializes the transportation mode code.
+     *
+     * <p>
+     * Sets the emergency contact transportation mode code.
+     * </p>
+     *
+     * @param transportationModeCode - string of the transportation mode code
+     */
+    public void setTransportationModeCode(String transportationModeCode) {
+        this.transportationModeCode = transportationModeCode;
+    }
 }

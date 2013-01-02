@@ -871,7 +871,12 @@ public class WebUtils {
     	if(StringUtils.isBlank(principalId)) {
     		throw new IllegalArgumentException("Principal ID must have a value");
     	}
-    	return KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(principalId).getDefaultName().getCompositeName();
+        if (KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(principalId) == null){
+            return "";
+        }
+        else {
+    	    return KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(principalId).getDefaultName().getCompositeName();
+        }
     }
 
     /**

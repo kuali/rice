@@ -20,6 +20,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+<!-- TODO Add back in after module changeover
+
   <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"
         p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
         p:templateName="demo_kradappheader"/>
@@ -47,10 +49,32 @@
               p:url="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start"/>
       </list>
     </property>
-  </bean>
+  </bean> -->
 
   <!-- SampleAppView defaults -->
   <bean id="KradSampleAppView" parent="Uif-FormView">
+    <property name="additionalCssFiles">
+      <list>
+        <value>css/krad/jquery.tweet.css</value>
+        <value>css/krad/kradSampleApp.css</value>
+      </list>
+    </property>
+    <property name="additionalScriptFiles">
+      <list>
+        <value>scripts/krad/jquery.tweet.js</value>
+        <value>scripts/krad/kradSampleApp.js</value>
+      </list>
+    </property>
+    <property name="applicationHeader">
+      <bean parent="Uif-GlobalApplicationHeader-parentBean"
+              p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
+              p:templateName="demo_kradappheader"/>
+    </property>
+    <property name="applicationFooter">
+      <bean parent="Uif-GlobalApplicationFooter-parentBean"
+              p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl" p:render="@{!renderedInLightBox}"
+              p:templateName="demo_kradappfooter"/>
+    </property>
     <property name="breadcrumbs.render" value="false"/>
     <property name="cssClasses">
       <list merge="true">

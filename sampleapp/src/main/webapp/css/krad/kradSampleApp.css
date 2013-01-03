@@ -203,7 +203,7 @@
 /*********** Component Library home *******************************************************/
 
 .demo-componentLibHome .demo-sampleAppPage {
-    padding-top: 15px;
+    padding-top: 25px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
 }
@@ -254,7 +254,7 @@
 }
 
 .demo-componentLibView .demo-sampleAppPage {
-    padding-top: 15px;
+    padding-top: 25px;
 }
 
 .demo-componentLibView .demo-sampleAppPage > .uif-pageHeader select {
@@ -271,20 +271,82 @@
 
 /** Component Exhibit *********************************************************************/
 
+#ComponentLibraryTabGroup{
+    margin-left: -5px;
+}
+
 #ComponentLibraryTabGroup_tabs {
     width: 100%;
 }
 
 #ComponentLibraryTabGroup_tabs > div.ui-tabs-panel {
-    min-height: 250px;
+    min-height: 200px;
     overflow: auto;
-    width: 70%;
+    width: 72%;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px 4px 4px 4px;
+    padding: 12px;
 }
 
 #ComponentLibraryTabGroup_tabList {
-    width: 25%;
+    width: 23%;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+#ComponentLibraryTabGroup_tabList li {
+    border-style: none !important;
+    padding-bottom: 2px;
+    padding-left: 16px;
+    padding-top: 2px;
+    margin-top: 0;
+    background-color: transparent !important;
+    background-image: url("../../images/krad/widgetNavDivider.png");
+    background-position: 12px 0;
+    background-repeat: no-repeat;
+    margin-left: -14px;
+    border-radius: 0;
+    text-shadow: none;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+#ComponentLibraryTabGroup_tabList li:last-child{
+    background-image: url("../../images/krad/widgetNavDivider.png"), url("../../images/krad/widgetNavDivider.png");
+    background-position: 12px 0, 12px bottom;
+    background-repeat: no-repeat, no-repeat;
+}
+
+#ComponentLibraryTabGroup_tabList li.ui-state-active {
+    background-color: #FFFFFF;
+    background-image: url("../../images/krad/widgetNavBorder.png"), url("../../images/krad/widgetNavBorder.png"), url("../../images/krad/widgetNavCorner.png");
+    background-position: 1px top, -2px bottom, left center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    border-style: none;
+    border-right: 1px solid #FFBC04 !important;
+    position: relative;
+    cursor: pointer !important;
+}
+
+#ComponentLibraryTabGroup_tabList a:focus{
+    outline: thin dotted #333333;
+    outline-offset: -2px;
+}
+
+#ComponentLibraryTabGroup_tabList a {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.85em;
+    color: #666666;
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
+    line-height: 20px;
+    width: 100%;
+}
+
+#ComponentLibraryTabGroup_tabList li.ui-state-active a {
+    color: black;
 }
 
 .demo-noTabs > div.ui-tabs > ul.ui-tabs-nav {
@@ -325,6 +387,7 @@
     min-height: 500px;
     padding-bottom: 24px;
     padding-top: 40px;
+    margin-top: 7px;
 }
 
 .demo-componentLibView > .uif-viewContentWrapper > .uif-pageContentWrapper {
@@ -785,7 +848,7 @@ a.demo-documentationLink {
     color: #333333;
 }
 
-.demo-kradSampleAppDemo a{
+.demo-kradSampleAppDemo a {
     color: #A30234;
     font-weight: bold;
 }
@@ -824,18 +887,18 @@ a.demo-documentationLink {
     margin-bottom: 0;
 }
 
-div#KradSampleAppDemo-Row1-Demo1{
+div#KradSampleAppDemo-Row1-Demo1 {
     background-image: url("../../images/krad/demo-inquiry.png");
 }
 
-div#KradSampleAppDemo-Row1-Demo2{
+div#KradSampleAppDemo-Row1-Demo2 {
     background-image: url("../../images/krad/demo-new.png");
 }
 
-div#KradSampleAppDemo-Row1-Demo3{
+div#KradSampleAppDemo-Row1-Demo3 {
     background-image: url("../../images/krad/demo-edit.png");
 }
 
-div#KradSampleAppDemo-Row2-Demo1, div#KradSampleAppDemo-Row2-Demo2, div#KradSampleAppDemo-Row2-Demo3{
+div#KradSampleAppDemo-Row2-Demo1, div#KradSampleAppDemo-Row2-Demo2, div#KradSampleAppDemo-Row2-Demo3 {
     background-image: url("../../images/krad/demo-lookup.png");
 }

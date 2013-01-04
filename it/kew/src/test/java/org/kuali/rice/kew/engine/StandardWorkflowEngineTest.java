@@ -106,9 +106,9 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
         String applicationId = routeHeader.getDocumentType().getApplicationId();
 
-        KSBJavaService exploderAsService = (KSBJavaService) KewApiServiceLocator.getServiceAsynchronously(new QName(
-                "KEW", "exploader"), routeHeader.getDocumentId(), applicationId);
-		exploderAsService.invoke("");
+        KSBJavaService exploderAsService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(
+                "KEW", "exploader"), null, null, routeHeader.getDocumentId(), null);
+        exploderAsService.invoke("");
 		TestUtilities.waitForExceptionRouting();
 
 		// the document should be in exception routing now

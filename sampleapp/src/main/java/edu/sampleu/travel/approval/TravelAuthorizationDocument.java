@@ -18,6 +18,7 @@ package edu.sampleu.travel.approval;
 import edu.sampleu.travel.approval.dataobject.PrimaryDestination;
 import edu.sampleu.travel.approval.dataobject.TravelerDetail;
 import edu.sampleu.travel.approval.dataobject.TravelAdvance;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 import javax.persistence.*;
@@ -54,6 +55,13 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     
     // Travel Advance 
     private List<TravelAdvance> travelAdvanceList ;
+
+    // Special Circumstances
+    private KualiDecimal expenseLimit;
+    private Boolean questionForTaWhy;
+    private String questionForTa;
+    private Boolean questionForTaDocWhy;
+    private String questionForTaDoc;
 
     // Emergency Contact
     private String cellPhoneNumber;
@@ -429,4 +437,135 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     public void setTransportationModeCode(String transportationModeCode) {
         this.transportationModeCode = transportationModeCode;
     }
+
+    /**
+     * Returns the expense limit.
+     *
+     * <p>
+     * Gets the special circumstance expense limit.
+     * </p>
+     *
+     * @return KualiDecimal - expense limit
+     */
+    public KualiDecimal getExpenseLimit() {
+        return expenseLimit;
+    }
+
+    /**
+     * Initializes the expense limit.
+     *
+     * <p>
+     * Sets the special circumstance expense limit.
+     * </p>
+     *
+     * @param expenseLimit - kuali decimal of the expense limit
+     */
+    public void setExpenseLimit(KualiDecimal expenseLimit) {
+        this.expenseLimit = expenseLimit;
+    }
+
+    /**
+     * Returns the questions for TA why.
+     *
+     * <p>
+     * Gets the special circumstance questions for TA why.
+     * </p>
+     *
+     * @return Boolean - questionForTaWhy
+     */
+    public Boolean getQuestionForTaWhy() {
+        return questionForTaWhy;
+    }
+
+    /**
+     * Initializes the questions for TA why.
+     *
+     * <p>
+     * Sets the special circumstance questions for TA why.
+     * </p>
+     *
+     * @param questionForTaWhy - boolean of the questions for TA why
+     */
+    public void setQuestionForTaWhy(Boolean questionForTaWhy) {
+        this.questionForTaWhy = questionForTaWhy;
+    }
+
+    /**
+     * Returns the questions for TA.
+     *
+     * <p>
+     * Gets the special circumstance questions for TA.
+     * </p>
+     *
+     * @return String - questions for TA
+     */
+    public String getQuestionForTa() {
+        return questionForTa;
+    }
+
+    /**
+     * Initializes the questions for TA.
+     *
+     * <p>
+     * Sets the special circumstance questions for TA.
+     * </p>
+     *
+     * @param questionForTa - string of the questions for TA
+     */
+    public void setQuestionForTa(String questionForTa) {
+        this.questionForTa = questionForTa;
+    }
+
+    /**
+     * Returns the questions for TA document why.
+     *
+     * <p>
+     * Gets the special circumstance questions for TA document why.
+     * </p>
+     *
+     * @return Boolean - questionForTaDocWhy
+     */
+    public Boolean getQuestionForTaDocWhy() {
+        return questionForTaDocWhy;
+    }
+
+    /**
+     * Initializes the questions for TA document why.
+     *
+     * <p>
+     * Sets the special circumstance questions for TA document why.
+     * </p>
+     *
+     * @param questionForTaDocWhy - boolean of the questions for TA document why
+     */
+    public void setQuestionForTaDocWhy(Boolean questionForTaDocWhy) {
+        this.questionForTaDocWhy = questionForTaDocWhy;
+    }
+
+    /**
+     * Returns the questions for TA document.
+     *
+     * <p>
+     * Gets the special circumstance questions for TA document.
+     * </p>
+     *
+     * @return String - questions for TA document
+     */
+    public String getQuestionForTaDoc() {
+        return questionForTaDoc;
+    }
+
+    /**
+     * Initializes the questions for TA document.
+     *
+     * <p>
+     * Sets the special circumstance questions for TA document.
+     * </p>
+     *
+     * @param questionForTaDoc - string of the questions for TA document
+     */
+    public void setQuestionForTaDoc(String questionForTaDoc) {
+        this.questionForTaDoc = questionForTaDoc;
+    }
+
 }

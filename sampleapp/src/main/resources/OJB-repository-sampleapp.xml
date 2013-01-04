@@ -51,8 +51,11 @@
     <field-descriptor name="tripTypeCode" column="TRIP_TYP_CD" jdbc-type="VARCHAR"/>
     <field-descriptor name="tripBegin" column="TRIP_BGN_DT" jdbc-type="DATE"/>
     <field-descriptor name="tripEnd" column="TRIP_END_DT" jdbc-type="DATE"/>
-    <!--<field-descriptor name="expenseLimit" column="EXP_LMT" jdbc-type="DECIMAL"-->
-                      <!--conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>-->
+    <field-descriptor name="expenseLimit" column="EXP_LMT" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
+    <field-descriptor name="questionForTaWhy" column="SPEC_CIRC_TA_WHY" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
+    <field-descriptor name="questionForTa" column="SPEC_CIRC_TA" jdbc-type="VARCHAR"/>
+    <field-descriptor name="questionForTaDocWhy" column="SPEC_CIRC_TA_DOC_WHY" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
+    <field-descriptor name="questionForTaDoc" column="SPEC_CIRC_TA_DOC" jdbc-type="VARCHAR"/>
     <!--<field-descriptor name="mealWithoutLodgingReason" column="MEAL_WITHOUT_LODGING" jdbc-type="VARCHAR"/>-->
     <field-descriptor name="primaryDestinationId" column="PRIMARY_DEST_ID" jdbc-type="INTEGER"/>
     <field-descriptor name="primaryDestinationName" column="PRIMARY_DEST_NAME" jdbc-type="VARCHAR"/>

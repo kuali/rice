@@ -34,6 +34,11 @@
         <ref bean="TravelAuthorizationDocument-cellPhoneNumber"/>
         <ref bean="TravelAuthorizationDocument-transportationModeCode"/>
         <ref bean="TravelAuthorizationDocument-regionFamiliarity"/>
+        <ref bean="TravelAuthorizationDocument-expenseLimit"/>
+        <ref bean="TravelAuthorizationDocument-questionForTaWhy"/>
+        <ref bean="TravelAuthorizationDocument-questionForTa"/>
+        <ref bean="TravelAuthorizationDocument-questionForTaDocWhy"/>
+        <ref bean="TravelAuthorizationDocument-questionForTaDoc"/>
       </list>
     </property>
   </bean>
@@ -336,6 +341,83 @@
     <property name="maxLength" value="255"/>
     <property name="summary" value="Region Familiarity"/>
     <property name="description" value="Region Familiarity"/>
+    <property name="controlField">
+      <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="60"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-expenseLimit"
+        parent="TravelAuthorizationDocument-expenseLimit-parentBean"/>
+  <bean id="TravelAuthorizationDocument-expenseLimit-parentBean" parent="AttributeDefinition">
+    <property name="name" value="expenseLimit"/>
+    <property name="label" value="If there is an expense limit imposed by department or grant or some other budgetary restrictions on this trip, please enter the expense limit here $"/>
+    <property name="shortLabel" value="Expense Limit"/>
+    <property name="summary" value="Expense limit imposed by department or grant or some other budgetary restrictions on trip."/>
+    <property name="description" value="Expense limit imposed by department or grant or some other budgetary restrictions on trip."/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-questionForTaWhy"
+                 parent="TravelAuthorizationDocument-questionForTaWhy-parentBean"/>
+  <bean id="TravelAuthorizationDocument-questionForTaWhy-parentBean" parent="AttributeDefinition">
+    <property name="name" value="questionForTaWhy"/>
+    <property name="label" value="Why oh Why?"/>
+    <property name="shortLabel" value="Why oh Why?"/>
+    <property name="summary" value="Why oh Why?"/>
+    <property name="description" value="Why oh Why?"/>
+    <property name="controlField">
+      <bean parent="Uif-HorizontalCheckboxesControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="P" p:value=""/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-questionForTa"
+        parent="TravelAuthorizationDocument-questionForTa-parentBean"/>
+  <bean id="TravelAuthorizationDocument-questionForTa-parentBean" parent="AttributeDefinition">
+    <property name="name" value="questionForTa"/>
+    <property name="label" value="Question for TA - is anyone traveling with you?"/>
+    <property name="shortLabel" value="Is anyone traveling with you?"/>
+    <property name="summary" value="Question for TA - is anyone traveling with you?"/>
+    <property name="description" value="Question for TA - is anyone traveling with you?"/>
+    <property name="controlField">
+      <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="60"/>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-questionForTaDocWhy"
+        parent="TravelAuthorizationDocument-questionForTaDocWhy-parentBean"/>
+  <bean id="TravelAuthorizationDocument-questionForTaDocWhy-parentBean" parent="AttributeDefinition">
+    <property name="name" value="questionForTaDocWhy"/>
+    <property name="label" value="Question for TA documents - not free form: Carrying Fruit? "/>
+    <property name="shortLabel" value="Question for TA documents - not free form: Carrying Fruit? "/>
+    <property name="summary" value="Question for TA documents - not free form: Carrying Fruit? "/>
+    <property name="description" value="Question for TA documents - not free form: Carrying Fruit? "/>
+    <property name="controlField">
+      <bean parent="Uif-HorizontalCheckboxesControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="P" p:value=""/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="TravelAuthorizationDocument-questionForTaDoc"
+        parent="TravelAuthorizationDocument-questionForTaDoc-parentBean"/>
+  <bean id="TravelAuthorizationDocument-questionForTaDoc-parentBean" parent="AttributeDefinition">
+    <property name="name" value="questionForTaDoc"/>
+    <property name="label" value="Do you have large pets traveling with you?"/>
+    <property name="shortLabel" value="Large pets traveling with you?"/>
+    <property name="summary" value="Do you have large pets traveling with you?"/>
+    <property name="description" value="Do you have large pets traveling with you?"/>
     <property name="controlField">
       <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="60"/>
     </property>

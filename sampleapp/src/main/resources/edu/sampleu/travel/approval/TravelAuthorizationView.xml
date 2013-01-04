@@ -176,6 +176,18 @@
   <bean id="TravelAuthorization-SpecialCircumstances"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Special Circumstances">
     <property name="items">
       <list>
+        <bean id="TravelAuthorization-SpecialCircumstances-SpecialCircumstances" parent="Uif-Disclosure-GridSubSection" p:headerText="Special Circumstances"
+              p:layoutManager.numberOfColumns="4">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="expenseLimit"/>
+              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="questionForTaWhy"/>
+              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="questionForTa"/>
+              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="questionForTaDocWhy"/>
+              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="questionForTaDoc"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

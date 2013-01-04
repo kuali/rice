@@ -461,12 +461,57 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
       <para>Assuming bookId is ‘3’ and bookTitle is ‘Dogs and Cats’, this would result in the text ‘3 *-* Dogs and Cats’.</para>
       <tip>
         <title>Alternate/Additional Display and Input Field</title>
-        <para>The alternate and additional display values are only used 
-                when the field is read-only. But input field allows the user to edit the value so does it make sense to 
-                configure these properties for an input field? The answer is yes! An input field has a readOnly property 
-                (inherited form ComponentBase) which dictates whether the control is rendered. So there might be conditions 
-                that set this property to true, causing the control not to render and the value.</para>
+        <para>The alternate and additional display values are only used when the field is read-only.
+          But input field allows the user to edit the value so does it make sense to configure these
+          properties for an input field? The answer is yes! An input field has a readOnly property
+          (inherited from ComponentBase) which dictates whether the control is rendered. So there
+          might be conditions that set this property to true, causing the control not to render and
+          the value instead.</para>
       </tip>
+    </section>
+    <section>
+      <title>Additional Display Properties for List&lt;String> fields</title>
+      <para>When a field is of type List&lt;String> and the readOnly property is set to true, there
+        are a few more options that you can take advantage of to change how this data is displayed.
+        By default this values will be output in a comma and space (", ") separated list, but this
+        can be changed with the <emphasis role="bold">readOnlyListDisplayType</emphasis> property of
+        DataField (and child type InputField).  The following options are allowed:<itemizedlist>
+          <listitem>
+            <para>"DELIMITED" - list will be output with delimiters between each item defined
+                by<emphasis role="bold"> readOnlyListDelimiter</emphasis> (which can be any text or
+              html you would like)</para>
+          </listitem>
+          <listitem>
+            <para>"BREAK" - list will be output with breaks between each item</para>
+          </listitem>
+          <listitem>
+            <para>"OL" - list will be output in ordered list format (numbered)</para>
+          </listitem>
+          <listitem>
+            <para>"UL" - list will be output in unordered list format (bulleted)</para>
+          </listitem>
+        </itemizedlist></para>
+      <para>The following would put a dash with spaces between each item of the
+        list:<programlisting>&lt;bean parent="Uif-InputField-LabelTop" p:propertyName="field120" p:label="Alternate Delimiter"
+              p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
+              p:readOnlyListDisplayType="DELIMITED" p:readOnlyListDelimiter=" - ">
+...</programlisting>The
+        result would be something like this "Value1 - Value2 - Value3"<tip>
+          <title>Empty list alternate readOnly display</title>
+          <para>If your List&lt;String> field is empty, the DataField will simply display nothing as
+            a the value for the list.  Inorder to display something instead, indicating that the
+            list is empty, you can use a SpringEL expression with the <emphasis role="bold"
+              >readOnlyDisplayReplacement</emphasis> property as
+            follows:<programlisting>p:readOnlyDisplayReplacement="@{#emptyList(field115)?'No Options Selected':''}</programlisting>This
+            would display 'No Options Selected'  when the list is empty.  </para>
+          <para>Note the OR; this means that the <emphasis role="bold"
+              >readOnlyDisplayReplacement</emphasis> property is blank when the list is not empty.
+            This is required because we want the list to display with the options we may have set in
+              <emphasis role="bold">readOnlyListDisplayType</emphasis> instead of an alternate
+            replacement for when the list does contain values.  The readOnlyListDisplayType logic
+            performs a check make sure that readOnlyDisplayReplacement is null or blank before
+            processing - if it was set that content would be used instead!</para>
+        </tip></para>
     </section>
     <section>
       <title>Recap</title>

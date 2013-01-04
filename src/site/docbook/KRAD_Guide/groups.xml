@@ -2171,7 +2171,6 @@ public class Test2Object {
         <title>Row Details Group option</title>
         <para>Table collections can now display addition details per a row.  When using this functionality an additional column with a “Details” link will be available, and when the user clicks on it the configured group to display for that row will be revealed/disclosed below that row.  The intended uses of this functionality is for the user to be able to discover additional information about that collection item without having to leave the page, or hide content that can become large, such as descriptions.
 </para>
-        <para><emphasis role="bold">Note: Currently ONLY readOnly content is officially supported, and any content that relies on javascript functionality is NOT supported in this release. </emphasis></para>
         <para>To use a row details group with a Uif-TableCollectionSection (or variation of) you setup the following properties on its <emphasis role="bold">layoutManager</emphasis> (It is <emphasis role="bold">REQUIRED</emphasis> that the layoutManager is using richTable functionality - in other words, it is using the dataTables jQuery plugin to render):
 </para>
         <para><emphasis role="bold">rowDetailsGrou</emphasis>p – this can be ANY group or section content you would like to use for the content of details.  The input and data fields used in this group will automatically inherit the necessary collection binding path just like items of the collection itself.

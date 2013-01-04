@@ -60,8 +60,29 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 		boolean rulesPassed = super.processCustomRouteDocumentBusinessRules( document );
 		try {
 			GenericPermissionBo perm = (GenericPermissionBo)getNewBo();
+            GenericPermissionBo orgBo = (GenericPermissionBo)getOldBo();
 			rulesPassed &= validateDetailValuesFormat(perm.getDetailValues());
             if(StringUtils.isNotBlank(perm.getNamespaceCode()) && StringUtils.isNotBlank(perm.getName()) && StringUtils.isBlank(perm.getId())){
+                rulesPassed &= validateNamespaceCodeAndName(perm.getNamespaceCode(), perm.getName());
+            }
+            // rule case for copy
+            if(StringUtils.isNotBlank(perm.getNamespaceCode()) &&
+               StringUtils.isNotBlank(perm.getName()) &&
+               StringUtils.isNotBlank(orgBo.getId()) &&
+               StringUtils.isNotBlank(perm.getId()) &&
+               !StringUtils.equals(orgBo.getId(), perm.getId())){
+                  rulesPassed &= validateNamespaceCodeAndName(perm.getNamespaceCode(), perm.getName());
+            }
+            // rule case for edit
+            if(StringUtils.isNotBlank(perm.getNamespaceCode()) &&
+                    StringUtils.isNotBlank(perm.getName()) &&
+                    StringUtils.isNotBlank(orgBo.getId()) &&
+                    StringUtils.isNotBlank(perm.getId()) &&
+                    StringUtils.equals(orgBo.getId(), perm.getId()) &&
+                    ( !StringUtils.equals(orgBo.getNamespaceCode(), perm.getNamespaceCode()) ||
+                      !StringUtils.equals(orgBo.getName(), perm.getName())
+                    )
+               ) {
                 rulesPassed &= validateNamespaceCodeAndName(perm.getNamespaceCode(), perm.getName());
             }
 			// detailValues

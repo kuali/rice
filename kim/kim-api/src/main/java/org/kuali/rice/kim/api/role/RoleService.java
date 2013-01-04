@@ -576,7 +576,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "assignPrincipalToRole")
     @WebResult(name = "roleMember")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember assignPrincipalToRole(@WebParam(name="principalId") String principalId,
                 @WebParam(name="namespaceCode")
                 String namespaceCode,
@@ -600,7 +600,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "assignGroupToRole")
     @WebResult(name = "roleMember")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember assignGroupToRole(@WebParam(name="groupId") String groupId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -620,7 +620,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "assignRoleToRole")
     @WebResult(name = "roleMember")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember assignRoleToRole(@WebParam(name="roleId") String roleId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -637,7 +637,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "createRoleMember")
     @WebResult(name = "roleMember")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember createRoleMember(
                 @WebParam(name = "roleMember")
                 RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
@@ -652,7 +652,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "updateRoleMember")
     @WebResult(name = "roleMember")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember updateRoleMember(@WebParam(name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
@@ -770,7 +770,7 @@ public interface RoleService {
      * @throws RiceIllegalArgumentException if principalId, namespaceCode or roleName is null or blank.
      */
     @WebMethod(operationName = "removePrincipalFromRole")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void removePrincipalFromRole(@WebParam(name="principalId") String principalId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -788,7 +788,7 @@ public interface RoleService {
      * @throws RiceIllegalArgumentException if groupId, namespaceCode or roleName is null or blank.
      */
     @WebMethod(operationName = "removeGroupFromRole")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void removeGroupFromRole(@WebParam(name="groupId") String groupId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -806,7 +806,7 @@ public interface RoleService {
      * @throws RiceIllegalArgumentException if roleId, namespaceCode or roleName is null or blank.
      */
     @WebMethod(operationName = "removeRoleFromRole")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void removeRoleFromRole(@WebParam(name="roleId") String roleId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -821,7 +821,7 @@ public interface RoleService {
      * @throws RiceIllegalArgumentException if permissionId or roleId is null or blank.
      */
     @WebMethod(operationName = "assignPermissionToRole")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void assignPermissionToRole(
             @WebParam(name = "permissionId") String permissionId,
             @WebParam(name = "roleId") String roleId)
@@ -836,7 +836,7 @@ public interface RoleService {
      * @throws RiceIllegalArgumentException if permissionId or roleId is null or blank.
      */
     @WebMethod(operationName = "revokePermissionFromRole")
-    @CacheEvict(value={Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, Permission.Cache.NAME, Responsibility.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void revokePermissionFromRole(
             @WebParam(name = "permissionId") String permissionId,
             @WebParam(name = "roleId") String roleId)

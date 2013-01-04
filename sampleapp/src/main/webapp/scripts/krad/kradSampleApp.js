@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * Shows the appHeader and footer, initializes the tweet area, selects appropriate links in nav menus, removes
+ * padding from views rendered in lightboxes, and handles tab swap action fire if using large example
+ */
 jQuery(function () {
     jQuery(".demo-appHeader, .demo-appFooter, .demo-thirdTier").show();
     jQuery(".demo-tweets > div").tweet({
@@ -30,6 +35,10 @@ jQuery(function () {
     handleTabSwap("select#Demo-LargeExampleDropdown_control");
 });
 
+/**
+ * Setup call for exhibit tabs, adds a handler for the tabsactivate event to switch the source in the syntaxHighlighter
+ * based on tab index
+ */
 function setupExhibitHandlers() {
     jQuery( "#ComponentLibraryTabGroup_tabs" ).on( "tabsactivate", function( event, ui ) {
         var tabIndex = ui.newTab.index();
@@ -38,12 +47,15 @@ function setupExhibitHandlers() {
     } );
 }
 
+/**
+ * Adds css classes the appropriate links in the header and in the componentLibrary navigation based on user selection
+ * so they appear active
+ */
 function linkSelection() {
-
     var viewDiv = jQuery("div.uif-view");
     if (jQuery(viewDiv).is(".demo-componentLibView")  || jQuery(viewDiv).is(".demo-componentLibHome")) {
-        var url = window.location.href;
-        var link = jQuery("#Uif-Navigation").find("a[href='" + url + "']");
+        var viewId = viewDiv.attr("id");
+        var link = jQuery("#Uif-Navigation").find("a[href*='" + viewId + "']");
         if (link.length) {
             jQuery(link).css("color", "#222222");
             var accordionLi = jQuery(link).closest("li.uif-accordionTab");
@@ -61,10 +73,17 @@ function linkSelection() {
     }
 }
 
+/**
+ * Activates the tab (hidden in the case where large example is being used) for large examples in order to retain
+ * the ability to show the correct source in the syntaxHighlighter without needing additional handlers
+ *
+ * @param control the large example dropdown control
+ */
 function handleTabSwap(control){
     var tab = jQuery(control).val();
-    var tabNum = parseInt(tab);
-
-    jQuery("#ComponentLibraryTabGroup_tabs").tabs( "option", "active", tabNum );
+    if(tab != undefined){
+        var tabNum = parseInt(tab);
+        jQuery("#ComponentLibraryTabGroup_tabs").tabs( "option", "active", tabNum );
+    }
 }
 

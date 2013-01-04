@@ -250,14 +250,10 @@
         <bean parent="Uif-ListGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Image Field"
-                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ImageField-View&amp;methodToCall=start"/>
-              <bean parent="Uif-Link" p:linkText="Link Field"
-                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkField-View&amp;methodToCall=start"/>
-              <bean parent="Uif-Link" p:linkText="Message Field"
-                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageField-View&amp;methodToCall=start"/>
-              <bean parent="Uif-Link" p:linkText="Text Area"
-                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextAreaControl-View&amp;methodToCall=start"/>
+              <bean id="ComponentLibraryHome-NewItem1" parent="Uif-Link"/>
+              <bean id="ComponentLibraryHome-NewItem2" parent="Uif-Link"/>
+              <bean id="ComponentLibraryHome-NewItem3" parent="Uif-Link"/>
+              <bean id="ComponentLibraryHome-NewItem4" parent="Uif-Link"/>
             </list>
           </property>
         </bean>
@@ -312,8 +308,8 @@
         <property name="onChangeScript" value="nonAjaxSubmitForm('changeTheme')"/>
         <property name="options">
           <list>
-            <bean parent="Uif-KeyLabelPair" p:key="Uif-KradTheme" p:value="KRAD Theme"/>
-            <bean parent="Uif-KeyLabelPair" p:key="Uif-ClassicKnsTheme" p:value="KNS Theme"/>
+            <bean parent="Uif-KeyLabelPair" p:key="Uif-KradTheme"/>
+            <bean parent="Uif-KeyLabelPair" p:key="Uif-ClassicKnsTheme"/>
           </list>
         </property>
       </bean>
@@ -503,7 +499,7 @@
   <bean id="ComponentLibrary-Nav-GeneralFeatures" p:headerText="General Features" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Incedent Page"
+        <bean parent="Uif-Link" p:linkText="Incident Page"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncedentPage-View&amp;methodToCall=start"/>
       </list>
     </property>

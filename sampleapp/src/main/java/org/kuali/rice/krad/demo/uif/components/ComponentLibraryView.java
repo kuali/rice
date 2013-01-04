@@ -69,7 +69,7 @@ public class ComponentLibraryView extends FormView {
     private String usage;
     private String largeExampleFieldId;
 
-    public static enum ExampleSize{
+    public static enum ExampleSize {
         SMALL, LARGE;
     }
 
@@ -90,6 +90,8 @@ public class ComponentLibraryView extends FormView {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
+
         //set page name
         this.getPage().setHeaderText(this.getComponentName());
 
@@ -102,7 +104,7 @@ public class ComponentLibraryView extends FormView {
         //Description header
         Header descriptionHeader = (Header) ComponentFactory.getNewComponentInstance("Uif-SubSectionHeader");
         descriptionHeader.setHeaderLevel("H3");
-        descriptionHeader.setHeaderText("Description");
+        descriptionHeader.setHeaderText(messageService.getMessageText("KR-SAP", null, "componentLibrary.description"));
         descriptionHeader.setRender(false);
         descriptionGroup.setHeader(descriptionHeader);
 
@@ -121,7 +123,7 @@ public class ComponentLibraryView extends FormView {
         //Usage header
         Header usageHeader = (Header) ComponentFactory.getNewComponentInstance("Uif-SubSectionHeader");
         usageHeader.setHeaderLevel("H3");
-        usageHeader.setHeaderText("Usage");
+        usageHeader.setHeaderText(messageService.getMessageText("KR-SAP", null, "componentLibrary.usage"));
         usageHeader.setRender(false);
         usageGroup.setHeader(usageHeader);
 
@@ -161,16 +163,16 @@ public class ComponentLibraryView extends FormView {
         exhibit.setDemoSourceCode(sourceCode);
         exhibit.setDemoGroups(this.getDemoGroups());
 
-        if(this.getExampleSize() != null && this.getExampleSize().equals(ExampleSize.LARGE)){
+        if (this.getExampleSize() != null && this.getExampleSize().equals(ExampleSize.LARGE)) {
             exhibit.getTabGroup().addStyleClass("demo-noTabs");
             Group headerRightGroup = view.getPage().getHeader().getRightGroup();
-            for(Component item: headerRightGroup.getItems()){
-                if(item instanceof InputField && ((InputField) item).getControl() instanceof MultiValueControl
-                        && item.getId().equals(this.getLargeExampleFieldId())){
+            for (Component item : headerRightGroup.getItems()) {
+                if (item instanceof InputField && ((InputField) item).getControl() instanceof MultiValueControl && item
+                        .getId().equals(this.getLargeExampleFieldId())) {
                     //List<ConcreteKeyValue> keyValues = new ArrayList<ConcreteKeyValue>();
                     List<KeyValue> values = new ArrayList<KeyValue>();
                     int i = 0;
-                    for(Group demoGroup: demoGroups){
+                    for (Group demoGroup : demoGroups) {
                         values.add(new ConcreteKeyValue(String.valueOf(i), demoGroup.getHeader().getHeaderText()));
                         i++;
                     }
@@ -199,7 +201,6 @@ public class ComponentLibraryView extends FormView {
     private void processDocumentationTab(List<Component> tabItems) {
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
-        //ComponentLibraryView.class.getClassLoader().getResource(javaFullClassPath);
         try {
             Class<?> componentClass = Class.forName(javaFullClassPath);
             Method methodsArray[] = componentClass.getMethods();
@@ -208,7 +209,7 @@ public class ComponentLibraryView extends FormView {
             String classMessage = messageService.getMessageText("KR-SAP", null, javaFullClassPath);
 
             if (classMessage == null) {
-                classMessage = "NO DOCUMENTATION AVAILABLE... we are working on it!";
+                classMessage = "NO DOCUMENTATION AVAILABLE/FOUND... we are working on it!";
             }
 
             //scrub class message of @link and @code
@@ -235,23 +236,34 @@ public class ComponentLibraryView extends FormView {
                 schemaTable = "";
             }
 
+            String javadocTitle = messageService.getMessageText("KR-SAP", null, "componentLibrary.javaDoc");
+            String kradGuideTitle = messageService.getMessageText("KR-SAP", null, "componentLibrary.kradGuide");
+            String devDocumentationTitle = messageService.getMessageText("KR-SAP", null,
+                    "componentLibrary.devDocumentation");
+            String beanDefsTitle = messageService.getMessageText("KR-SAP", null, "componentLibrary.beanDefs");
+
             //build documentation links from javadoc address and docbook address/anchor
             String docLinkDiv = "<div class='demo-docLinks'> "
                     + "<label>Additional Resources:</label><a class='demo-documentationLink'"
                     + " href='"
                     + getRootJavadocAddress()
                     + javaFullClassPath.replace('.', '/')
-                    + ".html' target='_blank'>Class JavaDoc</a>"
+                    + ".html' target='_blank'>"
+                    + javadocTitle
+                    + "</a>"
                     + "<a class='demo-documentationLink'"
                     + " href='"
                     + getRootDocBookAddress()
                     + getDocBookAnchor()
-                    + "' target='_blank'>KRAD Guide</a>"
+                    + "' target='_blank'>"
+                    + kradGuideTitle
+                    + "</a>"
                     + "</div>";
 
             //initialize the documentation content
-            String documentationMessageContent = "<H3>" + this.getComponentName() + " Developer Documentation</H3>" +
-                    docLinkDiv + classMessage + "<H3>Preconfigured KRAD Schema Names & Bean ids</H3>" + schemaTable;
+            String documentationMessageContent =
+                    "<H3>" + this.getComponentName() + " " + devDocumentationTitle + "</H3>" +
+                            docLinkDiv + classMessage + "<H3>" + beanDefsTitle + "</H3>" + schemaTable;
 
             List<String> propertyDescriptions = new ArrayList<String>();
             Map<String, List<String>> inheritedProperties = new HashMap<String, List<String>>();
@@ -340,7 +352,8 @@ public class ComponentLibraryView extends FormView {
             //properties header
             Header documentationHeader = (Header) ComponentFactory.getNewComponentInstance("Uif-SubSectionHeader");
             documentationHeader.setHeaderLevel("H3");
-            documentationHeader.setHeaderText("Documentation");
+            documentationHeader.setHeaderText(messageService.getMessageText("KR-SAP", null,
+                    "componentLibrary.documentation"));
             documentationHeader.setRender(false);
             documentationGroup.setHeader(documentationHeader);
 
@@ -366,7 +379,8 @@ public class ComponentLibraryView extends FormView {
                     //inherited properties header
                     Header iPropHeader = (Header) ComponentFactory.getNewComponentInstance("Uif-SubSectionHeader");
                     iPropHeader.setHeaderLevel("H3");
-                    iPropHeader.setHeaderText("Inherited from " + className);
+                    iPropHeader.setHeaderText(messageService.getMessageText("KR-SAP", null,
+                            "componentLibrary.inheritedFrom") + " " + className);
                     //iPropHeader.setRender(false);
                     iPropertiesGroup.setHeader(iPropHeader);
                     iPropertiesGroup.getDisclosure().setRender(true);

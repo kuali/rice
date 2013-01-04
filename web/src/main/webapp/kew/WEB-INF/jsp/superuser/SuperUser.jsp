@@ -23,7 +23,7 @@
   headerMenuBar="" transactionalDocument="false" showDocumentInfo="false"
   htmlFormAction="SuperUser" errorKey="document" docTitle="Superuser Document Service">
   <link href="css/screen.css" rel="stylesheet" type="text/css">
-<%--
+  <%--
 <html-el:html>
 <head>
 <link href="css/screen.css" rel="stylesheet" type="text/css">
@@ -86,13 +86,13 @@
 
 <c:if test="${(! SuperUserForm.routeHeader['canceled']) && (SuperUserForm.authorized)}">
       <%--<html-el:form method="post" action="/SuperUser.do">--%>
-      <html-el:hidden property="methodToCall" value="" />
+    <html-el:hidden property="methodToCall" value="" />
       <html-el:hidden property="documentId" value="${SuperUserForm.routeHeader.documentId}" />
 	  <html-el:hidden property="docId" value="${SuperUserForm.workflowDocument.documentId}" />
 	  <html-el:hidden property="lookupableImplServiceName" />
   	  <html-el:hidden property="lookupType" />
 
-<c:if test="${(! SuperUserForm.routeHeader['final'])}">
+    <c:if test="${(! SuperUserForm.routeHeader['final']) && (! SuperUserForm.routeHeader.stateInitiated) }">
   <tr>
     <td height="30">
       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="bord-r-t">
@@ -186,7 +186,7 @@
 <%--</html-el:form>--%>
 </c:if>
 
-</table>
+  </table>
 <%--
     </td>
     <td></td>
@@ -195,7 +195,7 @@
 --%>
 <jsp:include page="../BackdoorMessage.jsp" flush="true"/>
 
-<%-- KULRICE-3035: The superuser form now stores the "returnLocation" needed by the doc search after the "cancel" button is clicked. --%>
+  <%-- KULRICE-3035: The superuser form now stores the "returnLocation" needed by the doc search after the "cancel" button is clicked. --%>
 <html-el:hidden property="returnLocation" />
 <c:choose>
 	<c:when test="${not empty SuperUserForm.returnLocation}">
@@ -206,7 +206,7 @@
 	</c:otherwise>
 </c:choose>
 
-<div class="globalbuttons">
+  <div class="globalbuttons">
 	<a href="DocumentSearch.do"><img src="images/buttonsmall_cancel.gif" border="0" alt="cancel"></a>
 </div>
 <%--

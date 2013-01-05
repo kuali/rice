@@ -295,6 +295,10 @@
     margin-top: 20px;
 }
 
+#ComponentLibraryTabGroup_tabList .uif-validationImage {
+    display: none !important;
+}
+
 #ComponentLibraryTabGroup_tabList li {
     border-style: none !important;
     padding-bottom: 2px;
@@ -901,4 +905,10 @@ div#KradSampleAppDemo-Row1-Demo3 {
 
 div#KradSampleAppDemo-Row2-Demo1, div#KradSampleAppDemo-Row2-Demo2, div#KradSampleAppDemo-Row2-Demo3 {
     background-image: url("../../images/krad/demo-lookup.png");
+}
+
+/* example specific css */
+
+div#Demo-InputField-View div#ComponentLibraryTabGroup_tabs > .ui-tabs-panel{
+    min-height: 290px;
 }

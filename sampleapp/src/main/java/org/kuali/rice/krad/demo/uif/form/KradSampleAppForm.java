@@ -29,6 +29,7 @@ public class KradSampleAppForm extends UifFormBase {
     private static final long serialVersionUID = -7525378097732916418L;
     private String themeName;
     private String exampleShown;
+    private String currentExampleIndex;
 
     //Fields separated by demonstration type below:
 
@@ -39,6 +40,11 @@ public class KradSampleAppForm extends UifFormBase {
     private String inputField4;
     private String inputField5;
     private String inputField6;
+    private String inputField7;
+    private String inputField8;
+    private String inputField9;
+    private String inputField10;
+    private String inputField11;
 
     private String testPersonId;
     private Person testPerson;
@@ -68,6 +74,14 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setExampleShown(String exampleShown) {
         this.exampleShown = exampleShown;
+    }
+
+    public String getCurrentExampleIndex() {
+        return currentExampleIndex;
+    }
+
+    public void setCurrentExampleIndex(String currentExampleIndex) {
+        this.currentExampleIndex = currentExampleIndex;
     }
 
     /**
@@ -121,6 +135,46 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setInputField6(String inputField6) {
         this.inputField6 = inputField6;
+    }
+
+    public String getInputField7() {
+        return inputField7;
+    }
+
+    public void setInputField7(String inputField7) {
+        this.inputField7 = inputField7;
+    }
+
+    public String getInputField8() {
+        return inputField8;
+    }
+
+    public void setInputField8(String inputField8) {
+        this.inputField8 = inputField8;
+    }
+
+    public String getInputField9() {
+        return inputField9;
+    }
+
+    public void setInputField9(String inputField9) {
+        this.inputField9 = inputField9;
+    }
+
+    public String getInputField10() {
+        return inputField10;
+    }
+
+    public void setInputField10(String inputField10) {
+        this.inputField10 = inputField10;
+    }
+
+    public String getInputField11() {
+        return inputField11;
+    }
+
+    public void setInputField11(String inputField11) {
+        this.inputField11 = inputField11;
     }
 
     public String getMessageField1() {

@@ -32,18 +32,19 @@ jQuery(function () {
     if(jQuery("#renderedInLightBox").length && jQuery("#renderedInLightBox").val() == "true"){
         jQuery(".uif-view").css("padding-top", "0");
     }
-    handleTabSwap("select#Demo-LargeExampleDropdown_control");
+    handleTabSwap("input#Demo-CurrentExampleIndex_control");
 });
 
 /**
  * Setup call for exhibit tabs, adds a handler for the tabsactivate event to switch the source in the syntaxHighlighter
- * based on tab index
+ * based on tab index and write the tabIndex value to the Demo-CurrentExampleIndex_control
  */
 function setupExhibitHandlers() {
     jQuery( "#ComponentLibraryTabGroup_tabs" ).on( "tabsactivate", function( event, ui ) {
         var tabIndex = ui.newTab.index();
         var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
         jQuery("div.uif-syntaxHighlighter:first > div > pre").replaceWith(jQuery(source)[0].outerHTML);
+        jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
     } );
 }
 
@@ -74,14 +75,14 @@ function linkSelection() {
 }
 
 /**
- * Activates the tab (hidden in the case where large example is being used) for large examples in order to retain
- * the ability to show the correct source in the syntaxHighlighter without needing additional handlers
+ * Activates the tab (hidden in the case where large example is being used)  in order to retain
+ * the ability to show the correct example tab and source in the syntaxHighlighter without needing additional handlers
  *
  * @param control the large example dropdown control
  */
 function handleTabSwap(control){
     var tab = jQuery(control).val();
-    if(tab != undefined){
+    if(tab != undefined && tab != ""){
         var tabNum = parseInt(tab);
         jQuery("#ComponentLibraryTabGroup_tabs").tabs( "option", "active", tabNum );
     }

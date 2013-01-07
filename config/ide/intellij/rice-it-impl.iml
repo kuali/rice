@@ -4,20 +4,21 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../it/impl/src/test/resources/org/kuali/rice/core/mail/MailerTestSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/it/impl/src/test/resources/org/kuali/rice/core/mail/MailerTestSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/impl/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/impl/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../it/impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/impl/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/impl/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/impl/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/impl/src/test/resources/META-INF" isTestSource="true" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/it/impl">
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/impl/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/impl/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/impl/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/impl/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/impl/target" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/impl/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

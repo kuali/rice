@@ -8,55 +8,54 @@
         <datasource-mapping>
           <factory-entry name="krad-application-unit" />
         </datasource-mapping>
-        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../../it/krad/src/test/resources/META-INF/krad-test-persistence.xml" />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/META-INF/krad-test-persistence.xml" />
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Address.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Company.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Employee.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountManagerMaintenanceDocument.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountManager.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument2.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/Account.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Person.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountMaintenanceDocument.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountExtension.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountWithDDAttributesDocument.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountTypeDivergent.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/LookupResultsDDBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/BOContainingPerson.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountType.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument3.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountType2MaintenanceDocument.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/AccountType2.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocument.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/uif/UifBeanFactoryPostProcessorTestBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/RiceTestTransactionalDocument2.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/org/kuali/rice/krad/test/document/RiceTestTransactionalDocumentDivergentType.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/KRADTestSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/DictionaryValidationServiceSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../it/krad/src/test/resources/TestDataDictionary.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Address.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Company.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Employee.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountManagerMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountManager.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument2.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/Account.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Person.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountExtension.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountWithDDAttributesDocument.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountTypeDivergent.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/LookupResultsDDBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/BOContainingPerson.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountType.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument3.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountType2MaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/AccountType2.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocument.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/uif/UifBeanFactoryPostProcessorTestBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/RiceTestTransactionalDocument2.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/org/kuali/rice/krad/test/document/RiceTestTransactionalDocumentDivergentType.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/KRADTestSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/DictionaryValidationServiceSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/TestDataDictionary.xml</file>
         </fileset>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/krad/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/krad/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../it/krad">
+    <output url="file://$MODULE_DIR$/../../../rice-framework/krad-it/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-framework/krad-it/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-framework/krad-it">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-test-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-it/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-it/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-it/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -213,8 +212,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.ant:ant:1.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
-    <orderEntry type="module" module-name="rice-krad-web-framework" scope="TEST" />
-    <orderEntry type="module" module-name="rice-krad-app-framework" scope="TEST" />
+    <orderEntry type="module" module-name="rice-krad-web-framework" scope="TEST" production-on-test="" />
+    <orderEntry type="module" module-name="rice-krad-app-framework" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-edl-impl" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.18" level="project" />
   </component>

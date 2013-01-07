@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/remote/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/remote/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/it/remote">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-test-sources/test-annotations" isTestSource="true" />
@@ -10,12 +10,13 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/remote/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/remote/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/remote/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
-    <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-core-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -142,13 +143,13 @@
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.javassist:javassist:3.15.0-GA" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-core-service-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-core-service-impl" scope="TEST" production-on-test="" />
     <orderEntry type="library" scope="TEST" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: xalan:serializer:2.7.1" level="project" />
     <orderEntry type="module" module-name="rice-core-service-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-ken-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-core-service-web" scope="TEST" />
@@ -165,8 +166,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-ksb-server-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-krms-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-server-impl" scope="TEST" production-on-test="" />
+    <orderEntry type="module" module-name="rice-krms-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-krms-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-krms-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-krms-impl" scope="TEST" />

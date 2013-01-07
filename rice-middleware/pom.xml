@@ -19,6 +19,17 @@
     <module>edl</module>
     <module>impl</module>
     <module>it</module>
+    <module>ken</module>
+    <module>kew</module>
+    <module>kim</module>
+    <module>kns</module>
+    <module>krms</module>
+    <module>ksb</module>
+    <module>location</module>
+    <module>sampleapp</module>
+    <module>serviceregistry</module>
+    <module>standalone</module>
+    <module>web</module>
   </modules>
 
 </project>

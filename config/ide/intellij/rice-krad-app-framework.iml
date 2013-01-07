@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../krad/krad-app-framework/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../krad/krad-app-framework/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../krad/krad-app-framework">
+    <output url="file://$MODULE_DIR$/../../../rice-framework/krad-app-framework/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-framework/krad-app-framework/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-framework/krad-app-framework">
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/target/generated-test-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-app-framework/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-app-framework/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-app-framework/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-app-framework/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-app-framework/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-app-framework/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

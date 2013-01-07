@@ -995,22 +995,11 @@
   </build>
   <modules>
     <module>db</module>
-    <module>kim</module>
-    <module>location</module>
-    <module>krad</module>
-    <module>kns</module>
-    <module>kew</module>
-    <module>ken</module>
-    <module>ksb</module>
-    <module>krms</module>
-    <module>web</module>
     <module>development-tools</module>
-    <module>sampleapp</module>
-    <module>serviceregistry</module>
-    <module>standalone</module>
     <module>dist</module>
     <module>config</module>
     <module>rice-middleware</module>
+    <module>rice-framework</module>
   </modules>
 
   <repositories>

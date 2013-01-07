@@ -15,16 +15,17 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/kew/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/kew/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/it/kew">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kew/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kew/target/generated-test-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kew/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kew/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kew/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kew/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kew/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/kew/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kew/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

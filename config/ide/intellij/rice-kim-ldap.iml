@@ -4,23 +4,24 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/resources/org/kuali/rice/kim/config/KIMLdapSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/main/resources/org/kuali/rice/kim/config/KIMLdapSpringBeans.xml</file>
         </fileset>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../kim/kim-ldap">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap">
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-ldap/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/kim/kim-ldap/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -89,7 +89,6 @@
     </ConfigurationWrapper>
     <method>
       <option name="BuildArtifacts" enabled="true" />
-      <option name="Maven.BeforeRunTask" enabled="false" file="$PROJECT_DIR$/../../../web/pom.xml" goal="process-resources" />
     </method>
   </configuration>
 </component>

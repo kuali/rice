@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../kns/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../kns/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../kns">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/kns/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/kns/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/kns">
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/target/generated-test-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kns/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kns/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kns/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/kns/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/kns/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

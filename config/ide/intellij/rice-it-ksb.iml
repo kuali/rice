@@ -35,21 +35,21 @@
           <file>file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/org/kuali/rice/ksb/testclient1/resources/TestClient1SpringBeans.xml</file>
           <file>file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/org/kuali/rice/ksb/testclient2/resources/TestClient2SpringBeans.xml</file>
         </fileset>
-        <fileset id="web: application context" profiles="" autodetected="true" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/ksb/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/ksb/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ksb/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ksb/target/generated-test-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/ksb/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/ksb/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

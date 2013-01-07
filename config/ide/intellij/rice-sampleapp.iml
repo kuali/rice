@@ -4,14 +4,10 @@
     <facet type="web" name="Web">
       <configuration>
         <webroots>
-          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/webapp" relative="/" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/webapp" relative="/" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" />
-          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" />
-          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" />
-          <root url="file://$MODULE_DIR$/../../../sampleapp/src/it/resources" />
         </sourceRoots>
       </configuration>
       <facet type="struts" name="Struts">
@@ -45,57 +41,56 @@
           <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</file>
           <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</file>
           <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/uif/PeopleFlowViews.xml</file>
-          <file>file://$MODULE_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowMemberBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowDelegateBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ActionBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/uif/AgendaEditorView.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaItemBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaMaintenance.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/CategoryBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ContextBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ContextMaintenanceDocument.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/uif/ContextMaintenanceView.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/KrmsAttributeDefinitionBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/PropositionBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/PropositionParameterBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleAttributeBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleMaintenance.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermParameterBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermSpecificationBo.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsView.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP3.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP4.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP5.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP6.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP7.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP8.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP9.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/kew/impl/src/main/resources/org/kuali/rice/kew/impl/uif/PeopleFlowViews.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowMemberBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowDelegateBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ActionBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/uif/AgendaEditorView.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaItemBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaMaintenance.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/CategoryBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ContextBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ContextMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/uif/ContextMaintenanceView.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/KrmsAttributeDefinitionBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/PropositionBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/PropositionParameterBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleAttributeBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleMaintenance.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermParameterBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermSpecificationBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsView.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP3.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP4.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP5.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP6.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP7.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP8.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP9.xml</file>
         </fileset>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../../../sampleapp">
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp">
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-test-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -251,7 +246,7 @@
     <orderEntry type="module" module-name="rice-krms-impl" />
     <orderEntry type="module" module-name="rice-krms-framework" />
     <orderEntry type="module" module-name="rice-krms-api" />
-    <orderEntry type="module" module-name="rice-it-krad" scope="TEST" />
+    <orderEntry type="module" module-name="rice-it-krad" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-it-internal-tools" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />

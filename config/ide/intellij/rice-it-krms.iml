@@ -11,17 +11,18 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/krms/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/krms/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/it/krms">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/target/generated-test-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/krms/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/krms/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/krms/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/krms/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/krms/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/krms/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krms/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/krms/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -178,8 +179,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
-    <orderEntry type="module" module-name="rice-krms-api" scope="TEST" />
-    <orderEntry type="module" module-name="rice-krms-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-krms-api" scope="TEST" production-on-test="" />
+    <orderEntry type="module" module-name="rice-krms-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-krms-framework" />
     <orderEntry type="module" module-name="rice-krms-api" />
     <orderEntry type="module" module-name="rice-krms-impl" />

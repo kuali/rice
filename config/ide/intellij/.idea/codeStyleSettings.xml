@@ -299,6 +299,10 @@
           <option name="WRAP_COMMENTS" value="true" />
           <option name="PARENT_SETTINGS_INSTALLED" value="true" />
         </codeStyleSettings>
+        <codeStyleSettings language="SQL">
+          <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
+          <option name="PARENT_SETTINGS_INSTALLED" value="true" />
+        </codeStyleSettings>
         <codeStyleSettings language="XML">
           <indentOptions>
             <option name="INDENT_SIZE" value="2" />

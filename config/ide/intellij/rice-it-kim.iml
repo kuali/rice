@@ -13,20 +13,21 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../it/kim/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../it/kim/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../rice-middleware/it/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/it/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/it/kim">
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kim/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kim/target/generated-test-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kim/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kim/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kim/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kim/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kim/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/kim/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/it/kim/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" scope="TEST" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
@@ -176,7 +177,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />
-    <orderEntry type="module" module-name="rice-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-impl" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-it-internal-tools" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />

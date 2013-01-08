@@ -154,7 +154,7 @@
     <orderEntry type="module" module-name="rice-core-service-impl" />
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
-    <orderEntry type="module" module-name="rice-impl" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-impl:2.2.1-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-ken-api" />
     <orderEntry type="module" module-name="rice-kew-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />

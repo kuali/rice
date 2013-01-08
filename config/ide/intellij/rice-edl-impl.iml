@@ -67,7 +67,7 @@
     <orderEntry type="library" name="Maven: com.google.guava:guava:11.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.6" level="project" />
-    <orderEntry type="module" module-name="rice-impl" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-impl:2.2.1-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-kew-api" />
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />

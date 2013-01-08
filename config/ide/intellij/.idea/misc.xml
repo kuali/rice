@@ -191,24 +191,6 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../../krad">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/continuous-integration" />
-                  <option value="https://test.kuali.org/svn/rice/inactive" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/../../../rice-framework/krad-it">
           <value>
             <SvnBranchConfiguration>

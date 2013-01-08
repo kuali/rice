@@ -24,7 +24,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-impl" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-impl:2.2.1-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-core-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />

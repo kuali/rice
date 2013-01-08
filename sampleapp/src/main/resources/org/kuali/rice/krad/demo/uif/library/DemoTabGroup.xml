@@ -25,6 +25,7 @@
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTabGroup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.TabGroup"/>
     <property name="docBookAnchor" value=""/>
+    <property name="exampleSize" value="LARGE"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-TabGroup-Example1"/>
@@ -37,7 +38,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-TabGroup-Example1 start-->
-        <bean parent="Uif-MessageField" p:messageText="TODO : tabs cause error inside ComponentLibraryView"/>
+        <bean parent="Uif-TabGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-VerticalBoxSection" p:headerText="one"/>
+              <bean parent="Uif-VerticalBoxSection" p:headerText="two"/>
+            </list>
+          </property>
+        </bean>
         <!-- ex:Demo-TabGroup-Example1 end-->
       </list>
     </property>

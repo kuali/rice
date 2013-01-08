@@ -43,8 +43,10 @@ function setupExhibitHandlers() {
     jQuery( "#ComponentLibraryTabGroup_tabs" ).on( "tabsactivate", function( event, ui ) {
         var tabIndex = ui.newTab.index();
         var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
-        jQuery("div.uif-syntaxHighlighter:first > div > pre").replaceWith(jQuery(source)[0].outerHTML);
-        jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
+        if (source != null && source.length) {
+            jQuery("div.uif-syntaxHighlighter:first > div > pre").replaceWith(jQuery(source)[0].outerHTML);
+            jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
+        }
     } );
 }
 

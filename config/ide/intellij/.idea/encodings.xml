@@ -19,10 +19,10 @@
     <file url="file://$PROJECT_DIR$/../../../db/sql" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../development-tools" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../dist" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../../krad" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../rice-framework" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-app-framework" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-it" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-sampleapp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-web-framework" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/client-contrib" charset="UTF-8" />

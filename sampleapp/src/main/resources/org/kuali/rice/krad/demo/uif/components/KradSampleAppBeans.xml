@@ -20,36 +20,36 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-<!-- TODO Add back in after module changeover
+  <!-- TODO Add back in after module changeover
 
-  <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"
-        p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
-        p:templateName="demo_kradappheader"/>
+ <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"
+       p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
+       p:templateName="demo_kradappheader"/>
 
-  <bean id="Uif-GlobalApplicationFooter" parent="Uif-GlobalApplicationFooter-parentBean"
-        p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl" p:render="@{!renderedInLightBox}"
-        p:templateName="demo_kradappfooter"/>
+ <bean id="Uif-GlobalApplicationFooter" parent="Uif-GlobalApplicationFooter-parentBean"
+       p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl" p:render="@{!renderedInLightBox}"
+       p:templateName="demo_kradappfooter"/>
 
-  <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean">
-    <property name="additionalCssFiles">
-      <list>
-        <value>css/krad/jquery.tweet.css</value>
-        <value>css/krad/kradSampleApp.css</value>
-      </list>
-    </property>
-    <property name="additionalScriptFiles">
-      <list>
-        <value>scripts/krad/jquery.tweet.js</value>
-        <value>scripts/krad/kradSampleApp.js</value>
-      </list>
-    </property>
-    <property name="breadcrumbs.homewardPathList">
-      <list>
-        <bean parent="Uif-HistoryEntry" p:title="Home"
-              p:url="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start"/>
-      </list>
-    </property>
-  </bean> -->
+ <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean">
+   <property name="additionalCssFiles">
+     <list>
+       <value>css/krad/jquery.tweet.css</value>
+       <value>css/krad/kradSampleApp.css</value>
+     </list>
+   </property>
+   <property name="additionalScriptFiles">
+     <list>
+       <value>scripts/krad/jquery.tweet.js</value>
+       <value>scripts/krad/kradSampleApp.js</value>
+     </list>
+   </property>
+   <property name="breadcrumbs.homewardPathList">
+     <list>
+       <bean parent="Uif-HistoryEntry" p:title="Home"
+             p:url="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start"/>
+     </list>
+   </property>
+ </bean> -->
 
   <!-- SampleAppView defaults -->
   <bean id="KradSampleAppView" parent="Uif-FormView">
@@ -67,13 +67,13 @@
     </property>
     <property name="applicationHeader">
       <bean parent="Uif-GlobalApplicationHeader-parentBean"
-              p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
-              p:templateName="demo_kradappheader"/>
+            p:template="/WEB-INF/ftl/krad/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
+            p:templateName="demo_kradappheader"/>
     </property>
     <property name="applicationFooter">
       <bean parent="Uif-GlobalApplicationFooter-parentBean"
-              p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl" p:render="@{!renderedInLightBox}"
-              p:templateName="demo_kradappfooter"/>
+            p:template="/WEB-INF/ftl/krad/kradSampleAppFooter.ftl" p:render="@{!renderedInLightBox}"
+            p:templateName="demo_kradappfooter"/>
     </property>
     <property name="breadcrumbs.render" value="false"/>
     <property name="cssClasses">
@@ -485,8 +485,34 @@
   <bean id="ComponentLibrary-Nav-Validation" p:headerText="Validation" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Simple Constraint"
+        <bean parent="Uif-Link" p:linkText="Simple Constraints"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SimpleConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Prerequisite Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PrerequisiteConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Must Occur Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MustOccurConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Case Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CaseConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Any Character Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AnyCharacterPatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Charset Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CharsetPatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Alpha Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AlphaPatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="AlphaNumeric Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Numeric Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NumericPatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Integer Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IntegerPatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Fixed Point Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FixedPointPatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Floating Point Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FloatingPointPatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Date Constraint"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePatternConstraint-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Regex Based Constraints"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConfigurationBasedRegexPatternConstraint-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

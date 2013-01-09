@@ -45,6 +45,10 @@ public class KradSampleAppForm extends UifFormBase {
     private String inputField9;
     private String inputField10;
     private String inputField11;
+    private String inputField12;
+    private String inputField13;
+    private String inputField14;
+    private String inputField15;
 
     private String testPersonId;
     private Person testPerson;
@@ -60,26 +64,55 @@ public class KradSampleAppForm extends UifFormBase {
         messageField1 = "fruits";
     }
 
+    /**
+     * Theme by name (id) currently used for the component library view
+     *
+     * @return
+     */
     public String getThemeName() {
         return themeName;
     }
 
+    /**
+     *
+     * @param themeName
+     */
     public void setThemeName(String themeName) {
         this.themeName = themeName;
     }
 
+    /**
+     * Backing property for the large example dropdown since on is required.  Stores dropdown selection
+     *
+     * @return
+     */
     public String getExampleShown() {
         return exampleShown;
     }
 
+    /**
+     * Large example selection
+     *
+     * @param exampleShown
+     */
     public void setExampleShown(String exampleShown) {
         this.exampleShown = exampleShown;
     }
 
+    /**
+     * Index of the current example, used to reselect between submit actions
+     *
+     * @return
+     */
     public String getCurrentExampleIndex() {
         return currentExampleIndex;
     }
 
+    /**
+     * Index of the current example
+     *
+     * @param currentExampleIndex
+     */
     public void setCurrentExampleIndex(String currentExampleIndex) {
         this.currentExampleIndex = currentExampleIndex;
     }
@@ -175,6 +208,38 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setInputField11(String inputField11) {
         this.inputField11 = inputField11;
+    }
+
+    public String getInputField12() {
+        return inputField12;
+    }
+
+    public void setInputField12(String inputField12) {
+        this.inputField12 = inputField12;
+    }
+
+    public String getInputField13() {
+        return inputField13;
+    }
+
+    public void setInputField13(String inputField13) {
+        this.inputField13 = inputField13;
+    }
+
+    public String getInputField14() {
+        return inputField14;
+    }
+
+    public void setInputField14(String inputField14) {
+        this.inputField14 = inputField14;
+    }
+
+    public String getInputField15() {
+        return inputField15;
+    }
+
+    public void setInputField15(String inputField15) {
+        this.inputField15 = inputField15;
     }
 
     public String getMessageField1() {

@@ -163,6 +163,21 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAccordionGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoActionField.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTabGroup.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSimpleConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAlphaPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAlphaNumericPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoNumericPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoAnyCharacterPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCaseConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCharsetPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoConfigurationBasedRegexPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoDatePatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoFixedPointPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoFloatingPointPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoIntegerPatternConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoMustOccurConstraint.xml</value>
+        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoPrerequisiteConstraint.xml</value>
+
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
 
@@ -231,6 +246,20 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAccordionGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoActionFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTabGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSimpleConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAlphaConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAlphaNumericConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoNumericConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAnyCharacterConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCaseConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCharsetConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoConfigurationBasedRegexResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDateConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoFixedPointConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoFloatingPointConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoIntegerConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMustOccurConstraintResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPrerequisiteConstraintResources</value>
       </list>
     </property>
   </bean>

@@ -49,12 +49,17 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
         if (isAllowNegative()) {
             regex.append("-?");
         }
-        // final patter will be: -?([0-9]{0,p-s}\.[0-9]{1,s}|[0-9]{1,p-s}) where p = precision, s=scale
+        // final pattern will be: -?([0-9]{0,p-s}\.[0-9]{1,s}|[0-9]{1,p-s}) where p = precision, s=scale
+
         regex.append("(");
-        regex.append("[0-9]{0," + (getPrecision() - getScale()) + "}");
+        if(getPrecision() - getScale() > 0){
+            regex.append("[0-9]{0," + (getPrecision() - getScale()) + "}");
+        }
         regex.append("\\.");
         regex.append("[0-9]{1," + getScale() + "}");
-        regex.append("|[0-9]{1," + (getPrecision() - getScale()) + "}");
+        if(getPrecision() - getScale() > 0){
+            regex.append("|[0-9]{1," + (getPrecision() - getScale()) + "}");
+        }
         regex.append(")");
         return regex.toString();
     }

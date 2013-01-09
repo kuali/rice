@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,18 +53,26 @@ public class KradSampleAppController extends UifControllerBase {
         return super.start(form, result, request, response);
     }
 
-    @RequestMapping(params = "methodToCall=changeTheme")
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=changeTheme")
     public ModelAndView changeTheme(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         changeTheme(form);
         return getUIFModelAndView(form);
     }
 
-    private void changeTheme(UifFormBase form){
-        String theme = ((KradSampleAppForm)form).getThemeName();
-        if(theme != null){
-            ViewTheme newTheme = (ViewTheme)(KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(theme));
-            if(newTheme != null){
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=validateView")
+    public ModelAndView validateView(@ModelAttribute("KualiForm") UifFormBase uiTestForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        KRADServiceLocatorWeb.getViewValidationService().validateView(uiTestForm);
+        return getUIFModelAndView(uiTestForm);
+    }
+
+    private void changeTheme(UifFormBase form) {
+        String theme = ((KradSampleAppForm) form).getThemeName();
+        if (theme != null) {
+            ViewTheme newTheme = (ViewTheme) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                    theme));
+            if (newTheme != null) {
                 form.getPostedView().setTheme(newTheme);
                 form.getView().setTheme(newTheme);
             }

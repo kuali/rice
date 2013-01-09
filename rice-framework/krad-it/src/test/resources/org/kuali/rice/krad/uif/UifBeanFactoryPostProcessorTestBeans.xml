@@ -26,7 +26,7 @@
   </bean>
 
   <bean id="testNestedExpressionOverride2" parent="Uif-InputField" p:label="Direct Inquiry" p:propertyName="field1">
-    <property name="inquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+    <property name="inquiry.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
     <property name="inquiry.render" value="@{1 == 1}"/>
     <property name="inquiry.inquiryParameters">
       <map>

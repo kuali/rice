@@ -36,7 +36,11 @@ public class ComponentExhibit extends ContentElementBase {
 
     private List<Group> demoGroups;
     private List<String> demoSourceCode;
+    private List<String> additionalDemoSourceCode1 = new ArrayList<String>();
+    private List<String> additionalDemoSourceCode2 = new ArrayList<String>();
     private SyntaxHighlighter sourceCodeViewer;
+    private SyntaxHighlighter additionalSourceCodeViewer1;
+    private SyntaxHighlighter additionalSourceCodeViewer2;
     private FieldGroup docLinkFields;
     private TabGroup tabGroup;
 
@@ -58,6 +62,16 @@ public class ComponentExhibit extends ContentElementBase {
         if(demoSourceCode != null && !demoSourceCode.isEmpty()){
             sourceCodeViewer.setSourceCode(demoSourceCode.get(0));
         }
+
+        if(additionalDemoSourceCode1 != null && !additionalDemoSourceCode1.isEmpty()
+                && additionalDemoSourceCode1.get(0) != null){
+            additionalSourceCodeViewer1.setSourceCode(additionalDemoSourceCode1.get(0));
+        }
+
+        if(additionalDemoSourceCode2 != null && !additionalDemoSourceCode2.isEmpty()
+                        && additionalDemoSourceCode2.get(0) != null){
+            additionalSourceCodeViewer2.setSourceCode(additionalDemoSourceCode2.get(0));
+        }
     }
 
     /**
@@ -68,6 +82,8 @@ public class ComponentExhibit extends ContentElementBase {
         List<Component> components = new ArrayList<Component>();
 
         components.add(sourceCodeViewer);
+        components.add(additionalSourceCodeViewer1);
+        components.add(additionalSourceCodeViewer2);
         components.add(tabGroup);
 
         return components;
@@ -160,5 +176,37 @@ public class ComponentExhibit extends ContentElementBase {
      */
     public void setTabGroup(TabGroup tabGroup) {
         this.tabGroup = tabGroup;
+    }
+
+    public List<String> getAdditionalDemoSourceCode1() {
+        return additionalDemoSourceCode1;
+    }
+
+    public void setAdditionalDemoSourceCode1(List<String> additionalDemoSourceCode1) {
+        this.additionalDemoSourceCode1 = additionalDemoSourceCode1;
+    }
+
+    public List<String> getAdditionalDemoSourceCode2() {
+        return additionalDemoSourceCode2;
+    }
+
+    public void setAdditionalDemoSourceCode2(List<String> additionalDemoSourceCode2) {
+        this.additionalDemoSourceCode2 = additionalDemoSourceCode2;
+    }
+
+    public SyntaxHighlighter getAdditionalSourceCodeViewer1() {
+        return additionalSourceCodeViewer1;
+    }
+
+    public void setAdditionalSourceCodeViewer1(SyntaxHighlighter additionalSourceCodeViewer1) {
+        this.additionalSourceCodeViewer1 = additionalSourceCodeViewer1;
+    }
+
+    public SyntaxHighlighter getAdditionalSourceCodeViewer2() {
+        return additionalSourceCodeViewer2;
+    }
+
+    public void setAdditionalSourceCodeViewer2(SyntaxHighlighter additionalSourceCodeViewer2) {
+        this.additionalSourceCodeViewer2 = additionalSourceCodeViewer2;
     }
 }

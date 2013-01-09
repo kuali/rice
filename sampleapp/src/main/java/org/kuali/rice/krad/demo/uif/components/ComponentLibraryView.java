@@ -70,7 +70,7 @@ public class ComponentLibraryView extends FormView {
     private String largeExampleFieldId;
 
     public static enum ExampleSize {
-        SMALL, LARGE;
+        SMALL, LARGE, XLARGE, WINDOW;
     }
 
     private ExampleSize exampleSize;

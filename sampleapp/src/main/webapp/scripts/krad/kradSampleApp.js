@@ -40,12 +40,33 @@ jQuery(function () {
  * based on tab index and write the tabIndex value to the Demo-CurrentExampleIndex_control
  */
 function setupExhibitHandlers() {
-    jQuery( "#ComponentLibraryTabGroup_tabs" ).on( "tabsactivate", function( event, ui ) {
+    jQuery( "#ComponentLibrary-TabGroup_tabs" ).on( "tabsactivate", function( event, ui ) {
         var tabIndex = ui.newTab.index();
+        jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
+
+        //main source code viewer
         var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
         if (source != null && source.length) {
-            jQuery("div.uif-syntaxHighlighter:first > div > pre").replaceWith(jQuery(source)[0].outerHTML);
-            jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
+            jQuery("div#ComponentLibrary-MainCodeViewer > div > pre").replaceWith(jQuery(source)[0].outerHTML);
+        }
+
+        //additional source code viewers
+        var additionalSource1 = jQuery("#demo-additionalExhibitSource1 > pre[data-index='" + tabIndex + "']");
+        if (additionalSource1 != null && additionalSource1.length) {
+            jQuery("div#ComponentLibrary-AdditionalCodeViewer1 > div > pre").replaceWith(jQuery(additionalSource1)[0].outerHTML);
+            jQuery("div#ComponentLibrary-AdditionalCodeViewer1").show();
+        }
+        else{
+            jQuery("div#ComponentLibrary-AdditionalCodeViewer1").hide();
+        }
+
+        var additionalSource2 = jQuery("#demo-additionalExhibitSource2 > pre[data-index='" + tabIndex + "']");
+        if (additionalSource2 != null && additionalSource2.length) {
+            jQuery("div#ComponentLibrary-AdditionalCodeViewer2 > div > pre").replaceWith(jQuery(additionalSource2)[0].outerHTML);
+            jQuery("div#ComponentLibrary-AdditionalCodeViewer2").show();
+        }
+        else{
+            jQuery("div#ComponentLibrary-AdditionalCodeViewer2").hide();
         }
     } );
 }
@@ -86,7 +107,7 @@ function handleTabSwap(control){
     var tab = jQuery(control).val();
     if(tab != undefined && tab != ""){
         var tabNum = parseInt(tab);
-        jQuery("#ComponentLibraryTabGroup_tabs").tabs( "option", "active", tabNum );
+        jQuery("#ComponentLibrary-TabGroup_tabs").tabs( "option", "active", tabNum );
     }
 }
 

@@ -271,15 +271,15 @@
 
 /** Component Exhibit *********************************************************************/
 
-#ComponentLibraryTabGroup{
+#ComponentLibrary-TabGroup{
     margin-left: -5px;
 }
 
-#ComponentLibraryTabGroup_tabs {
+#ComponentLibrary-TabGroup_tabs {
     width: 100%;
 }
 
-#ComponentLibraryTabGroup_tabs > div.ui-tabs-panel {
+#ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel {
     min-height: 200px;
     overflow: auto;
     width: 72%;
@@ -288,18 +288,18 @@
     padding: 12px;
 }
 
-#ComponentLibraryTabGroup_tabList {
+#ComponentLibrary-TabGroup_tabList {
     width: 23%;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     margin-top: 20px;
 }
 
-#ComponentLibraryTabGroup_tabList .uif-validationImage {
+#ComponentLibrary-TabGroup_tabList .uif-validationImage {
     display: none !important;
 }
 
-#ComponentLibraryTabGroup_tabList li {
+#ComponentLibrary-TabGroup_tabList li {
     border-style: none !important;
     padding-bottom: 2px;
     padding-left: 16px;
@@ -316,13 +316,13 @@
     box-shadow: none;
 }
 
-#ComponentLibraryTabGroup_tabList li:last-child{
+#ComponentLibrary-TabGroup_tabList li:last-child{
     background-image: url("../../images/krad/widgetNavDivider.png"), url("../../images/krad/widgetNavDivider.png");
     background-position: 12px 0, 12px bottom;
     background-repeat: no-repeat, no-repeat;
 }
 
-#ComponentLibraryTabGroup_tabList li.ui-state-active {
+#ComponentLibrary-TabGroup_tabList li.ui-state-active {
     background-color: #FFFFFF;
     background-image: url("../../images/krad/widgetNavBorder.png"), url("../../images/krad/widgetNavBorder.png"), url("../../images/krad/widgetNavCorner.png");
     background-position: 1px top, -2px bottom, left center;
@@ -333,12 +333,12 @@
     cursor: pointer !important;
 }
 
-#ComponentLibraryTabGroup_tabList a:focus{
+#ComponentLibrary-TabGroup_tabList a:focus{
     outline: thin dotted #333333;
     outline-offset: -2px;
 }
 
-#ComponentLibraryTabGroup_tabList a {
+#ComponentLibrary-TabGroup_tabList a {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 0.85em;
     color: #666666;
@@ -349,7 +349,7 @@
     width: 100%;
 }
 
-#ComponentLibraryTabGroup_tabList li.ui-state-active a {
+#ComponentLibrary-TabGroup_tabList li.ui-state-active a {
     color: black;
 }
 
@@ -362,6 +362,10 @@
 }
 
 /**** Source code viewer *********************************************************/
+
+#ComponentLibrary-AdditionalCodeViewer1, #ComponentLibrary-AdditionalCodeViewer2{
+    display: none;
+}
 
 .demo-componentLibView .demo-sampleAppPage > div > .uif-syntaxHighlighter h3 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -909,6 +913,6 @@ div#KradSampleAppDemo-Row2-Demo1, div#KradSampleAppDemo-Row2-Demo2, div#KradSamp
 
 /* example specific css */
 
-div#Demo-InputField-View div#ComponentLibraryTabGroup_tabs > .ui-tabs-panel{
+div#Demo-InputField-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 290px;
 }

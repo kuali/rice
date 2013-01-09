@@ -21,11 +21,15 @@ Create pre tags containing the text to highlight adding the css class used by th
 -->
 <#macro uif_syntaxHighlighter widget >
 
-    <div class="uif-syntaxHighlighter">
-        <h3>${widget.sourceCodeHeader}</h3>
+    <div id="${widget.id}" class="uif-syntaxHighlighter">
+        <#if widget.header?has_content>
+            <@krad.template component=widget.header/>
+        </#if>
         <div>
             <pre class="${widget.pluginCssClass}">
-                ${widget.sourceCode}
+                <#if widget.sourceCode?has_content>
+                    ${widget.sourceCode}
+                </#if>
             </pre>
         </div>
     </div>

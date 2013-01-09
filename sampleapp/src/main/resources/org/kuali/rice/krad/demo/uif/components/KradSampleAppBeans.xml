@@ -542,17 +542,26 @@
   <bean id="ComponentLibraryExhibit" class="org.kuali.rice.krad.demo.uif.components.ComponentExhibit"
         p:templateName="uif_exhibit" p:template="/WEB-INF/ftl/krad/componentExhibit.ftl">
     <property name="sourceCodeViewer">
-      <ref bean="ComponentLibraryCodeViewer"/>
+      <bean id="ComponentLibrary-MainCodeViewer" parent="ComponentLibrary-CodeViewer"/>
+    </property>
+    <property name="additionalSourceCodeViewer1">
+      <bean id="ComponentLibrary-AdditionalCodeViewer1" parent="ComponentLibrary-CodeViewer"/>
+    </property>
+    <property name="additionalSourceCodeViewer2">
+      <bean id="ComponentLibrary-AdditionalCodeViewer2" parent="ComponentLibrary-CodeViewer"/>
     </property>
     <property name="tabGroup">
-      <ref bean="ComponentLibraryTabGroup"/>
+      <ref bean="ComponentLibrary-TabGroup"/>
     </property>
   </bean>
 
-  <bean id="ComponentLibraryCodeViewer" parent="Uif-SyntaxHighlighter"
-        p:sourceCodeHeader="Get the Code"/>
+  <bean id="ComponentLibrary-CodeViewer" parent="Uif-SyntaxHighlighter">
+    <property name="header">
+      <bean parent="Uif-HeaderThree"/>
+    </property>
+  </bean>
 
-  <bean id="ComponentLibraryTabGroup" parent="Uif-TabGroup">
+  <bean id="ComponentLibrary-TabGroup" parent="Uif-TabGroup">
     <property name="tabsWidget.position" value="RIGHT"/>
   </bean>
 

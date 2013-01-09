@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.io.Serializable;
@@ -34,7 +35,7 @@ import java.io.Serializable;
 @BeanTag(name = "syntaxHighlighter", parent = "Uif-SyntaxHighlighter")
 public class SyntaxHighlighter extends WidgetBase {
 
-    private String sourceCodeHeader;
+    private Header header;
     private String sourceCode;
     private String pluginCssClass;
     
@@ -47,22 +48,12 @@ public class SyntaxHighlighter extends WidgetBase {
         super.performFinalize(view, model, parent);
     }
 
-    /**
-     * The header text to display above the source code text
-     *
-     * @return String
-     */
-    public String getSourceCodeHeader() {
-        return sourceCodeHeader;
+    public Header getHeader() {
+        return header;
     }
 
-    /**
-     * Setter for the widget header text
-     *
-     * @param sourceCodeHeader
-     */
-    public void setSourceCodeHeader(String sourceCodeHeader) {
-        this.sourceCodeHeader = sourceCodeHeader;
+    public void setHeader(Header header) {
+        this.header = header;
     }
 
     /**
